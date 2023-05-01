@@ -1,0 +1,53 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  #game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  #map-container {
+    width: 800px;
+    height: 600px;
+    background-color: lightblue;
+    position: relative;
+  }
+  
+  .settlement-icon {
+    position: absolute;
+    cursor: pointer;
+  }
+  
+  .settlement-label {
+    position: absolute;
+    text-align: center;
+    width: 100px;
+    margin-left: -50px;
+    font-size: 12px;
+  }
+  
+  #controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  #ui-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+  
+  .settlement-info {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: white;
+    padding: 10px;
+    border: 1px solid black;
+    z-index: 1000;
+  }
+  

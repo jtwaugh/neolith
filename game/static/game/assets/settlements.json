@@ -1,0 +1,31 @@
+[
+    {
+      "name": "Çatalhöyük",
+      "coordinates": [37.671944, 32.825],
+      "founding_date": 7500,
+      "settlement_type": "city",
+      "population_history": [
+        {"year": 7500, "population": 2000},
+        {"year": 7400, "population": 3000},
+        {"year": 7300, "population": 5000}
+      ],
+      "resources": ["grain", "flax", "cattle"],
+      "technologies": ["pottery", "weaving"],
+      "culture": "Anatolian"
+    },
+    {
+      "name": "Hunter-gatherer Group A",
+      "coordinates": [45.123, 12.345],
+      "founding_date": 8500,
+      "settlement_type": "dispersed",
+      "population_history": [
+        {"year": 8500, "population": 50},
+        {"year": 8400, "population": 70},
+        {"year": 8300, "population": 100}
+      ],
+      "resources": ["fish", "wild game", "berries"],
+      "technologies": ["stone tools", "hunting"],
+      "culture": "European"
+    }
+]
+  
