@@ -225,10 +225,155 @@ document.addEventListener('DOMContentLoaded', () => {
          }
     ]
 
+    let tech_tree = technology_tree = {
+      "basic_tools": {
+          "dependencies": [],
+          "unlocks": ["agriculture", "basic_pottery", "basic_hunting"],
+      },
+      "basic_pottery": {
+          "dependencies": ["basic_tools"],
+          "unlocks": [
+              "Cardium pottery",
+              "Linear pottery",
+              "Vinča pottery",
+              "Funnel beaker pottery",
+              "Cucuteni-Trypillia pottery",
+              "Yamnaya pottery",
+          ],
+      },
+      "agriculture": {
+          "dependencies": ["basic_tools"],
+          "unlocks": ["animal_husbandry", "irrigation", "plant_domestication"],
+      },
+      "animal_husbandry": {
+          "dependencies": ["agriculture"],
+          "unlocks": ["pastoralism", "horse_domestication"],
+      },
+      "basic_hunting": {
+          "dependencies": ["basic_tools"],
+          "unlocks": ["marine_resources"],
+      },
+      "plant_domestication": {
+          "dependencies": ["agriculture"],
+          "unlocks": [],
+      },
+      "irrigation": {
+          "dependencies": ["agriculture"],
+          "unlocks": ["advanced_agriculture"],
+      },
+      "pastoralism": {
+          "dependencies": ["animal_husbandry"],
+          "unlocks": [],
+      },
+      "horse_domestication": {
+          "dependencies": ["animal_husbandry"],
+          "unlocks": ["wheeled_vehicles"],
+      },
+      "advanced_agriculture": {
+          "dependencies": ["irrigation"],
+          "unlocks": ["large_settlements"],
+      },
+      "marine_resources": {
+          "dependencies": ["basic_hunting"],
+          "unlocks": [],
+      },
+      "large_settlements": {
+          "dependencies": ["advanced_agriculture"],
+          "unlocks": ["megalithic_tombs", "amber_trade"],
+      },
+      "wheeled_vehicles": {
+          "dependencies": ["horse_domestication"],
+          "unlocks": [],
+      },
+      "megalithic_tombs": {
+          "dependencies": ["large_settlements"],
+          "unlocks": [],
+      },
+      "amber_trade": {
+          "dependencies": ["large_settlements"],
+          "unlocks": [],
+      },
+      "metallurgy": {
+          "dependencies": ["basic_tools"],
+          "unlocks": ["copper_working"],
+      },
+      "copper_working": {
+          "dependencies": ["metallurgy"],
+          "unlocks": [],
+      },
+    }
+
+    let gene_pools = ["WHG", "EEF", "EHG", "CHG", "ANF", "SP"]
+
+    let neolithic_cultures = [
+      {
+          "name": "Cardium Pottery Culture",
+          "gene_pool": {"EEF": 0.9, "WHG": 0.1},
+          "material_practices": [
+              "Cardium pottery",
+              "agriculture",
+              "animal husbandry",
+              "marine resources",
+          ],
+      },
+      {
+          "name": "Linear Pottery Culture (LBK)",
+          "gene_pool": {"EEF": 0.95, "WHG": 0.05},
+          "material_practices": [
+              "Linear pottery",
+              "agriculture",
+              "animal husbandry",
+              "longhouses",
+          ],
+      },
+      {
+          "name": "Vinča Culture",
+          "gene_pool": {"EEF": 0.9, "ANF": 0.1},
+          "material_practices": [
+              "Vinča pottery",
+              "agriculture",
+              "animal husbandry",
+              "metallurgy (copper)",
+              "large settlements",
+          ],
+      },
+      {
+          "name": "Funnel Beaker Culture (TRB)",
+          "gene_pool": {"EEF": 0.6, "WHG": 0.3, "EHG": 0.1},
+          "material_practices": [
+              "Funnel beaker pottery",
+              "agriculture",
+              "animal husbandry",
+              "megalithic tombs",
+              "amber trade",
+          ],
+      },
+      {
+          "name": "Cucuteni-Trypillia Culture",
+          "gene_pool": {"EEF": 0.7, "WHG": 0.2, "CHG": 0.1},
+          "material_practices": [
+              "Cucuteni-Trypillia pottery",
+              "agriculture",
+              "animal husbandry",
+              "large settlements",
+              "painted ceramics",
+          ],
+      },
+      {
+          "name": "Yamnaya Culture",
+          "gene_pool": {"EHG": 0.4, "CHG": 0.4, "SP": 0.2},
+          "material_practices": [
+              "Yamnaya pottery",
+              "pastoralism",
+              "horse domestication",
+              "kurgan burial mounds",
+              "wheeled vehicles",
+          ],
+      },
+    ]  
 
     let currentYear = -7500;
     let intervalID;
-
 
     // Create a Leaflet map
     const map = L.map('map').setView([39.0742, 21.8243], 4); // Set the center and zoom level
@@ -239,7 +384,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }).addTo(map);
 
     // Display information about the clicked hex
-    function showHexInfo(feature) {}
+    function showHexInfo(feature) {
+      const properties = feature.properties;
+      const info = `
+        <p>Terrain: ${properties.terrain}</p>
+        <p>Climate: ${properties.climate}</p>
+        <p>Resources: ${properties.resources}</p>
+        <p>Culture: ${properties.culture}</p>
+      `;
+      document.getElementById("hexInfo").innerHTML = info;
+    }
 
     const startScreen = document.getElementById('start-screen');
     const gameScreen = document.getElementById('game-screen');
@@ -254,26 +408,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const settlementPopulation = document.getElementById('settlement-population');
     const settlementLayer = L.layerGroup();
 
+    function onEachFeature(feature, layer) {
+      layer.on(
+        'click', (event, d) => {
+          showHexInfo(feature);
+          displayPieChart(event, d)
+          event.stopPropagation();
+        }
+      );
+    }
+
     // Load the GeoJSON data
     fetch('/static/game/assets/hex.geojson')
     .then(response => response.json())
-    .then(geojsonData => {
-        // Add the hex grid to the map
-        L.geoJSON(geojsonData, {
-        onEachFeature: (feature, layer) => {
-            // Attach a click event to each hex
-            layer.on('click', (event) => {
-            // Call the showHexInfo function and pass the feature object
-            showHexInfo(feature);
-            
-            // Add the following line to stop event propagation, so that click events from underlying layers don't get triggered
-            event.stopPropagation();
-            });
-        },
-        }).addTo(map);
+    .then(geojsonData => 
+      {
+        L.geoJSON(geojsonData, { onEachFeature: onEachFeature }).addTo(map);
+      }
+    );
 
-        settlementLayer.addTo(map);
-    });
+    settlementLayer.addTo(map);
 
     function createSettlement(settlement) {
         // Create an icon for the settlement
@@ -335,6 +489,62 @@ document.addEventListener('DOMContentLoaded', () => {
     function hideSettlementInfo() {
         settlementInfo.style.display = 'none';
     }
+
+    function createPieChart(data) {
+      const width = 200;
+      const height = 200;
+      const radius = Math.min(width, height) / 2;
+    
+      const color = d3.scaleOrdinal(d3.schemeCategory10);
+    
+      const pie = d3.pie().value(d => d.value);
+    
+      const arc = d3.arc()
+        .outerRadius(radius - 10)
+        .innerRadius(0);
+    
+      const svg = d3.create("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", `translate(${width / 2},${height / 2})`);
+    
+      const g = svg.selectAll(".arc")
+        .data(pie(data))
+        .join("g")
+        .attr("class", "arc");
+    
+      g.append("path")
+        .attr("d", arc)
+        .style("fill", d => color(d.data.label));
+    
+      return svg.node();
+    }
+
+    function displayPieChart(event, d) {
+      // Example genetic breakdown data
+      const geneticData = [
+        { label: "Gene A", value: 30 },
+        { label: "Gene B", value: 50 },
+        { label: "Gene C", value: 20 },
+      ];
+    
+      const pieChartDiv = document.createElement("div");
+      pieChartDiv.style.position = "absolute";
+      pieChartDiv.style.left = `${event.clientX}px`;
+      pieChartDiv.style.top = `${event.clientY}px`;
+    
+      const pieChart = createPieChart(geneticData);
+      pieChartDiv.appendChild(pieChart);
+    
+      document.body.appendChild(pieChartDiv);
+    
+      // Remove the pie chart when clicking outside
+      d3.select(document).on("click", () => {
+        pieChartDiv.remove();
+      }, { once: true });
+    }    
+    
 
     startGameButton.addEventListener('click', startGame);
     pausePlayButton.addEventListener('click', toggleGamePause);

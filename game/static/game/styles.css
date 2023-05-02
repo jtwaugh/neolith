@@ -50,4 +50,14 @@ body {
     border: 1px solid black;
     z-index: 1000;
   }
+
+  #hexInfo {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    z-index: 1000;
+  }
   
