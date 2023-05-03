@@ -372,16 +372,38 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     ]  
 
+    const terrainColors = d3.scaleOrdinal()
+      .domain([0, 1, 2, 3]) // Add as many terrain types as you have
+      .range(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728"]); // Add corresponding colors for each terrain type
+
     let currentYear = -7500;
     let intervalID;
 
     // Create a Leaflet map
     const map = L.map('map').setView([39.0742, 21.8243], 4); // Set the center and zoom level
-
-    // Add a basemap
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map);
+    
+    const svgLayer = L.svg();
+    svgLayer.addTo(map);
+    
+    function drawHexagons(data) {
+      console.log(data)
+      const hexLayer = L.geoJSON(data, {
+        style: function (feature) {
+          return {
+            fillColor: terrainColors(feature.properties.terrain),
+            weight: 1,
+            opacity: 1,
+            color: 'white',
+            fillOpacity: 0.7
+          };
+        },
+        onEachFeature: function (feature, layer) {
+          layer.on({
+            click: function() {showHexInfo(feature);}
+          });
+        }
+      }).addTo(map);
+    }
 
     // Display information about the clicked hex
     function showHexInfo(feature) {
@@ -390,7 +412,10 @@ document.addEventListener('DOMContentLoaded', () => {
         <p>Terrain: ${properties.terrain}</p>
         <p>Climate: ${properties.climate}</p>
         <p>Resources: ${properties.resources}</p>
-        <p>Culture: ${properties.culture}</p>
+        <p>Agriculture Adoption: ${properties.agriculture_adoption}</p>
+        <p>Trade Route Quality: ${properties.trade_route_quality}</p>
+        <p>Caloric Surplus: ${properties.caloric_surplus}</p>
+        <p>Population: ${properties.population}</p>
       `;
       document.getElementById("hexInfo").innerHTML = info;
     }
@@ -408,26 +433,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const settlementPopulation = document.getElementById('settlement-population');
     const settlementLayer = L.layerGroup();
 
-    function onEachFeature(feature, layer) {
-      layer.on(
-        'click', (event, d) => {
-          showHexInfo(feature);
-          displayPieChart(event, d)
-          event.stopPropagation();
-        }
-      );
-    }
+    settlementLayer.addTo(map);
 
-    // Load the GeoJSON data
     fetch('/static/game/assets/hex.geojson')
     .then(response => response.json())
-    .then(geojsonData => 
-      {
-        L.geoJSON(geojsonData, { onEachFeature: onEachFeature }).addTo(map);
-      }
-    );
-
-    settlementLayer.addTo(map);
+    .then(data => {
+      // Call the drawHexagons function with the fetched GeoJSON data
+      drawHexagons(data);
+    })
+    .catch(error => console.error('Error fetching GeoJSON data:', error));
 
     function createSettlement(settlement) {
         // Create an icon for the settlement
