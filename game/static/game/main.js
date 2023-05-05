@@ -376,27 +376,19 @@ document.addEventListener('DOMContentLoaded', () => {
       .domain(
         [
           0.0,
-          23.0,
-          31.0,
-          39.0,
-          63.0,
-          127.0,
-          151.0,
-          175.0,
-          183.0,
-          199.0,
-          215.0,
-          231.0,
-          247.0,
+          0.1,
+          0.3,
+          0.5,
+          0.8,
+          1.5,
+          1.0,
+          2.0,
+          5.0,
         ]
       )
       .range(
         [
           "#000000",
-          "#1c1c1c",
-          "#1c1c1c",
-          "#1c1c1c",
-          "#1c1c1c",
           "#383838",
           "#555555",
           "#717171",
@@ -453,7 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const colorSchemes = {
       "koeppen": koeppenColors,
       "terrain": terrainColors,
-      "population_density_index": popColors,
+      "population_density": popColors,
     };
 
     let hexLayer = null;
@@ -537,7 +529,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <p>Agriculture Adoption: ${properties.agriculture_adoption}</p>
         <p>Trade Route Quality: ${properties.trade_route_quality}</p>
         <p>Caloric Surplus: ${properties.caloric_surplus}</p>
-        <p>Population Density: ${properties.population_density_index}</p>
+        <p>People per Square km: ${properties.population_density}</p>
       `;
 
       const hexInfoElement = document.getElementById("hexInfo");
