@@ -373,8 +373,42 @@ document.addEventListener('DOMContentLoaded', () => {
     ]  
 
     const terrainColors = d3.scaleOrdinal()
-      .domain([0, 1, 2, 3]) // Add as many terrain types as you have
-      .range(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728"]); // Add corresponding colors for each terrain type
+      .domain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]) // Add as many terrain types as you have
+      .range(
+        [
+          "#184a85", 
+          "#1c00ff", 
+          "#3183ff", 
+          "#61b2f3", 
+          "#f40000", 
+          "#f8a09f", 
+          "#f1af00", 
+          "#fce163", 
+          "#feff00", 
+          "#cdce00", 
+          "#a0a100", 
+          "#abff9b", 
+          "#7bd069", 
+          "#4aa12d", 
+          "#d2ff44", 
+          "#83ff48", 
+          "#54ce00", 
+          "#f500ff", 
+          "#c700d2",
+          "#9b37a3", 
+          "#9e6fa2", 
+          "#b6b8ff", 
+          "#6a83e5", 
+          "#585ac1", 
+          "#380095", 
+          "#57ffff", 
+          "#5cceff", 
+          "#2a8889", 
+          "#164f6d", 
+          "#bbbbbb", 
+          "#717170"
+        ]
+      );
 
     let currentYear = -7500;
     let intervalID;
@@ -390,11 +424,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const hexLayer = L.geoJSON(data, {
         style: function (feature) {
           return {
-            fillColor: terrainColors(feature.properties.terrain),
-            weight: 1,
+            fillColor: terrainColors(Math.floor(feature.properties.koeppen)),
+            weight: 0.3,
             opacity: 1,
-            color: 'white',
-            fillOpacity: 0.7
+            color: 'grey',
+            fillOpacity: 1.0
           };
         },
         onEachFeature: function (feature, layer) {
@@ -410,7 +444,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const properties = feature.properties;
       const info = `
         <p>Terrain: ${properties.terrain}</p>
-        <p>Climate: ${properties.climate}</p>
+        <p>Climate Code: ${properties.climate}</p>
+        <p>Koeppen Index: ${properties.koeppen}</p>
         <p>Resources: ${properties.resources}</p>
         <p>Agriculture Adoption: ${properties.agriculture_adoption}</p>
         <p>Trade Route Quality: ${properties.trade_route_quality}</p>
