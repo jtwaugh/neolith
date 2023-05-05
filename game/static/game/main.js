@@ -373,6 +373,10 @@ document.addEventListener('DOMContentLoaded', () => {
     ]  
 
     const terrainColors = d3.scaleOrdinal()
+      .domain([0, 1, 2, 3]) // Add as many terrain types as you have
+      .range(["#184a85", "#ff7f0e", "#2ca02c", "#d62728"]); // Add corresponding colors for each terrain type
+
+    const koeppenColors = d3.scaleOrdinal()
       .domain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]) // Add as many terrain types as you have
       .range(
         [
@@ -410,6 +414,50 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
       );
 
+    const colorSchemes = {
+      "koeppen": koeppenColors,
+      "terrain": terrainColors
+    };
+
+    let hexLayer = null;
+    let hexagonData = null;
+
+    function populateMapModeSelector() {
+      const MapModeSelectorControl = L.Control.extend({
+        options: {
+          position: 'topleft'
+        },
+        onAdd: function (map) {
+          const container = L.DomUtil.create('div', 'map-mode-selector-container leaflet-bar');
+          const mapModeSelector = L.DomUtil.create('select', 'map-mode-selector', container);
+    
+          for (const mode in colorSchemes) {
+            const option = document.createElement('option');
+            option.value = mode;
+            option.innerText = mode.charAt(0).toUpperCase() + mode.slice(1);
+            mapModeSelector.appendChild(option);
+          }
+    
+          mapModeSelector.addEventListener('change', (event) => {
+            updateMapMode();
+          });
+    
+          return container;
+        }
+      });
+    
+      const mapModeSelectorControl = new MapModeSelectorControl();
+      map.addControl(mapModeSelectorControl);
+    
+      const selectedMode = document.querySelector('.map-mode-selector').value;
+
+      // Call the drawHexagons function after the mapModeSelector is added to the DOM
+      if (hexagonData) {
+        drawHexagons(hexagonData, selectedMode);
+      }
+    }
+    
+
     let currentYear = -7500;
     let intervalID;
 
@@ -418,13 +466,15 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const svgLayer = L.svg();
     svgLayer.addTo(map);
-    
-    function drawHexagons(data) {
+
+    function drawHexagons(data, selectedMode) {
+      const selectedColorScheme = colorSchemes[selectedMode];
+
       console.log(data)
-      const hexLayer = L.geoJSON(data, {
+      hexLayer = L.geoJSON(data, {
         style: function (feature) {
           return {
-            fillColor: terrainColors(Math.floor(feature.properties.koeppen)),
+            fillColor: selectedColorScheme(feature.properties[selectedMode]),
             weight: 0.3,
             opacity: 1,
             color: 'grey',
@@ -455,6 +505,19 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById("hexInfo").innerHTML = info;
     }
 
+    function updateMapMode() {
+      const selectedMode = document.querySelector('.map-mode-selector').value;
+      // Remove the existing hex layer
+      if (hexLayer){
+        map.removeLayer(hexLayer);
+      }
+    
+      // Redraw the hexagons with the new color scheme
+      if (hexagonData){
+        drawHexagons(hexagonData, selectedMode);
+      }
+    }
+
     const startScreen = document.getElementById('start-screen');
     const gameScreen = document.getElementById('game-screen');
     const startYearInput = document.getElementById('start-year');
@@ -474,7 +537,8 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(response => response.json())
     .then(data => {
       // Call the drawHexagons function with the fetched GeoJSON data
-      drawHexagons(data);
+      hexagonData = data;
+      populateMapModeSelector();
     })
     .catch(error => console.error('Error fetching GeoJSON data:', error));
 
