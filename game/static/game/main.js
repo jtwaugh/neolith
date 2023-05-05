@@ -373,8 +373,42 @@ document.addEventListener('DOMContentLoaded', () => {
     ]  
 
     const terrainColors = d3.scaleOrdinal()
-      .domain([0, 1, 2, 3]) // Add as many terrain types as you have
-      .range(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728"]); // Add corresponding colors for each terrain type
+      .domain(list(range(31))) // Add as many terrain types as you have
+      .range(
+        [
+          "#ffffff", 
+          "#1c00ff", 
+          "#3183ff", 
+          "#61b2f3", 
+          "#f40000", 
+          "#f8a09f", 
+          "#f1af00", 
+          "#fce163", 
+          "#feff00", 
+          "#cdce00", 
+          "#a0a100", 
+          "#abff9b", 
+          "#7bd069", 
+          "#4aa12d", 
+          "#d2ff44", 
+          "83ff48", 
+          "54ce00", 
+          "#f500ff", 
+          "#c700d2",
+          "#9b37a3", 
+          "#9e6fa2", 
+          "#b6b8ff", 
+          "#6a83e5", 
+          "#585ac1", 
+          "#380095", 
+          "#57ffff", 
+          "#5cceff", 
+          "#2a8889", 
+          "#164f6d", 
+          "#bbbbbb", 
+          "#717170"
+        ]
+      );
 
     let currentYear = -7500;
     let intervalID;
@@ -390,7 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const hexLayer = L.geoJSON(data, {
         style: function (feature) {
           return {
-            fillColor: terrainColors(feature.properties.terrain),
+            fillColor: terrainColors(int(feature.properties.koeppen)),
             weight: 1,
             opacity: 1,
             color: 'white',
@@ -410,7 +444,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const properties = feature.properties;
       const info = `
         <p>Terrain: ${properties.terrain}</p>
-        <p>Climate: ${properties.climate}</p>
+        <p>Climate Code: ${properties.climate}</p>
+        <p>Koeppen Index: ${properties.koeppen}</p>
         <p>Resources: ${properties.resources}</p>
         <p>Agriculture Adoption: ${properties.agriculture_adoption}</p>
         <p>Trade Route Quality: ${properties.trade_route_quality}</p>
