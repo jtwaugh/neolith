@@ -373,10 +373,10 @@ document.addEventListener('DOMContentLoaded', () => {
     ]  
 
     const terrainColors = d3.scaleOrdinal()
-      .domain(list(range(31))) // Add as many terrain types as you have
+      .domain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]) // Add as many terrain types as you have
       .range(
         [
-          "#ffffff", 
+          "#184a85", 
           "#1c00ff", 
           "#3183ff", 
           "#61b2f3", 
@@ -391,8 +391,8 @@ document.addEventListener('DOMContentLoaded', () => {
           "#7bd069", 
           "#4aa12d", 
           "#d2ff44", 
-          "83ff48", 
-          "54ce00", 
+          "#83ff48", 
+          "#54ce00", 
           "#f500ff", 
           "#c700d2",
           "#9b37a3", 
@@ -424,11 +424,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const hexLayer = L.geoJSON(data, {
         style: function (feature) {
           return {
-            fillColor: terrainColors(int(feature.properties.koeppen)),
-            weight: 1,
+            fillColor: terrainColors(Math.floor(feature.properties.koeppen)),
+            weight: 0.3,
             opacity: 1,
-            color: 'white',
-            fillOpacity: 0.7
+            color: 'grey',
+            fillOpacity: 1.0
           };
         },
         onEachFeature: function (feature, layer) {
