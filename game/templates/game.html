@@ -24,19 +24,22 @@
         <div id="map-container">
             <div id="map" style="width: 100%; height: 100%;"></div>
             <div id="ui-container">
-                <div class="settlement-info">
+                <div class="settlement-info neolithic-style">
                   <h3 id="settlement-name">Settlement Name</h3>
                   <p id="settlement-population">Population: 0</p>
                 </div>
             </div>
         </div>          
-      <div id="year-display">Year: <span id="current-year"></span></div>
+      <div id="year-display" class="neolithic-style">Year: <span id="current-year"></span></div>
       <div id="controls">
         <button id="pause-play">Pause</button>
       </div>
+      <script src="{% static 'game/main.js' %}"></script>
+      <div id="hexInfo" class="neolithic-style" style="display: none;">
+        Click on a hex to see its information
+      </div>
     </div>
   </div>
-  <script src="{% static 'game/main.js' %}"></script>
-  <div id="hexInfo">Click on a hex to see its information</div>
+  
 </body>
 </html>

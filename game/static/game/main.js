@@ -372,6 +372,42 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     ]  
 
+    const popColors = d3.scaleOrdinal()
+      .domain(
+        [
+          0.0,
+          23.0,
+          31.0,
+          39.0,
+          63.0,
+          127.0,
+          151.0,
+          175.0,
+          183.0,
+          199.0,
+          215.0,
+          231.0,
+          247.0,
+        ]
+      )
+      .range(
+        [
+          "#000000",
+          "#1c1c1c",
+          "#1c1c1c",
+          "#1c1c1c",
+          "#1c1c1c",
+          "#383838",
+          "#555555",
+          "#717171",
+          "#8D8D8D",
+          "#aaaaaa",
+          "#c6c6c6",
+          "#e2e2e2",
+          "#ffffff",
+        ]
+      )
+
     const terrainColors = d3.scaleOrdinal()
       .domain([0, 1, 2, 3]) // Add as many terrain types as you have
       .range(["#184a85", "#ff7f0e", "#2ca02c", "#d62728"]); // Add corresponding colors for each terrain type
@@ -416,7 +452,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const colorSchemes = {
       "koeppen": koeppenColors,
-      "terrain": terrainColors
+      "terrain": terrainColors,
+      "population_density_index": popColors,
     };
 
     let hexLayer = null;
@@ -500,9 +537,12 @@ document.addEventListener('DOMContentLoaded', () => {
         <p>Agriculture Adoption: ${properties.agriculture_adoption}</p>
         <p>Trade Route Quality: ${properties.trade_route_quality}</p>
         <p>Caloric Surplus: ${properties.caloric_surplus}</p>
-        <p>Population: ${properties.population}</p>
+        <p>Population Density: ${properties.population_density_index}</p>
       `;
-      document.getElementById("hexInfo").innerHTML = info;
+
+      const hexInfoElement = document.getElementById("hexInfo");
+      hexInfoElement.innerHTML = info;
+      hexInfoElement.classList.add("neolithic-style");
     }
 
     function updateMapMode() {
@@ -533,7 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     settlementLayer.addTo(map);
 
-    fetch('/static/game/assets/hex.geojson')
+    fetch('/static/game/assets/hex_pop.geojson')
     .then(response => response.json())
     .then(data => {
       // Call the drawHexagons function with the fetched GeoJSON data
@@ -575,6 +615,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameScreen.style.display = 'block';
         currentYear = parseInt(startYearInput.value, 10);
         currentYearDisplay.innerText = currentYear;
+        document.getElementById("hexInfo").style.display = "block";
 
         settlements.forEach(settlement => {
             createSettlement(settlement);
