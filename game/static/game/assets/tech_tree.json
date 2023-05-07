@@ -1,0 +1,77 @@
+{
+    "basic_tools": {
+        "dependencies": [],
+        "unlocks": ["agriculture", "basic_pottery", "basic_hunting"],
+    },
+    "basic_pottery": {
+        "dependencies": ["basic_tools"],
+        "unlocks": [
+            "Cardium pottery",
+            "Linear pottery",
+            "Vinča pottery",
+            "Funnel beaker pottery",
+            "Cucuteni-Trypillia pottery",
+            "Yamnaya pottery", 
+        ],
+    },
+    "agriculture": {
+        "dependencies": ["basic_tools"],
+        "unlocks": ["animal_husbandry", "irrigation", "plant_domestication"],
+    },
+    "animal_husbandry": {
+        "dependencies": ["agriculture"],
+        "unlocks": ["pastoralism", "horse_domestication"],
+    },
+    "basic_hunting": {
+        "dependencies": ["basic_tools"],
+        "unlocks": ["marine_resources"],
+    },
+    "plant_domestication": {
+        "dependencies": ["agriculture"],
+        "unlocks": [],
+    },
+    "irrigation": {
+        "dependencies": ["agriculture"],
+        "unlocks": ["advanced_agriculture"],
+    },
+    "pastoralism": {
+        "dependencies": ["animal_husbandry"],
+        "unlocks": [],
+    },
+    "horse_domestication": {
+        "dependencies": ["animal_husbandry"],
+        "unlocks": ["wheeled_vehicles"],
+    },
+    "advanced_agriculture": {
+        "dependencies": ["irrigation"],
+        "unlocks": ["large_settlements"],
+    },
+    "marine_resources": {
+        "dependencies": ["basic_hunting"],
+        "unlocks": [],
+    },
+    "large_settlements": {
+        "dependencies": ["advanced_agriculture"],
+        "unlocks": ["megalithic_tombs", "amber_trade"],
+    },
+    "wheeled_vehicles": {
+        "dependencies": ["horse_domestication"],
+        "unlocks": [],
+    },
+    "megalithic_tombs": {
+        "dependencies": ["large_settlements"],
+        "unlocks": [],
+    },
+    "amber_trade": {
+        "dependencies": ["large_settlements"],
+        "unlocks": [],
+    },
+    "metallurgy": {
+        "dependencies": ["basic_tools"],
+        "unlocks": ["copper_working"],
+    },
+    "copper_working": {
+        "dependencies": ["metallurgy"],
+        "unlocks": [],
+    },
+  }
