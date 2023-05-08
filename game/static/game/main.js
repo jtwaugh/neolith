@@ -27,9 +27,45 @@ const popColors = d3.scaleOrdinal()
   )
 
 const terrainColors = d3.scaleOrdinal()
-  .domain(["Ice", "Water", "Plains", "Mountains"]) // Add as many terrain types as you have
-  .range(["#2ca02c", "#184a85", "#ff7f0e", "#d62728"]); // Add corresponding colors for each terrain type
-
+.domain(
+  [
+    "Ice", 
+    "Water", 
+    "Plains", 
+    "Mountains", 
+    "Chaparral",
+    "Extreme Desert",
+    "Semi-Desert",
+    "Free",
+    "Savannah",
+    "Woodlands",
+    "Tropical Forest",
+    "Grassland",
+    "Temperate Forest",
+    "Steppe-Forest",
+    "Boreal Forest",
+  ]
+) // Add as many terrain types as you have
+.range(
+  [
+    "#bfd1e5", 
+    "#64b5f6",
+    "#ffe0b2",
+    "#bdbdbd", 
+    "#a1887f",
+    "#d2b48c", 
+    "#f5deb3",
+    "#ffffff",
+    "#c1b23d", 
+    "#8bc34a",
+    "#388e3c",
+    "#d7c55c",
+    "#689f38", 
+    "#a2d0a5",
+    "#2e7d32",
+  ]
+); // Add corresponding colors for each terrain type
+    
 const koeppenColors = d3.scaleOrdinal()
   .domain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]) // Add as many terrain types as you have
   .range(
@@ -481,6 +517,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const indexToReplace = hexagonData.features.findIndex((hex) => hex.properties.id == selectedHexData.properties.id)      
   
       hexagonData.features[indexToReplace] = newHexData
+
+      JSON.
 
       document.getElementById("json-editor-container").style.display = "none";
       document.getElementById("hexInfo").style.display = "block";
