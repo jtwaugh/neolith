@@ -49,5 +49,5 @@ for feature in geojson_data["features"]:
     feature["properties"]["climate"] = koeppen_key[koeppen]
 
 # Save the modified GeoJSON data to a new file
-with open("game/static/game/assets/hex_pop.geojson", "w") as file:
+with open("game/static/game/assets/maps/5000_bce.geojson", "w") as file:
     json.dump(geojson_data, file, indent=2)
