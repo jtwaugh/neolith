@@ -1,0 +1,66 @@
+[
+    {
+        "name": "Cardium Pottery Culture",
+        "gene_pool": {"EEF": 0.9, "WHG": 0.1},
+        "material_practices": [
+            "Cardium pottery",
+            "agriculture",
+            "animal husbandry",
+            "marine resources",
+        ],
+    },
+    {
+        "name": "Linear Pottery Culture (LBK)",
+        "gene_pool": {"EEF": 0.95, "WHG": 0.05},
+        "material_practices": [
+            "Linear pottery",
+            "agriculture",
+            "animal husbandry",
+            "longhouses",
+        ],
+    },
+    {
+        "name": "Vinča Culture",
+        "gene_pool": {"EEF": 0.9, "ANF": 0.1},
+        "material_practices": [
+            "Vinča pottery",
+            "agriculture",
+            "animal husbandry",
+            "metallurgy (copper)",
+            "large settlements",
+        ],
+    },
+    {
+        "name": "Funnel Beaker Culture (TRB)",
+        "gene_pool": {"EEF": 0.6, "WHG": 0.3, "EHG": 0.1},
+        "material_practices": [
+            "Funnel beaker pottery",
+            "agriculture",
+            "animal husbandry",
+            "megalithic tombs",
+            "amber trade",
+        ],
+    },
+    {
+        "name": "Cucuteni-Trypillia Culture",
+        "gene_pool": {"EEF": 0.7, "WHG": 0.2, "CHG": 0.1},
+        "material_practices": [
+            "Cucuteni-Trypillia pottery",
+            "agriculture",
+            "animal husbandry",
+            "large settlements",
+            "painted ceramics",
+        ],
+    },
+    {
+        "name": "Yamnaya Culture",
+        "gene_pool": {"EHG": 0.4, "CHG": 0.4, "SP": 0.2},
+        "material_practices": [
+            "Yamnaya pottery",
+            "pastoralism",
+            "horse domestication",
+            "kurgan burial mounds",
+            "wheeled vehicles",
+        ],
+    },
+  ]  
