@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>  
     <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/ace.js"></script>
   <title>Neolithic Deities</title>
 </head>
 <body>
@@ -45,8 +46,23 @@
         <span id="years-per-second">0</span> years/second
       </div>
       <div id="hexInfo" class="neolithic-style" style="display: none;">
-        Click on a hex to see its information
-      </div>
+        <p>Terrain: <span id="hex-terrain"></span></p>
+        <p>Climate Code: <span id="hex-climate"></span></p>
+        <p>Koeppen Index: <span id="hex-koeppen"></span></p>
+        <p>Resources: <span id="hex-resources"></span></p>
+        <p>Agriculture Adoption: <span id="hex-agriculture-adoption"></span></p>
+        <p>Trade Route Quality: <span id="hex-trade-route-quality"></span></p>
+        <p>Caloric Surplus: <span id="hex-caloric-surplus"></span></p>
+        <p>People per Square km: <span id="hex-population-density"></span></p>
+        <button id="edit-hex-json">Edit JSON</button>
+      </div>      
+      <div id="json-editor-container" style="display: none; position: fixed; bottom: 0; width: 100%; height: 50%;">
+        <div id="json-editor" style="width: 100%; height: calc(100% - 40px);"></div>
+        <div style="display: flex; margin-top: 10px;">
+          <button id="save-json">Save</button>
+          <button id="cancel-json">Cancel</button>
+        </div>
+      </div>      
     </div>
   </div>
   <script src="{% static 'game/main.js' %}"></script>

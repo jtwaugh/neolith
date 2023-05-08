@@ -80,3 +80,19 @@ body {
     background-color: transparent;
     z-index: 1000;
   }
+
+  #json-editor-container {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    height: 50%;
+    z-index: 1000; /* Ensures the editor appears above the map */
+    background-color: #ffffff; /* Set the background color */
+    border: 2px solid #000000; /* Add a border */
+    padding: 20px; /* Add some padding around the content */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a shadow for a "floating" effect */
+    overflow: auto; /* Add scrollbars if the content overflows */
+  }
+  
