@@ -11,7 +11,7 @@ your_dictionary = {
 # Load the GeoJSON file
 
 input_folder = "game/static/game/assets/maps/"
-map_files = ["5000_bce.geojson"]
+map_files = ["6000_bce.geojson", "5000_bce.geojson"]
 
 for mf in map_files:
     with open(os.path.join(input_folder, mf), "r") as file:
