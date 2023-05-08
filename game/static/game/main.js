@@ -71,14 +71,19 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
       );
 
+    const hexProperties = ["terrain", "climate", "koeppen", "population_density"]    
+
     const colorSchemes = {
       "koeppen": koeppenColors,
       "terrain": terrainColors,
       "population_density": popColors,
     };
 
-    let hexLayer;
-    let hexagonData;
+    let hexLayer; // GPT doesn't really know what this is supposed to do
+
+    let hexagonData; // Raw data containing hex history, probably containing duplicates that aren't actually updates. TODO remove duplicate values
+    let currentHexes; // Hexes starting from current year
+    let hexUpdates = {}; // Diffs
 
     let currentYear = -8000;
     const speedSlider = document.getElementById("speed-slider");
@@ -102,9 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
         currentYear++;
         currentYearDisplay.innerText = currentYear;
         updateVisibleSettlements();
+        updateVisibleHexes();
       }, intervalDuration * 1000); // Convert seconds to milliseconds
     }
-
 
     function populateMapModeSelector() {
       const MapModeSelectorControl = L.Control.extend({
@@ -132,13 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
       const mapModeSelectorControl = new MapModeSelectorControl();
       map.addControl(mapModeSelectorControl);
-    
-      const selectedMode = document.querySelector('.map-mode-selector').value;
-
-      // Call the drawHexagons function after the mapModeSelector is added to the DOM
-      if (hexagonData) {
-        drawHexagons(hexagonData, selectedMode);
-      }
     }
     
 
@@ -148,25 +146,96 @@ document.addEventListener('DOMContentLoaded', () => {
     const svgLayer = L.svg();
     svgLayer.addTo(map);
 
-    function drawHexagons(data, selectedMode) {
-      const selectedColorScheme = colorSchemes[selectedMode];
+    // Set the global current hexes value
+    function getHexes() {
+      // Assume hexagonData already exists
+      if (hexagonData)
+      {
+        if (!currentHexes) {
+          // Extract the hexes and their properties for the current year
+          currentHexes = hexagonData.features.map((hex) => {
+            let updatedHexProperties = {};
+            hexProperties.forEach((property) => {
+              const propertyYears = Object.keys(hex.properties[property]).map(Number);
+              const validYears = propertyYears.filter((year) => year <= currentYear);
+              
+              if (validYears.length > 0) {
+                const latestYear = Math.max(...validYears);
+                const hexUpdatesForYear = hexUpdates[latestYear] || {};
 
-      hexLayer = L.geoJSON(data, {
-        style: function (feature) {
-          return {
-            fillColor: selectedColorScheme(feature.properties[selectedMode]),
-            weight: 0.3,
-            opacity: 1,
-            color: 'grey',
-            fillOpacity: 1.0
-          };
-        },
-        onEachFeature: function (feature, layer) {
-          layer.on({
-            click: function() {showHexInfo(feature);}
+                // Apply any updates to the hex properties
+                updatedHexProperties[property] = hexUpdatesForYear[hex.properties.id][property];
+              }
+            });
+            
+            const ret = Object.assign({}, hex, {
+              properties: updatedHexProperties,
+            });
+
+            return ret;
           });
         }
-      }).addTo(map);
+      }
+    }
+
+    function drawHexagons(selectedMode) {
+      const selectedColorScheme = colorSchemes[selectedMode];
+    
+      if (hexLayer) {
+        // If hexLayer exists, we remove it from the map and draw a new one with the updated hexes
+        map.removeLayer(hexLayer);
+      }
+    
+      hexLayer = L.layerGroup();
+    
+      // Loop over the hexagons and add them to the layer group
+      currentHexes.forEach((hex) => {
+        hexLayer.addLayer(L.geoJSON(hex, {
+          style: function (feature) {
+            return {
+              fillColor: selectedColorScheme(feature.properties[selectedMode]),
+              weight: 0.3,
+              opacity: 1,
+              color: 'grey',
+              fillOpacity: 1.0
+            };
+          },
+          onEachFeature: function (feature, layer) {
+            layer.on({
+              click: function() {showHexInfo(feature);}
+            });
+          }
+        }));
+      });
+    }
+
+    function updateHexStyle(hexId, newValue, selectedMode) {
+      const hex = hexLayer[hexId].feature;
+      const selectedColorScheme = colorSchemes[selectedMode];
+    
+      hex.properties[selectedMode] = newValue;
+    
+      hexLayer[hexId].setStyle({
+        fillColor: selectedColorScheme(hex.properties[selectedMode]),
+        weight: 0.3,
+        opacity: 1,
+        color: 'grey',
+        fillOpacity: 1.0
+      });
+    }
+
+    function updateVisibleHexes() {
+      if (hexUpdates[currentYear]) {
+        for (const hexId in hexUpdates[currentYear]) {
+          if (hexLayer[hexId]) {
+            const update = hexUpdates[currentYear][hexId];
+            hexProperties.forEach((hexProperty) => {
+              hexLayer.feature.properties[selectedMode] = update[hexProperty];
+              updateHexStyle(hexId, selectedMode);
+            });
+          }
+        }
+      }
     }
 
     // Display information about the clicked hex
@@ -197,7 +266,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
       // Redraw the hexagons with the new color scheme
       if (hexagonData){
-        drawHexagons(hexagonData, selectedMode);
+        drawHexagons(selectedMode); // Render the hexgons to the hexLayer object
+        hexLayer.addTo(map); // Actually add it to the map object
       }
     }
 
@@ -219,15 +289,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let settlementUpdates = {};
 
-    fetch('/static/game/assets/hex_pop.geojson')
-    .then(response => response.json())
-    .then(data => {
-      // Call the drawHexagons function with the fetched GeoJSON data
-      hexagonData = data;
-      populateMapModeSelector();
-    })
-    .catch(error => console.error('Error fetching GeoJSON data:', error));
-
     function createSettlement(settlement) {
       if (settlement.properties.founding <= currentYear) {
         // Create an icon for the settlement
@@ -247,7 +308,6 @@ document.addEventListener('DOMContentLoaded', () => {
       
         // Attach a click event to the marker
         marker.on("click", () => {
-          console.log("Marker clicked");
           settlementName.textContent = settlement.properties.name;
           const populationYears = Object.keys(settlement.properties.population).map(Number);
           const validYears = populationYears.filter((year) => year <= currentYear);
@@ -266,8 +326,56 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    function prepareSettlementUpdates() {
-      fetch('/static/game/assets/settlements.geojson')
+    function prepareHexUpdates() {
+      const properties = ["terrain", "climate", "koeppen", "population_density"]
+
+      if (hexagonData) {
+        hexagonData.features.forEach((hex) => {
+          properties.forEach((property) => {
+            const propertyYears = Object.keys(hex.properties[property]).map(Number);
+            propertyYears.forEach((year) => {
+              if (!hexUpdates[year]) {
+                hexUpdates[year] = {};
+              }
+              if (!hexUpdates[year][hex.properties.id]) {
+                hexUpdates[year][hex.properties.id] = {}
+              }
+              hexUpdates[year][hex.properties.id][property] = hex.properties[property][year]
+            });
+          });
+        });
+      }
+    }
+
+    function updateVisibleSettlements() {
+      if (settlementUpdates[currentYear]) {
+        settlementUpdates[currentYear].settlements.forEach(settlement => {
+            createSettlement(settlement)
+        });
+      }
+    }
+
+    function startGame() {
+        startScreen.style.display = 'none';
+        gameScreen.style.display = 'block';
+        
+        currentYear = parseInt(startYearInput.value, 10);
+        currentYearDisplay.innerText = currentYear;
+        document.getElementById("hexInfo").style.display = "block";
+
+        fetch('/static/game/assets/combined_map.geojson')
+        .then(response => response.json())
+        .then(data => {
+          hexagonData = data;
+          prepareHexUpdates(); // Turn hexes into just their updates TODO remove duplicates
+          getHexes(); // Set the current values of the hexes
+          populateMapModeSelector();
+          updateMapMode();
+        })
+        .catch(error => console.error('Error fetching GeoJSON data:', error));
+
+        
+        fetch('/static/game/assets/settlements.geojson')
         .then(response => response.json())
         .then(data => {
           // Call the drawHexagons function with the fetched GeoJSON data
@@ -276,6 +384,10 @@ document.addEventListener('DOMContentLoaded', () => {
           settlements.forEach((settlement) => {
             const foundingYear = settlement.properties.founding;
         
+            if (foundingYear <= currentYear) {
+              createSettlement(settlement);
+            }
+
             if (!settlementUpdates[foundingYear]) {
               settlementUpdates[foundingYear] = {
                 settlements: [],
@@ -295,40 +407,6 @@ document.addEventListener('DOMContentLoaded', () => {
               }
               settlementUpdates[year].populationUpdates[settlement.id] = settlement.properties.population[year];
             });
-          });
-        })
-        .catch(error => console.error('Error fetching GeoJSON data:', error)); 
-    }
-
-    function updateVisibleSettlements() {
-      if (settlementUpdates[currentYear]) {
-        settlementUpdates[currentYear].settlements.forEach(settlement => {
-            createSettlement(settlement)
-        });
-      }
-    }
-
-    function startGame() {
-        startScreen.style.display = 'none';
-        gameScreen.style.display = 'block';
-        
-        currentYear = parseInt(startYearInput.value, 10);
-        currentYearDisplay.innerText = currentYear;
-        document.getElementById("hexInfo").style.display = "block";
-
-        prepareSettlementUpdates();
-        
-        fetch('/static/game/assets/settlements.geojson')
-        .then(response => response.json())
-        .then(data => {
-          // Call the drawHexagons function with the fetched GeoJSON data
-          settlements = data;
-
-          settlements.forEach((settlement) => {
-            const foundingYear = settlement.properties.founding;
-            if (foundingYear <= currentYear) {
-              createSettlement(settlement);
-            }
           });
         });
 
