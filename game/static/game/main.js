@@ -85,10 +85,15 @@ document.addEventListener('DOMContentLoaded', () => {
   let hexUpdates = {}; // Diffs
   let settlementUpdates = {};
 
+  let selectedHexData;
+  let mapModeSelector;
+
   let currentYear = -8000;
   let intervalID;
 
   const map = L.map('map').setView([39.0742, 21.8243], 4); // Set the center and zoom level
+
+  const hexDataURI = '/static/game/assets/combined_map.geojson'
 
   const speedSlider = document.getElementById("speed-slider");
   const yearsPerSecondDisplay = document.getElementById("years-per-second");
@@ -104,17 +109,37 @@ document.addEventListener('DOMContentLoaded', () => {
   const dnaInfo = document.querySelector('.dna-info');
   const settlementName = document.getElementById('settlement-name');
   const settlementPopulation = document.getElementById('settlement-population');
-  const settlementLayer = L.layerGroup();
+  
+  
+  const editor = ace.edit("json-editor");
+  editor.setTheme("ace/theme/chrome");
+  editor.session.setMode("ace/mode/json");
+  editor.session.setTabSize(2);
 
   const svgLayer = L.svg();
   svgLayer.addTo(map);
+
+  const settlementLayer = L.layerGroup();
   settlementLayer.addTo(map);
+
+  speedSlider.addEventListener("input", () => {
+    adjustGameSpeed();
+  });
+
+  let selectedHexLayer = L.geoJSON(null, {
+    style: {
+      color: '#ff0000', // Set the border color of the selected hex
+      weight: 3, // Set the border width of the selected hex
+      fillColor: '#ff0000', // Set the fill color of the selected hex
+      fillOpacity: 0.3, // Set the fill opacity of the selected hex
+    },
+  }).addTo(map);
 
   startGameButton.addEventListener('click', startGame);
   pausePlayButton.addEventListener('click', toggleGamePause);
-  //document.getElementById('edit-hex-json').addEventListener('click', openJSONEditor);
-  //document.getElementById('save-json').addEventListener('click', saveJSON);
-  //document.getElementById('cancel-json').addEventListener('click', cancelJSON);
+  document.getElementById('edit-hex-json').addEventListener('click', openJSONEditor);
+  document.getElementById('save-json').addEventListener('click', saveJSON);
+  document.getElementById('cancel-json').addEventListener('click', cancelJSON);
 
   function startGame() {
     startScreen.style.display = 'none';
@@ -124,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentYearDisplay.innerText = currentYear;
     document.getElementById("hexInfo").style.display = "block";
 
-    fetch('/static/game/assets/combined_map.geojson')
+    fetch(hexDataURI)
     .then(response => response.json())
     .then(data => {
       hexagonData = data;
@@ -174,7 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
     adjustGameSpeed();
   }
 
-
   function adjustGameSpeed() {
     clearInterval(intervalID);
     
@@ -199,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       onAdd: function (map) {
         const container = L.DomUtil.create('div', 'map-mode-selector-container leaflet-bar');
-        const mapModeSelector = L.DomUtil.create('select', 'map-mode-selector', container);
+        mapModeSelector = L.DomUtil.create('select', 'map-mode-selector', container);
   
         for (const mode in colorSchemes) {
           const option = document.createElement('option');
@@ -241,9 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function renderCurrentHexes(selectedMode) {
-    const selectedColorScheme = colorSchemes[selectedMode];
-  
+  function renderCurrentHexes() {
     if (hexLayer) {
       // If hexLayer exists, we remove it from the map and draw a new one with the updated hexes
       map.removeLayer(hexLayer);
@@ -253,31 +275,23 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // Loop over the hexagons and add them to the layer group
     currentHexes.forEach((hex) => {
-      hexLayer.addLayer(L.geoJSON(hex, {
-        style: function (feature) {
-          return {
-            fillColor: selectedColorScheme(feature.properties[selectedMode]),
-            weight: 0.3,
-            opacity: 1,
-            color: 'grey',
-            fillOpacity: 1.0
-          };
-        },
-        onEachFeature: function (feature, layer) {
-          layer.on({
-            click: function() {showHexInfo(feature);}
-          });
-        }
-      }));
+      hexLayer.addLayer(getStylizedHex(hex));
     });
   }
 
   // Update a single hex
   function updateSingleHex(hex) {
-    const selectedMode = document.querySelector('.map-mode-selector').value;
+    const updatedHex = getStylizedHex(hex);
+  
+    hexLayer.removeLayer(hex);
+    hexLayer.addLayer(updatedHex);
+  }
+
+  function getStylizedHex(hex) {
+    const selectedMode = mapModeSelector.value;
     const selectedColorScheme = colorSchemes[selectedMode];
-      
-    const updatedHex = L.geoJSON(hex, {
+
+    return L.geoJSON(hex, {
       style: function (feature) {
         return {
           fillColor: selectedColorScheme(feature.properties[selectedMode]),
@@ -287,16 +301,24 @@ document.addEventListener('DOMContentLoaded', () => {
           fillOpacity: 1.0
         };
       },
-      onEachFeature: function (feature, layer) {
-        layer.on({
-          click: function() {showHexInfo(feature);}
-        });
-      }
+      onEachFeature: function (feature, layer) { onHexClick(feature, layer) }
     });
-  
-    hexLayer.removeLayer(hex);
-    hexLayer.addLayer(updatedHex);
   }
+
+  function onHexClick(hex, layer) {
+    layer.on({
+      click: function() {
+        showHexInfo(hex);
+        selectedHexData = hex;
+        // Clear any existing geometry from the selectedHexLayer
+        selectedHexLayer.clearLayers();
+  
+        // Add the clicked hex geometry to the selectedHexLayer
+        selectedHexLayer.addData(hex.geometry);
+      },
+    });
+  }
+  
 
   // Pick out hexes that need the update and update them
   function updateVisibleHexes() {
@@ -318,24 +340,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // Display information about the clicked hex
   function showHexInfo(feature) {
     const properties = feature.properties;
-    const info = `
-      <p>Terrain: ${properties.terrain}</p>
-      <p>Climate Code: ${properties.climate}</p>
-      <p>Koeppen Index: ${properties.koeppen}</p>
-      <p>Resources: ${properties.resources}</p>
-      <p>Agriculture Adoption: ${properties.agriculture_adoption}</p>
-      <p>Trade Route Quality: ${properties.trade_route_quality}</p>
-      <p>Caloric Surplus: ${properties.caloric_surplus}</p>
-      <p>People per Square km: ${properties.population_density}</p>
-    `;
-
-    const hexInfoElement = document.getElementById("hexInfo");
-    hexInfoElement.innerHTML = info;
-    hexInfoElement.classList.add("neolithic-style");
+  
+    document.getElementById("hex-terrain").textContent = properties.terrain;
+    document.getElementById("hex-climate").textContent = properties.climate;
+    document.getElementById("hex-koeppen").textContent = properties.koeppen;
+    document.getElementById("hex-resources").textContent = properties.resources;
+    document.getElementById("hex-agriculture-adoption").textContent = properties.agriculture_adoption;
+    document.getElementById("hex-trade-route-quality").textContent = properties.trade_route_quality;
+    document.getElementById("hex-caloric-surplus").textContent = properties.caloric_surplus;
+    document.getElementById("hex-population-density").textContent = properties.population_density;
+  
+    document.getElementById("hexInfo").style.display = "block";
   }
+  
 
   function updateMapMode() {
-    const selectedMode = document.querySelector('.map-mode-selector').value;
     // Remove the existing hex layer
     if (hexLayer){
       map.removeLayer(hexLayer);
@@ -343,7 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // Redraw the hexagons with the new color scheme
     if (hexagonData){
-      renderCurrentHexes(selectedMode); // Render the hexgons to the hexLayer object
+      renderCurrentHexes(); // Render the hexgons to the hexLayer object
       hexLayer.addTo(map); // Actually add it to the map object
     }
   }
@@ -438,6 +457,45 @@ document.addEventListener('DOMContentLoaded', () => {
         pausePlayButton.innerText = 'Pause';
     }
   }
+
+  function openJSONEditor() {
+    if (selectedHexData) {
+      toggleGamePause(); // Pause while we edit
+      // TODO don't let us click on another tile
+  
+      // Get the tile value with all historical properties
+      const ogHexWithID = hexagonData.features.find((hex) => hex.properties.id == selectedHexData.properties.id)
+
+      editor.setValue(JSON.stringify(ogHexWithID, null, 2), -1);
+      document.getElementById("hexInfo").style.display = "none";
+      document.getElementById("json-editor-container").style.display = "block";
+    }
+  }
+
+  function saveJSON() {
+    try {
+      const newHexData = JSON.parse(editor.getValue());
+
+      console.log(newHexData);
+
+      const indexToReplace = hexagonData.features.findIndex((hex) => hex.properties.id == selectedHexData.properties.id)      
+  
+      hexagonData.features[indexToReplace] = newHexData
+
+      document.getElementById("json-editor-container").style.display = "none";
+      document.getElementById("hexInfo").style.display = "block";
+  
+      alert("File saved successfully at " + hexDataURI);
+    } catch (error) {
+      alert("Invalid JSON. Please check your input and try again.");
+    }
+  }
+
+  function cancelJSON() {
+    document.getElementById("json-editor-container").style.display = "none";
+    document.getElementById("hexInfo").style.display = "block";
+  }
+  
 });
 
 
