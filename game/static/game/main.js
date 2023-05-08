@@ -146,33 +146,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const svgLayer = L.svg();
     svgLayer.addTo(map);
 
-    // Set the global current hexes value
     function getHexes() {
-      // Assume hexagonData already exists
-      if (hexagonData)
-      {
+      if (hexagonData) {
         if (!currentHexes) {
-          // Extract the hexes and their properties for the current year
           currentHexes = hexagonData.features.map((hex) => {
-            let updatedHexProperties = {};
+            let updatedHexProperties = {"id": hex.properties.id};
             hexProperties.forEach((property) => {
               const propertyYears = Object.keys(hex.properties[property]).map(Number);
               const validYears = propertyYears.filter((year) => year <= currentYear);
-              
               if (validYears.length > 0) {
                 const latestYear = Math.max(...validYears);
-                const hexUpdatesForYear = hexUpdates[latestYear] || {};
-
-                // Apply any updates to the hex properties
-                updatedHexProperties[property] = hexUpdatesForYear[hex.properties.id][property];
+                updatedHexProperties[property] = hex.properties[property][latestYear];
               }
             });
-            
-            const ret = Object.assign({}, hex, {
+            return Object.assign({}, hex, {
               properties: updatedHexProperties,
             });
-
-            return ret;
           });
         }
       }
@@ -209,32 +198,46 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    function updateHexStyle(hexId, newValue, selectedMode) {
-      const hex = hexLayer[hexId].feature;
+    // Update a single hex
+    function updateHexStyle(hex) {
+      const selectedMode = document.querySelector('.map-mode-selector').value;
       const selectedColorScheme = colorSchemes[selectedMode];
-    
-      hex.properties[selectedMode] = newValue;
-    
-      hexLayer[hexId].setStyle({
-        fillColor: selectedColorScheme(hex.properties[selectedMode]),
-        weight: 0.3,
-        opacity: 1,
-        color: 'grey',
-        fillOpacity: 1.0
+        
+      const updatedHex = L.geoJSON(hex, {
+        style: function (feature) {
+          return {
+            fillColor: selectedColorScheme(feature.properties[selectedMode]),
+            weight: 0.3,
+            opacity: 1,
+            color: 'grey',
+            fillOpacity: 1.0
+          };
+        },
+        onEachFeature: function (feature, layer) {
+          layer.on({
+            click: function() {showHexInfo(feature);}
+          });
+        }
       });
+    
+      hexLayer.removeLayer(hex);
+      hexLayer.addLayer(updatedHex);
     }
 
+    // Pick out hexes that need the update and update them
     function updateVisibleHexes() {
       if (hexUpdates[currentYear]) {
-        for (const hexId in hexUpdates[currentYear]) {
-          if (hexLayer[hexId]) {
-            const update = hexUpdates[currentYear][hexId];
+        currentHexes.forEach((hex) => {
+          const update = hexUpdates[currentYear][hex.properties.id];
+          if (update) {
             hexProperties.forEach((hexProperty) => {
-              hexLayer.feature.properties[selectedMode] = update[hexProperty];
-              updateHexStyle(hexId, selectedMode);
+              if (update[hexProperty]) {
+                hex.properties[hexProperty] = update[hexProperty];
+                updateHexStyle(hex);
+              }
             });
           }
-        }
+        });
       }
     }
 
@@ -329,18 +332,29 @@ document.addEventListener('DOMContentLoaded', () => {
     function prepareHexUpdates() {
       const properties = ["terrain", "climate", "koeppen", "population_density"]
 
+      const previousHexValues = {};
+
       if (hexagonData) {
         hexagonData.features.forEach((hex) => {
           properties.forEach((property) => {
             const propertyYears = Object.keys(hex.properties[property]).map(Number);
             propertyYears.forEach((year) => {
-              if (!hexUpdates[year]) {
-                hexUpdates[year] = {};
+              const currentValue = hex.properties[property][year];
+              const previousValue = previousHexValues[hex.properties.id] ? previousHexValues[hex.properties.id][property] : undefined;
+
+              if (currentValue !== previousValue) {
+                if (!hexUpdates[year]) {
+                  hexUpdates[year] = {};
+                }
+                if (!hexUpdates[year][hex.properties.id]) {
+                  hexUpdates[year][hex.properties.id] = {}
+                }
+                hexUpdates[year][hex.properties.id][property] = hex.properties[property][year]
+
+                // Update the previous value for this property and hexagon
+                previousHexValues[hex.properties.id] = previousHexValues[hex.properties.id] || {};
+                previousHexValues[hex.properties.id][property] = currentValue;
               }
-              if (!hexUpdates[year][hex.properties.id]) {
-                hexUpdates[year][hex.properties.id] = {}
-              }
-              hexUpdates[year][hex.properties.id][property] = hex.properties[property][year]
             });
           });
         });

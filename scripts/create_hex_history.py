@@ -14,6 +14,7 @@ combined_hexes = {}
 for map_file in map_files:
     with open(os.path.join(input_folder, map_file), 'r') as f:
         hex_map = json.load(f)
+        print(map_file)
         year = int("-" + map_file.split('_')[0].split('.')[0])
         
         for hex_feature in hex_map['features']:
