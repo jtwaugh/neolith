@@ -49,6 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const settlementName = document.getElementById('settlement-name');
   const settlementPopulation = document.getElementById('settlement-population');
   
+  let updatesCache = {};
+  const batchSize = 10000; // Adjust this based on your needs
   
   const editor = ace.edit("json-editor");
   editor.setTheme("ace/theme/chrome");
@@ -64,6 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
   speedSlider.addEventListener("input", () => {
     adjustGameSpeed();
   });
+
+  const downloadBtn = document.getElementById("download-json");
+  downloadBtn.addEventListener("click", downloadCacheAsJSON);
 
   let selectedHexLayer = L.geoJSON(null, {
     style: {
@@ -234,9 +239,6 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     });
   }
-  
-  const updatesCache = {};
-  const batchSize = 10000; // Adjust this based on your needs
 
   async function fetchHexUpdatesInBatch(currentYear) {
     const fetchStartYear = -1 * (Math.floor(currentYear / batchSize) * batchSize);
@@ -433,6 +435,23 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
       alert("Invalid JSON. Please check your input and try again.");
     }
+  }
+
+  function downloadCacheAsJSON() {
+    let hexagonData;
+  
+    fetch('get_hexagon_data/')
+      .then(response => response.json())
+      .then(data => {
+        hexagonData = data;
+        console.log('hexagonData:', hexagonData);
+        const encodedData = encodeURIComponent(JSON.stringify(hexagonData));
+        const dataUrl = "data:text/json;charset=utf-8," + encodedData;
+        console.log('dataUrl:', dataUrl);
+        downloadBtn.setAttribute("href", dataUrl);
+        downloadBtn.setAttribute("download", "hexagon_data.json");
+        downloadBtn.click();
+      });
   }
 });
 
