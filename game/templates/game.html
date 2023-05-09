@@ -11,9 +11,14 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>  
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/ace.js"></script>
+    
   <title>Neolithic Deities</title>
 </head>
 <body>
+  <script>
+    const hexProperties = {{ hex_properties|safe }};
+    const colorSchemesData = {{ color_schemes|safe }};
+  </script>
   <div id="game-container">
     <div id="start-screen">
       <h1>Neolithic Deities</h1>
