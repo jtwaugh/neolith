@@ -1,110 +1,14 @@
 const popColors = d3.scaleOrdinal()
-  .domain(
-    [
-      0.0,
-      0.1,
-      0.3,
-      0.5,
-      0.8,
-      1.5,
-      1.0,
-      2.0,
-      5.0,
-    ]
-  )
-  .range(
-    [
-      "#000000",
-      "#383838",
-      "#555555",
-      "#717171",
-      "#8D8D8D",
-      "#aaaaaa",
-      "#c6c6c6",
-      "#e2e2e2",
-      "#ffffff",
-    ]
-  )
+  .domain(colorSchemesData.population_density.domain)
+  .range(colorSchemesData.population_density.range);
 
 const terrainColors = d3.scaleOrdinal()
-.domain(
-  [
-    "Ice", 
-    "Water", 
-    "Plains", 
-    "Mountains", 
-    "Chaparral",
-    "Extreme Desert",
-    "Semi-Desert",
-    "Free",
-    "Savannah",
-    "Woodlands",
-    "Tropical Forest",
-    "Grassland",
-    "Temperate Forest",
-    "Steppe-Forest",
-    "Boreal Forest",
-  ]
-) // Add as many terrain types as you have
-.range(
-  [
-    "#bfd1e5", 
-    "#64b5f6",
-    "#ffe0b2",
-    "#bdbdbd", 
-    "#a1887f",
-    "#d2b48c", 
-    "#f5deb3",
-    "#ffffff",
-    "#c1b23d", 
-    "#8bc34a",
-    "#388e3c",
-    "#d7c55c",
-    "#689f38", 
-    "#a2d0a5",
-    "#2e7d32",
-  ]
-); // Add corresponding colors for each terrain type
-    
-const koeppenColors = d3.scaleOrdinal()
-  .domain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]) // Add as many terrain types as you have
-  .range(
-    [
-      "#184a85", 
-      "#1c00ff", 
-      "#3183ff", 
-      "#61b2f3", 
-      "#f40000", 
-      "#f8a09f", 
-      "#f1af00", 
-      "#fce163", 
-      "#feff00", 
-      "#cdce00", 
-      "#a0a100", 
-      "#abff9b", 
-      "#7bd069", 
-      "#4aa12d", 
-      "#d2ff44", 
-      "#83ff48", 
-      "#54ce00", 
-      "#f500ff", 
-      "#c700d2",
-      "#9b37a3", 
-      "#9e6fa2", 
-      "#b6b8ff", 
-      "#6a83e5", 
-      "#585ac1", 
-      "#380095", 
-      "#57ffff", 
-      "#5cceff", 
-      "#2a8889", 
-      "#164f6d", 
-      "#bbbbbb", 
-      "#717170"
-    ]
-  );
+  .domain(colorSchemesData.terrain.domain)
+  .range(colorSchemesData.terrain.range);
 
-const hexProperties = ["terrain", "climate", "koeppen", "population_density"]    
+const koeppenColors = d3.scaleOrdinal()
+  .domain(colorSchemesData.koeppen.domain)
+  .range(colorSchemesData.koeppen.range);
 
 const colorSchemes = {
   "koeppen": koeppenColors,
@@ -115,16 +19,15 @@ const colorSchemes = {
 document.addEventListener('DOMContentLoaded', () => {
   let settlements = []
 
-  let hexLayer; // GPT doesn't really know what this is supposed to do
-  let hexagonData; // Raw data containing hex history, probably containing duplicates that aren't actually updates. TODO remove duplicate values
-  let currentHexes; // Hexes starting from current year
-  let hexUpdates = {}; // Diffs
+  let hexLayer; // GeoJSON data for rendering
+
   let settlementUpdates = {};
 
   let selectedHexData;
   let mapModeSelector;
 
   let currentYear = -8000;
+  let startYear;
   let intervalID;
 
   const map = L.map('map').setView([39.0742, 21.8243], 4); // Set the center and zoom level
@@ -146,6 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const settlementName = document.getElementById('settlement-name');
   const settlementPopulation = document.getElementById('settlement-population');
   
+  let updatesCache = {};
+  const batchSize = 10000; // Adjust this based on your needs
   
   const editor = ace.edit("json-editor");
   editor.setTheme("ace/theme/chrome");
@@ -162,6 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
     adjustGameSpeed();
   });
 
+  const downloadBtn = document.getElementById("download-json");
+  downloadBtn.addEventListener("click", downloadCacheAsJSON);
+
   let selectedHexLayer = L.geoJSON(null, {
     style: {
       color: '#ff0000', // Set the border color of the selected hex
@@ -177,25 +85,37 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('save-json').addEventListener('click', saveJSON);
   document.getElementById('cancel-json').addEventListener('click', cancelJSON);
 
+  async function loadData() {
+    try {
+      try {
+        const response = await fetch('/game/cache_hexagon_data/');
+        const data = await response.json();
+      } catch (error) {
+        console.error('Error caching hexagon data:', error);
+      }
+      try {
+        const response = await fetch('/game/prepare_hex_updates/');
+        const data = await response.json();
+      } catch (error) {
+        console.error('Error caching hexagon data:', error);
+      }
+      populateMapModeSelector();
+      updateMapMode();
+    } catch (error) {
+      console.error('Error fetching GeoJSON data:', error);
+    }
+  }
+
   function startGame() {
     startScreen.style.display = 'none';
     gameScreen.style.display = 'block';
     
-    currentYear = parseInt(startYearInput.value, 10);
+    startYear = parseInt(startYearInput.value, 10)
+    currentYear = startYear;
     currentYearDisplay.innerText = currentYear;
     document.getElementById("hexInfo").style.display = "block";
 
-    fetch(hexDataURI)
-    .then(response => response.json())
-    .then(data => {
-      hexagonData = data;
-      prepareHexUpdates(); // Turn hexes into just their updates TODO remove duplicates
-      createCurrentHexes(); // Set the current values of the hexes
-      populateMapModeSelector();
-      updateMapMode();
-    })
-    .catch(error => console.error('Error fetching GeoJSON data:', error));
-
+    loadData();
     
     fetch('/static/game/assets/settlements.geojson')
     .then(response => response.json())
@@ -280,41 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
     map.addControl(mapModeSelectorControl);
   }
 
-  function createCurrentHexes() {
-    if (hexagonData) {
-      if (!currentHexes) {
-        currentHexes = hexagonData.features.map((hex) => {
-          let updatedHexProperties = {"id": hex.properties.id};
-          hexProperties.forEach((property) => {
-            const propertyYears = Object.keys(hex.properties[property]).map(Number);
-            const validYears = propertyYears.filter((year) => year <= currentYear);
-            if (validYears.length > 0) {
-              const latestYear = Math.max(...validYears);
-              updatedHexProperties[property] = hex.properties[property][latestYear];
-            }
-          });
-          return Object.assign({}, hex, {
-            properties: updatedHexProperties,
-          });
-        });
-      }
-    }
-  }
-
-  function renderCurrentHexes() {
-    if (hexLayer) {
-      // If hexLayer exists, we remove it from the map and draw a new one with the updated hexes
-      map.removeLayer(hexLayer);
-    }
-  
-    hexLayer = L.layerGroup();
-  
-    // Loop over the hexagons and add them to the layer group
-    currentHexes.forEach((hex) => {
-      hexLayer.addLayer(getStylizedHex(hex));
-    });
-  }
-
   // Update a single hex
   function updateSingleHex(hex) {
     const updatedHex = getStylizedHex(hex);
@@ -354,13 +239,34 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     });
   }
-  
 
-  // Pick out hexes that need the update and update them
+  async function fetchHexUpdatesInBatch(currentYear) {
+    const fetchStartYear = -1 * (Math.floor(currentYear / batchSize) * batchSize);
+    const fetchEndYear = (fetchStartYear - batchSize + 1);
+    
+    const response = await fetch(`get_hex_updates_range/${fetchStartYear}/${fetchEndYear}/`);
+    const updates = await response.json();
+    
+    for (const year in updates) {
+      updatesCache[year] = updates[year];
+    }
+  }
+
   function updateVisibleHexes() {
-    if (hexUpdates[currentYear]) {
-      currentHexes.forEach((hex) => {
-        const update = hexUpdates[currentYear][hex.properties.id];
+    if (!updatesCache[currentYear]) {
+      fetchHexUpdatesInBatch(currentYear).then(() => {
+        applyUpdates(currentYear);
+      });
+    } else {
+      applyUpdates(currentYear);
+    }
+  }
+  
+  function applyUpdates(year) {
+    const updates = updatesCache[year];
+    if (updates && Object.keys(updates).length > 0) {
+      hexLayer.toGeoJSON().features.forEach((hex) => {
+        const update = updates[hex.properties.id];
         if (update) {
           hexProperties.forEach((hexProperty) => {
             if (update[hexProperty]) {
@@ -390,18 +296,38 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
 
-  function updateMapMode() {
-    // Remove the existing hex layer
-    if (hexLayer){
-      map.removeLayer(hexLayer);
-    }
+  async function updateMapMode() {
+    // If hexLayer exists, loop through its layers and update the style based on the new map mode
+    if (hexLayer) {
+      hexLayer.eachLayer((layer) => {
+        const selectedMode = mapModeSelector.value;
+        const selectedColorScheme = colorSchemes[selectedMode];
   
-    // Redraw the hexagons with the new color scheme
-    if (hexagonData){
-      renderCurrentHexes(); // Render the hexgons to the hexLayer object
-      hexLayer.addTo(map); // Actually add it to the map object
+        layer.setStyle((feature) => {
+          return {
+            fillColor: selectedColorScheme(feature.properties[selectedMode]),
+            weight: 0.3,
+            opacity: 1,
+            color: "grey",
+            fillOpacity: 1.0,
+          };
+        });
+      });
+    } else {
+      const response = await fetch(`get_current_hexes/${-1 * startYear}/`);
+      const currentHexes = await response.json();
+  
+      hexLayer = L.layerGroup();
+  
+      // Loop over the hexagons and add them to the layer group
+      currentHexes.forEach((hex) => {
+        hexLayer.addLayer(getStylizedHex(hex));
+      });
+  
+      hexLayer.addTo(map);
     }
   }
+  
 
   function createSettlement(settlement) {
     if (settlement.properties.founding <= currentYear) {
@@ -440,38 +366,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function prepareHexUpdates() {
-    const properties = ["terrain", "climate", "koeppen", "population_density"]
-
-    const previousHexValues = {};
-
-    if (hexagonData) {
-      hexagonData.features.forEach((hex) => {
-        properties.forEach((property) => {
-          const propertyYears = Object.keys(hex.properties[property]).map(Number);
-          propertyYears.forEach((year) => {
-            const currentValue = hex.properties[property][year];
-            const previousValue = previousHexValues[hex.properties.id] ? previousHexValues[hex.properties.id][property] : undefined;
-
-            if (currentValue !== previousValue) {
-              if (!hexUpdates[year]) {
-                hexUpdates[year] = {};
-              }
-              if (!hexUpdates[year][hex.properties.id]) {
-                hexUpdates[year][hex.properties.id] = {}
-              }
-              hexUpdates[year][hex.properties.id][property] = hex.properties[property][year]
-
-              // Update the previous value for this property and hexagon
-              previousHexValues[hex.properties.id] = previousHexValues[hex.properties.id] || {};
-              previousHexValues[hex.properties.id][property] = currentValue;
-            }
-          });
-        });
-      });
-    }
-  }
-
   function updateVisibleSettlements() {
     if (settlementUpdates[currentYear]) {
       settlementUpdates[currentYear].settlements.forEach(settlement => {
@@ -494,46 +388,71 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function openJSONEditor() {
+  async function openJSONEditor() {
     if (selectedHexData) {
-      toggleGamePause(); // Pause while we edit
+      if (!(intervalID)) {
+        toggleGamePause(); // Pause while we edit
+      }
+
       // TODO don't let us click on another tile
   
       // Get the tile value with all historical properties
-      const ogHexWithID = hexagonData.features.find((hex) => hex.properties.id == selectedHexData.properties.id)
+      const response = await fetch(`get_hex_by_id/${selectedHexData.properties.id}/`);
+      const ogHexWithID = await response.json();
 
       editor.setValue(JSON.stringify(ogHexWithID, null, 2), -1);
+
       document.getElementById("hexInfo").style.display = "none";
       document.getElementById("json-editor-container").style.display = "block";
     }
   }
 
-  function saveJSON() {
+  async function saveJSON() {
     try {
       const newHexData = JSON.parse(editor.getValue());
+      const hexId = selectedHexData.properties.id;
 
-      console.log(newHexData);
-
-      const indexToReplace = hexagonData.features.findIndex((hex) => hex.properties.id == selectedHexData.properties.id)      
+      if (newHexData.properties.id !== hexId) {
+        alert("Invalid JSON. ID must be " + hexId);
+      }
   
-      hexagonData.features[indexToReplace] = newHexData
-
-      JSON.
-
-      document.getElementById("json-editor-container").style.display = "none";
-      document.getElementById("hexInfo").style.display = "block";
+      const response = await fetch(`/game/update_hex_by_id/${hexId}/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newHexData)
+      });
   
-      alert("File saved successfully at " + hexDataURI);
+      if (response.ok) {
+        document.getElementById("json-editor-container").style.display = "none";
+        document.getElementById("hexInfo").style.display = "block";
+  
+        alert("Hex saved successfully to cache");
+      } else {
+        throw new Error("Failed to update hex data");
+      }
     } catch (error) {
       alert("Invalid JSON. Please check your input and try again.");
     }
   }
 
-  function cancelJSON() {
-    document.getElementById("json-editor-container").style.display = "none";
-    document.getElementById("hexInfo").style.display = "block";
-  }
+  function downloadCacheAsJSON() {
+    let hexagonData;
   
+    fetch('get_hexagon_data/')
+      .then(response => response.json())
+      .then(data => {
+        hexagonData = data;
+        console.log('hexagonData:', hexagonData);
+        const encodedData = encodeURIComponent(JSON.stringify(hexagonData));
+        const dataUrl = "data:text/json;charset=utf-8," + encodedData;
+        console.log('dataUrl:', dataUrl);
+        downloadBtn.setAttribute("href", dataUrl);
+        downloadBtn.setAttribute("download", "hexagon_data.json");
+        downloadBtn.click();
+      });
+  }
 });
 
 

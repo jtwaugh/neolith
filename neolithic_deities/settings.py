@@ -130,3 +130,112 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-hex-updates',
+    }
+}
+# settings.py
+
+HEX_PROPERTIES = ["terrain", "climate", "koeppen", "population_density"]
+
+COLOR_SCHEMES = {
+    "koeppen": {
+        "domain": list(range(0, 31)),
+        "range": [
+            "#184a85", 
+            "#1c00ff", 
+            "#3183ff", 
+            "#61b2f3", 
+            "#f40000", 
+            "#f8a09f", 
+            "#f1af00", 
+            "#fce163", 
+            "#feff00", 
+            "#cdce00", 
+            "#a0a100", 
+            "#abff9b", 
+            "#7bd069", 
+            "#4aa12d", 
+            "#d2ff44", 
+            "#83ff48", 
+            "#54ce00", 
+            "#f500ff", 
+            "#c700d2",
+            "#9b37a3", 
+            "#9e6fa2", 
+            "#b6b8ff", 
+            "#6a83e5", 
+            "#585ac1", 
+            "#380095", 
+            "#57ffff", 
+            "#5cceff", 
+            "#2a8889", 
+            "#164f6d", 
+            "#bbbbbb", 
+            "#717170"
+        ],
+    },
+    "terrain": {
+        "domain": [
+            "Ice", 
+            "Water", 
+            "Plains", 
+            "Mountains", 
+            "Chaparral",
+            "Extreme Desert",
+            "Semi-Desert",
+            "Free",
+            "Savannah",
+            "Woodlands",
+            "Tropical Forest",
+            "Grassland",
+            "Temperate Forest",
+            "Steppe-Forest",
+            "Boreal Forest",
+        ],
+        "range": [
+            "#bfd1e5", 
+            "#64b5f6",
+            "#ffe0b2",
+            "#bdbdbd", 
+            "#a1887f",
+            "#d2b48c", 
+            "#f5deb3",
+            "#ffffff",
+            "#c1b23d", 
+            "#8bc34a",
+            "#388e3c",
+            "#d7c55c",
+            "#689f38", 
+            "#a2d0a5",
+            "#2e7d32",
+        ],
+    },
+    "population_density": {
+        "domain": [
+            0.0,
+            0.1,
+            0.3,
+            0.5,
+            0.8,
+            1.5,
+            1.0,
+            2.0,
+            5.0,
+        ],
+        "range": [
+            "#000000",
+            "#383838",
+            "#555555",
+            "#717171",
+            "#8D8D8D",
+            "#aaaaaa",
+            "#c6c6c6",
+            "#e2e2e2",
+            "#ffffff",
+        ],
+    },
+}
