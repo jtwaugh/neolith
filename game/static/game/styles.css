@@ -95,4 +95,15 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a shadow for a "floating" effect */
     overflow: auto; /* Add scrollbars if the content overflows */
   }
+
+  .color-box {
+    width: 20px; /* adjust as needed */
+    height: 20px; /* adjust as needed */
+    margin: 5px;
+    display: inline-block;
+    cursor: pointer;
+  }
   
+  .selected {
+    border: 2px solid black;
+  }

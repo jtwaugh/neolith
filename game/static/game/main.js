@@ -20,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let settlements = []
 
   let hexLayer; // GeoJSON data for rendering
+  let hexIdMap = {};
+
+  let adjacencyMap = null;
 
   let settlementUpdates = {};
 
@@ -29,6 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentYear = -8000;
   let startYear;
   let intervalID;
+  let editingMode = "select";
+  let selectedProperty = null;
 
   const map = L.map('map').setView([39.0742, 21.8243], 4); // Set the center and zoom level
 
@@ -48,6 +53,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const dnaInfo = document.querySelector('.dna-info');
   const settlementName = document.getElementById('settlement-name');
   const settlementPopulation = document.getElementById('settlement-population');
+
+  const colorPalette = document.getElementById('color-palette');
+  
+  colorPalette.addEventListener('click', (event) => {
+    const clickedElement = event.target;
+    if (clickedElement.classList.contains('color-box')) {
+      const prevSelectedElement = colorPalette.querySelector('.selected');
+      if (prevSelectedElement) {
+        prevSelectedElement.classList.remove('selected');
+      }
+  
+      clickedElement.classList.add('selected');
+      selectedColor = clickedElement.style.backgroundColor;
+      selectedProperty = clickedElement.getAttribute('data-property-value');
+    }
+  });
+
+  document.getElementById('pencil-tool').addEventListener('click', function() {
+    editingMode = "pencil";
+    this.style.color = editingMode == "pencil" ? 'red' : 'black'; // Change color to indicate active state
+  });
+  document.getElementById('paintbucket-tool').addEventListener('click', function() {
+    editingMode = "paintbucket";
+    this.style.color = editingMode == "paintbucket" ? 'red' : 'black'; // Change color to indicate active state
+  });
   
   let updatesCache = {};
   const batchSize = 10000; // Adjust this based on your needs
@@ -83,26 +113,43 @@ document.addEventListener('DOMContentLoaded', () => {
   pausePlayButton.addEventListener('click', toggleGamePause);
   document.getElementById('edit-hex-json').addEventListener('click', openJSONEditor);
   document.getElementById('save-json').addEventListener('click', saveJSON);
-  document.getElementById('cancel-json').addEventListener('click', cancelJSON);
+  //document.getElementById('cancel-json').addEventListener('click', cancelJSON);
 
   async function loadData() {
     try {
       try {
         const response = await fetch('/game/cache_hexagon_data/');
         const data = await response.json();
+        console.log("Cached hexagon data.");
       } catch (error) {
         console.error('Error caching hexagon data:', error);
       }
+
       try {
         const response = await fetch('/game/prepare_hex_updates/');
         const data = await response.json();
+        console.log("Created hex updates on backend.");
       } catch (error) {
-        console.error('Error caching hexagon data:', error);
+        console.error('Error retrieving hex updates:', error);
       }
-      populateMapModeSelector();
-      updateMapMode();
+
+      try {
+        const response = await fetch('generate_adjacency_map/');
+        const data = await response.json();
+        adjacencyMap = data;
+        console.log("Created and set adjacency data.");
+      } catch (error) {
+        console.error('Error retrieving adjacency map:', error);
+      }
+
+      await populateMapModeSelector();
+      await updateMapMode();
+      await updateColorPalette();
+      await loadSettlements();
+
+      console.log("Data loaded.");
     } catch (error) {
-      console.error('Error fetching GeoJSON data:', error);
+      console.error('Error processing data:', error);
     }
   }
 
@@ -115,44 +162,12 @@ document.addEventListener('DOMContentLoaded', () => {
     currentYearDisplay.innerText = currentYear;
     document.getElementById("hexInfo").style.display = "block";
 
-    loadData();
+    try {
+      loadData();
+    } catch {
+      console("Didn't load data");
+    }
     
-    fetch('/static/game/assets/settlements.geojson')
-    .then(response => response.json())
-    .then(data => {
-      // Call the drawHexagons function with the fetched GeoJSON data
-      settlements = data;
-
-      settlements.forEach((settlement) => {
-        const foundingYear = settlement.properties.founding;
-    
-        if (foundingYear <= currentYear) {
-          createSettlement(settlement);
-        }
-
-        if (!settlementUpdates[foundingYear]) {
-          settlementUpdates[foundingYear] = {
-            settlements: [],
-            populationUpdates: {},
-          };
-        }
-    
-        settlementUpdates[foundingYear].settlements.push(settlement);
-    
-        const populationYears = Object.keys(settlement.properties.population).map(Number);
-        populationYears.forEach((year) => {
-          if (!settlementUpdates[year]) {
-            settlementUpdates[year] = {
-              settlements: [],
-              populationUpdates: {},
-            };
-          }
-          settlementUpdates[year].populationUpdates[settlement.id] = settlement.properties.population[year];
-        });
-      });
-    });
-
-    adjustGameSpeed();
   }
 
   function adjustGameSpeed() {
@@ -170,6 +185,46 @@ document.addEventListener('DOMContentLoaded', () => {
       updateVisibleSettlements();
       updateVisibleHexes();
     }, intervalDuration * 1000); // Convert seconds to milliseconds
+
+    console.log("Game speed adjusted");
+  }
+
+  async function loadSettlements() {
+    fetch('/static/game/assets/settlements.geojson')
+      .then(response => response.json())
+      .then(data => {
+        // Call the drawHexagons function with the fetched GeoJSON data
+        settlements = data;
+
+        settlements.forEach((settlement) => {
+          const foundingYear = settlement.properties.founding;
+      
+          if (foundingYear <= currentYear) {
+            createSettlement(settlement);
+          }
+
+          if (!settlementUpdates[foundingYear]) {
+            settlementUpdates[foundingYear] = {
+              settlements: [],
+              populationUpdates: {},
+            };
+          }
+      
+          settlementUpdates[foundingYear].settlements.push(settlement);
+      
+          const populationYears = Object.keys(settlement.properties.population).map(Number);
+          populationYears.forEach((year) => {
+            if (!settlementUpdates[year]) {
+              settlementUpdates[year] = {
+                settlements: [],
+                populationUpdates: {},
+              };
+            }
+            settlementUpdates[year].populationUpdates[settlement.id] = settlement.properties.population[year];
+          });
+        });
+        console.log("Settlements created.");
+      });
   }
 
   function populateMapModeSelector() {
@@ -190,6 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
         mapModeSelector.addEventListener('change', (event) => {
           updateMapMode();
+          updateColorPalette();
         });
   
         return container;
@@ -226,19 +282,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function onHexClick(hex, layer) {
+  function onHexClick(feature, layer) {
     layer.on({
-      click: function() {
-        showHexInfo(hex);
-        selectedHexData = hex;
-        // Clear any existing geometry from the selectedHexLayer
-        selectedHexLayer.clearLayers();
-  
-        // Add the clicked hex geometry to the selectedHexLayer
-        selectedHexLayer.addData(hex.geometry);
-      },
+      click: function(e) {
+        switch (editingMode) {
+          case 'pencil':
+            feature.properties[mapModeSelector.value] = selectedProperty;
+            updateSingleHex(feature);
+            break;
+          case 'paintbucket':
+            floodFill(feature, selectedProperty);
+            break;
+          default:
+            // Original click handling code
+            showHexInfo(feature);
+            selectedHexData = feature;
+            selectedHexLayer.clearLayers();
+            selectedHexLayer.addData(feature.geometry);
+        }
+      }
     });
   }
+  
 
   async function fetchHexUpdatesInBatch(currentYear) {
     const fetchStartYear = -1 * (Math.floor(currentYear / batchSize) * batchSize);
@@ -253,6 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateVisibleHexes() {
+    console.log("Updating hexes for currentYear " + currentYear);
     if (!updatesCache[currentYear]) {
       fetchHexUpdatesInBatch(currentYear).then(() => {
         applyUpdates(currentYear);
@@ -316,15 +382,17 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       const response = await fetch(`get_current_hexes/${-1 * startYear}/`);
       const currentHexes = await response.json();
-  
+      
       hexLayer = L.layerGroup();
   
       // Loop over the hexagons and add them to the layer group
       currentHexes.forEach((hex) => {
+        hexIdMap[hex.properties.id] = hex;
         hexLayer.addLayer(getStylizedHex(hex));
       });
   
       hexLayer.addTo(map);
+      console.log("Added hex layer to map");
     }
   }
   
@@ -453,6 +521,66 @@ document.addEventListener('DOMContentLoaded', () => {
         downloadBtn.click();
       });
   }
+
+  function updateColorPalette() {
+    const selectedMode = mapModeSelector.value;
+  
+    // Clear the existing color palette
+    while (colorPalette.firstChild) {
+      colorPalette.removeChild(colorPalette.firstChild);
+    }
+  
+    // Populate the color palette with the unique colors
+    for (let propertyValue in colorSchemesData[selectedMode].domain) {
+      let color = colorSchemes[selectedMode](colorSchemesData[selectedMode].domain[propertyValue]);
+      let colorDiv = document.createElement('div');
+      colorDiv.style.backgroundColor = color;
+      colorDiv.className = 'color-box';  // Assign class
+      colorDiv.title = `Color: ${color}\nProperty value: ${colorSchemesData[selectedMode].domain[propertyValue]}`;  // Add title attribute
+      colorDiv.dataset.color = color; // Store the color in a data attribute for retrieval on click
+      colorDiv.dataset.propertyValue = colorSchemesData[selectedMode].domain[propertyValue];
+      colorPalette.appendChild(colorDiv);
+    }
+  }
+  
+  function floodFill(hex) {
+    if (adjacencyMap === null) {
+      console.error("Adjacency map is not loaded.");
+      return;
+    }
+    if (selectedProperty === null) {
+      console.error("No selected property");
+      return;
+    }
+
+    if (hex.properties[mapModeSelector.value] == selectedProperty) {
+      console.log("No need to fill this hex");
+    }
+
+    const queue = [hex];
+    const targetValue = hex.properties[mapModeSelector.value];
+  
+    while (queue.length > 0) {
+      const currentHex = queue.pop();
+      if (currentHex.properties[mapModeSelector.value] !== targetValue) {
+        continue;
+      }
+  
+      currentHex.properties[mapModeSelector.value] = selectedProperty;
+      updateSingleHex(currentHex);
+  
+      const adjacentHexes = adjacencyMap[currentHex.properties.id].map(id => hexIdMap[id]);
+
+      console.log("adjacent hexes to hex " + currentHex.properties.id + ": " + adjacentHexes.length);
+
+      for (const adjacentHex of adjacentHexes) {
+        if (adjacentHex.properties[mapModeSelector.value] === targetValue) {
+          queue.push(adjacentHex);
+        }
+      }
+    }
+  }
+  
 });
 
 

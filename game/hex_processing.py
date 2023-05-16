@@ -1,6 +1,10 @@
 import json
 import os
+
 from django.conf import settings
+
+import math
+
 
 def load_hexagon_data():
     data_file = os.path.join(settings.BASE_DIR, 'game', 'static/game/assets/', 'combined_map.geojson')
@@ -55,3 +59,39 @@ def create_current_hexes(hexagon_data, current_year):
             current_hexes.append(new_hex)
     return current_hexes
 
+
+def process_adjacency_map(hexagon_data):
+    adjacency_map = {}
+
+    min_x = min(hex['properties']['left'] for hex in hexagon_data['features'])
+    min_y = min(hex['properties']['top'] for hex in hexagon_data['features'])
+
+    sample_hex = hexagon_data['features'][0]
+    hex_width = abs(sample_hex['properties']['left'] - sample_hex['properties']['right']) * 3/4
+    hex_height = abs(sample_hex['properties']['top'] - sample_hex['properties']['bottom'])
+
+    # Create a dictionary of hexagons indexed by their grid coordinates
+    grid_to_hex = {}
+    for hex in hexagon_data['features']:
+        grid_x = round(((hex['properties']['left'] - min_x) / hex_width))
+        y_offset = -hex_height / 2 if grid_x % 2 == 0 else 0
+        grid_y = round((((hex['properties']['top'] - min_y) + y_offset) / hex_height))
+        grid_to_hex[(grid_x, grid_y)] = hex
+
+    # Determine offsets for adjacent hexes in flat-topped configuration
+    x_offsets = [0, 1, 1, 0, -1, -1]
+    y_offsets_even_q = [-1, 0, 1, 1, 1, 0]
+    y_offsets_odd_q = [-1, -1, 0, 1, 0, -1]
+
+    # Generate adjacency map
+    for grid, hex in grid_to_hex.items():
+        adjacency_map[hex['properties']['id']] = []
+        for i in range(6):
+            if grid[0] % 2 == 0:
+                adjacent_grid = (grid[0] + x_offsets[i], grid[1] + y_offsets_even_q[i])
+            else:
+                adjacent_grid = (grid[0] + x_offsets[i], grid[1] + y_offsets_odd_q[i])
+            if adjacent_grid in grid_to_hex:
+                adjacency_map[hex['properties']['id']].append(grid_to_hex[adjacent_grid]['properties']['id'])
+
+    return adjacency_map
