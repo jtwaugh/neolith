@@ -7,7 +7,7 @@ import json
 
 from django.http import HttpResponseNotAllowed, Http404
 
-from .hex_processing import process_hex_updates, create_current_hexes, load_hexagon_data
+from .hex_processing import process_hex_updates, create_current_hexes, load_hexagon_data, process_adjacency_map
 
 HEX_UPDATES_CACHE_KEY = "hex_updates"
 HEXAGON_DATA_CACHE_KEY = "hexagon_data"
@@ -165,3 +165,16 @@ def update_hex_by_id(request, hex_id):
             return HttpResponseBadRequest("Hex data not found")
     else:
         return HttpResponseNotAllowed(['POST'])
+
+
+def generate_adjacency_map(request):
+    if request.method != 'GET':
+        return HttpResponseNotAllowed(['GET'])
+
+    hexagon_data = cache.get(HEXAGON_DATA_CACHE_KEY)
+    if not hexagon_data:
+        return HttpResponseBadRequest("Hexagon data not cached. Call cache_hexagon_data first.")
+    
+    adjacency_map = process_adjacency_map(hexagon_data)
+    
+    return JsonResponse(adjacency_map)

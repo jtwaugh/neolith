@@ -11,4 +11,5 @@ urlpatterns = [
     path('get_hexagon_data/', views.get_hexagon_data, name='get_hexagon_data'),
     path('get_hex_by_id/<int:hex_id>/', views.get_hex_by_id, name='get_hex_by_id'),
     path('update_hex_by_id/<int:hex_id>/', views.update_hex_by_id, name='update_hex_by_id'),
+    path('generate_adjacency_map/', views.generate_adjacency_map, name='generate_adjacency_map'),
 ]

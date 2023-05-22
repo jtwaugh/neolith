@@ -42,7 +42,34 @@
       <div id="map-container">
           <div id="map" style="width: 100%; height: 100%;"></div>
       </div>          
-      
+      <div id="tool-container">
+        <div id="color-palette">
+          <!-- Colors will be added dynamically with JavaScript -->
+        </div>
+        <div id="tool-buttons">
+          <button id="pencil-tool">
+            <img src="{% static 'game/icons/pencil.png' %}" alt="Pencil Tool">
+          </button>
+          <button id="paintbucket-tool">
+            <img src="{% static 'game/icons/paintbucket.png' %}" alt="Paintbucket Tool">
+          </button>
+          <button id="lasso-tool">
+            <img src="{% static 'game/icons/lasso.png' %}" alt="Lasso Tool">
+          </button>
+          <button id="select-all-tool">
+            <img src="{% static 'game/icons/select-all.png' %}" alt="Select All Tool">
+          </button>
+          <button id="deselect-all-tool">
+            <img src="{% static 'game/icons/deselect-all.png' %}" alt="Deselect All Tool">
+          </button>
+        </div>
+        <div id="undo-redo-buttons">
+          <button id="undo-button">Undo</button>
+          <button id="redo-button">Redo</button>
+          <button id="download-json">Download JSON</button>
+          <button id="download-json">Upload JSON</button>
+        </div>
+      </div>      
       <div id="year-display" class="neolithic-style">Year: <span id="current-year"></span></div>
       <div id="controls">
         <button id="pause-play">Pause</button>
@@ -60,7 +87,6 @@
         <p>Caloric Surplus: <span id="hex-caloric-surplus"></span></p>
         <p>People per Square km: <span id="hex-population-density"></span></p>
         <button id="edit-hex-json">Edit JSON</button>
-        <button id="download-json">Download JSON</button>
       </div>      
       <div id="json-editor-container" style="display: none; position: fixed; bottom: 0; width: 100%; height: 50%;">
         <div id="json-editor" style="width: 100%; height: calc(100% - 40px);"></div>
