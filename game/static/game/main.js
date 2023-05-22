@@ -506,21 +506,26 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function downloadCacheAsJSON() {
-    let hexagonData;
-  
-    fetch('get_hexagon_data/')
-      .then(response => response.json())
-      .then(data => {
-        hexagonData = data;
-        console.log('hexagonData:', hexagonData);
-        const encodedData = encodeURIComponent(JSON.stringify(hexagonData));
-        const dataUrl = "data:text/json;charset=utf-8," + encodedData;
-        console.log('dataUrl:', dataUrl);
-        downloadBtn.setAttribute("href", dataUrl);
-        downloadBtn.setAttribute("download", "hexagon_data.json");
-        downloadBtn.click();
-      });
-  }
+    if (!hexLayer) {
+        console.error('No data');
+        return;
+    }
+
+    const filename = 'map.geojson';
+
+    data = JSON.stringify(hexLayer.toGeoJSON(), undefined, 4);
+
+    var blob = new Blob([data], {type: 'text/json'}),
+        e    = document.createEvent('MouseEvents'),
+        a    = document.createElement('a');
+
+    a.download = filename;
+    a.href = window.URL.createObjectURL(blob);
+    a.dataset.downloadurl =  ['text/json', a.download, a.href].join(':');
+    e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    a.dispatchEvent(e);
+}
+
 
   function updateColorPalette() {
     const selectedMode = mapModeSelector.value;
