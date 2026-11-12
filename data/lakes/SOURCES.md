@@ -38,6 +38,15 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC4507243
 | Fall of >100 m in the Bodélé and >34 m in Lake Chad by 4.7 ka | 285 m at −2750 (after the map's end) |
 | Bahr el Ghazal sill 287 m (288 m in one figure caption); Mayo Kébbi overflow 325 m | Sill used for the Bahr el Ghazal spillway; the outlet comes from ETOPO1 (327 m) |
 
+- Dated settlements the curve puts under water when they start (the map
+  build's report, "Phases starting under the modelled water"; build of
+  2026-11-12): Borkou 121 m, Beurkia 48 m, Mandi 41 m, Faya-Largeau 10 m.
+  Borkou's depth means its record is placed at a regional centroid in the
+  Bodélé, not at the site, so it says nothing about the curve. Faya-Largeau
+  (317 m, from about −4000) sits under the 329 m stand of −3900…−3450, the
+  6.6–5.4 ka beach-ridge cluster; either its date or the length of that
+  stand is off, and it is the case to check first. The 308 m fall at −4000
+  is Armitage et al.'s dated "brief fall" and stays.
 - One lake fills both the Chad and Bodélé basins whenever it is above the
   sill. That is true for the whole map period, so no separate Bodélé lake is
   needed. Its separation, about 4.7 ka, and final drying, about 1 ka, fall
@@ -159,6 +168,40 @@ within 25 m.
 - The board's drawn ice is used only until −9700 (it covers central Sweden
   until about −8500, when the area was in fact ice-free).
 - Marine stages draw no shoreline line, like the open sea elsewhere.
+- **Karelian Isthmus (`clear`).** The drawn maps put Water over the whole
+  western isthmus (hexes 20–80 m above sea level today) for the whole
+  period. Run without that drawn Water, the model on its own wets only a
+  scattered few hexes there (Vyborg Bay, the Vuoksi lowland). The strait is
+  real until Ladoga was cut off from the Baltic, about 10.2 cal ka
+  (Ludikova et al. 2024, see data/rivers/SOURCES.md), so the drawn Water
+  stays until −8250. From then on, drawn Water the model doesn't reach in
+  28.2–33.6°E, 59.7–62.0°N becomes land (modern sea floor excepted). Ladoga's
+  outflow then runs through the Heinjoki Strait (rivers.toml).
+
+## Lake Ladoga (low confidence)
+
+The board had no Ladoga. The drawn maps leave its basin as land, ETOPO1
+records it as a flat surface at 1 m (no bathymetry; the real surface is
+about 5 m asl). From the isolation (−8250) a dam along the isthmus divide
+(Neva lowland, Heinjoki threshold, Salpausselkä) keeps the Baltic model out
+of its catchment: ETOPO1's lake surface counts as ground, the uplift
+correction sinks the north-west shore by up to 50 m, and without the dam the
+Baltic flooded the skerry coast (three or four hexes outside the shoreline)
+over the Heinjoki threshold. It is now a lake of its own, held at its present
+extent all period: 1.5 m on the ETOPO datum floods about 16,700 km² from the
+seed, against a real area of about 17,700 km². Its lowest exit in the window
+is at 21 m, so nothing leaks. `basin_margin = 0` keeps it from clearing the
+Baltic's water around it.
+
+| Literature | Model |
+|---|---|
+| Joined to the Baltic (Baltic Ice Lake, Yoldia, Ancylus) until about 10.2 cal ka; some put the isolation at about 11.5 cal ka (Ludikova et al. 2024; Dolukhanov et al.) | the lake, plus the drawn Water over the isthmus until −8250 |
+| Early-Holocene lowstand: submerged coastal bars at 13, 21 and 41 m below today's level (*Limnology and Freshwater Biology*, 2024–25) | not shown: no bathymetry |
+| Ladoga transgression in the south: rise from about 5 cal ka (Dolukhanov et al.) or 3.7–3.6 ka (Taipale Bay study) to about 14 m, then the Neva breakthrough at 3.5–3.2 cal ka | after −3000 for the most part; not shown |
+
+The Ancylus-stage maximum is given as 17–18 m (about 8.1 ka) or about 20 m
+in the southern shallows (Subetto's excursion guide). The sources disagree,
+and some are field-trip guides or abstracts.
 
 ## Black Sea lake (low confidence)
 
@@ -322,3 +365,16 @@ whenever a source is used.
   https://www.researchgate.net/publication/240525437_Early_Holocene_history_of_the_southwestern_Baltic_Sea_The_Ancylus_Lake_stage
 - The eastern shores of the Baltic Sea in the Early Holocene.
   https://rgs-ibg.onlinelibrary.wiley.com/doi/10.1002/geo2.87
+- Ludikova, A.V. et al., 2024. *Quaternary* 7(3):31 (the Heinjoki
+  paleo-outlet of Lake Ladoga). https://www.mdpi.com/2571-550X/7/3/31
+- Dolukhanov, P.M. et al. Evolution of waterways and early human
+  settlements in the eastern Baltic area: radiocarbon-based chronology.
+  *Radiocarbon*. https://www.cambridge.org/core/product/50D0CE873BE05527714BCCC5D66B8A07
+- Lake Ladoga water levels and the Ladoga transgression (Taipale Bay
+  coast; Ancylus maximum 17–18 m). https://core.ac.uk/download/226292428.pdf;
+  https://journal.fi/iskos/article/view/110412/64904
+- Submerged early-Holocene coastal bars in Lake Ladoga. *Limnology and
+  Freshwater Biology*. https://journals.rcsi.science/2658-3518/article/view/288500
+- Lake Ladoga Holocene history (EGU 2008 and 2009 abstracts).
+  https://meetingorganizer.copernicus.org/EGU2009/EGU2009-9406.pdf;
+  https://meetings.copernicus.org/www.cosis.net/abstracts/EGU2008/03592/EGU2008-A-03592.pdf

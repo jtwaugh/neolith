@@ -17,8 +17,14 @@
 # level = "sea-or-outlet": a basin that is open sea when the global sea can
 #        get in and otherwise a lake held at its lowest outlet, on a surface
 #        corrected for glacio-isostatic uplift ([isostasy] in the config),
-#        recomputed every year. `dam` may then take an `until` year;
-#        `downsample` coarsens the raster by that factor for speed.
+#        recomputed every year. `dam` may then be a list, each dam with
+#        `from` and `until` years;
+#        `downsample` coarsens the raster by that factor for speed;
+#        `clear = { box = [lon0, lat0, lon1, lat1], from = year }` makes the
+#        model authoritative in that box from that year: drawn Water it
+#        doesn't reach (and isn't modern sea floor) becomes land.
+# basin_margin: overrides [lakes] basin_margin for this lake (how far above
+#        its highest level drawn Water counts as its basin and is cleared).
 # Lakes not listed here stay as the drawn keyframes have them.
 
 [[lake]]
@@ -55,13 +61,46 @@ box = [9.0, 53.0, 37.0, 71.0]
 # The window reaches the Barents and Norwegian seas and takes in Ladoga and
 # Onega; only edge cells in today's open sea count as outlets.
 level = "sea-or-outlet"
-dam = { line = [[11.6, 58.2], [13.7, 58.4], [15.0, 58.8], [16.5, 58.9], [17.6, 59.1], [18.8, 59.4], [20.5, 59.8], [22.5, 59.8], [25.0, 60.4], [27.0, 60.9], [29.5, 61.5], [31.5, 62.0]], top = 1000.0, until = -9700 }
+# Second dam: once Ladoga was cut off (about 10.2 cal ka, see `clear` below)
+# the Baltic no longer reached its catchment. ETOPO1 has Ladoga's surface as
+# ground, and the uplift correction sinks its north-west shore below sea
+# level, so without a barrier the Baltic floods the Ladoga skerries over the
+# Heinjoki threshold. The line follows the isthmus divide (Neva lowland,
+# Heinjoki, Salpausselkä); the Neva didn't exist before about 3.3 cal ka.
+dam = [
+  { line = [[11.6, 58.2], [13.7, 58.4], [15.0, 58.8], [16.5, 58.9], [17.6, 59.1], [18.8, 59.4], [20.5, 59.8], [22.5, 59.8], [25.0, 60.4], [27.0, 60.9], [29.5, 61.5], [31.5, 62.0]], top = 1000.0, until = -9700 },
+  { line = [[30.6, 59.6], [30.5, 60.05], [29.9, 60.3], [29.3, 60.5], [29.2, 60.8], [29.1, 61.15], [29.6, 61.6], [30.3, 62.1], [31.0, 62.6]], top = 1000.0, from = -8250 },
+]
 downsample = 3
 # The board's drawn ice covers central Sweden until about -8500, but it was
 # ice-free soon after the Baltic Ice Lake drained (the Yoldia Sea connected
 # through it); drawn Ice blocks the water only until then. Ice hexes still
 # never turn to Water.
 ice_until = -9700
+# The drawn maps put Water over the whole western Karelian Isthmus (hexes
+# 20-80 m above sea level) for the whole period and leave Ladoga's basin as
+# land. The strait over the isthmus is real until Ladoga was cut off from
+# the Baltic, about 10.2 cal ka (Ludikova et al. 2024): from then the model
+# decides, and the Ladoga lake below fills its basin.
+clear = { box = [28.2, 59.7, 33.6, 62.0], from = -8250 }
+confidence = "low"
+
+[[lake]]
+key = "ladoga"
+name = "Lake Ladoga"
+seed = [31.5, 60.8]
+box = [29.0, 59.6, 33.8, 62.2]
+# ETOPO1 has the lake as a flat surface at 1 m (no bathymetry; the real
+# surface is about 5 m), so the lake is held at its present extent: 1.5 m on
+# the ETOPO datum floods about 16,700 km² (the real lake is about
+# 17,700 km²). Early-Holocene lowstands (bars down to 41 m below today's
+# level) can't be shown without bathymetry; the Ladoga transgression in the
+# south (to about 14 m) and the Neva breakthrough fall mostly after -3000.
+# Before about -8250 it was joined to the Baltic over the Karelian Isthmus,
+# which the Baltic entry's drawn Water keeps.
+level = [[-10000, 1.5]]
+# Clear only its own basin, not the Baltic's water on the isthmus.
+basin_margin = 0.0
 confidence = "low"
 
 [[lake]]

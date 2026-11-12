@@ -39,7 +39,7 @@ fn geojson_bin_geojson_round_trip_reproduces_every_property() {
     for (fa, fb) in a.iter().zip(b) {
         let (pa, pb) = (&fa["properties"], &fb["properties"]);
         assert_eq!(pa["id"], pb["id"]);
-        for prop in ["terrain", "climate", "koeppen", "population_density", "elevation"] {
+        for prop in ["terrain", "climate", "koeppen", "population_density", "elevation", "npp", "farming"] {
             assert_eq!(pa[prop], pb[prop], "hex {} {prop}", pa["id"]);
         }
         for side in ["left", "top", "right", "bottom"] {

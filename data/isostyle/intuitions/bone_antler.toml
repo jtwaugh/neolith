@@ -1,0 +1,535 @@
+# Gap critic: bone and antler layer. Judgements, not data.
+# Presence-only layer: masked cells mean 'not recorded'. Values are the expected share of occupations
+# that would have worked bone or antler if their finds were recorded (0-1); preservation sets it.
+
+[meta]
+layer = "bone_antler"
+written = "2026-11-12"
+dossier = "build/isostyle/gaps/bone_antler/dossier.json"
+summary = "Bone and antler is presence-only: no source records its absence, so the atlas shows 1.0 wherever anything is recorded and masked cells mean 'not recorded', never 'absent'. The values below are the share of occupations that would have worked bone or antler if their finds were recorded and reported; this applies to every entry. Unlike flaked stone, that share is set by preservation, not by use: everyone used bone and antler, but it survives in alkaline soils, caves, shell middens, tells and wetlands and is lost in acid sands, podzols and granite uplands and on deflated desert surfaces. So expect 0.8-0.9 in tell and loess regions (SW Asia, the Balkans, the steppe, the Maghreb's escargotières), 0.4-0.6 in the acid north (Scandinavia, the Russian forest, the British Isles) where it depends on bogs and shell middens, and lower on the Saharan and Arabian surface sites. Coverage is an artefact of three sources: BDA (France, Iberia, Maghreb), DEFC (Greece and Anatolia) and 50 directly dated points (Tsirintoulaki et al.), whose bone points are why Denmark, the Baltic and the British Isles show coverage only at 9,000-8,000 BCE. The acid-soil mask uses modern topsoil pH and is too harsh where bogs and lakes preserve bone (Denmark, Latvia's Zvejnieki, Star Carr); a speculative layer should restore those wetland margins."
+
+# ---------------------------------------------------------------- Eastern Europe
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-7000-88", "bone_antler-6000-115", "bone_antler-5000-142", "bone_antler-4000-169", "bone_antler-3000-196", "bone_antler-10000-01", "bone_antler-8000-59", "bone_antler-9000-30", "bone_antler-9000-52", "bone_antler-7000-112", "bone_antler-6000-138", "bone_antler-5000-166", "bone_antler-4000-193", "bone_antler-3000-220", "bone_antler-8000-86"]
+why_empty = ["recording_practice", "not_in_open_compilations", "preservation", "publication_access"]
+why_note = "Not recorded; podzol and sand sites lose bone, but peat-bog sites (Zamostje, Veretye, Oleni Ostrov, Shigir) preserve rich bone and antler industries."
+expected = 0.55
+expected_range = [0.3, 0.8]
+confidence = "low"
+basis = ["literature", "environment"]
+reasoning = "Coverage 0% except 0.7% at 9,000 BCE (7 edge cells at 1.0); nearest evidence 1,388-3,649 km. The forest-zone wetland sites are among Europe's richest bone-tool assemblages; dune and moraine camps keep only lithics."
+literature = [
+  { cite = "Zhilin, Savchenko et al., Zamostje 2 bone and antler industry", checked = false },
+]
+would_settle = "Inventories of the Upper Volga and Onega wetland sites; Shigir and Gorbunovo collections."
+speculative_rule = "0.75 within 5 km of lakes and rivers with peat, 0.35 elsewhere."
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-9000-35", "bone_antler-7000-92", "bone_antler-8000-64", "bone_antler-6000-119", "bone_antler-10000-07", "bone_antler-5000-147", "bone_antler-4000-175", "bone_antler-3000-202"]
+why_empty = ["recording_practice", "not_in_open_compilations", "publication_access"]
+why_note = "Not recorded; chernozem soils preserve bone well, and steppe sites and graves are full of bone tools and ornaments."
+expected = 0.8
+expected_range = [0.6, 0.95]
+confidence = "medium"
+basis = ["literature", "environment"]
+reasoning = "Coverage 0%; nearest evidence 1,364-1,991 km."
+literature = [
+  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false },
+]
+would_settle = "Steppe site and cemetery inventories (Khvalynsk, Varfolomeevka)."
+speculative_rule = "0.8 across the steppe."
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-10000-13", "bone_antler-8000-71", "bone_antler-7000-101", "bone_antler-6000-128", "bone_antler-5000-155", "bone_antler-4000-182", "bone_antler-9000-42", "bone_antler-3000-209"]
+why_empty = ["recording_practice", "not_in_open_compilations", "preservation"]
+why_note = "Not recorded except one point at 9,000 BCE; Ukraine's loess and chernozem preserve bone (Dnieper-Donets cemeteries, Trypillia); Belarusian sands less so."
+expected = 0.75
+expected_range = [0.5, 0.9]
+confidence = "medium"
+basis = ["literature", "environment"]
+reasoning = "Coverage 0-2%; nearest evidence 752-1,170 km."
+literature = []
+would_settle = "Ukrainian site inventories."
+speculative_rule = "0.85 in Ukraine, 0.5 in Belarus."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [22.0, 45.0, 40.5, 56.5]
+value = 0.85
+[[judgement.adjust]]
+kind = "area"
+bbox = [23.0, 51.6, 32.8, 56.2]
+value = 0.5
+
+[[judgement]]
+region = "Baltic"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-10000-24", "bone_antler-8000-81", "bone_antler-7000-110", "bone_antler-6000-136", "bone_antler-5000-163", "bone_antler-4000-191", "bone_antler-3000-218", "bone_antler-9000-57"]
+why_empty = ["recording_practice", "not_in_open_compilations", "preservation"]
+why_note = "Only the 9,000 BCE slice is recorded (dated bone points); Kunda and Narva wetland sites and Zvejnieki have rich bone industries, sandy camps none."
+expected = 0.6
+expected_range = [0.35, 0.85]
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Coverage 45% at 9,000 BCE, 0% otherwise; edges 1.0. The other slices are masked because only direct dates on bone points were ingested, not because the material stops."
+literature = [
+  { cite = "Zagorska & Zagorskis, Zvejnieki cemetery bone and antler artefacts", checked = false },
+]
+would_settle = "Zvejnieki and Estonian wetland-site inventories."
+speculative_rule = "0.75 near lakes and rivers with peat, 0.4 elsewhere."
+
+# ---------------------------------------------------------------- Northern and western Europe
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-4000-179", "bone_antler-3000-206", "bone_antler-5000-152", "bone_antler-6000-125", "bone_antler-7000-98", "bone_antler-8000-74", "bone_antler-10000-19", "bone_antler-9000-48", "bone_antler-10000-25"]
+why_empty = ["recording_practice", "not_in_open_compilations", "preservation", "ice"]
+why_note = "Mostly acid soils; bone survives in Danish and Scanian bogs (Maglemose), in Norwegian and Swedish shell middens and caves, and is lost elsewhere."
+expected = 0.5
+expected_range = [0.25, 0.75]
+confidence = "low"
+basis = ["literature", "environment"]
+reasoning = "Coverage 6% at 9,000-8,000 BCE (dated bone points), 0% otherwise. Denmark and Scania would be 0.7-0.8; the interior north under 0.3."
+literature = [
+  { cite = "Tsirintoulaki, Matzig & Riede 2023 (in atlas)", checked = false },
+]
+would_settle = "Danish and Swedish museum inventories of bone and antler finds."
+speculative_rule = "0.75 in Denmark and Scania and along shell-midden coasts; 0.3 in the interior north."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [8.0, 54.5, 14.6, 57.8]
+value = 0.75
+[[judgement.adjust]]
+kind = "area"
+bbox = [12.0, 62.0, 31.6, 71.2]
+value = 0.3
+
+[[judgement]]
+region = "British Isles"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-10000-18", "bone_antler-3000-213", "bone_antler-7000-105", "bone_antler-9000-47", "bone_antler-6000-131", "bone_antler-4000-188", "bone_antler-5000-160", "bone_antler-8000-78", "bone_antler-8000-84", "bone_antler-5000-168", "bone_antler-4000-195"]
+why_empty = ["recording_practice", "not_in_open_compilations", "preservation"]
+why_note = "Acid soils over most of the islands; Star Carr, Oronsay and the cave and shell-midden sites hold bone, open sites rarely."
+expected = 0.4
+expected_range = [0.2, 0.65]
+confidence = "low"
+basis = ["literature", "environment"]
+reasoning = "Coverage 14% and 4% at 9,000-8,000 BCE (bone points), 0% otherwise; nearest evidence 104-1,139 km. Neolithic causewayed enclosures on chalk preserve antler picks and bone, raising the share after 4,000 BCE."
+literature = []
+would_settle = "Historic England and Canmore find records for bone and antler."
+speculative_rule = "0.35 before 4,000 BCE; 0.55 after on chalk and limestone, 0.3 elsewhere."
+
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+value = 0.35
+
+[[judgement]]
+region = "France & Low Countries"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-10000-15", "bone_antler-8000-73", "bone_antler-7000-103", "bone_antler-9000-44", "bone_antler-4000-186", "bone_antler-3000-214", "bone_antler-6000-132", "bone_antler-5000-161"]
+why_empty = ["recording_practice", "sampling_bias"]
+why_note = "BDA records bone tools where they were reported; the holes are between recorded sites and in the acid Armorican and Ardennes massifs."
+expected = 0.7
+expected_range = [0.5, 0.9]
+confidence = "medium"
+basis = ["neighbouring_evidence", "environment"]
+reasoning = "Coverage 0-51%; every edge value is 1.0."
+literature = []
+would_settle = "More BDA sites; Dutch wetland-site inventories (Swifterbant, Hardinxveld)."
+speculative_rule = "0.75 on limestone and chalk, 0.4 on the Armorican and Ardennes massifs."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [-5.5, 42.0, 9.0, 51.5]
+value = 0.75
+[[judgement.adjust]]
+kind = "polygon"
+points = [[-4.8, 48.4], [-4.0, 48.75], [-2.8, 48.6], [-1.6, 48.7], [-1.9, 49.7], [-1.2, 49.6], [-0.3, 49.2], [0.2, 48.4], [-0.5, 47.5], [-0.7, 46.5], [-1.8, 46.6], [-3.0, 47.5]]
+value = 0.4
+[[judgement.adjust]]
+kind = "polygon"
+points = [[4.3, 49.8], [4.7, 50.15], [5.4, 50.45], [6.1, 50.45], [6.4, 50.2], [6.2, 49.9], [5.7, 49.75], [5.0, 49.7]]
+value = 0.4
+
+[[judgement]]
+region = "Iberia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-10000-17", "bone_antler-9000-45", "bone_antler-8000-75", "bone_antler-6000-129", "bone_antler-7000-104", "bone_antler-3000-212", "bone_antler-4000-185", "bone_antler-5000-157"]
+why_empty = ["recording_practice", "preservation"]
+why_note = "Recorded only from 5,000 BCE; caves and shell middens (Muge, Asturias) preserve bone, the granite north-west does not."
+expected = 0.65
+expected_range = [0.45, 0.85]
+confidence = "low"
+basis = ["literature", "environment"]
+reasoning = "Coverage 0% before 5,000 BCE, 4-7% after; edges 1.0."
+literature = []
+would_settle = "Iberian Mesolithic and Neolithic site inventories."
+speculative_rule = "0.7 on limestone, in caves and shell middens; 0.35 on the granite north-west."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [-10.0, 36.0, 4.0, 44.0]
+value = 0.7
+[[judgement.adjust]]
+kind = "area"
+bbox = [-9.3, 40.5, -6.5, 43.8]
+value = 0.35
+
+# ---------------------------------------------------------------- Central and southern Europe
+
+[[judgement]]
+region = "Central Europe"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-10000-11", "bone_antler-4000-180", "bone_antler-7000-99", "bone_antler-3000-207", "bone_antler-8000-69", "bone_antler-5000-153", "bone_antler-6000-126", "bone_antler-9000-41"]
+why_empty = ["recording_practice", "not_in_open_compilations"]
+why_note = "Barely recorded; loess and limestone preserve bone, and LBK, Lengyel and lakeside sites are rich in bone tools."
+expected = 0.7
+expected_range = [0.5, 0.9]
+confidence = "medium"
+basis = ["literature", "environment"]
+reasoning = "Coverage 0-19%; edges 1.0 where any."
+literature = []
+would_settle = "German and Polish site inventories; Swiss and southern German pile-dwelling bone-tool studies."
+speculative_rule = "0.75 on loess and in the Alpine forelands, 0.45 on the North European Plain's sands."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [5.8, 45.5, 24.2, 55.1]
+value = 0.75
+[[judgement.adjust]]
+kind = "area"
+bbox = [5.8, 52.0, 24.2, 55.1]
+value = 0.45
+
+[[judgement]]
+region = "Italy & islands"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-4000-189", "bone_antler-3000-216", "bone_antler-9000-50", "bone_antler-10000-21", "bone_antler-8000-79", "bone_antler-7000-108", "bone_antler-5000-164", "bone_antler-6000-140"]
+why_empty = ["recording_practice", "sampling_bias"]
+why_note = "Recorded only at 7,000-4,000 BCE; caves and limestone sites preserve bone throughout."
+expected = 0.75
+expected_range = [0.55, 0.9]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Coverage 0-47%; edges 1.0."
+literature = []
+would_settle = "Italian site inventories."
+speculative_rule = "0.75."
+
+[[judgement]]
+region = "Balkans & Greece"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-9000-43", "bone_antler-10000-14", "bone_antler-8000-72", "bone_antler-3000-210", "bone_antler-7000-102", "bone_antler-4000-184", "bone_antler-5000-158", "bone_antler-6000-130"]
+why_empty = ["recording_practice", "sampling_bias"]
+why_note = "DEFC covers Greece; Balkan tells and Iron Gates sites are rich in bone and antler; the earlier slices are unrecorded."
+expected = 0.85
+expected_range = [0.65, 0.95]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Coverage 0% before 7,000 BCE, 3-43% after; edges 1.0."
+literature = []
+would_settle = "Balkan site inventories; Iron Gates bone-industry studies."
+speculative_rule = "0.85."
+
+[[judgement]]
+region = "Anatolia & Cyprus"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-3000-211", "bone_antler-4000-183", "bone_antler-5000-156", "bone_antler-10000-16", "bone_antler-9000-46", "bone_antler-8000-76", "bone_antler-6000-133", "bone_antler-7000-106"]
+why_empty = ["recording_practice", "sampling_bias"]
+why_note = "DEFC covers central and western Anatolia to c. 5,000 BCE; Anatolian tells preserve bone well."
+expected = 0.85
+expected_range = [0.65, 0.95]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Coverage 6-47% to 6,000 BCE, near 0 after (DEFC's coverage ends); edges 1.0."
+literature = []
+would_settle = "TAY inventory."
+speculative_rule = "0.85."
+
+# ---------------------------------------------------------------- SW Asia
+
+[[judgement]]
+region = "Levant"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-6000-135", "bone_antler-4000-190", "bone_antler-5000-162", "bone_antler-3000-217", "bone_antler-10000-22", "bone_antler-8000-80", "bone_antler-7000-109", "bone_antler-9000-51"]
+why_empty = ["recording_practice", "sampling_bias"]
+why_note = "Recorded to 6,000 BCE only; Natufian and PPN bone industries are rich, and later sites keep them."
+expected = 0.85
+expected_range = [0.65, 0.95]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Coverage 0-16%; edges 1.0."
+literature = []
+would_settle = "Levantine site inventories."
+speculative_rule = "0.85."
+
+[[judgement]]
+region = "Mesopotamia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-10000-20", "bone_antler-8000-77", "bone_antler-7000-107", "bone_antler-6000-134", "bone_antler-9000-49", "bone_antler-5000-159", "bone_antler-4000-187", "bone_antler-3000-215"]
+why_empty = ["recording_practice", "not_in_open_compilations"]
+why_note = "Barely recorded; tells preserve bone."
+expected = 0.8
+expected_range = [0.6, 0.95]
+confidence = "low"
+basis = ["literature", "analogy"]
+reasoning = "Coverage 0-2%; edges 1.0 at 10,000-9,000 BCE (Zagros foothills)."
+literature = []
+would_settle = "Mesopotamian excavation inventories."
+speculative_rule = "0.8."
+
+[[judgement]]
+region = "Iran & Afghanistan"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-8000-67", "bone_antler-9000-38", "bone_antler-10000-10", "bone_antler-7000-96", "bone_antler-6000-124", "bone_antler-5000-151", "bone_antler-4000-178", "bone_antler-3000-205"]
+why_empty = ["recording_practice", "not_in_open_compilations", "low_population"]
+why_note = "Not recorded; Zagros caves and plateau tells preserve bone (Ganj Dareh, Sang-e Chakhmaq)."
+expected = 0.8
+expected_range = [0.6, 0.95]
+confidence = "low"
+basis = ["literature", "analogy"]
+reasoning = "Coverage 0%."
+literature = []
+would_settle = "Iranian site inventories."
+speculative_rule = "0.8 where occupied."
+
+[[judgement]]
+region = "Caucasus"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-8000-82", "bone_antler-7000-111", "bone_antler-9000-53", "bone_antler-6000-137", "bone_antler-5000-165", "bone_antler-4000-192", "bone_antler-3000-219", "bone_antler-10000-26"]
+why_empty = ["recording_practice", "not_in_open_compilations"]
+why_note = "Not recorded; Shulaveri-Shomu and Kura-Araxes sites have bone tools."
+expected = 0.75
+expected_range = [0.5, 0.9]
+confidence = "low"
+basis = ["literature", "analogy"]
+reasoning = "Coverage 0%."
+literature = []
+would_settle = "Caucasian site inventories."
+speculative_rule = "0.75."
+
+[[judgement]]
+region = "Central Asia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-7000-95", "bone_antler-8000-66", "bone_antler-9000-37", "bone_antler-6000-122", "bone_antler-5000-149", "bone_antler-4000-176", "bone_antler-3000-203", "bone_antler-10000-08"]
+why_empty = ["recording_practice", "not_in_open_compilations", "dataset_edge", "preservation"]
+why_note = "Not recorded; Jeitun preserves bone; Kelteminar desert sites are often deflated surface scatters."
+expected = 0.55
+expected_range = [0.3, 0.8]
+confidence = "low"
+basis = ["literature", "environment"]
+reasoning = "Coverage 0%."
+literature = []
+would_settle = "Central Asian site inventories."
+speculative_rule = "0.75 on the Kopet Dag piedmont, 0.4 in the Kyzylkum and Ustyurt."
+
+[[judgement.adjust]]
+kind = "polygon"
+points = [[54.0, 37.3], [55.5, 38.6], [56.3, 39.2], [57.5, 38.85], [58.5, 38.3], [60.0, 37.8], [61.5, 37.7], [61.5, 36.5], [60.0, 36.8], [58.4, 37.3], [56.8, 37.7], [55.3, 37.3]]
+value = 0.75
+[[judgement.adjust]]
+kind = "polygon"
+points = [[61.0, 42.4], [61.8, 41.5], [63.0, 40.4], [64.2, 40.0], [66.0, 40.4], [66.0, 43.8], [65.5, 44.6], [63.5, 45.0], [61.5, 44.3], [60.8, 43.3]]
+value = 0.4
+[[judgement.adjust]]
+kind = "polygon"
+points = [[53.3, 45.2], [55.5, 45.6], [58.2, 45.5], [58.4, 44.5], [58.6, 43.6], [58.0, 42.6], [57.0, 41.9], [55.5, 41.5], [54.5, 41.9], [54.0, 42.8], [53.0, 43.6], [52.8, 44.5]]
+value = 0.4
+
+[[judgement]]
+region = "Arabia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-10000-04", "bone_antler-9000-33", "bone_antler-8000-62", "bone_antler-7000-91", "bone_antler-6000-118", "bone_antler-5000-145", "bone_antler-4000-172", "bone_antler-3000-199"]
+why_empty = ["recording_practice", "not_in_open_compilations", "preservation", "low_population"]
+why_note = "Not recorded; most Arabian sites are deflated surface scatters without bone; Gulf and Omani shell middens are the exception."
+expected = 0.4
+expected_range = [0.15, 0.7]
+confidence = "low"
+basis = ["literature", "environment"]
+reasoning = "Coverage 0%."
+literature = []
+would_settle = "Arabian coastal midden inventories (Ras al-Hamra)."
+speculative_rule = "0.6 on the Gulf and Arabian Sea coasts, 0.25 inland."
+
+[[judgement.adjust]]
+kind = "coast"
+within_km = 55
+value = 0.6
+inland = 0.25
+[[judgement.adjust]]
+kind = "area"
+bbox = [34.0, 12.0, 43.6, 30.0]
+value = 0.25
+
+[[judgement]]
+region = "Other"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-10000-27", "bone_antler-9000-54", "bone_antler-8000-83", "bone_antler-7000-113", "bone_antler-6000-139", "bone_antler-5000-167", "bone_antler-4000-194", "bone_antler-3000-221"]
+why_empty = ["recording_practice", "not_in_open_compilations", "dataset_edge"]
+why_note = "Balochistan; Mehrgarh has bone tools."
+expected = 0.6
+expected_range = [0.3, 0.85]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Coverage 0%."
+literature = []
+would_settle = "Mehrgarh reports."
+speculative_rule = "0.6."
+
+# ---------------------------------------------------------------- Africa
+
+[[judgement]]
+region = "Maghreb"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-10000-03", "bone_antler-9000-32", "bone_antler-8000-61", "bone_antler-4000-171", "bone_antler-3000-198", "bone_antler-5000-144", "bone_antler-7000-90", "bone_antler-6000-117"]
+why_empty = ["recording_practice", "low_population"]
+why_note = "BDA records bone at 7,000-5,000 BCE only; Iberomaurusian caves and Capsian escargotières are rich in bone tools; the Saharan part is deflated."
+expected = 0.75
+expected_range = [0.5, 0.9]
+confidence = "medium"
+basis = ["literature", "neighbouring_evidence", "environment"]
+reasoning = "Coverage 0-11%; edges 1.0 where any."
+literature = []
+would_settle = "Capsian site inventories."
+speculative_rule = "0.85 in the Tell and the Capsian zone, 0.4 in the Sahara."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [-17.0, 19.0, 12.0, 37.5]
+value = 0.4
+[[judgement.adjust]]
+kind = "polygon"
+points = [[-10.0, 37.5], [12.0, 37.5], [11.5, 33.5], [10.0, 34.0], [8.3, 34.3], [7.0, 35.0], [5.5, 35.0], [2.5, 34.0], [-0.5, 33.0], [-5.0, 32.2], [-7.5, 31.2], [-9.8, 30.8]]
+value = 0.85
+
+[[judgement]]
+region = "Libya & Egypt"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-10000-05", "bone_antler-9000-34", "bone_antler-8000-63", "bone_antler-7000-93", "bone_antler-6000-120", "bone_antler-5000-146", "bone_antler-3000-200", "bone_antler-4000-173"]
+why_empty = ["recording_practice", "not_in_open_compilations", "preservation", "low_population"]
+why_note = "Not recorded; Fayum, Merimde and Haua Fteah preserve bone; desert surface sites do not."
+expected = 0.6
+expected_range = [0.35, 0.85]
+confidence = "low"
+basis = ["literature", "environment"]
+reasoning = "Coverage 0%."
+literature = []
+would_settle = "Egyptian site inventories."
+speculative_rule = "0.75 in the Nile valley, Fayum and Cyrenaica, 0.35 in the deserts."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [9.0, 19.5, 37.0, 34.0]
+value = 0.35
+[[judgement.adjust]]
+kind = "river"
+within_km = 30
+names = ["Nile", "Nile (Canopic branch)", "Nile (Pelusiac branch)", "Nile (Sebennytic branch)"]
+value = 0.75
+[[judgement.adjust]]
+kind = "polygon"
+points = [[30.3, 29.55], [30.75, 29.6], [31.05, 29.35], [30.9, 29.05], [30.5, 29.1], [30.25, 29.3]]
+value = 0.75
+[[judgement.adjust]]
+kind = "area"
+bbox = [19.8, 31.4, 23.5, 33.2]
+value = 0.75
+
+[[judgement]]
+region = "Nile & Sudan"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-10000-09", "bone_antler-9000-39", "bone_antler-8000-68", "bone_antler-7000-97", "bone_antler-5000-150", "bone_antler-6000-123", "bone_antler-3000-204", "bone_antler-4000-177"]
+why_empty = ["recording_practice", "not_in_open_compilations"]
+why_note = "Not recorded; Early Khartoum bone harpoons and Neolithic bone tools are diagnostic."
+expected = 0.75
+expected_range = [0.5, 0.9]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Coverage 0%."
+literature = [
+  { cite = "Arkell 1949, Early Khartoum", checked = false },
+]
+would_settle = "Sudanese site reports."
+speculative_rule = "0.75."
+
+[[judgement]]
+region = "Sahara–Sahel"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-10000-02", "bone_antler-4000-170", "bone_antler-8000-60", "bone_antler-3000-197", "bone_antler-9000-31", "bone_antler-5000-143", "bone_antler-6000-116", "bone_antler-7000-89"]
+why_empty = ["recording_practice", "not_in_open_compilations", "preservation", "low_population"]
+why_note = "Not recorded; early Holocene lakeside sites have bone harpoons (the 'aqualithic'), most surface sites lose bone."
+expected = 0.5
+expected_range = [0.25, 0.75]
+confidence = "low"
+basis = ["literature", "environment"]
+reasoning = "Coverage 0%."
+literature = []
+would_settle = "Saharan site lists (Gobero, Ténéré)."
+speculative_rule = "0.65 near Holocene palaeolakes, 0.35 elsewhere."
+
+[[judgement.adjust]]
+kind = "river"
+within_km = 50
+lakes = ["Lake Megachad", "Megalake Timbuktu", "Wadi Shati palaeolake", "West Nubian Palaeolake"]
+value = 0.65
+outside = 0.35
+
+[[judgement]]
+region = "West Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-10000-06", "bone_antler-9000-36", "bone_antler-7000-94", "bone_antler-8000-65", "bone_antler-6000-121", "bone_antler-4000-174", "bone_antler-5000-148", "bone_antler-3000-201"]
+why_empty = ["recording_practice", "not_in_open_compilations", "preservation", "dataset_edge"]
+why_note = "Not recorded; acid tropical soils destroy bone except in rock shelters (Shum Laka) and shell middens."
+expected = 0.2
+expected_range = [0.05, 0.5]
+confidence = "low"
+basis = ["literature", "environment"]
+reasoning = "Coverage 0%."
+literature = []
+would_settle = "West African rock-shelter reports."
+speculative_rule = "0.2."
+
+[[judgement]]
+region = "Horn of Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-10000-12", "bone_antler-9000-40", "bone_antler-8000-70", "bone_antler-7000-100", "bone_antler-5000-154", "bone_antler-6000-127", "bone_antler-4000-181", "bone_antler-3000-208"]
+why_empty = ["recording_practice", "not_in_open_compilations", "research_intensity"]
+why_note = "Not recorded; rock shelters preserve some bone."
+expected = 0.45
+expected_range = [0.2, 0.75]
+confidence = "low"
+basis = ["intuition"]
+reasoning = "Coverage 0%."
+literature = []
+would_settle = "Ethiopian LSA site reports."
+speculative_rule = "0.45."
+
+[[judgement]]
+region = "Now-drowned shelves and islands"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["bone_antler-10000-23", "bone_antler-10000-28", "bone_antler-9000-55", "bone_antler-9000-56", "bone_antler-8000-85", "bone_antler-7000-114", "bone_antler-8000-87", "bone_antler-10000-29", "bone_antler-9000-58", "bone_antler-6000-141"]
+why_empty = ["submerged", "recording_practice"]
+why_note = "Doggerland, the Gulf basin and the Caspian shelf; Doggerland's trawled finds include many bone and antler points."
+expected = 0.6
+expected_range = [0.3, 0.9]
+confidence = "low"
+basis = ["analogy", "literature"]
+reasoning = "Coverage 0-13%; edges 1.0 at 9,000-8,000 BCE (Doggerland)."
+literature = []
+would_settle = "Marine survey only."
+speculative_rule = "Copy the adjacent coast's speculative value; 0.8 for Doggerland."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [-1.0, 52.5, 9.0, 57.5]
+value = 0.8

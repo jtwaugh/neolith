@@ -4,7 +4,8 @@
 
 use crate::board::camera::Camera;
 use crate::board::projection::Projection;
-use crate::board::renderer::{BoardRenderer, COLOUR_FORMAT};
+use crate::board::lines;
+use crate::board::renderer::{BoardRenderer, LineMesh, COLOUR_FORMAT};
 use crate::board::scene::{self, ArtMode, BoardStyle, Material, Piece};
 use crate::board::mesh;
 use eframe::wgpu;
@@ -30,6 +31,8 @@ pub struct Options {
     pub hillshade: Option<f64>,
     /// Relief exaggeration; 0 turns the relief off.
     pub relief: Option<f64>,
+    /// The evidence layer (id) for `--mode evidence`; the first if `None`.
+    pub evidence: Option<String>,
 }
 
 pub fn run(world: &World, opt: &Options) -> Result<(), String> {
@@ -46,7 +49,14 @@ pub fn run(world: &World, opt: &Options) -> Result<(), String> {
 
     let snapshot = world.snapshot(opt.year);
     let shade = neolith_core::elevation::hillshade(grid, &world.elevation, neolith_core::elevation::HILLSHADE_EXAGGERATION);
-    renderer.upload_state(&queue, &scene::state_texels(grid, &snapshot, &shade, &world.landform, None, None, None));
+    renderer.upload_state(&queue, &scene::state_texels(grid, &snapshot, &shade, &world.landform, &world.survey, None, None, None));
+    if opt.mode == MapMode::Evidence {
+        let layer = match &opt.evidence {
+            Some(id) => world.evidence_layer(id).ok_or(format!("no evidence layer {id:?}"))?,
+            None => world.evidence.first().ok_or("this world has no evidence layers")?,
+        };
+        renderer.upload_evidence(&queue, &scene::evidence_texels(grid, layer.codes_at(opt.year)));
+    }
 
     let mut cam = Camera::initial(grid);
     if let Some(v) = opt.yaw {
@@ -79,15 +89,40 @@ pub fn run(world: &World, opt: &Options) -> Result<(), String> {
         .settlements
         .iter()
         .filter(|s| s.exists_at(opt.year))
-        .map(|s| Piece { pos: s.pos, population: s.population_at(opt.year).unwrap_or(0), highlighted: false })
+        .map(|s| Piece::new(s, opt.year))
         .collect();
     let relief = crate::board::relief::Relief::new(grid, &snapshot.height, crate::board::relief::scale(&style));
-    let mut verts = scene::piece_vertices(&pieces, &proj, &relief, opt.flat, cam.dist);
-    verts.extend(scene::river_vertices(&world.rivers, opt.year, &proj, &relief, opt.flat, cam.dist));
-    verts.extend(scene::lake_vertices(&world.lakes, opt.year, &proj, &relief, opt.flat, cam.dist));
+    let verts = scene::piece_vertices(&pieces, &proj, &relief, opt.flat, cam.dist);
     renderer.upload_pieces(&device, &queue, &verts);
+    let mut line_mesh = LineMesh::default();
+    let line_board = lines::Board { proj: &proj, relief: &relief, t: opt.flat, cam_dist: cam.dist };
+    lines::rivers(&mut line_mesh, &world.rivers, &world.lakes, &snapshot, &line_board);
+    lines::lakes(&mut line_mesh, &world.lakes, opt.year, &line_board);
+    renderer.upload_lines(&device, &queue, &line_mesh);
+    renderer.upload_river_field(&queue, &lines::river_field(&world.rivers, &lines::flowing(&world.rivers, opt.year), grid));
 
     let globals = scene::globals(&view, &style, opt.mode, grid, &board, opt.size[1] as f32);
+
+    // NEOLITH_BENCH=<frames>: time the board pass (GPU throughput, after a
+    // warm-up frame) and print it before writing the screenshot.
+    if let Some(frames) = std::env::var("NEOLITH_BENCH").ok().and_then(|v| v.parse::<u32>().ok()).filter(|n| *n > 0) {
+        let wait = || device.poll(wgpu::PollType::Wait { submission_index: None, timeout: None }).map(|_| ());
+        let frame = |renderer: &mut BoardRenderer| {
+            let mut encoder = device.create_command_encoder(&Default::default());
+            renderer.render(&device, &queue, &mut encoder, opt.size, &globals);
+            queue.submit([encoder.finish()]);
+        };
+        frame(&mut renderer);
+        wait().map_err(|e| format!("GPU poll failed: {e}"))?;
+        let start = std::time::Instant::now();
+        for _ in 0..frames {
+            frame(&mut renderer);
+        }
+        wait().map_err(|e| format!("GPU poll failed: {e}"))?;
+        let ms = start.elapsed().as_secs_f64() * 1000.0 / frames as f64;
+        println!("bench: {ms:.2} ms/frame over {frames} frames at {}x{}", opt.size[0], opt.size[1]);
+    }
+
     let mut encoder = device.create_command_encoder(&Default::default());
     renderer.render(&device, &queue, &mut encoder, opt.size, &globals);
 

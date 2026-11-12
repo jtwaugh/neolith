@@ -1,7 +1,8 @@
 """python -m pipeline build [--config pipeline/config.toml] [--step N] [--out PATH]
 python -m pipeline settlements [--config pipeline/config.toml]
 python -m pipeline cultures-check [--config pipeline/config.toml]
-python -m pipeline biome [--config pipeline/config.toml]   # subset the BIOME4 NetCDF"""
+python -m pipeline biome [--config pipeline/config.toml]   # subset the BIOME4 NetCDF
+python -m pipeline anchors [--config pipeline/config.toml]  # pollen anchor records for the biome maps"""
 import argparse
 import json
 import os
@@ -11,7 +12,7 @@ from collections import Counter
 
 import numpy as np
 
-from . import compose, elevation, emit, grid as gridmod, koeppen, paleobiome, lakes as lakemod, raster, report, rivers
+from . import biome_clean, compose, elevation, emit, grid as gridmod, koeppen, paleobiome, lakes as lakemod, raster, report, rivers
 
 
 def build(cfg, step=None, out=None):
@@ -43,6 +44,38 @@ def build(cfg, step=None, out=None):
     elev = elevation.hex_median(g, arr, tf)
     log(f"elevation: {int(np.isnan(elev).sum())} hexes without cells")
 
+    # Drawn classes the transcription of the source maps got wrong, by region
+    # ([[terrain.reinterpret]]), before anything learns from them.
+    reinterpreted = {}
+    for y in raw:
+        raw[y], n = compose.reinterpret(raw[y], g.centres, tcfg.get("reinterpret", []), y)
+        if n:
+            reinterpreted[y] = n
+    if reinterpreted:
+        log("reinterpreted drawn classes: " + ", ".join(
+            f"{y}: {sum(v.values())}" for y, v in sorted(reinterpreted.items())))
+
+    # Drawn Water on high ground outside every modelled lake is a drawing
+    # artefact (a coast drawn a hex off, a flicker in one key frame): make it
+    # a biome gap, filled like the drawn "Land" ([terrain.high_water]).
+    hcfg = cfg["terrain"].get("high_water", {})
+    high_water = {}
+    if hcfg.get("enabled"):
+        with open(cfg["lakes"]["catalogue"], "rb") as f:
+            boxes = [lk["box"] for lk in tomllib.load(f)["lake"]] + hcfg.get("keep", [])
+        c = g.centres
+        in_box = np.zeros(len(g), dtype=bool)
+        for b in boxes:
+            in_box |= (c[:, 0] >= b[0]) & (c[:, 0] <= b[2]) & (c[:, 1] >= b[1]) & (c[:, 1] <= b[3])
+        high = (elev > hcfg["max_elevation"]) & ~in_box
+        for y in raw:
+            m = high & (raw[y] == "Water")
+            if m.any():
+                raw[y] = raw[y].copy()
+                raw[y][m] = "Land"
+                high_water[y] = np.flatnonzero(m)
+        log("high drawn water made gaps: " + ", ".join(f"{y}: {len(v)}" for y, v in sorted(high_water.items())))
+
     # Landform is static and separate from the biome.
     mcfg = cfg["mountains"]
     mfrac = elevation.hex_fraction(g, elevation.mountain_cells(arr, tf, mcfg), tf)
@@ -60,6 +93,8 @@ def build(cfg, step=None, out=None):
     drawn = dict(raw)
     land_stats, biome_bp, model, cal_stats = {}, {}, {}, {}
     cold, shift = {}, None
+    # Per keyframe, the hexes whose biome came from the model, not a drawing.
+    model_filled = {}
     if pcfg:
         kyears = sorted(set(raw) | set(pcfg.get("extend_keyframes", [])))
         lcfg = pcfg.get("lapse", {})
@@ -73,7 +108,11 @@ def build(cfg, step=None, out=None):
         model, biome_bp = paleobiome.hex_biomes(g, pcfg, kyears)
         cal_stats = {}
         if pcfg.get("calibrate", {}).get("enabled"):
-            model, cal_stats = paleobiome.calibrated_biomes(g, pcfg, kyears, drawn, model, shift)
+            ccfg = pcfg["calibrate"]
+            lit = (paleobiome.literature_labels(cfg.get("anchors", {}).get("literature"),
+                                                cfg.get("anchors", {}).get("holdout", 3), g)
+                   if ccfg.get("use_literature") else None)
+            model, cal_stats = paleobiome.calibrated_biomes(g, pcfg, kyears, drawn, model, shift, lit)
             log("paleobiome: calibrated against drawn maps")
         gaps = tuple(pcfg.get("gaps", ["Land"]))
         for y in kyears:
@@ -81,6 +120,7 @@ def build(cfg, step=None, out=None):
             if base is None:
                 base = drawn[min(drawn, key=lambda k: abs(k - y))]
             raw[y], land_stats[y] = compose.resolve_land(base, model[y], g.neighbours, gaps)
+            model_filled[y] = np.isin(base, list(gaps))
         log(f"paleobiome: {len(kyears)} keyframes, slices BP {sorted(set(biome_bp.values()))}")
         if "treeline" in mcfg:
             cold = paleobiome.treeline(g, pcfg, mcfg["treeline"], kyears, shift)
@@ -101,7 +141,48 @@ def build(cfg, step=None, out=None):
     alpine = ", ".join(f"{y}: {st['alpine']}" for y, st in sorted(mtn_stats.items()))
     log(f"alpine hexes by keyframe: {alpine}")
 
+    # The Irano-Anatolian uplands: the drawn maps leave them as Mountains, a
+    # gap the drawings never show woodland for in this climate ([biome.upland]).
+    ucfg = cfg.get("biome", {}).get("upland", {})
+    upland = {}
+    if ucfg.get("enabled") and pcfg:
+        uclim = paleobiome.hex_climate(g, pcfg, sorted(keyframes), [["BIO12", "linear"], ["BIO6", "linear"]], shift)
+        for y in sorted(keyframes):
+            keyframes[y], upland[y] = paleobiome.apply_upland(
+                keyframes[y], model_filled.get(y, np.zeros(len(g), bool)), elev, g.centres, uclim[y], y, ucfg)
+        log("upland rule: " + ", ".join(f"{y}: {n}" for y, n in sorted(upland.items())))
+
+    # Biome cleanup on the keyframes: roughen the model's straight edges, then
+    # break up pairs of biomes that should never touch.
+    bcfg = cfg.get("biome", {})
+    ecfg, acfg = bcfg.get("edges", {}), bcfg.get("adjacency", {})
+    clean = {"warped": {}, "adjacency": {}}
+    none = np.zeros(len(g), dtype=bool)
+    if ecfg.get("enabled"):
+        targets = biome_clean.warp_targets(g, ecfg)
+        for y in sorted(keyframes):
+            mask = ~none if ecfg.get("apply_to", "model") == "all" else model_filled.get(y, none)
+            keyframes[y], clean["warped"][y] = biome_clean.warp(keyframes[y], targets, mask)
+        log("biome edges: warped " + ", ".join(f"{y}: {n}" for y, n in sorted(clean["warped"].items())))
+    forbid = biome_clean.forbid_table(acfg) if acfg.get("enabled") else {}
+    if forbid:
+        for y in sorted(keyframes):
+            keyframes[y], clean["adjacency"][y] = biome_clean.fix_adjacency(
+                keyframes[y], g.neighbours, forbid, model_filled.get(y), max_passes=acfg.get("max_passes", 8))
+
     terrain, prov = compose.fill(keyframes, years, tc["fill"], g.neighbours)
+    if forbid:
+        # Fronts between keyframes can bring together pairs neither keyframe has.
+        kys = sorted(keyframes)
+        for y in years:
+            if y in keyframes:
+                continue
+            prev = max((k for k in kys if k <= y), default=kys[0])
+            terrain[y], n = biome_clean.fix_adjacency(
+                terrain[y], g.neighbours, forbid, model_filled.get(prev), max_passes=acfg.get("max_passes", 8))
+            clean["adjacency"][y] = clean["adjacency"].get(y, 0) + n
+        log(f"biome adjacency: {sum(clean['adjacency'].values())} hex-years bridged")
+    before_water = terrain
     terrain, sea_stats = compose.apply_sea(terrain, elev, g, cfg["sea"])
     if cfg.get("coasts"):
         # Dated shorelines inland of today's (data/coasts/coasts.toml).
@@ -125,6 +206,50 @@ def build(cfg, step=None, out=None):
         lakemod.write_geojson(cfg["lakes"]["geojson"], lakes)
         log(f"wrote {cfg['lakes']['geojson']}")
 
+    icfg = cfg.get("islands", {})
+    if icfg.get("enabled"):
+        from . import islands
+        cells = islands.hex_cells(g, arr, tf)
+        terrain, clean["islands"], clean["majority_land"] = islands.keep_islands(
+            terrain, before_water, g, cells, cfg, lakes, icfg)
+        props["terrain"] = terrain
+        log(f"islands: {sum(r[4] for v in clean['islands'].values() for r in v)} hex-frames made land; "
+            f"{sum(clean['majority_land'].values())} drawn-water hex-frames on majority land restored")
+
+    # The settlements `make maps` ships: the `make settlements` output when present.
+    spath = next((p for p in (cfg.get("settlements", {}).get("out"), "game/static/game/assets/settlements.geojson")
+                  if p and os.path.exists(p)), None)
+    sfeats = gridmod.load_geojson(spath)["features"] if spath else None
+    lcfg = cfg.get("settled_land", {})
+    from . import coords
+    if sfeats and lcfg.get("corrections"):
+        sfeats, clean["coord_fixes"], unmatched = coords.apply(sfeats, coords.load(lcfg["corrections"]), g)
+        log(f"settlement corrections: {len(clean['coord_fixes'])} applied")
+        if unmatched:
+            raise ValueError(f"{lcfg['corrections']}: no settlement matches {unmatched}")
+    if sfeats and lcfg.get("enabled"):
+        # After every step that makes Water (sea, coasts, lakes), before
+        # anything that reads land (Köppen, rivers, floodplains, population).
+        ocean = compose.ocean_masks(elev, g, cfg["sea"], years)
+        depth = compose.site_water_depth(sfeats, arr, tf, cfg, lakes, g, ocean, lcfg.get("site_radius", 1),
+                                         lcfg.get("coast_cap", 20.0))
+        terrain, sfeats, clean["settled_land"] = compose.keep_settled_land(
+            terrain, before_water, sfeats, g, lcfg.get("min_land_neighbours", 1), depth,
+            lcfg.get("drown_margin", 0.0), lcfg.get("islets", False))
+        props["terrain"] = terrain
+        sl = clean["settled_land"]
+        log(f"settled land: {sum(sl['kept'].values())} hex-frames kept as land under sites above the water; "
+            f"{sl['drowned']} occupation phases ended by the water")
+    if sfeats and lcfg.get("audit"):
+        clean["coord_audit"] = coords.audit(sfeats, terrain, g, arr, tf, lcfg.get("audit_deep_m", 50.0),
+                                            lcfg.get("audit_far_km", 25.0))
+        coords.write(lcfg["audit"], clean["coord_audit"])
+        log(f"coordinate audit: {len(clean['coord_audit'])} suspect sites -> {lcfg['audit']}")
+    if sfeats and lcfg.get("out"):
+        # What `make maps` hands the converter: occupation as cut above.
+        with open(lcfg["out"], "w") as f:
+            json.dump({"type": "FeatureCollection", "features": sfeats}, f)
+
     kstats = None
     if kcfg["source"] == "beyer2020":
         props["koeppen"], provenance["koeppen"], kstats = build_koeppen(
@@ -141,11 +266,48 @@ def build(cfg, step=None, out=None):
         segments, props["river"] = rivers.build(cfg, g, terrain, arr, tf, years, log, lakes)
         rivers.write_geojson(rcfg["geojson"], segments)
         log(f"wrote {rcfg['geojson']} ({len(segments)} segments)")
+        fcfg = rcfg.get("floodplain", {})
+        if fcfg.get("enabled"):
+            clean["floodplain"] = {}
+            for y in years:
+                terrain[y], clean["floodplain"][y] = biome_clean.floodplains(
+                    terrain[y], props["river"][y], elev, landform, g.neighbours, fcfg)
+            props["terrain"] = terrain
+            log(f"floodplains: {max(clean['floodplain'].values())} hexes at most")
+
+    ncfg = cfg.get("productivity", {})
+    if ncfg.get("enabled"):
+        from . import productivity
+        props["npp"], nstats = productivity.build(g, pcfg, ncfg, shift)
+        y0, y1 = min(nstats), max(nstats)
+        log(f"productivity: {len(nstats)} keyframes; land median {nstats[y0]['median']:.0f} g/m²/yr at {y0}, "
+            f"{nstats[y1]['median']:.0f} at {y1}; {nstats[y1]['filled']} shelf hexes filled from neighbours")
+
+    # Nobody lives on the water: clear population on each year's final Water.
+    props["population_density"], clean["water_population"] = biome_clean.clear_water_population(
+        props["population_density"], terrain)
+    log(f"population: cleared {clean['water_population']} hex-years on water")
 
     out = out or cfg["output"]["combined"]
     # Static per-hex median elevation (m, present-day datum) for the
     # elevation map mode. Sea level over time is already in `terrain`.
     static = {"elevation": np.round(elev), "landform": landform}
+    fcfg = cfg.get("farming", {})
+    if fcfg.get("enabled"):
+        from . import farming
+        reached, origin = farming.arrival(g.centres, g.neighbours, terrain, years, fcfg)
+        static["farming"] = np.round(reached)
+        got = reached[np.isfinite(reached)]
+        log(f"farming: front from hex {int(g.ids[origin])} at {fcfg['start']}; reaches {len(got)} hexes by {years[-1]}, "
+            f"half of them by {np.median(got):.0f}")
+    # Survey intensity (0/1/2) from `make settlements`: where an absence of
+    # sites says little. A detection layer, not an input to population.
+    survey_path = cfg.get("settlements", {}).get("survey", {}).get("out")
+    if survey_path and os.path.exists(survey_path):
+        from .settlements import read_survey
+        levels = read_survey(survey_path)
+        static["survey"] = np.array([levels.get(int(h), np.nan) for h in g.ids], dtype=float)
+        log(f"survey: levels for {len(levels)} hexes from {survey_path}")
     emit.write_combined(out, g, props, sparse=cfg["output"].get("sparse", False), static=static)
     bd = cfg["output"]["build_dir"]
     with open(os.path.join(bd, "provenance.json"), "w") as f:
@@ -157,7 +319,10 @@ def build(cfg, step=None, out=None):
                  cfg.get("report", {}).get("watch", []),
                  land=(land_stats, biome_bp, model, cal_stats),
                  regions=cfg.get("report", {}).get("regions", []),
-                 koeppen=(props["koeppen"], kstats))
+                 koeppen=(props["koeppen"], kstats),
+                 clean={**clean, "high_water": (high_water, elev), "reinterpreted": reinterpreted, "upland": upland,
+                        "reinterpret_rules": tcfg.get("reinterpret", [])}, settlements=sfeats,
+                 islands_watch=cfg.get("islands", {}).get("watch", []))
     log(f"wrote {bd}/report.md and previews")
 
 
@@ -194,23 +359,51 @@ def build_koeppen(g, cfg, kcfg, terrain, years, leg, strategy, shift=None):
 
 def main():
     ap = argparse.ArgumentParser(prog="python -m pipeline")
-    ap.add_argument("command", choices=["build", "settlements", "biome", "cultures-check"])
+    ap.add_argument("command", choices=["build", "settlements", "biome", "cultures-check", "anchors", "residuals"])
     ap.add_argument("--config", default="pipeline/config.toml")
     ap.add_argument("--step", type=int)
     ap.add_argument("--out")
     a = ap.parse_args()
     with open(a.config, "rb") as f:
         cfg = tomllib.load(f)
+    from .lock import build_lock
+    with build_lock(cfg["output"]["build_dir"]):
+        run(a, cfg)
+
+
+def run(a, cfg):
     if a.command == "biome":
         b = cfg["paleobiome"]
         paleobiome.subset(b["source"], b["data"], b["box"], b["bp_min"], b["bp_max"],
-                          [n for n, _ in b.get("calibrate", {}).get("features", [])],
+                          [n for n, _ in b.get("calibrate", {}).get("features", [])]
+                          + [v for k in ("temperature", "precipitation")
+                             if (v := cfg.get("productivity", {}).get(k))
+                             and v not in [n for n, _ in b.get("calibrate", {}).get("features", [])]],
                           b.get("monthly_vars", []))
+    elif a.command == "residuals":
+        import csv
+        import json
+        from . import residuals
+        rc = cfg["residuals"]
+        g = gridmod.load(cfg["output"]["combined"])
+        feats = gridmod.load_geojson(cfg["output"]["combined"])["features"]
+        sites = gridmod.load_geojson(cfg["settled_land"]["out"])["features"]
+        with open(rc["expected"], newline="") as f:
+            expected = list(csv.DictReader(f))
+        rows, summary, extra = residuals.run(cfg, g, feats, sites, expected)
+        residuals.write_rows(rc["out"], rows)
+        with open(rc["summary"], "w") as f:
+            json.dump(summary, f, indent=1, ensure_ascii=False)
+        residuals.maps(rc["maps"], g, rc["years"], extra, rc["map_bins"])
+        print(f"wrote {rc['out']} ({len(rows)} rows), {rc['summary']} and maps in {rc['maps']}")
     elif a.command == "cultures-check":
         import os
         from . import cultures
         cc = cfg["settlements"]["cultures"]
         cultures.check(cc["table"], cc["wikipedia_cache"], os.path.join(cc["out_dir"], "wikipedia.json"))
+    elif a.command == "anchors":
+        from . import anchors
+        anchors.build(cfg)
     elif a.command == "settlements":
         from . import settlements
         settlements.build(cfg, gridmod.load(cfg["grid"]["source"]))

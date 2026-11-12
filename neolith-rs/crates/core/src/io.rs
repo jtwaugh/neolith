@@ -5,18 +5,21 @@
 
 use crate::grid::GridSpec;
 use crate::timeline::Timeline;
-use crate::values::{Koeppen, PopDensity, Terrain};
+use crate::values::{Koeppen, Landform, PopDensity, Terrain};
 use crate::lake::Lake;
 use crate::river::River;
-use crate::world::{Settlement, World};
+use crate::world::{CultureInfo, Settlement, SiteInfo, World};
 use serde::Deserialize;
 use std::fmt;
 use std::io::Read;
 
 pub const MAGIC: [u8; 4] = *b"NEOL";
 /// Version 2 added rivers, version 3 lakes, version 4 elevation, version 5
-/// landform. Older files still load.
-pub const VERSION: u16 = 5;
+/// landform, version 6 site records, cultures and occupation phases, version 7
+/// settlement importance and evidence and the survey layer, version 8
+/// productivity, version 9 the farming front, version 10 the speculative
+/// evidence layers. Older files still load.
+pub const VERSION: u16 = 10;
 const HEADER_LEN: usize = 6;
 
 #[derive(Debug)]
@@ -71,11 +74,87 @@ pub fn decode(bytes: &[u8]) -> Result<World, IoError> {
         postcard::from_bytes::<WorldV3>(&raw).map_err(corrupt)?.into()
     } else if version == 4 {
         postcard::from_bytes::<WorldV4>(&raw).map_err(corrupt)?.into()
+    } else if version == 5 {
+        postcard::from_bytes::<WorldV5>(&raw).map_err(corrupt)?.into()
+    } else if version == 6 {
+        postcard::from_bytes::<WorldV6>(&raw).map_err(corrupt)?.into()
+    } else if version == 7 {
+        postcard::from_bytes::<WorldV7>(&raw).map_err(corrupt)?.into()
+    } else if version == 8 {
+        postcard::from_bytes::<WorldV8>(&raw).map_err(corrupt)?.into()
+    } else if version == 9 {
+        postcard::from_bytes::<WorldV9>(&raw).map_err(corrupt)?.into()
     } else {
         postcard::from_bytes(&raw).map_err(|e| IoError::Corrupt(e.to_string()))?
     };
     world.validate().map_err(IoError::Invalid)?;
     Ok(world)
+}
+
+/// A settlement before version 6: no occupation phases.
+#[derive(Deserialize)]
+#[cfg_attr(test, derive(serde::Serialize))]
+struct SettlementV5 {
+    id: u32,
+    name: String,
+    pos: crate::grid::LonLat,
+    founded: crate::time::Year,
+    population: Timeline<u32>,
+}
+
+impl From<SettlementV5> for Settlement {
+    fn from(s: SettlementV5) -> Self {
+        SettlementV6 { id: s.id, name: s.name, pos: s.pos, founded: s.founded, population: s.population, occupation: Vec::new() }
+            .into()
+    }
+}
+
+/// A settlement before version 7: no importance or evidence.
+#[derive(Deserialize)]
+#[cfg_attr(test, derive(serde::Serialize))]
+struct SettlementV6 {
+    id: u32,
+    name: String,
+    pos: crate::grid::LonLat,
+    founded: crate::time::Year,
+    population: Timeline<u32>,
+    occupation: Vec<(crate::time::Year, crate::time::Year)>,
+}
+
+impl From<SettlementV6> for Settlement {
+    fn from(s: SettlementV6) -> Self {
+        Settlement {
+            id: s.id,
+            name: s.name,
+            pos: s.pos,
+            founded: s.founded,
+            population: s.population,
+            occupation: s.occupation,
+            importance: Settlement::DEFAULT_IMPORTANCE,
+            evidence: Settlement::DEFAULT_EVIDENCE,
+        }
+    }
+}
+
+#[cfg(test)]
+impl From<&Settlement> for SettlementV6 {
+    fn from(s: &Settlement) -> Self {
+        SettlementV6 {
+            id: s.id,
+            name: s.name.clone(),
+            pos: s.pos,
+            founded: s.founded,
+            population: s.population.clone(),
+            occupation: s.occupation.clone(),
+        }
+    }
+}
+
+#[cfg(test)]
+impl From<&Settlement> for SettlementV5 {
+    fn from(s: &Settlement) -> Self {
+        SettlementV5 { id: s.id, name: s.name.clone(), pos: s.pos, founded: s.founded, population: s.population.clone() }
+    }
 }
 
 /// The version 1 layout: no rivers.
@@ -85,7 +164,7 @@ struct WorldV1 {
     terrain: Vec<Timeline<Terrain>>,
     koeppen: Vec<Timeline<Koeppen>>,
     pop: Vec<Timeline<PopDensity>>,
-    settlements: Vec<Settlement>,
+    settlements: Vec<SettlementV5>,
 }
 
 impl From<WorldV1> for World {
@@ -94,7 +173,7 @@ impl From<WorldV1> for World {
         w.terrain = v.terrain;
         w.koeppen = v.koeppen;
         w.pop = v.pop;
-        w.settlements = v.settlements;
+        w.settlements = v.settlements.into_iter().map(Into::into).collect();
         w
     }
 }
@@ -106,7 +185,7 @@ struct WorldV2 {
     terrain: Vec<Timeline<Terrain>>,
     koeppen: Vec<Timeline<Koeppen>>,
     pop: Vec<Timeline<PopDensity>>,
-    settlements: Vec<Settlement>,
+    settlements: Vec<SettlementV5>,
     river: Vec<Timeline<u8>>,
     rivers: Vec<River>,
 }
@@ -117,7 +196,7 @@ impl From<WorldV2> for World {
         w.terrain = v.terrain;
         w.koeppen = v.koeppen;
         w.pop = v.pop;
-        w.settlements = v.settlements;
+        w.settlements = v.settlements.into_iter().map(Into::into).collect();
         w.river = v.river;
         w.rivers = v.rivers;
         w
@@ -131,7 +210,7 @@ struct WorldV3 {
     terrain: Vec<Timeline<Terrain>>,
     koeppen: Vec<Timeline<Koeppen>>,
     pop: Vec<Timeline<PopDensity>>,
-    settlements: Vec<Settlement>,
+    settlements: Vec<SettlementV5>,
     river: Vec<Timeline<u8>>,
     rivers: Vec<River>,
     lakes: Vec<Lake>,
@@ -143,7 +222,7 @@ impl From<WorldV3> for World {
         w.terrain = v.terrain;
         w.koeppen = v.koeppen;
         w.pop = v.pop;
-        w.settlements = v.settlements;
+        w.settlements = v.settlements.into_iter().map(Into::into).collect();
         w.river = v.river;
         w.rivers = v.rivers;
         w.lakes = v.lakes;
@@ -158,7 +237,7 @@ struct WorldV4 {
     terrain: Vec<Timeline<Terrain>>,
     koeppen: Vec<Timeline<Koeppen>>,
     pop: Vec<Timeline<PopDensity>>,
-    settlements: Vec<Settlement>,
+    settlements: Vec<SettlementV5>,
     river: Vec<Timeline<u8>>,
     rivers: Vec<River>,
     lakes: Vec<Lake>,
@@ -171,11 +250,194 @@ impl From<WorldV4> for World {
         w.terrain = v.terrain;
         w.koeppen = v.koeppen;
         w.pop = v.pop;
+        w.settlements = v.settlements.into_iter().map(Into::into).collect();
+        w.river = v.river;
+        w.rivers = v.rivers;
+        w.lakes = v.lakes;
+        w.elevation = v.elevation;
+        w
+    }
+}
+
+/// The version 5 layout: landform, no site records.
+#[derive(Deserialize)]
+struct WorldV5 {
+    grid: GridSpec,
+    terrain: Vec<Timeline<Terrain>>,
+    koeppen: Vec<Timeline<Koeppen>>,
+    pop: Vec<Timeline<PopDensity>>,
+    settlements: Vec<SettlementV5>,
+    river: Vec<Timeline<u8>>,
+    rivers: Vec<River>,
+    lakes: Vec<Lake>,
+    elevation: Vec<i16>,
+    landform: Vec<Option<Landform>>,
+}
+
+impl From<WorldV5> for World {
+    fn from(v: WorldV5) -> Self {
+        let mut w = World::empty(v.grid);
+        w.terrain = v.terrain;
+        w.koeppen = v.koeppen;
+        w.pop = v.pop;
+        w.settlements = v.settlements.into_iter().map(Into::into).collect();
+        w.river = v.river;
+        w.rivers = v.rivers;
+        w.lakes = v.lakes;
+        w.elevation = v.elevation;
+        w.landform = v.landform;
+        w
+    }
+}
+
+/// The version 6 layout: site records, no importance, evidence or survey.
+#[derive(Deserialize)]
+struct WorldV6 {
+    grid: GridSpec,
+    terrain: Vec<Timeline<Terrain>>,
+    koeppen: Vec<Timeline<Koeppen>>,
+    pop: Vec<Timeline<PopDensity>>,
+    settlements: Vec<SettlementV6>,
+    river: Vec<Timeline<u8>>,
+    rivers: Vec<River>,
+    lakes: Vec<Lake>,
+    elevation: Vec<i16>,
+    landform: Vec<Option<Landform>>,
+    site_info: Vec<SiteInfo>,
+    cultures: Vec<CultureInfo>,
+}
+
+impl From<WorldV6> for World {
+    fn from(v: WorldV6) -> Self {
+        let mut w = World::empty(v.grid);
+        w.terrain = v.terrain;
+        w.koeppen = v.koeppen;
+        w.pop = v.pop;
+        w.settlements = v.settlements.into_iter().map(Into::into).collect();
+        w.river = v.river;
+        w.rivers = v.rivers;
+        w.lakes = v.lakes;
+        w.elevation = v.elevation;
+        w.landform = v.landform;
+        w.site_info = v.site_info;
+        w.cultures = v.cultures;
+        w
+    }
+}
+
+/// The version 7 layout: survey, no productivity.
+#[derive(Deserialize)]
+struct WorldV7 {
+    grid: GridSpec,
+    terrain: Vec<Timeline<Terrain>>,
+    koeppen: Vec<Timeline<Koeppen>>,
+    pop: Vec<Timeline<PopDensity>>,
+    settlements: Vec<Settlement>,
+    river: Vec<Timeline<u8>>,
+    rivers: Vec<River>,
+    lakes: Vec<Lake>,
+    elevation: Vec<i16>,
+    landform: Vec<Option<Landform>>,
+    site_info: Vec<SiteInfo>,
+    cultures: Vec<CultureInfo>,
+    survey: Vec<u8>,
+}
+
+impl From<WorldV7> for World {
+    fn from(v: WorldV7) -> Self {
+        let mut w = World::empty(v.grid);
+        w.terrain = v.terrain;
+        w.koeppen = v.koeppen;
+        w.pop = v.pop;
         w.settlements = v.settlements;
         w.river = v.river;
         w.rivers = v.rivers;
         w.lakes = v.lakes;
         w.elevation = v.elevation;
+        w.landform = v.landform;
+        w.site_info = v.site_info;
+        w.cultures = v.cultures;
+        w.survey = v.survey;
+        w
+    }
+}
+
+/// The version 8 layout: productivity, no farming front.
+#[derive(Deserialize)]
+struct WorldV8 {
+    grid: GridSpec,
+    terrain: Vec<Timeline<Terrain>>,
+    koeppen: Vec<Timeline<Koeppen>>,
+    pop: Vec<Timeline<PopDensity>>,
+    settlements: Vec<Settlement>,
+    river: Vec<Timeline<u8>>,
+    rivers: Vec<River>,
+    lakes: Vec<Lake>,
+    elevation: Vec<i16>,
+    landform: Vec<Option<Landform>>,
+    site_info: Vec<SiteInfo>,
+    cultures: Vec<CultureInfo>,
+    survey: Vec<u8>,
+    npp: Vec<Timeline<u16>>,
+}
+
+impl From<WorldV8> for World {
+    fn from(v: WorldV8) -> Self {
+        let mut w = World::empty(v.grid);
+        w.terrain = v.terrain;
+        w.koeppen = v.koeppen;
+        w.pop = v.pop;
+        w.settlements = v.settlements;
+        w.river = v.river;
+        w.rivers = v.rivers;
+        w.lakes = v.lakes;
+        w.elevation = v.elevation;
+        w.landform = v.landform;
+        w.site_info = v.site_info;
+        w.cultures = v.cultures;
+        w.survey = v.survey;
+        w.npp = v.npp;
+        w
+    }
+}
+
+/// The version 9 layout: the farming front, no evidence layers.
+#[derive(Deserialize)]
+struct WorldV9 {
+    grid: GridSpec,
+    terrain: Vec<Timeline<Terrain>>,
+    koeppen: Vec<Timeline<Koeppen>>,
+    pop: Vec<Timeline<PopDensity>>,
+    settlements: Vec<Settlement>,
+    river: Vec<Timeline<u8>>,
+    rivers: Vec<River>,
+    lakes: Vec<Lake>,
+    elevation: Vec<i16>,
+    landform: Vec<Option<Landform>>,
+    site_info: Vec<SiteInfo>,
+    cultures: Vec<CultureInfo>,
+    survey: Vec<u8>,
+    npp: Vec<Timeline<u16>>,
+    farming: Vec<Option<crate::time::Year>>,
+}
+
+impl From<WorldV9> for World {
+    fn from(v: WorldV9) -> Self {
+        let mut w = World::empty(v.grid);
+        w.terrain = v.terrain;
+        w.koeppen = v.koeppen;
+        w.pop = v.pop;
+        w.settlements = v.settlements;
+        w.river = v.river;
+        w.rivers = v.rivers;
+        w.lakes = v.lakes;
+        w.elevation = v.elevation;
+        w.landform = v.landform;
+        w.site_info = v.site_info;
+        w.cultures = v.cultures;
+        w.survey = v.survey;
+        w.npp = v.npp;
+        w.farming = v.farming;
         w
     }
 }
@@ -240,7 +502,7 @@ mod tests {
             terrain: &'a Vec<Timeline<Terrain>>,
             koeppen: &'a Vec<Timeline<Koeppen>>,
             pop: &'a Vec<Timeline<PopDensity>>,
-            settlements: &'a Vec<Settlement>,
+            settlements: &'a Vec<SettlementV5>,
         }
         let w = test_world(6, 5);
         let raw = postcard::to_stdvec(&V1 {
@@ -248,7 +510,7 @@ mod tests {
             terrain: &w.terrain,
             koeppen: &w.koeppen,
             pop: &w.pop,
-            settlements: &w.settlements,
+            settlements: &w.settlements.iter().map(SettlementV5::from).collect(),
         })
         .unwrap();
         let mut bytes = MAGIC.to_vec();
@@ -257,7 +519,8 @@ mod tests {
         let old = decode(&bytes).unwrap();
         assert!(old.rivers.is_empty());
         assert_eq!(old.terrain, w.terrain);
-        assert_eq!(old.settlements, w.settlements);
+        assert_eq!(old.settlements[0].name, w.settlements[0].name);
+        assert_eq!(old.settlements[0].importance, Settlement::DEFAULT_IMPORTANCE);
     }
 
     #[test]
@@ -268,7 +531,7 @@ mod tests {
             terrain: &'a Vec<Timeline<Terrain>>,
             koeppen: &'a Vec<Timeline<Koeppen>>,
             pop: &'a Vec<Timeline<PopDensity>>,
-            settlements: &'a Vec<Settlement>,
+            settlements: &'a Vec<SettlementV5>,
             river: &'a Vec<Timeline<u8>>,
             rivers: &'a Vec<River>,
         }
@@ -278,7 +541,7 @@ mod tests {
             terrain: &w.terrain,
             koeppen: &w.koeppen,
             pop: &w.pop,
-            settlements: &w.settlements,
+            settlements: &w.settlements.iter().map(SettlementV5::from).collect(),
             river: &w.river,
             rivers: &w.rivers,
         })
@@ -299,7 +562,7 @@ mod tests {
             terrain: &'a Vec<Timeline<Terrain>>,
             koeppen: &'a Vec<Timeline<Koeppen>>,
             pop: &'a Vec<Timeline<PopDensity>>,
-            settlements: &'a Vec<Settlement>,
+            settlements: &'a Vec<SettlementV5>,
             river: &'a Vec<Timeline<u8>>,
             rivers: &'a Vec<River>,
             lakes: &'a Vec<Lake>,
@@ -310,7 +573,7 @@ mod tests {
             terrain: &w.terrain,
             koeppen: &w.koeppen,
             pop: &w.pop,
-            settlements: &w.settlements,
+            settlements: &w.settlements.iter().map(SettlementV5::from).collect(),
             river: &w.river,
             rivers: &w.rivers,
             lakes: &w.lakes,
@@ -332,7 +595,7 @@ mod tests {
             terrain: &'a Vec<Timeline<Terrain>>,
             koeppen: &'a Vec<Timeline<Koeppen>>,
             pop: &'a Vec<Timeline<PopDensity>>,
-            settlements: &'a Vec<Settlement>,
+            settlements: &'a Vec<SettlementV5>,
             river: &'a Vec<Timeline<u8>>,
             rivers: &'a Vec<River>,
             lakes: &'a Vec<Lake>,
@@ -344,7 +607,7 @@ mod tests {
             terrain: &w.terrain,
             koeppen: &w.koeppen,
             pop: &w.pop,
-            settlements: &w.settlements,
+            settlements: &w.settlements.iter().map(SettlementV5::from).collect(),
             river: &w.river,
             rivers: &w.rivers,
             lakes: &w.lakes,
@@ -357,6 +620,287 @@ mod tests {
         let old = decode(&bytes).unwrap();
         assert_eq!(old.elevation, w.elevation);
         assert!(old.landform.iter().all(|l| l.is_none()));
+    }
+
+    #[test]
+    fn reads_version_5_files() {
+        #[derive(serde::Serialize)]
+        struct V5<'a> {
+            grid: &'a GridSpec,
+            terrain: &'a Vec<Timeline<Terrain>>,
+            koeppen: &'a Vec<Timeline<Koeppen>>,
+            pop: &'a Vec<Timeline<PopDensity>>,
+            settlements: &'a Vec<SettlementV5>,
+            river: &'a Vec<Timeline<u8>>,
+            rivers: &'a Vec<River>,
+            lakes: &'a Vec<Lake>,
+            elevation: &'a Vec<i16>,
+            landform: &'a Vec<Option<Landform>>,
+        }
+        let w = test_world(6, 5);
+        let raw = postcard::to_stdvec(&V5 {
+            grid: &w.grid,
+            terrain: &w.terrain,
+            koeppen: &w.koeppen,
+            pop: &w.pop,
+            settlements: &w.settlements.iter().map(SettlementV5::from).collect(),
+            river: &w.river,
+            rivers: &w.rivers,
+            lakes: &w.lakes,
+            elevation: &w.elevation,
+            landform: &w.landform,
+        })
+        .unwrap();
+        let mut bytes = MAGIC.to_vec();
+        bytes.extend_from_slice(&5u16.to_le_bytes());
+        bytes.extend_from_slice(&compress_pure(&raw));
+        let old = decode(&bytes).unwrap();
+        assert_eq!(old.landform, w.landform);
+        assert_eq!(old.settlements[0].population, w.settlements[0].population);
+        assert!(old.site_info.is_empty() && old.cultures.is_empty());
+        assert!(old.site_info(0).is_none());
+    }
+
+    #[test]
+    fn reads_version_6_files() {
+        #[derive(serde::Serialize)]
+        struct V6<'a> {
+            grid: &'a GridSpec,
+            terrain: &'a Vec<Timeline<Terrain>>,
+            koeppen: &'a Vec<Timeline<Koeppen>>,
+            pop: &'a Vec<Timeline<PopDensity>>,
+            settlements: &'a Vec<SettlementV6>,
+            river: &'a Vec<Timeline<u8>>,
+            rivers: &'a Vec<River>,
+            lakes: &'a Vec<Lake>,
+            elevation: &'a Vec<i16>,
+            landform: &'a Vec<Option<Landform>>,
+            site_info: &'a Vec<SiteInfo>,
+            cultures: &'a Vec<CultureInfo>,
+        }
+        let w = test_world(6, 5);
+        let raw = postcard::to_stdvec(&V6 {
+            grid: &w.grid,
+            terrain: &w.terrain,
+            koeppen: &w.koeppen,
+            pop: &w.pop,
+            settlements: &w.settlements.iter().map(SettlementV6::from).collect(),
+            river: &w.river,
+            rivers: &w.rivers,
+            lakes: &w.lakes,
+            elevation: &w.elevation,
+            landform: &w.landform,
+            site_info: &w.site_info,
+            cultures: &w.cultures,
+        })
+        .unwrap();
+        let mut bytes = MAGIC.to_vec();
+        bytes.extend_from_slice(&6u16.to_le_bytes());
+        bytes.extend_from_slice(&compress_pure(&raw));
+        let old = decode(&bytes).unwrap();
+        assert_eq!(old.site_info, w.site_info);
+        assert_eq!(old.settlements[0].occupation, w.settlements[0].occupation);
+        assert_eq!(old.settlements[0].importance, Settlement::DEFAULT_IMPORTANCE);
+        assert_eq!(old.settlements[0].evidence, Settlement::DEFAULT_EVIDENCE);
+        assert!(old.survey.is_empty() && old.survey_at(crate::HexId(0)).is_none());
+    }
+
+    #[test]
+    fn reads_version_7_files() {
+        #[derive(serde::Serialize)]
+        struct V7<'a> {
+            grid: &'a GridSpec,
+            terrain: &'a Vec<Timeline<Terrain>>,
+            koeppen: &'a Vec<Timeline<Koeppen>>,
+            pop: &'a Vec<Timeline<PopDensity>>,
+            settlements: &'a Vec<Settlement>,
+            river: &'a Vec<Timeline<u8>>,
+            rivers: &'a Vec<River>,
+            lakes: &'a Vec<Lake>,
+            elevation: &'a Vec<i16>,
+            landform: &'a Vec<Option<Landform>>,
+            site_info: &'a Vec<SiteInfo>,
+            cultures: &'a Vec<CultureInfo>,
+            survey: &'a Vec<u8>,
+        }
+        let w = test_world(6, 5);
+        let raw = postcard::to_stdvec(&V7 {
+            grid: &w.grid,
+            terrain: &w.terrain,
+            koeppen: &w.koeppen,
+            pop: &w.pop,
+            settlements: &w.settlements,
+            river: &w.river,
+            rivers: &w.rivers,
+            lakes: &w.lakes,
+            elevation: &w.elevation,
+            landform: &w.landform,
+            site_info: &w.site_info,
+            cultures: &w.cultures,
+            survey: &w.survey,
+        })
+        .unwrap();
+        let mut bytes = MAGIC.to_vec();
+        bytes.extend_from_slice(&7u16.to_le_bytes());
+        bytes.extend_from_slice(&compress_pure(&raw));
+        let old = decode(&bytes).unwrap();
+        assert_eq!(old.survey, w.survey);
+        assert_eq!(old.settlements, w.settlements);
+        assert!(old.npp.is_empty() && old.npp_at(crate::HexId(0), crate::Year(-9000)).is_none());
+    }
+
+    #[test]
+    fn reads_version_8_files() {
+        #[derive(serde::Serialize)]
+        struct V8<'a> {
+            grid: &'a GridSpec,
+            terrain: &'a Vec<Timeline<Terrain>>,
+            koeppen: &'a Vec<Timeline<Koeppen>>,
+            pop: &'a Vec<Timeline<PopDensity>>,
+            settlements: &'a Vec<Settlement>,
+            river: &'a Vec<Timeline<u8>>,
+            rivers: &'a Vec<River>,
+            lakes: &'a Vec<Lake>,
+            elevation: &'a Vec<i16>,
+            landform: &'a Vec<Option<Landform>>,
+            site_info: &'a Vec<SiteInfo>,
+            cultures: &'a Vec<CultureInfo>,
+            survey: &'a Vec<u8>,
+            npp: &'a Vec<Timeline<u16>>,
+        }
+        let w = test_world(6, 5);
+        let raw = postcard::to_stdvec(&V8 {
+            grid: &w.grid,
+            terrain: &w.terrain,
+            koeppen: &w.koeppen,
+            pop: &w.pop,
+            settlements: &w.settlements,
+            river: &w.river,
+            rivers: &w.rivers,
+            lakes: &w.lakes,
+            elevation: &w.elevation,
+            landform: &w.landform,
+            site_info: &w.site_info,
+            cultures: &w.cultures,
+            survey: &w.survey,
+            npp: &w.npp,
+        })
+        .unwrap();
+        let mut bytes = MAGIC.to_vec();
+        bytes.extend_from_slice(&8u16.to_le_bytes());
+        bytes.extend_from_slice(&compress_pure(&raw));
+        let old = decode(&bytes).unwrap();
+        assert_eq!(old.npp, w.npp);
+        assert!(old.farming.is_empty());
+        assert!(!old.expected_at(crate::HexId(0), crate::Year(-3000)).is_some_and(|e| e.farmed));
+    }
+
+    #[test]
+    fn reads_version_9_files() {
+        #[derive(serde::Serialize)]
+        struct V9<'a> {
+            grid: &'a GridSpec,
+            terrain: &'a Vec<Timeline<Terrain>>,
+            koeppen: &'a Vec<Timeline<Koeppen>>,
+            pop: &'a Vec<Timeline<PopDensity>>,
+            settlements: &'a Vec<Settlement>,
+            river: &'a Vec<Timeline<u8>>,
+            rivers: &'a Vec<River>,
+            lakes: &'a Vec<Lake>,
+            elevation: &'a Vec<i16>,
+            landform: &'a Vec<Option<Landform>>,
+            site_info: &'a Vec<SiteInfo>,
+            cultures: &'a Vec<CultureInfo>,
+            survey: &'a Vec<u8>,
+            npp: &'a Vec<Timeline<u16>>,
+            farming: &'a Vec<Option<crate::Year>>,
+        }
+        let w = test_world(6, 5);
+        assert!(!w.evidence.is_empty());
+        let raw = postcard::to_stdvec(&V9 {
+            grid: &w.grid,
+            terrain: &w.terrain,
+            koeppen: &w.koeppen,
+            pop: &w.pop,
+            settlements: &w.settlements,
+            river: &w.river,
+            rivers: &w.rivers,
+            lakes: &w.lakes,
+            elevation: &w.elevation,
+            landform: &w.landform,
+            site_info: &w.site_info,
+            cultures: &w.cultures,
+            survey: &w.survey,
+            npp: &w.npp,
+            farming: &w.farming,
+        })
+        .unwrap();
+        let mut bytes = MAGIC.to_vec();
+        bytes.extend_from_slice(&9u16.to_le_bytes());
+        bytes.extend_from_slice(&compress_pure(&raw));
+        let old = decode(&bytes).unwrap();
+        assert_eq!(old.farming, w.farming);
+        assert_eq!(old.npp, w.npp);
+        assert!(old.evidence.is_empty());
+        assert_eq!(World { evidence: w.evidence.clone(), ..old }, w);
+    }
+
+    #[test]
+    fn version_10_round_trips_evidence() {
+        let mut w = test_world(7, 5);
+        w.evidence.push(crate::evidence::test_layer("second", w.grid.len()));
+        w.evidence[1].codes[3] = crate::evidence::NO_VALUE;
+        let bytes = encode(&w);
+        assert_eq!(u16::from_le_bytes([bytes[4], bytes[5]]), 10);
+        let back = decode(&bytes).unwrap();
+        assert_eq!(back.evidence, w.evidence);
+        assert_eq!(back.evidence_layer("second").unwrap().codes[3], crate::evidence::NO_VALUE);
+        assert_eq!(back, w);
+    }
+
+    #[test]
+    fn evidence_must_match_grid() {
+        let mut w = test_world(6, 5);
+        w.evidence[0].codes.pop();
+        assert!(matches!(decode(&encode(&w)), Err(IoError::Invalid(_))));
+        let mut w = test_world(6, 5);
+        w.evidence[0].slices.reverse();
+        assert!(matches!(decode(&encode(&w)), Err(IoError::Invalid(_))));
+        let mut w = test_world(6, 5);
+        let dup = w.evidence[0].clone();
+        w.evidence.push(dup);
+        assert!(matches!(decode(&encode(&w)), Err(IoError::Invalid(_))));
+    }
+
+    #[test]
+    fn farming_must_match_grid() {
+        let mut w = test_world(6, 5);
+        w.farming.pop();
+        assert!(matches!(decode(&encode(&w)), Err(IoError::Invalid(_))));
+    }
+
+    #[test]
+    fn productivity_must_match_grid() {
+        let mut w = test_world(6, 5);
+        w.npp.pop();
+        assert!(matches!(decode(&encode(&w)), Err(IoError::Invalid(_))));
+    }
+
+    #[test]
+    fn survey_must_match_grid() {
+        let mut w = test_world(6, 5);
+        w.survey.pop();
+        assert!(matches!(decode(&encode(&w)), Err(IoError::Invalid(_))));
+        let mut w = test_world(6, 5);
+        w.survey[0] = 3;
+        assert!(matches!(decode(&encode(&w)), Err(IoError::Invalid(_))));
+    }
+
+    #[test]
+    fn site_records_must_match_settlements() {
+        let mut w = test_world(6, 5);
+        w.site_info.push(crate::SiteInfo::default());
+        assert!(matches!(decode(&encode(&w)), Err(IoError::Invalid(_))));
     }
 
     #[test]

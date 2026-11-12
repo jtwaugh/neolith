@@ -1,0 +1,12 @@
+# The Vercel project's Root Directory is neolith-rs, so deploys run from the
+# repo root. Upload only the Rust app; the rest (data/, game/, db.sqlite3, ...)
+# isn't needed for the web build.
+/*
+!/neolith-rs
+neolith-rs/target
+neolith-rs/dist
+neolith-rs/harness
+neolith-rs/.bin
+neolith-rs/.vercel
+neolith-rs/.env*
+.DS_Store

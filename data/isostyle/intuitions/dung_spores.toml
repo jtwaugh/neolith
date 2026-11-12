@@ -1,0 +1,683 @@
+# Gap critic: dung_spores layer. Judgements, not data.
+# Values are the expected share of cores that count non-pollen palynomorphs
+# (NPPs) and hold dung-fungus spores (Sporormiella, Sordaria, Cercophora,
+# Podospora) in a slice, if such cores existed in the gap. Wild herbivores
+# count as well as livestock.
+
+[meta]
+layer = "dung_spores"
+written = "2026-11-12"
+dossier = "build/isostyle/gaps/dung_spores/dossier.json"
+summary = """This layer is a map of a counting habit. Pollen cores are common across Russia, Scandinavia and Anatolia, but most are 'status unknown' for dung because NPPs were not counted. Routine NPP counting dates from the 2000s and clusters in European landscape-archaeology projects. With 118-277 usable cores per slice, coverage is 0% across Africa, Arabia, SW and Central Asia and the steppe, and 1-4% in northern Russia, Ukraine-Belarus and Iran. \
+Wild herbivores make dung spores too. So the expected values follow grazing pressure, not farming: high in steppes and savannas full of saiga, onager, horse, gazelle and aurochs (and then herds), low in closed boreal and temperate forest. \
+Method notes: (1) the kernel width is borrowed from cereal pollen, which is far too narrow for so few cores. (2) Edge values are means over 3-15 cells next to one or two NPP-counting cores, so they are anecdotes, not trends. (3) Cores that count NPPs are biased toward sites chosen for archaeology, which probably inflates the evidenced mean in farmed Europe after 5,000 BCE."""
+
+# ---------------------------------------------------------------- Forest and steppe of eastern Europe
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-01", "dung_spores-9000-33", "dung_spores-9000-51", "dung_spores-8000-64", "dung_spores-8000-89", "dung_spores-7000-110", "dung_spores-7000-92", "dung_spores-6000-120", "dung_spores-6000-137", "dung_spores-5000-148", "dung_spores-5000-165", "dung_spores-4000-175", "dung_spores-4000-191", "dung_spores-3000-202", "dung_spores-3000-218"]
+why_empty = ["recording_practice", "publication_access", "research_intensity"]
+why_note = "Dozens of cores exist (grey 'status unknown' points fill gap_01.png) but did not count NPPs. Elk and reindeer were the only large grazers, and there were no livestock."
+expected = 0.15
+expected_range = [0.05, 0.3]
+confidence = "low"
+basis = ["dossier_statistics", "neighbouring_evidence", "environment"]
+reasoning = "The edges are 0.12-0.24 from 7-12 cells. Finland-Karelia NPP cores record 0 of 1-3 in every slice. Closed taiga lakes collect few spores, so a forest of low herbivore density should sit below the European mean (0.20-0.35)."
+literature = [
+  { cite = "Baker, Bhagwat & Willis 2013, 'Do dung fungal spores make a good proxy for past distribution of large herbivores?', QSR 62", checked = false },
+]
+would_settle = "Recount NPPs on archived slides from Komi and Karelian cores, or ingest RPD sites that report Sporormiella."
+speculative_rule = "Fill at 0.15 in all slices and 0.25 in the tundra strip north of 66°N for 10,000-9,000 BCE (reindeer herds)."
+[[judgement.adjust]]
+kind = "area"
+bbox = [28.0, 66.0, 66.0, 76.0]
+value = 0.25
+slices = [-10000, -9000]
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-10000, -9000, -8000, -7000, -6000]
+gap_ids = ["dung_spores-10000-07", "dung_spores-9000-38", "dung_spores-8000-69", "dung_spores-7000-96", "dung_spores-6000-124"]
+why_empty = ["recording_practice", "research_intensity", "publication_access"]
+why_note = "Few steppe cores, and none counts NPPs. The steppe carried wild horse, saiga, aurochs and onager."
+expected = 0.55
+expected_range = [0.3, 0.8]
+confidence = "low"
+basis = ["environment", "analogy", "literature"]
+reasoning = "There is no edge evidence before 4,000 BCE, and the nearest evidence is 990-1109 km away. By analogy with Iranian and Central Asian NPP cores (0.5-1.0) and with Pleistocene-Holocene steppe Sporormiella records elsewhere, open grassland with large migratory herds should give spores in most cores."
+literature = [
+  { cite = "Perrotti & van Asperen 2019, 'Dung fungi as a proxy for megaherbivores: opportunities and limitations for archaeological applications', VHA 28", checked = false },
+]
+would_settle = "NPP counts on a lower Volga or Manych lake core."
+speculative_rule = "Fill at 0.55 for 10,000-6,000 BCE, and fade to 0.35 in the forest-steppe north of 53°N."
+[[judgement.adjust]]
+kind = "gradient"
+axis = "lat"
+from = [53.0, 0.55]
+to = [56.0, 0.35]
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-5000, -4000, -3000]
+gap_ids = ["dung_spores-5000-153", "dung_spores-4000-181", "dung_spores-3000-208"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "As before, plus domestic cattle, sheep and horse with the Khvalynsk and Yamnaya herders from c. 5000 BCE."
+expected = 0.65
+expected_range = [0.35, 0.85]
+confidence = "low"
+basis = ["other_layer", "literature", "environment", "neighbouring_evidence"]
+reasoning = "The few edge cells are 0.13 (4,000 BCE) and 0.42 (3,000 BCE). The ancient-genome and pottery layers inside the gap mark herders. Herding should add to an already high wild baseline."
+literature = [
+  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false },
+]
+would_settle = "NPP counts on a steppe lake core next to a Yamnaya kurgan field."
+speculative_rule = "Fill at 0.65, and at 0.45 in the forest-steppe north of 53°N."
+[[judgement.adjust]]
+kind = "area"
+bbox = [30.0, 53.0, 66.0, 56.0]
+value = 0.45
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-12", "dung_spores-9000-44", "dung_spores-8000-75", "dung_spores-7000-104", "dung_spores-6000-132", "dung_spores-5000-160", "dung_spores-4000-187", "dung_spores-3000-214"]
+why_empty = ["recording_practice", "publication_access"]
+why_note = "The gap covers Polesia and the Kyiv forest-steppe. Cores exist, but NPPs are rarely counted in Ukrainian and Belarusian work. Trypillia farmers arrive from c. 4800 BCE."
+expected = 0.3
+expected_range = [0.15, 0.5]
+confidence = "low"
+basis = ["dossier_statistics", "other_layer", "environment"]
+reasoning = "The edges are 0.16-0.23 until 4,000 BCE and 0.39 at 3,000 BCE. Domestic livestock appears inside the gap from 4,000 BCE. Polesian forest should be low and the forest-steppe higher."
+literature = [
+  { cite = "Kremenetski 1995, Holocene vegetation history of southwestern Ukraine", checked = false },
+]
+would_settle = "NPP counts on a Trypillia-adjacent core (e.g. near Maidanetske)."
+speculative_rule = "Fill at 0.2 for 10,000-6,000 BCE, 0.3 at 5,000 BCE and 0.4 for 4,000-3,000 BCE."
+
+# ---------------------------------------------------------------- Europe, thin coverage
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000, -7000, -6000]
+value = 0.2
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000]
+value = 0.3
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-4000, -3000]
+value = 0.4
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-14", "dung_spores-10000-21", "dung_spores-9000-46", "dung_spores-8000-76", "dung_spores-7000-102", "dung_spores-6000-130", "dung_spores-5000-158", "dung_spores-4000-185", "dung_spores-3000-212"]
+why_empty = ["recording_practice", "ice"]
+why_note = "Central and northern Sweden and Norway have many cores but few NPP counts. Before 8,000 BCE much of the area was ice or had just been deglaciated."
+expected = 0.15
+expected_range = [0.05, 0.3]
+confidence = "low"
+basis = ["dossier_statistics", "neighbouring_evidence", "environment"]
+reasoning = "The edges are 0.10-0.12 until 7,000 BCE, then 0.21-0.24 for 6,000-4,000 BCE, then 0.15 at 3,000 BCE. Herding stays south of 60°N (Funnel Beaker from c. 4000 BCE), so the boreal interior is like the Russian taiga."
+literature = [
+  { cite = "Gauthier, Bichet & Massa 2010, 'Fungal spores as proxies for past livestock?'  (method review)", checked = false },
+]
+would_settle = "NPP recounts of central Swedish and Trøndelag cores."
+speculative_rule = "Fill at 0.15, rising to 0.25 south of 60°N from 4,000 BCE."
+[[judgement.adjust]]
+kind = "area"
+bbox = [4.0, 54.0, 32.0, 60.0]
+value = 0.25
+slices = [-4000, -3000]
+
+[[judgement]]
+region = "Baltic"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-27", "dung_spores-9000-58", "dung_spores-8000-86", "dung_spores-7000-115", "dung_spores-6000-144", "dung_spores-5000-171", "dung_spores-4000-198", "dung_spores-3000-224"]
+why_empty = ["recording_practice"]
+why_note = "There are Lithuanian and Latvian cores, but few count NPPs. Foragers here (Kunda, Narva) adopted livestock only late."
+expected = 0.18
+expected_range = [0.08, 0.35]
+confidence = "medium"
+basis = ["dossier_statistics", "neighbouring_evidence"]
+reasoning = "The edges are 0.11-0.24 with no clear trend, and they are consistent with forest foragers until the Corded Ware period."
+literature = []
+would_settle = "NPP counts in Lithuanian cores (e.g. Stanaitis's group)."
+speculative_rule = "Fill at 0.15 until 4,000 BCE and 0.25 at 3,000 BCE."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000]
+value = 0.15
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-3000]
+value = 0.25
+
+[[judgement]]
+region = "Central Europe"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-22", "dung_spores-9000-54", "dung_spores-8000-83", "dung_spores-7000-111", "dung_spores-6000-140", "dung_spores-5000-166", "dung_spores-4000-193", "dung_spores-3000-221"]
+why_empty = ["recording_practice"]
+why_note = "This is the Masovian gap in Poland. The cores exist but do not count NPPs. Farmers arrive c. 5300 BCE (LBK) on the loess, later on the sands."
+expected = 0.2
+expected_range = [0.1, 0.4]
+confidence = "medium"
+basis = ["dossier_statistics", "neighbouring_evidence", "other_layer"]
+reasoning = "The edges are 0.10-0.19, rising slightly after 5,000 BCE, and livestock appears inside the gap from 5,000 BCE."
+literature = []
+would_settle = "NPP counts on Masovian lake cores."
+speculative_rule = "Fill at 0.12 until 6,000 BCE and 0.22 from 5,000 BCE."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000, -7000, -6000]
+value = 0.12
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000, -3000]
+value = 0.22
+
+[[judgement]]
+region = "France & Low Countries"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-18", "dung_spores-9000-48", "dung_spores-8000-82", "dung_spores-7000-108", "dung_spores-6000-138", "dung_spores-5000-169", "dung_spores-4000-195", "dung_spores-3000-223"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "The lower Loire and Vendée have few cored lakes, and the NPP counts there are mainly from coastal marshes."
+expected = 0.3
+expected_range = [0.15, 0.5]
+confidence = "medium"
+basis = ["dossier_statistics", "neighbouring_evidence", "other_layer"]
+reasoning = "The edges fall from 0.42 at 10,000 BCE (open Late Glacial-Preboreal grazing) to 0.16-0.17 at 7,000-6,000 BCE, then rise to 0.27-0.38 with Neolithic herding from 5,000 BCE. That curve is believable."
+literature = []
+would_settle = "NPP counts from Brière or Grand-Lieu marsh cores."
+speculative_rule = "Follow the edge curve: 0.35 at 10,000 BCE, 0.2 for 8,000-6,000 BCE, and 0.35 from 5,000 BCE."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000]
+value = 0.35
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-8000, -7000, -6000]
+value = 0.2
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000, -3000]
+value = 0.35
+
+[[judgement]]
+region = "Iberia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-20", "dung_spores-9000-53", "dung_spores-8000-85", "dung_spores-7000-114", "dung_spores-6000-143", "dung_spores-5000-172", "dung_spores-4000-199", "dung_spores-3000-226"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "The Alentejo-Extremadura borderland has few lakes. Dehesa-like open woodland was later grazed heavily."
+expected = 0.45
+expected_range = [0.2, 0.7]
+confidence = "medium"
+basis = ["dossier_statistics", "neighbouring_evidence", "literature"]
+reasoning = "Southern Iberian NPP cores rise from 0.0-0.25 before 6,000 BCE to 0.56-0.83 from 6,000 BCE, and the edges go from 0.20-0.28 to 0.45-0.59. The Neolithic arrives c. 5500 BCE and the megalithic herding landscape after."
+literature = [
+  { cite = "López-Sáez & López-Merino 2007, 'Coprophilous fungi as a source of information of anthropic activities during the Prehistory in the Amblés Valley', Revista Española de Micropaleontología", checked = false },
+]
+would_settle = "NPP counts on Alentejo pond records."
+speculative_rule = "Fill at 0.25 until 7,000 BCE, 0.45 at 6,000 BCE and 0.6 from 5,000 BCE."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000, -7000]
+value = 0.25
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-6000]
+value = 0.45
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000, -3000]
+value = 0.6
+
+[[judgement]]
+region = "Italy & islands"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+gap_ids = ["dung_spores-10000-29", "dung_spores-9000-60", "dung_spores-8000-88", "dung_spores-7000-117", "dung_spores-6000-145", "dung_spores-5000-173"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "The Tavoliere and Basilicata have few lakes and few NPP counts, although the Tavoliere is one of the densest Early Neolithic landscapes in Europe."
+expected = 0.25
+expected_range = [0.1, 0.5]
+confidence = "low"
+basis = ["dossier_statistics", "other_layer", "literature"]
+reasoning = "The edges are 0.11-0.15 until 6,000 BCE and 0.25 at 5,000 BCE. Ditched villages with sheep and goat from c. 6000 BCE suggest the gap should be above its edges after that date."
+literature = []
+would_settle = "NPP counts on Lago Salso or Lago di Lesina cores."
+speculative_rule = "Fill at 0.15 until 7,000 BCE and 0.4 from 6,000 BCE."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000, -7000]
+value = 0.15
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-6000, -5000]
+value = 0.4
+
+[[judgement]]
+region = "Balkans & Greece"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-16", "dung_spores-10000-25", "dung_spores-9000-49", "dung_spores-9000-59", "dung_spores-8000-80", "dung_spores-8000-87", "dung_spores-7000-113", "dung_spores-7000-116", "dung_spores-6000-141", "dung_spores-6000-142", "dung_spores-5000-168", "dung_spores-5000-170", "dung_spores-4000-196", "dung_spores-4000-197", "dung_spores-3000-222", "dung_spores-3000-225"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "The gaps are Wallachia-Moldova, Bosnia and the Peloponnese. Cores exist, but there are few NPP counts. Farming arrives in Greece c. 6700 BCE and in the lower Danube c. 6200 BCE."
+expected = 0.4
+expected_range = [0.2, 0.6]
+confidence = "low"
+basis = ["dossier_statistics", "neighbouring_evidence"]
+reasoning = "The edges are 0.22-0.47 throughout, and Greek NPP cores record 0.25-0.80, rising after 6,000 BCE. The Danube plain forest-steppe would also have carried wild aurochs and horse."
+literature = []
+would_settle = "NPP counts on Romanian lowland cores."
+speculative_rule = "Fill at 0.35 until 7,000 BCE and 0.45 from 6,000 BCE, rising to 0.55 at 3,000 BCE in Moldova."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000, -7000]
+value = 0.35
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-6000, -5000, -4000, -3000]
+value = 0.45
+[[judgement.adjust]]
+kind = "area"
+bbox = [27.3, 47.6, 30.2, 48.5]
+value = 0.55
+slices = [-3000]
+[[judgement.adjust]]
+kind = "area"
+bbox = [27.8, 46.6, 30.2, 47.6]
+value = 0.55
+slices = [-3000]
+[[judgement.adjust]]
+kind = "area"
+bbox = [28.1, 45.4, 30.2, 46.6]
+value = 0.55
+slices = [-3000]
+
+[[judgement]]
+region = "British Isles"
+slices = [-10000, -9000]
+gap_ids = ["dung_spores-10000-19", "dung_spores-9000-55"]
+why_empty = ["recording_practice"]
+why_note = "There were few NPP counts in Early Holocene English Midlands and Irish cores."
+expected = 0.15
+expected_range = [0.05, 0.3]
+confidence = "medium"
+basis = ["dossier_statistics", "neighbouring_evidence"]
+reasoning = "The edges are about 0.12-0.13. The Preboreal woodland had red deer, elk and aurochs at modest density."
+literature = []
+would_settle = "Recount Star Carr-region cores."
+speculative_rule = "Fill at 0.15."
+
+[[judgement]]
+region = "Anatolia & Cyprus"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-13", "dung_spores-9000-45", "dung_spores-8000-77", "dung_spores-7000-105", "dung_spores-6000-133", "dung_spores-5000-161", "dung_spores-4000-188", "dung_spores-3000-215"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "The central Anatolian plateau (Kızılırmak bend) has several cores (Eski Acıgöl, Nar), but NPPs are counted mainly in Cappadocian and Konya-plain projects. This is steppe with onager, aurochs and gazelle, and sheep and goat herding from c. 8000 BCE."
+expected = 0.4
+expected_range = [0.2, 0.65]
+confidence = "low"
+basis = ["dossier_statistics", "neighbouring_evidence", "other_layer", "environment"]
+reasoning = "Anatolian NPP cores record 0.0-0.5 (4-5 cores), and the edges are 0.10-0.12 at 9,000-8,000 BCE from one cell, then 0.21-0.46. Livestock inside the gap from 8,000 BCE and an open plateau argue for higher values than in temperate Europe."
+literature = [
+  { cite = "Roberts et al. 2016, 'A tale of two lakes: a multi-proxy comparison of Lateglacial and Holocene environmental change in Cappadocia', JQS", checked = false },
+]
+would_settle = "NPP counts on Nar or Eski Acıgöl archived samples."
+speculative_rule = "Fill at 0.3 for 10,000-9,000 BCE and 0.45 from 8,000 BCE."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000]
+value = 0.3
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-8000, -7000, -6000, -5000, -4000, -3000]
+value = 0.45
+
+[[judgement]]
+region = "Caucasus"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-24", "dung_spores-9000-52", "dung_spores-8000-81", "dung_spores-7000-109", "dung_spores-6000-136", "dung_spores-5000-164", "dung_spores-4000-194", "dung_spores-3000-220"]
+why_empty = ["recording_practice", "publication_access"]
+why_note = "The Kura lowland and Lesser Caucasus foothills have Georgian and Armenian cores with NPP counts only since c. 2015. Shulaveri-Shomu herding starts c. 6000 BCE."
+expected = 0.4
+expected_range = [0.2, 0.7]
+confidence = "low"
+basis = ["dossier_statistics", "neighbouring_evidence", "other_layer"]
+reasoning = "The one Caucasus NPP core records 1 in most slices. The 4,000-3,000 BCE edges are 0.13 and 0.44. Semi-desert lowland with herds."
+literature = []
+would_settle = "Ingest Armenian lake NPP series (e.g. Lake Sevan region work)."
+speculative_rule = "Fill at 0.35 until 7,000 BCE and 0.5 from 6,000 BCE."
+
+# ---------------------------------------------------------------- SW and Central Asia, Arabia
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000, -7000]
+value = 0.35
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-6000, -5000, -4000, -3000]
+value = 0.5
+
+[[judgement]]
+region = "Levant"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-17", "dung_spores-9000-50", "dung_spores-8000-79", "dung_spores-7000-107", "dung_spores-6000-135", "dung_spores-5000-163", "dung_spores-4000-190", "dung_spores-3000-217"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "Levantine cores (Dead Sea, Hula, Ghab) are counted for pollen only in the open databases. The Badia carried gazelle and onager (the desert kites were built to trap them), and caprine herding came from c. 8000 BCE."
+expected = 0.6
+expected_range = [0.3, 0.85]
+confidence = "low"
+basis = ["environment", "analogy", "literature", "other_layer"]
+reasoning = "There is no edge evidence, and the nearest NPP core is 728 km away. By analogy with Iranian NPP cores (0.5-1.0) and the dense game and herding the archaeology shows, most cores should carry spores."
+literature = [
+  { cite = "Crassard et al. 2015, 'Addressing the desert kites phenomenon and its global range through a multi-proxy approach', JAMT", checked = false },
+]
+would_settle = "NPP counts on Dead Sea or Hula cores."
+speculative_rule = "Fill at 0.6 in all slices."
+
+[[judgement]]
+region = "Mesopotamia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-15", "dung_spores-9000-47", "dung_spores-8000-78", "dung_spores-7000-106", "dung_spores-6000-134", "dung_spores-5000-162", "dung_spores-4000-189", "dung_spores-3000-216"]
+why_empty = ["research_intensity", "recording_practice", "preservation"]
+why_note = "There are hardly any cores of any kind, and the alluvial sediments are reworked."
+expected = 0.6
+expected_range = [0.3, 0.85]
+confidence = "low"
+basis = ["environment", "analogy", "other_layer"]
+reasoning = "There is no edge evidence. Steppe with onager and gazelle, then dense herding from the 7th millennium BCE, argues by analogy with Iran for a high share."
+literature = []
+would_settle = "NPP counts on marsh cores from southern Iraq."
+speculative_rule = "Fill at 0.55 until 7,000 BCE and 0.7 from 6,000 BCE."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000, -7000]
+value = 0.55
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-6000, -5000, -4000, -3000]
+value = 0.7
+
+[[judgement]]
+region = "Iran & Afghanistan"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-10", "dung_spores-9000-42", "dung_spores-8000-73", "dung_spores-7000-101", "dung_spores-6000-129", "dung_spores-5000-157", "dung_spores-4000-184", "dung_spores-3000-211"]
+why_empty = ["research_intensity", "preservation"]
+why_note = "The central plateau and Afghanistan have no lakes with a cored record. NPP counts come from the Zagros and Caspian margins."
+expected = 0.65
+expected_range = [0.4, 0.9]
+confidence = "low"
+basis = ["dossier_statistics", "neighbouring_evidence", "environment"]
+reasoning = "Two NPP cores in Iran record 0.5-1.0, and the edges are 0.39-0.71 (mostly 0.65-0.70). Steppe-desert with onager and goat, then early herding (Ganj Dareh goats c. 8000 BCE)."
+literature = [
+  { cite = "Zeder & Hesse 2000, 'The initial domestication of goats (Capra hircus) in the Zagros mountains 10,000 years ago', Science 287", checked = false },
+]
+would_settle = "NPP counts on any plateau playa core."
+speculative_rule = "Fill at 0.65 in all slices."
+
+[[judgement]]
+region = "Central Asia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-08", "dung_spores-9000-40", "dung_spores-8000-71", "dung_spores-7000-99", "dung_spores-6000-127", "dung_spores-5000-155", "dung_spores-4000-182", "dung_spores-3000-209"]
+why_empty = ["not_in_open_compilations", "recording_practice", "research_intensity"]
+why_note = "Aral-region cores are in palaeoclimate papers and do not count NPPs. The region carried saiga, onager and goitred gazelle."
+expected = 0.6
+expected_range = [0.3, 0.85]
+confidence = "low"
+basis = ["dossier_statistics", "neighbouring_evidence", "environment"]
+reasoning = "The 2 NPP cores on the Caspian/Kopet Dag rim record 0.5-1.0, and the 9,000-6,000 BCE edges are 0.50-0.67 from 3 cells."
+literature = []
+would_settle = "NPP counts on Aral or Sarykamysh cores."
+speculative_rule = "Fill at 0.6."
+
+[[judgement]]
+region = "Arabia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-04", "dung_spores-9000-36", "dung_spores-8000-67", "dung_spores-7000-95", "dung_spores-6000-123", "dung_spores-5000-151", "dung_spores-4000-178", "dung_spores-3000-205"]
+why_empty = ["research_intensity", "preservation", "recording_practice"]
+why_note = "Palaeolakes existed only in the humid phase (c. 8000-4000 BCE), and few were cored. Arabian Neolithic herders kept cattle, sheep and goat from c. 6800 BCE. Wild fauna included gazelle, oryx and aurochs."
+expected = 0.45
+expected_range = [0.15, 0.75]
+confidence = "low"
+basis = ["environment", "literature", "other_layer"]
+reasoning = "There is no edge evidence before 3,000 BCE, when 1 core records 1. Livestock appears inside the gap from 7,000 BCE. Lake-bound herds in the humid phase would deposit spores. Before 8,000 BCE and after 4,000 BCE lakes were few and grazing sparse."
+literature = [
+  { cite = "Petraglia et al. 2020, 'Human responses to climate and ecosystem change in ancient Arabia', PNAS 117", checked = false },
+]
+would_settle = "NPP counts on Jubbah, Tayma or Mundafan lake sediments."
+speculative_rule = "Fill at 0.3 for 10,000-9,000 BCE, 0.55 for 8,000-5,000 BCE, and 0.35 for 4,000-3,000 BCE."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000]
+value = 0.3
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-8000, -7000, -6000, -5000]
+value = 0.55
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-4000, -3000]
+value = 0.35
+
+[[judgement]]
+region = "Other"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-26", "dung_spores-9000-56", "dung_spores-8000-84", "dung_spores-7000-112", "dung_spores-6000-139", "dung_spores-5000-167", "dung_spores-4000-192", "dung_spores-3000-219"]
+why_empty = ["research_intensity", "dataset_edge"]
+why_note = "This is the Baluchistan desert at the grid edge, with no cores."
+expected = 0.45
+expected_range = [0.2, 0.75]
+confidence = "low"
+basis = ["analogy", "environment"]
+reasoning = "By analogy with the Iranian plateau, but drier, with lower herbivore density."
+literature = []
+would_settle = "None realistic."
+speculative_rule = "Fill at 0.45."
+
+# ---------------------------------------------------------------- Africa
+
+[[judgement]]
+region = "Sahara–Sahel"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-02", "dung_spores-9000-34", "dung_spores-8000-65", "dung_spores-7000-93", "dung_spores-6000-121", "dung_spores-5000-149", "dung_spores-4000-176", "dung_spores-3000-203"]
+why_empty = ["recording_practice", "preservation", "research_intensity"]
+why_note = "There are few cores, none counts NPPs, and the humid-phase lakes dried out. During the African Humid Period the green Sahara carried elephant, giraffe and antelope, and from c. 7000-5000 BCE pastoralists' cattle (rock art, Takarkori dairying)."
+expected = 0.5
+expected_range = [0.2, 0.8]
+confidence = "low"
+basis = ["environment", "literature", "other_layer"]
+reasoning = "The nearest evidence is over 2,000 km away. The pottery, ground-stone and later livestock layers inside the gap show herders and hunters at lakes. Spore input per lake would be high while lakes held water (8,000-4,000 BCE) and fall as they dried."
+literature = [
+  { cite = "Dunne et al. 2012, 'First dairying in green Saharan Africa in the fifth millennium BC', Nature 486", checked = false },
+  { cite = "di Lernia 2013, 'The emergence and spread of herding in Northern Africa', in Oxford Handbook of African Archaeology", checked = false },
+]
+would_settle = "NPP counts on Lake Yoa or the Chad megalake sediments."
+speculative_rule = "Fill at 0.4 for 10,000-9,000 BCE, 0.6 for 8,000-5,000 BCE, 0.45 at 4,000 BCE and 0.3 at 3,000 BCE. North of 22°N, drop to 0.2 after 4,000 BCE."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000]
+value = 0.4
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-8000, -7000, -6000, -5000]
+value = 0.6
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-4000]
+value = 0.45
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-3000]
+value = 0.3
+[[judgement.adjust]]
+kind = "area"
+bbox = [-17.5, 22.0, 24.0, 28.0]
+value = 0.2
+slices = [-3000]
+
+[[judgement]]
+region = "Libya & Egypt"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-05", "dung_spores-9000-37", "dung_spores-8000-68", "dung_spores-7000-97", "dung_spores-6000-125", "dung_spores-5000-152", "dung_spores-4000-179", "dung_spores-3000-206"]
+why_empty = ["preservation", "research_intensity", "recording_practice"]
+why_note = "The playas were seasonal and do not hold cores. Nabta Playa cattle (contested, c. 8000 BCE) and the later Saharan herders used them. The Nile valley had herds from c. 5000 BCE."
+expected = 0.4
+expected_range = [0.15, 0.7]
+confidence = "low"
+basis = ["environment", "literature", "neighbouring_evidence"]
+reasoning = "The only edge is 0.43 at 3,000 BCE (15 cells, Nile side). The desert interior had grazers only in the humid phase."
+literature = [
+  { cite = "Wendorf & Schild 2001, Holocene Settlement of the Egyptian Sahara", checked = false },
+]
+would_settle = "NPP counts on Nile Delta cores."
+speculative_rule = "Fill at 0.35 for 9,000-5,000 BCE and 0.15 otherwise in the desert. Use 0.5 in the Nile strip from 5,000 BCE."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-9000, -8000, -7000, -6000, -5000]
+value = 0.35
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -4000, -3000]
+value = 0.15
+[[judgement.adjust]]
+kind = "river"
+within_km = 30
+names = ["Nile"]
+value = 0.5
+slices = [-5000, -4000, -3000]
+
+[[judgement]]
+region = "Maghreb"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-03", "dung_spores-9000-35", "dung_spores-8000-66", "dung_spores-7000-94", "dung_spores-6000-122", "dung_spores-5000-150", "dung_spores-4000-177", "dung_spores-3000-204"]
+why_empty = ["recording_practice", "research_intensity", "true_absence"]
+why_note = "The Tell has few NPP-counting cores, and the Saharan part has no lakes. Barbary sheep, gazelle and aurochs were present, and caprines from c. 5500 BCE."
+expected = 0.5
+expected_range = [0.25, 0.75]
+confidence = "low"
+basis = ["dossier_statistics", "neighbouring_evidence", "other_layer"]
+reasoning = "The one Moroccan NPP core records 1 from 9,000 BCE. The edges are 0.48-0.60 to 6,000 BCE and 0.63-0.72 after. Livestock appears inside the gap from 5,000 BCE."
+literature = []
+would_settle = "NPP counts on Middle Atlas lake cores."
+speculative_rule = "Fill at 0.5 until 6,000 BCE and 0.65 from 5,000 BCE north of 32°N. In the Sahara, use the Sahara-Sahel rule."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000, -7000, -6000]
+value = 0.5
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000, -3000]
+value = 0.65
+[[judgement.adjust]]
+kind = "polygon"                         # Sahara south of the Atlas and Saharan Atlas
+points = [[-17.5, 19.0], [-17.5, 27.9], [-9.8, 29.0], [-6.5, 29.6], [-4.0, 31.3], [-1.5, 32.3], [0.5, 33.0], [3.0, 33.8], [5.8, 34.7], [10.2, 33.7], [12.0, 33.0], [12.0, 19.0]]
+value = 0.4
+slices = [-10000, -9000]
+[[judgement.adjust]]
+kind = "polygon"                         # Sahara south of the Atlas and Saharan Atlas
+points = [[-17.5, 19.0], [-17.5, 27.9], [-9.8, 29.0], [-6.5, 29.6], [-4.0, 31.3], [-1.5, 32.3], [0.5, 33.0], [3.0, 33.8], [5.8, 34.7], [10.2, 33.7], [12.0, 33.0], [12.0, 19.0]]
+value = 0.6
+slices = [-8000, -7000, -6000, -5000]
+[[judgement.adjust]]
+kind = "polygon"                         # Sahara south of the Atlas and Saharan Atlas
+points = [[-17.5, 19.0], [-17.5, 27.9], [-9.8, 29.0], [-6.5, 29.6], [-4.0, 31.3], [-1.5, 32.3], [0.5, 33.0], [3.0, 33.8], [5.8, 34.7], [10.2, 33.7], [12.0, 33.0], [12.0, 19.0]]
+value = 0.45
+slices = [-4000]
+[[judgement.adjust]]
+kind = "polygon"                         # Sahara south of the Atlas and Saharan Atlas
+points = [[-17.5, 19.0], [-17.5, 27.9], [-9.8, 29.0], [-6.5, 29.6], [-4.0, 31.3], [-1.5, 32.3], [0.5, 33.0], [3.0, 33.8], [5.8, 34.7], [10.2, 33.7], [12.0, 33.0], [12.0, 19.0]]
+value = 0.2
+slices = [-3000]
+[[judgement.adjust]]
+kind = "area"
+bbox = [-17.5, 19.0, 12.0, 22.0]
+value = 0.3
+slices = [-3000]
+
+[[judgement]]
+region = "Nile & Sudan"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-09", "dung_spores-9000-41", "dung_spores-8000-72", "dung_spores-7000-100", "dung_spores-6000-128", "dung_spores-5000-156", "dung_spores-4000-183", "dung_spores-3000-210"]
+why_empty = ["research_intensity", "recording_practice", "preservation"]
+why_note = "Kordofan savanna had wild ungulates, and cattle pastoralism spread from c. 5000 BCE."
+expected = 0.5
+expected_range = [0.2, 0.8]
+confidence = "low"
+basis = ["environment", "other_layer", "analogy"]
+reasoning = "There is no edge evidence. The livestock layer inside the gap from 7,000 BCE and savanna fauna both argue for a high share where lakes existed."
+literature = []
+would_settle = "NPP counts on any Kordofan or Darfur lake core."
+speculative_rule = "Fill at 0.45 until 6,000 BCE and 0.6 from 5,000 BCE."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000, -7000, -6000]
+value = 0.45
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000, -3000]
+value = 0.6
+
+[[judgement]]
+region = "West Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-06", "dung_spores-9000-39", "dung_spores-8000-70", "dung_spores-7000-98", "dung_spores-6000-126", "dung_spores-5000-154", "dung_spores-4000-180", "dung_spores-3000-207"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "The savanna-forest mosaic carried wild ungulates. Tsetse kept cattle out until late."
+expected = 0.35
+expected_range = [0.1, 0.6]
+confidence = "low"
+basis = ["environment", "analogy"]
+reasoning = "There is no evidence within 2,700 km. Wild grazing in the Guinea savanna was moderate, below Sahel and East African levels."
+literature = []
+would_settle = "NPP counts on Lake Tilla or Bosumtwi."
+speculative_rule = "Fill at 0.35."
+
+[[judgement]]
+region = "Horn of Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["dung_spores-10000-11", "dung_spores-9000-43", "dung_spores-8000-74", "dung_spores-7000-103", "dung_spores-6000-131", "dung_spores-5000-159", "dung_spores-4000-186", "dung_spores-3000-213"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "The Afar-Somali lowlands carried wild ass, oryx and gazelle. Pastoralism reaches the Horn c. 3000-2500 BCE."
+expected = 0.45
+expected_range = [0.2, 0.75]
+confidence = "low"
+basis = ["environment", "literature", "analogy"]
+reasoning = "There is no edge evidence. The 3,000 BCE Horn core (1 of 1) records spores. Livestock appears inside the gap at 5,000 and 3,000 BCE."
+literature = []
+would_settle = "NPP counts on Lake Abhe or Ziway cores."
+speculative_rule = "Fill at 0.4 until 4,000 BCE and 0.55 at 3,000 BCE."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000]
+value = 0.4
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-3000]
+value = 0.55
+
+[[judgement]]
+region = "Now-drowned shelves and islands"
+slices = [-10000, -9000]
+gap_ids = ["dung_spores-10000-23", "dung_spores-10000-28", "dung_spores-9000-57"]
+why_empty = ["submerged"]
+why_note = "This covers Doggerland (54.8°N 4°E) and the Persian Gulf floor. Doggerland had open wetland with aurochs, red deer and elk. The Gulf floor was a riverine oasis in a desert."
+expected = 0.3
+expected_range = [0.1, 0.6]
+confidence = "low"
+basis = ["neighbouring_evidence", "analogy"]
+reasoning = "The Doggerland edges are 0.17-0.23, which is ordinary for the early Holocene North Sea plain. The Gulf has no evidence; by analogy with Mesopotamia it should be higher, 0.5."
+literature = [
+  { cite = "Gaffney, Fitch & Smith 2009, Europe's Lost World: the rediscovery of Doggerland", checked = false },
+]
+would_settle = "NPP counts on North Sea vibrocores (Europe's Lost Frontiers project)."
+speculative_rule = "Fill Doggerland at 0.25 and the Gulf floor at 0.5 while dry."
+[[judgement.adjust]]
+kind = "area"
+bbox = [0.5, 52.5, 9.0, 57.5]
+value = 0.25
+[[judgement.adjust]]
+kind = "area"
+bbox = [47.5, 24.0, 57.0, 30.5]
+value = 0.5

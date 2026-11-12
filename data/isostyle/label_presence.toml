@@ -38,6 +38,13 @@ absent_cultures = [
 # the `from` limit.
 present_stages = ["neolithic", "chalcolithic", "bronze_age", "iron_age"]
 absent_stages = ["palaeolithic", "upper_palaeolithic", "epipalaeolithic", "mesolithic", "aceramic_neolithic"]
+# Where a bare stage label implies NO pottery: the Arabian Neolithic made no
+# pottery of its own; only imported Ubaid sherds reach the Gulf coast, and
+# those sites carry the Ubaid culture label, which still counts as present
+# (flagged by the gap critic, 2026-11-12).
+# Only the "neolithic" stage: Bronze Age Arabia (Umm an-Nar, Yemen) had pottery.
+present_stages_absent_in_countries_stages = ["neolithic"]
+present_stages_absent_in_countries = ["Saudi Arabia", "Yemen", "Oman", "United Arab Emirates", "Qatar", "Bahrain", "Kuwait"]
 [pottery.from]
 neolithic = -7000      # earlier "Neolithic" labels may be pre-pottery
 ertebolle = -4700      # early Ertebølle is aceramic

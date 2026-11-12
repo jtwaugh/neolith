@@ -1,0 +1,546 @@
+# Gap critic: mt haplogroup set (mt_u5, mt_u4, mt_h, mt_k, mt_j, mt_t2, mt_n1a, mt_other). Judgements, not data.
+# `expected` maps clade layer id -> expected share of genomes in the gap if it had been sampled.
+# mt_other carries U2 and X (folded in by the build), U6, M1, L*, N1b, R0a, W, HV, I, C/D/Z and the rest:
+# in Africa and South Asia it is nearly everything. Gap ids are those of the mt_u5 dossier;
+# every mt clade dossier has the same regions.
+
+[meta]
+layer = "mt haplogroup"
+written = "2026-11-12"
+dossier = "build/isostyle/gaps/mt_u5/dossier.json"
+summary = "The mt surfaces use a 300 km kernel (against 100 km for Y), so they cover far more land than the genomes behind them and their gaps are fewer (173). The expected pattern: European hunter-gatherers were U5 (U5b in the west, U5a in the east) with U4 and U2e (in 'other') rising eastwards into the EHG and SHG; Anatolian farmers brought K1, N1a, J, T2, H, X2, W and HV, and European farmer gene pools are a mix of these with H rising after 5,000 BCE; CHG and Iranian farmers were H13, K3, U1, X, T and J; Levantine Natufians and PPNB farmers were N1b, J, K, T, R0a; North Africans were U6 and M1 (Iberomaurusian), with K1, T2, J, X and H arriving from the Levant and Iberia after 5,500 BCE; and steppe Yamnaya were a mix of EHG U5a/U4/U2e and CHG-related H, T2, W, I, J. NO mt data exist for Sudan, the Sahara-Sahel, West Africa, the Horn, Arabia before 3,000 BCE, Afghanistan, Baluchistan or interior Algeria; any value there is extrapolation. Method artefacts of the wide kernel: the Maghreb at 7,000 BCE reads U5 0.82 and Libya & Egypt / Arabia read Levantine shares at 8,000-7,000 BCE purely by bleed from Iberia and the Levant; these should not be extended. Early-slice H spikes (Russia steppe 0.34, Ukraine 0.35 at 10,000 BCE) rest on one or two individuals."
+
+[[judgement]]
+region = "France & Low Countries"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["mt_u5-10000-19", "mt_u5-9000-45", "mt_u5-8000-76", "mt_u5-7000-106"]
+why_empty = ["research_intensity", "sampling_bias"]
+why_note = "Sampling: few Mesolithic burials sequenced (Téviec and Hoedic are late)."
+expected = { mt_u5 = 0.75, mt_u4 = 0.03, mt_h = 0.04, mt_other = 0.15 }
+confidence = "high"
+basis = ["literature", "neighbouring_evidence", "dossier_statistics"]
+reasoning = "Western hunter-gatherers are about three-quarters U5b with U2, U4 and U5a (mostly in 'other' and U4); evidenced cells read U5 0.67-0.82. Gaps of 25-247 cells lie 463-539 km from genomes."
+literature = [
+  { cite = "Posth et al. 2023, Nature", checked = false },
+  { cite = "Bramanti et al. 2009, 'Genetic discontinuity between local hunter-gatherers and central Europe's first farmers', Science", checked = false },
+]
+would_settle = "Mesolithic genomes from northern France and Belgium."
+speculative_rule = "Set U5 0.75, other 0.15 across the region until farming arrives."
+
+[[judgement]]
+region = "Iberia"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["mt_u5-9000-43", "mt_u5-8000-71", "mt_u5-10000-17", "mt_u5-7000-96"]
+why_empty = ["research_intensity", "low_population"]
+why_note = "Sampling; the Meseta was thinly settled."
+expected = { mt_u5 = 0.65, mt_h = 0.08, mt_other = 0.2 }
+confidence = "medium"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Iberian hunter-gatherers are U5b with some H and U* lineages (El Mirón cluster); surface U5 0.50-0.78. Gaps 209-300 cells, 370-1,234 km away."
+literature = [
+  { cite = "Villalba-Mouco et al. 2019, Curr. Biol.", checked = false },
+]
+would_settle = "Meseta and Andalusian Mesolithic genomes."
+speculative_rule = "Set U5 0.65, H 0.08."
+
+[[judgement]]
+region = "British Isles"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+gap_ids = ["mt_u5-10000-16", "mt_u5-9000-46", "mt_u5-6000-118", "mt_u5-7000-97", "mt_u5-5000-141", "mt_u5-5000-143", "mt_u5-8000-79", "mt_u5-8000-80"]
+why_empty = ["recording_practice", "preservation", "research_intensity"]
+why_note = "Burial practice (Irish cremation) and acid soils; England has Cheddar Man (U5b1)."
+expected = { mt_u5 = 0.75, mt_u4 = 0.03, mt_other = 0.15 }
+confidence = "medium"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Surface U5 0.62-0.80 to 6,000 BCE. The 5,000 BCE gaps (59-71 cells) are Irish and Scottish Mesolithic; farmer lineages (K, H, J) enter only after 4,000 BCE, so the surface's 0.22 U5 at 5,000 BCE is a kernel mix with France."
+literature = [
+  { cite = "Brace et al. 2019, Nat. Ecol. Evol.", checked = false },
+]
+would_settle = "Irish and Scottish Mesolithic genomes."
+speculative_rule = "Set U5 0.75 in the isles until 4,000 BCE."
+
+[[judgement]]
+region = "Now-drowned shelves and islands"
+slices = [-10000, -9000, -8000]
+gap_ids = ["mt_u5-10000-22", "mt_u5-9000-53"]
+why_empty = ["submerged"]
+why_note = "Submerged: Doggerland and the North Sea shelf."
+expected = { mt_u5 = 0.75, mt_u4 = 0.03, mt_h = 0.04, mt_other = 0.15 }
+confidence = "low"
+basis = ["neighbouring_evidence", "analogy"]
+reasoning = "Between British and Low Countries hunter-gatherers; the 9,000 BCE gap edge reads U5 0.80."
+literature = []
+would_settle = "None realistic."
+speculative_rule = "Set U5 0.75 on the North Sea shelf."
+
+[[judgement]]
+region = "Now-drowned shelves and islands"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["mt_u5-10000-28", "mt_u5-9000-57", "mt_u5-7000-105", "mt_u5-8000-82", "mt_u5-10000-29", "mt_u5-9000-59"]
+why_empty = ["submerged"]
+why_note = "Submerged: Persian Gulf floor, north Caspian lowland and Pechora coast. NO ancient DNA: extrapolation."
+expected = { mt_u5 = 0.15, mt_u4 = 0.1, mt_k = 0.05, mt_j = 0.05, mt_other = 0.5 }
+confidence = "low"
+basis = ["analogy", "intuition"]
+reasoning = "A blend: Gulf cells like Zagros and Arabian foragers (U1, X, R0, J, K), Caspian cells like EHG (U5a, U4, U2e, C)."
+literature = []
+would_settle = "None realistic."
+speculative_rule = "Gulf cells: other 0.6, J 0.1, K 0.1. Caspian and Pechora cells: U5 0.35, U4 0.25, other 0.3."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [47.5, 23.5, 57.0, 30.5]
+value = { mt_other = 0.6, mt_j = 0.1, mt_k = 0.1 }
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [46.5, 36.5, 55.0, 47.5]
+value = { mt_u5 = 0.35, mt_u4 = 0.25, mt_other = 0.3 }
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [43.0, 67.0, 62.0, 72.0]
+value = { mt_u5 = 0.35, mt_u4 = 0.25, mt_other = 0.3 }
+
+[[judgement]]
+region = "Italy & islands"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["mt_u5-8000-75", "mt_u5-9000-54", "mt_u5-10000-27", "mt_u5-7000-103"]
+why_empty = ["sampling_bias", "research_intensity"]
+why_note = "Sampling: Villabruna, Continenza and Sicily."
+expected = { mt_u5 = 0.65, mt_k = 0.03, mt_other = 0.22 }
+confidence = "medium"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Villabruna-cluster foragers are U5b and U2'3'4'7'8'9; surface U5 0.43-0.81. Gaps 62-136 cells."
+literature = [
+  { cite = "Fu et al. 2016, Nature", checked = false },
+]
+would_settle = "Apennine Mesolithic genomes."
+speculative_rule = "Set U5 0.65."
+
+[[judgement]]
+region = "Central Europe"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["mt_u5-10000-11", "mt_u5-9000-41", "mt_u5-8000-73", "mt_u5-7000-98"]
+why_empty = ["sampling_bias", "research_intensity"]
+why_note = "Sampling and Mesolithic burial rarity."
+expected = { mt_u5 = 0.65, mt_u4 = 0.08, mt_k = 0.03, mt_other = 0.18 }
+confidence = "medium"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Surface U5 0.49-0.73. Gaps 109-618 cells, 258-847 km from genomes; U4 rises towards Poland."
+literature = [
+  { cite = "Posth et al. 2023, Nature", checked = false },
+]
+would_settle = "German and Polish Mesolithic genomes."
+speculative_rule = "Set U5 0.65, U4 0.08, U4 up to 0.15 east of the Oder."
+
+[[judgement.adjust]]
+kind = "polygon"
+points = [[14.2, 55.5], [14.6, 53.4], [14.6, 52.4], [15.6, 51.9], [16.1, 51.65], [17.0, 51.1], [17.9, 50.7], [18.3, 50.1], [17.6, 49.8], [17.6, 48.5], [24.5, 48.5], [24.5, 55.5]]
+value = { mt_u5 = 0.597, mt_k = 0.028, mt_other = 0.165, mt_u4 = 0.15 }
+
+[[judgement]]
+region = "Balkans & Greece"
+slices = [-10000, -9000, -8000]
+gap_ids = ["mt_u5-10000-13", "mt_u5-9000-58", "mt_u5-8000-83"]
+why_empty = ["sampling_bias"]
+why_note = "Sampling beyond the Iron Gates and Greek caves."
+expected = { mt_u5 = 0.55, mt_h = 0.08, mt_k = 0.08, mt_u4 = 0.07, mt_other = 0.15 }
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Iron Gates foragers are U5a/U5b with some H and K1 and U4; Aegean Mesolithic (Theopetra, Maroulas) is closer to Anatolian foragers (K, N). Surface U5 0.48-0.69. Gaps 29-417 cells, 107-712 km."
+literature = [
+  { cite = "Mathieson et al. 2018, Nature", checked = false },
+]
+would_settle = "Greek and Bulgarian Mesolithic genomes."
+speculative_rule = "Set U5 0.55 north of 42°N, U5 0.3 with K 0.2 in Greece."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [20.9, 34.8, 28.3, 41.0]
+value = { mt_h = 0.115, mt_u4 = 0.1, mt_other = 0.215, mt_u5 = 0.3, mt_k = 0.2 }
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [19.6, 37.5, 20.9, 39.6]
+value = { mt_h = 0.115, mt_u4 = 0.1, mt_other = 0.215, mt_u5 = 0.3, mt_k = 0.2 }
+
+[[judgement]]
+region = "Baltic"
+slices = [-10000, -9000, -8000]
+gap_ids = ["mt_u5-9000-49", "mt_u5-10000-23", "mt_u5-8000-77"]
+why_empty = ["low_population", "research_intensity"]
+why_note = "No burials before Zvejnieki c. 7,500 BCE."
+expected = { mt_u5 = 0.6, mt_u4 = 0.25, mt_other = 0.1 }
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Baltic foragers are U5a, U4 and U2e; surface U5 0.73 and U4 0.13 at 7,000 BCE."
+literature = [
+  { cite = "Mittnik et al. 2018, Nat. Commun.", checked = false },
+]
+would_settle = "Early Mesolithic Baltic genomes."
+speculative_rule = "Set U5 0.6, U4 0.25."
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["mt_u5-7000-94", "mt_u5-5000-134", "mt_u5-4000-154", "mt_u5-6000-117", "mt_u5-3000-167", "mt_u5-9000-42", "mt_u5-10000-18", "mt_u5-8000-72", "mt_u5-10000-24"]
+why_empty = ["ice", "preservation", "low_population", "research_intensity"]
+why_note = "Ice early; acid soils in Finland and Norrland later."
+expected = { mt_u5 = 0.5, mt_u4 = 0.2, mt_h = 0.03, mt_other = 0.2 }
+confidence = "low"
+basis = ["literature", "neighbouring_evidence", "analogy"]
+reasoning = "SHG and Pitted Ware are U5a, U4, U2e (other) and some H/V; southern farmer lineages (K, T2, J, H; surface 0.10-0.18 each at 4,000-3,000 BCE) reach only Denmark and south Sweden. The gaps (99-542 cells) are Norrland, Finland and Norway's north, which stayed forager-descended."
+literature = [
+  { cite = "Günther et al. 2018, PLoS Biol.", checked = false },
+  { cite = "Lamnidis et al. 2018, Nat. Commun.", checked = false },
+]
+would_settle = "Finnish and Norrland Stone Age genomes."
+speculative_rule = "Set U5 0.5, U4 0.2, other 0.2 in the gaps in every slice; Siberian C/D/Z ('other') up to 0.3 in Finnish Lapland after 4,000 BCE."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [20.5, 66.0, 29.7, 70.1]
+value = { mt_u5 = 0.432, mt_u4 = 0.173, mt_h = 0.026, mt_other = 0.3 }
+slices = [-3000]
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["mt_u5-10000-01", "mt_u5-8000-60", "mt_u5-7000-85", "mt_u5-9000-31", "mt_u5-5000-129", "mt_u5-4000-148", "mt_u5-6000-112", "mt_u5-3000-164", "mt_u5-3000-168", "mt_u5-5000-136", "mt_u5-9000-51", "mt_u5-7000-100", "mt_u5-6000-121", "mt_u5-5000-140", "mt_u5-4000-156", "mt_u5-3000-169", "mt_u5-9000-56", "mt_u5-6000-124", "mt_u5-8000-81"]
+why_empty = ["research_intensity", "low_population", "preservation"]
+why_note = "Sampling plus acid soils north of 62°N."
+expected = { mt_u5 = 0.35, mt_u4 = 0.3, mt_h = 0.03, mt_t2 = 0.03, mt_other = 0.25 }
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "EHG are U5a, U4, U2e and C1; Yuzhny Oleni Ostrov includes C1g. Surface U5 0.15-0.48, U4 0.18-0.55. H, T2 and J reach the forest zone only with Fatyanovo (c. 2,800 BCE), so the 3,000 BCE surface H 0.18 is the southern edge. Gaps 44-2,002 cells, 552-1,841 km."
+literature = [
+  { cite = "Mathieson et al. 2018, Nature", checked = false },
+  { cite = "Saag et al. 2021, Sci. Adv.", checked = false },
+]
+would_settle = "Pechora and Dvina Mesolithic-Neolithic genomes."
+speculative_rule = "Set U5 0.35, U4 0.3, other 0.25 (U2e, C, Z); Siberian 'other' up to 0.4 east of 55°E."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [55.0, 56.1, 65.7, 75.6]
+value = { mt_u5 = 0.276, mt_u4 = 0.237, mt_h = 0.024, mt_t2 = 0.024, mt_other = 0.4 }
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+gap_ids = ["mt_u5-7000-89", "mt_u5-10000-07", "mt_u5-9000-38", "mt_u5-8000-68", "mt_u5-6000-119", "mt_u5-5000-144"]
+why_empty = ["research_intensity", "sampling_bias"]
+why_note = "Sampling of Mesolithic steppe graves."
+expected = { mt_u5 = 0.45, mt_u4 = 0.2, mt_h = 0.05, mt_other = 0.22 }
+confidence = "medium"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Steppe EHG (Samara, Lebyazhinka) U5a, U4, U2e; surface U5 0.34-0.65. H 0.33-0.34 at 10,000/8,000 BCE rests on very few samples. Gaps 47-1,048 cells."
+literature = [
+  { cite = "Haak et al. 2015, Nature", checked = false },
+]
+would_settle = "Lower Don and Kama Mesolithic genomes."
+speculative_rule = "Set U5 0.45, U4 0.2."
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["mt_u5-10000-15", "mt_u5-8000-74", "mt_u5-9000-47", "mt_u5-7000-101"]
+why_empty = ["research_intensity", "preservation"]
+why_note = "Sampling in Belarus; acid sands."
+expected = { mt_u5 = 0.5, mt_u4 = 0.18, mt_h = 0.08, mt_other = 0.18 }
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Dnieper foragers are U5a/U5b, U4, U2e, with H in a few individuals. Surface U5 0.45-0.67. Gaps 80-321 cells over Belarus."
+literature = [
+  { cite = "Mathieson et al. 2018, Nature", checked = false },
+]
+would_settle = "Belarusian Mesolithic genomes."
+speculative_rule = "Set U5 0.5, U4 0.18."
+
+[[judgement]]
+region = "Anatolia & Cyprus"
+slices = [-10000, -9000]
+gap_ids = ["mt_u5-10000-14", "mt_u5-9000-44"]
+why_empty = ["research_intensity"]
+why_note = "Sampling: only Pınarbaşı and Boncuklu."
+expected = { mt_k = 0.25, mt_n1a = 0.08, mt_u5 = 0.05, mt_j = 0.08, mt_other = 0.4 }
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Pınarbaşı foragers carry K and U3/N lineages; Boncuklu K1, N1a, U3, X. Surface K 0.37 at 9,000 BCE. Gaps 292-387 cells."
+literature = [
+  { cite = "Feldman et al. 2019, Nat. Commun.", checked = false },
+]
+would_settle = "Epipalaeolithic Anatolian genomes."
+speculative_rule = "Set K 0.25, other 0.4."
+
+[[judgement]]
+region = "Anatolia & Cyprus"
+slices = [-5000]
+gap_ids = ["mt_u5-5000-139"]
+why_empty = ["sampling_bias"]
+why_note = "Sampling: a Middle Chalcolithic gap (108 cells)."
+expected = { mt_k = 0.2, mt_h = 0.18, mt_t2 = 0.1, mt_j = 0.1, mt_n1a = 0.03, mt_other = 0.3 }
+confidence = "medium"
+basis = ["neighbouring_evidence"]
+reasoning = "Neighbouring cells at 5,000-4,000 BCE: K 0.19-0.25, H 0.18-0.20, other 0.30-0.34."
+literature = [
+  { cite = "Kılınç et al. 2016, Curr. Biol.", checked = false },
+]
+would_settle = "Chalcolithic genomes."
+speculative_rule = "Extend neighbours."
+
+[[judgement]]
+region = "Caucasus"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["mt_u5-7000-99", "mt_u5-9000-52", "mt_u5-10000-25"]
+why_empty = ["research_intensity"]
+why_note = "Sampling: only west Georgia."
+expected = { mt_h = 0.2, mt_k = 0.15, mt_other = 0.45, mt_t2 = 0.05, mt_j = 0.05 }
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Kotias is H13c, Satsurblia K3; surface H 0.30, other 0.30 at 8,000 BCE."
+literature = [
+  { cite = "Jones et al. 2015, Nat. Commun.", checked = false },
+]
+would_settle = "Azerbaijani Mesolithic genomes."
+speculative_rule = "Set H 0.2, K 0.15, other 0.45."
+
+[[judgement]]
+region = "Levant"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["mt_u5-5000-137", "mt_u5-10000-21", "mt_u5-9000-50", "mt_u5-6000-123", "mt_u5-3000-173"]
+why_empty = ["research_intensity", "recording_practice", "preservation"]
+why_note = "Sampling; burial practice at 5,000 BCE; heat."
+expected = { mt_k = 0.2, mt_j = 0.1, mt_t2 = 0.08, mt_h = 0.06, mt_n1a = 0.03, mt_other = 0.45 }
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Natufians N1b, U3, J; PPNB K, J, T, R0a, X2; Peqi'in H, U, K, T, N1b. Surface K 0.15-0.41, other 0.21-0.45. Gaps 32-142 cells."
+literature = [
+  { cite = "Lazaridis et al. 2016, Nature", checked = false },
+  { cite = "Harney et al. 2018, Nat. Commun.", checked = false },
+]
+would_settle = "Syrian genomes."
+speculative_rule = "Set K 0.2, other 0.45; H rising to 0.12 by 3,000 BCE."
+
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-4000]
+value = { mt_k = 0.193, mt_j = 0.097, mt_t2 = 0.077, mt_n1a = 0.029, mt_other = 0.434, mt_h = 0.09 }
+
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-3000]
+value = { mt_k = 0.186, mt_j = 0.093, mt_t2 = 0.074, mt_n1a = 0.028, mt_other = 0.419, mt_h = 0.12 }
+
+[[judgement]]
+region = "Mesopotamia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["mt_u5-10000-20", "mt_u5-9000-48", "mt_u5-5000-138", "mt_u5-6000-120", "mt_u5-3000-170", "mt_u5-4000-158", "mt_u5-7000-104"]
+why_empty = ["preservation", "research_intensity"]
+why_note = "Preservation on the alluvium; sampling in the north. Southern Mesopotamia has NO ancient DNA: extrapolation."
+expected = { mt_k = 0.15, mt_j = 0.1, mt_h = 0.1, mt_t2 = 0.08, mt_other = 0.45 }
+confidence = "low"
+basis = ["literature", "analogy"]
+reasoning = "Northern Iraqi Neolithic genomes mix Anatolian (K, N1a) and Zagros (U1, X, J, T) lineages; surface other 0.25-0.60. All gaps (39-202 cells) are on the southern alluvium."
+literature = [
+  { cite = "Lazaridis et al. 2022, Science", checked = false },
+]
+would_settle = "Ubaid petrous sampling."
+speculative_rule = "Set other 0.45, K 0.15."
+
+[[judgement]]
+region = "Iran & Afghanistan"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["mt_u5-10000-10", "mt_u5-9000-39", "mt_u5-6000-115", "mt_u5-7000-93", "mt_u5-5000-133", "mt_u5-8000-69", "mt_u5-4000-155", "mt_u5-3000-172"]
+why_empty = ["research_intensity", "dataset_edge", "preservation"]
+why_note = "Sampling; Afghanistan has NO ancient DNA: extrapolation."
+expected = { mt_j = 0.12, mt_k = 0.1, mt_h = 0.08, mt_t2 = 0.05, mt_u5 = 0.03, mt_other = 0.55 }
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Ganj Dareh and Wezmeh: X, U1, J, T, N; Hissar/Shahr-i Sokhta add W, U7, M (South Asian). Surface other 0.24-0.70. Gaps 41-887 cells, mostly the plateau and Afghanistan."
+literature = [
+  { cite = "Broushaki et al. 2016, Science", checked = false },
+  { cite = "Narasimhan et al. 2019, Science", checked = false },
+]
+would_settle = "Plateau genomes."
+speculative_rule = "Set other 0.55, J 0.12; South Asian M ('other') rises to 0.4 of the total in Afghanistan."
+
+[[judgement]]
+region = "Central Asia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["mt_u5-7000-91", "mt_u5-9000-36", "mt_u5-8000-66", "mt_u5-6000-113", "mt_u5-10000-08", "mt_u5-5000-132", "mt_u5-4000-152", "mt_u5-3000-171"]
+why_empty = ["research_intensity", "dataset_edge", "low_population"]
+why_note = "Sampling and grid edge."
+expected = { mt_u5 = 0.15, mt_u4 = 0.1, mt_h = 0.1, mt_j = 0.07, mt_t2 = 0.05, mt_k = 0.03, mt_other = 0.45 }
+confidence = "low"
+basis = ["analogy", "neighbouring_evidence"]
+reasoning = "North: West Siberian foragers (U5a, U4, U2e, C, Z); south: Geoksyur (U, H, T, J, W, M). Surface U5 0.34-0.41 and U4 0.28-0.30 at 6,000-5,000 BCE. Gaps 41-1,007 cells."
+literature = [
+  { cite = "Narasimhan et al. 2019, Science", checked = false },
+]
+would_settle = "Kelteminar genomes."
+speculative_rule = "North of 45°N U5 0.3, U4 0.2; south other 0.55."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [47.0, 45.0, 65.7, 55.5]
+value = { mt_h = 0.064, mt_j = 0.045, mt_t2 = 0.032, mt_k = 0.019, mt_other = 0.289, mt_u5 = 0.3, mt_u4 = 0.2 }
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [47.0, 35.0, 65.7, 45.0]
+value = { mt_u5 = 0.12, mt_u4 = 0.08, mt_h = 0.08, mt_j = 0.056, mt_t2 = 0.04, mt_k = 0.024, mt_other = 0.55 }
+
+[[judgement]]
+region = "Other"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000]
+gap_ids = ["mt_u5-10000-26", "mt_u5-9000-55", "mt_u5-8000-78", "mt_u5-7000-102", "mt_u5-6000-122", "mt_u5-5000-142", "mt_u5-4000-157"]
+why_empty = ["preservation", "dataset_edge"]
+why_note = "Baluchistan: NO ancient DNA; Mehrgarh failed. Extrapolation."
+expected = { mt_other = 0.9, mt_j = 0.03, mt_t2 = 0.02, mt_h = 0.02 }
+confidence = "low"
+basis = ["analogy", "literature"]
+reasoning = "Indus Periphery outliers carry South Asian M lineages plus U2, R and W. 71-75 cells."
+literature = [
+  { cite = "Narasimhan et al. 2019, Science", checked = false },
+]
+would_settle = "Mehrgarh petrous sampling."
+speculative_rule = "Set other 0.9."
+
+[[judgement]]
+region = "Arabia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["mt_u5-10000-04", "mt_u5-9000-33", "mt_u5-6000-109", "mt_u5-5000-126", "mt_u5-3000-160", "mt_u5-7000-87", "mt_u5-8000-63", "mt_u5-4000-147"]
+why_empty = ["preservation", "research_intensity"]
+why_note = "Arabia has NO prehistoric ancient DNA: extrapolation. Surface values at 8,000-7,000 BCE are Levantine bleed."
+expected = { mt_other = 0.6, mt_j = 0.12, mt_t2 = 0.06, mt_k = 0.05, mt_h = 0.05, mt_n1a = 0.02 }
+confidence = "low"
+basis = ["analogy", "intuition"]
+reasoning = "Expect R0a, HV, N1b, U, L (other) with J and T as in modern and Bronze/Iron Age Arabia."
+literature = [
+  { cite = "Martiniano et al. 2024, Cell", checked = false },
+]
+would_settle = "Jebel Buhais genomes."
+speculative_rule = "Set other 0.6, J 0.12."
+
+[[judgement]]
+region = "Libya & Egypt"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["mt_u5-10000-05", "mt_u5-9000-34", "mt_u5-6000-110", "mt_u5-3000-161", "mt_u5-5000-127", "mt_u5-7000-90", "mt_u5-8000-65", "mt_u5-4000-149"]
+why_empty = ["preservation", "research_intensity"]
+why_note = "Takarkori only; Egypt pre-3,000 BCE has NO ancient DNA. Mostly extrapolation."
+expected = { mt_other = 0.8, mt_h = 0.05, mt_j = 0.04, mt_t2 = 0.03, mt_k = 0.03 }
+confidence = "low"
+basis = ["literature", "analogy"]
+reasoning = "Takarkori women carry a basal N lineage; Egyptian later genomes M1, U6, L, J, T, H. Surface values here are kernel bleed from the Levant."
+literature = [
+  { cite = "Salem et al. 2025, Nature", checked = false },
+]
+would_settle = "Predynastic Egyptian genomes."
+speculative_rule = "Set other 0.8."
+
+[[judgement]]
+region = "Maghreb"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["mt_u5-10000-03", "mt_u5-8000-62", "mt_u5-9000-32", "mt_u5-7000-86"]
+why_empty = ["research_intensity", "preservation"]
+why_note = "No genome falls in these slices."
+expected = { mt_other = 0.95 }
+confidence = "medium"
+basis = ["literature", "analogy"]
+reasoning = "Taforalt women are U6a and M1b; the 7,000 BCE surface U5 0.82 is Iberian bleed (method artefact)."
+literature = [
+  { cite = "van de Loosdrecht et al. 2018, Science", checked = false },
+]
+would_settle = "Capsian genomes."
+speculative_rule = "Set other 0.95."
+
+[[judgement]]
+region = "Maghreb"
+slices = [-6000, -5000, -4000, -3000]
+gap_ids = ["mt_u5-6000-108", "mt_u5-3000-163", "mt_u5-5000-130", "mt_u5-4000-150"]
+why_empty = ["research_intensity", "preservation"]
+why_note = "Sampling: northern Morocco only."
+expected = { mt_other = 0.65, mt_k = 0.1, mt_h = 0.07, mt_t2 = 0.05, mt_j = 0.05 }
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "IAM U6a, M1; KTG K1, T2, X, H; KEB K1, J2, HV, X, H."
+literature = [
+  { cite = "Fregel et al. 2018, PNAS", checked = false },
+  { cite = "Simões et al. 2023, Nature", checked = false },
+]
+would_settle = "Algerian genomes."
+speculative_rule = "North Morocco K 0.15, H 0.1; elsewhere other 0.85."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [-17.2, 18.9, 12.0, 37.6]
+value = { mt_k = 0.026, mt_h = 0.018, mt_t2 = 0.013, mt_j = 0.013, mt_other = 0.85 }
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [-9.0, 33.5, -1.75, 36.0]
+value = { mt_other = 0.581, mt_t2 = 0.045, mt_j = 0.045, mt_k = 0.15, mt_h = 0.1 }
+
+[[judgement]]
+region = "Nile & Sudan"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["mt_u5-10000-09", "mt_u5-9000-37", "mt_u5-8000-67", "mt_u5-7000-92", "mt_u5-5000-131", "mt_u5-6000-114", "mt_u5-3000-165", "mt_u5-4000-151"]
+why_empty = ["preservation", "research_intensity"]
+why_note = "NO ancient DNA: extrapolation."
+expected = { mt_other = 0.97 }
+confidence = "low"
+basis = ["analogy"]
+reasoning = "L lineages, M1, U6, N."
+literature = []
+would_settle = "Al Khiday genomes."
+speculative_rule = "Set other 0.97."
+
+[[judgement]]
+region = "Sahara–Sahel"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["mt_u5-10000-02", "mt_u5-4000-145", "mt_u5-8000-61", "mt_u5-3000-159", "mt_u5-9000-30", "mt_u5-5000-125", "mt_u5-6000-107", "mt_u5-7000-84"]
+why_empty = ["preservation", "research_intensity", "low_population"]
+why_note = "NO ancient DNA: extrapolation."
+expected = { mt_other = 0.97 }
+confidence = "low"
+basis = ["analogy", "literature"]
+reasoning = "L, U6, M1, basal N (Takarkori)."
+literature = [
+  { cite = "Salem et al. 2025, Nature", checked = false },
+]
+would_settle = "Gobero."
+speculative_rule = "Set other 0.97."
+
+[[judgement]]
+region = "West Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["mt_u5-10000-06", "mt_u5-9000-35", "mt_u5-7000-88", "mt_u5-8000-64", "mt_u5-6000-111", "mt_u5-4000-146", "mt_u5-5000-128", "mt_u5-3000-162"]
+why_empty = ["preservation", "dataset_edge"]
+why_note = "NO ancient DNA: extrapolation."
+expected = { mt_other = 1.0 }
+confidence = "medium"
+basis = ["analogy", "literature"]
+reasoning = "L0-L3 (Shum Laka L0a2, L1c)."
+literature = [
+  { cite = "Lipson et al. 2020, Nature", checked = false },
+]
+would_settle = "Rock shelters."
+speculative_rule = "Set other 1.0."
+
+[[judgement]]
+region = "Horn of Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["mt_u5-10000-12", "mt_u5-9000-40", "mt_u5-8000-70", "mt_u5-7000-95", "mt_u5-5000-135", "mt_u5-6000-116", "mt_u5-4000-153", "mt_u5-3000-166"]
+why_empty = ["preservation", "research_intensity"]
+why_note = "NO ancient DNA before Mota: extrapolation."
+expected = { mt_other = 0.97 }
+confidence = "low"
+basis = ["analogy", "literature"]
+reasoning = "Mota is L3x2a; expect L, M1, N."
+literature = [
+  { cite = "Gallego Llorente et al. 2015, Science", checked = false },
+]
+would_settle = "Highland caves."
+speculative_rule = "Set other 0.97."

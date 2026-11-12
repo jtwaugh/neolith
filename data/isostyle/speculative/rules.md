@@ -1,0 +1,1373 @@
+# Speculative fill rules from the gap critics
+
+Free-text rules the critics proposed for each gap, with how many machine-readable `adjust`
+entries encode each (applied by `speculative.py`). A rule with none is filled with the judgement's
+flat expected value. Each line names its judgement (file#index).
+
+## Pottery
+
+- **Arabia**, 7,000–10,000 BCE (high, flat value): 0 across the peninsula for 10,000-7,000 BCE. `pottery.toml#26`
+- **Arabia**, 4,000–6,000 BCE (medium, encoded (5 adjust)): Set 0 inland; set 0.3 within 50 km of the Gulf coast at 5,000 BCE only; do not extend the 0.5-0.7 rim values into the peninsula. `pottery.toml#27`
+- **Arabia**, 3,000–3,000 BCE (low, encoded (6 adjust)): 0.7 in Oman, the UAE and highland Yemen; 0.1 in the interior and the Hejaz. `pottery.toml#28`
+- **Baltic**, 7,000–10,000 BCE (high, flat value): 0 for 10,000-7,000 BCE. `pottery.toml#12`
+- **Baltic**, 6,000–6,000 BCE (medium, flat value): 0.05 across the Baltic at 6,000 BCE. `pottery.toml#13`
+- **Baltic**, 3,000–3,000 BCE (high, flat value): Copy the adjacent 0.99 into the hole. `pottery.toml#14`
+- **Caucasus**, 7,000–10,000 BCE (medium, flat value): 0 throughout the Caucasus for 10,000-7,000 BCE. `pottery.toml#17`
+- **Caucasus**, 6,000–6,000 BCE (low, flat value): Cap the Caucasus at 0.6 for 6,000 BCE in the speculative layer. `pottery.toml#18`
+- **Caucasus**, 3,000–3,000 BCE (high, flat value): Fill with 0.99. `pottery.toml#19`
+- **Central Asia**, 8,000–10,000 BCE (medium, flat value): 0 across the Central Asian part of the grid for 10,000-8,000 BCE. `pottery.toml#20`
+- **Central Asia**, 6,000–7,000 BCE (low, encoded (5 adjust)): 7,000 BCE: 0.05 everywhere. 6,000 BCE: 0.8 along the Kopet Dag piedmont (south of 39°N), 0.4 on the Caspian shore, 0.2 in the Kyzylkum and Ustyurt. `pottery.toml#21`
+- **Central Asia**, 3,000–5,000 BCE (medium, encoded (2 adjust)): Fill with 0.9, lowering to 0.7 in the Ustyurt and central Karakum where occupation was ephemeral. `pottery.toml#22`
+- **Iran & Afghanistan**, 8,000–10,000 BCE (medium, encoded (2 adjust)): 0 for 10,000-9,000 BCE; at 8,000 BCE 0.05 in the Zagros, 0 on the plateau and in Afghanistan. `pottery.toml#23`
+- **Iran & Afghanistan**, 6,000–7,000 BCE (low, encoded (4 adjust)): 7,000 BCE: 0.35 on the plateau rims, 0.1 in Afghanistan. 6,000 BCE: 0.8 on the rims, 0.4 in Afghanistan; mark the Kavir and Lut deserts as low occupation rather than pottery-free. `pottery.toml#24`
+- **Iran & Afghanistan**, 3,000–5,000 BCE (medium, flat value): Fill with the adjacent 0.95-0.99. `pottery.toml#25`
+- **Libya & Egypt**, 10,000–10,000 BCE (medium, flat value): 0, and mark the desert as unoccupied. `pottery.toml#38`
+- **Libya & Egypt**, 7,000–9,000 BCE (low, encoded (4 adjust)): 0.3 at 9,000 BCE and 0.65 at 8,000-7,000 BCE in the desert interior; keep the observed low values within 50 km of the Nile and in the Fayum. `pottery.toml#39`
+- **Libya & Egypt**, 3,000–6,000 BCE (medium, flat value): Fill with 0.9; from 5,000 BCE mark the desert interior as low occupation rather than lowering the pottery value. `pottery.toml#40`
+- **Maghreb**, 9,000–10,000 BCE (medium, encoded (4 adjust)): 0 for 10,000 BCE; at 9,000 BCE 0.3 within 300 km of the Hoggar and Tassili, 0 north of the Saharan Atlas. `pottery.toml#35`
+- **Maghreb**, 6,000–8,000 BCE (low, encoded (2 adjust)): South of 30°N: 0.6 at 8,000, 0.75 at 7,000-6,000 BCE; north of the Saharan Atlas keep the observed Capsian values. `pottery.toml#36`
+- **Maghreb**, 3,000–5,000 BCE (medium, flat value): Fill with 0.9; mark the Erg and Tanezrouft as low occupation from 4,000 BCE. `pottery.toml#37`
+- **Mesopotamia**, 7,000–10,000 BCE (medium, encoded (3 adjust)): 0 for 10,000-8,000 BCE; 0.2 at 7,000 BCE north of 32°N, 0 south of it. `pottery.toml#41`
+- **Mesopotamia**, 3,000–6,000 BCE (high, flat value): Fill with 0.95; mark the western desert part as low occupation. `pottery.toml#42`
+- **Nile & Sudan**, 10,000–10,000 BCE (low, encoded (2 adjust)): 0.3 within 300 km of the Nile, 0.15 further west and in South Sudan. `pottery.toml#32`
+- **Nile & Sudan**, 6,000–9,000 BCE (medium, encoded (3 adjust)): 0.7 at 9,000 BCE and 0.85 at 8,000-6,000 BCE across Kordofan and Darfur; 0.5 in South Sudan where the record is unknown. `pottery.toml#33`
+- **Nile & Sudan**, 3,000–5,000 BCE (medium, flat value): Fill with 0.95. `pottery.toml#34`
+- **Now-drowned shelves and islands**, 7,000–10,000 BCE (medium, flat value): Copy the adjacent coast: 0 on the Gulf and Doggerland shelves. `pottery.toml#47`
+- **Now-drowned shelves and islands**, 10,000–10,000 BCE (high, flat value): Treat as part of the Russian forest zone and take its values. `pottery.toml#49`
+- **Now-drowned shelves and islands**, 6,000–9,000 BCE (low, encoded (3 adjust)): Copy the adjacent Lower Volga/North Caspian coast values: 0 to 8,000, 0.2 at 7,000, 0.75 at 6,000 BCE. `pottery.toml#48`
+- **Other**, 6,000–10,000 BCE (low, encoded (2 adjust)): 0 to 7,000 BCE; 0.1 at 6,000 BCE. `pottery.toml#45`
+- **Other**, 3,000–5,000 BCE (medium, encoded (2 adjust)): 0.8 at 5,000 BCE, 0.95 after. `pottery.toml#46`
+- **Russia: forest north of 56°N**, 8,000–10,000 BCE (high, flat value): Set pottery to 0 across the whole Russian forest zone, including the Pechora and Novaya Zemlya fringes, for 10,000-8,000 BCE. `pottery.toml#1`
+- **Russia: forest north of 56°N**, 7,000–7,000 BCE (medium, encoded (2 adjust)): Set 0.05 south of 58°N between 35° and 55°E (Upper Volga, Kama) and 0 elsewhere in the forest zone at 7,000 BCE. `pottery.toml#2`
+- **Russia: forest north of 56°N**, 6,000–6,000 BCE (medium, encoded (2 adjust)): At 6,000 BCE set 0.55 south of 60°N, fading linearly to 0.15 at 64°N and 0.05 on the Arctic coast and Novaya Zemlya. `pottery.toml#3`
+- **Russia: forest north of 56°N**, 3,000–5,000 BCE (medium, encoded (2 adjust)): Fill the forest zone with the adjacent 0.95 south of 64°N, fading to 0.7 at the Arctic coast; leave Novaya Zemlya as unknown/unsettled. `pottery.toml#4`
+- **Russia: steppe and forest-steppe**, 7,000–10,000 BCE (medium, encoded (3 adjust)): 0 for 10,000-8,000 BCE; at 7,000 BCE 0.3 within 250 km of the Middle Volga (Samara) and Lower Don, 0.05 elsewhere in the steppe. `pottery.toml#5`
+- **Russia: steppe and forest-steppe**, 6,000–6,000 BCE (medium, encoded (2 adjust)): 0.8 within 250 km of the Volga and Lower Don, 0.6 in the rest of the steppe and forest-steppe. `pottery.toml#6`
+- **Russia: steppe and forest-steppe**, 3,000–5,000 BCE (medium, flat value): Fill with 0.95. `pottery.toml#7`
+- **Sahara–Sahel**, 10,000–10,000 BCE (low, encoded (4 adjust)): 0.15 in the Malian and Nigerien Sahel south of 18°N, 0.05 further north. `pottery.toml#29`
+- **Sahara–Sahel**, 7,000–9,000 BCE (medium, encoded (4 adjust)): 0.6 at 9,000 BCE and 0.8 at 8,000-7,000 BCE south of 22°N, fading to 0.5 in the hyper-arid north of Mali and Mauritania. `pottery.toml#30`
+- **Sahara–Sahel**, 3,000–6,000 BCE (medium, flat value): Fill with 0.95; from 4,000 BCE mark the area north of 20°N as low occupation rather than lowering the pottery value. `pottery.toml#31`
+- **Scandinavia**, 6,000–10,000 BCE (high, flat value): Set 0 over Norway, northern Sweden and Finland through 6,000 BCE, ignoring the 0.25-0.37 edge values. `pottery.toml#15`
+- **Scandinavia**, 3,000–5,000 BCE (low, encoded (8 adjust)): Finland: copy the Baltic values (0.9 at 5,000, 0.95 after). Norway and Swedish interior north of 62°N: 0.1 at 5,000, 0.25 at 4,000 and 0.35 at 3,000 BCE, rising to 0.5 near the Finnish border. `pottery.toml#16`
+- **Ukraine & Belarus**, 8,000–10,000 BCE (high, flat value): Set pottery to 0 across Ukraine and Belarus for 10,000-8,000 BCE. `pottery.toml#8`
+- **Ukraine & Belarus**, 7,000–7,000 BCE (low, encoded (3 adjust)): At 7,000 BCE set 0.15 east of the Dnieper and south of 49°N, fading to 0 at 52°N and in all of Belarus. `pottery.toml#9`
+- **Ukraine & Belarus**, 6,000–6,000 BCE (low, encoded (1 adjust)): 0.1 across Belarus at 6,000 BCE, rising to 0.4 at the Ukrainian border. `pottery.toml#10`
+- **Ukraine & Belarus**, 3,000–3,000 BCE (high, flat value): Copy the adjacent 0.99 into the hole. `pottery.toml#11`
+
+## Flaked stone
+
+- **Anatolia & Cyprus**, 3,000–10,000 BCE (high, flat value): Fill every occupied cell with 1.0. `flaked_stone.toml#12`
+- **Arabia**, 3,000–10,000 BCE (high, flat value): Fill occupied cells with 0.99; mark the Rub' al-Khali and Nafud as low occupation. `flaked_stone.toml#18`
+- **Balkans & Greece**, 3,000–10,000 BCE (high, flat value): Fill every occupied cell with 1.0. `flaked_stone.toml#11`
+- **Baltic**, 3,000–10,000 BCE (high, flat value): Fill every occupied cell with 0.98. `flaked_stone.toml#4`
+- **British Isles**, 3,000–10,000 BCE (high, flat value): Fill every occupied cell with 0.99. `flaked_stone.toml#6`
+- **Caucasus**, 3,000–10,000 BCE (high, flat value): Fill every occupied cell with 1.0. `flaked_stone.toml#16`
+- **Central Asia**, 3,000–10,000 BCE (high, flat value): Fill every occupied cell with 0.98. `flaked_stone.toml#17`
+- **Central Europe**, 3,000–10,000 BCE (high, flat value): Fill every occupied cell with 1.0. `flaked_stone.toml#9`
+- **France & Low Countries**, 3,000–10,000 BCE (high, flat value): Fill every occupied cell with 1.0. `flaked_stone.toml#7`
+- **Horn of Africa**, 3,000–10,000 BCE (medium, flat value): Fill every occupied cell with 0.99. `flaked_stone.toml#25`
+- **Iberia**, 3,000–10,000 BCE (high, flat value): Fill every occupied cell with 1.0. `flaked_stone.toml#8`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (high, flat value): Fill every occupied cell with 0.99. `flaked_stone.toml#15`
+- **Italy & islands**, 3,000–10,000 BCE (high, flat value): Fill every occupied cell with 1.0. `flaked_stone.toml#10`
+- **Levant**, 3,000–10,000 BCE (high, flat value): Fill every occupied cell with 1.0. `flaked_stone.toml#13`
+- **Libya & Egypt**, 3,000–10,000 BCE (high, flat value): Fill occupied cells with 1.0; the desert before 9,000 BCE as unoccupied. `flaked_stone.toml#21`
+- **Maghreb**, 3,000–10,000 BCE (high, flat value): Fill every occupied cell with 1.0; mark the ergs as low occupation after 4,000 BCE. `flaked_stone.toml#20`
+- **Mesopotamia**, 3,000–10,000 BCE (medium, encoded (3 adjust)): 1.0 north of 33°N; 0.85 on the southern alluvium from 6,000 BCE on. `flaked_stone.toml#14`
+- **Nile & Sudan**, 3,000–10,000 BCE (high, flat value): Fill every occupied cell with 0.99. `flaked_stone.toml#22`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (high, flat value): Copy the adjacent coast's value (1.0). `flaked_stone.toml#26`
+- **Other**, 3,000–10,000 BCE (medium, flat value): Fill every occupied cell with 0.99. `flaked_stone.toml#19`
+- **Russia: forest north of 56°N**, 3,000–10,000 BCE (high, flat value): Fill every occupied cell with 0.98. `flaked_stone.toml#1`
+- **Russia: steppe and forest-steppe**, 3,000–10,000 BCE (high, encoded (1 adjust)): Fill every occupied cell with 0.98 (0.95 at 3,000 BCE). `flaked_stone.toml#2`
+- **Sahara–Sahel**, 3,000–10,000 BCE (high, flat value): Fill occupied cells with 0.99; leave unoccupied desert empty. `flaked_stone.toml#23`
+- **Scandinavia**, 3,000–10,000 BCE (high, flat value): Fill every ice-free occupied cell with 0.99. `flaked_stone.toml#5`
+- **Ukraine & Belarus**, 3,000–10,000 BCE (high, flat value): Fill every occupied cell with 0.99. `flaked_stone.toml#3`
+- **West Africa**, 3,000–10,000 BCE (low, encoded (2 adjust)): 0.95 in the savanna, 0.85 in the forest belt. `flaked_stone.toml#24`
+
+## Ground stone
+
+- **Anatolia & Cyprus**, 10,000–10,000 BCE (low, encoded (2 adjust)): 0.6 in the south-east, 0.4 on the plateau. `ground_stone.toml#14`
+- **Arabia**, 9,000–10,000 BCE (low, flat value): 0.5 on the northern rim and in Yemen, unoccupied in the Rub' al-Khali. `ground_stone.toml#17`
+- **Arabia**, 3,000–8,000 BCE (low, flat value): 0.8 where occupied; leave the Rub' al-Khali as low occupation. `ground_stone.toml#18`
+- **Balkans & Greece**, 8,000–10,000 BCE (low, encoded (3 adjust)): 0.15 at 10,000 BCE; 0.45 at 9,000-8,000 BCE, 0.7 along the Danube gorges. `ground_stone.toml#13`
+- **Balkans & Greece**, 7,000–7,000 BCE (medium, flat value): 0.85. `ground_stone.toml#31`
+- **Baltic**, 9,000–10,000 BCE (low, flat value): 0.2. `ground_stone.toml#7`
+- **Baltic**, 7,000–8,000 BCE (low, flat value): 0.4. `ground_stone.toml#29`
+- **British Isles**, 10,000–10,000 BCE (medium, flat value): 0.1. `ground_stone.toml#11`
+- **Caucasus**, 7,000–10,000 BCE (low, encoded (2 adjust)): 0.5 at 10,000-9,000 BCE, 0.65 at 8,000-7,000 BCE. `ground_stone.toml#32`
+- **Central Asia**, 9,000–10,000 BCE (low, flat value): 0.25. `ground_stone.toml#19`
+- **Central Asia**, 3,000–8,000 BCE (low, encoded (3 adjust)): 0.95 on the Kopet Dag piedmont, 0.6 in the Kyzylkum and Ustyurt. `ground_stone.toml#20`
+- **Central Europe**, 10,000–10,000 BCE (medium, flat value): 0.1. `ground_stone.toml#12`
+- **Central Europe**, 9,000–9,000 BCE (low, flat value): 0.3. `ground_stone.toml#30`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): 0.6. `ground_stone.toml#28`
+- **Iran & Afghanistan**, 9,000–10,000 BCE (low, encoded (2 adjust)): 0.7 in the Zagros, 0.4 on the plateau and in Afghanistan. `ground_stone.toml#15`
+- **Iran & Afghanistan**, 3,000–8,000 BCE (medium, flat value): 0.95 on the plateau rims; mark the Kavir and Lut as low occupation. `ground_stone.toml#16`
+- **Libya & Egypt**, 3,000–10,000 BCE (medium, encoded (2 adjust)): 0.65 at 10,000 BCE (and unoccupied desert), 0.9 after. `ground_stone.toml#25`
+- **Maghreb**, 9,000–10,000 BCE (low, encoded (2 adjust)): 0.35 at 10,000, 0.55 at 9,000 BCE; the Sahara part as low occupation at 10,000 BCE. `ground_stone.toml#21`
+- **Maghreb**, 3,000–8,000 BCE (medium, encoded (2 adjust)): 0.9 south of the Saharan Atlas, 0.8 in the Capsian north; mark the ergs as low occupation from 4,000 BCE. `ground_stone.toml#22`
+- **Mesopotamia**, 10,000–10,000 BCE (low, flat value): 0.5, marked as low occupation. `ground_stone.toml#33`
+- **Nile & Sudan**, 3,000–10,000 BCE (medium, encoded (2 adjust)): 0.75 at 10,000 BCE, 0.95 after. `ground_stone.toml#26`
+- **Now-drowned shelves and islands**, 7,000–10,000 BCE (low, flat value): Copy the adjacent coast's speculative value. `ground_stone.toml#36`
+- **Other**, 8,000–10,000 BCE (low, flat value): Leave as unknown occupation; 0.3 if filled. `ground_stone.toml#34`
+- **Other**, 3,000–7,000 BCE (medium, flat value): 0.9. `ground_stone.toml#35`
+- **Russia: forest north of 56°N**, 10,000–10,000 BCE (low, flat value): 0.1 across the zone. `ground_stone.toml#1`
+- **Russia: forest north of 56°N**, 7,000–9,000 BCE (low, encoded (2 adjust)): 0.55 across the zone, 0.65 within 300 km of Lake Onega and the Upper Volga. `ground_stone.toml#2`
+- **Russia: forest north of 56°N**, 3,000–6,000 BCE (medium, flat value): 0.85 across the zone. `ground_stone.toml#3`
+- **Russia: steppe and forest-steppe**, 8,000–10,000 BCE (low, flat value): 0.3 across the steppe. `ground_stone.toml#4`
+- **Russia: steppe and forest-steppe**, 3,000–7,000 BCE (medium, flat value): 0.8 for settlements; 0.6 where the occupations are mostly kurgans (from 4,000 BCE). `ground_stone.toml#5`
+- **Sahara–Sahel**, 10,000–10,000 BCE (low, flat value): 0.4 south of 20°N; unoccupied north of it. `ground_stone.toml#23`
+- **Sahara–Sahel**, 3,000–9,000 BCE (medium, flat value): 0.9 where occupied; mark the north as low occupation after 4,000 BCE. `ground_stone.toml#24`
+- **Scandinavia**, 10,000–10,000 BCE (medium, flat value): 0.1 on ice-free land. `ground_stone.toml#8`
+- **Scandinavia**, 6,000–9,000 BCE (low, encoded (3 adjust)): 0.4 at 9,000 BCE, 0.6 at 8,000-6,000 BCE; 0.7 in southern Norway and western Sweden. `ground_stone.toml#9`
+- **Scandinavia**, 3,000–5,000 BCE (medium, flat value): 0.85 across the gap. `ground_stone.toml#10`
+- **Ukraine & Belarus**, 7,000–10,000 BCE (low, encoded (2 adjust)): 0.2 at 10,000-9,000 BCE, 0.4 at 8,000-7,000 BCE. `ground_stone.toml#6`
+- **West Africa**, 3,000–10,000 BCE (low, encoded (2 adjust)): 0.4 before 5,000 BCE, 0.8 after. `ground_stone.toml#27`
+
+## Bone and antler
+
+- **Anatolia & Cyprus**, 3,000–10,000 BCE (medium, flat value): 0.85. `bone_antler.toml#12`
+- **Arabia**, 3,000–10,000 BCE (low, encoded (2 adjust)): 0.6 on the Gulf and Arabian Sea coasts, 0.25 inland. `bone_antler.toml#18`
+- **Balkans & Greece**, 3,000–10,000 BCE (medium, flat value): 0.85. `bone_antler.toml#11`
+- **Baltic**, 3,000–10,000 BCE (low, flat value): 0.75 near lakes and rivers with peat, 0.4 elsewhere. `bone_antler.toml#4`
+- **British Isles**, 3,000–10,000 BCE (low, encoded (1 adjust)): 0.35 before 4,000 BCE; 0.55 after on chalk and limestone, 0.3 elsewhere. `bone_antler.toml#6`
+- **Caucasus**, 3,000–10,000 BCE (low, flat value): 0.75. `bone_antler.toml#16`
+- **Central Asia**, 3,000–10,000 BCE (low, encoded (3 adjust)): 0.75 on the Kopet Dag piedmont, 0.4 in the Kyzylkum and Ustyurt. `bone_antler.toml#17`
+- **Central Europe**, 3,000–10,000 BCE (medium, encoded (2 adjust)): 0.75 on loess and in the Alpine forelands, 0.45 on the North European Plain's sands. `bone_antler.toml#9`
+- **France & Low Countries**, 3,000–10,000 BCE (medium, encoded (3 adjust)): 0.75 on limestone and chalk, 0.4 on the Armorican and Ardennes massifs. `bone_antler.toml#7`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): 0.45. `bone_antler.toml#25`
+- **Iberia**, 3,000–10,000 BCE (low, encoded (2 adjust)): 0.7 on limestone, in caves and shell middens; 0.35 on the granite north-west. `bone_antler.toml#8`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): 0.8 where occupied. `bone_antler.toml#15`
+- **Italy & islands**, 3,000–10,000 BCE (medium, flat value): 0.75. `bone_antler.toml#10`
+- **Levant**, 3,000–10,000 BCE (medium, flat value): 0.85. `bone_antler.toml#13`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, encoded (4 adjust)): 0.75 in the Nile valley, Fayum and Cyrenaica, 0.35 in the deserts. `bone_antler.toml#21`
+- **Maghreb**, 3,000–10,000 BCE (medium, encoded (2 adjust)): 0.85 in the Tell and the Capsian zone, 0.4 in the Sahara. `bone_antler.toml#20`
+- **Mesopotamia**, 3,000–10,000 BCE (low, flat value): 0.8. `bone_antler.toml#14`
+- **Nile & Sudan**, 3,000–10,000 BCE (medium, flat value): 0.75. `bone_antler.toml#22`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, encoded (1 adjust)): Copy the adjacent coast's speculative value; 0.8 for Doggerland. `bone_antler.toml#26`
+- **Other**, 3,000–10,000 BCE (low, flat value): 0.6. `bone_antler.toml#19`
+- **Russia: forest north of 56°N**, 3,000–10,000 BCE (low, flat value): 0.75 within 5 km of lakes and rivers with peat, 0.35 elsewhere. `bone_antler.toml#1`
+- **Russia: steppe and forest-steppe**, 3,000–10,000 BCE (medium, flat value): 0.8 across the steppe. `bone_antler.toml#2`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (1 adjust)): 0.65 near Holocene palaeolakes, 0.35 elsewhere. `bone_antler.toml#23`
+- **Scandinavia**, 3,000–10,000 BCE (low, encoded (2 adjust)): 0.75 in Denmark and Scania and along shell-midden coasts; 0.3 in the interior north. `bone_antler.toml#5`
+- **Ukraine & Belarus**, 3,000–10,000 BCE (medium, encoded (2 adjust)): 0.85 in Ukraine, 0.5 in Belarus. `bone_antler.toml#3`
+- **West Africa**, 3,000–10,000 BCE (low, flat value): 0.2. `bone_antler.toml#24`
+
+## Ornaments
+
+- **Anatolia & Cyprus**, 3,000–10,000 BCE (medium, flat value): 0.75. `ornaments.toml#12`
+- **Arabia**, 3,000–10,000 BCE (low, encoded (1 adjust)): 0.7 on the coasts, 0.5 inland. `ornaments.toml#18`
+- **Balkans & Greece**, 3,000–10,000 BCE (medium, encoded (1 adjust)): 0.6 before 7,000 BCE; copy observed after. `ornaments.toml#11`
+- **Baltic**, 3,000–10,000 BCE (low, encoded (2 adjust)): 0.55 before 4,000 BCE, 0.75 after. `ornaments.toml#4`
+- **British Isles**, 3,000–10,000 BCE (low, flat value): 0.45. `ornaments.toml#6`
+- **Caucasus**, 3,000–10,000 BCE (low, flat value): 0.6. `ornaments.toml#16`
+- **Central Asia**, 3,000–10,000 BCE (low, flat value): 0.6. `ornaments.toml#17`
+- **Central Europe**, 3,000–10,000 BCE (medium, encoded (2 adjust)): 0.5 before 7,000 BCE, 0.7 after. `ornaments.toml#9`
+- **France & Low Countries**, 3,000–10,000 BCE (medium, encoded (2 adjust)): 0.55 before 7,000 BCE, 0.7 after. `ornaments.toml#7`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): 0.55. `ornaments.toml#25`
+- **Iberia**, 3,000–10,000 BCE (low, flat value): 0.6; 0.8 in megalithic tombs. `ornaments.toml#8`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): 0.7. `ornaments.toml#15`
+- **Italy & islands**, 3,000–10,000 BCE (medium, encoded (2 adjust)): 0.6 before 7,000 BCE, 0.7 after. `ornaments.toml#10`
+- **Levant**, 3,000–10,000 BCE (medium, flat value): 0.8. `ornaments.toml#13`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, flat value): 0.7 where occupied. `ornaments.toml#21`
+- **Maghreb**, 3,000–10,000 BCE (low, flat value): 0.75. `ornaments.toml#20`
+- **Mesopotamia**, 3,000–10,000 BCE (low, flat value): 0.75. `ornaments.toml#14`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, flat value): 0.75. `ornaments.toml#22`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, flat value): Copy the adjacent coast's speculative value. `ornaments.toml#26`
+- **Other**, 3,000–10,000 BCE (low, flat value): 0.7. `ornaments.toml#19`
+- **Russia: forest north of 56°N**, 3,000–10,000 BCE (low, flat value): 0.55; 0.75 near cemeteries and wetland sites. `ornaments.toml#1`
+- **Russia: steppe and forest-steppe**, 3,000–10,000 BCE (low, encoded (2 adjust)): 0.5 before 6,000 BCE, 0.75 after. `ornaments.toml#2`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, flat value): 0.7 where occupied. `ornaments.toml#23`
+- **Scandinavia**, 3,000–10,000 BCE (low, encoded (2 adjust)): 0.7 in Denmark and Scania, 0.35 in the north. `ornaments.toml#5`
+- **Ukraine & Belarus**, 3,000–10,000 BCE (low, encoded (2 adjust)): 0.5 before 7,000 BCE, 0.75 after. `ornaments.toml#3`
+- **West Africa**, 3,000–10,000 BCE (low, flat value): 0.4. `ornaments.toml#24`
+
+## Cereal grain
+
+- **Anatolia & Cyprus**, 10,000–10,000 BCE (low, encoded (2 adjust)): Fill southeast Anatolia (east of 37°E, south of 39°N) at 0.5 at 10,000 BCE; set the plateau and west to 0.05. `cereals.toml#5`
+- **Anatolia & Cyprus**, 3,000–9,000 BCE (high, encoded (3 adjust)): Fill Anatolia and Cyprus at 0.9 from 9,000 BCE in the southeast and central plateau, from 7,000 BCE in the west and northwest, and from 6,000 BCE on the Pontic coast. `cereals.toml#6`
+- **Arabia**, 4,000–10,000 BCE (medium, encoded (4 adjust)): Set cereals to 0 in Arabia before 4,000 BCE, except 0.3 on the Gulf coast within 50 km of Ubaid-contact sites at 5,000 BCE. `cereals.toml#14`
+- **Arabia**, 3,000–3,000 BCE (low, encoded (3 adjust)): Set 0.6 in the Oman piedmont oases and Yemeni highlands at 3,000 BCE and 0 elsewhere in Arabia. `cereals.toml#15`
+- **Balkans & Greece**, 8,000–10,000 BCE (high, flat value): Set cereals to 0 in the Balkans and Greece before 7,000 BCE. `cereals.toml#24`
+- **Balkans & Greece**, 7,000–7,000 BCE (medium, encoded (4 adjust)): Set 0.6 in Crete, Thessaly and Greek Macedonia and 0 elsewhere in the Balkans at 7,000 BCE. `cereals.toml#25`
+- **Balkans & Greece**, 3,000–6,000 BCE (high, encoded (2 adjust)): Fill the Balkans and Greece at 0.95 from 6,000 BCE, except the Dinaric Alps and Adriatic islands at 0.6 until 5,000 BCE. `cereals.toml#26`
+- **Baltic**, 4,000–10,000 BCE (high, flat value): Set cereals to 0 in the Baltic states before 3,500 BCE. `cereals.toml#42`
+- **Baltic**, 3,000–3,000 BCE (low, encoded (2 adjust)): Set 0.1 in Lithuania and 0 to the north at 3,000 BCE. `cereals.toml#43`
+- **British Isles**, 5,000–10,000 BCE (high, flat value): Set cereals to 0 in Britain and Ireland before 4,500 BCE. `cereals.toml#38`
+- **British Isles**, 3,000–4,000 BCE (medium, encoded (4 adjust)): Fill at 0.85 at 4,000 BCE and 0.6 at 3,000 BCE in lowland Britain and eastern Ireland; 0.4 in the Highlands and the west of Ireland. `cereals.toml#39`
+- **Caucasus**, 7,000–10,000 BCE (medium, flat value): Set cereals to 0 in the Caucasus before 6,500 BCE. `cereals.toml#10`
+- **Caucasus**, 3,000–6,000 BCE (medium, encoded (1 adjust)): Fill the Kura and Araxes lowlands and the Armenian plateau at 0.85 from 6,000 BCE; set high Greater Caucasus valleys to 0.3 until 4,000 BCE. `cereals.toml#11`
+- **Central Asia**, 7,000–10,000 BCE (high, flat value): Set cereals to 0 across Central Asia before 6,500 BCE. `cereals.toml#12`
+- **Central Asia**, 3,000–6,000 BCE (medium, encoded (4 adjust)): Set 0.9 in a 60 km strip along the Kopet Dag piedmont (Turkmenistan, 54-61°E) from 6,000 BCE and in the Tejen and Murghab deltas from 4,000 BCE; 0 elsewhere in Central Asia. `cereals.toml#13`
+- **Central Europe**, 7,000–10,000 BCE (high, flat value): Set cereals to 0 in Central Europe before 6,000 BCE. `cereals.toml#35`
+- **Central Europe**, 6,000–6,000 BCE (medium, encoded (4 adjust)): Set 0.8 in the Hungarian plain and 0.1 in Austria, Moravia and Slovakia, 0 further north and west at 6,000 BCE. `cereals.toml#36`
+- **Central Europe**, 3,000–5,000 BCE (high, encoded (3 adjust)): Fill at 0.97 from 5,000 BCE south of 52.5°N; north of it 0.3 at 5,000 BCE and 0.9 from 4,000 BCE. `cereals.toml#37`
+- **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set cereals to 0 in France and the Low Countries before 6,000 BCE. `cereals.toml#32`
+- **France & Low Countries**, 6,000–6,000 BCE (medium, encoded (4 adjust)): Set 0.4 on the Provence and Languedoc coast and 0 elsewhere in France and the Low Countries at 6,000 BCE. `cereals.toml#33`
+- **France & Low Countries**, 3,000–5,000 BCE (high, encoded (4 adjust)): Fill at 0.95 from 5,000 BCE, except the Low Countries wetlands and Brittany at 0.4 at 5,000 BCE. `cereals.toml#34`
+- **Horn of Africa**, 3,000–10,000 BCE (medium, flat value): Set cereals to 0 across the Horn of Africa in all slices. `cereals.toml#21`
+- **Iberia**, 7,000–10,000 BCE (high, flat value): Set cereals to 0 in Iberia before 6,000 BCE. `cereals.toml#29`
+- **Iberia**, 6,000–6,000 BCE (medium, encoded (3 adjust)): Set 0.5 on the Mediterranean coast from Catalonia to Valencia and 0 inland and in the west at 6,000 BCE. `cereals.toml#30`
+- **Iberia**, 3,000–5,000 BCE (high, encoded (4 adjust)): Fill Iberia at 0.95 from 5,000 BCE, except the Cantabrian strip and Galicia at 0.5 at 5,000 BCE. `cereals.toml#31`
+- **Iran & Afghanistan**, 9,000–10,000 BCE (low, encoded (5 adjust)): Fill the Zagros foothills at 0.6 at 10,000 and 0.8 at 9,000 BCE; leave the central deserts masked and set the rest of the plateau to 0.1. `cereals.toml#7`
+- **Iran & Afghanistan**, 3,000–8,000 BCE (medium, encoded (6 adjust)): Fill the Zagros at 0.95 from 8,000 BCE and the northern and southern plateau rims (Sialk, Chakhmaq, Kerman) at 0.9 from 7,000 BCE; the central deserts stay masked. `cereals.toml#8`
+- **Italy & islands**, 7,000–10,000 BCE (high, flat value): Set cereals to 0 in Italy before 6,500 BCE. `cereals.toml#27`
+- **Italy & islands**, 3,000–6,000 BCE (high, encoded (3 adjust)): At 6,000 BCE fill southern Italy and Sicily at 0.8 and the north at 0.2; from 5,000 BCE fill all Italy and the islands at 0.95. `cereals.toml#28`
+- **Levant**, 10,000–10,000 BCE (medium, encoded (3 adjust)): Fill the Levant at 0.75 west of the 200 mm isohyet and 0.3 in the Negev, Sinai and eastern Jordanian desert at 10,000 BCE. `cereals.toml#1`
+- **Levant**, 3,000–9,000 BCE (high, encoded (2 adjust)): Fill the Levant at 0.95 from 9,000 BCE in the Mediterranean zone and Jordan valley, 0.6 in the steppe-desert fringe east of the 200 mm isohyet. `cereals.toml#2`
+- **Libya & Egypt**, 7,000–10,000 BCE (high, flat value): Set cereals to 0 across Libya and Egypt before 6,500 BCE. `cereals.toml#16`
+- **Libya & Egypt**, 3,000–6,000 BCE (medium, encoded (10 adjust)): Set 0.05 at 6,000 BCE, then 0.9 within 20 km of the Nile, the Delta and the Fayum from 5,000 BCE; 0.05 in the Western Desert oases and 0 in the open desert and Cyrenaica. `cereals.toml#17`
+- **Maghreb**, 7,000–10,000 BCE (high, flat value): Set cereals to 0 in the Maghreb before 6,000 BCE. `cereals.toml#22`
+- **Maghreb**, 3,000–6,000 BCE (medium, encoded (7 adjust)): Set 0.1 at 6,000 BCE and 0.6 from 5,000 BCE north of the Rif and Middle Atlas and in coastal Tell; 0.2 in the Algerian and Tunisian Tell; 0 south of the Saharan Atlas. `cereals.toml#23`
+- **Mesopotamia**, 10,000–10,000 BCE (low, encoded (1 adjust)): Fill north Mesopotamia above 34°N at 0.55 at 10,000 BCE and leave the alluvial south masked (low population). `cereals.toml#3`
+- **Mesopotamia**, 3,000–9,000 BCE (high, encoded (3 adjust)): Fill Mesopotamia at 0.95 from 8,000 BCE in the rain-fed north and from 6,000 BCE in the irrigated south; 0.8 at 9,000 BCE in the north only. `cereals.toml#4`
+- **Nile & Sudan**, 3,000–10,000 BCE (medium, encoded (2 adjust)): Set 0 in Sudan throughout, except 0.15 along the Nile north of the Third Cataract at 3,000 BCE. `cereals.toml#18`
+- **Now-drowned shelves and islands**, 6,000–10,000 BCE (medium, flat value): Set cereals to 0 on all now-drowned land. `cereals.toml#48`
+- **Other**, 3,000–10,000 BCE (low, encoded (5 adjust)): Set 0 before 7,000 BCE, 0.3 at 6,000 and 0.8 from 5,000 BCE in the valleys; leave the Makran desert masked. `cereals.toml#9`
+- **Russia: forest north of 56°N**, 3,000–10,000 BCE (high, flat value): Set cereals to 0 in the Russian forest zone in all slices. `cereals.toml#47`
+- **Russia: steppe and forest-steppe**, 3,000–10,000 BCE (medium, encoded (2 adjust)): Set 0 across the Russian steppe in all slices, except 0.5 in the north Caucasus foothills south of 45.5°N at 4,000 and 3,000 BCE. `cereals.toml#46`
+- **Sahara–Sahel**, 3,000–10,000 BCE (high, flat value): Set cereals to 0 across the Sahara and Sahel in all slices. `cereals.toml#19`
+- **Scandinavia**, 5,000–10,000 BCE (high, flat value): Set cereals to 0 in Scandinavia before 4,500 BCE. `cereals.toml#40`
+- **Scandinavia**, 3,000–4,000 BCE (medium, encoded (5 adjust)): Fill 0.85 south of 59°N in Sweden, Denmark and the Oslofjord, 0.3 up to 61°N on the Swedish east coast, and 0 to the north, from 4,000 BCE; at 3,000 BCE lower the Swedish east coast to 0.15 for Pitted Ware. `cereals.toml#41`
+- **Ukraine & Belarus**, 6,000–10,000 BCE (medium, encoded (5 adjust)): Set 0 in Ukraine and Belarus before 6,000 BCE and 0.1 west of the Dniester at 6,000 BCE. `cereals.toml#44`
+- **Ukraine & Belarus**, 3,000–5,000 BCE (medium, encoded (4 adjust)): Fill 0.85 in the forest-steppe west of the Dnieper (Trypillia area) from 4,800 BCE, 0.1 in the steppe south of 48°N and 0 in Belarus until 3,000 BCE, when Belarus rises to 0.05. `cereals.toml#45`
+- **West Africa**, 3,000–10,000 BCE (high, flat value): Set cereals to 0 across West Africa in all slices. `cereals.toml#20`
+
+## Domestic livestock
+
+- **Anatolia & Cyprus**, 9,000–10,000 BCE (medium, encoded (3 adjust)): Set 0 at 10,000 BCE; at 9,000 BCE 0.2 in southeast Anatolia and 0 elsewhere. `domestic_livestock.toml#6`
+- **Anatolia & Cyprus**, 7,000–8,000 BCE (medium, encoded (7 adjust)): At 8,000 BCE fill 0.6 on the central plateau and Cyprus and 0 west of 31°E; at 7,000 BCE fill 0.9 on the plateau and Lake District, 0.5 on the Aegean coast and 0 in the Pontic north. `domestic_livestock.toml#7`
+- **Anatolia & Cyprus**, 3,000–6,000 BCE (high, encoded (2 adjust)): Fill all Anatolia and Cyprus at 0.95 from 6,000 BCE, except the Pontic forest coast at 0.7 at 6,000 BCE. `domestic_livestock.toml#8`
+- **Arabia**, 8,000–10,000 BCE (high, flat value): Set livestock to 0 in Arabia before 7,500 BCE. `domestic_livestock.toml#16`
+- **Arabia**, 6,000–7,000 BCE (low, encoded (3 adjust)): Fill 0.2 at 7,000 BCE and 0.5 at 6,000 BCE in the north and west of the peninsula and Yemen; 0.1 in the Rub' al-Khali. `domestic_livestock.toml#17`
+- **Arabia**, 3,000–5,000 BCE (medium, encoded (5 adjust)): Fill 0.85 in the Gulf hinterland, Oman and Yemen and 0.5 on the fishing coasts from 5,000 BCE; leave the Rub' al-Khali masked after 4,000 BCE. `domestic_livestock.toml#18`
+- **Balkans & Greece**, 8,000–10,000 BCE (high, flat value): Set livestock to 0 in the Balkans and Greece before 7,000 BCE. `domestic_livestock.toml#35`
+- **Balkans & Greece**, 7,000–7,000 BCE (medium, encoded (4 adjust)): Set 0.6 in Crete, Thessaly and Greek Macedonia and 0 elsewhere at 7,000 BCE. `domestic_livestock.toml#36`
+- **Balkans & Greece**, 3,000–6,000 BCE (high, encoded (3 adjust)): Fill at 0.95 from 6,000 BCE, with the Iron Gates gorge at 0.5 at 6,000 BCE. `domestic_livestock.toml#37`
+- **Baltic**, 5,000–10,000 BCE (high, flat value): Set livestock to 0 in the Baltic before 4,500 BCE. `domestic_livestock.toml#51`
+- **Baltic**, 3,000–4,000 BCE (medium, encoded (3 adjust)): Set 0.05 at 4,000 BCE and 0.4 in Lithuania, 0.2 in Latvia and Estonia at 3,000 BCE. `domestic_livestock.toml#52`
+- **British Isles**, 6,000–10,000 BCE (high, flat value): Set livestock to 0 in Britain and Ireland before 5,000 BCE. `domestic_livestock.toml#46`
+- **British Isles**, 5,000–5,000 BCE (high, flat value): Set 0.02 in the British Isles at 5,000 BCE. `domestic_livestock.toml#47`
+- **British Isles**, 3,000–3,000 BCE (high, flat value): Fill at 0.95. `domestic_livestock.toml#48`
+- **Caucasus**, 7,000–10,000 BCE (medium, flat value): Set livestock to 0 in the Caucasus before 6,500 BCE. `domestic_livestock.toml#12`
+- **Caucasus**, 3,000–6,000 BCE (medium, encoded (1 adjust)): Fill the Kura and Araxes lowlands and Armenian plateau at 0.9 from 6,000 BCE; high valleys of the Greater Caucasus at 0.6 until 4,000 BCE. `domestic_livestock.toml#13`
+- **Central Asia**, 7,000–10,000 BCE (high, flat value): Set livestock to 0 across Central Asia before 6,500 BCE. `domestic_livestock.toml#14`
+- **Central Asia**, 3,000–6,000 BCE (medium, encoded (6 adjust)): Set 0.9 along the Kopet Dag piedmont from 6,000 BCE and in the Tejen and Murghab deltas from 4,000 BCE; 0.05 elsewhere, rising to 0.2 on the Caspian and Ustyurt steppe at 3,000 BCE. `domestic_livestock.toml#15`
+- **Central Europe**, 7,000–10,000 BCE (high, flat value): Set livestock to 0 in Central Europe before 6,000 BCE. `domestic_livestock.toml#44`
+- **Central Europe**, 5,000–6,000 BCE (medium, encoded (3 adjust)): At 6,000 BCE set 0.8 in the Hungarian plain and 0 north of 49°N; at 5,000 BCE fill 0.95. `domestic_livestock.toml#45`
+- **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set livestock to 0 in France and the Low Countries before 6,000 BCE. `domestic_livestock.toml#42`
+- **France & Low Countries**, 6,000–6,000 BCE (medium, encoded (4 adjust)): Set 0.5 on the Provence and Languedoc coast and 0 elsewhere at 6,000 BCE. `domestic_livestock.toml#43`
+- **Horn of Africa**, 5,000–10,000 BCE (high, flat value): Set livestock to 0 in the Horn before 4,500 BCE. `domestic_livestock.toml#30`
+- **Horn of Africa**, 3,000–4,000 BCE (low, encoded (3 adjust)): Set 0.05 at 4,000 BCE; at 3,000 BCE 0.4 in the Eritrean lowlands and Gash delta and 0.05 elsewhere. `domestic_livestock.toml#31`
+- **Iberia**, 7,000–10,000 BCE (high, flat value): Set livestock to 0 in Iberia before 6,000 BCE. `domestic_livestock.toml#40`
+- **Iberia**, 3,000–6,000 BCE (high, encoded (6 adjust)): At 6,000 BCE set 0.5 on the east coast and 0 inland; from 5,000 BCE fill 0.95, except Cantabria and Galicia at 0.4 at 5,000 BCE. `domestic_livestock.toml#41`
+- **Iran & Afghanistan**, 9,000–10,000 BCE (medium, encoded (3 adjust)): Set 0 on the plateau and 0.1 in the central Zagros at 9,000 BCE; 0 everywhere at 10,000 BCE. `domestic_livestock.toml#9`
+- **Iran & Afghanistan**, 3,000–8,000 BCE (medium, encoded (7 adjust)): Fill the Zagros at 0.6 at 8,000 BCE and 0.95 from 7,000 BCE; the northern and southern plateau rims at 0.9 from 6,000 BCE; leave the Kavir and Lut masked. `domestic_livestock.toml#10`
+- **Italy & islands**, 7,000–10,000 BCE (high, flat value): Set livestock to 0 in Italy before 6,500 BCE. `domestic_livestock.toml#38`
+- **Italy & islands**, 3,000–6,000 BCE (high, encoded (3 adjust)): At 6,000 BCE fill 0.8 in the south and Sicily and 0.2 in the north; from 5,000 BCE fill 0.95 everywhere. `domestic_livestock.toml#39`
+- **Levant**, 10,000–10,000 BCE (high, flat value): Set livestock to 0 across the Levant at 10,000 BCE. `domestic_livestock.toml#1`
+- **Levant**, 9,000–9,000 BCE (medium, encoded (2 adjust)): Set 0.3 in the northern Levant (north of 34°N) and 0 in the south at 9,000 BCE. `domestic_livestock.toml#2`
+- **Levant**, 4,000–8,000 BCE (medium, encoded (4 adjust)): Fill 0.8 at 8,000 BCE and 0.95 at 6,000 and 4,000 BCE in the Mediterranean Levant; 0.4 in the eastern desert at 8,000 BCE and 0.8 later. `domestic_livestock.toml#3`
+- **Libya & Egypt**, 8,000–10,000 BCE (medium, encoded (3 adjust)): Set 0 in Libya and Egypt at 10,000 and 9,000 BCE and 0.1 in the southern Western Desert at 8,000 BCE. `domestic_livestock.toml#19`
+- **Libya & Egypt**, 6,000–7,000 BCE (low, encoded (5 adjust)): Set 0.2 at 7,000 BCE in the southern Western Desert only; at 6,000 BCE 0.6 in the Western Desert and Red Sea hills and 0.3 in Cyrenaica. `domestic_livestock.toml#20`
+- **Libya & Egypt**, 3,000–5,000 BCE (high, encoded (3 adjust)): Fill 0.95 where any occupation is plausible from 5,000 BCE; leave the Great Sand Sea and Calanscio masked after 4,000 BCE (low population). `domestic_livestock.toml#21`
+- **Maghreb**, 7,000–10,000 BCE (high, flat value): Set livestock to 0 in the Maghreb before 6,000 BCE. `domestic_livestock.toml#32`
+- **Maghreb**, 6,000–6,000 BCE (medium, encoded (2 adjust)): Set 0.4 on the Moroccan Mediterranean coast and 0 elsewhere at 6,000 BCE. `domestic_livestock.toml#33`
+- **Maghreb**, 3,000–5,000 BCE (medium, encoded (2 adjust)): Fill 0.85 in the Tell and Atlas and 0.8 in the Algerian Sahara from 5,000 BCE. `domestic_livestock.toml#34`
+- **Mesopotamia**, 9,000–10,000 BCE (medium, encoded (3 adjust)): Set 0 at 10,000 BCE and 0.2 north of 35°N at 9,000 BCE; 0 in the south. `domestic_livestock.toml#4`
+- **Mesopotamia**, 3,000–8,000 BCE (high, encoded (3 adjust)): Fill 0.75 at 8,000 BCE north of 34°N; 0.95 from 7,000 BCE in the north and from 6,000 BCE in the south. `domestic_livestock.toml#5`
+- **Nile & Sudan**, 8,000–10,000 BCE (high, flat value): Set livestock to 0 in Sudan before 7,500 BCE. `domestic_livestock.toml#22`
+- **Nile & Sudan**, 5,000–7,000 BCE (medium, encoded (6 adjust)): Set 0.05 at 7,000 BCE, 0.25 at 6,000 BCE (0.4 north of 18°N) and 0.6 at 5,000 BCE along the Nile; 0.2 in Kordofan and Darfur. `domestic_livestock.toml#23`
+- **Nile & Sudan**, 3,000–4,000 BCE (medium, encoded (3 adjust)): Fill 0.95 north of 12°N and 0.3 south of it at 4,000 BCE, 0.6 south of 12°N at 3,000 BCE. `domestic_livestock.toml#24`
+- **Now-drowned shelves and islands**, 6,000–10,000 BCE (medium, flat value): Set livestock to 0 on all now-drowned land. `domestic_livestock.toml#60`
+- **Other**, 3,000–10,000 BCE (low, encoded (4 adjust)): Set 0 before 7,000 BCE, 0.5 at 7,000 and 6,000 BCE and 0.9 from 5,000 BCE in the valleys. `domestic_livestock.toml#11`
+- **Russia: forest north of 56°N**, 4,000–10,000 BCE (high, flat value): Set livestock to 0 in the Russian forest zone before 3,500 BCE. `domestic_livestock.toml#58`
+- **Russia: forest north of 56°N**, 3,000–3,000 BCE (medium, encoded (2 adjust)): Set 0.15 in the Upper Volga and Oka basin south of 58°N and 0 elsewhere at 3,000 BCE. `domestic_livestock.toml#59`
+- **Russia: steppe and forest-steppe**, 6,000–10,000 BCE (medium, encoded (3 adjust)): Set 0 before 6,500 BCE and 0.05 on the lower Don and Volga at 6,000 BCE. `domestic_livestock.toml#56`
+- **Russia: steppe and forest-steppe**, 3,000–5,000 BCE (medium, encoded (6 adjust)): Steppe south of 52°N: 0.4 at 5,000, 0.75 at 4,000, 0.95 at 3,000 BCE; forest-steppe north of 52°N: 0.05, 0.2, 0.5. `domestic_livestock.toml#57`
+- **Sahara–Sahel**, 7,000–10,000 BCE (high, flat value): Set livestock to 0 across the Sahara and Sahel before 6,500 BCE. `domestic_livestock.toml#25`
+- **Sahara–Sahel**, 6,000–6,000 BCE (medium, encoded (2 adjust)): Set 0.5 in the central Sahara (Acacus, Tassili, Aïr, Tibesti) and 0.05 in the western Sahara and Sahel at 6,000 BCE. `domestic_livestock.toml#26`
+- **Sahara–Sahel**, 3,000–5,000 BCE (medium, encoded (4 adjust)): Fill 0.9 across the Sahara from 5,000 BCE, 0.5 in the Sahel north of 14°N and 0.05 south of it; raise the Sahel to 0.4 at 3,000 BCE. `domestic_livestock.toml#27`
+- **Scandinavia**, 5,000–10,000 BCE (high, encoded (3 adjust)): Set livestock to 0 in Scandinavia before 4,500 BCE (0.05 in Denmark and Scania at 5,000 BCE). `domestic_livestock.toml#49`
+- **Scandinavia**, 3,000–4,000 BCE (medium, encoded (5 adjust)): Fill 0.9 south of 59°N, 0.4 to 61°N and 0 to the north at 4,000 BCE; at 3,000 BCE 0.9 south of 59°N, 0.5 to 63°N and 0.1 north of it. `domestic_livestock.toml#50`
+- **Ukraine & Belarus**, 7,000–10,000 BCE (high, flat value): Set livestock to 0 in Ukraine and Belarus before 6,500 BCE. `domestic_livestock.toml#53`
+- **Ukraine & Belarus**, 5,000–6,000 BCE (medium, encoded (4 adjust)): At 6,000 BCE set 0.2 west of the Dnieper and 0 elsewhere; at 5,000 BCE 0.7 in the forest-steppe west of the Dnieper, 0.3 in the steppe and 0 in Belarus. `domestic_livestock.toml#54`
+- **Ukraine & Belarus**, 3,000–4,000 BCE (medium, encoded (3 adjust)): Fill 0.95 in Ukraine from 4,000 BCE; Belarus 0.05 at 4,000 BCE and 0.3 at 3,000 BCE. `domestic_livestock.toml#55`
+- **West Africa**, 4,000–10,000 BCE (high, flat value): Set livestock to 0 across West Africa before 3,500 BCE. `domestic_livestock.toml#28`
+- **West Africa**, 3,000–3,000 BCE (medium, encoded (2 adjust)): Set 0.1 north of 12°N and 0 to the south at 3,000 BCE. `domestic_livestock.toml#29`
+
+## Enclosures
+
+- **Anatolia & Cyprus**, 3,000–10,000 BCE (medium, flat value): 0.01 everywhere; do not extend European values. `enclosures.toml#33`
+- **Arabia**, 3,000–10,000 BCE (medium, flat value): 0.01 everywhere; do not extend European values. `enclosures.toml#39`
+- **Balkans & Greece**, 7,000–10,000 BCE (high, flat value): Fill with 0. `enclosures.toml#7`
+- **Balkans & Greece**, 5,000–6,000 BCE (medium, encoded (4 adjust)): 0.05 at 6,000 BCE rising to 0.15 at 5,000 BCE across the Danube and Thracian lowlands, 0.03 in Greece and the Dinaric uplands. `enclosures.toml#14`
+- **Balkans & Greece**, 3,000–4,000 BCE (low, flat value): 0.05 across the region. `enclosures.toml#15`
+- **Baltic**, 7,000–10,000 BCE (high, flat value): Fill with 0. `enclosures.toml#6`
+- **Baltic**, 3,000–5,000 BCE (low, flat value): 0.01 everywhere. `enclosures.toml#30`
+- **British Isles**, 5,000–10,000 BCE (high, flat value): Fill with 0 and suppress the evidenced cells before 4,500 BCE. `enclosures.toml#11`
+- **British Isles**, 3,000–4,000 BCE (high, encoded (1 adjust)): 0.08, fading to 0.03 in the Highlands and Islands. `enclosures.toml#20`
+- **Caucasus**, 3,000–10,000 BCE (medium, flat value): 0.01 everywhere; do not extend European values. `enclosures.toml#37`
+- **Central Asia**, 3,000–10,000 BCE (medium, flat value): 0.01 everywhere; do not extend European values. `enclosures.toml#38`
+- **Central Europe**, 7,000–10,000 BCE (high, flat value): Fill with 0. `enclosures.toml#4`
+- **Central Europe**, 6,000–6,000 BCE (medium, encoded (2 adjust)): 0.01 in the loess belt, 0 elsewhere. `enclosures.toml#16`
+- **Central Europe**, 3,000–5,000 BCE (medium, encoded (2 adjust)): 0.08 on the loess belt and Pannonian plain, 0.03 on the North European plain, 0 in the Alps. `enclosures.toml#17`
+- **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Fill with 0. `enclosures.toml#1`
+- **France & Low Countries**, 3,000–5,000 BCE (medium, encoded (3 adjust)): 0.12 north of the Loire and in the Centre-West, 0.05 in the south and Brittany. `enclosures.toml#19`
+- **Horn of Africa**, 3,000–10,000 BCE (medium, flat value): Fill with 0. `enclosures.toml#45`
+- **Iberia**, 7,000–10,000 BCE (high, flat value): Fill with 0. `enclosures.toml#2`
+- **Iberia**, 3,000–4,000 BCE (medium, encoded (3 adjust)): 0.03 at 4,000 BCE; 0.2 at 3,000 BCE in Andalusia, Alentejo and the Meseta, 0.05 in the north. `enclosures.toml#22`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (medium, flat value): 0.01 everywhere; do not extend European values. `enclosures.toml#36`
+- **Italy & islands**, 7,000–10,000 BCE (high, flat value): Fill with 0. `enclosures.toml#3`
+- **Italy & islands**, 5,000–6,000 BCE (medium, encoded (2 adjust)): 0.4 in Apulia and Basilicata from 6,000 to 5,000 BCE, 0.02 in the rest of the peninsula. `enclosures.toml#12`
+- **Italy & islands**, 3,000–4,000 BCE (low, encoded (2 adjust)): 0.04 across peninsular Italy, 0.01 in the islands. `enclosures.toml#13`
+- **Levant**, 3,000–10,000 BCE (medium, flat value): 0.01 everywhere; do not extend European values. `enclosures.toml#34`
+- **Libya & Egypt**, 3,000–10,000 BCE (medium, flat value): Fill with 0. `enclosures.toml#42`
+- **Maghreb**, 3,000–10,000 BCE (medium, flat value): Fill with 0. `enclosures.toml#41`
+- **Mesopotamia**, 3,000–10,000 BCE (medium, flat value): 0.01 everywhere; do not extend European values. `enclosures.toml#35`
+- **Nile & Sudan**, 3,000–10,000 BCE (medium, flat value): Fill with 0. `enclosures.toml#43`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (medium, flat value): Fill with 0. `enclosures.toml#47`
+- **Other**, 3,000–10,000 BCE (medium, flat value): 0.01 everywhere; do not extend European values. `enclosures.toml#40`
+- **Russia: forest north of 56°N**, 7,000–10,000 BCE (high, flat value): Fill with 0. `enclosures.toml#9`
+- **Russia: forest north of 56°N**, 3,000–5,000 BCE (low, flat value): 0.01 everywhere. `enclosures.toml#31`
+- **Russia: steppe and forest-steppe**, 7,000–10,000 BCE (high, flat value): Fill with 0. `enclosures.toml#10`
+- **Russia: steppe and forest-steppe**, 3,000–5,000 BCE (low, flat value): 0.01 everywhere. `enclosures.toml#32`
+- **Sahara–Sahel**, 3,000–10,000 BCE (medium, flat value): Fill with 0. `enclosures.toml#44`
+- **Scandinavia**, 7,000–10,000 BCE (high, flat value): Fill with 0. `enclosures.toml#5`
+- **Scandinavia**, 3,000–4,000 BCE (medium, encoded (1 adjust)): 0.06 in Denmark and Scania, fading to 0 north of 58°N. `enclosures.toml#24`
+- **Ukraine & Belarus**, 7,000–10,000 BCE (high, flat value): Fill with 0. `enclosures.toml#8`
+- **Ukraine & Belarus**, 3,000–5,000 BCE (low, encoded (3 adjust)): 0.08 in the Trypillia zone west of the Dnieper from 4,500 BCE, 0 in Belarus and the east. `enclosures.toml#25`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Fill with 0. `enclosures.toml#46`
+
+## Megalithic tombs
+
+- **Anatolia & Cyprus**, 3,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#29`
+- **Arabia**, 4,000–10,000 BCE (medium, flat value): Fill with 0. `megalithic_tombs.toml#24`
+- **Arabia**, 3,000–3,000 BCE (low, encoded (4 adjust)): 0.02 in Oman and the UAE; 0 elsewhere. `megalithic_tombs.toml#19`
+- **Balkans & Greece**, 3,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#25`
+- **Baltic**, 3,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#26`
+- **British Isles**, 5,000–10,000 BCE (high, flat value): Fill with 0 and suppress evidenced cells before 4,000 BCE. `megalithic_tombs.toml#3`
+- **British Isles**, 3,000–4,000 BCE (medium, flat value): 0.35 along the Atlantic facade, 0.15 in inland France and the Meseta, 0.05 in the Low Countries outside Drenthe. `megalithic_tombs.toml#8`
+- **Caucasus**, 4,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#20`
+- **Caucasus**, 3,000–3,000 BCE (low, encoded (3 adjust)): 0.15 in a strip within 50 km of the Black Sea coast between Anapa and Sukhumi, 0 elsewhere. `megalithic_tombs.toml#16`
+- **Central Asia**, 3,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#32`
+- **Central Europe**, 5,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#9`
+- **Central Europe**, 3,000–4,000 BCE (medium, encoded (1 adjust)): 0.2 north of 51°N, fading to 0 south of 50°N. `megalithic_tombs.toml#10`
+- **France & Low Countries**, 6,000–10,000 BCE (high, flat value): Fill with 0 and suppress evidenced cells before 5,000 BCE. `megalithic_tombs.toml#2`
+- **France & Low Countries**, 5,000–5,000 BCE (medium, encoded (2 adjust)): 0.15 in Brittany, Galicia and the Alentejo, 0.02 elsewhere in these regions. `megalithic_tombs.toml#5`
+- **France & Low Countries**, 3,000–4,000 BCE (medium, encoded (7 adjust)): 0.35 along the Atlantic facade, 0.15 in inland France and the Meseta, 0.05 in the Low Countries outside Drenthe. `megalithic_tombs.toml#7`
+- **Horn of Africa**, 3,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#36`
+- **Iberia**, 6,000–10,000 BCE (high, flat value): Fill with 0 and suppress evidenced cells before 5,000 BCE. `megalithic_tombs.toml#1`
+- **Iberia**, 5,000–5,000 BCE (medium, encoded (3 adjust)): 0.15 in Brittany, Galicia and the Alentejo, 0.02 elsewhere in these regions. `megalithic_tombs.toml#4`
+- **Iberia**, 3,000–4,000 BCE (medium, encoded (3 adjust)): 0.35 along the Atlantic facade, 0.15 in inland France and the Meseta, 0.05 in the Low Countries outside Drenthe. `megalithic_tombs.toml#6`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#31`
+- **Italy & islands**, 5,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#13`
+- **Italy & islands**, 3,000–4,000 BCE (low, encoded (5 adjust)): 0.1 in Sardinia, Corsica-facing coasts and Apulia; 0.02 elsewhere. `megalithic_tombs.toml#14`
+- **Levant**, 5,000–10,000 BCE (medium, flat value): Fill with 0. `megalithic_tombs.toml#22`
+- **Levant**, 3,000–4,000 BCE (low, encoded (3 adjust)): 0.1 along the Rift margins from 3,500 BCE, 0 elsewhere. `megalithic_tombs.toml#15`
+- **Libya & Egypt**, 3,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#33`
+- **Maghreb**, 5,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#23`
+- **Maghreb**, 3,000–4,000 BCE (low, encoded (3 adjust)): 0.01 along the Moroccan Atlantic coast, 0 inland; do not extend the Iberian values. `megalithic_tombs.toml#18`
+- **Mesopotamia**, 3,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#30`
+- **Nile & Sudan**, 3,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#34`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#38`
+- **Other**, 3,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#39`
+- **Russia: forest north of 56°N**, 3,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#28`
+- **Russia: steppe and forest-steppe**, 4,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#21`
+- **Russia: steppe and forest-steppe**, 3,000–3,000 BCE (low, encoded (3 adjust)): 0.15 in a strip within 50 km of the Black Sea coast between Anapa and Sukhumi, 0 elsewhere. `megalithic_tombs.toml#17`
+- **Sahara–Sahel**, 3,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#35`
+- **Scandinavia**, 5,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#11`
+- **Scandinavia**, 3,000–4,000 BCE (medium, encoded (1 adjust)): 0.35 in Denmark and southern Sweden south of 59°N, 0 north of 60°N. `megalithic_tombs.toml#12`
+- **Ukraine & Belarus**, 3,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#27`
+- **West Africa**, 3,000–10,000 BCE (high, flat value): Fill with 0. `megalithic_tombs.toml#37`
+
+## Pile dwellings
+
+- **Anatolia & Cyprus**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#12`
+- **Arabia**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#18`
+- **Balkans & Greece**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#8`
+- **Balkans & Greece**, 3,000–6,000 BCE (low, encoded (5 adjust)): 0.3 within 20 km of Lakes Kastoria, Ohrid and Prespa from 5,500 BCE; 0 elsewhere. `pile_dwellings.toml#34`
+- **Baltic**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#7`
+- **Baltic**, 3,000–4,000 BCE (low, encoded (3 adjust)): 0.15 in the Upper Dvina-Lovat lake district, the Latvian and Lithuanian coastal lagoons and the Belarusian Lakelands; 0 elsewhere. `pile_dwellings.toml#39`
+- **British Isles**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#1`
+- **British Isles**, 3,000–6,000 BCE (medium, encoded (3 adjust)): 0.05 in the Western Isles at 4,000-3,000 BCE; 0 elsewhere. `pile_dwellings.toml#43`
+- **Caucasus**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#16`
+- **Central Asia**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#17`
+- **Central Europe**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#5`
+- **Central Europe**, 3,000–4,000 BCE (medium, encoded (8 adjust)): 0.4 within 100 km of the northern Alpine lakes (Bodensee, Zürich, Neuchâtel, Federsee, Mondsee, Attersee), 0.05 to 48.5°N, 0 beyond. `pile_dwellings.toml#30`
+- **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#2`
+- **France & Low Countries**, 3,000–4,000 BCE (medium, encoded (2 adjust)): 0.35 in the Jura and Savoy lake basins, 0 elsewhere. `pile_dwellings.toml#32`
+- **Horn of Africa**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#23`
+- **Iberia**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#3`
+- **Iberia**, 3,000–6,000 BCE (high, encoded (3 adjust)): 0.2 within 20 km of Lake Banyoles at 5,000 BCE; 0 elsewhere. `pile_dwellings.toml#33`
+- **Iran & Afghanistan**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#15`
+- **Italy & islands**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#4`
+- **Italy & islands**, 5,000–6,000 BCE (medium, encoded (3 adjust)): 0.1 in a 30 km radius of Lake Bracciano at 6,000 BCE; 0 elsewhere. `pile_dwellings.toml#27`
+- **Italy & islands**, 3,000–4,000 BCE (medium, encoded (2 adjust)): 0.3 in the pre-Alpine lake belt (Garda, Varese, Iseo, Trentino), 0 south of the Po. `pile_dwellings.toml#28`
+- **Levant**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#13`
+- **Libya & Egypt**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#20`
+- **Maghreb**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#19`
+- **Mesopotamia**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#14`
+- **Nile & Sudan**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#21`
+- **Now-drowned shelves and islands**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#25`
+- **Other**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#26`
+- **Russia: forest north of 56°N**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#10`
+- **Russia: forest north of 56°N**, 3,000–4,000 BCE (low, encoded (2 adjust)): 0.15 in the Upper Dvina-Lovat lake district, the Latvian and Lithuanian coastal lagoons and the Belarusian Lakelands; 0 elsewhere. `pile_dwellings.toml#42`
+- **Russia: steppe and forest-steppe**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#11`
+- **Russia: steppe and forest-steppe**, 3,000–4,000 BCE (low, encoded (2 adjust)): 0.15 in the Upper Dvina-Lovat lake district, the Latvian and Lithuanian coastal lagoons and the Belarusian Lakelands; 0 elsewhere. `pile_dwellings.toml#41`
+- **Sahara–Sahel**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#22`
+- **Scandinavia**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#6`
+- **Scandinavia**, 3,000–6,000 BCE (high, encoded (5 adjust)): 0 except a point at Alvastra at 3,000 BCE. `pile_dwellings.toml#44`
+- **Ukraine & Belarus**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#9`
+- **Ukraine & Belarus**, 3,000–4,000 BCE (low, encoded (2 adjust)): 0.15 in the Upper Dvina-Lovat lake district, the Latvian and Lithuanian coastal lagoons and the Belarusian Lakelands; 0 elsewhere. `pile_dwellings.toml#40`
+- **West Africa**, 7,000–10,000 BCE (high, flat value): Fill with 0. `pile_dwellings.toml#24`
+
+## Houses
+
+- **Anatolia & Cyprus**, 10,000–10,000 BCE (low, encoded (2 adjust)): 0.3 in the Taurus foothills and upper Tigris; 0.1 elsewhere. `houses.toml#5`
+- **Anatolia & Cyprus**, 3,000–9,000 BCE (medium, flat value): 0.7 in the farming zone, 0.3 in the arid margins. `houses.toml#3`
+- **Arabia**, 3,000–10,000 BCE (low, encoded (5 adjust)): 0.05 before 7,000 BCE, 0.2 after, 0.3 on the Gulf coast. `houses.toml#15`
+- **Balkans & Greece**, 7,000–10,000 BCE (low, encoded (2 adjust)): 0.15, rising to 0.5 in the Iron Gates gorge at 7,000 BCE. `houses.toml#16`
+- **Balkans & Greece**, 3,000–6,000 BCE (medium, encoded (6 adjust)): 0.75 in the lowlands, 0.4 in the uplands. `houses.toml#17`
+- **Baltic**, 5,000–10,000 BCE (low, encoded (2 adjust)): 0.2 before 7,000 BCE, 0.3 after. `houses.toml#32`
+- **Baltic**, 3,000–4,000 BCE (low, flat value): 0.35. `houses.toml#35`
+- **British Isles**, 5,000–10,000 BCE (medium, flat value): 0.1. `houses.toml#29`
+- **British Isles**, 3,000–4,000 BCE (medium, encoded (1 adjust)): 0.3, 0.45 in Orkney. `houses.toml#30`
+- **Caucasus**, 7,000–10,000 BCE (low, flat value): 0.1. `houses.toml#9`
+- **Caucasus**, 3,000–6,000 BCE (medium, encoded (2 adjust)): 0.65 in the Kura and Araxes valleys, 0.2 in the uplands. `houses.toml#10`
+- **Central Asia**, 8,000–10,000 BCE (low, flat value): 0.1. `houses.toml#11`
+- **Central Asia**, 3,000–7,000 BCE (low, encoded (3 adjust)): 0.6 along the Kopet Dag and in Baluchistan from 6,500 BCE, 0.2 in the Kyzylkum and Kazakh steppe. `houses.toml#13`
+- **Central Europe**, 7,000–10,000 BCE (low, flat value): 0.1. `houses.toml#18`
+- **Central Europe**, 6,000–6,000 BCE (medium, encoded (2 adjust)): 0.5 on the loess from 5,500 BCE, 0.1 elsewhere. `houses.toml#19`
+- **Central Europe**, 3,000–5,000 BCE (medium, encoded (1 adjust)): 0.6 on the loess and Alpine foreland, 0.35 on the North European plain. `houses.toml#20`
+- **France & Low Countries**, 7,000–10,000 BCE (low, flat value): 0.1. `houses.toml#21`
+- **France & Low Countries**, 3,000–5,000 BCE (medium, encoded (3 adjust)): 0.55 in the Paris basin and the north, 0.3 in Mediterranean France. `houses.toml#25`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): 0.1. `houses.toml#46`
+- **Iberia**, 7,000–10,000 BCE (low, flat value): 0.1. `houses.toml#23`
+- **Iberia**, 4,000–6,000 BCE (medium, flat value): 0.3. `houses.toml#27`
+- **Iberia**, 3,000–3,000 BCE (medium, encoded (1 adjust)): 0.55 in the south and Meseta, 0.35 in the north. `houses.toml#28`
+- **Iran & Afghanistan**, 9,000–10,000 BCE (low, encoded (2 adjust)): 0.2 in the Zagros, 0.05 on the plateau. `houses.toml#7`
+- **Iran & Afghanistan**, 3,000–8,000 BCE (medium, encoded (3 adjust)): 0.6 in the Zagros and plateau oases, 0.1 in the deserts. `houses.toml#8`
+- **Italy & islands**, 7,000–10,000 BCE (low, flat value): 0.1. `houses.toml#22`
+- **Italy & islands**, 3,000–6,000 BCE (medium, encoded (4 adjust)): 0.6 in Apulia and the Po plain, 0.35 elsewhere. `houses.toml#26`
+- **Levant**, 10,000–10,000 BCE (medium, encoded (2 adjust)): 0.5 in the Mediterranean zone, 0.2 in the steppe and desert. `houses.toml#1`
+- **Levant**, 3,000–9,000 BCE (medium, encoded (3 adjust)): 0.7 in the farming zone, 0.3 in the arid margins. `houses.toml#2`
+- **Libya & Egypt**, 6,000–10,000 BCE (low, flat value): 0.1. `houses.toml#41`
+- **Libya & Egypt**, 3,000–5,000 BCE (medium, encoded (3 adjust)): 0.5 in the Nile valley and Delta, 0.05 in the deserts. `houses.toml#42`
+- **Maghreb**, 3,000–10,000 BCE (low, flat value): 0.1. `houses.toml#45`
+- **Mesopotamia**, 10,000–10,000 BCE (low, encoded (2 adjust)): 0.3 in the Taurus foothills and upper Tigris; 0.1 elsewhere. `houses.toml#6`
+- **Mesopotamia**, 3,000–9,000 BCE (medium, encoded (3 adjust)): 0.7 in the farming zone, 0.3 in the arid margins. `houses.toml#4`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, flat value): 0.1. `houses.toml#43`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, flat value): 0.15 while above water. `houses.toml#48`
+- **Other**, 8,000–10,000 BCE (low, flat value): 0.1. `houses.toml#12`
+- **Other**, 3,000–7,000 BCE (low, encoded (1 adjust)): 0.6 along the Kopet Dag and in Baluchistan from 6,500 BCE, 0.2 in the Kyzylkum and Kazakh steppe. `houses.toml#14`
+- **Russia: forest north of 56°N**, 5,000–10,000 BCE (low, encoded (2 adjust)): 0.2 before 7,000 BCE, 0.3 after. `houses.toml#33`
+- **Russia: forest north of 56°N**, 3,000–4,000 BCE (low, flat value): 0.35. `houses.toml#36`
+- **Russia: steppe and forest-steppe**, 6,000–10,000 BCE (low, flat value): 0.15. `houses.toml#38`
+- **Russia: steppe and forest-steppe**, 3,000–5,000 BCE (low, flat value): 0.2. `houses.toml#40`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, flat value): 0.1. `houses.toml#44`
+- **Scandinavia**, 5,000–10,000 BCE (low, encoded (2 adjust)): 0.2 before 7,000 BCE, 0.3 after. `houses.toml#31`
+- **Scandinavia**, 3,000–4,000 BCE (low, flat value): 0.35. `houses.toml#34`
+- **Ukraine & Belarus**, 6,000–10,000 BCE (low, flat value): 0.15. `houses.toml#37`
+- **Ukraine & Belarus**, 3,000–5,000 BCE (medium, encoded (3 adjust)): 0.75 west of the Dnieper in the forest-steppe, 0.2 elsewhere. `houses.toml#39`
+- **West Africa**, 3,000–10,000 BCE (low, flat value): 0.1. `houses.toml#47`
+
+## Flint and stone mines
+
+- **Anatolia & Cyprus**, 5,000–10,000 BCE (low, encoded (3 adjust)): 0.02 within 30 km of the Cappadocian obsidian sources and the Negev quarry fields; 0 elsewhere. `mines.toml#26`
+- **Anatolia & Cyprus**, 3,000–4,000 BCE (low, encoded (2 adjust)): 0.05 in the Arabah and around Kestel, 0 elsewhere. `mines.toml#28`
+- **Arabia**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#16`
+- **Arabia**, 3,000–6,000 BCE (low, encoded (1 adjust)): 0.01 at 4,000-3,000 BCE in ore and flint districts; 0 elsewhere. `mines.toml#39`
+- **Balkans & Greece**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#8`
+- **Balkans & Greece**, 3,000–6,000 BCE (medium, encoded (4 adjust)): 0.04 in eastern Serbia and Thrace at 5,000 BCE; 0.005 elsewhere. `mines.toml#35`
+- **Baltic**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#7`
+- **British Isles**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#1`
+- **British Isles**, 3,000–6,000 BCE (high, encoded (4 adjust)): 0 before 4,000 BCE; 0.05 on the southern chalk and Cumbrian fells, 0.01 elsewhere. `mines.toml#33`
+- **Caucasus**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#14`
+- **Central Asia**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#15`
+- **Central Europe**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#5`
+- **Central Europe**, 3,000–6,000 BCE (medium, encoded (5 adjust)): 0.04 in the Jurassic flint zones of Bavaria and southern Poland, 0.01 elsewhere; 0 at 6,000 BCE. `mines.toml#31`
+- **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#2`
+- **France & Low Countries**, 3,000–6,000 BCE (medium, encoded (5 adjust)): 0.05 on the chalk of northern France and Belgium from 4,500 BCE, 0.01 elsewhere; 0 at 6,000 BCE. `mines.toml#32`
+- **Horn of Africa**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#21`
+- **Iberia**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#3`
+- **Iberia**, 3,000–6,000 BCE (medium, encoded (3 adjust)): 0.05 around Madrid at 5,000 BCE and Barcelona at 4,000 BCE; 0.005 elsewhere. `mines.toml#30`
+- **Iran & Afghanistan**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#13`
+- **Iran & Afghanistan**, 3,000–6,000 BCE (low, encoded (1 adjust)): 0.01 at 4,000-3,000 BCE in ore and flint districts; 0 elsewhere. `mines.toml#38`
+- **Italy & islands**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#4`
+- **Italy & islands**, 3,000–6,000 BCE (medium, encoded (4 adjust)): 0.05 on the Gargano, Lessini and Iblei; 0 elsewhere. `mines.toml#29`
+- **Levant**, 5,000–10,000 BCE (low, encoded (2 adjust)): 0.02 within 30 km of the Cappadocian obsidian sources and the Negev quarry fields; 0 elsewhere. `mines.toml#25`
+- **Levant**, 3,000–4,000 BCE (low, encoded (2 adjust)): 0.05 in the Arabah and around Kestel, 0 elsewhere. `mines.toml#27`
+- **Libya & Egypt**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#18`
+- **Libya & Egypt**, 3,000–6,000 BCE (low, encoded (1 adjust)): 0.01 at 4,000-3,000 BCE in ore and flint districts; 0 elsewhere. `mines.toml#37`
+- **Maghreb**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#17`
+- **Mesopotamia**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#12`
+- **Nile & Sudan**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#19`
+- **Now-drowned shelves and islands**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#23`
+- **Other**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#24`
+- **Russia: forest north of 56°N**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#10`
+- **Russia: steppe and forest-steppe**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#11`
+- **Sahara–Sahel**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#20`
+- **Scandinavia**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#6`
+- **Scandinavia**, 3,000–6,000 BCE (medium, encoded (5 adjust)): 0.03 in Denmark and Scania from 4,000 BCE; 0 elsewhere. `mines.toml#34`
+- **Ukraine & Belarus**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#9`
+- **Ukraine & Belarus**, 3,000–6,000 BCE (low, encoded (3 adjust)): 0.03 near Grodno at 4,000-3,000 BCE; 0 elsewhere. `mines.toml#36`
+- **West Africa**, 7,000–10,000 BCE (high, flat value): Fill with 0. `mines.toml#22`
+
+## Metallurgy
+
+- **Anatolia & Cyprus**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#12`
+- **Anatolia & Cyprus**, 6,000–6,000 BCE (low, flat value): 0.01 in central and eastern Anatolia and the Zagros. `metallurgy.toml#51`
+- **Anatolia & Cyprus**, 3,000–5,000 BCE (medium, encoded (3 adjust)): 0.05 at 5,000 BCE, 0.08 at 4,000, 0.12 at 3,000, highest in the east. `metallurgy.toml#55`
+- **Arabia**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#18`
+- **Arabia**, 3,000–5,000 BCE (low, encoded (4 adjust)): 0.03 in Lower Egypt and Oman at 3,000 BCE; 0 elsewhere. `metallurgy.toml#75`
+- **Balkans & Greece**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#8`
+- **Balkans & Greece**, 5,000–5,000 BCE (medium, encoded (2 adjust)): 0.08 in the central Balkans and lower Danube, 0.02 in Greece. `metallurgy.toml#53`
+- **Balkans & Greece**, 3,000–4,000 BCE (low, flat value): 0.04. `metallurgy.toml#54`
+- **Baltic**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#7`
+- **British Isles**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#1`
+- **Caucasus**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#16`
+- **Caucasus**, 3,000–5,000 BCE (low, encoded (3 adjust)): 0.03 at 5,000 BCE, 0.07 at 4,000, 0.12 at 3,000. `metallurgy.toml#60`
+- **Central Asia**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#17`
+- **Central Asia**, 3,000–5,000 BCE (low, encoded (3 adjust)): 0.03 along the Kopet Dag at 4,000-3,000 BCE; 0 elsewhere. `metallurgy.toml#77`
+- **Central Europe**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#5`
+- **Central Europe**, 3,000–4,000 BCE (low, encoded (2 adjust)): 0.05 in the eastern Alps and Languedoc, 0.03 in northern and central Italy, 0 north of 49°N. `metallurgy.toml#70`
+- **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#2`
+- **France & Low Countries**, 3,000–4,000 BCE (low, encoded (2 adjust)): 0.05 in the eastern Alps and Languedoc, 0.03 in northern and central Italy, 0 north of 49°N. `metallurgy.toml#68`
+- **Horn of Africa**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#23`
+- **Iberia**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#3`
+- **Iberia**, 4,000–5,000 BCE (medium, encoded (1 adjust)): 0. `metallurgy.toml#63`
+- **Iberia**, 3,000–3,000 BCE (medium, encoded (4 adjust)): 0.12 in Almería, Huelva and Alentejo, 0.03 elsewhere. `metallurgy.toml#64`
+- **Iran & Afghanistan**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#15`
+- **Iran & Afghanistan**, 6,000–6,000 BCE (low, flat value): 0.01 in central and eastern Anatolia and the Zagros. `metallurgy.toml#52`
+- **Iran & Afghanistan**, 3,000–5,000 BCE (medium, encoded (3 adjust)): 0.05 at 5,000 BCE, 0.1 at 4,000-3,000 on the plateau, 0.02 in Afghanistan. `metallurgy.toml#56`
+- **Italy & islands**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#4`
+- **Italy & islands**, 3,000–4,000 BCE (low, encoded (2 adjust)): 0.05 in the eastern Alps and Languedoc, 0.03 in northern and central Italy, 0 north of 49°N. `metallurgy.toml#69`
+- **Levant**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#13`
+- **Levant**, 5,000–5,000 BCE (medium, flat value): 0.03 in the southern Levant. `metallurgy.toml#58`
+- **Levant**, 3,000–4,000 BCE (high, encoded (3 adjust)): 0.12 in the Beersheba basin and Arabah, 0.03 in the north. `metallurgy.toml#59`
+- **Libya & Egypt**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#20`
+- **Libya & Egypt**, 3,000–5,000 BCE (low, encoded (3 adjust)): 0.03 in Lower Egypt and Oman at 3,000 BCE; 0 elsewhere. `metallurgy.toml#76`
+- **Maghreb**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#19`
+- **Mesopotamia**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#14`
+- **Mesopotamia**, 3,000–5,000 BCE (low, encoded (2 adjust)): 0.01 at 5,000 BCE, 0.04 at 4,000-3,000. `metallurgy.toml#57`
+- **Nile & Sudan**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#21`
+- **Now-drowned shelves and islands**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#25`
+- **Other**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#26`
+- **Other**, 3,000–5,000 BCE (low, encoded (1 adjust)): 0.03 along the Kopet Dag at 4,000-3,000 BCE; 0 elsewhere. `metallurgy.toml#78`
+- **Russia: forest north of 56°N**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#10`
+- **Russia: steppe and forest-steppe**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#11`
+- **Russia: steppe and forest-steppe**, 3,000–5,000 BCE (low, encoded (3 adjust)): 0.02 in the North Caucasus foreland at 3,000 BCE; 0 elsewhere. `metallurgy.toml#61`
+- **Sahara–Sahel**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#22`
+- **Scandinavia**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#6`
+- **Ukraine & Belarus**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#9`
+- **Ukraine & Belarus**, 3,000–5,000 BCE (low, encoded (1 adjust)): 0.02 in the North Caucasus foreland at 3,000 BCE; 0 elsewhere. `metallurgy.toml#62`
+- **West Africa**, 7,000–10,000 BCE (high, flat value): Fill with 0. `metallurgy.toml#24`
+
+## Waterlogged organics
+
+- **Anatolia & Cyprus**, 3,000–10,000 BCE (medium, flat value): 0.005. `waterlogged_organics.toml#19`
+- **Arabia**, 3,000–10,000 BCE (low, encoded (1 adjust)): 0.04 in the Fayum, Nile valley and Saharan rock-shelters from 6,000 BCE, 0.005 elsewhere. `waterlogged_organics.toml#17`
+- **Balkans & Greece**, 3,000–10,000 BCE (medium, encoded (3 adjust)): 0.15 at the lake sites (Marmotta, La Draga, Dispilio) in their slices, 0.01 elsewhere. `waterlogged_organics.toml#10`
+- **Baltic**, 3,000–10,000 BCE (medium, encoded (1 adjust)): 0.03 at 10,000 BCE, 0.12 from 9,000 BCE in lake and coastal districts, 0.03 in the uplands. `waterlogged_organics.toml#2`
+- **British Isles**, 7,000–10,000 BCE (medium, encoded (2 adjust)): 0.08 in the east and the fens, 0.03 elsewhere. `waterlogged_organics.toml#6`
+- **British Isles**, 3,000–6,000 BCE (high, encoded (4 adjust)): 0.12 in the Levels, fens and Irish bogs, 0.03 elsewhere. `waterlogged_organics.toml#7`
+- **Caucasus**, 3,000–10,000 BCE (medium, flat value): 0.005. `waterlogged_organics.toml#22`
+- **Central Asia**, 3,000–10,000 BCE (medium, flat value): 0.005. `waterlogged_organics.toml#23`
+- **Central Europe**, 3,000–10,000 BCE (medium, encoded (3 adjust)): 0.1 in the Dutch-German lowlands and Alpine lakes, 0.02 on the loess. `waterlogged_organics.toml#4`
+- **France & Low Countries**, 3,000–10,000 BCE (medium, encoded (3 adjust)): 0.1 in the Dutch-German lowlands and Alpine lakes, 0.02 on the loess. `waterlogged_organics.toml#5`
+- **Horn of Africa**, 3,000–10,000 BCE (medium, flat value): 0.005. `waterlogged_organics.toml#25`
+- **Iberia**, 3,000–10,000 BCE (medium, encoded (3 adjust)): 0.15 at the lake sites (Marmotta, La Draga, Dispilio) in their slices, 0.01 elsewhere. `waterlogged_organics.toml#9`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (medium, flat value): 0.005. `waterlogged_organics.toml#21`
+- **Italy & islands**, 3,000–10,000 BCE (medium, encoded (3 adjust)): 0.15 at the lake sites (Marmotta, La Draga, Dispilio) in their slices, 0.01 elsewhere. `waterlogged_organics.toml#8`
+- **Levant**, 3,000–10,000 BCE (medium, encoded (2 adjust)): 0.05 in the Judean Desert and Dead Sea caves, 0.005 elsewhere. `waterlogged_organics.toml#13`
+- **Levant**, 4,000–5,000 BCE (medium, encoded (2 adjust)): 0.05 in the Judean Desert, 0.005 elsewhere. `waterlogged_organics.toml#14`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, encoded (4 adjust)): 0.04 in the Fayum, Nile valley and Saharan rock-shelters from 6,000 BCE, 0.005 elsewhere. `waterlogged_organics.toml#15`
+- **Maghreb**, 3,000–10,000 BCE (medium, flat value): 0.005. `waterlogged_organics.toml#24`
+- **Mesopotamia**, 3,000–10,000 BCE (medium, flat value): 0.005. `waterlogged_organics.toml#20`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, encoded (3 adjust)): 0.04 in the Fayum, Nile valley and Saharan rock-shelters from 6,000 BCE, 0.005 elsewhere. `waterlogged_organics.toml#16`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): 0.1 on the North Sea shelf while above water, 0 on the Gulf and Caspian shelves. `waterlogged_organics.toml#28`
+- **Other**, 3,000–10,000 BCE (medium, flat value): 0.005. `waterlogged_organics.toml#27`
+- **Russia: forest north of 56°N**, 3,000–10,000 BCE (medium, encoded (2 adjust)): 0.03 at 10,000 BCE, 0.12 from 9,000 BCE in lake and coastal districts, 0.03 in the uplands. `waterlogged_organics.toml#3`
+- **Russia: steppe and forest-steppe**, 3,000–10,000 BCE (low, encoded (2 adjust)): 0.1 in Belarus and the Upper Dnieper-Dvina, 0.01 in the steppe. `waterlogged_organics.toml#12`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (1 adjust)): 0.04 in the Fayum, Nile valley and Saharan rock-shelters from 6,000 BCE, 0.005 elsewhere. `waterlogged_organics.toml#18`
+- **Scandinavia**, 3,000–10,000 BCE (medium, encoded (2 adjust)): 0.03 at 10,000 BCE, 0.12 from 9,000 BCE in lake and coastal districts, 0.03 in the uplands. `waterlogged_organics.toml#1`
+- **Ukraine & Belarus**, 3,000–10,000 BCE (low, encoded (2 adjust)): 0.1 in Belarus and the Upper Dnieper-Dvina, 0.01 in the steppe. `waterlogged_organics.toml#11`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): 0.005. `waterlogged_organics.toml#26`
+
+## Cereal pollen in cores
+
+- **Anatolia & Cyprus**, 3,000–10,000 BCE (medium, encoded (2 adjust)): Fill at 0.65 for 10,000-9,000 BCE and 0.75 from 8,000 BCE. `cereal_pollen.toml#11`
+- **Arabia**, 3,000–10,000 BCE (medium, encoded (3 adjust)): Fill at 0.05 everywhere up to 4,000 BCE. At 3,000 BCE raise the Yemeni and Asir highlands above 1,500 m to 0.3, and set the northern Nafud margin (north of 28°N) to 0.3 in every slice for wild barley. `cereal_pollen.toml#8`
+- **Caucasus**, 5,000–10,000 BCE (low, encoded (2 adjust)): Fill at 0.25 for 10,000-8,000 BCE and 0.45 at 5,000 BCE. `cereal_pollen.toml#12`
+- **Central Asia**, 3,000–10,000 BCE (low, encoded (2 adjust)): Fill at 0.35 in the desert interior. On the Kopet Dag piedmont, use 0.6 from 6,000 BCE. `cereal_pollen.toml#14`
+- **Horn of Africa**, 3,000–10,000 BCE (medium, flat value): Fill at 0.03 in all slices. `cereal_pollen.toml#4`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, encoded (5 adjust)): Fill at 0.45 in all slices. Raise it to 0.6 within 100 km of known oasis and piedmont settlements from 6,000 BCE, and lower it to 0.2 in the Kavir and Lut basins. `cereal_pollen.toml#13`
+- **Levant**, 3,000–10,000 BCE (medium, flat value): Fill at 0.5 in all slices, and mark it as wild-grass background. `cereal_pollen.toml#10`
+- **Libya & Egypt**, 3,000–10,000 BCE (medium, encoded (4 adjust)): Fill the desert at 0.03. Within 30 km of the Nile and in the Delta, use 0.5 for 10,000-6,000 BCE (wild grasses, following the Delta core) and 0.7 from 5,000 BCE. `cereal_pollen.toml#5`
+- **Maghreb**, 6,000–10,000 BCE (medium, encoded (1 adjust)): Fill at 0.08 north of 32°N and at 0.02 in the Saharan part south of the Saharan Atlas. `cereal_pollen.toml#6`
+- **Maghreb**, 3,000–5,000 BCE (low, encoded (3 adjust)): Fill at 0.35 in Morocco and 0.2 in Algeria-Tunisia north of 34°N from 5,000 BCE, and at 0.02 south of the Saharan Atlas. `cereal_pollen.toml#7`
+- **Mesopotamia**, 3,000–10,000 BCE (low, encoded (3 adjust)): Fill at 0.6 for 10,000-7,000 BCE and 0.75 for 6,000-3,000 BCE in the alluvium. In the western desert, set 0.4 throughout. Flag it as natural grass, not farming, before 7,000 BCE. `cereal_pollen.toml#9`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, encoded (2 adjust)): Fill at 0.03 away from the Nile. In a 50 km Nile strip, raise it to 0.2 from 5,000 BCE and 0.3 by 3,000 BCE. `cereal_pollen.toml#3`
+- **Now-drowned shelves and islands**, 9,000–10,000 BCE (low, flat value): Fill at 0.4 while the floor is dry. `cereal_pollen.toml#19`
+- **Other**, 3,000–10,000 BCE (low, flat value): Fill at 0.3 in all slices, and at 0.5 within 100 km of Mehrgarh from 7,000 BCE. `cereal_pollen.toml#15`
+- **Russia: forest north of 56°N**, 3,000–10,000 BCE (medium, encoded (3 adjust)): Fill at 0.02 for 10,000-5,000 BCE and 0.04 for 4,000-3,000 BCE. Fade to 0 north of 66°N. `cereal_pollen.toml#17`
+- **Russia: steppe and forest-steppe**, 3,000–10,000 BCE (low, encoded (2 adjust)): Fill at 0.12 for 10,000-6,000 BCE and 0.18 for 5,000-3,000 BCE. Treat it as wild Triticeae, not farming. `cereal_pollen.toml#16`
+- **Sahara–Sahel**, 3,000–10,000 BCE (medium, flat value): Fill at 0.02 in every slice and ignore the shrinkage edges. If the game wants a domestication marker, add a separate 'millet' flag in the western Sahel from 2,500 BCE instead of raising this layer. `cereal_pollen.toml#1`
+- **Ukraine & Belarus**, 8,000–10,000 BCE (low, flat value): Fill at 0.1. `cereal_pollen.toml#18`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Fill at 0.02 for all slices. `cereal_pollen.toml#2`
+
+## Dung-fungus spores in cores
+
+- **Anatolia & Cyprus**, 3,000–10,000 BCE (low, encoded (2 adjust)): Fill at 0.3 for 10,000-9,000 BCE and 0.45 from 8,000 BCE. `dung_spores.toml#13`
+- **Arabia**, 3,000–10,000 BCE (low, encoded (3 adjust)): Fill at 0.3 for 10,000-9,000 BCE, 0.55 for 8,000-5,000 BCE, and 0.35 for 4,000-3,000 BCE. `dung_spores.toml#19`
+- **Balkans & Greece**, 3,000–10,000 BCE (low, encoded (5 adjust)): Fill at 0.35 until 7,000 BCE and 0.45 from 6,000 BCE, rising to 0.55 at 3,000 BCE in Moldova. `dung_spores.toml#11`
+- **Baltic**, 3,000–10,000 BCE (medium, encoded (2 adjust)): Fill at 0.15 until 4,000 BCE and 0.25 at 3,000 BCE. `dung_spores.toml#6`
+- **British Isles**, 9,000–10,000 BCE (medium, flat value): Fill at 0.15. `dung_spores.toml#12`
+- **Caucasus**, 3,000–10,000 BCE (low, encoded (2 adjust)): Fill at 0.35 until 7,000 BCE and 0.5 from 6,000 BCE. `dung_spores.toml#14`
+- **Central Asia**, 3,000–10,000 BCE (low, flat value): Fill at 0.6. `dung_spores.toml#18`
+- **Central Europe**, 3,000–10,000 BCE (medium, encoded (2 adjust)): Fill at 0.12 until 6,000 BCE and 0.22 from 5,000 BCE. `dung_spores.toml#7`
+- **France & Low Countries**, 3,000–10,000 BCE (medium, encoded (3 adjust)): Follow the edge curve: 0.35 at 10,000 BCE, 0.2 for 8,000-6,000 BCE, and 0.35 from 5,000 BCE. `dung_spores.toml#8`
+- **Horn of Africa**, 3,000–10,000 BCE (low, encoded (2 adjust)): Fill at 0.4 until 4,000 BCE and 0.55 at 3,000 BCE. `dung_spores.toml#26`
+- **Iberia**, 3,000–10,000 BCE (medium, encoded (3 adjust)): Fill at 0.25 until 7,000 BCE, 0.45 at 6,000 BCE and 0.6 from 5,000 BCE. `dung_spores.toml#9`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Fill at 0.65 in all slices. `dung_spores.toml#17`
+- **Italy & islands**, 5,000–10,000 BCE (low, encoded (2 adjust)): Fill at 0.15 until 7,000 BCE and 0.4 from 6,000 BCE. `dung_spores.toml#10`
+- **Levant**, 3,000–10,000 BCE (low, flat value): Fill at 0.6 in all slices. `dung_spores.toml#15`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, encoded (3 adjust)): Fill at 0.35 for 9,000-5,000 BCE and 0.15 otherwise in the desert. Use 0.5 in the Nile strip from 5,000 BCE. `dung_spores.toml#22`
+- **Maghreb**, 3,000–10,000 BCE (low, encoded (7 adjust)): Fill at 0.5 until 6,000 BCE and 0.65 from 5,000 BCE north of 32°N. In the Sahara, use the Sahara-Sahel rule. `dung_spores.toml#23`
+- **Mesopotamia**, 3,000–10,000 BCE (low, encoded (2 adjust)): Fill at 0.55 until 7,000 BCE and 0.7 from 6,000 BCE. `dung_spores.toml#16`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, encoded (2 adjust)): Fill at 0.45 until 6,000 BCE and 0.6 from 5,000 BCE. `dung_spores.toml#24`
+- **Now-drowned shelves and islands**, 9,000–10,000 BCE (low, encoded (2 adjust)): Fill Doggerland at 0.25 and the Gulf floor at 0.5 while dry. `dung_spores.toml#27`
+- **Other**, 3,000–10,000 BCE (low, flat value): Fill at 0.45. `dung_spores.toml#20`
+- **Russia: forest north of 56°N**, 3,000–10,000 BCE (low, encoded (1 adjust)): Fill at 0.15 in all slices and 0.25 in the tundra strip north of 66°N for 10,000-9,000 BCE (reindeer herds). `dung_spores.toml#1`
+- **Russia: steppe and forest-steppe**, 6,000–10,000 BCE (low, encoded (1 adjust)): Fill at 0.55 for 10,000-6,000 BCE, and fade to 0.35 in the forest-steppe north of 53°N. `dung_spores.toml#2`
+- **Russia: steppe and forest-steppe**, 3,000–5,000 BCE (low, encoded (1 adjust)): Fill at 0.65, and at 0.45 in the forest-steppe north of 53°N. `dung_spores.toml#3`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (5 adjust)): Fill at 0.4 for 10,000-9,000 BCE, 0.6 for 8,000-5,000 BCE, 0.45 at 4,000 BCE and 0.3 at 3,000 BCE. North of 22°N, drop to 0.2 after 4,000 BCE. `dung_spores.toml#21`
+- **Scandinavia**, 3,000–10,000 BCE (low, encoded (1 adjust)): Fill at 0.15, rising to 0.25 south of 60°N from 4,000 BCE. `dung_spores.toml#5`
+- **Ukraine & Belarus**, 3,000–10,000 BCE (low, encoded (3 adjust)): Fill at 0.2 for 10,000-6,000 BCE, 0.3 at 5,000 BCE and 0.4 for 4,000-3,000 BCE. `dung_spores.toml#4`
+- **West Africa**, 3,000–10,000 BCE (low, flat value): Fill at 0.35. `dung_spores.toml#25`
+
+## Open land (pollen-based)
+
+- **Anatolia & Cyprus**, 8,000–10,000 BCE (medium, encoded (3 adjust)): Fill at 70% at 10,000 BCE, 65% at 9,000 BCE and 58% at 8,000 BCE. `open_land.toml#17`
+- **Anatolia & Cyprus**, 3,000–7,000 BCE (medium, encoded (2 adjust)): Fill at 48%, and at 60% within 50 km of Tuz Gölü. `open_land.toml#18`
+- **Arabia**, 3,000–10,000 BCE (high, encoded (3 adjust)): Fill at 95%, and at 70% on the Asir, Yemeni and Hajar highlands above 1,500 m. `open_land.toml#3`
+- **Balkans & Greece**, 3,000–10,000 BCE (low, encoded (6 adjust)): Fill with the mountain curve (69, 55, 40, then 20%) above 400 m, and at 45% in the Danube and Moldavian lowlands from 7,000 BCE. `open_land.toml#26`
+- **Baltic**, 3,000–10,000 BCE (medium, encoded (2 adjust)): Fill at 35% at 10,000 BCE and 20% after. `open_land.toml#21`
+- **Caucasus**, 3,000–10,000 BCE (low, encoded (5 adjust)): Fill at 85% at 10,000-9,000 BCE and 75% thereafter below 500 m. In the foothills, follow the Georgian edge values. `open_land.toml#19`
+- **Central Asia**, 3,000–10,000 BCE (high, encoded (2 adjust)): Fill at 92%, and at 75% in the river deltas. `open_land.toml#4`
+- **Central Europe**, 8,000–10,000 BCE (medium, encoded (3 adjust)): Fill at 60% at 10,000-9,000 BCE and 50% at 8,000 BCE. Add 10 points on the Hungarian plain. `open_land.toml#22`
+- **Central Europe**, 3,000–7,000 BCE (medium, encoded (3 adjust)): Fill at 35% for 7,000-6,000 BCE and 30% from 5,000 BCE. Add 10 points on the Hungarian plain. `open_land.toml#23`
+- **France & Low Countries**, 3,000–10,000 BCE (medium, encoded (8 adjust)): Fill with the valid-cell curve: 80, 75, 63, 50, 42, 49, 54, 56% from 10,000 to 3,000 BCE. `open_land.toml#24`
+- **Horn of Africa**, 3,000–10,000 BCE (medium, encoded (2 adjust)): Fill at 90% below 1,500 m and 50% above. `open_land.toml#12`
+- **Iberia**, 3,000–10,000 BCE (medium, encoded (7 adjust)): Fill with the valid-cell curve: 79, 64, 46, 40, 45, 54, 54, 48% from 10,000 to 3,000 BCE. `open_land.toml#25`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (medium, encoded (4 adjust)): Fill at 92% on the plateau, 75% in the Zagros and the Afghan highlands, and 40% in the Hyrcanian strip. `open_land.toml#6`
+- **Italy & islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): Fill the Po plain at 20% and the Tavoliere at 35% before 6,000 BCE and 45% after. `open_land.toml#27`
+- **Levant**, 3,000–10,000 BCE (medium, flat value): Fill at 92%, ignoring the 0% edges. `open_land.toml#8`
+- **Libya & Egypt**, 3,000–10,000 BCE (high, encoded (2 adjust)): Fill at 98%. Use 70% on the Jebel Akhdar and 85% in a 10 km Nile strip. `open_land.toml#2`
+- **Maghreb**, 3,000–10,000 BCE (medium, encoded (3 adjust)): Fill at 95% south of the Saharan Atlas. In the Tell and Atlas, use 60% at 10,000-9,000 BCE and 45% from 8,000 BCE. `open_land.toml#9`
+- **Mesopotamia**, 3,000–10,000 BCE (high, encoded (1 adjust)): Fill at 93%, with 85% in the marshes. `open_land.toml#7`
+- **Nile & Sudan**, 3,000–10,000 BCE (medium, encoded (3 adjust)): Fill at 75% for 9,000-5,000 BCE and 88% otherwise. Use 60% on Jebel Marra. `open_land.toml#11`
+- **Now-drowned shelves and islands**, 8,000–10,000 BCE (low, encoded (5 adjust)): Fill Doggerland at 55% at 10,000 BCE, 45% at 9,000 BCE and 30% at 8,000 BCE. Fill the Gulf and Caspian shelves at 95% while dry. `open_land.toml#28`
+- **Other**, 3,000–10,000 BCE (high, flat value): Fill at 95%. `open_land.toml#5`
+- **Russia: forest north of 56°N**, 8,000–10,000 BCE (medium, encoded (4 adjust)): Fill at 55% at 10,000 BCE, 40% at 9,000 BCE and 30% at 8,000 BCE. Use 80% north of 66°N. `open_land.toml#14`
+- **Russia: forest north of 56°N**, 3,000–7,000 BCE (medium, encoded (3 adjust)): Fill at 15%, 12% from 5,000 BCE. Use 60% north of 67°N. `open_land.toml#15`
+- **Russia: steppe and forest-steppe**, 3,000–10,000 BCE (medium, encoded (3 adjust)): Fill at 85% south of 50°N and 60% in the forest-steppe from 50°N to 54°N. Add 10 points at 10,000 BCE. `open_land.toml#13`
+- **Sahara–Sahel**, 3,000–10,000 BCE (medium, encoded (1 adjust)): Fill at 95%. In the southern Sahel (south of 15°N), use 85% for 9,000-5,000 BCE. `open_land.toml#1`
+- **Scandinavia**, 3,000–10,000 BCE (medium, encoded (4 adjust)): Fill at 25% in the boreal lowlands and 60% above 800 m in the Scandes. Add 15 points before 8,000 BCE. `open_land.toml#20`
+- **Ukraine & Belarus**, 3,000–10,000 BCE (medium, encoded (6 adjust)): Fill at 80% at 10,000 BCE, 70% at 9,000 BCE, 55% at 8,000 BCE, 45% for 7,000-5,000 BCE and 50% for 4,000-3,000 BCE. Subtract 20 points in Polesia north of 51°N. `open_land.toml#16`
+- **West Africa**, 3,000–10,000 BCE (low, encoded (4 adjust)): Fill at 65% at 10,000 BCE, 45% for 9,000-5,000 BCE and 60% for 4,000-3,000 BCE. Make it 15% more open north of 11°N. `open_land.toml#10`
+
+## Ancient genomes
+
+- **Anatolia & Cyprus**, 3,000–10,000 BCE (medium, encoded (2 adjust)): Fill 0.75 on the plateau, 0.5 in the SE lowlands. `adna_samples.toml#15`
+- **Arabia**, 3,000–10,000 BCE (low, encoded (2 adjust)): Fill 0.15, 0.3 in the Hajar and Yemeni highlands. `adna_samples.toml#21`
+- **Balkans & Greece**, 3,000–10,000 BCE (medium, encoded (1 adjust)): Fill 0.8; 0.6 in the Dinaric karst uplands. `adna_samples.toml#14`
+- **Baltic**, 7,000–10,000 BCE (medium, encoded (3 adjust)): Fill 0.3 at 10,000-9,000 BCE and 0.5 at 8,000-7,000 BCE across the Baltic, rising to 0.8 around Lake Burtnieks. `adna_samples.toml#5`
+- **British Isles**, 3,000–10,000 BCE (medium, encoded (4 adjust)): Fill 0.25 in Ireland and Scotland and 0.6 in limestone England for 10,000-5,000 BCE; 0.9 after 4,000 BCE. `adna_samples.toml#12`
+- **Caucasus**, 3,000–10,000 BCE (medium, encoded (2 adjust)): Fill 0.75; 0.6 on the Kura-Araxes lowlands. `adna_samples.toml#16`
+- **Central Asia**, 3,000–10,000 BCE (low, encoded (4 adjust)): Fill 0.6 in the Kopet Dag piedmont and Kazakh steppe, 0.3 in the Karakum and Kyzylkum. `adna_samples.toml#20`
+- **Central Europe**, 7,000–10,000 BCE (medium, flat value): Fill 0.8 across Germany, Poland, Czechia and Austria for 10,000-7,000 BCE. `adna_samples.toml#8`
+- **Central Europe**, 3,000–6,000 BCE (high, encoded (1 adjust)): Fill 0.9, falling to 0.6 above 1,500 m in the Alps. `adna_samples.toml#9`
+- **France & Low Countries**, 3,000–10,000 BCE (medium, encoded (3 adjust)): Fill 0.75 before 5,000 BCE and 0.9 after, with 0.5 on Breton granite and Campine sand. `adna_samples.toml#10`
+- **Horn of Africa**, 3,000–10,000 BCE (low, encoded (2 adjust)): Fill 0.3 in the Ethiopian highlands, 0.05 in lowlands. `adna_samples.toml#26`
+- **Iberia**, 3,000–10,000 BCE (medium, encoded (3 adjust)): Fill 0.75 in the north and Atlantic coast, 0.5 on the Meseta and in the south, for all slices. `adna_samples.toml#11`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, encoded (5 adjust)): Fill 0.55 in the Zagros, 0.4 on the plateau, 0.25 in the deserts and Afghanistan. `adna_samples.toml#19`
+- **Italy & islands**, 3,000–10,000 BCE (medium, encoded (1 adjust)): Fill 0.8, 0.6 in the south. `adna_samples.toml#13`
+- **Levant**, 3,000–10,000 BCE (medium, encoded (3 adjust)): Fill 0.6 in hill country, 0.4 in the Syrian desert; 0.3 at 5,000 BCE everywhere. `adna_samples.toml#17`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, encoded (9 adjust)): Fill 0.3 in the Nile Valley and Libyan rock shelters, 0.05 in the dune seas. `adna_samples.toml#22`
+- **Maghreb**, 3,000–10,000 BCE (low, encoded (3 adjust)): Fill 0.6 in the Tell and Moroccan Atlas, 0.1 south of the Saharan Atlas. `adna_samples.toml#27`
+- **Mesopotamia**, 3,000–10,000 BCE (low, encoded (2 adjust)): Fill 0.6 in the northern foothills, 0.15 on the southern alluvium. `adna_samples.toml#18`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, encoded (1 adjust)): Fill 0.2 along the Nile, 0.05 elsewhere. `adna_samples.toml#23`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (high, flat value): Fill 0.02. `adna_samples.toml#28`
+- **Other**, 3,000–10,000 BCE (low, flat value): Fill 0.15. `adna_samples.toml#29`
+- **Russia: forest north of 56°N**, 3,000–10,000 BCE (medium, encoded (2 adjust)): Fill 0.65 south of 62°N in the Upper Volga and Karelia, fading to 0.3 at the Arctic coast and on the Pechora; same for every slice. `adna_samples.toml#1`
+- **Russia: steppe and forest-steppe**, 6,000–10,000 BCE (medium, encoded (1 adjust)): Fill 0.75 across the steppe and forest-steppe for 10,000-6,000 BCE, 0.85 near the Volga bend. `adna_samples.toml#2`
+- **Russia: steppe and forest-steppe**, 3,000–5,000 BCE (high, encoded (1 adjust)): Extend the neighbouring presence (1.0) across the steppe gaps for 5,000-3,000 BCE, 0.85 at the forest-steppe edge. `adna_samples.toml#3`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (2 adjust)): Fill 0.1, 0.2 in rock shelters of Aïr and Tibesti. `adna_samples.toml#24`
+- **Scandinavia**, 8,000–10,000 BCE (medium, encoded (1 adjust)): Fill 0 under the ice margin at 10,000 BCE; 0.4 on deglaciated coasts at 9,000-8,000 BCE and 0.15 inland. `adna_samples.toml#6`
+- **Scandinavia**, 3,000–7,000 BCE (medium, encoded (4 adjust)): Fill 0.15 across Finland and inland Norrland, 0.5 on the Norwegian coast and 0.8 in southern Sweden and Denmark for 7,000-3,000 BCE. `adna_samples.toml#7`
+- **Ukraine & Belarus**, 3,000–10,000 BCE (medium, encoded (4 adjust)): Fill 0.85 in the Ukrainian steppe and Dnieper rapids, 0.6 in the forest-steppe at 4,000 BCE, and 0.4 across Belarus north of the Pripyat. `adna_samples.toml#4`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Fill 0.05. `adna_samples.toml#25`
+
+## Y: I2
+
+- **Anatolia & Cyprus**, 9,000–10,000 BCE (low, flat value): Set G2a 0.25, other 0.4 across Anatolia for 10,000-9,000 BCE. `y_haplogroup.toml#28`
+- **Anatolia & Cyprus**, 5,000–8,000 BCE (medium, encoded (1 adjust)): Set G2a 0.45 in west and central Anatolia, falling to 0.2 in the SE where J2 rises to 0.3. `y_haplogroup.toml#29`
+- **Anatolia & Cyprus**, 3,000–4,000 BCE (medium, encoded (1 adjust)): Set G2a 0.25, J2 0.25, rising J2 eastwards to 0.4. `y_haplogroup.toml#30`
+- **Arabia**, 3,000–10,000 BCE (low, flat value): Set other 0.8, J2 0.15. `y_haplogroup.toml#41`
+- **Balkans & Greece**, 7,000–10,000 BCE (low, flat value): Set R1b 0.35, I2 0.35. `y_haplogroup.toml#25`
+- **Balkans & Greece**, 4,000–6,000 BCE (medium, flat value): Extend neighbours. `y_haplogroup.toml#26`
+- **Balkans & Greece**, 3,000–3,000 BCE (low, encoded (1 adjust)): North-east R1b 0.35; south G2a/J2. `y_haplogroup.toml#27`
+- **Baltic**, 7,000–10,000 BCE (low, flat value): Set I2 0.35, R1b 0.3. `y_haplogroup.toml#16`
+- **Baltic**, 3,000–4,000 BCE (low, flat value): Extend neighbours. `y_haplogroup.toml#17`
+- **British Isles**, 5,000–10,000 BCE (medium, flat value): Set I2 0.85 across the isles until 4,000 BCE. `y_haplogroup.toml#4`
+- **British Isles**, 3,000–3,000 BCE (high, flat value): Extend the adjacent I2 0.75. `y_haplogroup.toml#5`
+- **Caucasus**, 7,000–10,000 BCE (low, flat value): Set J2 0.45, G2a 0.1 across the Caucasus for 10,000-7,000 BCE. `y_haplogroup.toml#31`
+- **Caucasus**, 3,000–6,000 BCE (low, encoded (1 adjust)): Extend the adjacent Georgian/Armenian shares; R1b 0.15 only at 3,000 BCE. `y_haplogroup.toml#32`
+- **Central Asia**, 5,000–10,000 BCE (low, encoded (2 adjust)): North of 45°N R1b 0.25, R1a 0.25, other 0.4; south J2 0.3, other 0.6. `y_haplogroup.toml#38`
+- **Central Asia**, 3,000–4,000 BCE (low, encoded (2 adjust)): South: J2 0.35, other 0.55. North: R1b 0.35 (M73), other 0.5. `y_haplogroup.toml#39`
+- **Central Europe**, 7,000–10,000 BCE (medium, flat value): Set I2 0.75. `y_haplogroup.toml#10`
+- **Central Europe**, 4,000–6,000 BCE (medium, encoded (1 adjust)): Extend G2a 0.4, I2 0.25; at 6,000 BCE raise I2 to 0.6 north of 52°N. `y_haplogroup.toml#11`
+- **Central Europe**, 3,000–3,000 BCE (medium, encoded (1 adjust)): Extend neighbours; R1a rising eastward. `y_haplogroup.toml#12`
+- **France & Low Countries**, 6,000–10,000 BCE (medium, flat value): Set I2 0.75, C 0.08, R1b 0.05 across France and the Low Countries until farmers arrive (5,700 BCE in the south, 5,300 BCE in the north-east). `y_haplogroup.toml#1`
+- **France & Low Countries**, 3,000–5,000 BCE (medium, flat value): Extend neighbours. `y_haplogroup.toml#13`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `y_haplogroup.toml#48`
+- **Iberia**, 7,000–10,000 BCE (low, flat value): Set I2 0.5, C 0.3 across Iberia before 6,000 BCE. `y_haplogroup.toml#2`
+- **Iberia**, 3,000–6,000 BCE (medium, flat value): Extend the adjacent I2 0.45 / G2a 0.25 into the gaps. `y_haplogroup.toml#3`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set J2 0.3, other 0.6 (G2b, R2, J1, L) everywhere; L and R2 rise towards Afghanistan. `y_haplogroup.toml#37`
+- **Italy & islands**, 7,000–10,000 BCE (low, flat value): Set I2 0.45, R1b 0.25 for 10,000-7,000 BCE. `y_haplogroup.toml#8`
+- **Italy & islands**, 3,000–6,000 BCE (medium, flat value): Extend G2a 0.4, I2 0.2. `y_haplogroup.toml#9`
+- **Levant**, 9,000–10,000 BCE (medium, flat value): Set other 0.85 (E1b1b). `y_haplogroup.toml#33`
+- **Levant**, 5,000–8,000 BCE (low, flat value): Set other 0.65, H2 0.1, G2a 0.1. `y_haplogroup.toml#34`
+- **Levant**, 3,000–4,000 BCE (medium, encoded (1 adjust)): Set other 0.65, J2 0.12; J2 to 0.2 in northern Syria. `y_haplogroup.toml#35`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set other 0.85 everywhere; J2 0.08 in the Delta from 4,000 BCE. `y_haplogroup.toml#42`
+- **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95 (E1b1b) across the Maghreb for 10,000-7,000 BCE. `y_haplogroup.toml#43`
+- **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): Northern Morocco: G2a 0.3, other 0.6. Elsewhere other 0.9 (E1b1b, T1a by 3,000 BCE). `y_haplogroup.toml#44`
+- **Mesopotamia**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set J2 0.3, G2a 0.12, other 0.5; raise G2a to 0.25 north of 36°N before 6,000 BCE. `y_haplogroup.toml#36`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, flat value): Set other 0.97 everywhere in Nile & Sudan. `y_haplogroup.toml#45`
+- **Now-drowned shelves and islands**, 8,000–10,000 BCE (low, flat value): Set I2 0.75 on the North Sea shelf. `y_haplogroup.toml#6`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): Gulf cells: J2 0.3, other 0.65. Caspian and Pechora cells: R1b 0.35, R1a 0.3, other 0.25. `y_haplogroup.toml#7`
+- **Other**, 3,000–10,000 BCE (low, flat value): Set J2 0.2, other 0.75. `y_haplogroup.toml#40`
+- **Russia: forest north of 56°N**, 5,000–10,000 BCE (low, flat value): Set R1a 0.4, R1b 0.2. `y_haplogroup.toml#18`
+- **Russia: forest north of 56°N**, 3,000–4,000 BCE (low, flat value): Set R1a 0.4. `y_haplogroup.toml#19`
+- **Russia: steppe and forest-steppe**, 6,000–10,000 BCE (low, flat value): Set R1b 0.35, R1a 0.25. `y_haplogroup.toml#20`
+- **Russia: steppe and forest-steppe**, 4,000–5,000 BCE (medium, flat value): Extend R1b 0.45. `y_haplogroup.toml#21`
+- **Russia: steppe and forest-steppe**, 3,000–3,000 BCE (high, flat value): Extend R1b 0.65. `y_haplogroup.toml#22`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set other 0.85; R1b 0.15 around Lake Chad from 6,000 BCE, 0.05 elsewhere. `y_haplogroup.toml#46`
+- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.65; raise R1a to 0.2 north of 64°N. `y_haplogroup.toml#14`
+- **Scandinavia**, 3,000–6,000 BCE (low, encoded (2 adjust)): Southern cells I2 0.65; Finland R1a 0.3, R1b 0.15, I2 0.25. `y_haplogroup.toml#15`
+- **Ukraine & Belarus**, 5,000–10,000 BCE (medium, flat value): Set I2 0.5. `y_haplogroup.toml#23`
+- **Ukraine & Belarus**, 3,000–4,000 BCE (low, encoded (2 adjust)): Gradient: south R1b 0.45, west G2a 0.25, north I2 0.4. `y_haplogroup.toml#24`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Set other 1.0. `y_haplogroup.toml#47`
+
+## Y: G2a
+
+- **Anatolia & Cyprus**, 9,000–10,000 BCE (low, flat value): Set G2a 0.25, other 0.4 across Anatolia for 10,000-9,000 BCE. `y_haplogroup.toml#28`
+- **Anatolia & Cyprus**, 5,000–8,000 BCE (medium, encoded (1 adjust)): Set G2a 0.45 in west and central Anatolia, falling to 0.2 in the SE where J2 rises to 0.3. `y_haplogroup.toml#29`
+- **Anatolia & Cyprus**, 3,000–4,000 BCE (medium, encoded (1 adjust)): Set G2a 0.25, J2 0.25, rising J2 eastwards to 0.4. `y_haplogroup.toml#30`
+- **Arabia**, 3,000–10,000 BCE (low, flat value): Set other 0.8, J2 0.15. `y_haplogroup.toml#41`
+- **Balkans & Greece**, 7,000–10,000 BCE (low, flat value): Set R1b 0.35, I2 0.35. `y_haplogroup.toml#25`
+- **Balkans & Greece**, 4,000–6,000 BCE (medium, flat value): Extend neighbours. `y_haplogroup.toml#26`
+- **Balkans & Greece**, 3,000–3,000 BCE (low, encoded (1 adjust)): North-east R1b 0.35; south G2a/J2. `y_haplogroup.toml#27`
+- **Baltic**, 7,000–10,000 BCE (low, flat value): Set I2 0.35, R1b 0.3. `y_haplogroup.toml#16`
+- **Baltic**, 3,000–4,000 BCE (low, flat value): Extend neighbours. `y_haplogroup.toml#17`
+- **British Isles**, 5,000–10,000 BCE (medium, flat value): Set I2 0.85 across the isles until 4,000 BCE. `y_haplogroup.toml#4`
+- **British Isles**, 3,000–3,000 BCE (high, flat value): Extend the adjacent I2 0.75. `y_haplogroup.toml#5`
+- **Caucasus**, 7,000–10,000 BCE (low, flat value): Set J2 0.45, G2a 0.1 across the Caucasus for 10,000-7,000 BCE. `y_haplogroup.toml#31`
+- **Caucasus**, 3,000–6,000 BCE (low, encoded (1 adjust)): Extend the adjacent Georgian/Armenian shares; R1b 0.15 only at 3,000 BCE. `y_haplogroup.toml#32`
+- **Central Asia**, 5,000–10,000 BCE (low, encoded (2 adjust)): North of 45°N R1b 0.25, R1a 0.25, other 0.4; south J2 0.3, other 0.6. `y_haplogroup.toml#38`
+- **Central Asia**, 3,000–4,000 BCE (low, encoded (2 adjust)): South: J2 0.35, other 0.55. North: R1b 0.35 (M73), other 0.5. `y_haplogroup.toml#39`
+- **Central Europe**, 7,000–10,000 BCE (medium, flat value): Set I2 0.75. `y_haplogroup.toml#10`
+- **Central Europe**, 4,000–6,000 BCE (medium, encoded (1 adjust)): Extend G2a 0.4, I2 0.25; at 6,000 BCE raise I2 to 0.6 north of 52°N. `y_haplogroup.toml#11`
+- **Central Europe**, 3,000–3,000 BCE (medium, encoded (1 adjust)): Extend neighbours; R1a rising eastward. `y_haplogroup.toml#12`
+- **France & Low Countries**, 6,000–10,000 BCE (medium, flat value): Set I2 0.75, C 0.08, R1b 0.05 across France and the Low Countries until farmers arrive (5,700 BCE in the south, 5,300 BCE in the north-east). `y_haplogroup.toml#1`
+- **France & Low Countries**, 3,000–5,000 BCE (medium, flat value): Extend neighbours. `y_haplogroup.toml#13`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `y_haplogroup.toml#48`
+- **Iberia**, 7,000–10,000 BCE (low, flat value): Set I2 0.5, C 0.3 across Iberia before 6,000 BCE. `y_haplogroup.toml#2`
+- **Iberia**, 3,000–6,000 BCE (medium, flat value): Extend the adjacent I2 0.45 / G2a 0.25 into the gaps. `y_haplogroup.toml#3`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set J2 0.3, other 0.6 (G2b, R2, J1, L) everywhere; L and R2 rise towards Afghanistan. `y_haplogroup.toml#37`
+- **Italy & islands**, 7,000–10,000 BCE (low, flat value): Set I2 0.45, R1b 0.25 for 10,000-7,000 BCE. `y_haplogroup.toml#8`
+- **Italy & islands**, 3,000–6,000 BCE (medium, flat value): Extend G2a 0.4, I2 0.2. `y_haplogroup.toml#9`
+- **Levant**, 9,000–10,000 BCE (medium, flat value): Set other 0.85 (E1b1b). `y_haplogroup.toml#33`
+- **Levant**, 5,000–8,000 BCE (low, flat value): Set other 0.65, H2 0.1, G2a 0.1. `y_haplogroup.toml#34`
+- **Levant**, 3,000–4,000 BCE (medium, encoded (1 adjust)): Set other 0.65, J2 0.12; J2 to 0.2 in northern Syria. `y_haplogroup.toml#35`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set other 0.85 everywhere; J2 0.08 in the Delta from 4,000 BCE. `y_haplogroup.toml#42`
+- **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95 (E1b1b) across the Maghreb for 10,000-7,000 BCE. `y_haplogroup.toml#43`
+- **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): Northern Morocco: G2a 0.3, other 0.6. Elsewhere other 0.9 (E1b1b, T1a by 3,000 BCE). `y_haplogroup.toml#44`
+- **Mesopotamia**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set J2 0.3, G2a 0.12, other 0.5; raise G2a to 0.25 north of 36°N before 6,000 BCE. `y_haplogroup.toml#36`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, flat value): Set other 0.97 everywhere in Nile & Sudan. `y_haplogroup.toml#45`
+- **Now-drowned shelves and islands**, 8,000–10,000 BCE (low, flat value): Set I2 0.75 on the North Sea shelf. `y_haplogroup.toml#6`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): Gulf cells: J2 0.3, other 0.65. Caspian and Pechora cells: R1b 0.35, R1a 0.3, other 0.25. `y_haplogroup.toml#7`
+- **Other**, 3,000–10,000 BCE (low, flat value): Set J2 0.2, other 0.75. `y_haplogroup.toml#40`
+- **Russia: forest north of 56°N**, 5,000–10,000 BCE (low, flat value): Set R1a 0.4, R1b 0.2. `y_haplogroup.toml#18`
+- **Russia: forest north of 56°N**, 3,000–4,000 BCE (low, flat value): Set R1a 0.4. `y_haplogroup.toml#19`
+- **Russia: steppe and forest-steppe**, 6,000–10,000 BCE (low, flat value): Set R1b 0.35, R1a 0.25. `y_haplogroup.toml#20`
+- **Russia: steppe and forest-steppe**, 4,000–5,000 BCE (medium, flat value): Extend R1b 0.45. `y_haplogroup.toml#21`
+- **Russia: steppe and forest-steppe**, 3,000–3,000 BCE (high, flat value): Extend R1b 0.65. `y_haplogroup.toml#22`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set other 0.85; R1b 0.15 around Lake Chad from 6,000 BCE, 0.05 elsewhere. `y_haplogroup.toml#46`
+- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.65; raise R1a to 0.2 north of 64°N. `y_haplogroup.toml#14`
+- **Scandinavia**, 3,000–6,000 BCE (low, encoded (2 adjust)): Southern cells I2 0.65; Finland R1a 0.3, R1b 0.15, I2 0.25. `y_haplogroup.toml#15`
+- **Ukraine & Belarus**, 5,000–10,000 BCE (medium, flat value): Set I2 0.5. `y_haplogroup.toml#23`
+- **Ukraine & Belarus**, 3,000–4,000 BCE (low, encoded (2 adjust)): Gradient: south R1b 0.45, west G2a 0.25, north I2 0.4. `y_haplogroup.toml#24`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Set other 1.0. `y_haplogroup.toml#47`
+
+## Y: R1b
+
+- **Anatolia & Cyprus**, 9,000–10,000 BCE (low, flat value): Set G2a 0.25, other 0.4 across Anatolia for 10,000-9,000 BCE. `y_haplogroup.toml#28`
+- **Anatolia & Cyprus**, 5,000–8,000 BCE (medium, encoded (1 adjust)): Set G2a 0.45 in west and central Anatolia, falling to 0.2 in the SE where J2 rises to 0.3. `y_haplogroup.toml#29`
+- **Anatolia & Cyprus**, 3,000–4,000 BCE (medium, encoded (1 adjust)): Set G2a 0.25, J2 0.25, rising J2 eastwards to 0.4. `y_haplogroup.toml#30`
+- **Arabia**, 3,000–10,000 BCE (low, flat value): Set other 0.8, J2 0.15. `y_haplogroup.toml#41`
+- **Balkans & Greece**, 7,000–10,000 BCE (low, flat value): Set R1b 0.35, I2 0.35. `y_haplogroup.toml#25`
+- **Balkans & Greece**, 4,000–6,000 BCE (medium, flat value): Extend neighbours. `y_haplogroup.toml#26`
+- **Balkans & Greece**, 3,000–3,000 BCE (low, encoded (1 adjust)): North-east R1b 0.35; south G2a/J2. `y_haplogroup.toml#27`
+- **Baltic**, 7,000–10,000 BCE (low, flat value): Set I2 0.35, R1b 0.3. `y_haplogroup.toml#16`
+- **Baltic**, 3,000–4,000 BCE (low, flat value): Extend neighbours. `y_haplogroup.toml#17`
+- **British Isles**, 5,000–10,000 BCE (medium, flat value): Set I2 0.85 across the isles until 4,000 BCE. `y_haplogroup.toml#4`
+- **British Isles**, 3,000–3,000 BCE (high, flat value): Extend the adjacent I2 0.75. `y_haplogroup.toml#5`
+- **Caucasus**, 7,000–10,000 BCE (low, flat value): Set J2 0.45, G2a 0.1 across the Caucasus for 10,000-7,000 BCE. `y_haplogroup.toml#31`
+- **Caucasus**, 3,000–6,000 BCE (low, encoded (1 adjust)): Extend the adjacent Georgian/Armenian shares; R1b 0.15 only at 3,000 BCE. `y_haplogroup.toml#32`
+- **Central Asia**, 5,000–10,000 BCE (low, encoded (2 adjust)): North of 45°N R1b 0.25, R1a 0.25, other 0.4; south J2 0.3, other 0.6. `y_haplogroup.toml#38`
+- **Central Asia**, 3,000–4,000 BCE (low, encoded (2 adjust)): South: J2 0.35, other 0.55. North: R1b 0.35 (M73), other 0.5. `y_haplogroup.toml#39`
+- **Central Europe**, 7,000–10,000 BCE (medium, flat value): Set I2 0.75. `y_haplogroup.toml#10`
+- **Central Europe**, 4,000–6,000 BCE (medium, encoded (1 adjust)): Extend G2a 0.4, I2 0.25; at 6,000 BCE raise I2 to 0.6 north of 52°N. `y_haplogroup.toml#11`
+- **Central Europe**, 3,000–3,000 BCE (medium, encoded (1 adjust)): Extend neighbours; R1a rising eastward. `y_haplogroup.toml#12`
+- **France & Low Countries**, 6,000–10,000 BCE (medium, flat value): Set I2 0.75, C 0.08, R1b 0.05 across France and the Low Countries until farmers arrive (5,700 BCE in the south, 5,300 BCE in the north-east). `y_haplogroup.toml#1`
+- **France & Low Countries**, 3,000–5,000 BCE (medium, flat value): Extend neighbours. `y_haplogroup.toml#13`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `y_haplogroup.toml#48`
+- **Iberia**, 7,000–10,000 BCE (low, flat value): Set I2 0.5, C 0.3 across Iberia before 6,000 BCE. `y_haplogroup.toml#2`
+- **Iberia**, 3,000–6,000 BCE (medium, flat value): Extend the adjacent I2 0.45 / G2a 0.25 into the gaps. `y_haplogroup.toml#3`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set J2 0.3, other 0.6 (G2b, R2, J1, L) everywhere; L and R2 rise towards Afghanistan. `y_haplogroup.toml#37`
+- **Italy & islands**, 7,000–10,000 BCE (low, flat value): Set I2 0.45, R1b 0.25 for 10,000-7,000 BCE. `y_haplogroup.toml#8`
+- **Italy & islands**, 3,000–6,000 BCE (medium, flat value): Extend G2a 0.4, I2 0.2. `y_haplogroup.toml#9`
+- **Levant**, 9,000–10,000 BCE (medium, flat value): Set other 0.85 (E1b1b). `y_haplogroup.toml#33`
+- **Levant**, 5,000–8,000 BCE (low, flat value): Set other 0.65, H2 0.1, G2a 0.1. `y_haplogroup.toml#34`
+- **Levant**, 3,000–4,000 BCE (medium, encoded (1 adjust)): Set other 0.65, J2 0.12; J2 to 0.2 in northern Syria. `y_haplogroup.toml#35`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set other 0.85 everywhere; J2 0.08 in the Delta from 4,000 BCE. `y_haplogroup.toml#42`
+- **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95 (E1b1b) across the Maghreb for 10,000-7,000 BCE. `y_haplogroup.toml#43`
+- **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): Northern Morocco: G2a 0.3, other 0.6. Elsewhere other 0.9 (E1b1b, T1a by 3,000 BCE). `y_haplogroup.toml#44`
+- **Mesopotamia**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set J2 0.3, G2a 0.12, other 0.5; raise G2a to 0.25 north of 36°N before 6,000 BCE. `y_haplogroup.toml#36`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, flat value): Set other 0.97 everywhere in Nile & Sudan. `y_haplogroup.toml#45`
+- **Now-drowned shelves and islands**, 8,000–10,000 BCE (low, flat value): Set I2 0.75 on the North Sea shelf. `y_haplogroup.toml#6`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): Gulf cells: J2 0.3, other 0.65. Caspian and Pechora cells: R1b 0.35, R1a 0.3, other 0.25. `y_haplogroup.toml#7`
+- **Other**, 3,000–10,000 BCE (low, flat value): Set J2 0.2, other 0.75. `y_haplogroup.toml#40`
+- **Russia: forest north of 56°N**, 5,000–10,000 BCE (low, flat value): Set R1a 0.4, R1b 0.2. `y_haplogroup.toml#18`
+- **Russia: forest north of 56°N**, 3,000–4,000 BCE (low, flat value): Set R1a 0.4. `y_haplogroup.toml#19`
+- **Russia: steppe and forest-steppe**, 6,000–10,000 BCE (low, flat value): Set R1b 0.35, R1a 0.25. `y_haplogroup.toml#20`
+- **Russia: steppe and forest-steppe**, 4,000–5,000 BCE (medium, flat value): Extend R1b 0.45. `y_haplogroup.toml#21`
+- **Russia: steppe and forest-steppe**, 3,000–3,000 BCE (high, flat value): Extend R1b 0.65. `y_haplogroup.toml#22`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set other 0.85; R1b 0.15 around Lake Chad from 6,000 BCE, 0.05 elsewhere. `y_haplogroup.toml#46`
+- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.65; raise R1a to 0.2 north of 64°N. `y_haplogroup.toml#14`
+- **Scandinavia**, 3,000–6,000 BCE (low, encoded (2 adjust)): Southern cells I2 0.65; Finland R1a 0.3, R1b 0.15, I2 0.25. `y_haplogroup.toml#15`
+- **Ukraine & Belarus**, 5,000–10,000 BCE (medium, flat value): Set I2 0.5. `y_haplogroup.toml#23`
+- **Ukraine & Belarus**, 3,000–4,000 BCE (low, encoded (2 adjust)): Gradient: south R1b 0.45, west G2a 0.25, north I2 0.4. `y_haplogroup.toml#24`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Set other 1.0. `y_haplogroup.toml#47`
+
+## Y: R1a
+
+- **Anatolia & Cyprus**, 9,000–10,000 BCE (low, flat value): Set G2a 0.25, other 0.4 across Anatolia for 10,000-9,000 BCE. `y_haplogroup.toml#28`
+- **Anatolia & Cyprus**, 5,000–8,000 BCE (medium, encoded (1 adjust)): Set G2a 0.45 in west and central Anatolia, falling to 0.2 in the SE where J2 rises to 0.3. `y_haplogroup.toml#29`
+- **Anatolia & Cyprus**, 3,000–4,000 BCE (medium, encoded (1 adjust)): Set G2a 0.25, J2 0.25, rising J2 eastwards to 0.4. `y_haplogroup.toml#30`
+- **Arabia**, 3,000–10,000 BCE (low, flat value): Set other 0.8, J2 0.15. `y_haplogroup.toml#41`
+- **Balkans & Greece**, 7,000–10,000 BCE (low, flat value): Set R1b 0.35, I2 0.35. `y_haplogroup.toml#25`
+- **Balkans & Greece**, 4,000–6,000 BCE (medium, flat value): Extend neighbours. `y_haplogroup.toml#26`
+- **Balkans & Greece**, 3,000–3,000 BCE (low, encoded (1 adjust)): North-east R1b 0.35; south G2a/J2. `y_haplogroup.toml#27`
+- **Baltic**, 7,000–10,000 BCE (low, flat value): Set I2 0.35, R1b 0.3. `y_haplogroup.toml#16`
+- **Baltic**, 3,000–4,000 BCE (low, flat value): Extend neighbours. `y_haplogroup.toml#17`
+- **British Isles**, 5,000–10,000 BCE (medium, flat value): Set I2 0.85 across the isles until 4,000 BCE. `y_haplogroup.toml#4`
+- **British Isles**, 3,000–3,000 BCE (high, flat value): Extend the adjacent I2 0.75. `y_haplogroup.toml#5`
+- **Caucasus**, 7,000–10,000 BCE (low, flat value): Set J2 0.45, G2a 0.1 across the Caucasus for 10,000-7,000 BCE. `y_haplogroup.toml#31`
+- **Caucasus**, 3,000–6,000 BCE (low, encoded (1 adjust)): Extend the adjacent Georgian/Armenian shares; R1b 0.15 only at 3,000 BCE. `y_haplogroup.toml#32`
+- **Central Asia**, 5,000–10,000 BCE (low, encoded (2 adjust)): North of 45°N R1b 0.25, R1a 0.25, other 0.4; south J2 0.3, other 0.6. `y_haplogroup.toml#38`
+- **Central Asia**, 3,000–4,000 BCE (low, encoded (2 adjust)): South: J2 0.35, other 0.55. North: R1b 0.35 (M73), other 0.5. `y_haplogroup.toml#39`
+- **Central Europe**, 7,000–10,000 BCE (medium, flat value): Set I2 0.75. `y_haplogroup.toml#10`
+- **Central Europe**, 4,000–6,000 BCE (medium, encoded (1 adjust)): Extend G2a 0.4, I2 0.25; at 6,000 BCE raise I2 to 0.6 north of 52°N. `y_haplogroup.toml#11`
+- **Central Europe**, 3,000–3,000 BCE (medium, encoded (1 adjust)): Extend neighbours; R1a rising eastward. `y_haplogroup.toml#12`
+- **France & Low Countries**, 6,000–10,000 BCE (medium, flat value): Set I2 0.75, C 0.08, R1b 0.05 across France and the Low Countries until farmers arrive (5,700 BCE in the south, 5,300 BCE in the north-east). `y_haplogroup.toml#1`
+- **France & Low Countries**, 3,000–5,000 BCE (medium, flat value): Extend neighbours. `y_haplogroup.toml#13`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `y_haplogroup.toml#48`
+- **Iberia**, 7,000–10,000 BCE (low, flat value): Set I2 0.5, C 0.3 across Iberia before 6,000 BCE. `y_haplogroup.toml#2`
+- **Iberia**, 3,000–6,000 BCE (medium, flat value): Extend the adjacent I2 0.45 / G2a 0.25 into the gaps. `y_haplogroup.toml#3`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set J2 0.3, other 0.6 (G2b, R2, J1, L) everywhere; L and R2 rise towards Afghanistan. `y_haplogroup.toml#37`
+- **Italy & islands**, 7,000–10,000 BCE (low, flat value): Set I2 0.45, R1b 0.25 for 10,000-7,000 BCE. `y_haplogroup.toml#8`
+- **Italy & islands**, 3,000–6,000 BCE (medium, flat value): Extend G2a 0.4, I2 0.2. `y_haplogroup.toml#9`
+- **Levant**, 9,000–10,000 BCE (medium, flat value): Set other 0.85 (E1b1b). `y_haplogroup.toml#33`
+- **Levant**, 5,000–8,000 BCE (low, flat value): Set other 0.65, H2 0.1, G2a 0.1. `y_haplogroup.toml#34`
+- **Levant**, 3,000–4,000 BCE (medium, encoded (1 adjust)): Set other 0.65, J2 0.12; J2 to 0.2 in northern Syria. `y_haplogroup.toml#35`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set other 0.85 everywhere; J2 0.08 in the Delta from 4,000 BCE. `y_haplogroup.toml#42`
+- **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95 (E1b1b) across the Maghreb for 10,000-7,000 BCE. `y_haplogroup.toml#43`
+- **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): Northern Morocco: G2a 0.3, other 0.6. Elsewhere other 0.9 (E1b1b, T1a by 3,000 BCE). `y_haplogroup.toml#44`
+- **Mesopotamia**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set J2 0.3, G2a 0.12, other 0.5; raise G2a to 0.25 north of 36°N before 6,000 BCE. `y_haplogroup.toml#36`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, flat value): Set other 0.97 everywhere in Nile & Sudan. `y_haplogroup.toml#45`
+- **Now-drowned shelves and islands**, 8,000–10,000 BCE (low, flat value): Set I2 0.75 on the North Sea shelf. `y_haplogroup.toml#6`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): Gulf cells: J2 0.3, other 0.65. Caspian and Pechora cells: R1b 0.35, R1a 0.3, other 0.25. `y_haplogroup.toml#7`
+- **Other**, 3,000–10,000 BCE (low, flat value): Set J2 0.2, other 0.75. `y_haplogroup.toml#40`
+- **Russia: forest north of 56°N**, 5,000–10,000 BCE (low, flat value): Set R1a 0.4, R1b 0.2. `y_haplogroup.toml#18`
+- **Russia: forest north of 56°N**, 3,000–4,000 BCE (low, flat value): Set R1a 0.4. `y_haplogroup.toml#19`
+- **Russia: steppe and forest-steppe**, 6,000–10,000 BCE (low, flat value): Set R1b 0.35, R1a 0.25. `y_haplogroup.toml#20`
+- **Russia: steppe and forest-steppe**, 4,000–5,000 BCE (medium, flat value): Extend R1b 0.45. `y_haplogroup.toml#21`
+- **Russia: steppe and forest-steppe**, 3,000–3,000 BCE (high, flat value): Extend R1b 0.65. `y_haplogroup.toml#22`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set other 0.85; R1b 0.15 around Lake Chad from 6,000 BCE, 0.05 elsewhere. `y_haplogroup.toml#46`
+- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.65; raise R1a to 0.2 north of 64°N. `y_haplogroup.toml#14`
+- **Scandinavia**, 3,000–6,000 BCE (low, encoded (2 adjust)): Southern cells I2 0.65; Finland R1a 0.3, R1b 0.15, I2 0.25. `y_haplogroup.toml#15`
+- **Ukraine & Belarus**, 5,000–10,000 BCE (medium, flat value): Set I2 0.5. `y_haplogroup.toml#23`
+- **Ukraine & Belarus**, 3,000–4,000 BCE (low, encoded (2 adjust)): Gradient: south R1b 0.45, west G2a 0.25, north I2 0.4. `y_haplogroup.toml#24`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Set other 1.0. `y_haplogroup.toml#47`
+
+## Y: C
+
+- **Anatolia & Cyprus**, 9,000–10,000 BCE (low, flat value): Set G2a 0.25, other 0.4 across Anatolia for 10,000-9,000 BCE. `y_haplogroup.toml#28`
+- **Anatolia & Cyprus**, 5,000–8,000 BCE (medium, encoded (1 adjust)): Set G2a 0.45 in west and central Anatolia, falling to 0.2 in the SE where J2 rises to 0.3. `y_haplogroup.toml#29`
+- **Anatolia & Cyprus**, 3,000–4,000 BCE (medium, encoded (1 adjust)): Set G2a 0.25, J2 0.25, rising J2 eastwards to 0.4. `y_haplogroup.toml#30`
+- **Arabia**, 3,000–10,000 BCE (low, flat value): Set other 0.8, J2 0.15. `y_haplogroup.toml#41`
+- **Balkans & Greece**, 7,000–10,000 BCE (low, flat value): Set R1b 0.35, I2 0.35. `y_haplogroup.toml#25`
+- **Balkans & Greece**, 4,000–6,000 BCE (medium, flat value): Extend neighbours. `y_haplogroup.toml#26`
+- **Balkans & Greece**, 3,000–3,000 BCE (low, encoded (1 adjust)): North-east R1b 0.35; south G2a/J2. `y_haplogroup.toml#27`
+- **Baltic**, 7,000–10,000 BCE (low, flat value): Set I2 0.35, R1b 0.3. `y_haplogroup.toml#16`
+- **Baltic**, 3,000–4,000 BCE (low, flat value): Extend neighbours. `y_haplogroup.toml#17`
+- **British Isles**, 5,000–10,000 BCE (medium, flat value): Set I2 0.85 across the isles until 4,000 BCE. `y_haplogroup.toml#4`
+- **British Isles**, 3,000–3,000 BCE (high, flat value): Extend the adjacent I2 0.75. `y_haplogroup.toml#5`
+- **Caucasus**, 7,000–10,000 BCE (low, flat value): Set J2 0.45, G2a 0.1 across the Caucasus for 10,000-7,000 BCE. `y_haplogroup.toml#31`
+- **Caucasus**, 3,000–6,000 BCE (low, encoded (1 adjust)): Extend the adjacent Georgian/Armenian shares; R1b 0.15 only at 3,000 BCE. `y_haplogroup.toml#32`
+- **Central Asia**, 5,000–10,000 BCE (low, encoded (2 adjust)): North of 45°N R1b 0.25, R1a 0.25, other 0.4; south J2 0.3, other 0.6. `y_haplogroup.toml#38`
+- **Central Asia**, 3,000–4,000 BCE (low, encoded (2 adjust)): South: J2 0.35, other 0.55. North: R1b 0.35 (M73), other 0.5. `y_haplogroup.toml#39`
+- **Central Europe**, 7,000–10,000 BCE (medium, flat value): Set I2 0.75. `y_haplogroup.toml#10`
+- **Central Europe**, 4,000–6,000 BCE (medium, encoded (1 adjust)): Extend G2a 0.4, I2 0.25; at 6,000 BCE raise I2 to 0.6 north of 52°N. `y_haplogroup.toml#11`
+- **Central Europe**, 3,000–3,000 BCE (medium, encoded (1 adjust)): Extend neighbours; R1a rising eastward. `y_haplogroup.toml#12`
+- **France & Low Countries**, 6,000–10,000 BCE (medium, flat value): Set I2 0.75, C 0.08, R1b 0.05 across France and the Low Countries until farmers arrive (5,700 BCE in the south, 5,300 BCE in the north-east). `y_haplogroup.toml#1`
+- **France & Low Countries**, 3,000–5,000 BCE (medium, flat value): Extend neighbours. `y_haplogroup.toml#13`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `y_haplogroup.toml#48`
+- **Iberia**, 7,000–10,000 BCE (low, flat value): Set I2 0.5, C 0.3 across Iberia before 6,000 BCE. `y_haplogroup.toml#2`
+- **Iberia**, 3,000–6,000 BCE (medium, flat value): Extend the adjacent I2 0.45 / G2a 0.25 into the gaps. `y_haplogroup.toml#3`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set J2 0.3, other 0.6 (G2b, R2, J1, L) everywhere; L and R2 rise towards Afghanistan. `y_haplogroup.toml#37`
+- **Italy & islands**, 7,000–10,000 BCE (low, flat value): Set I2 0.45, R1b 0.25 for 10,000-7,000 BCE. `y_haplogroup.toml#8`
+- **Italy & islands**, 3,000–6,000 BCE (medium, flat value): Extend G2a 0.4, I2 0.2. `y_haplogroup.toml#9`
+- **Levant**, 9,000–10,000 BCE (medium, flat value): Set other 0.85 (E1b1b). `y_haplogroup.toml#33`
+- **Levant**, 5,000–8,000 BCE (low, flat value): Set other 0.65, H2 0.1, G2a 0.1. `y_haplogroup.toml#34`
+- **Levant**, 3,000–4,000 BCE (medium, encoded (1 adjust)): Set other 0.65, J2 0.12; J2 to 0.2 in northern Syria. `y_haplogroup.toml#35`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set other 0.85 everywhere; J2 0.08 in the Delta from 4,000 BCE. `y_haplogroup.toml#42`
+- **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95 (E1b1b) across the Maghreb for 10,000-7,000 BCE. `y_haplogroup.toml#43`
+- **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): Northern Morocco: G2a 0.3, other 0.6. Elsewhere other 0.9 (E1b1b, T1a by 3,000 BCE). `y_haplogroup.toml#44`
+- **Mesopotamia**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set J2 0.3, G2a 0.12, other 0.5; raise G2a to 0.25 north of 36°N before 6,000 BCE. `y_haplogroup.toml#36`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, flat value): Set other 0.97 everywhere in Nile & Sudan. `y_haplogroup.toml#45`
+- **Now-drowned shelves and islands**, 8,000–10,000 BCE (low, flat value): Set I2 0.75 on the North Sea shelf. `y_haplogroup.toml#6`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): Gulf cells: J2 0.3, other 0.65. Caspian and Pechora cells: R1b 0.35, R1a 0.3, other 0.25. `y_haplogroup.toml#7`
+- **Other**, 3,000–10,000 BCE (low, flat value): Set J2 0.2, other 0.75. `y_haplogroup.toml#40`
+- **Russia: forest north of 56°N**, 5,000–10,000 BCE (low, flat value): Set R1a 0.4, R1b 0.2. `y_haplogroup.toml#18`
+- **Russia: forest north of 56°N**, 3,000–4,000 BCE (low, flat value): Set R1a 0.4. `y_haplogroup.toml#19`
+- **Russia: steppe and forest-steppe**, 6,000–10,000 BCE (low, flat value): Set R1b 0.35, R1a 0.25. `y_haplogroup.toml#20`
+- **Russia: steppe and forest-steppe**, 4,000–5,000 BCE (medium, flat value): Extend R1b 0.45. `y_haplogroup.toml#21`
+- **Russia: steppe and forest-steppe**, 3,000–3,000 BCE (high, flat value): Extend R1b 0.65. `y_haplogroup.toml#22`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set other 0.85; R1b 0.15 around Lake Chad from 6,000 BCE, 0.05 elsewhere. `y_haplogroup.toml#46`
+- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.65; raise R1a to 0.2 north of 64°N. `y_haplogroup.toml#14`
+- **Scandinavia**, 3,000–6,000 BCE (low, encoded (2 adjust)): Southern cells I2 0.65; Finland R1a 0.3, R1b 0.15, I2 0.25. `y_haplogroup.toml#15`
+- **Ukraine & Belarus**, 5,000–10,000 BCE (medium, flat value): Set I2 0.5. `y_haplogroup.toml#23`
+- **Ukraine & Belarus**, 3,000–4,000 BCE (low, encoded (2 adjust)): Gradient: south R1b 0.45, west G2a 0.25, north I2 0.4. `y_haplogroup.toml#24`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Set other 1.0. `y_haplogroup.toml#47`
+
+## Y: J2
+
+- **Anatolia & Cyprus**, 9,000–10,000 BCE (low, flat value): Set G2a 0.25, other 0.4 across Anatolia for 10,000-9,000 BCE. `y_haplogroup.toml#28`
+- **Anatolia & Cyprus**, 5,000–8,000 BCE (medium, encoded (1 adjust)): Set G2a 0.45 in west and central Anatolia, falling to 0.2 in the SE where J2 rises to 0.3. `y_haplogroup.toml#29`
+- **Anatolia & Cyprus**, 3,000–4,000 BCE (medium, encoded (1 adjust)): Set G2a 0.25, J2 0.25, rising J2 eastwards to 0.4. `y_haplogroup.toml#30`
+- **Arabia**, 3,000–10,000 BCE (low, flat value): Set other 0.8, J2 0.15. `y_haplogroup.toml#41`
+- **Balkans & Greece**, 7,000–10,000 BCE (low, flat value): Set R1b 0.35, I2 0.35. `y_haplogroup.toml#25`
+- **Balkans & Greece**, 4,000–6,000 BCE (medium, flat value): Extend neighbours. `y_haplogroup.toml#26`
+- **Balkans & Greece**, 3,000–3,000 BCE (low, encoded (1 adjust)): North-east R1b 0.35; south G2a/J2. `y_haplogroup.toml#27`
+- **Baltic**, 7,000–10,000 BCE (low, flat value): Set I2 0.35, R1b 0.3. `y_haplogroup.toml#16`
+- **Baltic**, 3,000–4,000 BCE (low, flat value): Extend neighbours. `y_haplogroup.toml#17`
+- **British Isles**, 5,000–10,000 BCE (medium, flat value): Set I2 0.85 across the isles until 4,000 BCE. `y_haplogroup.toml#4`
+- **British Isles**, 3,000–3,000 BCE (high, flat value): Extend the adjacent I2 0.75. `y_haplogroup.toml#5`
+- **Caucasus**, 7,000–10,000 BCE (low, flat value): Set J2 0.45, G2a 0.1 across the Caucasus for 10,000-7,000 BCE. `y_haplogroup.toml#31`
+- **Caucasus**, 3,000–6,000 BCE (low, encoded (1 adjust)): Extend the adjacent Georgian/Armenian shares; R1b 0.15 only at 3,000 BCE. `y_haplogroup.toml#32`
+- **Central Asia**, 5,000–10,000 BCE (low, encoded (2 adjust)): North of 45°N R1b 0.25, R1a 0.25, other 0.4; south J2 0.3, other 0.6. `y_haplogroup.toml#38`
+- **Central Asia**, 3,000–4,000 BCE (low, encoded (2 adjust)): South: J2 0.35, other 0.55. North: R1b 0.35 (M73), other 0.5. `y_haplogroup.toml#39`
+- **Central Europe**, 7,000–10,000 BCE (medium, flat value): Set I2 0.75. `y_haplogroup.toml#10`
+- **Central Europe**, 4,000–6,000 BCE (medium, encoded (1 adjust)): Extend G2a 0.4, I2 0.25; at 6,000 BCE raise I2 to 0.6 north of 52°N. `y_haplogroup.toml#11`
+- **Central Europe**, 3,000–3,000 BCE (medium, encoded (1 adjust)): Extend neighbours; R1a rising eastward. `y_haplogroup.toml#12`
+- **France & Low Countries**, 6,000–10,000 BCE (medium, flat value): Set I2 0.75, C 0.08, R1b 0.05 across France and the Low Countries until farmers arrive (5,700 BCE in the south, 5,300 BCE in the north-east). `y_haplogroup.toml#1`
+- **France & Low Countries**, 3,000–5,000 BCE (medium, flat value): Extend neighbours. `y_haplogroup.toml#13`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `y_haplogroup.toml#48`
+- **Iberia**, 7,000–10,000 BCE (low, flat value): Set I2 0.5, C 0.3 across Iberia before 6,000 BCE. `y_haplogroup.toml#2`
+- **Iberia**, 3,000–6,000 BCE (medium, flat value): Extend the adjacent I2 0.45 / G2a 0.25 into the gaps. `y_haplogroup.toml#3`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set J2 0.3, other 0.6 (G2b, R2, J1, L) everywhere; L and R2 rise towards Afghanistan. `y_haplogroup.toml#37`
+- **Italy & islands**, 7,000–10,000 BCE (low, flat value): Set I2 0.45, R1b 0.25 for 10,000-7,000 BCE. `y_haplogroup.toml#8`
+- **Italy & islands**, 3,000–6,000 BCE (medium, flat value): Extend G2a 0.4, I2 0.2. `y_haplogroup.toml#9`
+- **Levant**, 9,000–10,000 BCE (medium, flat value): Set other 0.85 (E1b1b). `y_haplogroup.toml#33`
+- **Levant**, 5,000–8,000 BCE (low, flat value): Set other 0.65, H2 0.1, G2a 0.1. `y_haplogroup.toml#34`
+- **Levant**, 3,000–4,000 BCE (medium, encoded (1 adjust)): Set other 0.65, J2 0.12; J2 to 0.2 in northern Syria. `y_haplogroup.toml#35`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set other 0.85 everywhere; J2 0.08 in the Delta from 4,000 BCE. `y_haplogroup.toml#42`
+- **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95 (E1b1b) across the Maghreb for 10,000-7,000 BCE. `y_haplogroup.toml#43`
+- **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): Northern Morocco: G2a 0.3, other 0.6. Elsewhere other 0.9 (E1b1b, T1a by 3,000 BCE). `y_haplogroup.toml#44`
+- **Mesopotamia**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set J2 0.3, G2a 0.12, other 0.5; raise G2a to 0.25 north of 36°N before 6,000 BCE. `y_haplogroup.toml#36`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, flat value): Set other 0.97 everywhere in Nile & Sudan. `y_haplogroup.toml#45`
+- **Now-drowned shelves and islands**, 8,000–10,000 BCE (low, flat value): Set I2 0.75 on the North Sea shelf. `y_haplogroup.toml#6`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): Gulf cells: J2 0.3, other 0.65. Caspian and Pechora cells: R1b 0.35, R1a 0.3, other 0.25. `y_haplogroup.toml#7`
+- **Other**, 3,000–10,000 BCE (low, flat value): Set J2 0.2, other 0.75. `y_haplogroup.toml#40`
+- **Russia: forest north of 56°N**, 5,000–10,000 BCE (low, flat value): Set R1a 0.4, R1b 0.2. `y_haplogroup.toml#18`
+- **Russia: forest north of 56°N**, 3,000–4,000 BCE (low, flat value): Set R1a 0.4. `y_haplogroup.toml#19`
+- **Russia: steppe and forest-steppe**, 6,000–10,000 BCE (low, flat value): Set R1b 0.35, R1a 0.25. `y_haplogroup.toml#20`
+- **Russia: steppe and forest-steppe**, 4,000–5,000 BCE (medium, flat value): Extend R1b 0.45. `y_haplogroup.toml#21`
+- **Russia: steppe and forest-steppe**, 3,000–3,000 BCE (high, flat value): Extend R1b 0.65. `y_haplogroup.toml#22`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set other 0.85; R1b 0.15 around Lake Chad from 6,000 BCE, 0.05 elsewhere. `y_haplogroup.toml#46`
+- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.65; raise R1a to 0.2 north of 64°N. `y_haplogroup.toml#14`
+- **Scandinavia**, 3,000–6,000 BCE (low, encoded (2 adjust)): Southern cells I2 0.65; Finland R1a 0.3, R1b 0.15, I2 0.25. `y_haplogroup.toml#15`
+- **Ukraine & Belarus**, 5,000–10,000 BCE (medium, flat value): Set I2 0.5. `y_haplogroup.toml#23`
+- **Ukraine & Belarus**, 3,000–4,000 BCE (low, encoded (2 adjust)): Gradient: south R1b 0.45, west G2a 0.25, north I2 0.4. `y_haplogroup.toml#24`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Set other 1.0. `y_haplogroup.toml#47`
+
+## Y: H2
+
+- **Anatolia & Cyprus**, 9,000–10,000 BCE (low, flat value): Set G2a 0.25, other 0.4 across Anatolia for 10,000-9,000 BCE. `y_haplogroup.toml#28`
+- **Anatolia & Cyprus**, 5,000–8,000 BCE (medium, encoded (1 adjust)): Set G2a 0.45 in west and central Anatolia, falling to 0.2 in the SE where J2 rises to 0.3. `y_haplogroup.toml#29`
+- **Anatolia & Cyprus**, 3,000–4,000 BCE (medium, encoded (1 adjust)): Set G2a 0.25, J2 0.25, rising J2 eastwards to 0.4. `y_haplogroup.toml#30`
+- **Arabia**, 3,000–10,000 BCE (low, flat value): Set other 0.8, J2 0.15. `y_haplogroup.toml#41`
+- **Balkans & Greece**, 7,000–10,000 BCE (low, flat value): Set R1b 0.35, I2 0.35. `y_haplogroup.toml#25`
+- **Balkans & Greece**, 4,000–6,000 BCE (medium, flat value): Extend neighbours. `y_haplogroup.toml#26`
+- **Balkans & Greece**, 3,000–3,000 BCE (low, encoded (1 adjust)): North-east R1b 0.35; south G2a/J2. `y_haplogroup.toml#27`
+- **Baltic**, 7,000–10,000 BCE (low, flat value): Set I2 0.35, R1b 0.3. `y_haplogroup.toml#16`
+- **Baltic**, 3,000–4,000 BCE (low, flat value): Extend neighbours. `y_haplogroup.toml#17`
+- **British Isles**, 5,000–10,000 BCE (medium, flat value): Set I2 0.85 across the isles until 4,000 BCE. `y_haplogroup.toml#4`
+- **British Isles**, 3,000–3,000 BCE (high, flat value): Extend the adjacent I2 0.75. `y_haplogroup.toml#5`
+- **Caucasus**, 7,000–10,000 BCE (low, flat value): Set J2 0.45, G2a 0.1 across the Caucasus for 10,000-7,000 BCE. `y_haplogroup.toml#31`
+- **Caucasus**, 3,000–6,000 BCE (low, encoded (1 adjust)): Extend the adjacent Georgian/Armenian shares; R1b 0.15 only at 3,000 BCE. `y_haplogroup.toml#32`
+- **Central Asia**, 5,000–10,000 BCE (low, encoded (2 adjust)): North of 45°N R1b 0.25, R1a 0.25, other 0.4; south J2 0.3, other 0.6. `y_haplogroup.toml#38`
+- **Central Asia**, 3,000–4,000 BCE (low, encoded (2 adjust)): South: J2 0.35, other 0.55. North: R1b 0.35 (M73), other 0.5. `y_haplogroup.toml#39`
+- **Central Europe**, 7,000–10,000 BCE (medium, flat value): Set I2 0.75. `y_haplogroup.toml#10`
+- **Central Europe**, 4,000–6,000 BCE (medium, encoded (1 adjust)): Extend G2a 0.4, I2 0.25; at 6,000 BCE raise I2 to 0.6 north of 52°N. `y_haplogroup.toml#11`
+- **Central Europe**, 3,000–3,000 BCE (medium, encoded (1 adjust)): Extend neighbours; R1a rising eastward. `y_haplogroup.toml#12`
+- **France & Low Countries**, 6,000–10,000 BCE (medium, flat value): Set I2 0.75, C 0.08, R1b 0.05 across France and the Low Countries until farmers arrive (5,700 BCE in the south, 5,300 BCE in the north-east). `y_haplogroup.toml#1`
+- **France & Low Countries**, 3,000–5,000 BCE (medium, flat value): Extend neighbours. `y_haplogroup.toml#13`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `y_haplogroup.toml#48`
+- **Iberia**, 7,000–10,000 BCE (low, flat value): Set I2 0.5, C 0.3 across Iberia before 6,000 BCE. `y_haplogroup.toml#2`
+- **Iberia**, 3,000–6,000 BCE (medium, flat value): Extend the adjacent I2 0.45 / G2a 0.25 into the gaps. `y_haplogroup.toml#3`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set J2 0.3, other 0.6 (G2b, R2, J1, L) everywhere; L and R2 rise towards Afghanistan. `y_haplogroup.toml#37`
+- **Italy & islands**, 7,000–10,000 BCE (low, flat value): Set I2 0.45, R1b 0.25 for 10,000-7,000 BCE. `y_haplogroup.toml#8`
+- **Italy & islands**, 3,000–6,000 BCE (medium, flat value): Extend G2a 0.4, I2 0.2. `y_haplogroup.toml#9`
+- **Levant**, 9,000–10,000 BCE (medium, flat value): Set other 0.85 (E1b1b). `y_haplogroup.toml#33`
+- **Levant**, 5,000–8,000 BCE (low, flat value): Set other 0.65, H2 0.1, G2a 0.1. `y_haplogroup.toml#34`
+- **Levant**, 3,000–4,000 BCE (medium, encoded (1 adjust)): Set other 0.65, J2 0.12; J2 to 0.2 in northern Syria. `y_haplogroup.toml#35`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set other 0.85 everywhere; J2 0.08 in the Delta from 4,000 BCE. `y_haplogroup.toml#42`
+- **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95 (E1b1b) across the Maghreb for 10,000-7,000 BCE. `y_haplogroup.toml#43`
+- **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): Northern Morocco: G2a 0.3, other 0.6. Elsewhere other 0.9 (E1b1b, T1a by 3,000 BCE). `y_haplogroup.toml#44`
+- **Mesopotamia**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set J2 0.3, G2a 0.12, other 0.5; raise G2a to 0.25 north of 36°N before 6,000 BCE. `y_haplogroup.toml#36`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, flat value): Set other 0.97 everywhere in Nile & Sudan. `y_haplogroup.toml#45`
+- **Now-drowned shelves and islands**, 8,000–10,000 BCE (low, flat value): Set I2 0.75 on the North Sea shelf. `y_haplogroup.toml#6`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): Gulf cells: J2 0.3, other 0.65. Caspian and Pechora cells: R1b 0.35, R1a 0.3, other 0.25. `y_haplogroup.toml#7`
+- **Other**, 3,000–10,000 BCE (low, flat value): Set J2 0.2, other 0.75. `y_haplogroup.toml#40`
+- **Russia: forest north of 56°N**, 5,000–10,000 BCE (low, flat value): Set R1a 0.4, R1b 0.2. `y_haplogroup.toml#18`
+- **Russia: forest north of 56°N**, 3,000–4,000 BCE (low, flat value): Set R1a 0.4. `y_haplogroup.toml#19`
+- **Russia: steppe and forest-steppe**, 6,000–10,000 BCE (low, flat value): Set R1b 0.35, R1a 0.25. `y_haplogroup.toml#20`
+- **Russia: steppe and forest-steppe**, 4,000–5,000 BCE (medium, flat value): Extend R1b 0.45. `y_haplogroup.toml#21`
+- **Russia: steppe and forest-steppe**, 3,000–3,000 BCE (high, flat value): Extend R1b 0.65. `y_haplogroup.toml#22`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set other 0.85; R1b 0.15 around Lake Chad from 6,000 BCE, 0.05 elsewhere. `y_haplogroup.toml#46`
+- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.65; raise R1a to 0.2 north of 64°N. `y_haplogroup.toml#14`
+- **Scandinavia**, 3,000–6,000 BCE (low, encoded (2 adjust)): Southern cells I2 0.65; Finland R1a 0.3, R1b 0.15, I2 0.25. `y_haplogroup.toml#15`
+- **Ukraine & Belarus**, 5,000–10,000 BCE (medium, flat value): Set I2 0.5. `y_haplogroup.toml#23`
+- **Ukraine & Belarus**, 3,000–4,000 BCE (low, encoded (2 adjust)): Gradient: south R1b 0.45, west G2a 0.25, north I2 0.4. `y_haplogroup.toml#24`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Set other 1.0. `y_haplogroup.toml#47`
+
+## Y: other
+
+- **Anatolia & Cyprus**, 9,000–10,000 BCE (low, flat value): Set G2a 0.25, other 0.4 across Anatolia for 10,000-9,000 BCE. `y_haplogroup.toml#28`
+- **Anatolia & Cyprus**, 5,000–8,000 BCE (medium, encoded (1 adjust)): Set G2a 0.45 in west and central Anatolia, falling to 0.2 in the SE where J2 rises to 0.3. `y_haplogroup.toml#29`
+- **Anatolia & Cyprus**, 3,000–4,000 BCE (medium, encoded (1 adjust)): Set G2a 0.25, J2 0.25, rising J2 eastwards to 0.4. `y_haplogroup.toml#30`
+- **Arabia**, 3,000–10,000 BCE (low, flat value): Set other 0.8, J2 0.15. `y_haplogroup.toml#41`
+- **Balkans & Greece**, 7,000–10,000 BCE (low, flat value): Set R1b 0.35, I2 0.35. `y_haplogroup.toml#25`
+- **Balkans & Greece**, 4,000–6,000 BCE (medium, flat value): Extend neighbours. `y_haplogroup.toml#26`
+- **Balkans & Greece**, 3,000–3,000 BCE (low, encoded (1 adjust)): North-east R1b 0.35; south G2a/J2. `y_haplogroup.toml#27`
+- **Baltic**, 7,000–10,000 BCE (low, flat value): Set I2 0.35, R1b 0.3. `y_haplogroup.toml#16`
+- **Baltic**, 3,000–4,000 BCE (low, flat value): Extend neighbours. `y_haplogroup.toml#17`
+- **British Isles**, 5,000–10,000 BCE (medium, flat value): Set I2 0.85 across the isles until 4,000 BCE. `y_haplogroup.toml#4`
+- **British Isles**, 3,000–3,000 BCE (high, flat value): Extend the adjacent I2 0.75. `y_haplogroup.toml#5`
+- **Caucasus**, 7,000–10,000 BCE (low, flat value): Set J2 0.45, G2a 0.1 across the Caucasus for 10,000-7,000 BCE. `y_haplogroup.toml#31`
+- **Caucasus**, 3,000–6,000 BCE (low, encoded (1 adjust)): Extend the adjacent Georgian/Armenian shares; R1b 0.15 only at 3,000 BCE. `y_haplogroup.toml#32`
+- **Central Asia**, 5,000–10,000 BCE (low, encoded (2 adjust)): North of 45°N R1b 0.25, R1a 0.25, other 0.4; south J2 0.3, other 0.6. `y_haplogroup.toml#38`
+- **Central Asia**, 3,000–4,000 BCE (low, encoded (2 adjust)): South: J2 0.35, other 0.55. North: R1b 0.35 (M73), other 0.5. `y_haplogroup.toml#39`
+- **Central Europe**, 7,000–10,000 BCE (medium, flat value): Set I2 0.75. `y_haplogroup.toml#10`
+- **Central Europe**, 4,000–6,000 BCE (medium, encoded (1 adjust)): Extend G2a 0.4, I2 0.25; at 6,000 BCE raise I2 to 0.6 north of 52°N. `y_haplogroup.toml#11`
+- **Central Europe**, 3,000–3,000 BCE (medium, encoded (1 adjust)): Extend neighbours; R1a rising eastward. `y_haplogroup.toml#12`
+- **France & Low Countries**, 6,000–10,000 BCE (medium, flat value): Set I2 0.75, C 0.08, R1b 0.05 across France and the Low Countries until farmers arrive (5,700 BCE in the south, 5,300 BCE in the north-east). `y_haplogroup.toml#1`
+- **France & Low Countries**, 3,000–5,000 BCE (medium, flat value): Extend neighbours. `y_haplogroup.toml#13`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `y_haplogroup.toml#48`
+- **Iberia**, 7,000–10,000 BCE (low, flat value): Set I2 0.5, C 0.3 across Iberia before 6,000 BCE. `y_haplogroup.toml#2`
+- **Iberia**, 3,000–6,000 BCE (medium, flat value): Extend the adjacent I2 0.45 / G2a 0.25 into the gaps. `y_haplogroup.toml#3`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set J2 0.3, other 0.6 (G2b, R2, J1, L) everywhere; L and R2 rise towards Afghanistan. `y_haplogroup.toml#37`
+- **Italy & islands**, 7,000–10,000 BCE (low, flat value): Set I2 0.45, R1b 0.25 for 10,000-7,000 BCE. `y_haplogroup.toml#8`
+- **Italy & islands**, 3,000–6,000 BCE (medium, flat value): Extend G2a 0.4, I2 0.2. `y_haplogroup.toml#9`
+- **Levant**, 9,000–10,000 BCE (medium, flat value): Set other 0.85 (E1b1b). `y_haplogroup.toml#33`
+- **Levant**, 5,000–8,000 BCE (low, flat value): Set other 0.65, H2 0.1, G2a 0.1. `y_haplogroup.toml#34`
+- **Levant**, 3,000–4,000 BCE (medium, encoded (1 adjust)): Set other 0.65, J2 0.12; J2 to 0.2 in northern Syria. `y_haplogroup.toml#35`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set other 0.85 everywhere; J2 0.08 in the Delta from 4,000 BCE. `y_haplogroup.toml#42`
+- **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95 (E1b1b) across the Maghreb for 10,000-7,000 BCE. `y_haplogroup.toml#43`
+- **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): Northern Morocco: G2a 0.3, other 0.6. Elsewhere other 0.9 (E1b1b, T1a by 3,000 BCE). `y_haplogroup.toml#44`
+- **Mesopotamia**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set J2 0.3, G2a 0.12, other 0.5; raise G2a to 0.25 north of 36°N before 6,000 BCE. `y_haplogroup.toml#36`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, flat value): Set other 0.97 everywhere in Nile & Sudan. `y_haplogroup.toml#45`
+- **Now-drowned shelves and islands**, 8,000–10,000 BCE (low, flat value): Set I2 0.75 on the North Sea shelf. `y_haplogroup.toml#6`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): Gulf cells: J2 0.3, other 0.65. Caspian and Pechora cells: R1b 0.35, R1a 0.3, other 0.25. `y_haplogroup.toml#7`
+- **Other**, 3,000–10,000 BCE (low, flat value): Set J2 0.2, other 0.75. `y_haplogroup.toml#40`
+- **Russia: forest north of 56°N**, 5,000–10,000 BCE (low, flat value): Set R1a 0.4, R1b 0.2. `y_haplogroup.toml#18`
+- **Russia: forest north of 56°N**, 3,000–4,000 BCE (low, flat value): Set R1a 0.4. `y_haplogroup.toml#19`
+- **Russia: steppe and forest-steppe**, 6,000–10,000 BCE (low, flat value): Set R1b 0.35, R1a 0.25. `y_haplogroup.toml#20`
+- **Russia: steppe and forest-steppe**, 4,000–5,000 BCE (medium, flat value): Extend R1b 0.45. `y_haplogroup.toml#21`
+- **Russia: steppe and forest-steppe**, 3,000–3,000 BCE (high, flat value): Extend R1b 0.65. `y_haplogroup.toml#22`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set other 0.85; R1b 0.15 around Lake Chad from 6,000 BCE, 0.05 elsewhere. `y_haplogroup.toml#46`
+- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.65; raise R1a to 0.2 north of 64°N. `y_haplogroup.toml#14`
+- **Scandinavia**, 3,000–6,000 BCE (low, encoded (2 adjust)): Southern cells I2 0.65; Finland R1a 0.3, R1b 0.15, I2 0.25. `y_haplogroup.toml#15`
+- **Ukraine & Belarus**, 5,000–10,000 BCE (medium, flat value): Set I2 0.5. `y_haplogroup.toml#23`
+- **Ukraine & Belarus**, 3,000–4,000 BCE (low, encoded (2 adjust)): Gradient: south R1b 0.45, west G2a 0.25, north I2 0.4. `y_haplogroup.toml#24`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Set other 1.0. `y_haplogroup.toml#47`
+
+## mt: U5
+
+- **Anatolia & Cyprus**, 9,000–10,000 BCE (low, flat value): Set K 0.25, other 0.4. `mt_haplogroup.toml#14`
+- **Anatolia & Cyprus**, 5,000–5,000 BCE (medium, flat value): Extend neighbours. `mt_haplogroup.toml#15`
+- **Arabia**, 3,000–10,000 BCE (low, flat value): Set other 0.6, J 0.12. `mt_haplogroup.toml#22`
+- **Balkans & Greece**, 8,000–10,000 BCE (medium, encoded (2 adjust)): Set U5 0.55 north of 42°N, U5 0.3 with K 0.2 in Greece. `mt_haplogroup.toml#8`
+- **Baltic**, 8,000–10,000 BCE (medium, flat value): Set U5 0.6, U4 0.25. `mt_haplogroup.toml#9`
+- **British Isles**, 5,000–10,000 BCE (medium, flat value): Set U5 0.75 in the isles until 4,000 BCE. `mt_haplogroup.toml#3`
+- **Caucasus**, 7,000–10,000 BCE (low, flat value): Set H 0.2, K 0.15, other 0.45. `mt_haplogroup.toml#16`
+- **Central Asia**, 3,000–10,000 BCE (low, encoded (2 adjust)): North of 45°N U5 0.3, U4 0.2; south other 0.55. `mt_haplogroup.toml#20`
+- **Central Europe**, 7,000–10,000 BCE (medium, encoded (1 adjust)): Set U5 0.65, U4 0.08, U4 up to 0.15 east of the Oder. `mt_haplogroup.toml#7`
+- **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set U5 0.75, other 0.15 across the region until farming arrives. `mt_haplogroup.toml#1`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#29`
+- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65, H 0.08. `mt_haplogroup.toml#2`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set other 0.55, J 0.12; South Asian M ('other') rises to 0.4 of the total in Afghanistan. `mt_haplogroup.toml#19`
+- **Italy & islands**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65. `mt_haplogroup.toml#6`
+- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, other 0.45; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, flat value): Set other 0.8. `mt_haplogroup.toml#23`
+- **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95. `mt_haplogroup.toml#24`
+- **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): North Morocco K 0.15, H 0.1; elsewhere other 0.85. `mt_haplogroup.toml#25`
+- **Mesopotamia**, 3,000–10,000 BCE (low, flat value): Set other 0.45, K 0.15. `mt_haplogroup.toml#18`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#26`
+- **Now-drowned shelves and islands**, 8,000–10,000 BCE (low, flat value): Set U5 0.75 on the North Sea shelf. `mt_haplogroup.toml#4`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): Gulf cells: other 0.6, J 0.1, K 0.1. Caspian and Pechora cells: U5 0.35, U4 0.25, other 0.3. `mt_haplogroup.toml#5`
+- **Other**, 4,000–10,000 BCE (low, flat value): Set other 0.9. `mt_haplogroup.toml#21`
+- **Russia: forest north of 56°N**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set U5 0.35, U4 0.3, other 0.25 (U2e, C, Z); Siberian 'other' up to 0.4 east of 55°E. `mt_haplogroup.toml#11`
+- **Russia: steppe and forest-steppe**, 5,000–10,000 BCE (medium, flat value): Set U5 0.45, U4 0.2. `mt_haplogroup.toml#12`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#27`
+- **Scandinavia**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set U5 0.5, U4 0.2, other 0.2 in the gaps in every slice; Siberian C/D/Z ('other') up to 0.3 in Finnish Lapland after 4,000 BCE. `mt_haplogroup.toml#10`
+- **Ukraine & Belarus**, 7,000–10,000 BCE (medium, flat value): Set U5 0.5, U4 0.18. `mt_haplogroup.toml#13`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Set other 1.0. `mt_haplogroup.toml#28`
+
+## mt: U4
+
+- **Anatolia & Cyprus**, 9,000–10,000 BCE (low, flat value): Set K 0.25, other 0.4. `mt_haplogroup.toml#14`
+- **Anatolia & Cyprus**, 5,000–5,000 BCE (medium, flat value): Extend neighbours. `mt_haplogroup.toml#15`
+- **Arabia**, 3,000–10,000 BCE (low, flat value): Set other 0.6, J 0.12. `mt_haplogroup.toml#22`
+- **Balkans & Greece**, 8,000–10,000 BCE (medium, encoded (2 adjust)): Set U5 0.55 north of 42°N, U5 0.3 with K 0.2 in Greece. `mt_haplogroup.toml#8`
+- **Baltic**, 8,000–10,000 BCE (medium, flat value): Set U5 0.6, U4 0.25. `mt_haplogroup.toml#9`
+- **British Isles**, 5,000–10,000 BCE (medium, flat value): Set U5 0.75 in the isles until 4,000 BCE. `mt_haplogroup.toml#3`
+- **Caucasus**, 7,000–10,000 BCE (low, flat value): Set H 0.2, K 0.15, other 0.45. `mt_haplogroup.toml#16`
+- **Central Asia**, 3,000–10,000 BCE (low, encoded (2 adjust)): North of 45°N U5 0.3, U4 0.2; south other 0.55. `mt_haplogroup.toml#20`
+- **Central Europe**, 7,000–10,000 BCE (medium, encoded (1 adjust)): Set U5 0.65, U4 0.08, U4 up to 0.15 east of the Oder. `mt_haplogroup.toml#7`
+- **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set U5 0.75, other 0.15 across the region until farming arrives. `mt_haplogroup.toml#1`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#29`
+- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65, H 0.08. `mt_haplogroup.toml#2`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set other 0.55, J 0.12; South Asian M ('other') rises to 0.4 of the total in Afghanistan. `mt_haplogroup.toml#19`
+- **Italy & islands**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65. `mt_haplogroup.toml#6`
+- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, other 0.45; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, flat value): Set other 0.8. `mt_haplogroup.toml#23`
+- **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95. `mt_haplogroup.toml#24`
+- **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): North Morocco K 0.15, H 0.1; elsewhere other 0.85. `mt_haplogroup.toml#25`
+- **Mesopotamia**, 3,000–10,000 BCE (low, flat value): Set other 0.45, K 0.15. `mt_haplogroup.toml#18`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#26`
+- **Now-drowned shelves and islands**, 8,000–10,000 BCE (low, flat value): Set U5 0.75 on the North Sea shelf. `mt_haplogroup.toml#4`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): Gulf cells: other 0.6, J 0.1, K 0.1. Caspian and Pechora cells: U5 0.35, U4 0.25, other 0.3. `mt_haplogroup.toml#5`
+- **Other**, 4,000–10,000 BCE (low, flat value): Set other 0.9. `mt_haplogroup.toml#21`
+- **Russia: forest north of 56°N**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set U5 0.35, U4 0.3, other 0.25 (U2e, C, Z); Siberian 'other' up to 0.4 east of 55°E. `mt_haplogroup.toml#11`
+- **Russia: steppe and forest-steppe**, 5,000–10,000 BCE (medium, flat value): Set U5 0.45, U4 0.2. `mt_haplogroup.toml#12`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#27`
+- **Scandinavia**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set U5 0.5, U4 0.2, other 0.2 in the gaps in every slice; Siberian C/D/Z ('other') up to 0.3 in Finnish Lapland after 4,000 BCE. `mt_haplogroup.toml#10`
+- **Ukraine & Belarus**, 7,000–10,000 BCE (medium, flat value): Set U5 0.5, U4 0.18. `mt_haplogroup.toml#13`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Set other 1.0. `mt_haplogroup.toml#28`
+
+## mt: H
+
+- **Anatolia & Cyprus**, 9,000–10,000 BCE (low, flat value): Set K 0.25, other 0.4. `mt_haplogroup.toml#14`
+- **Anatolia & Cyprus**, 5,000–5,000 BCE (medium, flat value): Extend neighbours. `mt_haplogroup.toml#15`
+- **Arabia**, 3,000–10,000 BCE (low, flat value): Set other 0.6, J 0.12. `mt_haplogroup.toml#22`
+- **Balkans & Greece**, 8,000–10,000 BCE (medium, encoded (2 adjust)): Set U5 0.55 north of 42°N, U5 0.3 with K 0.2 in Greece. `mt_haplogroup.toml#8`
+- **Baltic**, 8,000–10,000 BCE (medium, flat value): Set U5 0.6, U4 0.25. `mt_haplogroup.toml#9`
+- **British Isles**, 5,000–10,000 BCE (medium, flat value): Set U5 0.75 in the isles until 4,000 BCE. `mt_haplogroup.toml#3`
+- **Caucasus**, 7,000–10,000 BCE (low, flat value): Set H 0.2, K 0.15, other 0.45. `mt_haplogroup.toml#16`
+- **Central Asia**, 3,000–10,000 BCE (low, encoded (2 adjust)): North of 45°N U5 0.3, U4 0.2; south other 0.55. `mt_haplogroup.toml#20`
+- **Central Europe**, 7,000–10,000 BCE (medium, encoded (1 adjust)): Set U5 0.65, U4 0.08, U4 up to 0.15 east of the Oder. `mt_haplogroup.toml#7`
+- **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set U5 0.75, other 0.15 across the region until farming arrives. `mt_haplogroup.toml#1`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#29`
+- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65, H 0.08. `mt_haplogroup.toml#2`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set other 0.55, J 0.12; South Asian M ('other') rises to 0.4 of the total in Afghanistan. `mt_haplogroup.toml#19`
+- **Italy & islands**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65. `mt_haplogroup.toml#6`
+- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, other 0.45; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, flat value): Set other 0.8. `mt_haplogroup.toml#23`
+- **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95. `mt_haplogroup.toml#24`
+- **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): North Morocco K 0.15, H 0.1; elsewhere other 0.85. `mt_haplogroup.toml#25`
+- **Mesopotamia**, 3,000–10,000 BCE (low, flat value): Set other 0.45, K 0.15. `mt_haplogroup.toml#18`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#26`
+- **Now-drowned shelves and islands**, 8,000–10,000 BCE (low, flat value): Set U5 0.75 on the North Sea shelf. `mt_haplogroup.toml#4`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): Gulf cells: other 0.6, J 0.1, K 0.1. Caspian and Pechora cells: U5 0.35, U4 0.25, other 0.3. `mt_haplogroup.toml#5`
+- **Other**, 4,000–10,000 BCE (low, flat value): Set other 0.9. `mt_haplogroup.toml#21`
+- **Russia: forest north of 56°N**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set U5 0.35, U4 0.3, other 0.25 (U2e, C, Z); Siberian 'other' up to 0.4 east of 55°E. `mt_haplogroup.toml#11`
+- **Russia: steppe and forest-steppe**, 5,000–10,000 BCE (medium, flat value): Set U5 0.45, U4 0.2. `mt_haplogroup.toml#12`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#27`
+- **Scandinavia**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set U5 0.5, U4 0.2, other 0.2 in the gaps in every slice; Siberian C/D/Z ('other') up to 0.3 in Finnish Lapland after 4,000 BCE. `mt_haplogroup.toml#10`
+- **Ukraine & Belarus**, 7,000–10,000 BCE (medium, flat value): Set U5 0.5, U4 0.18. `mt_haplogroup.toml#13`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Set other 1.0. `mt_haplogroup.toml#28`
+
+## mt: K
+
+- **Anatolia & Cyprus**, 9,000–10,000 BCE (low, flat value): Set K 0.25, other 0.4. `mt_haplogroup.toml#14`
+- **Anatolia & Cyprus**, 5,000–5,000 BCE (medium, flat value): Extend neighbours. `mt_haplogroup.toml#15`
+- **Arabia**, 3,000–10,000 BCE (low, flat value): Set other 0.6, J 0.12. `mt_haplogroup.toml#22`
+- **Balkans & Greece**, 8,000–10,000 BCE (medium, encoded (2 adjust)): Set U5 0.55 north of 42°N, U5 0.3 with K 0.2 in Greece. `mt_haplogroup.toml#8`
+- **Baltic**, 8,000–10,000 BCE (medium, flat value): Set U5 0.6, U4 0.25. `mt_haplogroup.toml#9`
+- **British Isles**, 5,000–10,000 BCE (medium, flat value): Set U5 0.75 in the isles until 4,000 BCE. `mt_haplogroup.toml#3`
+- **Caucasus**, 7,000–10,000 BCE (low, flat value): Set H 0.2, K 0.15, other 0.45. `mt_haplogroup.toml#16`
+- **Central Asia**, 3,000–10,000 BCE (low, encoded (2 adjust)): North of 45°N U5 0.3, U4 0.2; south other 0.55. `mt_haplogroup.toml#20`
+- **Central Europe**, 7,000–10,000 BCE (medium, encoded (1 adjust)): Set U5 0.65, U4 0.08, U4 up to 0.15 east of the Oder. `mt_haplogroup.toml#7`
+- **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set U5 0.75, other 0.15 across the region until farming arrives. `mt_haplogroup.toml#1`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#29`
+- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65, H 0.08. `mt_haplogroup.toml#2`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set other 0.55, J 0.12; South Asian M ('other') rises to 0.4 of the total in Afghanistan. `mt_haplogroup.toml#19`
+- **Italy & islands**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65. `mt_haplogroup.toml#6`
+- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, other 0.45; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, flat value): Set other 0.8. `mt_haplogroup.toml#23`
+- **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95. `mt_haplogroup.toml#24`
+- **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): North Morocco K 0.15, H 0.1; elsewhere other 0.85. `mt_haplogroup.toml#25`
+- **Mesopotamia**, 3,000–10,000 BCE (low, flat value): Set other 0.45, K 0.15. `mt_haplogroup.toml#18`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#26`
+- **Now-drowned shelves and islands**, 8,000–10,000 BCE (low, flat value): Set U5 0.75 on the North Sea shelf. `mt_haplogroup.toml#4`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): Gulf cells: other 0.6, J 0.1, K 0.1. Caspian and Pechora cells: U5 0.35, U4 0.25, other 0.3. `mt_haplogroup.toml#5`
+- **Other**, 4,000–10,000 BCE (low, flat value): Set other 0.9. `mt_haplogroup.toml#21`
+- **Russia: forest north of 56°N**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set U5 0.35, U4 0.3, other 0.25 (U2e, C, Z); Siberian 'other' up to 0.4 east of 55°E. `mt_haplogroup.toml#11`
+- **Russia: steppe and forest-steppe**, 5,000–10,000 BCE (medium, flat value): Set U5 0.45, U4 0.2. `mt_haplogroup.toml#12`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#27`
+- **Scandinavia**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set U5 0.5, U4 0.2, other 0.2 in the gaps in every slice; Siberian C/D/Z ('other') up to 0.3 in Finnish Lapland after 4,000 BCE. `mt_haplogroup.toml#10`
+- **Ukraine & Belarus**, 7,000–10,000 BCE (medium, flat value): Set U5 0.5, U4 0.18. `mt_haplogroup.toml#13`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Set other 1.0. `mt_haplogroup.toml#28`
+
+## mt: J
+
+- **Anatolia & Cyprus**, 9,000–10,000 BCE (low, flat value): Set K 0.25, other 0.4. `mt_haplogroup.toml#14`
+- **Anatolia & Cyprus**, 5,000–5,000 BCE (medium, flat value): Extend neighbours. `mt_haplogroup.toml#15`
+- **Arabia**, 3,000–10,000 BCE (low, flat value): Set other 0.6, J 0.12. `mt_haplogroup.toml#22`
+- **Balkans & Greece**, 8,000–10,000 BCE (medium, encoded (2 adjust)): Set U5 0.55 north of 42°N, U5 0.3 with K 0.2 in Greece. `mt_haplogroup.toml#8`
+- **Baltic**, 8,000–10,000 BCE (medium, flat value): Set U5 0.6, U4 0.25. `mt_haplogroup.toml#9`
+- **British Isles**, 5,000–10,000 BCE (medium, flat value): Set U5 0.75 in the isles until 4,000 BCE. `mt_haplogroup.toml#3`
+- **Caucasus**, 7,000–10,000 BCE (low, flat value): Set H 0.2, K 0.15, other 0.45. `mt_haplogroup.toml#16`
+- **Central Asia**, 3,000–10,000 BCE (low, encoded (2 adjust)): North of 45°N U5 0.3, U4 0.2; south other 0.55. `mt_haplogroup.toml#20`
+- **Central Europe**, 7,000–10,000 BCE (medium, encoded (1 adjust)): Set U5 0.65, U4 0.08, U4 up to 0.15 east of the Oder. `mt_haplogroup.toml#7`
+- **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set U5 0.75, other 0.15 across the region until farming arrives. `mt_haplogroup.toml#1`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#29`
+- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65, H 0.08. `mt_haplogroup.toml#2`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set other 0.55, J 0.12; South Asian M ('other') rises to 0.4 of the total in Afghanistan. `mt_haplogroup.toml#19`
+- **Italy & islands**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65. `mt_haplogroup.toml#6`
+- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, other 0.45; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, flat value): Set other 0.8. `mt_haplogroup.toml#23`
+- **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95. `mt_haplogroup.toml#24`
+- **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): North Morocco K 0.15, H 0.1; elsewhere other 0.85. `mt_haplogroup.toml#25`
+- **Mesopotamia**, 3,000–10,000 BCE (low, flat value): Set other 0.45, K 0.15. `mt_haplogroup.toml#18`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#26`
+- **Now-drowned shelves and islands**, 8,000–10,000 BCE (low, flat value): Set U5 0.75 on the North Sea shelf. `mt_haplogroup.toml#4`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): Gulf cells: other 0.6, J 0.1, K 0.1. Caspian and Pechora cells: U5 0.35, U4 0.25, other 0.3. `mt_haplogroup.toml#5`
+- **Other**, 4,000–10,000 BCE (low, flat value): Set other 0.9. `mt_haplogroup.toml#21`
+- **Russia: forest north of 56°N**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set U5 0.35, U4 0.3, other 0.25 (U2e, C, Z); Siberian 'other' up to 0.4 east of 55°E. `mt_haplogroup.toml#11`
+- **Russia: steppe and forest-steppe**, 5,000–10,000 BCE (medium, flat value): Set U5 0.45, U4 0.2. `mt_haplogroup.toml#12`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#27`
+- **Scandinavia**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set U5 0.5, U4 0.2, other 0.2 in the gaps in every slice; Siberian C/D/Z ('other') up to 0.3 in Finnish Lapland after 4,000 BCE. `mt_haplogroup.toml#10`
+- **Ukraine & Belarus**, 7,000–10,000 BCE (medium, flat value): Set U5 0.5, U4 0.18. `mt_haplogroup.toml#13`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Set other 1.0. `mt_haplogroup.toml#28`
+
+## mt: T2
+
+- **Anatolia & Cyprus**, 9,000–10,000 BCE (low, flat value): Set K 0.25, other 0.4. `mt_haplogroup.toml#14`
+- **Anatolia & Cyprus**, 5,000–5,000 BCE (medium, flat value): Extend neighbours. `mt_haplogroup.toml#15`
+- **Arabia**, 3,000–10,000 BCE (low, flat value): Set other 0.6, J 0.12. `mt_haplogroup.toml#22`
+- **Balkans & Greece**, 8,000–10,000 BCE (medium, encoded (2 adjust)): Set U5 0.55 north of 42°N, U5 0.3 with K 0.2 in Greece. `mt_haplogroup.toml#8`
+- **Baltic**, 8,000–10,000 BCE (medium, flat value): Set U5 0.6, U4 0.25. `mt_haplogroup.toml#9`
+- **British Isles**, 5,000–10,000 BCE (medium, flat value): Set U5 0.75 in the isles until 4,000 BCE. `mt_haplogroup.toml#3`
+- **Caucasus**, 7,000–10,000 BCE (low, flat value): Set H 0.2, K 0.15, other 0.45. `mt_haplogroup.toml#16`
+- **Central Asia**, 3,000–10,000 BCE (low, encoded (2 adjust)): North of 45°N U5 0.3, U4 0.2; south other 0.55. `mt_haplogroup.toml#20`
+- **Central Europe**, 7,000–10,000 BCE (medium, encoded (1 adjust)): Set U5 0.65, U4 0.08, U4 up to 0.15 east of the Oder. `mt_haplogroup.toml#7`
+- **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set U5 0.75, other 0.15 across the region until farming arrives. `mt_haplogroup.toml#1`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#29`
+- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65, H 0.08. `mt_haplogroup.toml#2`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set other 0.55, J 0.12; South Asian M ('other') rises to 0.4 of the total in Afghanistan. `mt_haplogroup.toml#19`
+- **Italy & islands**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65. `mt_haplogroup.toml#6`
+- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, other 0.45; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, flat value): Set other 0.8. `mt_haplogroup.toml#23`
+- **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95. `mt_haplogroup.toml#24`
+- **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): North Morocco K 0.15, H 0.1; elsewhere other 0.85. `mt_haplogroup.toml#25`
+- **Mesopotamia**, 3,000–10,000 BCE (low, flat value): Set other 0.45, K 0.15. `mt_haplogroup.toml#18`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#26`
+- **Now-drowned shelves and islands**, 8,000–10,000 BCE (low, flat value): Set U5 0.75 on the North Sea shelf. `mt_haplogroup.toml#4`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): Gulf cells: other 0.6, J 0.1, K 0.1. Caspian and Pechora cells: U5 0.35, U4 0.25, other 0.3. `mt_haplogroup.toml#5`
+- **Other**, 4,000–10,000 BCE (low, flat value): Set other 0.9. `mt_haplogroup.toml#21`
+- **Russia: forest north of 56°N**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set U5 0.35, U4 0.3, other 0.25 (U2e, C, Z); Siberian 'other' up to 0.4 east of 55°E. `mt_haplogroup.toml#11`
+- **Russia: steppe and forest-steppe**, 5,000–10,000 BCE (medium, flat value): Set U5 0.45, U4 0.2. `mt_haplogroup.toml#12`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#27`
+- **Scandinavia**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set U5 0.5, U4 0.2, other 0.2 in the gaps in every slice; Siberian C/D/Z ('other') up to 0.3 in Finnish Lapland after 4,000 BCE. `mt_haplogroup.toml#10`
+- **Ukraine & Belarus**, 7,000–10,000 BCE (medium, flat value): Set U5 0.5, U4 0.18. `mt_haplogroup.toml#13`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Set other 1.0. `mt_haplogroup.toml#28`
+
+## mt: N1a
+
+- **Anatolia & Cyprus**, 9,000–10,000 BCE (low, flat value): Set K 0.25, other 0.4. `mt_haplogroup.toml#14`
+- **Anatolia & Cyprus**, 5,000–5,000 BCE (medium, flat value): Extend neighbours. `mt_haplogroup.toml#15`
+- **Arabia**, 3,000–10,000 BCE (low, flat value): Set other 0.6, J 0.12. `mt_haplogroup.toml#22`
+- **Balkans & Greece**, 8,000–10,000 BCE (medium, encoded (2 adjust)): Set U5 0.55 north of 42°N, U5 0.3 with K 0.2 in Greece. `mt_haplogroup.toml#8`
+- **Baltic**, 8,000–10,000 BCE (medium, flat value): Set U5 0.6, U4 0.25. `mt_haplogroup.toml#9`
+- **British Isles**, 5,000–10,000 BCE (medium, flat value): Set U5 0.75 in the isles until 4,000 BCE. `mt_haplogroup.toml#3`
+- **Caucasus**, 7,000–10,000 BCE (low, flat value): Set H 0.2, K 0.15, other 0.45. `mt_haplogroup.toml#16`
+- **Central Asia**, 3,000–10,000 BCE (low, encoded (2 adjust)): North of 45°N U5 0.3, U4 0.2; south other 0.55. `mt_haplogroup.toml#20`
+- **Central Europe**, 7,000–10,000 BCE (medium, encoded (1 adjust)): Set U5 0.65, U4 0.08, U4 up to 0.15 east of the Oder. `mt_haplogroup.toml#7`
+- **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set U5 0.75, other 0.15 across the region until farming arrives. `mt_haplogroup.toml#1`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#29`
+- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65, H 0.08. `mt_haplogroup.toml#2`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set other 0.55, J 0.12; South Asian M ('other') rises to 0.4 of the total in Afghanistan. `mt_haplogroup.toml#19`
+- **Italy & islands**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65. `mt_haplogroup.toml#6`
+- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, other 0.45; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, flat value): Set other 0.8. `mt_haplogroup.toml#23`
+- **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95. `mt_haplogroup.toml#24`
+- **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): North Morocco K 0.15, H 0.1; elsewhere other 0.85. `mt_haplogroup.toml#25`
+- **Mesopotamia**, 3,000–10,000 BCE (low, flat value): Set other 0.45, K 0.15. `mt_haplogroup.toml#18`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#26`
+- **Now-drowned shelves and islands**, 8,000–10,000 BCE (low, flat value): Set U5 0.75 on the North Sea shelf. `mt_haplogroup.toml#4`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): Gulf cells: other 0.6, J 0.1, K 0.1. Caspian and Pechora cells: U5 0.35, U4 0.25, other 0.3. `mt_haplogroup.toml#5`
+- **Other**, 4,000–10,000 BCE (low, flat value): Set other 0.9. `mt_haplogroup.toml#21`
+- **Russia: forest north of 56°N**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set U5 0.35, U4 0.3, other 0.25 (U2e, C, Z); Siberian 'other' up to 0.4 east of 55°E. `mt_haplogroup.toml#11`
+- **Russia: steppe and forest-steppe**, 5,000–10,000 BCE (medium, flat value): Set U5 0.45, U4 0.2. `mt_haplogroup.toml#12`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#27`
+- **Scandinavia**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set U5 0.5, U4 0.2, other 0.2 in the gaps in every slice; Siberian C/D/Z ('other') up to 0.3 in Finnish Lapland after 4,000 BCE. `mt_haplogroup.toml#10`
+- **Ukraine & Belarus**, 7,000–10,000 BCE (medium, flat value): Set U5 0.5, U4 0.18. `mt_haplogroup.toml#13`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Set other 1.0. `mt_haplogroup.toml#28`
+
+## mt: other
+
+- **Anatolia & Cyprus**, 9,000–10,000 BCE (low, flat value): Set K 0.25, other 0.4. `mt_haplogroup.toml#14`
+- **Anatolia & Cyprus**, 5,000–5,000 BCE (medium, flat value): Extend neighbours. `mt_haplogroup.toml#15`
+- **Arabia**, 3,000–10,000 BCE (low, flat value): Set other 0.6, J 0.12. `mt_haplogroup.toml#22`
+- **Balkans & Greece**, 8,000–10,000 BCE (medium, encoded (2 adjust)): Set U5 0.55 north of 42°N, U5 0.3 with K 0.2 in Greece. `mt_haplogroup.toml#8`
+- **Baltic**, 8,000–10,000 BCE (medium, flat value): Set U5 0.6, U4 0.25. `mt_haplogroup.toml#9`
+- **British Isles**, 5,000–10,000 BCE (medium, flat value): Set U5 0.75 in the isles until 4,000 BCE. `mt_haplogroup.toml#3`
+- **Caucasus**, 7,000–10,000 BCE (low, flat value): Set H 0.2, K 0.15, other 0.45. `mt_haplogroup.toml#16`
+- **Central Asia**, 3,000–10,000 BCE (low, encoded (2 adjust)): North of 45°N U5 0.3, U4 0.2; south other 0.55. `mt_haplogroup.toml#20`
+- **Central Europe**, 7,000–10,000 BCE (medium, encoded (1 adjust)): Set U5 0.65, U4 0.08, U4 up to 0.15 east of the Oder. `mt_haplogroup.toml#7`
+- **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set U5 0.75, other 0.15 across the region until farming arrives. `mt_haplogroup.toml#1`
+- **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#29`
+- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65, H 0.08. `mt_haplogroup.toml#2`
+- **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set other 0.55, J 0.12; South Asian M ('other') rises to 0.4 of the total in Afghanistan. `mt_haplogroup.toml#19`
+- **Italy & islands**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65. `mt_haplogroup.toml#6`
+- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, other 0.45; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
+- **Libya & Egypt**, 3,000–10,000 BCE (low, flat value): Set other 0.8. `mt_haplogroup.toml#23`
+- **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95. `mt_haplogroup.toml#24`
+- **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): North Morocco K 0.15, H 0.1; elsewhere other 0.85. `mt_haplogroup.toml#25`
+- **Mesopotamia**, 3,000–10,000 BCE (low, flat value): Set other 0.45, K 0.15. `mt_haplogroup.toml#18`
+- **Nile & Sudan**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#26`
+- **Now-drowned shelves and islands**, 8,000–10,000 BCE (low, flat value): Set U5 0.75 on the North Sea shelf. `mt_haplogroup.toml#4`
+- **Now-drowned shelves and islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): Gulf cells: other 0.6, J 0.1, K 0.1. Caspian and Pechora cells: U5 0.35, U4 0.25, other 0.3. `mt_haplogroup.toml#5`
+- **Other**, 4,000–10,000 BCE (low, flat value): Set other 0.9. `mt_haplogroup.toml#21`
+- **Russia: forest north of 56°N**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set U5 0.35, U4 0.3, other 0.25 (U2e, C, Z); Siberian 'other' up to 0.4 east of 55°E. `mt_haplogroup.toml#11`
+- **Russia: steppe and forest-steppe**, 5,000–10,000 BCE (medium, flat value): Set U5 0.45, U4 0.2. `mt_haplogroup.toml#12`
+- **Sahara–Sahel**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#27`
+- **Scandinavia**, 3,000–10,000 BCE (low, encoded (1 adjust)): Set U5 0.5, U4 0.2, other 0.2 in the gaps in every slice; Siberian C/D/Z ('other') up to 0.3 in Finnish Lapland after 4,000 BCE. `mt_haplogroup.toml#10`
+- **Ukraine & Belarus**, 7,000–10,000 BCE (medium, flat value): Set U5 0.5, U4 0.18. `mt_haplogroup.toml#13`
+- **West Africa**, 3,000–10,000 BCE (medium, flat value): Set other 1.0. `mt_haplogroup.toml#28`

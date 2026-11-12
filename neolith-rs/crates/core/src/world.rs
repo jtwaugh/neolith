@@ -4,6 +4,10 @@ use crate::river::{River, RiverClass};
 use crate::time::Year;
 use crate::timeline::Timeline;
 use crate::elevation::{self, NO_ELEVATION};
+use crate::evidence::EvidenceLayer;
+use crate::farming;
+use crate::forager;
+use crate::productivity;
 use crate::values::{Koeppen, Landform, MapMode, PopDensity, Prop, Terrain, Value};
 use serde::{Deserialize, Serialize};
 
@@ -17,17 +21,124 @@ pub struct Settlement {
     pub pos: LonLat,
     pub founded: Year,
     pub population: Timeline<u32>,
+    /// Occupation phases `(start, abandoned_by)`, sorted, from the site's
+    /// dates: each ends a fixed span after its last date, the point by which
+    /// the site is assumed abandoned. Empty means occupied from `founded` on
+    /// (hand entries, Wikidata-only sites, files before version 6).
+    pub occupation: Vec<(Year, Year)>,
+    /// Inferred importance, 0-3, from the site type, how long it was lived
+    /// in and how it compares with its neighbours (the pipeline's
+    /// `score_sites`). Sizes the piece when there is no population figure.
+    pub importance: u8,
+    /// How firmly the site is attested, 0-2: one date (or none), 2-4, 5+.
+    pub evidence: u8,
 }
 
 impl Settlement {
+    /// Importance and evidence for files and hand entries that give none:
+    /// an ordinary, well-attested site.
+    pub const DEFAULT_IMPORTANCE: u8 = 1;
+    pub const DEFAULT_EVIDENCE: u8 = 2;
+
+    /// Whether the site is occupied in `year`: on or after `founded`, before
+    /// the last phase's end, and not in a gap between phases. Years between
+    /// `founded` and the first phase count as occupied, since a hand-entered
+    /// founding may be earlier than the first date.
     pub fn exists_at(&self, year: Year) -> bool {
-        self.founded <= year
+        if self.founded > year {
+            return false;
+        }
+        match self.occupation.last() {
+            None => true,
+            Some(&(_, end)) if year >= end => false,
+            Some(_) => !self.occupation.windows(2).any(|w| w[0].1 <= year && year < w[1].0),
+        }
     }
 
-    /// Population at `year`: the latest population key at or before it.
-    pub fn population_at(&self, year: Year) -> Option<u32> {
-        self.population.at(year)
+    /// The year the site is assumed abandoned by, if it is.
+    pub fn abandoned_by(&self) -> Option<Year> {
+        self.occupation.last().map(|(_, end)| *end)
     }
+
+    /// The stretch of occupation containing `year`, as `(start, end)`
+    /// (end exclusive), or `None` if the site is not occupied then. The first
+    /// stretch starts at `founded` if that is earlier than the first phase;
+    /// a site without phases runs from `founded` with no end.
+    pub fn phase_at(&self, year: Year) -> Option<(Year, Year)> {
+        if !self.exists_at(year) {
+            return None;
+        }
+        let i = self.occupation.iter().rposition(|(a, _)| *a <= year).unwrap_or(0);
+        Some(match self.occupation.get(i) {
+            None => (self.founded, Year(i32::MAX)),
+            Some(&(a, b)) if i == 0 => (a.min(self.founded), b),
+            Some(&(a, b)) => (a, b),
+        })
+    }
+
+    /// Population at `year`: the latest population key at or before it,
+    /// within the current phase of occupation. `None` while the site is
+    /// unoccupied, and a figure never carries across a gap.
+    pub fn population_at(&self, year: Year) -> Option<u32> {
+        let (start, _) = self.phase_at(year)?;
+        self.population.keys().iter().rev().find(|(y, _)| *y <= year && *y >= start).map(|(_, n)| *n)
+    }
+}
+
+/// One radiocarbon date at a site, as filed (lab number, conventional age
+/// and 1-sigma error in 14C years BP) plus its calibrated median year.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct C14Date {
+    pub lab: String,
+    pub bp: u32,
+    pub err: u32,
+    pub cal: Year,
+    /// The database the date came from (e.g. `xronos`, `p3k14c`).
+    pub dataset: String,
+}
+
+/// What the record says about a settlement, beyond what the board needs.
+/// Every field may be empty; worlds written before version 6 have none.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SiteInfo {
+    /// Site type as filed: "settlement", "cave", "rock shelter", ...
+    pub kind: String,
+    /// Latest calibrated date at the site.
+    pub abandoned: Option<Year>,
+    pub aliases: Vec<String>,
+    /// Period labels on the site's dates, as filed.
+    pub periods: Vec<String>,
+    /// (from year, culture or stage id in [`World::cultures`]), from the
+    /// site's own labelled dates.
+    pub culture: Vec<(Year, String)>,
+    pub stage: Vec<(Year, String)>,
+    /// The same, inferred from neighbouring sites where the site's own
+    /// labels say nothing.
+    pub culture_inferred: Vec<(Year, String)>,
+    pub stage_inferred: Vec<(Year, String)>,
+    /// Notable features recorded by hand (rock art, megaliths, ...).
+    pub features: Vec<String>,
+    /// English Wikipedia article title, and Wikidata id, when matched.
+    pub wikipedia: Option<String>,
+    pub wikidata: Option<String>,
+    /// Culture labels Wikidata gives the site.
+    pub wikidata_culture: Vec<String>,
+    /// Datasets the site comes from, and publications they cite.
+    pub sources: Vec<String>,
+    pub references: Vec<String>,
+    /// Radiocarbon dates, oldest first.
+    pub dates: Vec<C14Date>,
+}
+
+/// An archaeological culture or stage that [`SiteInfo`] refers to by id.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CultureInfo {
+    pub id: String,
+    /// "culture" or "stage".
+    pub kind: String,
+    pub name: String,
+    /// English Wikipedia article title it is cited to.
+    pub wikipedia: Option<String>,
 }
 
 /// The whole time-varying world, struct-of-arrays indexed by [`HexId`].
@@ -47,6 +158,37 @@ pub struct World {
     pub elevation: Vec<i16>,
     /// Per hex: static [`Landform`], or `None` (files before version 5).
     pub landform: Vec<Option<Landform>>,
+    /// Per settlement, same order as `settlements`; empty for files before
+    /// version 6. Use [`World::site_info`].
+    pub site_info: Vec<SiteInfo>,
+    /// The cultures and stages `site_info` refers to.
+    pub cultures: Vec<CultureInfo>,
+    /// Per hex: survey intensity, 0-2 (0: few dated records of any period,
+    /// so an absence of sites says little; 2: well surveyed). A detection
+    /// layer, never an input to population. Empty for files before
+    /// version 7. Use [`World::survey_at`].
+    pub survey: Vec<u8>,
+    /// Per hex: net primary productivity over time, in g dry matter/m²/yr (see
+    /// [`productivity`]). Empty for files before version 8. Use
+    /// [`World::npp_at`].
+    pub npp: Vec<Timeline<u16>>,
+    /// Per hex: the year farming reaches it (a front from one origin at one
+    /// speed; see the pipeline's `farming.py`), or `None` if it has not by
+    /// the end of the period. Says nothing about whether the hex can be
+    /// farmed. Empty for files before version 9.
+    pub farming: Vec<Option<Year>>,
+    /// Speculative evidence layers ([`crate::evidence`]), in picker order.
+    /// Empty for files before version 10.
+    pub evidence: Vec<EvidenceLayer>,
+}
+
+/// What [`World::expected_at`] returns.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct Expected {
+    /// People per km².
+    pub density: f64,
+    /// Farming has arrived and the hex can be farmed this year.
+    pub farmed: bool,
 }
 
 /// The flattened state at one year: one byte per hex per property
@@ -61,6 +203,19 @@ pub struct Snapshot {
     pub river: Vec<u8>,
     /// [`elevation::band`] per hex, given whether it is Water this year.
     pub elevation: Vec<u8>,
+    /// [`productivity::band`] per hex; [`NO_DATA`] on Water and where the
+    /// file has no productivity.
+    pub npp: Vec<u8>,
+    /// [`forager::biodiversity_band`] of the biodiversity the productivity
+    /// implies; [`NO_DATA`] wherever `npp` is.
+    pub biodiversity: Vec<u8>,
+    /// [`farming::band`] of [`World::expected_at`]; [`NO_DATA`] on Water
+    /// and where the file has no productivity.
+    pub expected: Vec<u8>,
+    /// [`World::shore_km`] per hex, `u16::MAX` where it is infinite. Pass it
+    /// to [`World::expected_given`] to ask about one hex without working
+    /// the distances out again.
+    pub shore_km: Vec<u16>,
     /// The surface height the board raises each hex to, in metres
     /// ([`World::surface_heights`]).
     pub height: Vec<i16>,
@@ -75,11 +230,19 @@ impl Snapshot {
         }
     }
 
-    /// What the board shows in `mode`, one byte per hex.
+    /// What the board shows in `mode`, one byte per hex. Empty for
+    /// [`MapMode::Evidence`]: a snapshot doesn't know which layer is picked
+    /// (see [`crate::EvidenceLayer::codes_at`]).
     pub fn layer(&self, mode: MapMode) -> &[u8] {
-        match mode.prop() {
-            Some(p) => self.get(p),
-            None => &self.elevation,
+        match mode {
+            MapMode::Evidence => &[],
+            MapMode::Elevation => &self.elevation,
+            MapMode::Npp => &self.npp,
+            MapMode::Biodiversity => &self.biodiversity,
+            MapMode::Expected => &self.expected,
+            MapMode::Terrain => &self.terrain,
+            MapMode::Koeppen => &self.koeppen,
+            MapMode::Pop => &self.pop,
         }
     }
 
@@ -107,7 +270,89 @@ impl World {
             lakes: Vec::new(),
             elevation: vec![NO_ELEVATION; n],
             landform: vec![None; n],
+            site_info: Vec::new(),
+            cultures: Vec::new(),
+            survey: Vec::new(),
+            npp: Vec::new(),
+            farming: Vec::new(),
+            evidence: Vec::new(),
         }
+    }
+
+    /// The evidence layer with this id.
+    pub fn evidence_layer(&self, id: &str) -> Option<&EvidenceLayer> {
+        self.evidence.iter().find(|l| l.id == id)
+    }
+
+    /// Productivity of a hex at `year` in g/m²/yr, if the file has the
+    /// layer and the hex a value by then. Stored for every hex; a hex that
+    /// is Water that year produces nothing a population can use.
+    pub fn npp_at(&self, hex: HexId, year: Year) -> Option<u16> {
+        self.npp.get(hex.index()).and_then(|t| t.at(year))
+    }
+
+    /// Expected hunter-gatherer density of a hex at `year` in people per
+    /// km² ([`forager::density`]): `None` without productivity, and on
+    /// Water or Ice.
+    pub fn forager_density_at(&self, hex: HexId, year: Year) -> Option<f64> {
+        match self.terrain[hex.index()].at(year) {
+            Some(Terrain::Water | Terrain::Ice) => None,
+            _ => self.npp_at(hex, year).map(|npp| forager::density(npp, self.shore_km(year)[hex.index()] as f64)),
+        }
+    }
+
+    /// Per hex: km from its centre to the edge of the nearest Water hex at
+    /// `year` (sea or lake), 0 on Water, infinite if the map has no Water.
+    /// The distance to that hex's centre, less half a hex, in whole km.
+    ///
+    /// Found by spreading outward from every Water hex at once, nearest
+    /// first, so it costs one pass over the grid.
+    pub fn shore_km(&self, year: Year) -> Vec<f32> {
+        use std::cmp::Reverse;
+        let n = self.grid.len();
+        let centre = |i: usize| {
+            let c = self.grid.centre(HexId(i as u32));
+            [c.lon, c.lat]
+        };
+        let mut out = vec![f32::INFINITY; n];
+        let mut heap = std::collections::BinaryHeap::new();
+        for (i, t) in self.terrain.iter().enumerate() {
+            if t.at(year) == Some(Terrain::Water) {
+                heap.push(Reverse((0u32, i as u32, i as u32)));
+            }
+        }
+        // Metres to the Water hex each entry came from; the nearest claim on a hex wins.
+        while let Some(Reverse((m, i, source))) = heap.pop() {
+            let i = i as usize;
+            if out[i].is_finite() {
+                continue;
+            }
+            out[i] = m as f32 / 1000.0;
+            for nb in self.grid.neighbours(HexId(i as u32)) {
+                if !out[nb.index()].is_finite() {
+                    let km = crate::geom::great_circle_km(centre(nb.index()), centre(source as usize));
+                    heap.push(Reverse(((km * 1000.0) as u32, nb.0, source)));
+                }
+            }
+        }
+        let hex_km = (self.grid.h * 111.2) as f32;
+        // Whole km: fine for the model, and a snapshot can hold it in 16 bits.
+        out.iter().map(|d| (d - d.min(hex_km) / 2.0).round()).collect()
+    }
+
+    /// Survey intensity of a hex (0-2), if the file has the layer.
+    pub fn survey_at(&self, hex: HexId) -> Option<u8> {
+        self.survey.get(hex.index()).copied()
+    }
+
+    /// The record for settlement `i`, if the file has one.
+    pub fn site_info(&self, i: usize) -> Option<&SiteInfo> {
+        self.site_info.get(i)
+    }
+
+    /// The culture or stage with this id.
+    pub fn culture(&self, id: &str) -> Option<&CultureInfo> {
+        self.cultures.iter().find(|c| c.id == id)
     }
 
     pub fn snapshot(&self, year: Year) -> Snapshot {
@@ -119,8 +364,24 @@ impl World {
             .map(|(z, t)| elevation::band(*z, *t == Terrain::Water as u8))
             .collect();
         let height = self.surface_heights(year, &terrain);
+        let land_npp = |i: usize| self.npp.get(i).and_then(|t| t.at(year)).filter(|_| terrain[i] != Terrain::Water as u8);
+        let npp = (0..terrain.len()).map(|i| land_npp(i).map_or(NO_DATA, productivity::band)).collect();
+        let biodiversity = (0..terrain.len())
+            .map(|i| land_npp(i).map_or(NO_DATA, |v| forager::biodiversity_band(forager::biodiversity(v))))
+            .collect();
+        let shore = self.shore_km(year);
+        let expected = self
+            .grid
+            .ids()
+            .map(|h| self.expected_given(h, year, shore[h.index()] as f64).map_or(NO_DATA, |e| farming::band(e.density)))
+            .collect();
+        let shore_km = shore.iter().map(|d| if d.is_finite() { *d as u16 } else { u16::MAX }).collect();
         Snapshot {
             year,
+            npp,
+            biodiversity,
+            expected,
+            shore_km,
             terrain,
             elevation,
             height,
@@ -265,6 +526,49 @@ impl World {
         }
     }
 
+    /// Expected population of a hex at `year`, from values on the map and
+    /// no site data: hunter-gatherers at the density its productivity and
+    /// distance to water support ([`forager::density`]); once farming has reached it
+    /// ([`World::farming`]) and while its climate and rivers allow
+    /// ([`farming::farmable`]), growing towards the farmers' ceiling for its
+    /// latitude ([`farming::density`]). Nobody on Ice; `None` on Water and
+    /// without productivity.
+    pub fn expected_at(&self, hex: HexId, year: Year) -> Option<Expected> {
+        self.expected_given(hex, year, self.shore_km(year)[hex.index()] as f64)
+    }
+
+    /// [`World::expected_at`] for every hex, working out the distances to
+    /// water once.
+    pub fn expected_field(&self, year: Year) -> Vec<Option<Expected>> {
+        let shore = self.shore_km(year);
+        self.grid.ids().map(|h| self.expected_given(h, year, shore[h.index()] as f64)).collect()
+    }
+
+    /// [`World::expected_at`] with the hex's distance to water supplied
+    /// ([`World::shore_km`], or a snapshot's copy of it).
+    pub fn expected_given(&self, hex: HexId, year: Year, shore_km: f64) -> Option<Expected> {
+        let i = hex.index();
+        match self.terrain[i].at(year) {
+            Some(Terrain::Water) => return None,
+            Some(Terrain::Ice) => return self.npp_at(hex, year).map(|_| Expected { density: 0.0, farmed: false }),
+            _ => {}
+        }
+        let npp = self.npp_at(hex, year)?;
+        let foragers = forager::density(npp, shore_km);
+        let since = self.farming.get(i).copied().flatten().map(|a| year.0 - a.0).filter(|y| *y >= 0);
+        let farmable = || {
+            let river = RiverClass::from_u8(self.river[i].at(year).unwrap_or(0)).unwrap_or(RiverClass::None);
+            self.koeppen[i].at(year).is_some_and(|k| farming::farmable(k, npp, river))
+        };
+        Some(match since {
+            Some(years) if farmable() => {
+                let ceiling = farming::CEILING * farming::latitude_factor(self.grid.centre(hex).lat);
+                Expected { density: farming::density(foragers, ceiling, years as f64), farmed: true }
+            }
+            _ => Expected { density: foragers, farmed: false },
+        })
+    }
+
     /// Structural invariants; checked after loading a file.
     pub fn validate(&self) -> Result<(), String> {
         let n = self.grid.len();
@@ -306,6 +610,34 @@ impl World {
             if !s.population.is_sorted() {
                 return Err(format!("settlement {}: population keys are not sorted", s.id));
             }
+            if s.occupation.iter().any(|(a, b)| a >= b) || s.occupation.windows(2).any(|w| w[0].1 > w[1].0) {
+                return Err(format!("settlement {}: occupation phases are empty, unsorted or overlap", s.id));
+            }
+        }
+        if !self.farming.is_empty() && self.farming.len() != n {
+            return Err(format!("farming layer has {} values for {n} hexes", self.farming.len()));
+        }
+        if !self.npp.is_empty() && (self.npp.len() != n || self.npp.iter().any(|t| !t.is_sorted())) {
+            return Err(format!("productivity layer has {} timelines for {n} hexes, or unsorted keys", self.npp.len()));
+        }
+        if !self.survey.is_empty() && (self.survey.len() != n || self.survey.iter().any(|v| *v > 2)) {
+            return Err(format!("survey layer has {} values (0-2) for {n} hexes", self.survey.len()));
+        }
+        if self.settlements.iter().any(|s| s.importance > 3 || s.evidence > 2) {
+            return Err("settlement importance must be 0-3 and evidence 0-2".into());
+        }
+        if !self.site_info.is_empty() && self.site_info.len() != self.settlements.len() {
+            return Err(format!(
+                "{} site records for {} settlements",
+                self.site_info.len(),
+                self.settlements.len()
+            ));
+        }
+        for (i, l) in self.evidence.iter().enumerate() {
+            l.validate(n)?;
+            if self.evidence[..i].iter().any(|o| o.id == l.id) {
+                return Err(format!("evidence layer {} appears twice", l.id));
+            }
         }
         for r in &self.rivers {
             if r.points.len() < 2 || !(1..=3).contains(&r.size) || !r.state.is_sorted() {
@@ -338,6 +670,9 @@ pub(crate) fn test_world(cols: u16, rows: u16) -> World {
         w.elevation[id.index()] = if land { 120 } else { -30 };
         w.landform[id.index()] = Some(if land && c % 4 == 0 { Landform::Mountains } else { Landform::Flat });
     }
+    w.survey = (0..w.grid.len()).map(|i| (i % 3) as u8).collect();
+    w.npp = (0..w.grid.len()).map(|i| Timeline::from_keys([(Year(-10000), 100), (Year(-8000), 100 + 60 * (i as u16 % 5))])).collect();
+    w.farming = (0..w.grid.len()).map(|i| (i % 2 == 0).then_some(Year(-9000 + 100 * (i as i32 % 7)))).collect();
     w.rivers.push(River {
         id: 1,
         key: "test".into(),
@@ -363,7 +698,27 @@ pub(crate) fn test_world(cols: u16, rows: u16) -> World {
         pos: LonLat::new(1.0, 49.0),
         founded: Year(-9000),
         population: Timeline::from_keys([(Year(-9000), 100), (Year(-8900), 150)]),
+        occupation: Vec::new(),
+        importance: 2,
+        evidence: 1,
     });
+    w.site_info.push(SiteInfo {
+        kind: "settlement".into(),
+        abandoned: Some(Year(-8500)),
+        culture: vec![(Year(-9000), "test_culture".into())],
+        features: vec!["rock art".into()],
+        wikipedia: Some("Testville".into()),
+        dates: vec![C14Date { lab: "T-1".into(), bp: 9950, err: 40, cal: Year(-9000), dataset: "test".into() }],
+        ..SiteInfo::default()
+    });
+    w.cultures.push(CultureInfo {
+        id: "test_culture".into(),
+        kind: "culture".into(),
+        name: "Test culture".into(),
+        wikipedia: Some("Test culture".into()),
+    });
+    let n = w.grid.len();
+    w.evidence.push(crate::evidence::test_layer("test_layer", n));
     w
 }
 
@@ -401,6 +756,37 @@ mod tests {
         assert!(s.exists_at(Year(-9000)));
         assert_eq!(s.population_at(Year(-8950)), Some(100));
         assert_eq!(s.population_at(Year(-5000)), Some(150));
+        assert!(s.exists_at(Year(3000)), "no phases: never abandoned");
+    }
+
+    #[test]
+    fn occupation_phases() {
+        let mut s = test_world(4, 4).settlements.remove(0);
+        s.founded = Year(-9500);
+        s.occupation = vec![(Year(-9000), Year(-7000)), (Year(-5000), Year(-4000))];
+        let at = |y| s.exists_at(Year(y));
+        assert!(!at(-9600));
+        assert!(at(-9500), "a founding before the first date counts");
+        assert!(at(-7001) && !at(-7000), "phase end is exclusive");
+        assert!(!at(-6000), "hiatus");
+        assert!(at(-5000) && at(-4001));
+        assert!(!at(-4000) && !at(0));
+        assert_eq!(s.abandoned_by(), Some(Year(-4000)));
+        assert_eq!(s.phase_at(Year(-9200)), Some((Year(-9500), Year(-7000))));
+        assert_eq!(s.phase_at(Year(-4500)), Some((Year(-5000), Year(-4000))));
+        assert_eq!(s.phase_at(Year(-6000)), None);
+    }
+
+    #[test]
+    fn population_does_not_cross_gaps() {
+        let mut s = test_world(4, 4).settlements.remove(0);
+        s.occupation = vec![(Year(-9000), Year(-7000)), (Year(-5000), Year(-4000))];
+        s.population = Timeline::from_keys([(Year(-9000), 100), (Year(-4500), 300)]);
+        assert_eq!(s.population_at(Year(-7500)), Some(100));
+        assert_eq!(s.population_at(Year(-6000)), None, "hiatus");
+        assert_eq!(s.population_at(Year(-4800)), None, "phase 1's figure stays in phase 1");
+        assert_eq!(s.population_at(Year(-4400)), Some(300));
+        assert_eq!(s.population_at(Year(-3000)), None, "abandoned");
     }
 
     #[test]
@@ -425,6 +811,103 @@ mod tests {
         let mut w = w;
         w.elevation[0] = NO_ELEVATION;
         assert_eq!(w.snapshot(Year(-9000)).elevation[0], NO_DATA);
+    }
+
+    #[test]
+    fn shore_distance_is_to_the_edge_of_the_nearest_water() {
+        let w = test_world(9, 7);
+        let year = Year(-10000);
+        let shore = w.shore_km(year);
+        let water: Vec<HexId> = w.grid.ids().filter(|h| w.terrain[h.index()].at(year) == Some(Terrain::Water)).collect();
+        assert!(!water.is_empty());
+        let c = |h: HexId| [w.grid.centre(h).lon, w.grid.centre(h).lat];
+        let hex_km = w.grid.h * 111.2;
+        for h in w.grid.ids() {
+            let nearest = water.iter().map(|x| crate::geom::great_circle_km(c(h), c(*x))).fold(f64::INFINITY, f64::min);
+            let want = nearest - nearest.min(hex_km) / 2.0;
+            // Spreading through neighbours can miss the true nearest by a fraction of a hex.
+            assert!((shore[h.index()] as f64 - want).abs() <= 0.25 * hex_km, "hex {}: {} vs {want}", h.0, shore[h.index()]);
+        }
+        assert!(water.iter().all(|h| shore[h.index()] == 0.0));
+        // Land beside water is about half a hex from its edge.
+        let beside = w.grid.ids().find(|h| !water.contains(h) && w.grid.neighbours(*h).any(|n| water.contains(&n))).unwrap();
+        assert!((10.0..35.0).contains(&shore[beside.index()]), "{}", shore[beside.index()]);
+        // The field and the single-hex query agree; no Water at all means no bonus and no panic.
+        let field = w.expected_field(year);
+        assert!(w.grid.ids().all(|h| field[h.index()] == w.expected_at(h, year)));
+        let snap = w.snapshot(year);
+        assert!(w.grid.ids().all(|h| w.expected_given(h, year, snap.shore_km[h.index()] as f64) == field[h.index()]));
+        assert!(shore.iter().all(|d| d.fract() == 0.0));
+        let mut dry = w.clone();
+        for h in water {
+            dry.set_key(h, Year(-10000), Value::Terrain(Terrain::Plains));
+            dry.set_key(h, Year(-8000), Value::Terrain(Terrain::Plains));
+        }
+        assert!(dry.shore_km(year).iter().all(|d| d.is_infinite()));
+        assert!(dry.snapshot(year).shore_km.iter().all(|d| *d == u16::MAX));
+        assert_eq!(dry.expected_given(HexId(0), year, u16::MAX as f64), dry.expected_at(HexId(0), year));
+        assert!(dry.expected_at(HexId(0), year).is_some());
+    }
+
+    #[test]
+    fn expected_population_switches_to_farmers_when_farming_arrives_on_farmable_land() {
+        let mut w = test_world(6, 5);
+        // A land hex that stays land, with a farmable climate (test worlds use Köppen 15, Cfb).
+        let hex = w.grid.ids().find(|h| w.terrain[h.index()].at(Year(-3000)) == Some(Terrain::Plains)).unwrap();
+        let i = hex.index();
+        assert!(farming::farmable(w.koeppen[i].at(Year(-9000)).unwrap(), 800, RiverClass::None));
+        w.npp[i] = Timeline::from_keys([(Year(-10000), 800)]);
+        w.farming[i] = Some(Year(-6000));
+        let shore = |w: &World, y: i32| w.shore_km(Year(y))[i] as f64;
+        let foragers = forager::density(800, shore(&w, -6001));
+        assert_eq!(w.expected_at(hex, Year(-6001)), Some(Expected { density: foragers, farmed: false }));
+        assert_eq!(w.expected_at(hex, Year(-6000)), Some(Expected { density: foragers, farmed: true }));
+        let ceiling = farming::CEILING * farming::latitude_factor(w.grid.centre(hex).lat);
+        let later = w.expected_at(hex, Year(-5000)).unwrap();
+        assert!(later.farmed && (later.density - ceiling).abs() < 1e-3 * ceiling, "{later:?} vs {ceiling}");
+        assert_eq!(w.snapshot(Year(-5000)).layer(MapMode::Expected)[i], farming::band(later.density));
+        // Dry land without a river can't be farmed, so foragers stay; a river changes that.
+        w.npp[i] = Timeline::from_keys([(Year(-10000), 100)]);
+        let foragers = forager::density(100, shore(&w, -5000));
+        assert_eq!(w.expected_at(hex, Year(-5000)), Some(Expected { density: foragers, farmed: false }));
+        w.river[i].set_key(Year(-10000), RiverClass::Major as u8);
+        assert!(w.expected_at(hex, Year(-5000)).unwrap().farmed);
+        // Never reached: foragers. Ice: nobody. Water or no productivity: nothing to say.
+        w.farming[i] = None;
+        assert!(!w.expected_at(hex, Year(-3000)).unwrap().farmed);
+        w.set_key(hex, Year(-4000), Value::Terrain(Terrain::Ice));
+        assert_eq!(w.expected_at(hex, Year(-3500)), Some(Expected { density: 0.0, farmed: false }));
+        w.set_key(hex, Year(-4000), Value::Terrain(Terrain::Water));
+        assert_eq!(w.expected_at(hex, Year(-3500)), None);
+        assert_eq!(w.snapshot(Year(-3500)).expected[i], NO_DATA);
+        w.farming.clear();
+        w.npp.clear();
+        assert_eq!(w.expected_at(hex, Year(-9000)), None);
+    }
+
+    #[test]
+    fn productivity_band_follows_the_year_and_the_water() {
+        let mut w = test_world(6, 5);
+        // Hex (0, 0) is land at first and Water from -8000; index 4 gains productivity then.
+        let hex = w.grid.id_at(0, 0);
+        assert_eq!(w.npp_at(hex, Year(-9000)), Some(100));
+        assert_eq!(w.snapshot(Year(-9000)).npp[hex.index()], productivity::band(100));
+        assert_eq!(w.snapshot(Year(-7000)).layer(MapMode::Npp)[hex.index()], NO_DATA);
+        let land = w.grid.ids().find(|h| h.index() % 5 == 4 && w.terrain[h.index()].at(Year(-7000)) != Some(Terrain::Water)).unwrap();
+        assert_eq!(w.snapshot(Year(-7000)).npp[land.index()], productivity::band(340));
+        assert_eq!(
+            w.snapshot(Year(-7000)).layer(MapMode::Biodiversity)[land.index()],
+            forager::biodiversity_band(forager::biodiversity(340))
+        );
+        assert_eq!(w.snapshot(Year(-7000)).biodiversity[hex.index()], NO_DATA);
+        assert_eq!(w.forager_density_at(land, Year(-7000)), Some(forager::density(340, w.shore_km(Year(-7000))[land.index()] as f64)));
+        assert_eq!(w.forager_density_at(hex, Year(-7000)), None);
+        w.set_key(land, Year(-7000), Value::Terrain(Terrain::Ice));
+        assert_eq!(w.forager_density_at(land, Year(-7000)), None);
+        assert_eq!(w.npp_at(land, Year(-10001)), None);
+        w.npp.clear();
+        assert!(w.snapshot(Year(-9000)).npp.iter().all(|b| *b == NO_DATA));
+        assert_eq!(w.npp_at(hex, Year(-9000)), None);
     }
 
     #[test]

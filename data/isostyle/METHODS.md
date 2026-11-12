@@ -5,6 +5,9 @@
 
 ## What was built, and what was not
 
+*Since this section was written, the atlas has grown beyond artefact classes; see "Layers beyond
+artefact classes" below.*
+
 Presence and evidence surfaces for five material classes on the game's hex grid, at the eight map
 keyframes. **Style surfaces (correspondence analysis, attribute shares, edge strength) were not
 built**: the Phase 1 audit found no open attribute-level data that covers more than isolated
@@ -112,6 +115,109 @@ lithics (almost all before 10,000 BCE), PaMELA and the British implement petrolo
 - **DObsiSS** records sourced obsidian only; it stands for flaked stone presence.
 - A record within 2 km of a dated site, overlapping one of its episodes, marks that episode; a
   recorded presence beats a recorded absence, and both beat a label.
+
+## Layers beyond artefact classes (added 2026-11-12)
+
+The surfaces are now driven by a layer registry, `data/isostyle/layers.toml`. Each layer names its
+kind, its unit of evidence, its kernel-width rule, its isoline levels, its licence and a note. There
+are three kinds of evidence point:
+
+| Unit | What one is | Source | Weight per slice |
+|---|---|---|---|
+| Occupation | One episode of a radiocarbon-dated site, or an external record that matched none | XRONOS, p3k14c, NeoNet, plus the presence datasets | Calibrated date distribution, or a uniform published range |
+| Core | One pollen core in one slice in which it has counted levels | Neotoma, including the European Pollen Database | 1 in that slice |
+| Sample | One ancient genome that passes AADR's quality assessment | AADR v66.p1 | Normal distribution from AADR's date mean and SD |
+
+| Group | Layer | Kind | Evidence | Source and licence |
+|---|---|---|---|---|
+| Subsistence | Cereal grain | presence and absence | dated sampled phases | EUROEVOL archaeobotany (Colledge 2016; licence field unfilled, UCL record says copyright waived); Arranz-Otaegui & Roe 2023 SW Asian flora (CC0); directly dated grain in XRONOS |
+| Subsistence | Domestic livestock | presence and absence | faunal assemblages | EUROEVOL fauna (Manning 2016, CC0); ADEMNES via Arranz-Otaegui & Roe (CC0); Open Context Anatolia (CC BY); Phelps et al. 2019 Africa (CC BY) |
+| Environment | Cereal pollen in cores | presence and absence | pollen cores | Neotoma / EPD (CC BY 4.0) |
+| Environment | Dung-fungus spores in cores | presence and absence | cores that count non-pollen palynomorphs | Neotoma / EPD |
+| Environment | Open land | gridded value, % | 1° REVEALS cells | LandClimII, Fyfe et al. 2021 (CC BY) |
+| Structures & organics | Enclosures, megalithic tombs, pile dwellings, houses, mines, metallurgy, waterlogged organics | presence only | dated occupations | XRONOS site types and dated materials (CC BY); rondel enclosures (CC BY); Paulsson 2019 megalith dates (CC BY-NC-ND, joined by lab number, read unmodified) |
+| People | Ancient genomes; Y clades I2, G2a, R1b, R1a, C, J2, H2, other; mt clades U5, U4, H, K, J, T2, N1a, other | presence only (genomes); share | samples | AADR v66.p1 (CC0) |
+
+### Rules
+
+- **Cereal grain.** A phase is present if charred wheat or barley is recorded, and absent if at least five plant taxa are recorded but no wheat or barley. In SW Asia before about 8500 BCE this includes wild-type grain.
+- **EUROEVOL.** The files are downloaded by hand, because UCL Discovery refuses scripted downloads; `fetch` records their checksums. Sites and the plant taxa list come from the SQL dump, because the CommonSites CSV has unquoted commas. A phase is dated by its own radiocarbon samples. A phase without its own samples takes only its site's dates that carry the same EUROEVOL period label (EN, MN, LN, LM ...); a phase without a period, or without such dates, is dropped. An earlier version took all of a site's dates and put livestock in France at 7,000 BCE through Mesolithic dates at multi-period sites. The two earliest French livestock phases left, Gazel and Font-des-Pigeons (Châteauneuf-les-Martigues), are the contested "Mesolithic sheep" caves; they are kept as recorded. Cereals are wheat, barley and rye of cultivated or wild/cultivated status, plus indeterminate cereal; oats count only where explicitly domestic. For livestock the taxa list's WildDomesticStatus decides; unspecified *Ovis* counts as domestic (Neolithic Europe had no wild sheep), and mixed-status *Bos*, *Sus* and *Capra* count as uncertain. EUROEVOL is built around Neolithic sites, so it adds many presences but few absences.
+- **Domestic livestock.** Present if domestic cattle, sheep, goat or pig is recorded. Absent only if at least 50 identified specimens (or 8 taxa) include no livestock genus of domestic *or uncertain* status. Unspecified sheep/goat, *Bos* or *Sus* count as uncertain.
+- **Pollen cores.** A level counts if it has a pollen sum. A core-slice is absent only if it has counted levels and none holds the type. Dung spores are unknown, not absent, in cores that do not count non-pollen palynomorphs. Ages come from the dataset's default chronology; cores with only uncalibrated ages are left out.
+- **Open land.** Each hex takes the 1° cell containing its centre. A slice averages the REVEALS windows that are at least half inside it. Firmness is the probability from the reconstruction's standard error that open land is 50% or more.
+- **Structures.** These are regex rules on XRONOS's free-text site type and dated material (`layers.toml`). Paulsson's 2,410 megalith dates have no coordinates; 1,919 match a dated site by lab number.
+- **Haplogroups.** Clades are matched by prefix on AADR's manual Y call (else its ISOGG call) and its mt call; mt H excludes HV. Each clade's share is computed among samples with a call of that kind, and Y only among males. The two smallest mt clades (U2, X) are folded into "other" so the set fits the 8-colour palette.
+- **Kernel widths.** These are cross-validated per layer where it has at least 20 presences and absences. Dung spores borrow from cereal pollen, the Y clades from Y I2, the mt clades from mt U5, and the structure layers from pottery.
+
+### Not built, and why
+
+- **Wool:** no open spindle-whorl, loom-weight or textile compilation before 2200 BCE, and no open kill-off (mortality profile) compilation.
+- **Isotopes and strontium mobility:** IsoArcH has no bulk download. MAIA's licence and download need checking, and calling a person non-local needs a strontium baseline (Hoogewerff et al. 2019, CC BY-NC). These are left for a later pass.
+- **Ancestry proportions:** AADR has none. Computing them (qpAdm or ADMIXTURE on the genotypes) is a separate job; haplogroup shares stand in.
+- **Lanting's logboat dates:** these exist only in a PDF and still need extracting.
+- **Metal lead isotopes:** too sparse before 3000 BCE.
+
+### Biases specific to these layers
+
+- **Cereal grain** depends on flotation, which became routine only from the 1970s and unevenly by country.
+- **Livestock absences** are rare: most identified assemblages after 6000 BCE have some domestic animal. With EUROEVOL in, the kernel width cross-validates to 200 km, which still smooths heavily.
+- **Pollen** samples vegetation a few kilometres around a lake or bog. Cores are dense in northern and central Europe and sparse in the Mediterranean and SW Asia. Large wild grasses put about 6% of pre-farming European levels in the cereal type.
+- **REVEALS** covers only 30–75°N, 25°W–50°E, and only 1° cells that have pollen records. Natural steppe and alpine land count as open.
+- **Structures** rest on how XRONOS's sources typed their sites. Houses and pile dwellings are badly undercounted: most houses are filed as plain settlements, and most pile dwellings are dated by tree rings, which no open table lists.
+- **Ancient genomes** come mostly from burials and from projects in a few countries. A clade's share is a share of sampled individuals, not of the population.
+
+## Fixes prompted by the gap critic (2026-11-12)
+
+The gap critic (`.claude/agents/gap-critic.md`) found these problems while reading the dossiers; all are fixed:
+
+- **Arabian pottery.** A bare "Neolithic" label in Arabia counted as pottery-bearing, but the Arabian Neolithic made none; it now counts as absent. Ubaid-labelled Gulf sites still count as present, and so does the Bronze Age.
+- **Eastern European pottery.** Dolbunova's 156 forager-pottery sites all had one 6000–4000 BC span, so the Baltic, Belarus and the Russian forest switched on together at 6,000 BCE. Each site now starts at the modelled start of its nearest modelled site (5540–6000 BC; `inputs/dolbunova2023_starts.csv`).
+- **Structures on older phases.** A site's type applies to all its dates, which put megaliths in Iberia at 7,000 BCE and enclosures in Britain at 6,000 BCE. Structure layers now have an earliest plausible date (`not_before` in `layers.toml`).
+- **Open land.** REVEALS lists every cell in every window, with all-zero rows where there is no reconstruction; these were read as 0% open land and halved the means. They are now dropped.
+- **Anatolian livestock dates.** The Open Context summary's "Start BCE" column holds cal BP, which had put Anatolian assemblages about 1,950 years too early.
+- **Cereal absences.** These now need at least five plant taxa in the phase.
+
+## Speculative layers (for the game)
+
+`python -m isostyle speculative` fills every layer's masked land cells, writing
+`data/isostyle/speculative/`. **These are not evidence.**
+
+For each layer, slice and land cell (ice and sea stay empty):
+
+1. **Observed:** the evidence surface's value where it has enough evidence.
+2. **Judged:** else the expected value of the gap critic's judgement for the cell's region and slice (`data/isostyle/intuitions/`). Several judgements average, weighted by confidence. For haplogroup sets, a clade the judgement omits gets 0 and "other" gets the remainder.
+3. **Blended:** judged cells within three hex steps of observed ones move toward the observed values (weights 0.75, 0.5, 0.25).
+4. **Extrapolated:** cells no judgement covers take the mean of the nearest observed values, spread ring by ring, with confidence "none".
+
+Acid-soil masks are filled: the game wants use, not survival.
+
+Judged regions are groups of modern countries (Russia split at 56°N), so judged values change at modern borders.
+
+The critics' free-text fill rules were then translated into machine-readable `adjust` entries in the intuition files, by one agent per theme instructed to encode only what each rule says. The schema is in `isostyle/intuitions.py`, and the builder applies the entries in order before blending:
+
+| Kind | What it does |
+|---|---|
+| `gradient` | Linear change along latitude or longitude |
+| `area` | A value inside a box |
+| `coast` | A value within some distance of the sea of that slice, in steps of about 55 km |
+| `near` | A value within some radius of a point |
+| `elevation` | A value above or below a height, from ETOPO1 at the cell centre |
+| `river` | A value within some distance of water. Water can be named traced rivers (the map pipeline's HydroRIVERS courses, counted only in slices where the river flowed), named lakes at that slice's shoreline, or any HydroRIVERS reach above a catchment size, optionally within a box |
+| `polygon` | A value inside an outline |
+| `slice_value` | A value for particular slices |
+
+Any entry may be limited to some slices, may add to the value instead of replacing it, or may withdraw a sub-area as "unknown", which leaves it to extrapolation.
+
+350 of 808 judgements carry rules; the rest are flat fills because their rules say no more. Of the rules, 182 are polygons and 32 rivers; these replaced most box and point approximations of rivers, deltas, basins, deserts and ranges. `speculative/rules.md` marks which rules are encoded.
+
+Known approximations:
+- Some broad zones are still boxes: loess, chalk, the Pontic steppe and the Paris basin.
+- River strip widths the rules didn't state were set by the translating agents (30–50 km).
+- A coastal strip narrower than one hex is one hex wide.
+- An elevation rule applies to all high ground in its region, not just the named range.
+- Rules that give no numbers, and habitat rules (peat shores, shell-midden coasts), stay flat.
+
+The viewer's Speculative view colours each cell by value and hatches judged cells: sparse hatching for high confidence, dense for low, crosshatch for extrapolated. Hovering a judged cell shows the judgement behind it.
 
 ## Known biases
 

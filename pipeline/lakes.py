@@ -267,7 +267,8 @@ def build(cfg, grid, terrain, arr, tf, years, log=print):
         top = max(eff.values())
         # The basin: what the lake covers at its highest, plus drawn Water
         # the water could reach a little above that (drawn shorelines differ).
-        basin = set(wet_hexes(top + lcfg["basin_margin"]).tolist())
+        margin = lk.get("basin_margin", lcfg["basin_margin"])
+        basin = set(wet_hexes(top + margin).tolist())
         cache, stats = {}, []
         for y in years:
             if until is not None and y >= until:
@@ -367,11 +368,11 @@ def _sea_or_outlet(lk, cfg, grid, out, arr, tf, years, log):
     rows, cols = np.mgrid[0:z.shape[0], 0:z.shape[1]]
     lon, lat = tfk.x0 + cols * tfk.a, tfk.y0 + rows * tfk.e
     rate = isostasy.rate(lon, lat, icfg) * icfg["scale"] * icfg["tau"]
-    dam = lk.get("dam")
-    dcells = []
-    if dam:
-        dcells = [(r, c) for r, c in dam_cells(dam["line"], tfk, slice(0, z.shape[0]), slice(0, z.shape[1]))
-                  if 0 <= r < z.shape[0] and 0 <= c < z.shape[1]]
+    # One dam or a list of them, each with its own `from`/`until` years.
+    dams = lk.get("dam", [])
+    dams = [dams] if isinstance(dams, dict) else dams
+    dams = [(d, [(r, c) for r, c in dam_cells(d["line"], tfk, slice(0, z.shape[0]), slice(0, z.shape[1]))
+                 if 0 <= r < z.shape[0] and 0 <= c < z.shape[1]]) for d in dams]
     seed = (int(round(tfk.row(lk["seed"][1]))), int(round(tfk.col(lk["seed"][0]))))
 
     b = grid.bbox
@@ -382,6 +383,19 @@ def _sea_or_outlet(lk, cfg, grid, out, arr, tf, years, log):
         if len(rr):
             cells[i] = (rr, cc)
 
+    # `clear`: for hexes centred in its box, from its year, the model is
+    # authoritative: drawn Water it doesn't reach becomes land (modern sea
+    # floor excepted).
+    clear = lk.get("clear")
+    clearable = np.zeros(len(grid), dtype=bool)
+    if clear:
+        cb = clear["box"]
+        cx, cy = (b[:, 0] + b[:, 2]) / 2, (b[:, 1] + b[:, 3]) / 2
+        for i in np.flatnonzero((cx > cb[0]) & (cx < cb[2]) & (cy > cb[1]) & (cy < cb[3])):
+            rr, cc = hex_pixels(grid.rings[i], grid.bbox[i], tf, arr.shape)
+            if len(rr) and np.nanmedian(arr[rr, cc]) > 0:
+                clearable[i] = True
+
     start, until = lk.get("from"), lk.get("until")
     eff, shapes, last, last_year, last_kind, stats = {}, [], None, None, None, []
     for y in years:
@@ -391,9 +405,10 @@ def _sea_or_outlet(lk, cfg, grid, out, arr, tf, years, log):
                 shapes[-1]["to"] = y
             continue
         zy = z - rate * np.expm1((1950 - y) / 1000.0 / icfg["tau"])
-        if dam and (dam.get("until") is None or y < dam["until"]):
-            for r, c in dcells:
-                zy[r, c] = max(zy[r, c], dam["top"])
+        for d, dcells in dams:
+            if (d.get("from") is None or y >= d["from"]) and (d.get("until") is None or y < d["until"]):
+                for r, c in dcells:
+                    zy[r, c] = max(zy[r, c], d["top"])
         # The ice sheet dams the water: no flow through the board's Ice hexes
         # (until `ice_until`, when the drawn ice no longer matches the
         # dated deglaciation).
@@ -412,6 +427,10 @@ def _sea_or_outlet(lk, cfg, grid, out, arr, tf, years, log):
             wet[i] = (need[rr, cc] <= lv).mean() >= lcfg["hex_fraction"]
         wet &= t != "Ice"
         t[wet] = "Water"
+        if clear and y >= clear.get("from", -np.inf):
+            drop = clearable & (t == "Water") & ~wet
+            out[y] = t = fill_from_neighbours(t, drop, grid.neighbours,
+                                              exclude=("Water", "Alpine"))
         stats.append((y, "lake" if lake else "sea", round(lv, 1), int(wet.sum())))
         # A shoreline in lake stages only; a new shape when the level moves
         # or every `shore_years` (the uplift reshapes it).

@@ -1,5 +1,6 @@
 //! Turns app state into what the renderer consumes: the uniform block, the
-//! per-hex state texels and the settlement piece triangles.
+//! per-hex state texels and the settlement piece triangles. (Rivers and
+//! lake shores are in [`super::lines`].)
 
 use super::camera::View;
 use super::mesh::BoardMesh;
@@ -8,14 +9,18 @@ use super::relief::{self, Relief};
 use super::renderer::{Globals, PieceVertex};
 use crate::palette::Rgb;
 use glam::{DVec3, Vec3};
-use std::f64::consts::{FRAC_PI_2, FRAC_PI_4};
-use neolith_core::{GridSpec, Lake, Landform, LonLat, MapMode, River, RiverState, Selection, Snapshot, Year};
+use std::f64::consts::{FRAC_PI_2, TAU};
+use neolith_core::{GridSpec, Landform, LonLat, MapMode, Selection, Snapshot, Year};
 
 pub const FLAG_SELECTED: u8 = 1;
 pub const FLAG_HOVER: u8 = 2;
 pub const FLAG_LASSO: u8 = 4;
 /// Bits 3-4 of the flags byte: the hex's [`Landform`] (0 = flat or unknown).
 pub const LANDFORM_SHIFT: u8 = 3;
+/// Survey intensity 1 (thinly surveyed) and 0 (hardly surveyed): few dated
+/// records of any period, so an absence of sites there says little.
+pub const FLAG_SURVEY_THIN: u8 = 1 << 5;
+pub const FLAG_SURVEY_NONE: u8 = 1 << 6;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Material {
@@ -89,6 +94,9 @@ pub struct BoardStyle {
     pub art_blend: bool,
     /// Draw river lines and lake shorelines.
     pub rivers: bool,
+    /// Hatch land where few dated records of any period exist, so an
+    /// absence of sites there is not read as an absence of people.
+    pub survey: bool,
     /// Hillshade from the elevation gradient on land hexes, in every map
     /// mode; 0 = off.
     pub hillshade: f32,
@@ -120,6 +128,7 @@ impl Default for BoardStyle {
             art_strength: 1.0,
             art_blend: true,
             rivers: true,
+            survey: true,
             hillshade: 0.6,
             relief: true,
             relief_exaggeration: 10.0,
@@ -143,6 +152,13 @@ pub fn srgb_to_linear(c: Rgb) -> [f32; 3] {
 fn rgb4(c: Rgb, a: f32) -> [f32; 4] {
     let [r, g, b] = srgb_to_linear(c);
     [r, g, b, a]
+}
+
+/// Radius of a hex on screen, in points, at the camera's target (the same
+/// measure board.wgsl fades the grout and borders by).
+pub fn hex_px(view: &View, grid: &GridSpec, cam_dist: f64) -> f64 {
+    let unit = (grid.h / 2.0).to_radians() / (3f64.sqrt() / 2.0);
+    unit * view.focal * view.size.y / 2.0 / cam_dist.max(1e-6)
 }
 
 /// `px_height` is the height of the render target in pixels.
@@ -190,7 +206,12 @@ pub fn globals(
             view.focal as f32 * px_height / 2.0,
             if style.art_blend { 1.0 } else { 0.0 },
         ],
-        hex: [(grid.w / 2.0).to_radians() as f32, (grid.h / 2.0).to_radians() as f32, relief::scale(style) as f32, 0.0],
+        hex: [
+            (grid.w / 2.0).to_radians() as f32,
+            (grid.h / 2.0).to_radians() as f32,
+            relief::scale(style) as f32,
+            if style.survey { 1.0 } else { 0.0 },
+        ],
     }
 }
 
@@ -198,24 +219,34 @@ pub fn globals(
 pub struct StateTexels {
     /// RGBA8: terrain, koeppen, population, flags.
     pub rgba: Vec<u8>,
-    /// RG8: elevation band, hillshade ([`neolith_core::elevation::hillshade`]).
+    /// RGBA8: elevation band, hillshade ([`neolith_core::elevation::hillshade`]),
+    /// productivity band, and in four bits each (15 = no data) the
+    /// biodiversity band (low) and expected-population band (high).
     pub relief: Vec<u8>,
     /// R16: tile surface height in metres (`Snapshot::height`).
     pub height: Vec<i16>,
 }
 
+/// Two bands in one byte, four bits each; anything over 14 (so
+/// [`neolith_core::NO_DATA`]) becomes 15, which the shader reads as no data.
+fn pack_bands(low: u8, high: u8) -> u8 {
+    low.min(15) | high.min(15) << 4
+}
+
+#[allow(clippy::too_many_arguments)]
 pub fn state_texels(
     grid: &GridSpec,
     snapshot: &Snapshot,
     hillshade: &[u8],
     landform: &[Option<Landform>],
+    survey: &[u8],
     selection: Option<&Selection>,
     lasso: Option<&Selection>,
     hover: Option<neolith_core::HexId>,
 ) -> StateTexels {
     let (cols, rows) = (grid.cols as usize, grid.rows as usize);
     let mut px = vec![0u8; cols * rows * 4];
-    let mut relief = vec![0u8; cols * rows * 2];
+    let mut relief = vec![0u8; cols * rows * 4];
     let mut height = vec![0i16; cols * rows];
     for id in grid.ids() {
         let (c, r) = grid.col_row(id);
@@ -230,20 +261,90 @@ pub fn state_texels(
         if hover == Some(id) {
             flags |= FLAG_HOVER;
         }
+        match survey.get(i) {
+            Some(0) => flags |= FLAG_SURVEY_NONE,
+            Some(1) => flags |= FLAG_SURVEY_THIN,
+            _ => {}
+        }
         let t = r as usize * cols + c as usize;
         px[t * 4..t * 4 + 4].copy_from_slice(&[snapshot.terrain[i], snapshot.koeppen[i], snapshot.pop[i], flags]);
-        relief[t * 2..t * 2 + 2].copy_from_slice(&[snapshot.elevation[i], hillshade[i]]);
+        relief[t * 4..t * 4 + 4].copy_from_slice(&[snapshot.elevation[i], hillshade[i], snapshot.npp[i], pack_bands(snapshot.biodiversity[i], snapshot.expected[i])]);
         height[t] = snapshot.height[i];
     }
     StateTexels { rgba: px, relief, height }
 }
 
+/// The evidence texture: per-hex `codes` (file order, e.g.
+/// [`neolith_core::EvidenceLayer::codes_at`]) laid out row-major
+/// `cols × rows`. Missing codes (no layer) are [`neolith_core::evidence::NO_VALUE`].
+pub fn evidence_texels(grid: &GridSpec, codes: &[u8]) -> Vec<u8> {
+    let cols = grid.cols as usize;
+    let mut out = vec![neolith_core::evidence::NO_VALUE; cols * grid.rows as usize];
+    for id in grid.ids() {
+        let (c, r) = grid.col_row(id);
+        if let Some(code) = codes.get(id.index()) {
+            out[r as usize * cols + c as usize] = *code;
+        }
+    }
+    out
+}
+
 /// A settlement to draw as a game piece.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Piece {
     pub pos: LonLat,
+    /// Recorded population this year, 0 when there is no figure.
     pub population: u32,
+    /// The site's inferred importance (0-3); sizes the piece when there is
+    /// no population figure.
+    pub importance: u8,
+    /// How firmly the site is attested (0-2); 0 draws a paler piece.
+    pub evidence: u8,
     pub highlighted: bool,
+}
+
+impl Piece {
+    pub fn new(s: &neolith_core::Settlement, year: Year) -> Self {
+        Piece {
+            pos: s.pos,
+            population: s.population_at(year).unwrap_or(0),
+            importance: s.importance,
+            evidence: s.evidence,
+            highlighted: false,
+        }
+    }
+
+    /// Label priority 0-3: from the population figure when there is one,
+    /// else from the inferred importance.
+    pub fn rank(&self) -> u8 {
+        match self.population {
+            0 => self.importance.min(3),
+            _ => self.size_tier(),
+        }
+    }
+
+    /// Size tier 0-3, from the recorded population alone: importance is
+    /// inferred, so it never makes a piece bigger (it earns a star instead).
+    pub fn size_tier(&self) -> u8 {
+        match self.population {
+            0..=199 => 0,
+            200..=999 => 1,
+            1000..=2999 => 2,
+            _ => 3,
+        }
+    }
+
+    /// Drawn as a standing stone: only a recorded population of a town's
+    /// size earns one. Everything else is a campfire on trampled ground.
+    pub fn monolith(&self) -> bool {
+        self.population >= 1000
+    }
+
+    /// An important site (inferred importance 3) carries a star above its
+    /// piece, whichever piece that is.
+    pub fn starred(&self) -> bool {
+        self.importance >= 3
+    }
 }
 
 /// World-space geometry of a piece, for drawing, labels and click tests.
@@ -253,34 +354,49 @@ pub struct PieceFrame {
     pub up: DVec3,
     /// Base radius of the piece.
     pub radius: f64,
+    /// Height of the piece itself (stone or fire and smoke).
+    pub body: f64,
+    /// Full height, including the star of an important site.
     pub height: f64,
 }
 
 /// Larger settlements get taller, heavier pieces.
-pub fn tier_scale(population: u32) -> f64 {
-    match population {
-        0..=199 => 0.85,
-        200..=999 => 1.0,
-        1000..=2999 => 1.2,
+pub fn tier_scale(tier: u8) -> f64 {
+    match tier {
+        0 => 0.85,
+        1 => 1.0,
+        2 => 1.2,
         _ => 1.4,
     }
 }
+
+/// Heights in piece radii: the standing stone, the campfire with its smoke,
+/// and the room a star takes above either.
+const MONOLITH_H: f64 = 2.9;
+const CAMPFIRE_H: f64 = 1.7;
+const STAR_H: f64 = 1.45;
 
 pub fn piece_frame(piece: &Piece, proj: &Projection, relief: &Relief, t: f64, cam_dist: f64) -> PieceFrame {
     // About a third of a hex wide close up. Further out the world size grows only
     // slightly with distance, so pieces shrink on screen roughly with the map
     // (ZOOM_EXP = 0: fixed world size; 1: fixed pixel size).
+    // Closer than DIST_REF they shrink in the world (NEAR_EXP), so a camp
+    // doesn't grow to fill its hex and bury its neighbours: on screen a
+    // piece still grows as you close in, but slower than the map does.
     const PIECE_R0: f64 = 0.0024;
     const DIST_REF: f64 = 0.48;
     const ZOOM_EXP: f64 = 0.2;
-    let zoom = (cam_dist / DIST_REF).max(1.0).powf(ZOOM_EXP);
-    let radius = PIECE_R0 * zoom * tier_scale(piece.population);
-    let tall = piece.population >= 1000;
+    const NEAR_EXP: f64 = 0.25;
+    let rel = cam_dist / DIST_REF;
+    let zoom = if rel >= 1.0 { rel.powf(ZOOM_EXP) } else { rel.max(1e-3).powf(NEAR_EXP) };
+    let radius = PIECE_R0 * zoom * tier_scale(piece.size_tier());
+    let body = radius * if piece.monolith() { MONOLITH_H } else { CAMPFIRE_H };
     PieceFrame {
         base: proj.surface_at(piece.pos, t, relief.at(piece.pos)),
         up: proj.normal(piece.pos, t),
         radius,
-        height: radius * if tall { 3.4 } else { 2.0 },
+        body,
+        height: body + if piece.starred() { radius * STAR_H } else { 0.0 },
     }
 }
 
@@ -314,8 +430,10 @@ pub fn piece_on_screen(view: &View, f: &PieceFrame) -> Option<ScreenPiece> {
     Some(ScreenPiece { base, top, radius_px: (edge - base).length().min(cap) })
 }
 
-/// Builds the triangles for all pieces: round huts for small settlements,
-/// obelisks for towns (≥ 1000 people).
+/// Builds the triangles for all pieces: a rough standing stone where a
+/// population of 1000 or more is recorded, a smouldering campfire on
+/// trampled dirt everywhere else, and a star over either when the site is
+/// important (inferred importance 3).
 pub fn piece_vertices(pieces: &[Piece], proj: &Projection, relief: &Relief, t: f64, cam_dist: f64) -> Vec<PieceVertex> {
     let mut out = Vec::new();
     for piece in pieces {
@@ -323,9 +441,17 @@ pub fn piece_vertices(pieces: &[Piece], proj: &Projection, relief: &Relief, t: f
         let up = f.up;
         let x = up.cross(DVec3::Z).normalize();
         let z = x.cross(up);
-        let at = |a: f64, r: f64, h: f64| f.base + (x * a.cos() + z * a.sin()) * r + up * h;
+        let dir = |a: f64| x * a.cos() + z * a.sin();
+        let at = |a: f64, r: f64, h: f64| f.base + dir(a) * r + up * h;
+        // Stable per-site variation, so no two stones or fires match.
+        let rnd = |k: f64| ((piece.pos.lon * 12.9898 + piece.pos.lat * 78.233 + k * 37.719).sin() * 43758.5453).rem_euclid(1.0);
         let glow = if piece.highlighted { 1.35 } else { 1.0 };
-        let mut tri = |a: DVec3, b: DVec3, c: DVec3, colour: Rgb| {
+        // A site known from a single date is drawn paler: tentative.
+        let pale = if piece.evidence == 0 { 0.45 } else { 0.0 };
+        // `emit` 0 shades the face by its own normal; above 0 the face is lit
+        // as if facing up and brightened by that factor (embers, the star).
+        // `alpha` is the opacity at each corner (smoke thins as it rises).
+        let mut tri = |a: DVec3, b: DVec3, c: DVec3, colour: Rgb, emit: f64, alpha: [f32; 3]| {
             let mut n = (b - a).cross(c - a).normalize_or_zero();
             // Face away from the piece's axis.
             let centroid = (a + b + c) / 3.0 - f.base;
@@ -335,39 +461,106 @@ pub fn piece_vertices(pieces: &[Piece], proj: &Projection, relief: &Relief, t: f
             if n.dot(up) < -0.5 {
                 n = -n;
             }
-            let [r, g, bl] = srgb_to_linear(colour);
-            for p in [a, b, c] {
+            let gain = if emit > 0.0 {
+                n = up;
+                glow * emit
+            } else {
+                glow
+            } as f32;
+            let [r, g, bl] = srgb_to_linear(colour).map(|c| c + (1.0 - c) * pale);
+            for (p, alpha) in [a, b, c].into_iter().zip(alpha) {
                 out.push(PieceVertex {
                     pos: p.as_vec3().to_array(),
                     normal: n.as_vec3().to_array(),
-                    colour: [r * glow, g * glow, bl * glow, 1.0],
+                    colour: [r * gain, g * gain, bl * gain, alpha],
                 });
             }
         };
+        const SOLID: [f32; 3] = [1.0; 3];
         let r = f.radius;
-        if piece.population >= 1000 {
-            // Obelisk: tapered square pillar with a pyramid cap.
-            let (stone, cap) = ([0xe8, 0xe0, 0xcc], [0xd0, 0xa0, 0x28]);
-            let (h1, h2) = (f.height * 0.82, f.height);
-            for k in 0..4 {
-                let (a0, a1) = ((k as f64 + 0.5) * FRAC_PI_2, (k as f64 + 1.5) * FRAC_PI_2);
-                let (b0, b1) = (at(a0, r * 0.62, 0.0), at(a1, r * 0.62, 0.0));
-                let (t0, t1) = (at(a0, r * 0.36, h1), at(a1, r * 0.36, h1));
-                tri(b0, b1, t1, stone);
-                tri(b0, t1, t0, stone);
-                tri(t0, t1, f.base + up * h2, cap);
+        let h = f.body;
+        let turn = rnd(0.0) * TAU;
+        if piece.monolith() {
+            // Standing stone: an unhewn five-sided boulder, leaning a little,
+            // lumpy at the shoulder and broken off unevenly at the top.
+            let (stone, crown) = ([0x8d, 0x89, 0x7f], [0xa9, 0xa5, 0x98]);
+            let lean = dir(rnd(1.0) * TAU) * r * 0.22;
+            const N: usize = 5;
+            let ring = |k: usize, rad: f64, height: f64, lean_part: f64, salt: f64| {
+                let a = turn + (k % N) as f64 * TAU / N as f64 + (rnd(salt + (k % N) as f64) - 0.5) * 0.5;
+                let j = 0.8 + 0.4 * rnd(salt + 10.0 + (k % N) as f64);
+                at(a, rad * j, height) + lean * lean_part
+            };
+            let foot = |k| ring(k, r * 0.62, 0.0, 0.0, 2.0);
+            let shoulder = |k| ring(k, r * 0.66, h * 0.5, 0.45, 20.0);
+            // A blunt, slanting top: one side of the rim stands well above the other.
+            let top = |k: usize| ring(k, r * 0.46, h * (0.74 + 0.22 * rnd(40.0 + (k % N) as f64)), 0.9, 40.0);
+            let tip = f.base + up * h * 0.97 + lean * 1.3;
+            for k in 0..N {
+                tri(foot(k), foot(k + 1), shoulder(k + 1), stone, 0.0, SOLID);
+                tri(foot(k), shoulder(k + 1), shoulder(k), stone, 0.0, SOLID);
+                tri(shoulder(k), shoulder(k + 1), top(k + 1), stone, 0.0, SOLID);
+                tri(shoulder(k), top(k + 1), top(k), stone, 0.0, SOLID);
+                tri(top(k), top(k + 1), tip, crown, 0.0, SOLID);
             }
         } else {
-            // Round hut: an octagonal wall under a conical roof.
-            let (wall, roof) = ([0xdc, 0xcb, 0xa6], [0x9a, 0x4f, 0x2c]);
-            let (h1, h2) = (f.height * 0.42, f.height);
-            for k in 0..8 {
-                let (a0, a1) = (k as f64 * FRAC_PI_4, (k + 1) as f64 * FRAC_PI_4);
-                let (b0, b1) = (at(a0, r * 0.8, 0.0), at(a1, r * 0.8, 0.0));
-                let (t0, t1) = (at(a0, r * 0.8, h1), at(a1, r * 0.8, h1));
-                tri(b0, b1, t1, wall);
-                tri(b0, t1, t0, wall);
-                tri(at(a0, r, h1), at(a1, r, h1), f.base + up * h2, roof);
+            // Trampled dirt: a low, ragged patch of bare earth.
+            let (dirt, ash, log, ember, smoke) =
+                ([0x5c, 0x47, 0x33], [0x2b, 0x27, 0x24], [0x3d, 0x2c, 0x20], [0xff, 0x74, 0x18], [0xc9, 0xc5, 0xbd]);
+            const N: usize = 10;
+            let rim = |k: usize| {
+                let k = k % N;
+                at(turn + k as f64 * TAU / N as f64, r * (0.85 + 0.3 * rnd(2.0 + k as f64)), r * 0.03)
+            };
+            let hub = f.base + up * r * 0.1;
+            for k in 0..N {
+                tri(rim(k), rim(k + 1), hub, dirt, 0.0, SOLID);
+            }
+            // The hearth: a bed of ash with embers still glowing in it.
+            for k in 0..6 {
+                let (a0, a1) = (turn + k as f64 * TAU / 6.0, turn + (k + 1) as f64 * TAU / 6.0);
+                tri(at(a0, r * 0.42, r * 0.11), at(a1, r * 0.42, r * 0.11), f.base + up * r * 0.16, ash, 0.0, SOLID);
+                tri(at(a0, r * 0.2, r * 0.15), at(a1, r * 0.2, r * 0.15), f.base + up * r * 0.4, ember, 1.5, SOLID);
+            }
+            // Charred logs leaning in over the embers.
+            for k in 0..4 {
+                let a = turn + 0.4 + k as f64 * FRAC_PI_2;
+                tri(at(a - 0.22, r * 0.46, r * 0.12), at(a + 0.22, r * 0.46, r * 0.12), at(a, r * 0.04, r * 0.36), log, 0.0, SOLID);
+            }
+            // A thin wisp of smoke, drifting as it rises and thinning to
+            // nothing (the piece pipeline turns opacity into MSAA coverage).
+            let drift = dir(rnd(1.0) * TAU);
+            let sway = drift.cross(up);
+            const SEGS: usize = 5;
+            let puff = |j: usize, k: usize| {
+                let u = j as f64 / SEGS as f64;
+                let centre = up * (r * 0.4 + (h - r * 0.4) * u) + drift * r * 0.35 * u * u + sway * r * 0.1 * (u * 5.0).sin();
+                let rad = r * (0.04 + 0.08 * (u * std::f64::consts::PI).sin());
+                f.base + centre + dir(turn + k as f64 * TAU / 3.0) * rad
+            };
+            let thin = |j: usize| (0.85 * (1.0 - j as f64 / SEGS as f64).powf(0.8)) as f32;
+            for j in 0..SEGS {
+                let (a0, a1) = (thin(j), thin(j + 1));
+                for k in 0..3 {
+                    tri(puff(j, k), puff(j, k + 1), puff(j + 1, k + 1), smoke, 0.0, [a0, a0, a1]);
+                    tri(puff(j, k), puff(j + 1, k + 1), puff(j + 1, k), smoke, 0.0, [a0, a1, a1]);
+                }
+            }
+        }
+        if piece.starred() {
+            // A five-pointed star floating over the piece, as two crossed
+            // upright cut-outs so it reads from any side.
+            let gold = [0xff, 0xd0, 0x3a];
+            let centre = f.base + up * (h + r * 0.8);
+            for plane in [dir(turn), dir(turn + FRAC_PI_2)] {
+                let point = |i: usize| {
+                    let a = i as f64 * std::f64::consts::PI / 5.0;
+                    let rad = r * if i % 2 == 0 { 0.62 } else { 0.26 };
+                    centre + (plane * a.sin() + up * a.cos()) * rad
+                };
+                for i in 0..10 {
+                    tri(centre, point(i), point(i + 1), gold, 1.5, SOLID);
+                }
             }
         }
     }
@@ -410,143 +603,31 @@ pub fn river_spline(pts: &[LonLat], step: f64) -> Vec<LonLat> {
     out
 }
 
-/// How far a line is drawn from the map: the world width grows a little with
-/// camera distance (like pieces) so lines stay visible zoomed out.
-fn line_zoom(cam_dist: f64) -> f64 {
-    const DIST_REF: f64 = 0.48;
-    const ZOOM_EXP: f64 = 0.6;
-    (cam_dist / DIST_REF).max(1.0).powf(ZOOM_EXP)
-}
-
-/// Appends a flat ribbon along `pts` (already splined), `half` wide on each
-/// side, `lift` above the tiles under it. With `dash` (on, off; degrees of
-/// arc) only the "on" stretches are drawn.
-#[allow(clippy::too_many_arguments)]
-fn ribbon(
-    out: &mut Vec<PieceVertex>,
-    pts: &[LonLat],
-    proj: &Projection,
-    relief: &Relief,
-    t: f64,
-    half: f64,
-    lift: f64,
-    colour: Rgb,
-    dash: Option<(f64, f64)>,
-) {
-    let m = pts.len();
-    if m < 2 {
-        return;
-    }
-    let [cr, cg, cb] = srgb_to_linear(colour);
-    // Each point at the highest tile among it and its neighbours, so a line
-    // crossing a step stays on top of the higher tile up to its edge.
-    let tops: Vec<f64> = pts.iter().map(|p| relief.at(*p)).collect();
-    let world: Vec<DVec3> = (0..m)
-        .map(|i| {
-            let top = tops[i.saturating_sub(1)].max(tops[i]).max(tops[(i + 1).min(m - 1)]);
-            proj.surface_at(pts[i], t, top)
-        })
-        .collect();
-    let ups: Vec<DVec3> = pts.iter().map(|p| proj.normal(*p, t)).collect();
-    let mut edges = Vec::with_capacity(m);
-    let mut along = Vec::with_capacity(m);
-    let mut dist = 0.0;
-    for i in 0..m {
-        let tangent = world[(i + 1).min(m - 1)] - world[i.saturating_sub(1)];
-        let side = tangent.cross(ups[i]).normalize_or_zero() * half;
-        let c = world[i] + ups[i] * lift;
-        edges.push((c - side, c + side));
-        if i > 0 {
-            dist += (pts[i].lon - pts[i - 1].lon).hypot(pts[i].lat - pts[i - 1].lat);
-        }
-        along.push(dist);
-    }
-    for i in 0..m - 1 {
-        if let Some((on, off)) = dash {
-            if along[i] % (on + off) > on {
-                continue;
-            }
-        }
-        let n = ups[i].as_vec3().to_array();
-        let (l0, r0) = edges[i];
-        let (l1, r1) = edges[i + 1];
-        for p in [l0, r0, r1, l0, r1, l1] {
-            out.push(PieceVertex { pos: p.as_vec3().to_array(), normal: n, colour: [cr, cg, cb, 1.0] });
-        }
-    }
-}
-
-/// Flat ribbons for the rivers flowing at `year`, lying just above the board
-/// top. Perennial rivers are solid; seasonal ones are paler and dashed.
-pub fn river_vertices(rivers: &[River], year: Year, proj: &Projection, relief: &Relief, t: f64, cam_dist: f64) -> Vec<PieceVertex> {
-    // Half widths (radians) per size, close up.
-    const HALF_WIDTH: [f64; 3] = [0.00030, 0.00045, 0.00065];
-    let zoom = line_zoom(cam_dist);
-    let mut out = Vec::new();
-    for r in rivers {
-        let state = r.state_at(year);
-        if state == RiverState::Absent {
-            continue;
-        }
-        let seasonal = state == RiverState::Seasonal;
-        let colour = if seasonal { [0x6c, 0xa6, 0xd2] } else { [0x2a, 0x62, 0xb0] };
-        let half = HALF_WIDTH[(r.size.clamp(1, 3) - 1) as usize] * zoom;
-        let dash = seasonal.then_some((0.22, 0.14));
-        ribbon(&mut out, &river_spline(&r.points, 0.04), proj, relief, t, half, 0.0004, colour, dash);
-    }
-    out
-}
-
-/// Shoreline rings of the lakes at `year`: a thin dark line showing the
-/// lake's real shape over the Water hexes.
-pub fn lake_vertices(lakes: &[Lake], year: Year, proj: &Projection, relief: &Relief, t: f64, cam_dist: f64) -> Vec<PieceVertex> {
-    let half = 0.00022 * line_zoom(cam_dist);
-    let mut out = Vec::new();
-    for l in lakes {
-        let Some(shape) = l.shape_at(year) else { continue };
-        for ring in &shape.rings {
-            let mut closed = ring.clone();
-            if closed.first().map(|p| (p.lon, p.lat)) != closed.last().map(|p| (p.lon, p.lat)) {
-                closed.push(ring[0]);
-            }
-            ribbon(&mut out, &river_spline(&closed, 0.04), proj, relief, t, half, 0.00035, [0x1d, 0x48, 0x7a], None);
-        }
-    }
-    out
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn spline_passes_through_its_points_and_ribbons_lie_on_the_board() {
+    fn evidence_texels_are_row_major() {
+        let grid = GridSpec { cols: 3, rows: 2, origin_lon: 0.0, origin_lat: 10.0, w: 0.5773502691896262, h: 0.5 };
+        let codes: Vec<u8> = (0..grid.len() as u8).collect();
+        let tex = evidence_texels(&grid, &codes);
+        assert_eq!(tex.len(), 6);
+        for id in grid.ids() {
+            let (c, r) = grid.col_row(id);
+            assert_eq!(tex[r as usize * 3 + c as usize], codes[id.index()]);
+        }
+        assert!(evidence_texels(&grid, &[]).iter().all(|c| *c == neolith_core::evidence::NO_VALUE));
+    }
+
+    #[test]
+    fn spline_passes_through_its_points() {
         let pts = [LonLat::new(30.0, 30.0), LonLat::new(31.0, 31.0), LonLat::new(33.0, 31.0)];
         let s = river_spline(&pts, 0.1);
         assert!(s.len() > 20);
         for p in pts {
             assert!(s.iter().any(|q| (q.lon - p.lon).abs() < 1e-9 && (q.lat - p.lat).abs() < 1e-9));
         }
-        let proj = Projection::new(LonLat::new(30.0, 35.0));
-        let grid = GridSpec { cols: 12, rows: 12, origin_lon: 28.0, origin_lat: 34.0, w: 0.5773502691896262, h: 0.5 };
-        let flat = Relief::flat(&grid);
-        let river = |state| River {
-            id: 1,
-            key: "r".into(),
-            name: "R".into(),
-            size: 2,
-            points: pts.to_vec(),
-            state: neolith_core::Timeline::from_keys([(Year(-10000), state)]),
-        };
-        let verts = river_vertices(&[river(RiverState::Perennial)], Year(-9000), &proj, &flat, 0.0, 1.0);
-        assert!(!verts.is_empty() && verts.len().is_multiple_of(3));
-        for v in &verts {
-            let r = Vec3::from(v.pos).length();
-            assert!(r > 1.0 && r < 1.002, "{r}");
-        }
-        let dashed = river_vertices(&[river(RiverState::Seasonal)], Year(-9000), &proj, &flat, 0.0, 1.0);
-        assert!(!dashed.is_empty() && dashed.len() < verts.len());
-        assert!(river_vertices(&[river(RiverState::Perennial)], Year(-10001), &proj, &flat, 0.0, 1.0).is_empty());
     }
     use neolith_core::{HexId, Year};
 
@@ -561,6 +642,10 @@ mod tests {
             pop: vec![2; n],
             river: vec![0; n],
             elevation: (100..100 + n as u8).collect(),
+            npp: vec![6; n],
+            biodiversity: vec![3; n],
+            expected: vec![neolith_core::NO_DATA; n],
+            shore_km: vec![0; n],
             height: (0..n as i16).map(|i| i * 10).collect(),
         };
         let mut sel = Selection::new(n);
@@ -568,13 +653,19 @@ mod tests {
         let shade: Vec<u8> = (0..n as u8).map(|i| 200 - i).collect();
         let mut lf = vec![None; n];
         lf[0] = Some(Landform::HighMountains);
-        let st = state_texels(&grid, &snap, &shade, &lf, Some(&sel), None, Some(HexId(5)));
+        let mut survey = vec![2u8; n];
+        survey[0] = 0;
+        survey[5] = 1;
+        let st = state_texels(&grid, &snap, &shade, &lf, &survey, Some(&sel), None, Some(HexId(5)));
         let px = &st.rgba;
         // Hex 5 is (col 1, row 2) -> texel index 2 * 4 + 1.
         let o = (2 * 4 + 1) * 4;
-        assert_eq!(&px[o..o + 4], &[5, 7, 2, FLAG_SELECTED | FLAG_HOVER]);
-        assert_eq!(&px[0..4], &[0, 7, 2, (Landform::HighMountains as u8) << LANDFORM_SHIFT]);
-        assert_eq!(st.relief[(2 * 4 + 1) * 2..(2 * 4 + 1) * 2 + 2], [105, 195]);
+        assert_eq!(&px[o..o + 4], &[5, 7, 2, FLAG_SELECTED | FLAG_HOVER | FLAG_SURVEY_THIN]);
+        assert_eq!(&px[0..4], &[0, 7, 2, (Landform::HighMountains as u8) << LANDFORM_SHIFT | FLAG_SURVEY_NONE]);
+        // Without a survey layer no hex is flagged.
+        let st = state_texels(&grid, &snap, &shade, &lf, &[], None, None, None);
+        assert!(st.rgba.chunks(4).all(|t| t[3] & (FLAG_SURVEY_NONE | FLAG_SURVEY_THIN) == 0));
+        assert_eq!(st.relief[(2 * 4 + 1) * 4..(2 * 4 + 1) * 4 + 4], [105, 195, 6, 0xf3]);
         assert_eq!(st.height[2 * 4 + 1], 50);
     }
 
@@ -596,20 +687,45 @@ mod tests {
     }
 
     #[test]
-    fn detail_slots_only_drawn_close_up() {
-        use crate::board::{camera::Camera, mesh, renderer::detail_possible};
+    fn props_culled_to_visible_land_and_detail_only_close_up() {
+        use crate::board::{camera::Camera, mesh, renderer::select_props};
         let grid = GridSpec { cols: 4, rows: 3, origin_lon: 0.0, origin_lat: 10.0, w: 0.5773502691896262, h: 0.5 };
         let proj = Projection::new(grid.centre_of_bounds());
         let board = mesh::build(&grid, &proj);
         let style = BoardStyle { terrain_art: ArtMode::Raised, ..Default::default() };
-        let at = |dist: f64| {
+        use neolith_core::Terrain;
+        let state = |t: Terrain| [Terrain::ALL.iter().position(|x| *x == t).unwrap() as u8, 0, 0, 0].repeat(grid.len());
+        // (props drawn, of which with the detail slots)
+        let at = |dist: f64, rgba: &[u8]| {
             let mut cam = Camera::initial(&grid);
             cam.dist = dist;
             let view = cam.view(&proj, 0.0, glam::DVec2::new(1280.0, 800.0));
-            detail_possible(&globals(&view, &style, MapMode::Terrain, &grid, &board, 800.0))
+            let g = globals(&view, &style, MapMode::Terrain, &grid, &board, 800.0);
+            let mut out = Vec::new();
+            let detail = select_props(&board.props, rgba, grid.cols as usize, &g, &mut out);
+            (out.len(), detail as usize)
         };
-        assert!(!at(2.15));
-        assert!(at(0.07));
+        let land = state(Terrain::Grassland);
+        let (far, far_detail) = at(2.15, &land);
+        assert_eq!(far_detail, 0, "no detail slots from far away");
+        assert!(far <= grid.len());
+        let (near, near_detail) = at(0.07, &land);
+        assert!(near > 0 && near_detail > 0, "close up, the hexes in view get the detail slots");
+        assert_eq!(at(0.07, &state(Terrain::Water)), (0, 0), "water has no props");
+    }
+
+    #[test]
+    fn population_picks_the_piece_and_importance_only_adds_a_star() {
+        let p = |population, importance| Piece { pos: LonLat::new(0.0, 0.0), population, importance, evidence: 2, highlighted: false };
+        // Only a recorded population of 1000 or more raises a stone.
+        assert!(p(5000, 0).monolith() && p(1000, 0).monolith());
+        assert!(!p(150, 3).monolith() && !p(0, 3).monolith() && !p(999, 3).monolith());
+        // Importance never changes the piece or its size, only the star.
+        assert!(p(0, 3).starred() && p(5000, 3).starred() && !p(0, 2).starred() && !p(5000, 2).starred());
+        assert_eq!(p(0, 3).size_tier(), p(0, 0).size_tier());
+        assert_eq!((p(150, 3).size_tier(), p(5000, 0).size_tier()), (0, 3));
+        // Label priority: a figure wins, importance stands in without one.
+        assert_eq!((p(150, 3).rank(), p(5000, 0).rank(), p(0, 2).rank()), (0, 3, 2));
     }
 
     #[test]
@@ -619,10 +735,13 @@ mod tests {
         // A raised board: the piece stands on its hex's top.
         let height = vec![2000i16; grid.len()];
         let relief = Relief::new(&grid, &height, 1e-6);
-        for (pop, tris) in [(100, 24), (5000, 12)] {
-            let p = Piece { pos: LonLat::new(30.0, 35.0), population: pop, highlighted: false };
+        // Campfire 56 triangles, standing stone 25, the star 20 more.
+        for (pop, importance, tris) in [(100, 1, 56), (5000, 1, 25), (0, 3, 76), (5000, 3, 45)] {
+            let p = Piece { pos: LonLat::new(30.0, 35.0), population: pop, importance, evidence: 2, highlighted: false };
             let verts = piece_vertices(std::slice::from_ref(&p), &proj, &relief, 0.0, 1.0);
             assert_eq!(verts.len(), tris * 3);
+            // Only a campfire's smoke is see-through.
+            assert_eq!(verts.iter().any(|v| v.colour[3] < 1.0), pop < 1000);
             let f = piece_frame(&p, &proj, &relief, 0.0, 1.0);
             assert!((f.base.length() - (1.0 + 2000e-6)).abs() < 1e-9);
             for v in &verts {
@@ -630,6 +749,19 @@ mod tests {
                 assert!(h > -1e-6 && h <= f.height + 1e-6);
             }
         }
+    }
+
+    #[test]
+    fn pieces_shrink_in_the_world_close_up() {
+        let proj = Projection::new(LonLat::new(25.0, 41.0));
+        let grid = GridSpec { cols: 4, rows: 4, origin_lon: 29.0, origin_lat: 36.0, w: 0.5773502691896262, h: 0.5 };
+        let relief = Relief::flat(&grid);
+        let p = Piece { pos: LonLat::new(30.0, 35.0), population: 0, importance: 1, evidence: 2, highlighted: false };
+        let r = |dist: f64| piece_frame(&p, &proj, &relief, 0.0, dist).radius;
+        // Smaller in the world, but still larger on screen (radius / distance).
+        assert!(r(0.06) < r(0.12) && r(0.12) < r(0.48));
+        assert!(r(0.06) / 0.06 > r(0.12) / 0.12 && r(0.12) / 0.12 > r(0.48) / 0.48);
+        assert!(r(1.5) > r(0.48));
     }
 
     /// Zoomed in over the Levant, a settlement 1000 km away in Egypt (El
@@ -645,7 +777,7 @@ mod tests {
         cam.target = LonLat::new(35.4, 31.8);
         cam.dist = 0.107;
         let view = cam.view(&proj, 0.0, glam::DVec2::new(1200.0, 800.0));
-        let piece = |lon, lat| Piece { pos: LonLat::new(lon, lat), population: 0, highlighted: false };
+        let piece = |lon, lat| Piece { pos: LonLat::new(lon, lat), population: 0, importance: 1, evidence: 2, highlighted: false };
         let near = piece_frame(&piece(35.4, 31.8), &proj, &relief, 0.0, cam.dist);
         let far = piece_frame(&piece(30.75, 22.75), &proj, &relief, 0.0, cam.dist);
         let on = piece_on_screen(&view, &near).expect("the piece at the target is on screen");

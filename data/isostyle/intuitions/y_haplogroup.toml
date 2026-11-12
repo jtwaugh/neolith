@@ -1,0 +1,919 @@
+# Gap critic: Y haplogroup set (y_i2, y_g2a, y_r1b, y_r1a, y_c, y_j2, y_h2, y_other). Judgements, not data.
+# `expected` maps clade layer id -> expected share of male genomes in the gap if it had been sampled.
+# Shares need not sum to 1; the remainder is spread across the listed clades' uncertainty.
+# y_other carries E1b1b, E1b1a, J1, T1a, L, Q1a, R2, N, G2b, A/B and everything else, so in Africa,
+# Arabia and South Asia it is most of the expectation. Gap ids are those of the y_i2 dossier;
+# every Y clade dossier has the same regions and gaps.
+
+[meta]
+layer = "Y haplogroup"
+written = "2026-11-12"
+dossier = "build/isostyle/gaps/y_i2/dossier.json"
+summary = "The Y gaps are the ancient-genome gaps, thinned further because only males count (722 male genomes at 3,000 BCE against 1,242 genomes). The expected pattern follows the published history: Western hunter-gatherers were overwhelmingly I2 with C1a2 and Villabruna-type R1b (L754/V88) as minorities, the Iron Gates carried much R1b-V88, and Eastern hunter-gatherers carried R1a, R1b and J1/Q1a; Anatolian-derived farmers brought G2a with H2, C1a2, J2a and T1a, then Middle Neolithic Europe saw I2 resurge through hunter-gatherer admixture (Britain, Iberia, France); CHG and Iranian farmers were J2 and G2b/R2-rich; the Levant was E1b1b, H2 and T; North Africa was E1b1b (M78, M81) with Levantine and Iberian-Neolithic inputs (G2a, T1a) after 5,500 BCE; and steppe R1b-Z2103 (Yamnaya) and R1a-M417 (Corded Ware) reach Central and Western Europe only after c. 2900 BCE, so the 3,000 BCE slice (3,500-2,500 BCE) should show at most a few percent R1a/R1b west of the Vistula. Whole regions have NO Y data at all and the expectation is extrapolation: Arabia, Libya & Egypt, Nile & Sudan, the Sahara-Sahel, West Africa, the Horn, interior Algeria, Afghanistan and Baluchistan. Method artefacts: with sigma 100 km and a few samples, single individuals dominate whole regions, e.g. J2 = 0.60 in the Russian steppe at 8,000 BCE is Caucasus (Kotias) bleed into the North Caucasus cells, C = 0.39 in Iberia at 6,000 BCE is La Braña alone, R1b = 0.22 in Anatolia at 5,000 BCE rests on a handful of samples, and R1b = 0.34 in the Balkans at 3,000 BCE is Bulgarian Yamnaya at the late edge of the slice. Shares in thinly sampled slices should be treated as anecdotes."
+
+[[judgement]]
+region = "France & Low Countries"
+slices = [-10000, -9000, -8000, -7000, -6000]
+gap_ids = ["y_i2-9000-45", "y_i2-10000-16", "y_i2-8000-73", "y_i2-7000-104", "y_i2-6000-132"]
+why_empty = ["research_intensity", "sampling_bias"]
+why_note = "Sampling: few Mesolithic burials sequenced; bone survives in Meuse and Jura caves."
+expected = { y_i2 = 0.75, y_c = 0.08, y_r1b = 0.05, y_other = 0.1 }
+confidence = "medium"
+basis = ["literature", "neighbouring_evidence", "dossier_statistics"]
+reasoning = "Western hunter-gatherer males from Loschbour, Bichon, Rochedane, Ranchot and the Breton middens are almost all I2a, with rare C1a2 and Villabruna-type R1b-L754. Evidenced cells give I2 0.56-0.66 at 8,000 and 6,000 BCE, with C 0.32-0.39 in slices resting on one or two men. Gaps of 300-372 cells lie 169-543 km from genomes."
+literature = [
+  { cite = "Posth et al. 2023, 'Palaeogenomics of Upper Palaeolithic to Neolithic European hunter-gatherers', Nature", checked = false },
+  { cite = "Rivollat et al. 2020, Sci. Adv.", checked = false },
+]
+would_settle = "More Mesolithic males from the Paris Basin, Belgium and Doggerland's edges."
+speculative_rule = "Set I2 0.75, C 0.08, R1b 0.05 across France and the Low Countries until farmers arrive (5,700 BCE in the south, 5,300 BCE in the north-east)."
+
+[[judgement]]
+region = "Iberia"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["y_i2-10000-17", "y_i2-9000-47", "y_i2-8000-76", "y_i2-7000-107"]
+why_empty = ["research_intensity", "low_population", "sampling_bias"]
+why_note = "Sampling: Cantabrian and Portuguese males only; the Meseta was thinly settled."
+expected = { y_i2 = 0.5, y_c = 0.3, y_other = 0.15 }
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Iberian Mesolithic males include C1a2 (La Braña) and I2a and some I/I* calls; the 6,000 BCE surface gives C 0.39, I2 0.27. C1a2 seems commoner in Iberia than elsewhere in western Europe, a relic of Magdalenian/El Mirón-cluster ancestry."
+literature = [
+  { cite = "Olalde et al. 2019, Science", checked = false },
+  { cite = "Villalba-Mouco et al. 2019, Curr. Biol.", checked = false },
+]
+would_settle = "Male Mesolithic genomes from the Ebro, the Meseta and Andalusia."
+speculative_rule = "Set I2 0.5, C 0.3 across Iberia before 6,000 BCE."
+
+[[judgement]]
+region = "Iberia"
+slices = [-6000, -5000, -4000, -3000]
+gap_ids = ["y_i2-5000-161", "y_i2-6000-133", "y_i2-4000-189", "y_i2-3000-227"]
+why_empty = ["sampling_bias", "research_intensity"]
+why_note = "Sampling: residual gaps on the Meseta and in the south."
+expected = { y_i2 = 0.45, y_g2a = 0.25, y_h2 = 0.05, y_c = 0.05, y_r1b = 0.02, y_other = 0.12 }
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Iberian Neolithic and Chalcolithic males are notably I2a-rich (surface I2 0.48-0.53 at 5,000-3,000 BCE) with G2a 0.11-0.15 and H2 locally 0.15: the 'hunter-gatherer resurgence' in male lines. Steppe R1b-P312 arrives c. 2,500 BCE, so it is near zero in this slice."
+literature = [
+  { cite = "Olalde et al. 2019, Science", checked = false },
+]
+would_settle = "Neolithic genomes from Extremadura and Andalusia."
+speculative_rule = "Extend the adjacent I2 0.45 / G2a 0.25 into the gaps."
+
+[[judgement]]
+region = "British Isles"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+gap_ids = ["y_i2-10000-18", "y_i2-9000-48", "y_i2-7000-108", "y_i2-6000-134", "y_i2-5000-166", "y_i2-8000-78", "y_i2-8000-85", "y_i2-5000-173"]
+why_empty = ["recording_practice", "preservation", "research_intensity"]
+why_note = "Burial practice and preservation: Irish Mesolithic cremation, acid Scottish soils; England has Cheddar Man."
+expected = { y_i2 = 0.85, y_c = 0.04, y_other = 0.08 }
+confidence = "medium"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Cheddar Man (c. 8400 BCE) and other British Mesolithic males are I2a; surface I2 0.67 at 8,000 BCE. Britain was farmed only from c. 4,000 BCE, so 5,000 BCE is still Mesolithic."
+literature = [
+  { cite = "Brace et al. 2019, Nat. Ecol. Evol.", checked = false },
+]
+would_settle = "Male genomes from Irish and Scottish Mesolithic sites."
+speculative_rule = "Set I2 0.85 across the isles until 4,000 BCE."
+
+[[judgement]]
+region = "British Isles"
+slices = [-3000]
+gap_ids = ["y_i2-3000-232"]
+why_empty = ["sampling_bias"]
+why_note = "Sampling: a small gap; neighbours are dense."
+expected = { y_i2 = 0.75, y_g2a = 0.05, y_r1b = 0.05, y_other = 0.12 }
+confidence = "high"
+basis = ["neighbouring_evidence"]
+reasoning = "British Neolithic males are overwhelmingly I2a (surface 0.73-0.82); steppe R1b reaches Britain c. 2,450 BCE."
+literature = [
+  { cite = "Brace et al. 2019, Nat. Ecol. Evol.", checked = false },
+  { cite = "Olalde et al. 2018, 'The Beaker phenomenon', Nature", checked = false },
+]
+would_settle = "None needed."
+speculative_rule = "Extend the adjacent I2 0.75."
+
+[[judgement]]
+region = "Now-drowned shelves and islands"
+slices = [-10000, -9000, -8000]
+gap_ids = ["y_i2-10000-23", "y_i2-9000-53", "y_i2-8000-88", "y_i2-8000-89"]
+why_empty = ["submerged"]
+why_note = "Submerged: Doggerland and the Danish shelf."
+expected = { y_i2 = 0.75, y_c = 0.05, y_other = 0.1 }
+confidence = "low"
+basis = ["neighbouring_evidence", "analogy"]
+reasoning = "Doggerland lay between the I2-dominated British and Low Countries hunter-gatherers; edge values at 8,000 BCE are I2 ~0.5."
+literature = []
+would_settle = "Only a chance trawled skeleton."
+speculative_rule = "Set I2 0.75 on the North Sea shelf."
+
+[[judgement]]
+region = "Now-drowned shelves and islands"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["y_i2-10000-28", "y_i2-9000-57", "y_i2-7000-117", "y_i2-8000-87", "y_i2-10000-29", "y_i2-9000-58", "y_i2-6000-146"]
+why_empty = ["submerged"]
+why_note = "Submerged: Persian Gulf floor, north Caspian lowland, Pechora coast. NO ancient DNA exists in this region for these slices: the expectation is extrapolation. "
+expected = { y_j2 = 0.2, y_r1b = 0.15, y_r1a = 0.15, y_other = 0.45 }
+confidence = "low"
+basis = ["analogy", "intuition"]
+reasoning = "A blend: Gulf shelf like Zagros/Arabian foragers (J, G2b, R2, E), Caspian lowland like EHG (R1a, R1b, Q1a)."
+literature = []
+would_settle = "None realistic."
+speculative_rule = "Gulf cells: J2 0.3, other 0.65. Caspian and Pechora cells: R1b 0.35, R1a 0.3, other 0.25."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [47.5, 23.5, 57.0, 30.5]
+value = { y_j2 = 0.3, y_other = 0.65 }
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [46.5, 36.5, 55.0, 47.5]
+value = { y_j2 = 0.05, y_r1b = 0.35, y_r1a = 0.3, y_other = 0.25 }
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [43.0, 67.0, 62.0, 72.0]
+value = { y_j2 = 0.05, y_r1b = 0.35, y_r1a = 0.3, y_other = 0.25 }
+
+[[judgement]]
+region = "Italy & islands"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["y_i2-9000-50", "y_i2-10000-21", "y_i2-8000-79", "y_i2-7000-111"]
+why_empty = ["sampling_bias", "research_intensity"]
+why_note = "Sampling: Villabruna, Grotta Continenza and Sicily only."
+expected = { y_i2 = 0.45, y_r1b = 0.25, y_c = 0.1, y_other = 0.15 }
+confidence = "low"
+basis = ["literature", "intuition"]
+reasoning = "Villabruna (c. 12,000 BCE) is R1b-L754, and Italian Mesolithic males are I2a and R1b-V88; C1a2 at low frequency."
+literature = [
+  { cite = "Fu et al. 2016, 'The genetic history of Ice Age Europe', Nature", checked = false },
+]
+would_settle = "Italian Mesolithic male genomes."
+speculative_rule = "Set I2 0.45, R1b 0.25 for 10,000-7,000 BCE."
+
+[[judgement]]
+region = "Italy & islands"
+slices = [-6000, -5000, -4000, -3000]
+gap_ids = ["y_i2-4000-192", "y_i2-6000-138", "y_i2-5000-172", "y_i2-3000-226", "y_i2-5000-174"]
+why_empty = ["sampling_bias", "research_intensity"]
+why_note = "Sampling: the south and the Apennines."
+expected = { y_g2a = 0.4, y_i2 = 0.2, y_j2 = 0.08, y_h2 = 0.05, y_r1b = 0.07, y_other = 0.15 }
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Italian and Sardinian Neolithic males are G2a with I2a, some J2a, H2 and R1b-V88 (Sardinia). Surface G2a 0.21-0.44."
+literature = [
+  { cite = "Fernandes et al. 2020, Nat. Ecol. Evol.", checked = false },
+]
+would_settle = "Southern Italian Neolithic males."
+speculative_rule = "Extend G2a 0.4, I2 0.2."
+
+[[judgement]]
+region = "Central Europe"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["y_i2-9000-40", "y_i2-8000-69", "y_i2-10000-11", "y_i2-7000-101"]
+why_empty = ["sampling_bias", "research_intensity"]
+why_note = "Sampling and burial practice: few Mesolithic graves."
+expected = { y_i2 = 0.75, y_c = 0.05, y_r1b = 0.05, y_other = 0.1 }
+confidence = "medium"
+basis = ["literature", "analogy"]
+reasoning = "Bichon and Loschbour type I2a; Bad Dürrenberg; the gap is 621-625 cells, 234-951 km away."
+literature = [
+  { cite = "Posth et al. 2023, Nature", checked = false },
+]
+would_settle = "Sequence Ofnet and Bad Dürrenberg males."
+speculative_rule = "Set I2 0.75."
+
+[[judgement]]
+region = "Central Europe"
+slices = [-6000, -5000, -4000]
+gap_ids = ["y_i2-6000-130", "y_i2-5000-165", "y_i2-4000-193", "y_i2-4000-195", "y_i2-4000-200"]
+why_empty = ["sampling_bias"]
+why_note = "Sampling: Alpine and Masurian margins."
+expected = { y_g2a = 0.4, y_i2 = 0.25, y_h2 = 0.05, y_c = 0.05, y_other = 0.2 }
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "LBK and successor males are G2a with I2, C1a2, H2, T1a, F; surface G2a 0.23-0.33, I2 0.20-0.38. At 6,000 BCE (6,500-5,500) the north and east are still hunter-gatherer (I2-rich)."
+literature = [
+  { cite = "Lipson et al. 2017, Nature", checked = false },
+]
+would_settle = "Alpine and NE Polish Neolithic males."
+speculative_rule = "Extend G2a 0.4, I2 0.25; at 6,000 BCE raise I2 to 0.6 north of 52°N."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [6.3, 52.0, 24.1, 55.1]
+value = { y_g2a = 0.2, y_h2 = 0.025, y_c = 0.025, y_other = 0.1, y_i2 = 0.6 }
+slices = [-6000]
+
+[[judgement]]
+region = "Central Europe"
+slices = [-3000]
+gap_ids = ["y_i2-3000-229", "y_i2-3000-231"]
+why_empty = ["sampling_bias"]
+why_note = "Sampling: small margins."
+expected = { y_i2 = 0.35, y_g2a = 0.2, y_r1a = 0.15, y_r1b = 0.08, y_other = 0.15 }
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "3,500-2,500 BCE: Globular Amphora and Funnel Beaker I2a-rich; Corded Ware R1a-M417 from c. 2,900 BCE."
+literature = [
+  { cite = "Haak et al. 2015, Nature", checked = false },
+]
+would_settle = "None urgent."
+speculative_rule = "Extend neighbours; R1a rising eastward."
+
+[[judgement.adjust]]
+kind = "gradient"
+axis = "lon"
+from = [10.0, { y_i2 = 0.372, y_g2a = 0.213, y_r1b = 0.085, y_other = 0.16, y_r1a = 0.1 }]
+to = [22.0, { y_i2 = 0.328, y_g2a = 0.187, y_r1b = 0.075, y_other = 0.14, y_r1a = 0.2 }]
+
+[[judgement]]
+region = "France & Low Countries"
+slices = [-5000, -4000, -3000]
+gap_ids = ["y_i2-3000-218", "y_i2-5000-168", "y_i2-4000-197"]
+why_empty = ["sampling_bias"]
+why_note = "Sampling: small gaps."
+expected = { y_g2a = 0.35, y_i2 = 0.35, y_h2 = 0.05, y_r1b = 0.04, y_other = 0.15 }
+confidence = "medium"
+basis = ["neighbouring_evidence"]
+reasoning = "Surface G2a 0.26-0.43, I2 0.31-0.44; steppe R1b only after c. 2,600 BCE."
+literature = [
+  { cite = "Rivollat et al. 2020, Sci. Adv.", checked = false },
+]
+would_settle = "None urgent."
+speculative_rule = "Extend neighbours."
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["y_i2-7000-100", "y_i2-8000-75", "y_i2-9000-46", "y_i2-10000-19", "y_i2-10000-25", "y_i2-8000-83", "y_i2-7000-116"]
+why_empty = ["ice", "low_population", "research_intensity"]
+why_note = "Ice at 10,000 BCE; thin pioneer population."
+expected = { y_i2 = 0.65, y_r1a = 0.1, y_c = 0.05, y_other = 0.15 }
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "SHG males are mostly I2a with R1a/EHG lineages in the north (Hummervikholmen); surface I2 0.57-0.66."
+literature = [
+  { cite = "Günther et al. 2018, PLoS Biol.", checked = false },
+]
+would_settle = "More Norwegian Mesolithic males."
+speculative_rule = "Set I2 0.65; raise R1a to 0.2 north of 64°N."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [4.6, 64.0, 31.0, 71.1]
+value = { y_i2 = 0.574, y_c = 0.044, y_other = 0.132, y_r1a = 0.2 }
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-6000, -5000, -4000, -3000]
+gap_ids = ["y_i2-4000-184", "y_i2-5000-156", "y_i2-3000-212", "y_i2-6000-128"]
+why_empty = ["preservation", "research_intensity", "low_population"]
+why_note = "Preservation in Finland/Norrland."
+expected = { y_i2 = 0.45, y_r1a = 0.15, y_r1b = 0.1, y_g2a = 0.05, y_other = 0.2 }
+confidence = "low"
+basis = ["neighbouring_evidence", "analogy"]
+reasoning = "South Scandinavia I2 0.59-0.73; the gap is Finland and Norrland, where Comb Ceramic foragers were probably EHG-like (R1a, R1b, J1, Q)."
+literature = [
+  { cite = "Lamnidis et al. 2018, Nat. Commun.", checked = false },
+]
+would_settle = "Finnish Stone Age genomes."
+speculative_rule = "Southern cells I2 0.65; Finland R1a 0.3, R1b 0.15, I2 0.25."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [4.6, 54.6, 19.5, 60.5]
+value = { y_r1a = 0.09, y_r1b = 0.06, y_g2a = 0.03, y_other = 0.12, y_i2 = 0.65 }
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [20.5, 59.7, 31.6, 70.1]
+value = { y_g2a = 0.05, y_other = 0.2, y_r1a = 0.3, y_r1b = 0.15, y_i2 = 0.25 }
+
+[[judgement]]
+region = "Baltic"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["y_i2-9000-52", "y_i2-10000-24", "y_i2-8000-80", "y_i2-7000-114"]
+why_empty = ["low_population", "research_intensity"]
+why_note = "Few burials before Zvejnieki."
+expected = { y_i2 = 0.35, y_r1b = 0.3, y_r1a = 0.15, y_other = 0.15 }
+confidence = "low"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Zvejnieki Mesolithic males are I2a, R1b1a and R1a; surface at 7,000 BCE R1b 0.37."
+literature = [
+  { cite = "Mittnik et al. 2018, Nat. Commun.", checked = false },
+]
+would_settle = "Early Mesolithic Baltic males."
+speculative_rule = "Set I2 0.35, R1b 0.3."
+
+[[judgement]]
+region = "Baltic"
+slices = [-4000, -3000]
+gap_ids = ["y_i2-3000-222", "y_i2-4000-202"]
+why_empty = ["sampling_bias"]
+why_note = "Sampling: Lithuanian margin."
+expected = { y_i2 = 0.25, y_r1b = 0.25, y_r1a = 0.3, y_other = 0.15 }
+confidence = "low"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Late Narva and early Corded Ware (R1a from c. 2,900 BCE); surface R1a 0.56 at 3,000 BCE."
+literature = [
+  { cite = "Mittnik et al. 2018, Nat. Commun.", checked = false },
+]
+would_settle = "Lithuanian Neolithic genomes."
+speculative_rule = "Extend neighbours."
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+gap_ids = ["y_i2-7000-90", "y_i2-5000-147", "y_i2-10000-01", "y_i2-8000-59", "y_i2-9000-30", "y_i2-6000-119", "y_i2-6000-137", "y_i2-9000-54", "y_i2-7000-113", "y_i2-6000-141", "y_i2-5000-169", "y_i2-8000-86"]
+why_empty = ["research_intensity", "low_population", "preservation"]
+why_note = "Sampling plus acid soils."
+expected = { y_r1a = 0.4, y_r1b = 0.2, y_i2 = 0.08, y_other = 0.27 }
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "EHG males (Yuzhny Oleni Ostrov, Popovo, Minino) are R1a, R1b, J1 and some I2/Q1a; surface R1a 0.50, R1b 0.27 at 9,000 BCE."
+literature = [
+  { cite = "Mathieson et al. 2018, Nature", checked = false },
+]
+would_settle = "Upper Volga and Pechora Mesolithic males."
+speculative_rule = "Set R1a 0.4, R1b 0.2."
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-4000, -3000]
+gap_ids = ["y_i2-4000-175", "y_i2-3000-203", "y_i2-4000-198", "y_i2-3000-223"]
+why_empty = ["research_intensity", "low_population", "preservation"]
+why_note = "Sampling."
+expected = { y_r1a = 0.4, y_r1b = 0.15, y_i2 = 0.1, y_other = 0.3 }
+confidence = "low"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Volosovo and Pit-Comb males; Fatyanovo R1a after c. 2,800 BCE gives the 0.73 surface at 3,000 BCE."
+literature = [
+  { cite = "Saag et al. 2021, Sci. Adv.", checked = false },
+]
+would_settle = "Volosovo and Pechora Neolithic males."
+speculative_rule = "Set R1a 0.4."
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-10000, -9000, -8000, -7000, -6000]
+gap_ids = ["y_i2-9000-35", "y_i2-7000-94", "y_i2-8000-64", "y_i2-10000-07", "y_i2-6000-124"]
+why_empty = ["research_intensity", "sampling_bias"]
+why_note = "Sampling."
+expected = { y_r1b = 0.35, y_r1a = 0.25, y_i2 = 0.1, y_other = 0.25 }
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Steppe EHG males (Samara, Lebyazhinka) are R1b, R1a, Q1a."
+literature = [
+  { cite = "Haak et al. 2015, Nature", checked = false },
+]
+would_settle = "Mesolithic steppe genomes."
+speculative_rule = "Set R1b 0.35, R1a 0.25."
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-5000, -4000]
+gap_ids = ["y_i2-5000-157", "y_i2-4000-186", "y_i2-5000-162", "y_i2-4000-190"]
+why_empty = ["sampling_bias"]
+why_note = "Sampling: margins."
+expected = { y_r1b = 0.45, y_r1a = 0.12, y_i2 = 0.1, y_j2 = 0.05, y_g2a = 0.03, y_other = 0.2 }
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Khvalynsk is R1b1a, R1a, Q1a, I2; Maikop G2a, J2a, L."
+literature = [
+  { cite = "Mathieson et al. 2015, Nature", checked = false },
+]
+would_settle = "Bashkir Eneolithic."
+speculative_rule = "Extend R1b 0.45."
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-3000]
+gap_ids = ["y_i2-3000-214", "y_i2-3000-221"]
+why_empty = ["sampling_bias"]
+why_note = "Sampling: margins."
+expected = { y_r1b = 0.65, y_r1a = 0.08, y_i2 = 0.08, y_other = 0.12 }
+confidence = "high"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Yamnaya R1b-Z2103; surface 0.67."
+literature = [
+  { cite = "Haak et al. 2015, Nature", checked = false },
+]
+would_settle = "None urgent."
+speculative_rule = "Extend R1b 0.65."
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+gap_ids = ["y_i2-10000-13", "y_i2-7000-103", "y_i2-8000-71", "y_i2-9000-42", "y_i2-6000-131", "y_i2-5000-160"]
+why_empty = ["research_intensity", "preservation"]
+why_note = "Sampling in Belarus; acid soils."
+expected = { y_i2 = 0.5, y_r1a = 0.15, y_r1b = 0.15, y_other = 0.12 }
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Dnieper Mesolithic and Dnieper-Donets males are I2a2 with R1a and R1b; surface I2 0.4-0.57."
+literature = [
+  { cite = "Mathieson et al. 2018, Nature", checked = false },
+]
+would_settle = "Belarusian burials."
+speculative_rule = "Set I2 0.5."
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-4000, -3000]
+gap_ids = ["y_i2-3000-215", "y_i2-4000-188"]
+why_empty = ["research_intensity", "recording_practice"]
+why_note = "Trypillia burial practice; Belarus sampling."
+expected = { y_i2 = 0.3, y_r1b = 0.25, y_r1a = 0.15, y_g2a = 0.12, y_other = 0.12 }
+confidence = "low"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Trypillia males G2a, I2; steppe R1b in the south (surface 0.46 at 3,000 BCE); Corded Ware R1a only from c. 2,800 BCE in the north-west."
+literature = [
+  { cite = "Nikitin et al. 2019", checked = false },
+]
+would_settle = "Trypillia and Belarusian genomes."
+speculative_rule = "Gradient: south R1b 0.45, west G2a 0.25, north I2 0.4."
+
+[[judgement.adjust]]
+kind = "gradient"
+axis = "lat"
+from = [47.0, { y_i2 = 0.213, y_r1a = 0.107, y_g2a = 0.085, y_other = 0.085, y_r1b = 0.45 }]
+to = [53.0, { y_r1b = 0.211, y_r1a = 0.127, y_g2a = 0.101, y_other = 0.101, y_i2 = 0.4 }]
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [22.4, 47.5, 27.0, 52.0]
+value = { y_i2 = 0.252, y_r1b = 0.21, y_r1a = 0.126, y_other = 0.101, y_g2a = 0.25 }
+
+[[judgement]]
+region = "Balkans & Greece"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["y_i2-10000-14", "y_i2-9000-43", "y_i2-8000-72", "y_i2-7000-105"]
+why_empty = ["sampling_bias"]
+why_note = "Sampling beyond the Iron Gates."
+expected = { y_r1b = 0.35, y_i2 = 0.35, y_other = 0.15, y_c = 0.05 }
+confidence = "low"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Iron Gates males R1b-V88 and I2a; surface R1b 0.47-0.63, I2 0.24-0.34."
+literature = [
+  { cite = "Mathieson et al. 2018, Nature", checked = false },
+]
+would_settle = "Greek and Bulgarian Mesolithic males."
+speculative_rule = "Set R1b 0.35, I2 0.35."
+
+[[judgement]]
+region = "Balkans & Greece"
+slices = [-6000, -5000, -4000]
+gap_ids = ["y_i2-5000-163", "y_i2-6000-140", "y_i2-4000-196", "y_i2-6000-143"]
+why_empty = ["sampling_bias"]
+why_note = "Sampling; Vinča graves rare."
+expected = { y_g2a = 0.35, y_i2 = 0.2, y_c = 0.07, y_h2 = 0.03, y_j2 = 0.05, y_other = 0.2 }
+confidence = "medium"
+basis = ["neighbouring_evidence"]
+reasoning = "Surface G2a 0.29-0.35, I2 0.19-0.24."
+literature = [
+  { cite = "Mathieson et al. 2018, Nature", checked = false },
+]
+would_settle = "Vinča males."
+speculative_rule = "Extend neighbours."
+
+[[judgement]]
+region = "Balkans & Greece"
+slices = [-3000]
+gap_ids = ["y_i2-3000-219", "y_i2-3000-230"]
+why_empty = ["sampling_bias"]
+why_note = "Sampling."
+expected = { y_g2a = 0.2, y_i2 = 0.25, y_r1b = 0.2, y_j2 = 0.07, y_other = 0.2 }
+confidence = "low"
+basis = ["neighbouring_evidence"]
+reasoning = "Yamnaya kurgans in Bulgaria/Romania; Aegean EBA J2."
+literature = [
+  { cite = "Mathieson et al. 2018, Nature", checked = false },
+]
+would_settle = "Aegean EBA."
+speculative_rule = "North-east R1b 0.35; south G2a/J2."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [22.0, 43.0, 29.7, 48.4]
+value = { y_g2a = 0.158, y_i2 = 0.198, y_j2 = 0.055, y_other = 0.158, y_r1b = 0.35 }
+
+[[judgement]]
+region = "Anatolia & Cyprus"
+slices = [-10000, -9000]
+gap_ids = ["y_i2-10000-15", "y_i2-9000-44"]
+why_empty = ["research_intensity", "sampling_bias"]
+why_note = "Sampling: only Pınarbaşı (Epipalaeolithic) and Boncuklu (c. 8300 BCE) precede the farming villages."
+expected = { y_g2a = 0.25, y_c = 0.1, y_j2 = 0.1, y_h2 = 0.05, y_other = 0.4 }
+confidence = "low"
+basis = ["literature", "analogy", "intuition"]
+reasoning = "Coverage is 0% at both slices; gaps of 385-387 cells lie 421-713 km from genomes. Central Anatolian foragers were the direct ancestors of the Aceramic farmers (Feldman 2019), so the farmer clade spectrum (G2a with C1a2, H2, J, T and other CT lineages) is the best guess, with more 'other' for unsampled diversity."
+literature = [
+  { cite = "Feldman et al. 2019, 'Late Pleistocene human genome suggests a local origin for the first farmers of central Anatolia', Nat. Commun.", checked = false },
+]
+would_settle = "Male genomes from Pınarbaşı, Boncuklu and the Epipalaeolithic of the Antalya caves."
+speculative_rule = "Set G2a 0.25, other 0.4 across Anatolia for 10,000-9,000 BCE."
+
+[[judgement]]
+region = "Anatolia & Cyprus"
+slices = [-8000, -7000, -6000, -5000]
+gap_ids = ["y_i2-5000-159", "y_i2-8000-74", "y_i2-7000-106", "y_i2-6000-136", "y_i2-6000-144"]
+why_empty = ["sampling_bias", "research_intensity"]
+why_note = "Sampling: Barcın, Menteşe, Çatalhöyük and Tepecik-Çiftlik are sampled; the east and Cyprus less so; the 5,000 BCE drop (2% coverage) is unsampled Middle Chalcolithic."
+expected = { y_g2a = 0.4, y_h2 = 0.05, y_c = 0.05, y_j2 = 0.12, y_i2 = 0.05, y_other = 0.28 }
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature", "dossier_statistics"]
+reasoning = "Anatolian farmer males are mainly G2a2, with H2, C1a2, I2c, J2a and T1a. Surface G2a 0.12-0.37 and 'other' 0.21-0.38 (T, J1, E1b1b). J2 should rise eastwards towards the Zagros. The 5,000 BCE R1b 0.22 rests on too few men to extend."
+literature = [
+  { cite = "Kılınç et al. 2016, Curr. Biol.", checked = false },
+  { cite = "Mathieson et al. 2015, 'Genome-wide patterns of selection in 230 ancient Eurasians', Nature", checked = false },
+]
+would_settle = "Male genomes from SE Anatolian PPNB (Çayönü, Nevalı Çori) and from Chalcolithic Cyprus."
+speculative_rule = "Set G2a 0.45 in west and central Anatolia, falling to 0.2 in the SE where J2 rises to 0.3."
+
+[[judgement.adjust]]
+kind = "gradient"
+axis = "lon"
+from = [36.0, { y_h2 = 0.045, y_c = 0.045, y_j2 = 0.109, y_i2 = 0.045, y_other = 0.255, y_g2a = 0.45 }]
+to = [41.0, { y_h2 = 0.052, y_c = 0.052, y_i2 = 0.052, y_other = 0.293, y_g2a = 0.2, y_j2 = 0.3 }]
+
+[[judgement]]
+region = "Anatolia & Cyprus"
+slices = [-4000, -3000]
+gap_ids = ["y_i2-4000-187", "y_i2-3000-217", "y_i2-3000-225"]
+why_empty = ["sampling_bias"]
+why_note = "Sampling: gaps of 54-299 cells between Chalcolithic and EBA sites."
+expected = { y_g2a = 0.25, y_j2 = 0.25, y_i2 = 0.05, y_r1b = 0.03, y_other = 0.35 }
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "From the 5th millennium CHG/Iranian-related ancestry spreads west across Anatolia, carrying J2a and J1; surface J2 0.11-0.29, G2a 0.15-0.40. Steppe R1b is essentially absent from Anatolia before 2,000 BCE."
+literature = [
+  { cite = "Lazaridis et al. 2022, 'The genetic history of the Southern Arc', Science", checked = false },
+]
+would_settle = "Late Chalcolithic genomes from central Anatolia."
+speculative_rule = "Set G2a 0.25, J2 0.25, rising J2 eastwards to 0.4."
+
+[[judgement.adjust]]
+kind = "gradient"
+axis = "lon"
+from = [33.0, { y_g2a = 0.25, y_j2 = 0.25, y_i2 = 0.05, y_r1b = 0.03, y_other = 0.35 }]
+to = [43.0, { y_g2a = 0.195, y_i2 = 0.039, y_r1b = 0.023, y_other = 0.273, y_j2 = 0.4 }]
+
+[[judgement]]
+region = "Caucasus"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["y_i2-7000-112", "y_i2-9000-55", "y_i2-10000-26", "y_i2-8000-84"]
+why_empty = ["research_intensity", "sampling_bias"]
+why_note = "Sampling: only Kotias Klde and Satsurblia (west Georgia); the eastern lowlands unsampled."
+expected = { y_j2 = 0.45, y_g2a = 0.1, y_other = 0.35 }
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Caucasus hunter-gatherers carry J2a (Kotias, c. 7700 BCE) and J* (Satsurblia, c. 11,000 BCE); surface J2 0.64 at 8,000 BCE. Two men are a thin basis; 'other' holds J1 and unsampled lineages."
+literature = [
+  { cite = "Jones et al. 2015, 'Upper Palaeolithic genomes reveal deep roots of modern Eurasians', Nat. Commun.", checked = false },
+]
+would_settle = "Mesolithic genomes from Azerbaijan and Armenia."
+speculative_rule = "Set J2 0.45, G2a 0.1 across the Caucasus for 10,000-7,000 BCE."
+
+[[judgement]]
+region = "Caucasus"
+slices = [-6000, -5000, -4000, -3000]
+gap_ids = ["y_i2-5000-170", "y_i2-4000-201", "y_i2-3000-228", "y_i2-6000-145"]
+why_empty = ["sampling_bias", "research_intensity"]
+why_note = "Sampling: Azerbaijani gaps of 36-77 cells, 28-274 km from genomes."
+expected = { y_j2 = 0.3, y_g2a = 0.2, y_r1b = 0.08, y_h2 = 0.03, y_other = 0.35 }
+confidence = "low"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Shulaveri-Shomu and Aknashen males mix CHG J2 with Anatolian-type G2a; Kura-Araxes males are J2a, L1a and R1b-Z2103 (not steppe-derived in ancestry). Surface J2 0.12-0.48, G2a 0.04-0.13, other 0.24-0.49."
+literature = [
+  { cite = "Lazaridis et al. 2022, Science", checked = false },
+]
+would_settle = "Neolithic and Kura-Araxes genomes from Azerbaijan."
+speculative_rule = "Extend the adjacent Georgian/Armenian shares; R1b 0.15 only at 3,000 BCE."
+
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-3000]
+value = { y_j2 = 0.276, y_g2a = 0.184, y_h2 = 0.028, y_other = 0.322, y_r1b = 0.15 }
+
+[[judgement]]
+region = "Levant"
+slices = [-10000, -9000]
+gap_ids = ["y_i2-9000-51", "y_i2-10000-22"]
+why_empty = ["research_intensity", "preservation"]
+why_note = "Sampling and heat: Natufian Raqefet is the only source."
+expected = { y_other = 0.85, y_h2 = 0.05, y_j2 = 0.03 }
+confidence = "medium"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Natufian males are E1b1b (M123/M34 branch) and CT; surface 'other' 0.69 at 10,000 BCE, with a C share that is kernel noise."
+literature = [
+  { cite = "Lazaridis et al. 2016, Nature", checked = false },
+]
+would_settle = "Natufian and PPNA males from Syria and Jordan."
+speculative_rule = "Set other 0.85 (E1b1b)."
+
+[[judgement]]
+region = "Levant"
+slices = [-8000, -7000, -6000, -5000]
+gap_ids = ["y_i2-7000-110", "y_i2-5000-167", "y_i2-6000-139", "y_i2-8000-81"]
+why_empty = ["research_intensity", "recording_practice", "preservation"]
+why_note = "Sampling; burial practice at 5,000 BCE (few Late Pottery Neolithic graves)."
+expected = { y_other = 0.65, y_h2 = 0.1, y_g2a = 0.1, y_j2 = 0.08 }
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "PPNB males (Ain Ghazal, Motza, Ba'ja) are E1b1b, H2 and T; Anatolian and Zagros inflows bring G2a and J2 by the Pottery Neolithic. Surface 'other' 0.53-0.86."
+literature = [
+  { cite = "Lazaridis et al. 2016, Nature", checked = false },
+  { cite = "Wang et al. 2023, 'Ancient genomes from Ba'ja', Commun. Biol.", checked = false },
+]
+would_settle = "Pottery Neolithic Levantine genomes."
+speculative_rule = "Set other 0.65, H2 0.1, G2a 0.1."
+
+[[judgement]]
+region = "Levant"
+slices = [-4000, -3000]
+gap_ids = ["y_i2-3000-220", "y_i2-4000-194"]
+why_empty = ["sampling_bias", "preservation"]
+why_note = "Sampling: Syria and Lebanon unsampled."
+expected = { y_other = 0.65, y_j2 = 0.12, y_g2a = 0.08, y_h2 = 0.03 }
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Peqi'in Chalcolithic males are mainly T1a with E1b1b and J1; EBA males J1, J2, E1b1b. 'other' holds T1a, J1 and E1b1b; surface 0.64-0.82."
+literature = [
+  { cite = "Harney et al. 2018, Nat. Commun.", checked = false },
+]
+would_settle = "Syrian Chalcolithic-EBA genomes."
+speculative_rule = "Set other 0.65, J2 0.12; J2 to 0.2 in northern Syria."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [35.5, 35.0, 41.8, 37.1]
+value = { y_other = 0.582, y_g2a = 0.072, y_h2 = 0.027, y_j2 = 0.2 }
+
+[[judgement]]
+region = "Mesopotamia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["y_i2-10000-20", "y_i2-9000-49", "y_i2-7000-109", "y_i2-6000-135", "y_i2-5000-164", "y_i2-4000-191", "y_i2-8000-77", "y_i2-3000-216"]
+why_empty = ["preservation", "research_intensity"]
+why_note = "Preservation on the alluvium; sampling in the north. The south has NO ancient DNA: extrapolation."
+expected = { y_j2 = 0.3, y_g2a = 0.12, y_h2 = 0.03, y_other = 0.5 }
+confidence = "low"
+basis = ["literature", "analogy"]
+reasoning = "Northern Iraq Neolithic males (Nemrik, Bestansur, Shanidar) sit between Anatolian G2a and Zagros J/G2b/R2 lineages; surface J2 0.64 at 6,000 BCE and 'other' 0.53-0.60. Halaf, Ubaid and Uruk men are unsampled; J1 and J2 dominate modern Iraq."
+literature = [
+  { cite = "Lazaridis et al. 2022, Science", checked = false },
+]
+would_settle = "Petrous sampling at Yarim Tepe, Tell Arpachiyah and Ubaid sites."
+speculative_rule = "Set J2 0.3, G2a 0.12, other 0.5; raise G2a to 0.25 north of 36°N before 6,000 BCE."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [38.8, 36.0, 48.3, 37.4]
+value = { y_j2 = 0.253, y_h2 = 0.025, y_other = 0.422, y_g2a = 0.25 }
+slices = [-10000, -9000, -8000, -7000]
+
+[[judgement]]
+region = "Iran & Afghanistan"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["y_i2-9000-38", "y_i2-10000-10", "y_i2-5000-155", "y_i2-7000-99", "y_i2-4000-183", "y_i2-6000-127", "y_i2-8000-68", "y_i2-3000-211"]
+why_empty = ["research_intensity", "dataset_edge", "preservation"]
+why_note = "Sampling; Afghanistan has NO ancient DNA: extrapolation."
+expected = { y_j2 = 0.3, y_g2a = 0.05, y_other = 0.6 }
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Zagros Neolithic males (Ganj Dareh, Tepe Abdul Hosein, Wezmeh) are G2b, J, R2 and other CT; Hajji Firuz and Seh Gabi add J2a; Tepe Hissar and Shahr-i Sokhta J2a, R2, L, G. Surface J2 0.13-0.68, other 0.09-0.73 depending on which few men fall in a slice."
+literature = [
+  { cite = "Broushaki et al. 2016, 'Early Neolithic genomes from the eastern Fertile Crescent', Science", checked = false },
+  { cite = "Narasimhan et al. 2019, Science", checked = false },
+]
+would_settle = "Neolithic-Chalcolithic genomes from the Iranian plateau and Afghanistan (Mundigak)."
+speculative_rule = "Set J2 0.3, other 0.6 (G2b, R2, J1, L) everywhere; L and R2 rise towards Afghanistan."
+
+[[judgement]]
+region = "Central Asia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+gap_ids = ["y_i2-7000-97", "y_i2-8000-66", "y_i2-9000-37", "y_i2-6000-125", "y_i2-5000-153", "y_i2-10000-08"]
+why_empty = ["research_intensity", "dataset_edge", "low_population"]
+why_note = "Sampling plus grid edge; Kelteminar unsampled."
+expected = { y_r1b = 0.15, y_r1a = 0.15, y_j2 = 0.1, y_other = 0.5 }
+confidence = "low"
+basis = ["analogy", "intuition"]
+reasoning = "North of the Aral the West Siberian/EHG cline (R1a, R1b, Q1a); south in the Karakum, Zagros-like lineages (J, G2b, R2). Surface R1b 0.44 at 5,000 BCE rests on 1% coverage."
+literature = [
+  { cite = "Narasimhan et al. 2019, Science", checked = false },
+]
+would_settle = "Kelteminar and Jeitun genomes."
+speculative_rule = "North of 45°N R1b 0.25, R1a 0.25, other 0.4; south J2 0.3, other 0.6."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [47.0, 45.0, 65.7, 55.5]
+value = { y_r1b = 0.25, y_r1a = 0.25, y_other = 0.4 }
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [47.0, 35.0, 65.7, 45.0]
+value = { y_j2 = 0.3, y_other = 0.6 }
+
+[[judgement]]
+region = "Central Asia"
+slices = [-4000, -3000]
+gap_ids = ["y_i2-4000-181", "y_i2-3000-210"]
+why_empty = ["research_intensity", "dataset_edge"]
+why_note = "Sampling; Geoksyur and Botai-like sites at the edges."
+expected = { y_r1b = 0.15, y_j2 = 0.2, y_r1a = 0.05, y_other = 0.55 }
+confidence = "low"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Geoksyur (c. 3,500 BCE) males J2a, R2a, G, L; Botai (c. 3,500 BCE, east of the grid) R1b-M73 and N. Surface R1b 0.35, J2 0.12 at 3,000 BCE."
+literature = [
+  { cite = "Narasimhan et al. 2019, Science", checked = false },
+  { cite = "de Barros Damgaard et al. 2018, 'The first horse herders', Science", checked = false },
+]
+would_settle = "Kazakh Eneolithic genomes."
+speculative_rule = "South: J2 0.35, other 0.55. North: R1b 0.35 (M73), other 0.5."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [47.0, 45.0, 65.7, 55.5]
+value = { y_j2 = 0.08, y_r1a = 0.02, y_r1b = 0.35, y_other = 0.5 }
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [47.0, 35.0, 65.7, 45.0]
+value = { y_r1b = 0.038, y_r1a = 0.013, y_j2 = 0.35, y_other = 0.55 }
+
+[[judgement]]
+region = "Other"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["y_i2-10000-27", "y_i2-9000-56", "y_i2-8000-82", "y_i2-7000-115", "y_i2-6000-142", "y_i2-5000-171", "y_i2-4000-199", "y_i2-3000-224"]
+why_empty = ["preservation", "dataset_edge", "research_intensity"]
+why_note = "Baluchistan (Pakistan): NO ancient DNA; Mehrgarh failed. Extrapolation."
+expected = { y_j2 = 0.2, y_other = 0.75 }
+confidence = "low"
+basis = ["analogy", "literature"]
+reasoning = "The 'Indus Periphery' outliers at Gonur and Shahr-i Sokhta carry R2, J2, L and H1; Baluchistan was the Iranian/South Asian interface."
+literature = [
+  { cite = "Narasimhan et al. 2019, Science", checked = false },
+  { cite = "Shinde et al. 2019, Rakhigarhi, Cell", checked = false },
+]
+would_settle = "Petrous sampling at Mehrgarh."
+speculative_rule = "Set J2 0.2, other 0.75."
+
+[[judgement]]
+region = "Arabia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["y_i2-10000-04", "y_i2-9000-33", "y_i2-8000-62", "y_i2-7000-93", "y_i2-6000-121", "y_i2-5000-150", "y_i2-4000-178", "y_i2-3000-206"]
+why_empty = ["preservation", "research_intensity"]
+why_note = "Arabia has NO prehistoric ancient DNA: extrapolation from neighbours and modern Arabians."
+expected = { y_j2 = 0.15, y_g2a = 0.03, y_other = 0.8 }
+confidence = "low"
+basis = ["analogy", "intuition"]
+reasoning = "Expect J1, E1b1b, T and R2 (all 'other') with some J2 and G. Surface at 8,000 BCE is Levantine bleed."
+literature = [
+  { cite = "Martiniano et al. 2024, Cell", checked = false },
+]
+would_settle = "Jebel Buhais genomes."
+speculative_rule = "Set other 0.8, J2 0.15."
+
+[[judgement]]
+region = "Libya & Egypt"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["y_i2-10000-05", "y_i2-9000-34", "y_i2-8000-63", "y_i2-7000-95", "y_i2-6000-122", "y_i2-5000-151", "y_i2-3000-207", "y_i2-4000-179"]
+why_empty = ["preservation", "research_intensity"]
+why_note = "NO prehistoric Y data in any slice: extrapolation. Preservation (heat) more than burial practice; Predynastic cemeteries abundant."
+expected = { y_other = 0.85, y_j2 = 0.05, y_g2a = 0.03, y_r1b = 0.02 }
+confidence = "low"
+basis = ["analogy", "literature"]
+reasoning = "0% coverage, nearest male genome 973-1,872 km away. Takarkori's two Green-Saharan genomes (c. 5,000 BCE) are female; Nuwayrat (c. 2,700 BCE) is after the slice. Expect E1b1b (M78 and M81, the Iberomaurusian/Natufian sister lineages) to dominate, with Levantine T1a and J1 entering the Delta from the 5th millennium; all of these are 'other'."
+literature = [
+  { cite = "Salem et al. 2025, 'Ancient DNA from the Green Sahara reveals ancestral North African lineage', Nature", checked = false },
+  { cite = "Morez Jacobs et al. 2025, Nature", checked = false },
+]
+would_settle = "Predynastic Egyptian (Badari, Naqada) and Libyan rock-shelter male genomes."
+speculative_rule = "Set other 0.85 everywhere; J2 0.08 in the Delta from 4,000 BCE."
+
+[[judgement.adjust]]
+kind = "polygon"
+points = [[31.2, 30.0], [30.2, 30.7], [29.8, 31.2], [30.4, 31.6], [31.2, 31.7], [32.0, 31.5], [32.4, 31.2], [32.0, 30.6]]
+value = { y_other = 0.822, y_g2a = 0.029, y_r1b = 0.019, y_j2 = 0.08 }
+slices = [-4000, -3000]
+
+[[judgement]]
+region = "Maghreb"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["y_i2-10000-03", "y_i2-9000-32", "y_i2-8000-61", "y_i2-7000-92"]
+why_empty = ["research_intensity", "preservation", "low_population"]
+why_note = "Sampling in the Tell; preservation and low population in the Saharan south. No genome falls in these slices: Taforalt is older (c. 13,000 BCE)."
+expected = { y_other = 0.95, y_i2 = 0.02 }
+confidence = "medium"
+basis = ["literature", "analogy"]
+reasoning = "0% coverage for the 1,306-1,323-cell gap (Algeria, Morocco, Tunisia), nearest genome 1,119-1,894 km. Iberomaurusian males at Taforalt are all E1b1b1a1 (M78); Capsian populations descend largely from them (Lipson 2025 at Djebba finds high forager continuity with ~minor European HG input). So E1b1b dominates; a trace of I2 for the small European-HG admixture."
+literature = [
+  { cite = "van de Loosdrecht et al. 2018, 'Pleistocene North African genomes link Near Eastern and sub-Saharan African human populations', Science", checked = false },
+  { cite = "Lipson et al. 2025, eastern Maghreb forager continuity (Djebba), Nature", checked = false },
+]
+would_settle = "Capsian escargotière burials in Algeria and Tunisia."
+speculative_rule = "Set other 0.95 (E1b1b) across the Maghreb for 10,000-7,000 BCE."
+
+[[judgement]]
+region = "Maghreb"
+slices = [-6000, -5000, -4000, -3000]
+gap_ids = ["y_i2-3000-205", "y_i2-6000-120", "y_i2-4000-177", "y_i2-5000-149"]
+why_empty = ["research_intensity", "preservation", "low_population"]
+why_note = "Sampling: only northern Morocco (Ifri n'Amr o Moussa, Kaf Taht el-Ghar, Skhirat, Kelif el Boroud) and Djebba; interior Algeria has NO data."
+expected = { y_other = 0.7, y_g2a = 0.15, y_i2 = 0.03, y_j2 = 0.03, y_h2 = 0.02 }
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Early Neolithic Ifri n'Amr o Moussa (c. 5,200 BCE) men are E1b1b (local forager stock with Levantine ancestry); Kaf Taht el-Ghar carries Iberian-Neolithic (European farmer) ancestry and G2a-type lineages; Late Neolithic Kelif el Boroud has T1a. Surface G2a 0.43 at 5,000 BCE is from very few men near the Strait. Interior Algeria and Tunisia probably stayed forager-descended (E1b1b)."
+literature = [
+  { cite = "Fregel et al. 2018, 'Ancient genomes from North Africa evidence prehistoric migrations to the Maghreb from both the Levant and Europe', PNAS", checked = false },
+  { cite = "Simões et al. 2023, 'Northwest African Neolithic initiated by migrants from Iberia and Levant', Nature", checked = false },
+]
+would_settle = "Algerian and Tunisian Neolithic genomes."
+speculative_rule = "Northern Morocco: G2a 0.3, other 0.6. Elsewhere other 0.9 (E1b1b, T1a by 3,000 BCE)."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [-17.2, 18.9, 12.0, 37.6]
+value = { y_g2a = 0.02, y_i2 = 0.004, y_j2 = 0.004, y_h2 = 0.003, y_other = 0.9 }
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [-9.0, 33.5, -1.75, 36.0]
+value = { y_i2 = 0.011, y_j2 = 0.011, y_h2 = 0.008, y_g2a = 0.3, y_other = 0.6 }
+
+[[judgement]]
+region = "Nile & Sudan"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["y_i2-10000-09", "y_i2-9000-39", "y_i2-8000-67", "y_i2-7000-98", "y_i2-5000-154", "y_i2-6000-126", "y_i2-3000-209", "y_i2-4000-182"]
+why_empty = ["preservation", "research_intensity"]
+why_note = "NO ancient DNA at all in Sudan before 3,000 BCE: extrapolation. Preservation (heat) is the bar; Jebel Sahaba, Al Khiday and Kadruka cemeteries hold many skeletons."
+expected = { y_other = 0.97 }
+confidence = "low"
+basis = ["analogy", "environment"]
+reasoning = "Nearest male genome 1,252-2,771 km. Expect E1b1b (M78 especially, which arose in NE Africa), A and B lineages: all 'other'. No Eurasian clade should reach Sudan before 3,000 BCE beyond traces."
+literature = []
+would_settle = "Petrous sampling at Al Khiday and Kadruka."
+speculative_rule = "Set other 0.97 everywhere in Nile & Sudan."
+
+[[judgement]]
+region = "Sahara–Sahel"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["y_i2-10000-02", "y_i2-4000-176", "y_i2-8000-60", "y_i2-3000-204", "y_i2-9000-31", "y_i2-5000-148", "y_i2-6000-118", "y_i2-7000-91"]
+why_empty = ["preservation", "research_intensity", "low_population"]
+why_note = "NO ancient DNA: extrapolation. Preservation (heat); burials exist (Gobero, 7,700-2,500 BCE)."
+expected = { y_other = 0.85, y_r1b = 0.08 }
+confidence = "low"
+basis = ["analogy", "intuition", "literature"]
+reasoning = "Nearest genome 1,764-2,877 km. Expect E1b1b and E1b1a with A and B. R1b-V88 is common among modern Chadic speakers and has been argued to have crossed the Green Sahara in the Holocene; a small R1b share is a speculative nod to that."
+literature = [
+  { cite = "D'Atanasio et al. 2018, 'The peopling of the last Green Sahara revealed by high-coverage resequencing of trans-Saharan patrilineages', Genome Biol.", checked = false },
+]
+would_settle = "Gobero and Aïr rock-shelter genomes."
+speculative_rule = "Set other 0.85; R1b 0.15 around Lake Chad from 6,000 BCE, 0.05 elsewhere."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [-17.0, 7.0, 24.0, 28.0]
+value = { y_other = 0.88, y_r1b = 0.05 }
+
+[[judgement.adjust]]
+kind = "river"
+within_km = 100
+lakes = ["Lake Megachad"]
+value = { y_other = 0.78, y_r1b = 0.15 }
+slices = [-6000, -5000, -4000, -3000]
+
+[[judgement]]
+region = "West Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["y_i2-10000-06", "y_i2-9000-36", "y_i2-7000-96", "y_i2-8000-65", "y_i2-6000-123", "y_i2-4000-180", "y_i2-5000-152", "y_i2-3000-208"]
+why_empty = ["preservation", "dataset_edge"]
+why_note = "NO ancient DNA in the grid's West Africa: extrapolation. Acid tropical soils."
+expected = { y_other = 1.0 }
+confidence = "medium"
+basis = ["analogy", "literature"]
+reasoning = "Nearest genome 2,639-3,752 km. Shum Laka (Cameroon) men carry A00 and B: deeply African lineages, all 'other'. No Eurasian clade."
+literature = [
+  { cite = "Lipson et al. 2020, 'Ancient West African foragers in the context of African population history', Nature", checked = false },
+]
+would_settle = "Rock-shelter sampling."
+speculative_rule = "Set other 1.0."
+
+[[judgement]]
+region = "Horn of Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["y_i2-10000-12", "y_i2-9000-41", "y_i2-8000-70", "y_i2-7000-102", "y_i2-5000-158", "y_i2-6000-129", "y_i2-4000-185", "y_i2-3000-213"]
+why_empty = ["preservation", "research_intensity"]
+why_note = "NO ancient DNA before Mota (c. 2,500 BCE): extrapolation."
+expected = { y_other = 0.97 }
+confidence = "low"
+basis = ["analogy", "literature"]
+reasoning = "Nearest genome 504-2,949 km. Mota man is E1b1; expect E1b1b, A and B. Eurasian back-flow (J, T) arrives after 3,000 BCE."
+literature = [
+  { cite = "Gallego Llorente et al. 2015, 'Ancient Ethiopian genome reveals extensive Eurasian admixture', Science", checked = false },
+]
+would_settle = "Ethiopian highland cave genomes."
+speculative_rule = "Set other 0.97."

@@ -425,6 +425,98 @@ state = { "-10000" = "perennial" }
 lake = "black-sea"
 confidence = "high"
 
+# ================================================================ Caucasus
+# Modern courses from HydroRIVERS. The Caspian rivers run out to the
+# Caspian at its lowest (Mangyshlak) level and drown as it rises; the Black
+# Sea rivers out to the Black Sea lake at its lowest level (lakes.toml).
+# Their deltas sit on lowland whose Holocene shorelines aren't dated well
+# enough to time any branch.
+[[river]]
+key = "kura"
+name = "Kura"
+size = 2
+from = [42.7, 41.3]
+min_upland = 1000
+lake = "caspian"
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "aras"
+name = "Aras"
+size = 2
+# From the Bingöl highlands; stops at the Kura near Sabirabad. Some
+# historical sources give it a separate mouth to the Caspian, undated.
+from = [41.6, 39.7]
+min_upland = 1000
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "terek"
+name = "Terek"
+size = 1
+from = [44.6, 42.7]
+min_upland = 500
+lake = "caspian"
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "sulak"
+name = "Sulak"
+size = 1
+from = [46.6, 42.6]
+min_upland = 1000
+lake = "caspian"
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "kuban"
+name = "Kuban"
+size = 2
+# To its modern mouth at Temryuk (Sea of Azov). The Taman peninsula was an
+# archipelago about 6 ka; the delta built out after that (Giaime et al.
+# 2016), and the ancient branch to the Kiziltash liman isn't dated.
+from = [41.9, 43.6]
+min_upland = 500
+lake = "black-sea"
+state = { "-10000" = "perennial" }
+confidence = "medium"
+
+[[river]]
+key = "rioni"
+name = "Rioni"
+size = 1
+# The Rioni delta built out mostly 3500-1500 BC (Laermanns et al. 2018);
+# before that the coast lay further inland, which ETOPO can't show.
+from = [43.1, 42.55]
+min_upland = 500
+lake = "black-sea"
+state = { "-10000" = "perennial" }
+confidence = "medium"
+
+[[river]]
+key = "inguri"
+name = "Inguri"
+size = 1
+from = [42.3, 42.95]
+min_upland = 500
+lake = "black-sea"
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "coruh"
+name = "Çoruh"
+size = 1
+from = [40.4, 40.3]
+min_upland = 1000
+lake = "black-sea"
+state = { "-10000" = "perennial" }
+confidence = "high"
+
 # ================================================================== Europe
 [[river]]
 key = "dnieper"
@@ -653,3 +745,57 @@ min_upland = 1000
 shelf = false
 state = { "-10000" = "perennial" }
 confidence = "high"
+
+[[river]]
+key = "douro"
+name = "Douro"
+size = 2
+from = [-2.85, 41.95]
+min_upland = 1000
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "guadalquivir"
+name = "Guadalquivir"
+size = 2
+# Its modern course to Sanlúcar. At the maximum flooding, about 6.5 ka
+# (Dabrio et al. 2000), the estuary (the later Lacus Ligustinus) reached up
+# towards Seville; the board's coast (ETOPO1) can't show it.
+from = [-2.9, 37.95]
+min_upland = 1000
+state = { "-10000" = "perennial" }
+confidence = "medium"
+
+# ========================================================= Ladoga outflow
+# The Neva formed only about 3400-3300 cal BP (about -1400), when the
+# Ladoga transgression broke through to the south (Ludikova et al. 2024;
+# Dolukhanov et al.), so it isn't drawn. Before that Ladoga drained
+# north-west through the Heinjoki Strait across the Karelian Isthmus to
+# Vyborg Bay, from about 10.2 cal ka once the lake was cut off from the
+# Baltic; its flow fell from about 4.1 cal ka, after the map's end.
+[[river]]
+key = "heinjoki"
+name = "Heinjoki Strait (Ladoga outlet)"
+size = 2
+# From the Ladoga shore in the Vuoksi lowland past the Vetokallio threshold
+# at Heinjoki (Veshchevo) to Vyborg Bay. Read off a map by eye. The first
+# point is just inside the modelled Ladoga shoreline (held at today's extent,
+# data/lakes/lakes.toml), along the Sukhodolskoye trough, so the outlet
+# leaves the lake instead of starting short of it.
+points = [[30.52, 60.68], [30.3, 60.67], [30.1, 60.68], [29.75, 60.67], [29.45, 60.72], [29.17, 60.7], [28.95, 60.68], [28.78, 60.68]]
+shelf = false
+state = { "-8250" = "perennial" }
+confidence = "low"
+
+[[river]]
+key = "vuoksi"
+name = "Vuoksi"
+size = 2
+# From Imatra, where Saimaa broke through the Salpausselkä ridge about
+# 5.7 cal ka, down the lake corridor to the Heinjoki Strait.
+from = [28.78, 61.23]
+min_upland = 1000
+to = [29.45, 60.72]
+state = { "-3750" = "perennial" }
+confidence = "low"

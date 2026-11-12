@@ -45,10 +45,21 @@ def rigaud2018(path):
               -b["LatestDateBC"].astype(float), source=src)])
 
 
-def dolbunova(path, span):
+def dolbunova(path, span, starts_path=None):
+    """Dolbunova et al. 2023 forager-pottery sites. Each site is dated from the
+    modelled pottery start of its nearest modelled site (starts_path, from the
+    deposit's R script) to the end of the dataset's span; without the starts
+    table every site gets the dataset-wide span."""
     d = pd.read_excel(path, sheet_name=0)[["Site", "Longitude", "Latitude"]].dropna().drop_duplicates()
-    return _rows("pottery", d["Site"], d["Longitude"], d["Latitude"], float(span[0]), float(span[1]),
-                 source="Dolbunova et al. 2023 (dataset-wide span)")
+    tpq = np.full(len(d), float(span[0]))
+    src = "Dolbunova et al. 2023 (dataset-wide span)"
+    if starts_path and os.path.exists(starts_path):
+        st = pd.read_csv(starts_path)
+        dist = ((d["Longitude"].values[:, None] - st["lon"].values[None, :]) * np.cos(np.radians(52))) ** 2 \
+            + (d["Latitude"].values[:, None] - st["lat"].values[None, :]) ** 2
+        tpq = -st["start_bc"].values[dist.argmin(axis=1)].astype(float)
+        src = "Dolbunova et al. 2023 (dated by nearest modelled start)"
+    return _rows("pottery", d["Site"], d["Longitude"], d["Latitude"], tpq, float(span[1]), source=src)
 
 
 def _zip_member(path, pattern):
@@ -238,6 +249,9 @@ def jordan2016(path, half=200):
 
 # ------------------------------------------------------------- subsistence
 CEREAL_CROPS = {"barley", "emmer wheat", "wheat", "einkorn wheat"}
+# A phase counts as without cereals only if at least this many plant taxa
+# were recorded (Ain Ghazal was "absent" on a single flax record).
+MIN_TAXA_FOR_ABSENCE = 5
 LIVESTOCK = re.compile(r"\b(bos|ovis|capra|sus)\b", re.I)
 
 
@@ -257,7 +271,9 @@ def swasia_flora(path):
     d["cer"] = d["founder_crop"].isin(CEREAL_CROPS) & (pd.to_numeric(d["n"], errors="coerce").fillna(1) > 0)
     g = d.groupby(["site_name", "phase_code"]).agg(site=("site_name", "first"), lon=("longitude", "first"),
                                                    lat=("latitude", "first"), a=("age_start", "max"),
-                                                   b=("age_end", "min"), cer=("cer", "any")).reset_index()
+                                                   b=("age_end", "min"), cer=("cer", "any"),
+                                                   taxa=("taxon", "nunique")).reset_index()
+    g = g[g["cer"] | (g["taxa"] >= MIN_TAXA_FOR_ABSENCE)]
     g["tpq"], g["taq"] = 1950 - g[["a", "b"]].max(axis=1), 1950 - g[["a", "b"]].min(axis=1)
     g["key"] = g["site_name"] + ":" + g["phase_code"].astype(str)
     return _phase_rows(g, "cereals", "cer", "Arranz-Otaegui & Roe 2023 (SW Asia flora)", "swa:")
@@ -304,11 +320,13 @@ DOMESTIC_LABEL = re.compile(r"ovis aries|capra hircus|bos taurus|sus scrofa dome
 def opencontext_eol(path, absent_min=50):
     """Open Context integrated Anatolian zooarchaeology (Arbuckle et al. 2014),
     summary per site and period. Only taxa the analyst named as the domestic
-    species count as domestic; "Sheep/goat", "Bos", "Sus" are uncertain."""
+    species count as domestic; "Sheep/goat", "Bos", "Sus" are uncertain.
+    The "Start BCE"/"End BCE" columns hold cal BP (Ulucak reads 8990-7650,
+    i.e. c. 7000-5700 BCE), so they are converted (found by the gap critic)."""
     d = pd.read_csv(path)
     lab = d["EOL Taxa Label"].astype(str) + " " + d["Analyst Taxanomic Designation (Source data)"].astype(str)
     d = d.assign(taxon=lab, isdom=lab.str.contains(DOMESTIC_LABEL), key=d["Site"] + ":" + d["Start BCE"].astype(str),
-                 site=d["Site"], lon=d["Longitude"], lat=d["Latitude"], tpq=-d["Start BCE"], taq=-d["End BCE"])
+                 site=d["Site"], lon=d["Longitude"], lat=d["Latitude"], tpq=1950 - d["Start BCE"], taq=1950 - d["End BCE"])
     d["uncertain"] = ~d["isdom"]
     g = _livestock_phase(d, ["site", "lon", "lat", "tpq", "taq"], "Specimen Count", "isdom", absent_min)
     # "uncertain" here is any livestock-genus taxon not named domestic, so an
@@ -335,11 +353,151 @@ def phelps_fauna(path, absent_min=50):
     return _phase_rows(g.rename(columns={"present": "p"}), "domestic_livestock", "p", "Phelps et al. 2019 (Africa)", "phe:")
 
 
+# ------------------------------------------------------ structures, organics
+def rondels(path, span=(-4850, -4500)):
+    """Neolithic rondel enclosures of Central Europe (Zenodo 23738404, CC BY):
+    every confirmed rondel, dated as a class to 4850-4500 BCE."""
+    d = pd.read_csv(path, sep=";", encoding="utf-8-sig")
+    return _rows("enclosures", d["Name"], d["WGS_E"], d["WGS_N"], float(span[0]), float(span[1]),
+                 source="Rondel enclosures (Zenodo 23738404)", group=("ron:" + d["ID"].astype(str)).values)
+
+
+def paulsson(path):
+    """Paulsson 2019 (PNAS 116:3460), 2,410 radiocarbon dates from megalithic
+    sites (CC BY-NC-ND; read unmodified from the Europe PMC supplement
+    bundle). No coordinates: the dates are joined to dated sites by lab
+    number. Returns (layer, labnr, present)."""
+    d = pd.read_excel(_zip_member(path, r"sd01\.xlsx$"), sheet_name=0)
+    return pd.DataFrame({"layer": "megalithic_tombs", "labnr": d["Laboratory number"].astype(str),
+                         "present": 1, "source": "Paulsson 2019 (megalith dates)"})
+
+
+LABJOIN = [("paulsson2019_supplement.zip", paulsson)]
+
+
+def load_labjoin(cfg, log=print):
+    """Records that carry a lab number instead of a place: joined to the date
+    whose lab number matches."""
+    d = os.path.join(cfg["output"]["build_dir"], "sources")
+    parts = []
+    for fname, fn in LABJOIN:
+        path = os.path.join(d, fname)
+        if os.path.exists(path):
+            x = fn(path)
+            log(f"sources: {fname}: {len(x)} lab-number records ({x['layer'].value_counts().to_dict()})")
+            parts.append(x)
+    return pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=["layer", "labnr", "present", "source"])
+
+
+# --------------------------------------------------------------- EUROEVOL
+# Manning et al. 2016 (joad.40, sites and dates; joad.41, fauna, CC0) and
+# Colledge 2016 (joad.42, archaeobotany). UCL Discovery rate-limits scripted
+# downloads, so the files are downloaded by hand (see config [[sources]]
+# kind = "manual"). Phases are dated by their own radiocarbon samples;
+# undated phases are dropped.
+EUE = "EUROEVOL09-07-201516-34_"
+
+
+def _eue(d, name):
+    return pd.read_csv(os.path.join(d, EUE + name + ".csv"), na_values=["NULL"], low_memory=False)
+
+
+def _eue_sites(d):
+    """CommonSites from the SQL dump: the CSV export has unquoted commas."""
+    s = _sql_table(os.path.join(d, "EUROEVOL09-07-201516-33.sql"), "CommonSites")
+    for c in ("Latitude", "Longitude"):
+        s[c] = pd.to_numeric(s[c], errors="coerce")
+    return s
+
+
+def _eue_dated(d, phases):
+    """Phase table (PhaseCode, SiteID, ...) -> one row per radiocarbon date
+    of each phase, with site coordinates. A phase with no dates of its own
+    takes the dates from its site that carry the same period label (EN, MN,
+    LN, LM ...); a phase without a period, or without such dates, is dropped.
+    Column `dated_by` says which."""
+    sites = _eue_sites(d)
+    c14 = _eue(d, "C14Samples")[["PhaseCode", "SiteID", "Period", "C14Age", "C14SD", "LabCode"]]
+    c14 = c14[pd.to_numeric(c14["C14Age"], errors="coerce").notna() & pd.to_numeric(c14["C14SD"], errors="coerce").gt(0)]
+    per = _sql_table(os.path.join(d, "EUROEVOL09-07-201516-33.sql"), "CommonPhases")[["PhaseCode", "Period"]]
+    x = phases.merge(sites[["SiteID", "SiteName", "Latitude", "Longitude"]], on="SiteID", how="inner")
+    own = x.merge(c14.drop(columns=["SiteID", "Period"]), on="PhaseCode", how="inner").assign(dated_by="phase")
+    rest = x[~x["PhaseCode"].isin(own["PhaseCode"])].merge(per, on="PhaseCode", how="inner")
+    rest = rest[rest["Period"].notna() & ~rest["Period"].isin(["UN", "UM", ""])]
+    site = rest.merge(c14.drop(columns="PhaseCode"), on=["SiteID", "Period"], how="inner").assign(dated_by="site, same period")
+    return pd.concat([own, site.drop(columns="Period")], ignore_index=True)
+
+
+def _sql_table(path, table):
+    """Rows of one table's INSERT statements in a MySQL dump, as tuples of strings."""
+    text = open(path, encoding="utf-8", errors="replace").read()
+    m = re.search(r"INSERT INTO `%s` \(([^)]*)\)\s*VALUES\s*(.*?);\n" % re.escape(table), text, re.S)
+    cols = [c.strip(" `") for c in m.group(1).split(",")]
+    rows = re.findall(r"\(((?:'(?:[^'\\]|\\.)*'|NULL|[^,()']+)(?:,\s*(?:'(?:[^'\\]|\\.)*'|NULL|[^,()']+))*)\)", m.group(2))
+    out = []
+    for r in rows:
+        vals = re.findall(r"'((?:[^'\\]|\\.)*)'|(NULL)|([^,\s]+)", r)
+        out.append([a if a or (not b and not c) else (None if b else c) for a, b, c in vals])
+    return pd.DataFrame(out, columns=cols)
+
+
+CEREAL_GENERA = {"Triticum", "Hordeum", "Secale", "Avena", "Cerealia", "Cereal"}
+
+
+def euroevol_botany(samples_path, d):
+    """Cereals present if a phase has a cultivated cereal (by the taxa list's
+    DomesticWildStatus and genus) or indeterminate cereal; absent if the
+    phase has plant remains but none."""
+    taxa = _sql_table(os.path.join(d, "EUROEVOL09-07-201516-33.sql"), "ABotTaxaList")
+    status = taxa["DomesticWildStatus"].fillna("")
+    gen = taxa["Genus"].fillna("").str.split().str[0]
+    # Wild/domestic wheat, barley, rye and indeterminate cereal count; oats only
+    # where explicitly domestic (Avena spp. in Neolithic Europe is mostly wild oat).
+    cult = status.str.contains("cultivated|domestic") & (gen.ne("Avena") | status.isin(["domestic", "cultivated"]))
+    cereal = set(taxa.loc[(cult & gen.isin(CEREAL_GENERA)) | taxa["FullNameOfTaxon"].fillna("").str.contains(
+        r"^Cereal", case=False), "TaxonCode"])
+    sm = pd.read_csv(samples_path, na_values=["NULL"], low_memory=False)
+    ph = _eue(d, "ABotPhases")[["PhaseCode", "SiteID"]]
+    flag = sm.assign(c=sm["TaxonCode"].isin(cereal)).groupby("PhaseCode").agg(
+        present=("c", "any"), taxa=("TaxonCode", "nunique")).reset_index()
+    flag = flag[flag["present"] | (flag["taxa"] >= MIN_TAXA_FOR_ABSENCE)][["PhaseCode", "present"]]
+    x = _eue_dated(d, ph.merge(flag, on="PhaseCode"))
+    return _rows("cereals", x["SiteName"], x["Longitude"], x["Latitude"], bp=x["C14Age"], std=x["C14SD"],
+                 present=x["present"].astype(int).values, source="EUROEVOL archaeobotany (Colledge 2016)",
+                 group=("eub:" + x["PhaseCode"].astype(str)).values)
+
+
+def euroevol_fauna(species_path, d, absent_min=50):
+    """Domestic livestock by EUROEVOL's own WildDomesticStatus. Unspecified
+    Ovis counts as domestic (no wild sheep in Neolithic Europe); Bos, Sus and
+    Capra of mixed status count as uncertain and block an absence."""
+    taxa = _eue(d, "FaunalTaxaList")
+    st = taxa["WildDomesticStatus"].fillna("").str.lower()
+    stock = taxa["FullNameOfTaxon"].fillna("").str.contains(LIVESTOCK)
+    dom = set(taxa.loc[stock & (st.eq("domestic") | taxa["Genus"].fillna("").eq("Ovis")), "TaxonCode"])
+    unc = set(taxa.loc[stock & st.str.contains("wild ?(/|&) ?domestic") & ~taxa["TaxonCode"].isin(dom), "TaxonCode"])
+    sp = pd.read_csv(species_path, na_values=["NULL"], low_memory=False)
+    sp = sp.assign(taxon=sp["TaxonCode"].astype(str), isdom=sp["TaxonCode"].isin(dom), uncertain=sp["TaxonCode"].isin(unc),
+                   key=sp["PhaseCode"].astype(str))
+    # Treat named livestock codes as matching the LIVESTOCK pattern in _livestock_phase.
+    sp.loc[sp["isdom"] | sp["uncertain"], "taxon"] = "Bos"
+    ph = _eue(d, "FaunalPhases")[["PhaseCode", "SiteID"]]
+    sites = _eue_sites(d)
+    sp = sp.merge(ph, on="PhaseCode").merge(sites[["SiteID", "SiteName", "Latitude", "Longitude"]], on="SiteID")
+    sp = sp.rename(columns={"SiteName": "site", "Longitude": "lon", "Latitude": "lat"}).assign(tpq=0.0, taq=0.0)
+    g = _livestock_phase(sp, ["site", "lon", "lat", "SiteID"], "NISP", "isdom", absent_min)
+    x = _eue_dated(d, g.rename(columns={"key": "PhaseCode"})[["PhaseCode", "SiteID", "present"]])
+    return _rows("domestic_livestock", x["SiteName"], x["Longitude"], x["Latitude"], bp=x["C14Age"], std=x["C14SD"],
+                 present=x["present"].astype(int).values, source="EUROEVOL fauna (Manning 2016)",
+                 group=("euf:" + x["PhaseCode"].astype(str)).values)
+
+
 def load(cfg, log=print):
     d = os.path.join(cfg["output"]["build_dir"], "sources")
     spans = cfg["presence"].get("spans", {})
     readers = [("evershed2022_lipid.csv", evershed, ()), ("rigaud2018_s1.xlsx", rigaud2018, ()),
-               ("dolbunova2023_ora.xlsx", dolbunova, (spans.get("dolbunova", [-6000, -4000]),)),
+               ("dolbunova2023_ora.xlsx", dolbunova, (spans.get("dolbunova", [-6000, -4000]),
+                                                       "data/isostyle/inputs/dolbunova2023_starts.csv")),
                ("windler2019_spondylus.zip", windler, ()), ("tsirintoulaki2023.zip", tsirintoulaki, ()),
                ("bda2021.zip", bda, ()), ("medafricarbon_v1.0.3.zip", medafricarbon, ()),
                ("rotunno2025_c14data.csv", rotunno, ()), ("dobsiss_v2.0.zip", dobsiss, ()),
@@ -347,7 +505,10 @@ def load(cfg, log=print):
                ("swasia_flora.tsv", swasia_flora, ()),
                ("ademnes_fauna.tsv", ademnes_fauna, (os.path.join(d, "ademnes_phase.tsv"), os.path.join(d, "ademnes_site.tsv"))),
                ("opencontext_eol_summary.csv", opencontext_eol, ()),
-               ("phelps2019_fauna.zip", phelps_fauna, ())]
+               ("phelps2019_fauna.zip", phelps_fauna, ()),
+               ("rondels_v1.1.csv", rondels, ()),
+               (EUE + "ABotSamples.csv", euroevol_botany, (d,)),
+               (EUE + "FaunalSpecies.csv", euroevol_fauna, (d,))]
     if pc_inputs := cfg["presence"].get("inputs"):
         readers += [(os.path.abspath(p), globals()[fn], ()) for fn, p in pc_inputs.items()]
     parts = []

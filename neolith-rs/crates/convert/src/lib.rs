@@ -1,8 +1,8 @@
 //! GeoJSON ⇄ `world.bin` conversion and dataset statistics.
 
 use neolith_core::{
-    GridSpec, HexId, Koeppen, Lake, LakeShape, Landform, LonLat, PopDensity, Prop, River, RiverClass, RiverState, Settlement, Terrain, Timeline,
-    Value, World, Year, NO_ELEVATION,
+    C14Date, CultureInfo, EvidenceLayer, GridSpec, HexId, Koeppen, Lake, LakeShape, Landform, LonLat, PopDensity, Prop, River, RiverClass, RiverState,
+    Settlement, SiteInfo, Terrain, Timeline, Value, World, Year, NO_ELEVATION,
 };
 use serde::Deserialize;
 use serde_json::{json, Map, Value as Json};
@@ -47,6 +47,16 @@ struct HexProps {
     /// absent in older files.
     #[serde(default)]
     landform: Option<u8>,
+    /// Survey intensity 0-2 (static); absent in older files.
+    #[serde(default)]
+    survey: Option<f64>,
+    /// Net primary productivity per year (g dry matter/m²/yr); absent in older files.
+    #[serde(default)]
+    npp: BTreeMap<String, f64>,
+    /// Year farming reaches the hex (static); absent where it never does,
+    /// and in older files.
+    #[serde(default)]
+    farming: Option<f64>,
 }
 
 fn parse_year(key: &str, what: &str) -> Result<Year, String> {
@@ -137,6 +147,10 @@ pub fn import_map(geojson: &str) -> Result<Import, String> {
     let mut climate_mismatch = Tally::default();
     let mut no_elevation = 0usize;
     let mut no_landform = 0usize;
+    let mut survey = vec![None; feats.len()];
+    let mut npp = vec![Timeline::new(); feats.len()];
+    let mut with_npp = 0usize;
+    let mut farming = vec![None; feats.len()];
     for f in feats {
         let p = &f.properties;
         let hex = HexId::from_geojson_id(p.id).unwrap();
@@ -151,6 +165,11 @@ pub fn import_map(geojson: &str) -> Result<Import, String> {
             Some(Some(l)) => world.landform[hex.index()] = Some(l),
             Some(None) => bad.add(format!("landform {}", p.landform.unwrap())),
             None => no_landform += 1,
+        }
+        match p.survey {
+            Some(v) if (0.0..=2.0).contains(&v) && v.fract() == 0.0 => survey[hex.index()] = Some(v as u8),
+            Some(v) => bad.add(format!("survey level {v}")),
+            None => {}
         }
         for (k, name) in &p.terrain {
             let t = Terrain::from_name(name).unwrap_or_else(|| {
@@ -172,6 +191,19 @@ pub fn import_map(geojson: &str) -> Result<Import, String> {
                     }
                 }
                 None => bad.add(format!("koeppen index {v}")),
+            }
+        }
+        match p.farming {
+            Some(y) if y.is_finite() && y.fract() == 0.0 && y.abs() < 1e6 => farming[hex.index()] = Some(Year(y as i32)),
+            Some(y) => bad.add(format!("farming year {y}")),
+            None => {}
+        }
+        with_npp += !p.npp.is_empty() as usize;
+        for (k, v) in &p.npp {
+            if v.is_finite() && (0.0..=u16::MAX as f64).contains(v) {
+                npp[hex.index()].set_key(parse_year(k, &what)?, v.round() as u16);
+            } else {
+                bad.add(format!("productivity {v}"));
             }
         }
         for (k, v) in &p.population_density {
@@ -207,6 +239,22 @@ pub fn import_map(geojson: &str) -> Result<Import, String> {
     if no_landform > 0 && no_landform < feats.len() {
         warnings.push(format!("{no_landform} hexes have no landform"));
     }
+    if with_npp > 0 {
+        if with_npp < feats.len() {
+            warnings.push(format!("{} hexes have no productivity", feats.len() - with_npp));
+        }
+        world.npp = npp;
+    }
+    if farming.iter().any(Option::is_some) {
+        world.farming = farming;
+    }
+    let surveyed = survey.iter().filter(|v| v.is_some()).count();
+    if surveyed > 0 {
+        if surveyed < feats.len() {
+            warnings.push(format!("{} hexes have no survey level; taken as 0", feats.len() - surveyed));
+        }
+        world.survey = survey.into_iter().map(|v| v.unwrap_or(0)).collect();
+    }
     unknown_terrain.drain_into("unknown terrain name mapped to Unknown: ", &mut warnings);
     climate_mismatch.drain_into("climate does not match koeppen: ", &mut warnings);
     Ok(Import { world, warnings })
@@ -215,6 +263,15 @@ pub fn import_map(geojson: &str) -> Result<Import, String> {
 /// Parses settlements. Accepts the current bare-array file, a proper
 /// FeatureCollection, and the older shape with `population` at the top level.
 pub fn import_settlements(text: &str) -> Result<(Vec<Settlement>, Vec<String>), String> {
+    import_settlement_records(text).map(|(s, _, w)| (s, w))
+}
+
+/// Most references kept per site; the full lists stay in the GeoJSON.
+pub const MAX_REFERENCES: usize = 12;
+
+/// Like [`import_settlements`], plus each settlement's [`SiteInfo`] (in the
+/// same order, without radiocarbon dates; see [`attach_dates`]).
+pub fn import_settlement_records(text: &str) -> Result<(Vec<Settlement>, Vec<SiteInfo>, Vec<String>), String> {
     let root: Json = serde_json::from_str(text).map_err(|e| format!("cannot parse settlements: {e}"))?;
     let items = match &root {
         Json::Array(a) => a,
@@ -225,6 +282,7 @@ pub fn import_settlements(text: &str) -> Result<(Vec<Settlement>, Vec<String>), 
         _ => return Err("settlements: expected an array or a FeatureCollection".into()),
     };
     let mut out: Vec<Settlement> = Vec::new();
+    let mut info: Vec<SiteInfo> = Vec::new();
     let mut warnings = Vec::new();
     for (i, item) in items.iter().enumerate() {
         let what = format!("settlement #{i}");
@@ -251,7 +309,30 @@ pub fn import_settlements(text: &str) -> Result<(Vec<Settlement>, Vec<String>), 
                 population.set_key(parse_year(k, &what)?, n.max(0.0).round() as u32);
             }
         }
-        let s = Settlement { id, name, pos: LonLat::new(lon, lat), founded: Year(founded as i32), population };
+        let mut occupation = Vec::new();
+        for ph in props.get("occupation").and_then(Json::as_array).into_iter().flatten() {
+            match ph.as_array().map(|p| p.iter().filter_map(Json::as_i64).collect::<Vec<_>>()).as_deref() {
+                Some(&[a, b]) if a < b => occupation.push((Year(a as i32), Year(b as i32))),
+                _ => return Err(format!("{what} ({name}): occupation phase {ph} is not [start, end]")),
+            }
+        }
+        occupation.sort();
+        let level = |k: &str, max: u64, default: u8| match props.get(k) {
+            None | Some(Json::Null) => Ok(default),
+            Some(v) => v.as_u64().filter(|n| *n <= max).map(|n| n as u8).ok_or(format!("{what} ({name}): {k} {v} is not 0-{max}")),
+        };
+        let importance = level("importance", 3, Settlement::DEFAULT_IMPORTANCE)?;
+        let evidence = level("evidence", 2, Settlement::DEFAULT_EVIDENCE)?;
+        let s = Settlement {
+            id,
+            name,
+            pos: LonLat::new(lon, lat),
+            founded: Year(founded as i32),
+            population,
+            occupation,
+            importance,
+            evidence,
+        };
         if let Some(dup) = out.iter().find(|o| o.name == s.name && o.pos == s.pos && o.founded == s.founded) {
             warnings.push(format!(
                 "settlement id {} ({}) duplicates id {} at the same point; dropped",
@@ -263,8 +344,141 @@ pub fn import_settlements(text: &str) -> Result<(Vec<Settlement>, Vec<String>), 
             return Err(format!("settlement id {} is used twice for different settlements", s.id));
         }
         out.push(s);
+        info.push(site_info(props, &what)?);
     }
-    Ok((out, warnings))
+    Ok((out, info, warnings))
+}
+
+fn strings(v: Option<&Json>) -> Vec<String> {
+    v.and_then(Json::as_array)
+        .map(|a| a.iter().filter_map(Json::as_str).map(str::to_string).collect())
+        .unwrap_or_default()
+}
+
+/// `{"<year>": "<id>", ...}` -> sorted (year, id) pairs.
+fn year_ids(v: Option<&Json>, what: &str) -> Result<Vec<(Year, String)>, String> {
+    let mut out = Vec::new();
+    for (k, id) in v.and_then(Json::as_object).into_iter().flatten() {
+        if let Some(id) = id.as_str() {
+            out.push((parse_year(k, what)?, id.to_string()));
+        }
+    }
+    out.sort();
+    Ok(out)
+}
+
+/// The record fields of one `settlements.geojson` feature.
+fn site_info(props: &Json, what: &str) -> Result<SiteInfo, String> {
+    let text = |k: &str| props.get(k).and_then(Json::as_str).filter(|s| !s.is_empty()).map(str::to_string);
+    let mut references = Vec::new();
+    for r in strings(props.get("references")) {
+        if references.len() < MAX_REFERENCES && !references.contains(&r) {
+            references.push(r);
+        }
+    }
+    Ok(SiteInfo {
+        kind: text("type").unwrap_or_default(),
+        abandoned: props.get("abandoned").and_then(Json::as_i64).map(|y| Year(y as i32)),
+        aliases: strings(props.get("aliases")),
+        periods: strings(props.get("periods")),
+        culture: year_ids(props.get("culture"), what)?,
+        stage: year_ids(props.get("stage"), what)?,
+        culture_inferred: year_ids(props.get("culture_inferred"), what)?,
+        stage_inferred: year_ids(props.get("stage_inferred"), what)?,
+        features: strings(props.get("features")),
+        wikipedia: text("wikipedia"),
+        wikidata: text("wikidata"),
+        wikidata_culture: strings(props.get("wikidata_culture")),
+        sources: strings(props.get("sources")),
+        references,
+        dates: Vec::new(),
+    })
+}
+
+/// Splits CSV text (RFC 4180: quoted fields, doubled quotes) into rows.
+fn csv_rows(text: &str) -> Vec<Vec<String>> {
+    let (mut rows, mut row, mut field) = (Vec::new(), Vec::new(), String::new());
+    let mut quoted = false;
+    let mut chars = text.chars().peekable();
+    while let Some(c) = chars.next() {
+        match (quoted, c) {
+            (true, '"') if chars.peek() == Some(&'"') => {
+                chars.next();
+                field.push('"');
+            }
+            (true, '"') => quoted = false,
+            (true, c) => field.push(c),
+            (false, '"') => quoted = true,
+            (false, ',') => row.push(std::mem::take(&mut field)),
+            (false, '\r') => {}
+            (false, '\n') => {
+                row.push(std::mem::take(&mut field));
+                rows.push(std::mem::take(&mut row));
+            }
+            (false, c) => field.push(c),
+        }
+    }
+    if !field.is_empty() || !row.is_empty() {
+        row.push(field);
+        rows.push(row);
+    }
+    rows
+}
+
+/// Adds the radiocarbon dates in `dates.csv` text (from `make settlements`)
+/// to the records, matched by `site_id`. Returns how many were attached and
+/// how many named a settlement that isn't there.
+pub fn attach_dates(settlements: &[Settlement], info: &mut [SiteInfo], text: &str) -> Result<(usize, usize), String> {
+    let mut rows = csv_rows(text).into_iter();
+    let header = rows.next().ok_or("dates: empty file")?;
+    let col = |name: &str| header.iter().position(|h| h == name).ok_or(format!("dates: no {name} column"));
+    let (site, lab, bp, err, cal, dataset) =
+        (col("site_id")?, col("lab_number")?, col("c14_age")?, col("c14_error")?, col("cal_year")?, col("dataset")?);
+    let index: std::collections::HashMap<u32, usize> = settlements.iter().enumerate().map(|(i, s)| (s.id, i)).collect();
+    let (mut attached, mut orphans) = (0, 0);
+    for (n, r) in rows.enumerate() {
+        if r.len() < header.len() {
+            continue;
+        }
+        let num = |c: usize| -> Result<i64, String> {
+            r[c].trim().parse::<f64>().map(|v| v.round() as i64).map_err(|_| format!("dates row {}: {:?} is not a number", n + 2, r[c]))
+        };
+        let Some(&i) = r[site].parse::<u32>().ok().and_then(|id| index.get(&id)) else {
+            orphans += 1;
+            continue;
+        };
+        info[i].dates.push(C14Date {
+            lab: r[lab].clone(),
+            bp: num(bp)?.max(0) as u32,
+            err: num(err)?.max(0) as u32,
+            cal: Year(num(cal)? as i32),
+            dataset: r[dataset].clone(),
+        });
+        attached += 1;
+    }
+    for s in info.iter_mut() {
+        s.dates.sort_by(|a, b| (a.cal, &a.lab).cmp(&(b.cal, &b.lab)));
+    }
+    Ok((attached, orphans))
+}
+
+/// Parses `data/cultures/cultures.json` into the culture table.
+pub fn import_cultures(text: &str) -> Result<Vec<CultureInfo>, String> {
+    let root: Json = serde_json::from_str(text).map_err(|e| format!("cannot parse cultures: {e}"))?;
+    let items = root.as_array().ok_or("cultures: expected an array")?;
+    items
+        .iter()
+        .map(|c| {
+            let get = |k: &str| c.get(k).and_then(Json::as_str).map(str::to_string);
+            let id = get("id").ok_or("cultures: an entry has no id")?;
+            Ok(CultureInfo {
+                kind: get("kind").unwrap_or_default(),
+                name: get("name").unwrap_or_else(|| id.clone()),
+                wikipedia: c.pointer("/wikipedia/title").and_then(Json::as_str).map(str::to_string),
+                id,
+            })
+        })
+        .collect()
 }
 
 /// Parses `rivers.geojson` (LineString features from `python -m pipeline build`).
@@ -446,7 +660,36 @@ pub fn hex_feature(world: &World, hex: HexId) -> Json {
     if let Some(l) = world.landform[hex.index()] {
         feature["properties"]["landform"] = json!(l as u8);
     }
+    if let Some(v) = world.survey_at(hex) {
+        feature["properties"]["survey"] = json!(v);
+    }
+    if let Some(y) = world.farming.get(hex.index()).copied().flatten() {
+        feature["properties"]["farming"] = json!(y.0);
+    }
+    if let Some(t) = world.npp.get(hex.index()).filter(|t| !t.keys().is_empty()) {
+        let keys: Map<String, Json> = t.keys().iter().map(|(y, v)| (y.0.to_string(), json!(v))).collect();
+        feature["properties"]["npp"] = Json::Object(keys);
+    }
     feature
+}
+
+/// Expected population per hex per year as CSV (`hex,year,density_per_km2,farmed,shore_km`),
+/// for the pipeline's residual maps: the app's own figures
+/// ([`World::expected_at`]), so the equations exist once. Hexes with nothing
+/// to say (Water, no productivity) are left out.
+pub fn expected_csv(world: &World, years: &[Year]) -> String {
+    let mut s = String::from("hex,year,density_per_km2,farmed,shore_km\n");
+    let shores: Vec<_> = years.iter().map(|y| world.shore_km(*y)).collect();
+    for hex in world.grid.ids() {
+        for (y, shore) in years.iter().zip(&shores) {
+            let km = shore[hex.index()];
+            if let Some(e) = world.expected_given(hex, *y, km as f64) {
+                let km = if km.is_finite() { format!("{km:.0}") } else { String::new() };
+                let _ = writeln!(s, "{},{},{:.6},{},{km}", hex.geojson_id(), y.0, e.density, e.farmed as u8);
+            }
+        }
+    }
+    s
 }
 
 /// Writes the world's hexes as a `combined_map.geojson` FeatureCollection.
@@ -472,12 +715,98 @@ pub fn export_settlements(world: &World) -> Json {
                     s.population.keys().iter().map(|(y, n)| (y.0.to_string(), json!(n))).collect();
                 json!({
                     "id": s.id,
-                    "properties": { "name": s.name, "founding": s.founded.0, "type": "settlement", "population": pop },
+                    "properties": {
+                        "name": s.name, "founding": s.founded.0, "type": "settlement", "population": pop,
+                        "occupation": s.occupation.iter().map(|(a, b)| json!([a.0, b.0])).collect::<Vec<_>>(),
+                        "importance": s.importance, "evidence": s.evidence,
+                    },
                     "geometry": { "type": "Point", "coordinates": [s.pos.lon, s.pos.lat] },
                 })
             })
             .collect(),
     )
+}
+
+/// Decodes standard base64 (with or without padding).
+fn base64_decode(text: &str) -> Result<Vec<u8>, String> {
+    let digit = |c: u8| -> Result<u32, String> {
+        Ok(match c {
+            b'A'..=b'Z' => c - b'A',
+            b'a'..=b'z' => c - b'a' + 26,
+            b'0'..=b'9' => c - b'0' + 52,
+            b'+' => 62,
+            b'/' => 63,
+            _ => return Err(format!("{:?} is not a base64 digit", c as char)),
+        } as u32)
+    };
+    let bytes: Vec<u8> = text.bytes().filter(|c| !c.is_ascii_whitespace()).collect();
+    let bytes = bytes.strip_suffix(b"==").or_else(|| bytes.strip_suffix(b"=")).unwrap_or(&bytes);
+    if bytes.len() % 4 == 1 {
+        return Err("base64 has a stray digit".into());
+    }
+    let mut out = Vec::with_capacity(bytes.len() * 3 / 4);
+    for chunk in bytes.chunks(4) {
+        let mut n = 0u32;
+        for (k, c) in chunk.iter().enumerate() {
+            n |= digit(*c)? << (18 - 6 * k);
+        }
+        out.extend_from_slice(&n.to_be_bytes()[1..chunk.len()]);
+    }
+    Ok(out)
+}
+
+/// Reads isostyle's speculative layers (`neolith-evidence-1`, written by
+/// `isostyle/export.py`) for a world of `hexes` hexes in file order.
+pub fn import_evidence(text: &str, hexes: usize) -> Result<Vec<EvidenceLayer>, String> {
+    use neolith_core::evidence::{BINS, LEVELS};
+    let root: Json = serde_json::from_str(text).map_err(|e| format!("cannot parse the evidence layers: {e}"))?;
+    let format = root["format"].as_str().unwrap_or("");
+    if format != "neolith-evidence-1" {
+        return Err(format!("evidence: format {format:?}, expected \"neolith-evidence-1\""));
+    }
+    if root["hexes"].as_u64() != Some(hexes as u64) {
+        return Err(format!("evidence: made for {} hexes, the map has {hexes}", root["hexes"]));
+    }
+    if root["bins"].as_u64() != Some(BINS as u64) {
+        return Err(format!("evidence: {} bins, this build reads {BINS}", root["bins"]));
+    }
+    if root["confidence"].as_array().is_some_and(|c| c.len() != LEVELS as usize) {
+        return Err(format!("evidence: {} confidence levels, this build reads {LEVELS}", root["confidence"]));
+    }
+    let slices: Vec<Year> = root["slices"]
+        .as_array()
+        .ok_or("evidence: no slices")?
+        .iter()
+        .map(|y| y.as_i64().map(|y| Year(y as i32)).ok_or(format!("evidence: slice {y} is not a year")))
+        .collect::<Result<_, _>>()?;
+    let text_of = |l: &Json, k: &str| l[k].as_str().unwrap_or("").to_string();
+    let mut out = Vec::new();
+    for l in root["layers"].as_array().ok_or("evidence: no layers")? {
+        let id = text_of(l, "id");
+        let codes = base64_decode(l["codes"].as_str().ok_or(format!("evidence layer {id}: no codes"))?)
+            .map_err(|e| format!("evidence layer {id}: {e}"))?;
+        // Layers may carry their own slices; the export puts them at the top.
+        let slices = match l["slices"].as_array() {
+            Some(a) => a.iter().filter_map(|y| y.as_i64()).map(|y| Year(y as i32)).collect(),
+            None => slices.clone(),
+        };
+        let layer = EvidenceLayer {
+            name: text_of(l, "name"),
+            group: text_of(l, "group"),
+            set: text_of(l, "set"),
+            kind: text_of(l, "kind"),
+            units: text_of(l, "units"),
+            vmin: l["vmin"].as_f64().ok_or(format!("evidence layer {id}: no vmin"))? as f32,
+            vmax: l["vmax"].as_f64().ok_or(format!("evidence layer {id}: no vmax"))? as f32,
+            note: text_of(l, "note"),
+            slices,
+            codes,
+            id,
+        };
+        layer.validate(hexes)?;
+        out.push(layer);
+    }
+    Ok(out)
 }
 
 /// An epoch-by-epoch summary of the dataset.
@@ -546,6 +875,13 @@ pub fn stats(world: &World) -> String {
             let _ = writeln!(s, "\nelevation: none");
         }
     }
+    if !world.farming.is_empty() {
+        let _ = writeln!(s, "farming front: reaches {} hexes", world.farming.iter().flatten().count());
+    }
+    if !world.npp.is_empty() {
+        let last = world.npp.iter().filter_map(|t| t.keys().last().map(|(_, v)| *v));
+        let _ = writeln!(s, "productivity: {} hexes, up to {} g/m²/yr at the last key", world.npp.len(), last.max().unwrap_or(0));
+    }
     if world.landform.iter().any(Option::is_some) {
         let n = |l: Landform| world.landform.iter().filter(|x| **x == Some(l)).count();
         let _ = writeln!(
@@ -553,6 +889,31 @@ pub fn stats(world: &World) -> String {
             "landform: {}",
             Landform::ALL.iter().map(|l| format!("{} {}", l.label(), n(*l))).collect::<Vec<_>>().join(", ")
         );
+    }
+    if !world.evidence.is_empty() {
+        use neolith_core::evidence::{confidence, LEVELS};
+        let years = &world.evidence[0].slices;
+        let span = format!("{}…{}", years[0].0, years[years.len() - 1].0);
+        let _ = writeln!(s, "\nevidence layers: {} ({} slices, {span}; share of coded hex-slices by confidence 0-{})", world.evidence.len(), years.len(), LEVELS - 1);
+        for l in &world.evidence {
+            let mut n = [0usize; LEVELS as usize];
+            l.codes.iter().filter_map(|c| confidence(*c)).for_each(|c| n[c as usize] += 1);
+            let coded: usize = n.iter().sum();
+            let shares: Vec<String> = n.iter().map(|k| format!("{:.0}%", 100.0 * *k as f64 / coded.max(1) as f64)).collect();
+            let set = if l.set.is_empty() { String::new() } else { format!(" / {}", l.set) };
+            let _ = writeln!(
+                s,
+                "  {:<22} {} [{}{set}], {} {}…{}, {:.0}% coded, by confidence {}",
+                l.id,
+                l.name,
+                l.group,
+                l.units,
+                l.vmin,
+                l.vmax,
+                100.0 * coded as f64 / l.codes.len().max(1) as f64,
+                shares.join("/")
+            );
+        }
     }
     let _ = writeln!(s, "\nrivers: {} ({} stretches)", keys.len(), world.rivers.len());
     for l in &world.lakes {
@@ -598,5 +959,90 @@ mod lake_tests {
         w.lakes = lakes;
         let again = import_lakes(&export_lakes(&w).to_string()).unwrap();
         assert_eq!(again, w.lakes);
+    }
+
+    #[test]
+    fn settlement_records_carry_the_metadata() {
+        let text = r#"[{"id": 7, "geometry": {"type": "Point", "coordinates": [1, 2]},
+            "properties": {"name": "A", "founding": -6000, "abandoned": -5000, "type": "cave",
+              "occupation": [[-4000, -3000], [-6000, -5000]],
+              "periods": ["LBK"], "aliases": ["B"], "culture": {"-5800": "lbk", "-6000": "x"},
+              "stage_inferred": {"-6000": "neolithic"}, "features": ["rock art"],
+              "wikipedia": "A (site)", "wikidata": "Q1", "sources": ["xronos"],
+              "references": ["r1", "r1", "r2"], "importance": 3, "evidence": 0}},
+            {"id": 8, "geometry": {"type": "Point", "coordinates": [3, 4]},
+            "properties": {"name": "C", "founding": -7000}}]"#;
+        let (s, info, _) = import_settlement_records(text).unwrap();
+        assert_eq!((s.len(), info.len()), (2, 2));
+        assert_eq!(s[0].occupation, vec![(Year(-6000), Year(-5000)), (Year(-4000), Year(-3000))]);
+        assert!(s[1].occupation.is_empty());
+        assert_eq!((s[0].importance, s[0].evidence), (3, 0));
+        assert_eq!((s[1].importance, s[1].evidence), (Settlement::DEFAULT_IMPORTANCE, Settlement::DEFAULT_EVIDENCE));
+        assert!(import_settlement_records(&text.replace("\"importance\": 3", "\"importance\": 4")).is_err());
+        let bad = text.replace("[-4000, -3000]", "[-3000, -4000]");
+        assert!(import_settlement_records(&bad).is_err());
+        let a = &info[0];
+        assert_eq!((a.kind.as_str(), a.abandoned), ("cave", Some(Year(-5000))));
+        assert_eq!(a.culture, vec![(Year(-6000), "x".to_string()), (Year(-5800), "lbk".to_string())]);
+        assert_eq!(a.stage_inferred, vec![(Year(-6000), "neolithic".to_string())]);
+        assert_eq!((a.wikipedia.as_deref(), a.wikidata.as_deref()), (Some("A (site)"), Some("Q1")));
+        assert_eq!(a.references, vec!["r1", "r2"]);
+        assert_eq!(a.features, vec!["rock art"]);
+        assert_eq!(info[1], SiteInfo::default());
+
+        let csv = "site_id,site,lab_number,c14_age,c14_error,cal_year,dataset,site_as_filed,references\n\
+                   7,A,X-2,6000,30,-4900,xronos,\"A, \"\"the\"\" site\",r1\n\
+                   7,A,X-1,7100,45,-5990,p3k14c,A,\n\
+                   99,Z,Z-1,100,10,1800,xronos,Z,\n";
+        let mut info = info;
+        assert_eq!(attach_dates(&s, &mut info, csv).unwrap(), (2, 1));
+        let labs: Vec<_> = info[0].dates.iter().map(|d| d.lab.as_str()).collect();
+        assert_eq!(labs, ["X-1", "X-2"]);
+        assert_eq!(info[0].dates[0], C14Date { lab: "X-1".into(), bp: 7100, err: 45, cal: Year(-5990), dataset: "p3k14c".into() });
+    }
+
+    #[test]
+    fn evidence_import() {
+        assert_eq!(base64_decode("AAEC/w==").unwrap(), vec![0, 1, 2, 255]);
+        assert_eq!(base64_decode("TWFu").unwrap(), b"Man");
+        assert_eq!(base64_decode("TWE").unwrap(), b"Ma");
+        assert!(base64_decode("TW!u").is_err());
+        // 2 slices × 2 hexes: [0, 60, 249, 255].
+        let doc = |hexes: usize, codes: &str| {
+            format!(
+                r#"{{"format":"neolith-evidence-1","hexes":{hexes},"slices":[-6000,-5000],"bins":50,
+                    "confidence":["a","b","c","d","e"],
+                    "layers":[{{"id":"x","name":"X","group":"G","set":"","kind":"share","units":"share",
+                                "vmin":0.0,"vmax":1.0,"note":"n","codes":"{codes}"}}]}}"#
+            )
+        };
+        let layers = import_evidence(&doc(2, "ADz5/w=="), 2).unwrap();
+        assert_eq!(layers.len(), 1);
+        let l = &layers[0];
+        assert_eq!((l.id.as_str(), l.group.as_str(), l.note.as_str()), ("x", "G", "n"));
+        assert_eq!(l.slices, vec![Year(-6000), Year(-5000)]);
+        assert_eq!(l.codes, vec![0, 60, 249, 255]);
+        assert_eq!(l.code_at(HexId(1), Year(-5500)), 60);
+        assert_eq!(l.code_at(HexId(1), Year(-4000)), 255);
+        assert!(import_evidence(&doc(2, "ADz5/w=="), 3).is_err(), "hex count must match the map");
+        assert!(import_evidence(&doc(2, "ADz5"), 2).is_err(), "codes must cover every slice");
+        assert!(import_evidence(&doc(2, "ADz6/w=="), 2).is_err(), "code 250 is out of range");
+        let mut w = World::empty(GridSpec { cols: 2, rows: 1, origin_lon: 0.0, origin_lat: 1.0, w: 0.5773502691896262, h: 0.5 });
+        w.evidence = layers;
+        assert!(stats(&w).contains("evidence layers: 1"));
+    }
+
+    #[test]
+    fn csv_handles_quotes() {
+        assert_eq!(csv_rows("a,\"b,c\",\"d\"\"e\"\r\n1,2,3"), vec![vec!["a", "b,c", "d\"e"], vec!["1", "2", "3"]]);
+    }
+
+    #[test]
+    fn cultures_table() {
+        let t = r#"[{"id": "lbk", "kind": "culture", "name": "Linear Pottery", "wikipedia": {"title": "Linear Pottery culture"}},
+                    {"id": "x", "kind": "stage", "name": "X"}]"#;
+        let c = import_cultures(t).unwrap();
+        assert_eq!(c[0], CultureInfo { id: "lbk".into(), kind: "culture".into(), name: "Linear Pottery".into(), wikipedia: Some("Linear Pottery culture".into()) });
+        assert_eq!(c[1].wikipedia, None);
     }
 }

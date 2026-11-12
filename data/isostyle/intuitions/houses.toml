@@ -1,0 +1,927 @@
+# Gap critic: houses layer. Judgements, not data.
+# Values: expected share of dated occupations with a house if all sites' structures were typed (0-1).
+# Regions that share one reading are written as one judgement per region with the same text.
+
+[meta]
+layer = "houses"
+written = "2026-11-12"
+dossier = "build/isostyle/gaps/houses/dossier.json"
+summary = "Houses existed wherever farmers lived and in many forager settings too, so almost every gap here is recording practice: XRONOS types most excavated houses as 'settlement', and the layer only shows Britain (Mesolithic roundhouses at 6,000 BCE, Neolithic halls at 4,000) plus a few Scandinavian and Central European cells. Expected values are the share of dated occupations that would show a house if every site's structures were typed: c. 0.6-0.75 in village-farming regions (SW Asia from the PPNA, the Balkans, the loess belt, Trypillia), 0.3-0.5 where caves and open camps dominate (Iberia, Italy, Mediterranean France), and 0.1-0.3 among foragers and mobile herders. The whole layer is a method artefact; a speculative layer should follow the farming front, not the evidence. A better proxy would be to read 'settlement' sites with house plans from regional syntheses."
+
+[[judgement]]
+region = "Levant"
+slices = [-10000]
+gap_ids = ["houses-10000-22"]
+why_empty = ["recording_practice"]
+why_note = "Natufian and PPNA round houses are common."
+expected = 0.5
+expected_range = [0.3, 0.7]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Masked; Natufian base camps (Eynan, Wadi Hammeh) and PPNA villages have houses."
+would_settle = "Typed site lists from the Levantine Epipalaeolithic and PPN."
+speculative_rule = "0.5 in the Mediterranean zone, 0.2 in the steppe and desert."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000]
+value = 0.2
+[[judgement.adjust]]
+kind = "area"
+bbox = [34.5, 31.0, 36.8, 37.1]
+value = 0.5
+
+[[judgement]]
+region = "Levant"
+slices = [-9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["houses-6000-135", "houses-4000-189", "houses-7000-108", "houses-5000-162", "houses-9000-51", "houses-3000-216", "houses-8000-80"]
+why_empty = ["recording_practice"]
+why_note = "Village farming from the PPNA/PPNB on; almost every settlement has buildings."
+expected = 0.7
+expected_range = [0.5, 0.85]
+confidence = "medium"
+basis = ["literature", "other_layer"]
+reasoning = "Fully masked. Pottery and cereals layers show dense settlement; the remaining occupations are caves, camps and burials. Same reading as: Anatolia & Cyprus, Mesopotamia."
+would_settle = "Type houses from ASPRO/Near Eastern site databases."
+speculative_rule = "0.7 in the farming zone, 0.3 in the arid margins."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-9000, -8000, -7000, -6000, -5000, -4000, -3000]
+value = 0.3
+[[judgement.adjust]]
+kind = "area"
+bbox = [34.5, 31.0, 36.8, 37.1]
+value = 0.7
+[[judgement.adjust]]
+kind = "area"
+bbox = [36.8, 35.8, 41.8, 37.1]
+value = 0.7
+
+[[judgement]]
+region = "Anatolia & Cyprus"
+slices = [-9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["houses-9000-44", "houses-8000-74", "houses-7000-103", "houses-6000-130", "houses-4000-184", "houses-3000-210", "houses-5000-157"]
+why_empty = ["recording_practice"]
+why_note = "Village farming from the PPNA/PPNB on; almost every settlement has buildings."
+expected = 0.7
+expected_range = [0.5, 0.85]
+confidence = "medium"
+basis = ["literature", "other_layer"]
+reasoning = "Fully masked. Pottery and cereals layers show dense settlement; the remaining occupations are caves, camps and burials. Same reading as: Levant, Mesopotamia."
+would_settle = "Type houses from ASPRO/Near Eastern site databases."
+speculative_rule = "0.7 in the farming zone, 0.3 in the arid margins."
+
+[[judgement]]
+region = "Mesopotamia"
+slices = [-9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["houses-9000-49", "houses-8000-77", "houses-7000-107", "houses-6000-133", "houses-5000-160", "houses-4000-187", "houses-3000-213"]
+why_empty = ["recording_practice"]
+why_note = "Village farming from the PPNA/PPNB on; almost every settlement has buildings."
+expected = 0.7
+expected_range = [0.5, 0.85]
+confidence = "medium"
+basis = ["literature", "other_layer"]
+reasoning = "Fully masked. Pottery and cereals layers show dense settlement; the remaining occupations are caves, camps and burials. Same reading as: Levant, Anatolia & Cyprus."
+would_settle = "Type houses from ASPRO/Near Eastern site databases."
+speculative_rule = "0.7 in the farming zone, 0.3 in the arid margins."
+[[judgement.adjust]]
+kind = "area"
+bbox = [38.8, 31.0, 43.3, 34.0]
+value = 0.3
+[[judgement.adjust]]
+kind = "area"
+bbox = [42.0, 28.6, 46.0, 31.0]
+value = 0.3
+[[judgement.adjust]]
+kind = "area"
+bbox = [46.5, 28.6, 48.3, 30.1]
+value = 0.3
+
+[[judgement]]
+region = "Anatolia & Cyprus"
+slices = [-10000]
+gap_ids = ["houses-10000-15"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "Late Epipalaeolithic and earliest PPNA (Körtik Tepe, Qermez Dere) have round houses; few sites."
+expected = 0.3
+expected_range = [0.1, 0.5]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Mesopotamia."
+would_settle = "As above."
+speculative_rule = "0.3 in the Taurus foothills and upper Tigris; 0.1 elsewhere."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000]
+value = 0.1
+[[judgement.adjust]]
+kind = "polygon"
+points = [[37.0, 36.8], [37.0, 37.6], [37.8, 37.9], [38.6, 38.3], [39.6, 38.6], [40.6, 38.4], [41.6, 38.2], [42.5, 37.9], [42.5, 37.1], [40.0, 36.9]]
+value = 0.3
+
+[[judgement]]
+region = "Mesopotamia"
+slices = [-10000]
+gap_ids = ["houses-10000-20"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "Late Epipalaeolithic and earliest PPNA (Körtik Tepe, Qermez Dere) have round houses; few sites."
+expected = 0.3
+expected_range = [0.1, 0.5]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Anatolia & Cyprus."
+would_settle = "As above."
+speculative_rule = "0.3 in the Taurus foothills and upper Tigris; 0.1 elsewhere."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000]
+value = 0.1
+[[judgement.adjust]]
+kind = "polygon"
+points = [[42.3, 36.9], [42.4, 37.3], [43.6, 37.35], [44.8, 37.15], [45.1, 36.4], [44.6, 35.8], [43.8, 36.0], [43.0, 36.4]]
+value = 0.3
+
+[[judgement]]
+region = "Iran & Afghanistan"
+slices = [-10000, -9000]
+gap_ids = ["houses-9000-38", "houses-10000-10"]
+why_empty = ["research_intensity", "recording_practice"]
+why_note = "Few sites; Zagros Epipalaeolithic camps and caves."
+expected = 0.2
+expected_range = [0.05, 0.4]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Zagros PPN syntheses."
+speculative_rule = "0.2 in the Zagros, 0.05 on the plateau."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000]
+value = 0.05
+[[judgement.adjust]]
+kind = "polygon"
+points = [[44.6, 37.2], [45.5, 34.6], [46.5, 33.4], [48.3, 32.3], [50.2, 30.5], [52.4, 28.7], [54.5, 27.4], [55.0, 28.3], [53.0, 30.5], [51.3, 32.6], [48.7, 34.6], [46.3, 36.8]]
+value = 0.2
+
+[[judgement]]
+region = "Iran & Afghanistan"
+slices = [-8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["houses-8000-67", "houses-7000-96", "houses-6000-124", "houses-5000-151", "houses-4000-178", "houses-3000-204"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "Ganj Dareh, Chogha Golan, Sialk and later villages."
+expected = 0.6
+expected_range = [0.4, 0.8]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Iranian site syntheses."
+speculative_rule = "0.6 in the Zagros and plateau oases, 0.1 in the deserts."
+[[judgement.adjust]]
+kind = "polygon"
+points = [[51.5, 34.6], [52.5, 35.2], [54.0, 35.6], [55.5, 35.2], [56.5, 34.5], [55.5, 33.6], [54.0, 33.6], [52.5, 34.0]]
+value = 0.1
+[[judgement.adjust]]
+kind = "polygon"
+points = [[57.3, 31.0], [58.2, 32.5], [59.0, 32.8], [59.5, 31.5], [59.6, 30.0], [59.0, 28.8], [58.3, 28.8], [57.8, 30.0]]
+value = 0.1
+[[judgement.adjust]]
+kind = "area"
+bbox = [61.0, 29.4, 65.7, 31.5]
+value = 0.1
+
+[[judgement]]
+region = "Caucasus"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["houses-8000-82", "houses-7000-111", "houses-9000-55", "houses-10000-26"]
+why_empty = ["low_population", "research_intensity"]
+why_note = "Mesolithic foragers using caves and camps."
+expected = 0.1
+expected_range = [0.0, 0.25]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Caucasian Mesolithic site lists."
+speculative_rule = "0.1."
+
+[[judgement]]
+region = "Caucasus"
+slices = [-6000, -5000, -4000, -3000]
+gap_ids = ["houses-6000-138", "houses-5000-165", "houses-4000-191", "houses-3000-218"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "Shulaveri-Shomu round mudbrick houses from c. 6000; Kura-Araxes villages later."
+expected = 0.65
+expected_range = [0.4, 0.8]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Caucasian Neolithic syntheses."
+speculative_rule = "0.65 in the Kura and Araxes valleys, 0.2 in the uplands."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-6000, -5000, -4000, -3000]
+value = 0.2
+[[judgement.adjust]]
+kind = "river"
+within_km = 40
+names = ["Kura", "Aras"]
+value = 0.65
+
+[[judgement]]
+region = "Central Asia"
+slices = [-10000, -9000, -8000]
+gap_ids = ["houses-8000-66", "houses-9000-37", "houses-10000-08"]
+why_empty = ["low_population", "research_intensity"]
+why_note = "Sparse foragers."
+expected = 0.1
+expected_range = [0.0, 0.25]
+confidence = "low"
+basis = ["intuition"]
+reasoning = "Masked. Same reading as: Other."
+would_settle = "Regional syntheses."
+speculative_rule = "0.1."
+
+[[judgement]]
+region = "Other"
+slices = [-10000, -9000, -8000]
+gap_ids = ["houses-10000-27", "houses-9000-56", "houses-8000-84"]
+why_empty = ["low_population", "research_intensity"]
+why_note = "Sparse foragers."
+expected = 0.1
+expected_range = [0.0, 0.25]
+confidence = "low"
+basis = ["intuition"]
+reasoning = "Masked. Same reading as: Central Asia."
+would_settle = "Regional syntheses."
+speculative_rule = "0.1."
+
+[[judgement]]
+region = "Central Asia"
+slices = [-7000, -6000, -5000, -4000, -3000]
+gap_ids = ["houses-7000-95", "houses-6000-122", "houses-5000-149", "houses-4000-176", "houses-3000-202"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "Jeitun-culture and Namazga villages in southern Turkmenistan and Baluchistan farming villages have houses; Kelteminar foragers have large huts."
+expected = 0.4
+expected_range = [0.2, 0.6]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Village farming only along the Kopet Dag piedmont and in Baluchistan. Same reading as: Other."
+would_settle = "Jeitun and Kelteminar site lists."
+speculative_rule = "0.6 along the Kopet Dag and in Baluchistan from 6,500 BCE, 0.2 in the Kyzylkum and Kazakh steppe."
+[[judgement.adjust]]
+kind = "polygon"
+points = [[54.0, 38.6], [55.0, 39.3], [56.5, 39.3], [58.0, 38.5], [59.5, 37.7], [61.0, 37.1], [61.0, 36.3], [59.5, 36.9], [58.0, 37.5], [56.5, 38.2], [55.0, 38.0], [54.0, 37.3]]
+slices = [-6000, -5000, -4000, -3000]
+value = 0.6
+[[judgement.adjust]]
+kind = "area"
+bbox = [60.0, 40.0, 65.7, 44.0]
+value = 0.2
+[[judgement.adjust]]
+kind = "area"
+bbox = [47.0, 45.0, 65.7, 54.4]
+value = 0.2
+
+[[judgement]]
+region = "Other"
+slices = [-7000, -6000, -5000, -4000, -3000]
+gap_ids = ["houses-7000-113", "houses-6000-140", "houses-5000-167", "houses-4000-193", "houses-3000-220"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "Jeitun-culture and Namazga villages in southern Turkmenistan and Baluchistan farming villages have houses; Kelteminar foragers have large huts."
+expected = 0.4
+expected_range = [0.2, 0.6]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Village farming only along the Kopet Dag piedmont and in Baluchistan. Same reading as: Central Asia."
+would_settle = "Jeitun and Kelteminar site lists."
+speculative_rule = "0.6 along the Kopet Dag and in Baluchistan from 6,500 BCE, 0.2 in the Kyzylkum and Kazakh steppe."
+[[judgement.adjust]]
+kind = "area"
+bbox = [61.0, 25.0, 65.7, 31.0]
+value = 0.6
+slices = [-6000, -5000, -4000, -3000]
+
+[[judgement]]
+region = "Arabia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["houses-10000-04", "houses-9000-33", "houses-8000-62", "houses-7000-91", "houses-6000-118", "houses-5000-145", "houses-4000-172", "houses-3000-198"]
+why_empty = ["recording_practice", "research_intensity", "low_population"]
+why_note = "Mobile herders and coastal foragers; stone houses at Marawah and some coastal sites."
+expected = 0.2
+expected_range = [0.05, 0.4]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Arabian Neolithic syntheses."
+speculative_rule = "0.05 before 7,000 BCE, 0.2 after, 0.3 on the Gulf coast."
+[[judgement.adjust]]
+kind = "coast"
+within_km = 110
+value = 0.3
+[[judgement.adjust]]
+kind = "area"
+bbox = [34.9, 12.1, 48.0, 32.1]
+value = 0.2
+[[judgement.adjust]]
+kind = "area"
+bbox = [48.0, 12.1, 60.0, 22.5]
+value = 0.2
+[[judgement.adjust]]
+kind = "area"
+bbox = [56.4, 22.5, 60.0, 25.0]
+value = 0.2
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000]
+value = 0.05
+
+[[judgement]]
+region = "Balkans & Greece"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["houses-9000-43", "houses-10000-14", "houses-8000-73", "houses-7000-102"]
+why_empty = ["low_population", "recording_practice"]
+why_note = "Foragers until c. 6500 BCE; Iron Gates trapezoidal houses (Lepenski Vir) are an exception."
+expected = 0.15
+expected_range = [0.05, 0.3]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Iron Gates dates."
+speculative_rule = "0.15, rising to 0.5 in the Iron Gates gorge at 7,000 BCE."
+[[judgement.adjust]]
+kind = "near"
+point = [22.2, 44.6]
+radius_km = 50
+value = 0.5
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000]
+value = 0.15
+
+[[judgement]]
+region = "Balkans & Greece"
+slices = [-6000, -5000, -4000, -3000]
+gap_ids = ["houses-6000-129", "houses-5000-156", "houses-4000-183", "houses-3000-209"]
+why_empty = ["recording_practice"]
+why_note = "Tells and flat villages with houses throughout."
+expected = 0.75
+expected_range = [0.6, 0.9]
+confidence = "medium"
+basis = ["literature", "other_layer"]
+reasoning = "Fully masked despite dense dated settlement."
+would_settle = "Type houses from Balkan site syntheses."
+speculative_rule = "0.75 in the lowlands, 0.4 in the uplands."
+[[judgement.adjust]]
+kind = "polygon"
+points = [[14.4, 45.35], [15.2, 44.15], [16.4, 43.5], [18.1, 42.65], [19.3, 42.0], [20.1, 42.5], [20.0, 43.5], [18.9, 44.4], [17.2, 44.85], [15.6, 45.5]]
+value = 0.4
+[[judgement.adjust]]
+kind = "polygon"
+points = [[20.6, 40.6], [21.1, 40.9], [21.5, 40.3], [21.9, 39.5], [22.1, 38.8], [21.6, 38.8], [21.0, 39.4], [20.6, 40.0]]
+value = 0.4
+[[judgement.adjust]]
+kind = "polygon"
+points = [[23.6, 41.6], [23.9, 42.05], [24.6, 42.0], [25.4, 41.9], [26.0, 41.6], [25.7, 41.25], [24.6, 41.25], [23.9, 41.35]]
+value = 0.4
+[[judgement.adjust]]
+kind = "polygon"
+points = [[22.4, 43.75], [22.9, 43.5], [23.6, 43.05], [24.9, 42.9], [26.5, 42.9], [26.5, 42.6], [24.9, 42.62], [23.6, 42.75], [22.6, 43.1], [22.2, 43.5]]
+value = 0.4
+[[judgement.adjust]]
+kind = "polygon"
+points = [[22.2, 45.0], [22.6, 45.55], [23.4, 45.55], [24.2, 45.7], [25.3, 45.6], [26.1, 45.55], [25.6, 45.25], [24.5, 45.2], [23.3, 45.1]]
+value = 0.4
+[[judgement.adjust]]
+kind = "polygon"
+points = [[25.8, 45.55], [26.6, 45.6], [26.5, 46.3], [26.3, 47.0], [25.9, 47.8], [24.8, 47.85], [24.9, 47.2], [25.4, 46.5], [25.5, 45.9]]
+value = 0.4
+
+[[judgement]]
+region = "Central Europe"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["houses-9000-40", "houses-8000-69", "houses-7000-99", "houses-10000-11"]
+why_empty = ["low_population", "recording_practice"]
+why_note = "Mesolithic foragers; few house structures."
+expected = 0.1
+expected_range = [0.0, 0.2]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Nothing urgent."
+speculative_rule = "0.1."
+
+[[judgement]]
+region = "Central Europe"
+slices = [-6000]
+gap_ids = ["houses-6000-126"]
+why_empty = ["recording_practice"]
+why_note = "LBK longhouses from c. 5500, at the end of the slice."
+expected = 0.3
+expected_range = [0.1, 0.5]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "LBK house catalogues."
+speculative_rule = "0.5 on the loess from 5,500 BCE, 0.1 elsewhere."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-6000]
+value = 0.1
+[[judgement.adjust]]
+kind = "area"
+bbox = [6.3, 49.8, 24.0, 52.2]
+value = 0.5
+
+[[judgement]]
+region = "Central Europe"
+slices = [-5000, -4000, -3000]
+gap_ids = ["houses-5000-153", "houses-4000-180", "houses-3000-206"]
+why_empty = ["recording_practice"]
+why_note = "LBK to Corded Ware: longhouses, then smaller houses; widespread."
+expected = 0.6
+expected_range = [0.4, 0.8]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Coverage 0% despite the densest excavated house record in Europe; only a few edge cells."
+would_settle = "Type houses from LBK and Michelsberg/TRB house catalogues."
+speculative_rule = "0.6 on the loess and Alpine foreland, 0.35 on the North European plain."
+[[judgement.adjust]]
+kind = "area"
+bbox = [6.3, 52.2, 24.1, 55.1]
+value = 0.35
+
+[[judgement]]
+region = "France & Low Countries"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["houses-10000-16", "houses-9000-45", "houses-8000-75", "houses-7000-104"]
+why_empty = ["low_population", "recording_practice"]
+why_note = "Mesolithic foragers; huts rare."
+expected = 0.1
+expected_range = [0.0, 0.2]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Italy & islands, Iberia."
+would_settle = "Nothing urgent."
+speculative_rule = "0.1."
+
+[[judgement]]
+region = "Italy & islands"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["houses-9000-50", "houses-10000-21", "houses-8000-79", "houses-7000-109"]
+why_empty = ["low_population", "recording_practice"]
+why_note = "Mesolithic foragers; huts rare."
+expected = 0.1
+expected_range = [0.0, 0.2]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: France & Low Countries, Iberia."
+would_settle = "Nothing urgent."
+speculative_rule = "0.1."
+
+[[judgement]]
+region = "Iberia"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["houses-10000-17", "houses-9000-47", "houses-8000-76", "houses-7000-105"]
+why_empty = ["low_population", "recording_practice"]
+why_note = "Mesolithic foragers; huts rare."
+expected = 0.1
+expected_range = [0.0, 0.2]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: France & Low Countries, Italy & islands."
+would_settle = "Nothing urgent."
+speculative_rule = "0.1."
+
+[[judgement]]
+region = "France & Low Countries"
+slices = [-6000]
+gap_ids = ["houses-6000-131"]
+why_empty = ["recording_practice"]
+why_note = "Mostly Mesolithic; Impressa coastal sites only."
+expected = 0.1
+expected_range = [0.0, 0.2]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Nothing urgent."
+speculative_rule = "0.1."
+
+[[judgement]]
+region = "France & Low Countries"
+slices = [-5000, -4000, -3000]
+gap_ids = ["houses-4000-185", "houses-5000-158", "houses-3000-211"]
+why_empty = ["recording_practice"]
+why_note = "LBK, Villeneuve-Saint-Germain and later houses in the north; caves and open sites in the south."
+expected = 0.45
+expected_range = [0.3, 0.65]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "French house catalogues (INRAP)."
+speculative_rule = "0.55 in the Paris basin and the north, 0.3 in Mediterranean France."
+[[judgement.adjust]]
+kind = "area"
+bbox = [-1.0, 47.5, 7.5, 53.9]
+value = 0.55
+[[judgement.adjust]]
+kind = "area"
+bbox = [1.7, 42.3, 7.7, 44.4]
+value = 0.3
+[[judgement.adjust]]
+kind = "area"
+bbox = [8.5, 41.4, 9.6, 43.1]
+value = 0.3
+
+[[judgement]]
+region = "Italy & islands"
+slices = [-6000, -5000, -4000, -3000]
+gap_ids = ["houses-4000-188", "houses-3000-215", "houses-5000-163", "houses-6000-136"]
+why_empty = ["recording_practice"]
+why_note = "Ditched villages with houses in the south; caves common elsewhere."
+expected = 0.45
+expected_range = [0.3, 0.6]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Italian site syntheses."
+speculative_rule = "0.6 in Apulia and the Po plain, 0.35 elsewhere."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-6000, -5000, -4000, -3000]
+value = 0.35
+[[judgement.adjust]]
+kind = "polygon"
+points = [[7.5, 44.7], [7.6, 45.3], [8.6, 45.65], [9.8, 45.65], [10.8, 45.45], [12.2, 45.55], [12.6, 45.2], [12.3, 44.4], [11.3, 44.5], [9.8, 44.95], [8.6, 44.75]]
+value = 0.6
+[[judgement.adjust]]
+kind = "area"
+bbox = [15.0, 40.9, 16.8, 42.0]
+value = 0.6
+[[judgement.adjust]]
+kind = "area"
+bbox = [16.8, 39.8, 18.5, 41.4]
+value = 0.6
+
+[[judgement]]
+region = "Iberia"
+slices = [-6000, -5000, -4000]
+gap_ids = ["houses-5000-159", "houses-4000-186", "houses-6000-132"]
+why_empty = ["recording_practice", "sampling_bias"]
+why_note = "Early and Middle Neolithic Iberia is dominated by caves; open-air houses are fewer."
+expected = 0.3
+expected_range = [0.15, 0.5]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Iberian Neolithic site syntheses."
+speculative_rule = "0.3."
+
+[[judgement]]
+region = "Iberia"
+slices = [-3000]
+gap_ids = ["houses-3000-212"]
+why_empty = ["recording_practice"]
+why_note = "Chalcolithic villages (Los Millares, Zambujal) have houses."
+expected = 0.55
+expected_range = [0.35, 0.7]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Iberian Chalcolithic syntheses."
+speculative_rule = "0.55 in the south and Meseta, 0.35 in the north."
+[[judgement.adjust]]
+kind = "area"
+bbox = [-9.5, 42.5, 3.4, 43.9]
+value = 0.35
+
+[[judgement]]
+region = "British Isles"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+gap_ids = ["houses-10000-18", "houses-9000-48", "houses-7000-106", "houses-6000-134", "houses-8000-78", "houses-5000-161", "houses-8000-85", "houses-5000-168"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "Mesolithic roundhouses (Howick, Mount Sandel, Star Carr) are real but rare."
+expected = 0.1
+expected_range = [0.03, 0.2]
+confidence = "medium"
+basis = ["dossier_statistics", "literature"]
+reasoning = "21% coverage at 6,000 BCE is genuine Mesolithic houses."
+would_settle = "Nothing urgent."
+speculative_rule = "0.1."
+
+[[judgement]]
+region = "British Isles"
+slices = [-4000, -3000]
+gap_ids = ["houses-3000-214", "houses-4000-194"]
+why_empty = ["recording_practice"]
+why_note = "Early Neolithic halls and later houses; houses are not common in Britain after c. 3600 BCE."
+expected = 0.3
+expected_range = [0.15, 0.45]
+confidence = "medium"
+basis = ["dossier_statistics", "literature"]
+reasoning = "Coverage 64% and 28%."
+would_settle = "Nothing urgent."
+speculative_rule = "0.3, 0.45 in Orkney."
+[[judgement.adjust]]
+kind = "area"
+bbox = [-3.5, 58.65, -2.3, 59.4]
+value = 0.45
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+gap_ids = ["houses-5000-152", "houses-6000-125", "houses-7000-98", "houses-8000-72", "houses-9000-46", "houses-10000-19", "houses-10000-25"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "Forager dwellings and pit-houses (Finland, Karelia, Norway) are common on coastal and lake sites."
+expected = 0.25
+expected_range = [0.1, 0.4]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Baltic, Russia: forest north of 56°N."
+would_settle = "Finnish and Russian pit-house surveys."
+speculative_rule = "0.2 before 7,000 BCE, 0.3 after."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000]
+value = 0.2
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-7000, -6000, -5000]
+value = 0.3
+
+[[judgement]]
+region = "Baltic"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+gap_ids = ["houses-9000-52", "houses-10000-24", "houses-8000-81", "houses-7000-110", "houses-6000-137", "houses-5000-164"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "Forager dwellings and pit-houses (Finland, Karelia, Norway) are common on coastal and lake sites."
+expected = 0.25
+expected_range = [0.1, 0.4]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Scandinavia, Russia: forest north of 56°N."
+would_settle = "Finnish and Russian pit-house surveys."
+speculative_rule = "0.2 before 7,000 BCE, 0.3 after."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000]
+value = 0.2
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-7000, -6000, -5000]
+value = 0.3
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+gap_ids = ["houses-7000-88", "houses-6000-115", "houses-5000-142", "houses-10000-01", "houses-9000-30", "houses-8000-59", "houses-9000-54", "houses-7000-112", "houses-6000-139", "houses-5000-166", "houses-8000-86"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "Forager dwellings and pit-houses (Finland, Karelia, Norway) are common on coastal and lake sites."
+expected = 0.25
+expected_range = [0.1, 0.4]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Scandinavia, Baltic."
+would_settle = "Finnish and Russian pit-house surveys."
+speculative_rule = "0.2 before 7,000 BCE, 0.3 after."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000]
+value = 0.2
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-7000, -6000, -5000]
+value = 0.3
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-4000, -3000]
+gap_ids = ["houses-4000-179", "houses-3000-205"]
+why_empty = ["recording_practice"]
+why_note = "TRB houses in the south; Comb Ware pit-house villages in Finland and Karelia."
+expected = 0.35
+expected_range = [0.2, 0.5]
+confidence = "low"
+basis = ["literature", "dossier_statistics"]
+reasoning = "2% coverage in Scandinavia only. Same reading as: Baltic, Russia: forest north of 56°N."
+would_settle = "As above."
+speculative_rule = "0.35."
+
+[[judgement]]
+region = "Baltic"
+slices = [-4000, -3000]
+gap_ids = ["houses-4000-190", "houses-3000-217"]
+why_empty = ["recording_practice"]
+why_note = "TRB houses in the south; Comb Ware pit-house villages in Finland and Karelia."
+expected = 0.35
+expected_range = [0.2, 0.5]
+confidence = "low"
+basis = ["literature", "dossier_statistics"]
+reasoning = "2% coverage in Scandinavia only. Same reading as: Scandinavia, Russia: forest north of 56°N."
+would_settle = "As above."
+speculative_rule = "0.35."
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-4000, -3000]
+gap_ids = ["houses-4000-169", "houses-3000-195", "houses-4000-192", "houses-3000-219"]
+why_empty = ["recording_practice"]
+why_note = "TRB houses in the south; Comb Ware pit-house villages in Finland and Karelia."
+expected = 0.35
+expected_range = [0.2, 0.5]
+confidence = "low"
+basis = ["literature", "dossier_statistics"]
+reasoning = "2% coverage in Scandinavia only. Same reading as: Scandinavia, Baltic."
+would_settle = "As above."
+speculative_rule = "0.35."
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-10000, -9000, -8000, -7000, -6000]
+gap_ids = ["houses-10000-13", "houses-9000-42", "houses-8000-71", "houses-7000-101", "houses-6000-128"]
+why_empty = ["research_intensity", "recording_practice"]
+why_note = "Foragers and early pottery-using groups."
+expected = 0.15
+expected_range = [0.05, 0.3]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Russia: steppe and forest-steppe."
+would_settle = "Regional syntheses."
+speculative_rule = "0.15."
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-10000, -9000, -8000, -7000, -6000]
+gap_ids = ["houses-9000-35", "houses-7000-92", "houses-8000-64", "houses-6000-119", "houses-10000-07"]
+why_empty = ["research_intensity", "recording_practice"]
+why_note = "Foragers and early pottery-using groups."
+expected = 0.15
+expected_range = [0.05, 0.3]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Ukraine & Belarus."
+would_settle = "Regional syntheses."
+speculative_rule = "0.15."
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-5000, -4000, -3000]
+gap_ids = ["houses-5000-155", "houses-4000-182", "houses-3000-208"]
+why_empty = ["recording_practice", "publication_access"]
+why_note = "Cucuteni-Trypillia villages with large houses, west of the Dnieper."
+expected = 0.5
+expected_range = [0.3, 0.75]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Trypillia site database."
+speculative_rule = "0.75 west of the Dnieper in the forest-steppe, 0.2 elsewhere."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000, -3000]
+value = 0.2
+[[judgement.adjust]]
+kind = "area"
+bbox = [24.0, 48.2, 30.5, 50.9]
+value = 0.75
+[[judgement.adjust]]
+kind = "area"
+bbox = [30.5, 48.4, 32.4, 50.2]
+value = 0.75
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-5000, -4000, -3000]
+gap_ids = ["houses-5000-147", "houses-4000-175", "houses-3000-201"]
+why_empty = ["recording_practice", "research_intensity"]
+why_note = "Steppe Eneolithic sites have few houses; burial grounds dominate."
+expected = 0.2
+expected_range = [0.05, 0.35]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Russian-language site syntheses."
+speculative_rule = "0.2."
+
+[[judgement]]
+region = "Libya & Egypt"
+slices = [-10000, -9000, -8000, -7000, -6000]
+gap_ids = ["houses-10000-05", "houses-9000-34", "houses-8000-63", "houses-7000-93", "houses-6000-120"]
+why_empty = ["research_intensity", "low_population"]
+why_note = "Foragers; Fayum and desert camps."
+expected = 0.1
+expected_range = [0.0, 0.2]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Nothing urgent."
+speculative_rule = "0.1."
+
+[[judgement]]
+region = "Libya & Egypt"
+slices = [-5000, -4000, -3000]
+gap_ids = ["houses-5000-146", "houses-3000-199", "houses-4000-173"]
+why_empty = ["recording_practice"]
+why_note = "Merimde, el-Omari, Maadi, Hierakonpolis have houses."
+expected = 0.4
+expected_range = [0.2, 0.6]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Fully masked although Predynastic villages are well excavated."
+would_settle = "Predynastic site syntheses."
+speculative_rule = "0.5 in the Nile valley and Delta, 0.05 in the deserts."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000, -3000]
+value = 0.05
+[[judgement.adjust]]
+kind = "river"
+within_km = 40
+names = ["Nile", "Nile (Canopic branch)", "Nile (Pelusiac branch)", "Nile (Sebennytic branch)"]
+value = 0.5
+[[judgement.adjust]]
+kind = "near"
+point = [30.85, 29.3]
+radius_km = 40
+value = 0.5
+
+[[judgement]]
+region = "Nile & Sudan"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["houses-10000-09", "houses-9000-39", "houses-8000-68", "houses-7000-97", "houses-5000-150", "houses-6000-123", "houses-3000-203", "houses-4000-177"]
+why_empty = ["research_intensity", "recording_practice", "low_population"]
+why_note = "Foragers and herders; houses rare in the record."
+expected = 0.1
+expected_range = [0.0, 0.25]
+confidence = "low"
+basis = ["intuition", "literature"]
+reasoning = "Fully masked. Same reading as: Sahara–Sahel, Maghreb, Horn of Africa, West Africa."
+would_settle = "Regional syntheses."
+speculative_rule = "0.1."
+
+[[judgement]]
+region = "Sahara–Sahel"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["houses-10000-02", "houses-4000-170", "houses-8000-60", "houses-3000-196", "houses-9000-31", "houses-5000-143", "houses-6000-116", "houses-7000-89"]
+why_empty = ["research_intensity", "recording_practice", "low_population"]
+why_note = "Foragers and herders; houses rare in the record."
+expected = 0.1
+expected_range = [0.0, 0.25]
+confidence = "low"
+basis = ["intuition", "literature"]
+reasoning = "Fully masked. Same reading as: Nile & Sudan, Maghreb, Horn of Africa, West Africa."
+would_settle = "Regional syntheses."
+speculative_rule = "0.1."
+
+[[judgement]]
+region = "Maghreb"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["houses-10000-03", "houses-9000-32", "houses-8000-61", "houses-5000-144", "houses-7000-90", "houses-4000-171", "houses-3000-197", "houses-6000-117"]
+why_empty = ["research_intensity", "recording_practice", "low_population"]
+why_note = "Foragers and herders; houses rare in the record."
+expected = 0.1
+expected_range = [0.0, 0.25]
+confidence = "low"
+basis = ["intuition", "literature"]
+reasoning = "Fully masked. Same reading as: Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa."
+would_settle = "Regional syntheses."
+speculative_rule = "0.1."
+
+[[judgement]]
+region = "Horn of Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["houses-10000-12", "houses-9000-41", "houses-8000-70", "houses-7000-100", "houses-5000-154", "houses-6000-127", "houses-4000-181", "houses-3000-207"]
+why_empty = ["research_intensity", "recording_practice", "low_population"]
+why_note = "Foragers and herders; houses rare in the record."
+expected = 0.1
+expected_range = [0.0, 0.25]
+confidence = "low"
+basis = ["intuition", "literature"]
+reasoning = "Fully masked. Same reading as: Nile & Sudan, Sahara–Sahel, Maghreb, West Africa."
+would_settle = "Regional syntheses."
+speculative_rule = "0.1."
+
+[[judgement]]
+region = "West Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["houses-10000-06", "houses-9000-36", "houses-7000-94", "houses-8000-65", "houses-6000-121", "houses-4000-174", "houses-5000-148", "houses-3000-200"]
+why_empty = ["research_intensity", "recording_practice", "low_population"]
+why_note = "Foragers and herders; houses rare in the record."
+expected = 0.1
+expected_range = [0.0, 0.25]
+confidence = "low"
+basis = ["intuition", "literature"]
+reasoning = "Fully masked. Same reading as: Nile & Sudan, Sahara–Sahel, Maghreb, Horn of Africa."
+would_settle = "Regional syntheses."
+speculative_rule = "0.1."
+
+[[judgement]]
+region = "Now-drowned shelves and islands"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["houses-10000-23", "houses-9000-53", "houses-8000-83", "houses-10000-28", "houses-9000-57", "houses-7000-114", "houses-8000-87", "houses-10000-29", "houses-9000-58", "houses-6000-141"]
+why_empty = ["submerged"]
+why_note = "Drowned forager land."
+expected = 0.15
+expected_range = [0.05, 0.3]
+confidence = "low"
+basis = ["analogy"]
+reasoning = "Fully masked."
+would_settle = "Nothing feasible."
+speculative_rule = "0.15 while above water."

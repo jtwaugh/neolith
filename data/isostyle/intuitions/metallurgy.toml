@@ -1,0 +1,1300 @@
+# Gap critic: metallurgy layer. Judgements, not data.
+# Values: expected share of dated occupations with smelting, slag or crucibles (0-1).
+# Regions that share one reading are written as one judgement per region with the same text.
+
+[meta]
+layer = "metallurgy"
+written = "2026-11-12"
+dossier = "build/isostyle/gaps/metallurgy/dossier.json"
+summary = "Before 3000 BCE smelting and crucible metallurgy belong to the Balkans (Belovode, Pločnik, c. 5000), eastern Anatolia (Değirmentepe, Norşuntepe), the Iranian plateau (Tal-i Iblis, Arisman), the southern Levant (Ghassulian, Faynan), and later the Caucasus, south-east Iberia (Los Millares, Cabezo Juré) and the Alps. The layer shows only the southern Levant (7-10%) and edge cells in Jordan-facing Arabia and Egypt. The empty Balkans and Anatolia are the largest method artefact: sites there are typed 'tell' or 'settlement', and slag and crucibles are rarely the dated material. Expected values are small shares (0.02-0.12) of occupations, highest in the 4th millennium in Anatolia, Iran and the Caucasus. Absence north of the Alps, in Britain, Scandinavia, the forest zone and Africa is real for this range."
+
+[[judgement]]
+region = "British Isles"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-10000-18", "metallurgy-9000-48", "metallurgy-7000-106", "metallurgy-8000-78", "metallurgy-8000-85"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "France & Low Countries"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-10000-16", "metallurgy-9000-45", "metallurgy-8000-75", "metallurgy-7000-104"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Iberia"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-10000-17", "metallurgy-9000-47", "metallurgy-8000-76", "metallurgy-7000-105"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Italy & islands"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-9000-50", "metallurgy-10000-21", "metallurgy-8000-79", "metallurgy-7000-109"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Central Europe"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-9000-40", "metallurgy-8000-69", "metallurgy-7000-99", "metallurgy-10000-11"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-7000-98", "metallurgy-8000-72", "metallurgy-9000-46", "metallurgy-10000-19", "metallurgy-10000-25"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Baltic"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-9000-52", "metallurgy-10000-24", "metallurgy-8000-81", "metallurgy-7000-110"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Balkans & Greece"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-9000-43", "metallurgy-10000-14", "metallurgy-8000-73", "metallurgy-7000-102"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-10000-13", "metallurgy-9000-42", "metallurgy-8000-71", "metallurgy-7000-101"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-7000-88", "metallurgy-10000-01", "metallurgy-9000-30", "metallurgy-8000-59", "metallurgy-9000-54", "metallurgy-7000-112", "metallurgy-8000-86"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-9000-35", "metallurgy-7000-92", "metallurgy-8000-64", "metallurgy-10000-07"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Anatolia & Cyprus"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-10000-15", "metallurgy-9000-44", "metallurgy-8000-74", "metallurgy-7000-103"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Levant"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-7000-108", "metallurgy-10000-22", "metallurgy-9000-51", "metallurgy-8000-80"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Mesopotamia"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-10000-20", "metallurgy-9000-49", "metallurgy-8000-77", "metallurgy-7000-107"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Iran & Afghanistan"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-8000-67", "metallurgy-9000-38", "metallurgy-10000-10", "metallurgy-7000-96"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Caucasus"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-8000-82", "metallurgy-7000-111", "metallurgy-9000-55", "metallurgy-10000-26"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Central Asia"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-7000-95", "metallurgy-8000-66", "metallurgy-9000-37", "metallurgy-10000-08"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Arabia"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-10000-04", "metallurgy-9000-33", "metallurgy-8000-62", "metallurgy-7000-91"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Maghreb"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-10000-03", "metallurgy-9000-32", "metallurgy-8000-61", "metallurgy-7000-90"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Libya & Egypt"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-10000-05", "metallurgy-9000-34", "metallurgy-8000-63", "metallurgy-7000-93"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Nile & Sudan"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-10000-09", "metallurgy-9000-39", "metallurgy-8000-68", "metallurgy-7000-97"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Sahara–Sahel"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-10000-02", "metallurgy-8000-60", "metallurgy-9000-31", "metallurgy-7000-89"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Horn of Africa"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-10000-12", "metallurgy-9000-41", "metallurgy-8000-70", "metallurgy-7000-100"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "West Africa"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-10000-06", "metallurgy-9000-36", "metallurgy-7000-94", "metallurgy-8000-65"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Now-drowned shelves and islands"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-10000-23", "metallurgy-9000-53", "metallurgy-8000-83", "metallurgy-10000-28", "metallurgy-9000-57", "metallurgy-7000-114", "metallurgy-8000-87", "metallurgy-10000-29", "metallurgy-9000-58"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Other"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["metallurgy-10000-27", "metallurgy-9000-56", "metallurgy-8000-84", "metallurgy-7000-113"]
+why_empty = ["true_absence"]
+why_note = "No smelting before c. 5000 BCE; cold-worked native copper (Çayönü) is not metallurgy in this sense."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "All masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Anatolia & Cyprus, Levant, Mesopotamia, Iran & Afghanistan, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "British Isles"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-133"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "France & Low Countries"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-131"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Iberia"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-132"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Italy & islands"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-136"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Central Europe"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-126"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-125"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Baltic"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-137"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Balkans & Greece"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-129"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-128"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-115", "metallurgy-6000-139"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-119"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Levant"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-135"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Mesopotamia"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-134"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Caucasus"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-138"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Central Asia"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-122"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Arabia"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-118"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Maghreb"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-117"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Libya & Egypt"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-120"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Nile & Sudan"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-123"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Sahara–Sahel"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-116"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Horn of Africa"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-127"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "West Africa"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-121"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Now-drowned shelves and islands"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-141"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Other"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-140"]
+why_empty = ["true_absence"]
+why_note = "Pre-smelting everywhere."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, France & Low Countries, Iberia, Italy & islands, Central Europe, Scandinavia, Baltic, Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Russia: steppe and forest-steppe, Levant, Mesopotamia, Caucasus, Central Asia, Arabia, Maghreb, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Anatolia & Cyprus"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-130"]
+why_empty = ["research_intensity", "unknown"]
+why_note = "Possible early slag (Çatalhöyük, debated) and annealed copper."
+expected = 0.01
+expected_range = [0.0, 0.02]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Iran & Afghanistan."
+would_settle = "Analyses of early slag."
+speculative_rule = "0.01 in central and eastern Anatolia and the Zagros."
+
+[[judgement]]
+region = "Iran & Afghanistan"
+slices = [-6000]
+gap_ids = ["metallurgy-6000-124"]
+why_empty = ["research_intensity", "unknown"]
+why_note = "Possible early slag (Çatalhöyük, debated) and annealed copper."
+expected = 0.01
+expected_range = [0.0, 0.02]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Anatolia & Cyprus."
+would_settle = "Analyses of early slag."
+speculative_rule = "0.01 in central and eastern Anatolia and the Zagros."
+
+[[judgement]]
+region = "Balkans & Greece"
+slices = [-5000]
+gap_ids = ["metallurgy-5000-156"]
+why_empty = ["recording_practice", "not_in_open_compilations"]
+why_note = "Belovode and Pločnik smelting c. 5000; Vinča and Gumelnița copper working."
+expected = 0.06
+expected_range = [0.02, 0.12]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Fully masked: the cradle of European smelting reads empty."
+literature = [
+  { cite = "Radivojević et al. 2010, J. Archaeol. Sci. 37", checked = false },
+]
+would_settle = "Radivojević et al. Belovode/Pločnik dates; Balkan metallurgy syntheses."
+speculative_rule = "0.08 in the central Balkans and lower Danube, 0.02 in Greece."
+[[judgement.adjust]]
+kind = "area"
+bbox = [20.0, 41.0, 29.7, 46.3]
+value = 0.08
+[[judgement.adjust]]
+kind = "area"
+bbox = [19.3, 34.9, 26.7, 41.0]
+value = 0.02
+
+[[judgement]]
+region = "Balkans & Greece"
+slices = [-4000, -3000]
+gap_ids = ["metallurgy-4000-183", "metallurgy-3000-210"]
+why_empty = ["recording_practice"]
+why_note = "Reduced activity after c. 4200; Cernavodă and EBA metallurgy."
+expected = 0.04
+expected_range = [0.01, 0.08]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "As above."
+speculative_rule = "0.04."
+
+[[judgement]]
+region = "Anatolia & Cyprus"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-4000-184", "metallurgy-3000-211", "metallurgy-5000-157"]
+why_empty = ["recording_practice", "not_in_open_compilations"]
+why_note = "Değirmentepe, Norşuntepe, Tülintepe, Arslantepe, Mersin-Yumuktepe."
+expected = 0.08
+expected_range = [0.03, 0.15]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Fully masked."
+would_settle = "Anatolian Chalcolithic metallurgy syntheses."
+speculative_rule = "0.05 at 5,000 BCE, 0.08 at 4,000, 0.12 at 3,000, highest in the east."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000]
+value = 0.05
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-4000]
+value = 0.08
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-3000]
+value = 0.12
+
+[[judgement]]
+region = "Iran & Afghanistan"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-5000-151", "metallurgy-4000-178", "metallurgy-3000-205"]
+why_empty = ["recording_practice", "not_in_open_compilations"]
+why_note = "Tal-i Iblis crucibles (c. 4500), Ghabristan, Arisman, Sialk, Hissar."
+expected = 0.08
+expected_range = [0.03, 0.15]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Iranian metallurgy dates."
+speculative_rule = "0.05 at 5,000 BCE, 0.1 at 4,000-3,000 on the plateau, 0.02 in Afghanistan."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-4000, -3000]
+value = 0.1
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000]
+value = 0.05
+[[judgement.adjust]]
+kind = "area"
+bbox = [61.0, 29.4, 65.7, 38.5]
+value = 0.02
+
+[[judgement]]
+region = "Mesopotamia"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-5000-160", "metallurgy-4000-187", "metallurgy-3000-215"]
+why_empty = ["recording_practice"]
+why_note = "Mostly a consumer region; Tepe Gawra and Uruk workshops."
+expected = 0.03
+expected_range = [0.01, 0.06]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Mesopotamian site syntheses."
+speculative_rule = "0.01 at 5,000 BCE, 0.04 at 4,000-3,000."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000]
+value = 0.01
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-4000, -3000]
+value = 0.04
+
+[[judgement]]
+region = "Levant"
+slices = [-5000]
+gap_ids = ["metallurgy-5000-162"]
+why_empty = ["research_intensity"]
+why_note = "Ghassulian copper begins c. 4500, at the end of the slice."
+expected = 0.03
+expected_range = [0.01, 0.06]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Ghassulian dates."
+speculative_rule = "0.03 in the southern Levant."
+
+[[judgement]]
+region = "Levant"
+slices = [-4000, -3000]
+gap_ids = ["metallurgy-3000-217", "metallurgy-4000-190"]
+why_empty = ["recording_practice"]
+why_note = "Abu Matar, Shiqmim and Faynan smelting."
+expected = 0.08
+expected_range = [0.04, 0.15]
+confidence = "high"
+basis = ["dossier_statistics", "literature"]
+reasoning = "Coverage 10% and 7% with 6 edge cells; the only region with evidence."
+would_settle = "Nothing urgent."
+speculative_rule = "0.12 in the Beersheba basin and Arabah, 0.03 in the north."
+[[judgement.adjust]]
+kind = "area"
+bbox = [34.5, 32.5, 41.8, 37.1]
+value = 0.03
+[[judgement.adjust]]
+kind = "polygon"
+points = [[34.4, 31.15], [34.6, 31.4], [34.95, 31.4], [35.25, 31.3], [35.2, 31.1], [34.9, 31.05], [34.55, 31.0]]
+value = 0.12
+[[judgement.adjust]]
+kind = "polygon"
+points = [[34.9, 29.5], [35.05, 29.5], [35.3, 30.2], [35.6, 30.6], [35.6, 31.0], [35.35, 31.0], [35.1, 30.4], [34.85, 29.8]]
+value = 0.12
+
+[[judgement]]
+region = "Caucasus"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-5000-165", "metallurgy-4000-192", "metallurgy-3000-219"]
+why_empty = ["research_intensity", "not_in_open_compilations"]
+why_note = "Leilatepe and Mentesh Tepe crucibles (5th millennium), Kura-Araxes metallurgy later."
+expected = 0.07
+expected_range = [0.02, 0.15]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Caucasian metallurgy syntheses."
+speculative_rule = "0.03 at 5,000 BCE, 0.07 at 4,000, 0.12 at 3,000."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000]
+value = 0.03
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-4000]
+value = 0.07
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-3000]
+value = 0.12
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-5000-147", "metallurgy-4000-175", "metallurgy-3000-202"]
+why_empty = ["true_absence", "research_intensity"]
+why_note = "Copper mostly imported; Maikop and Kargaly metallurgy is late or outside the range."
+expected = 0.01
+expected_range = [0.0, 0.03]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Ukraine & Belarus."
+would_settle = "Steppe metallurgy syntheses."
+speculative_rule = "0.02 in the North Caucasus foreland at 3,000 BCE; 0 elsewhere."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000, -3000]
+value = 0.0
+[[judgement.adjust]]
+kind = "area"
+bbox = [37.5, 43.4, 48.0, 46.0]
+value = 0.02
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000]
+value = 0.0
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-5000-155", "metallurgy-4000-182", "metallurgy-3000-209"]
+why_empty = ["true_absence", "research_intensity"]
+why_note = "Copper mostly imported; Maikop and Kargaly metallurgy is late or outside the range."
+expected = 0.01
+expected_range = [0.0, 0.03]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Russia: steppe and forest-steppe."
+would_settle = "Steppe metallurgy syntheses."
+speculative_rule = "0.02 in the North Caucasus foreland at 3,000 BCE; 0 elsewhere."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000, -3000]
+value = 0.0
+
+[[judgement]]
+region = "Iberia"
+slices = [-5000, -4000]
+gap_ids = ["metallurgy-5000-159", "metallurgy-4000-186"]
+why_empty = ["true_absence", "research_intensity"]
+why_note = "Iberian metallurgy starts in the later 4th millennium."
+expected = 0.005
+expected_range = [0.0, 0.01]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Nothing urgent."
+speculative_rule = "0."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000]
+value = 0.0
+
+[[judgement]]
+region = "Iberia"
+slices = [-3000]
+gap_ids = ["metallurgy-3000-213"]
+why_empty = ["recording_practice", "not_in_open_compilations"]
+why_note = "Slag and crucibles at many Chalcolithic villages in the south-east and south-west."
+expected = 0.08
+expected_range = [0.03, 0.15]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Iberian Chalcolithic metallurgy syntheses."
+speculative_rule = "0.12 in Almería, Huelva and Alentejo, 0.03 elsewhere."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-3000]
+value = 0.03
+[[judgement.adjust]]
+kind = "area"
+bbox = [-3.0, 36.7, -1.6, 37.6]
+value = 0.12
+[[judgement.adjust]]
+kind = "area"
+bbox = [-7.5, 37.0, -6.2, 38.2]
+value = 0.12
+[[judgement.adjust]]
+kind = "area"
+bbox = [-8.9, 37.3, -7.0, 39.7]
+value = 0.12
+
+[[judgement]]
+region = "France & Low Countries"
+slices = [-5000]
+gap_ids = ["metallurgy-5000-158"]
+why_empty = ["true_absence"]
+why_note = "No smelting yet west of the Balkans."
+expected = 0.0
+expected_range = [0.0, 0.005]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Italy & islands, Central Europe."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Italy & islands"
+slices = [-5000]
+gap_ids = ["metallurgy-5000-163"]
+why_empty = ["true_absence"]
+why_note = "No smelting yet west of the Balkans."
+expected = 0.0
+expected_range = [0.0, 0.005]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: France & Low Countries, Central Europe."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Central Europe"
+slices = [-5000]
+gap_ids = ["metallurgy-5000-153"]
+why_empty = ["true_absence"]
+why_note = "No smelting yet west of the Balkans."
+expected = 0.0
+expected_range = [0.0, 0.005]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: France & Low Countries, Italy & islands."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "France & Low Countries"
+slices = [-4000, -3000]
+gap_ids = ["metallurgy-4000-185", "metallurgy-3000-212"]
+why_empty = ["research_intensity", "recording_practice"]
+why_note = "Mondsee crucibles and Brixlegg (c. 3800), Cabrières in Languedoc, Remedello and Monte Loreto in Italy."
+expected = 0.02
+expected_range = [0.005, 0.05]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Italy & islands, Central Europe."
+would_settle = "Alpine and Languedoc metallurgy dates."
+speculative_rule = "0.05 in the eastern Alps and Languedoc, 0.03 in northern and central Italy, 0 north of 49°N."
+[[judgement.adjust]]
+kind = "area"
+bbox = [2.0, 42.4, 4.9, 44.4]
+value = 0.05
+[[judgement.adjust]]
+kind = "area"
+bbox = [-4.9, 49.0, 9.8, 53.9]
+value = 0.0
+
+[[judgement]]
+region = "Italy & islands"
+slices = [-4000, -3000]
+gap_ids = ["metallurgy-4000-189", "metallurgy-3000-216"]
+why_empty = ["research_intensity", "recording_practice"]
+why_note = "Mondsee crucibles and Brixlegg (c. 3800), Cabrières in Languedoc, Remedello and Monte Loreto in Italy."
+expected = 0.02
+expected_range = [0.005, 0.05]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: France & Low Countries, Central Europe."
+would_settle = "Alpine and Languedoc metallurgy dates."
+speculative_rule = "0.05 in the eastern Alps and Languedoc, 0.03 in northern and central Italy, 0 north of 49°N."
+[[judgement.adjust]]
+kind = "area"
+bbox = [7.2, 41.2, 14.2, 46.9]
+value = 0.03
+[[judgement.adjust]]
+kind = "polygon"
+points = [[9.5, 45.8], [9.4, 46.4], [9.5, 47.25], [12.0, 47.7], [16.0, 48.0], [15.3, 46.4], [13.0, 46.1], [10.5, 45.7]]
+value = 0.05
+
+[[judgement]]
+region = "Central Europe"
+slices = [-4000, -3000]
+gap_ids = ["metallurgy-4000-180", "metallurgy-3000-207"]
+why_empty = ["research_intensity", "recording_practice"]
+why_note = "Mondsee crucibles and Brixlegg (c. 3800), Cabrières in Languedoc, Remedello and Monte Loreto in Italy."
+expected = 0.02
+expected_range = [0.005, 0.05]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: France & Low Countries, Italy & islands."
+would_settle = "Alpine and Languedoc metallurgy dates."
+speculative_rule = "0.05 in the eastern Alps and Languedoc, 0.03 in northern and central Italy, 0 north of 49°N."
+[[judgement.adjust]]
+kind = "polygon"
+points = [[9.5, 45.8], [9.4, 46.4], [9.5, 47.25], [12.0, 47.7], [16.0, 48.0], [15.3, 46.4], [13.0, 46.1], [10.5, 45.7]]
+value = 0.05
+[[judgement.adjust]]
+kind = "area"
+bbox = [6.3, 49.0, 24.1, 55.1]
+value = 0.0
+
+[[judgement]]
+region = "British Isles"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-3000-214", "metallurgy-4000-188", "metallurgy-5000-161", "metallurgy-5000-168", "metallurgy-4000-195"]
+why_empty = ["true_absence"]
+why_note = "No smelting before Ross Island (c. 2400) in this zone."
+expected = 0.0
+expected_range = [0.0, 0.005]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Scandinavia, Baltic, Russia: forest north of 56°N."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-4000-179", "metallurgy-3000-206", "metallurgy-5000-152"]
+why_empty = ["true_absence"]
+why_note = "No smelting before Ross Island (c. 2400) in this zone."
+expected = 0.0
+expected_range = [0.0, 0.005]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, Baltic, Russia: forest north of 56°N."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Baltic"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-5000-164", "metallurgy-4000-191", "metallurgy-3000-218"]
+why_empty = ["true_absence"]
+why_note = "No smelting before Ross Island (c. 2400) in this zone."
+expected = 0.0
+expected_range = [0.0, 0.005]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, Scandinavia, Russia: forest north of 56°N."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-5000-142", "metallurgy-4000-169", "metallurgy-3000-196", "metallurgy-5000-166", "metallurgy-4000-193", "metallurgy-3000-220"]
+why_empty = ["true_absence"]
+why_note = "No smelting before Ross Island (c. 2400) in this zone."
+expected = 0.0
+expected_range = [0.0, 0.005]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: British Isles, Scandinavia, Baltic."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Arabia"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-5000-145", "metallurgy-4000-172", "metallurgy-3000-199"]
+why_empty = ["research_intensity", "recording_practice"]
+why_note = "Predynastic copper working (Maadi, Buto); Omani copper from c. 3000."
+expected = 0.02
+expected_range = [0.005, 0.05]
+confidence = "low"
+basis = ["dossier_statistics", "literature"]
+reasoning = "Edge cells (3-6) at 4,000-3,000 BCE spill from the southern Levant. Same reading as: Libya & Egypt."
+would_settle = "Predynastic and Omani dates."
+speculative_rule = "0.03 in Lower Egypt and Oman at 3,000 BCE; 0 elsewhere."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000, -3000]
+value = 0.0
+[[judgement.adjust]]
+kind = "area"
+bbox = [55.0, 19.0, 59.9, 26.4]
+value = 0.03
+[[judgement.adjust]]
+kind = "area"
+bbox = [53.1, 16.6, 55.0, 19.0]
+value = 0.03
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000]
+value = 0.0
+
+[[judgement]]
+region = "Libya & Egypt"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-5000-146", "metallurgy-3000-200", "metallurgy-4000-173"]
+why_empty = ["research_intensity", "recording_practice"]
+why_note = "Predynastic copper working (Maadi, Buto); Omani copper from c. 3000."
+expected = 0.02
+expected_range = [0.005, 0.05]
+confidence = "low"
+basis = ["dossier_statistics", "literature"]
+reasoning = "Edge cells (3-6) at 4,000-3,000 BCE spill from the southern Levant. Same reading as: Arabia."
+would_settle = "Predynastic and Omani dates."
+speculative_rule = "0.03 in Lower Egypt and Oman at 3,000 BCE; 0 elsewhere."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000, -3000]
+value = 0.0
+[[judgement.adjust]]
+kind = "area"
+bbox = [29.8, 29.7, 32.4, 31.6]
+value = 0.03
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000]
+value = 0.0
+
+[[judgement]]
+region = "Central Asia"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-5000-149", "metallurgy-4000-176", "metallurgy-3000-203"]
+why_empty = ["research_intensity"]
+why_note = "Namazga and Geoksyur crucibles; Baluchistan copper later."
+expected = 0.02
+expected_range = [0.0, 0.05]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Other."
+would_settle = "Regional syntheses."
+speculative_rule = "0.03 along the Kopet Dag at 4,000-3,000 BCE; 0 elsewhere."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000, -3000]
+value = 0.0
+[[judgement.adjust]]
+kind = "polygon"
+points = [[54.0, 38.6], [55.0, 39.3], [56.5, 39.3], [58.0, 38.5], [59.5, 37.7], [61.0, 37.1], [61.0, 36.3], [59.5, 36.9], [58.0, 37.5], [56.5, 38.2], [55.0, 38.0], [54.0, 37.3]]
+value = 0.03
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000]
+value = 0.0
+
+[[judgement]]
+region = "Other"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-5000-167", "metallurgy-4000-194", "metallurgy-3000-221"]
+why_empty = ["research_intensity"]
+why_note = "Namazga and Geoksyur crucibles; Baluchistan copper later."
+expected = 0.02
+expected_range = [0.0, 0.05]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Central Asia."
+would_settle = "Regional syntheses."
+speculative_rule = "0.03 along the Kopet Dag at 4,000-3,000 BCE; 0 elsewhere."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000, -3000]
+value = 0.0
+
+[[judgement]]
+region = "Maghreb"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-5000-144", "metallurgy-4000-171", "metallurgy-3000-198"]
+why_empty = ["true_absence"]
+why_note = "No metallurgy in this range."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Nile & Sudan"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-5000-150", "metallurgy-3000-204", "metallurgy-4000-177"]
+why_empty = ["true_absence"]
+why_note = "No metallurgy in this range."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Maghreb, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Sahara–Sahel"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-4000-170", "metallurgy-3000-197", "metallurgy-5000-143"]
+why_empty = ["true_absence"]
+why_note = "No metallurgy in this range."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Maghreb, Nile & Sudan, Horn of Africa, West Africa, Now-drowned shelves and islands."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Horn of Africa"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-5000-154", "metallurgy-4000-181", "metallurgy-3000-208"]
+why_empty = ["true_absence"]
+why_note = "No metallurgy in this range."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Maghreb, Nile & Sudan, Sahara–Sahel, West Africa, Now-drowned shelves and islands."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "West Africa"
+slices = [-5000, -4000, -3000]
+gap_ids = ["metallurgy-4000-174", "metallurgy-5000-148", "metallurgy-3000-201"]
+why_empty = ["true_absence"]
+why_note = "No metallurgy in this range."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Maghreb, Nile & Sudan, Sahara–Sahel, Horn of Africa, Now-drowned shelves and islands."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Now-drowned shelves and islands"
+slices = [-5000, -4000, -3000]
+gap_ids = []
+why_empty = ["true_absence"]
+why_note = "No metallurgy in this range."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Maghreb, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."

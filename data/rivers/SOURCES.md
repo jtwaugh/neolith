@@ -141,6 +141,16 @@ timing is a reasonable reading of sparse evidence.
 | Grand Rhône, Petit Rhône | — | not drawn | medium | Later courses (Vella et al. 2005). The whole Rhône delta is about one hex across, so its branches are sub-hex detail with approximate waypoints. |
 | Po | HydroRIVERS, stopped short of the modern delta at about 12.25°E, + shelf | perennial | medium | The modern course below Ficarolo dates from the AD 1152 avulsion; no main course downstream of it is attested before the Po di Adria (about 4.0–2.5 ka) and the Po di Spina (1st millennium BCE), so the modern line stands in. Bruno et al. 2017 (*Sedimentology* 64:1792): an estuary migrated landward 11.5–7.0 kyr BP; the Po split into three branches around 10 ka (within a few km); the shoreline reached its furthest inland position about 7.7 cal kyr BP, roughly 30 km inland of today. The board's coast (ETOPO1 and the sea curve) can't show that transgression. |
 | Vistula | HydroRIVERS (`shelf = false`) | perennial | high | The Baltic stages (Baltic Ice Lake, Yoldia, Ancylus, Littorina) are modelled in `data/lakes/` on an uplift-corrected surface; an extension across today's sea floor wouldn't follow them, so the Vistula ends at its modern mouth. |
+| Kura, Terek, Sulak | HydroRIVERS, extended to the Caspian at its lowest level | perennial | high | Modern rivers. Their lower courses drown as the Caspian rises (lakes.toml), as for the Volga and Ural. Holocene Kura and Terek delta branches aren't dated well enough to time (Kura delta Caspian-level work: INTAS project 2005-1000008-8078; Terek avulsions are historical, Magritsky et al. 2018). |
+| Aras | HydroRIVERS from the Bingöl highlands, stopped at the Kura near Sabirabad | perennial | high | Historical accounts of a separate Caspian mouth aren't dated, so it is drawn as a Kura tributary throughout. |
+| Kuban | HydroRIVERS to its modern mouth at Temryuk + the Black Sea lake extension (joins the Don's path across the dry Azov) | perennial | medium | Giaime et al. 2016: the Taman peninsula was an archipelago about 6 ka and the delta prograded after that; the 2019 *Geomorfologiya* paper dates the Bugaz stage of the transgression 9.5–7.9 ka. The ancient Hypanis branch to the Kiziltash liman (Black Sea) isn't dated, so the modern Azov course stands in. |
+| Rioni | HydroRIVERS + Black Sea lake extension | perennial | medium | Laermanns et al. 2018 (*Quaternary International* 465:85): a barrier–lagoon coast until about 5000 BC, delta progradation mostly 3500–1500 BC. ETOPO's modern Colchis plain can't show the inland coast. |
+| Inguri, Çoruh | HydroRIVERS + Black Sea lake extension | perennial | high | Modern rivers on a steep, narrow shelf. |
+| Douro | HydroRIVERS + shelf | perennial | high | Naughton et al. 2007 (*J. Coastal Research*): estuarine infill as the sea rose 11.5–6 cal ka; the main channel had moved north to about its present line by 6530 cal BP. |
+| Guadalquivir | HydroRIVERS to Sanlúcar + shelf | perennial | medium | Dabrio et al. 2000 (*Marine Geology* 162:381): marine influence in the Gulf of Cádiz estuaries from about 10 ka; maximum flooding about 6500 BP, then infilling by lateral progradation. At its maximum the estuary (later the Roman Lacus Ligustinus) reached towards Seville (2007 Seville cores, *El registro holoceno del estuario del Guadalquivir*); the board's coast can't show it. |
+| Neva | — | not drawn | medium | Formed about 3500–3200 cal BP (≈ −1400), when the Ladoga transgression broke through the Neva threshold (Ludikova et al. 2024, *Quaternary* 7:31; Dolukhanov et al., *Radiocarbon*). After the map's end. |
+| Heinjoki Strait (Ladoga outlet) | waypoints from the modelled Ladoga shore (today's, near Taipale Bay) through the Vuoksi lowland past the Vetokallio threshold at Heinjoki (Veshchevo) to Vyborg Bay | perennial from −8250 | low | Ladoga's outlet to the Baltic before the Neva: from about 10.2 cal ka (MDPI review in Ludikova et al. 2024; Dolukhanov et al. date the waterway from about 11.5 cal ka), flow falling from about 4.1 cal ka and ending 3.5–3.2 cal ka. Waypoints are approximate. Drawn from −8250, when the Baltic entry stops keeping the drawn strait over the isthmus (data/lakes/SOURCES.md); its western end drowns in Vyborg Bay when the Baltic model floods it. |
+| Vuoksi | HydroRIVERS from Imatra down the lake corridor to the Heinjoki Strait | perennial from −3750 | low | Saimaa broke through the Salpausselkä at Imatra about 5.7 cal ka (Saarnisto 1970). Whether its water then went east to Ladoga or west through Heinjoki is unclear; it is drawn into the strait. |
 
 ## Known gaps
 
@@ -165,8 +175,13 @@ timing is a reasonable reading of sparse evidence.
   dated well enough to time.
 - **River size is fixed**, so the Nile's larger humid-period discharge isn't
   shown.
+- **Ladoga's level** is held at its present extent (data/lakes/), so the
+  start of the Ladoga transgression before −3000 isn't shown.
+- **Inland coasts at the Guadalquivir and Rioni:** the mid-Holocene
+  Guadalquivir estuary up towards Seville and the Colchis coast before the
+  Rioni delta built out want dated shorelines in `data/coasts/`.
 - **Not yet catalogued:** Loire, Garonne, Ebro, Tagus, Oder, Northern
-  Dvina, Kura–Araks, Helmand, Karun, Orontes, and other Saharan fossil rivers
+  Dvina, Helmand, Karun, Orontes, and other Saharan fossil rivers
   (Wadi Sahel, the Chotts' Oued Djedi, the Fezzan wadis).
 
 ## References
@@ -290,3 +305,59 @@ above and its references here are in place.
   70:1051.
 - Berendsen, H.J.A. & Stouthamer, E., 2001. *Palaeogeographic development of
   the Rhine-Meuse delta, The Netherlands*. Van Gorcum, Assen.
+
+### Caucasus
+- Giaime, M., Avnaim-Katav, S., Morhange, C., Marriner, N. et al., 2016.
+  Evolution of Taman peninsula's ancient Bosphorus channels (south-west
+  Russia): deltaic progradation and Greek colonisation. *J. Coastal Research*.
+  https://www.ancientportsantiques.com/wp-content/uploads/Documents/PLACES/Bosphorus-BlackSea/Taman-Giaime2016.pdf;
+  https://kups.ub.uni-koeln.de/28640
+- 2019. Evolution of the main geomorphological
+  structure of the Holocene Kuban river delta. *Geomorfologiya* 2019(4):77.
+  https://doi.org/10.31857/s0435-42812019477-87;
+  https://journals.eco-vector.com/0435-4281/article/view/17660
+- Laermanns, H., Kelterbaum, D., May, S.M., Elashvili, M., Opitz, S.,
+  Hülle, D., Rölkens, J., Verheul, J., Riedesel, S. & Brückner, H., 2018.
+  Mid- to Late Holocene landscape changes in the Rioni Delta area (Kolkheti
+  lowlands, W Georgia). *Quaternary International* 465:85.
+  https://research.aber.ac.uk/en/publications/mid-to-late-holocene-landscape-changes-in-the-rioni-delta-area-ko/
+- INTAS project 2005-1000008-8078: Caspian sea-level highstands and
+  lowstands from the Kura delta. https://cordis.europa.eu/project/id/INTAS2005-1000008-8078
+- Magritsky, D.V. et al., 2018. Terek and Sulak mouth changes in the
+  geological past and modern period.
+  https://istina.msu.ru/conferences/presentations/117321148
+- ISRSE 2005 proceedings: satellite monitoring of
+  the Ural, Terek, Sulak and Kura deltas.
+  https://www.isprs.org/proceedings/2005/isrse/html/papers/265.pdf
+
+### Iberia
+- Dabrio, C.J., Zazo, C., Goy, J.L., Sierro, F.J., Borja, F., Lario, J.,
+  González, J.A. & Flores, J.A., 2000. Depositional history of estuarine
+  infill during the last postglacial transgression (Gulf of Cadiz, Southern
+  Spain). *Marine Geology* 162:381. https://doi.org/10.1016/S0025-3227(99)00069-9;
+  https://eprints.ucm.es/id/eprint/11355/1/2000_1_margeo.pdf
+- 2007. El registro holoceno del estuario del
+  Guadalquivir en el área de Sevilla: aproximación geoarqueológica.
+  https://investiga.upo.es/documentos/5ec8591729995265802be156
+- Naughton, F., Sánchez Goñi, M.F., Drago, T. et al., 2007. Holocene
+  changes in the Douro estuary (northwestern Iberia). *J. Coastal Research*
+  23(3). https://bioone.org/journals/journal-of-coastal-research/volume-2007/issue-233/05-0462.1/Holocene-Changes-in-the-Douro-Estuary-Northwestern-Iberia/10.2112/05-0462.1.full
+
+### Ladoga and the Neva
+- Ludikova, A.V. et al., 2024. Diatom evidence for the Heinjoki paleo-outlet
+  of Lake Ladoga, northern Karelian Isthmus. *Quaternary* 7(3):31.
+  https://www.mdpi.com/2571-550X/7/3/31;
+  https://doaj.org/article/6d06f6de11d34ecbb83f266b34eaee25
+- Dolukhanov, P.M. et al. Evolution
+  of waterways and early human settlements in the eastern Baltic area:
+  radiocarbon-based chronology. *Radiocarbon*.
+  https://www.cambridge.org/core/product/50D0CE873BE05527714BCCC5D66B8A07
+- Malachovskij, D. et al., 1996. Evidence from the Neva River valley,
+  Russia, of the Holocene history of Lake Ladoga. *Fennia*.
+  https://fennia.journal.fi/article/view/8912
+- To the history of the Baltic–Ladoga connection (bifurcation into the
+  pre-Neva and the Heinjoki Strait). *Limnology and Freshwater Biology*.
+  https://limnolfwbiol.com/index.php/LFWB/article/view/481
+- Saarnisto, M., 1970. The Late Weichselian and Flandrian history of the
+  Saimaa lake complex. *Commentationes Physico-Mathematicae* 37 (Societas
+  Scientiarum Fennica).

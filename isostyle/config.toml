@@ -200,3 +200,79 @@ name = "Phelps et al. 2019, African Holocene fauna (PANGAEA 904942, CC BY)"
 kind = "url"
 url = "https://doi.pangaea.de/10.1594/PANGAEA.904942?format=zip"
 file = "phelps2019_fauna.zip"
+
+# ------------------------------------------------------ structures, organics
+[[sources]]
+name = "Neolithic rondel enclosures in Central Europe v1.1.0 (CC BY)"
+kind = "zenodo"
+id = "23738404"
+match = '^1_NREs\.csv$'
+file = "rondels_v1.1.csv"
+
+[[sources]]
+name = "Paulsson 2019 PNAS supplementary files via Europe PMC (CC BY-NC-ND; read unmodified, not redistributed)"
+kind = "url"
+url = "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC6397522/supplementaryFiles"
+file = "paulsson2019_supplement.zip"
+
+# ----------------------------------------------------------------- environment
+[[sources]]
+name = "LandClimII REVEALS land cover, Fyfe et al. 2021 (PANGAEA 937075, CC BY)"
+kind = "url"
+url = "https://download.pangaea.de/dataset/937075/files/LANDCLIMII.RV.results.JUN2021.zip"
+file = "landclim2_reveals.zip"
+
+# ------------------------------------------------------------------ people
+[[sources]]
+name = "Allen Ancient DNA Resource v66.p1, 1240K annotation (Mallick et al. 2024; CC0)"
+kind = "url"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+file = "aadr_v66.p1_1240K.anno"
+
+# ---------------------------------------------------------------- EUROEVOL
+# UCL Discovery refuses scripted downloads (bot check, then HTTP 429), so these
+# are downloaded by hand from the landing page into build/isostyle/sources/.
+# `fetch` records their checksums. Sites and the plant taxa list are read from
+# the SQL dump: the CommonSites CSV has unquoted commas.
+
+[[sources]]
+name = "EUROEVOL ABotSamples (Manning et al. 2016; Colledge 2016)"
+kind = "manual"
+url = "https://discovery.ucl.ac.uk/id/eprint/1469811/"
+file = "EUROEVOL09-07-201516-34_ABotSamples.csv"
+
+[[sources]]
+name = "EUROEVOL ABotPhases (Manning et al. 2016; Colledge 2016)"
+kind = "manual"
+url = "https://discovery.ucl.ac.uk/id/eprint/1469811/"
+file = "EUROEVOL09-07-201516-34_ABotPhases.csv"
+
+[[sources]]
+name = "EUROEVOL C14Samples (Manning et al. 2016; Colledge 2016)"
+kind = "manual"
+url = "https://discovery.ucl.ac.uk/id/eprint/1469811/"
+file = "EUROEVOL09-07-201516-34_C14Samples.csv"
+
+[[sources]]
+name = "EUROEVOL FaunalSpecies (Manning et al. 2016; Colledge 2016)"
+kind = "manual"
+url = "https://discovery.ucl.ac.uk/id/eprint/1469811/"
+file = "EUROEVOL09-07-201516-34_FaunalSpecies.csv"
+
+[[sources]]
+name = "EUROEVOL FaunalPhases (Manning et al. 2016; Colledge 2016)"
+kind = "manual"
+url = "https://discovery.ucl.ac.uk/id/eprint/1469811/"
+file = "EUROEVOL09-07-201516-34_FaunalPhases.csv"
+
+[[sources]]
+name = "EUROEVOL FaunalTaxaList (Manning et al. 2016; Colledge 2016)"
+kind = "manual"
+url = "https://discovery.ucl.ac.uk/id/eprint/1469811/"
+file = "EUROEVOL09-07-201516-34_FaunalTaxaList.csv"
+
+[[sources]]
+name = "EUROEVOL SQL dump (Manning et al. 2016; Colledge 2016)"
+kind = "manual"
+url = "https://discovery.ucl.ac.uk/id/eprint/1469811/"
+file = "EUROEVOL09-07-201516-33.sql"

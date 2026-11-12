@@ -164,6 +164,66 @@ class Build(unittest.TestCase):
         self.assertEqual(out["shapes"][-1]["rings"], [])      # sea: none
         self.assertGreater((terrain[-8000] == "Water").sum(), (terrain[-9000] == "Water").sum())
 
+    def test_dated_dam_keeps_the_sea_out_of_part_of_the_basin(self):
+        g = make_grid(12, 10, w=0.1, h=0.1 * np.sqrt(3) / 2)
+        g.bbox[:, [0, 2]] += 0.25
+        g.bbox[:, [1, 3]] += 1.25
+        for r in g.rings:
+            for p in r:
+                p[0] += 0.25
+                p[1] += 1.25
+        tf = Affine(0.05, -0.05, 0.0, 1.45)
+        z = bowl() - 60.0
+        z[14:16, 29] = -100.0
+        years = [-9000, -8000]
+        terrain = {y: np.array(["Plains"] * len(g), dtype=object) for y in years}
+        # Same sea both years (open, above the notch); from -8000 a wall
+        # west of the seed cuts off that side of the bowl.
+        lk = {"key": "b", "name": "Bowl", "seed": [0.75, 0.7], "box": [0.0, 0.0, 1.5, 1.5],
+              "level": "sea-or-outlet",
+              "dam": [{"line": [[0.6, 1.45], [0.6, 0.0]], "top": 1000.0, "from": -8000},
+                      {"line": [[0.9, 1.45], [0.9, 0.0]], "top": 1000.0, "until": -9500}]}
+        cfg = {"lakes": {"hex_fraction": 0.5, "shore_step": 2.0, "min_ring_cells": 4, "simplify": 0.0},
+               "isostasy": {"centre": [0.0, 0.0], "azimuth": 0.0, "axes": [1.0, 1.0],
+                            "peak_rate": 0.0, "scale": 1.0, "tau": 5.0},
+               "sea": {"curve": [[-9000, -10.0], [-8000, -10.0]]}}
+        out = lakes._sea_or_outlet(lk, cfg, g, terrain, z.astype(float), tf, years, lambda m: None)
+        self.assertEqual((out["level"][-9000], out["level"][-8000]), (-10.0, -10.0))
+        before, after = terrain[-9000] == "Water", terrain[-8000] == "Water"
+        self.assertTrue(after.any())
+        self.assertLess(after.sum(), before.sum())
+        west = g.centres[:, 0] < 0.55
+        self.assertTrue((before & west).any())
+        self.assertFalse((after & west).any())
+
+    def test_clear_removes_drawn_water_the_model_misses(self):
+        g = make_grid(12, 10, w=0.1, h=0.1 * np.sqrt(3) / 2)
+        g.bbox[:, [0, 2]] += 0.25
+        g.bbox[:, [1, 3]] += 1.25
+        for r in g.rings:
+            for p in r:
+                p[0] += 0.25
+                p[1] += 1.25
+        tf = Affine(0.05, -0.05, 0.0, 1.45)
+        z = bowl() - 60.0           # floor -60, notch (outlet) at -20
+        z[14:16, 29] = -100.0
+        years = [-9000, -8000]
+        # Every hex drawn as Water, including the dry rim (40 m above the sea).
+        terrain = {y: np.array(["Water"] * len(g), dtype=object) for y in years}
+        lk = {"key": "b", "name": "Bowl", "seed": [0.75, 0.7], "box": [0.0, 0.0, 1.5, 1.5],
+              "level": "sea-or-outlet", "clear": {"box": [0.0, 0.0, 1.5, 1.5], "from": -8000}}
+        cfg = {"lakes": {"hex_fraction": 0.5, "shore_step": 2.0, "min_ring_cells": 4, "simplify": 0.0},
+               "isostasy": {"centre": [0.0, 0.0], "azimuth": 0.0, "axes": [1.0, 1.0],
+                            "peak_rate": 0.0, "scale": 1.0, "tau": 5.0},
+               "sea": {"curve": [[-9000, -40.0], [-8000, -40.0]]}}
+        lakes._sea_or_outlet(lk, cfg, g, terrain, z.astype(float), tf, years, lambda m: None)
+        # Before `from` the drawn Water stands; from it, the rim is land again
+        # and the lake stays Water.
+        self.assertTrue((terrain[-9000] == "Water").all())
+        land = terrain[-8000] != "Water"
+        self.assertTrue(land.any())
+        self.assertTrue((terrain[-8000] == "Water").any())
+
     def test_spillway_river_follows_the_lake(self):
         lk = {"key": "b", "spill": 40.0, "raw": {-9000: 80.0, -8000: 10.0}}
         f = rivers._spill_fn({"lake": "b", "above": "outlet"}, {"b": lk}, "R")

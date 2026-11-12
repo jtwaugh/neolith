@@ -199,3 +199,233 @@ def apply_sea(terrain, elev, grid, sea):
         stats[y] = {"sea_level": level, "flooded": int(flooded.sum()),
                     "exposed": int(exposed.sum())}
     return out, stats
+
+
+
+def phases(props, years):
+    """A settlement's occupation phases [(start, end)] (end exclusive, as the
+    game reads them), else founding..abandoned, else founding onward."""
+    occ = props.get("occupation")
+    if occ:
+        return [(int(a), int(b)) for a, b in occ]
+    start = props["founding"] if props.get("founding") is not None else years[0]
+    end = props["abandoned"] if props.get("abandoned") is not None else years[-1] + 1
+    return [(int(start), int(end))]
+
+
+def frame_of(year, years):
+    """The frame shown at `year`: the latest frame year at or before it
+    (the first frame for anything earlier)."""
+    k = int(np.searchsorted(years, year, side="right")) - 1
+    return years[max(k, 0)]
+
+
+def alive_frames(ph, years):
+    """Frame years in which any phase is occupied (the frame's span
+    [frame, next frame) overlaps [start, end))."""
+    nxt = list(years[1:]) + [years[-1] + (years[-1] - years[-2] if len(years) > 1 else 1)]
+    return [y for y, n in zip(years, nxt) if any(a < n and b > y for a, b in ph)]
+
+
+def lake_levels_at(lakes, lon, lat, year):
+    """Per point (arrays lon, lat): the level of the modelled lake whose
+    shoreline that year encloses it, and the lake's key ("" if none). Lake
+    levels count only inside the lake: the Baltic's box also holds the
+    Arctic coast, the Mega-Chad box dry desert."""
+    from .raster import point_in_poly
+    lon, lat = np.atleast_1d(np.asarray(lon, float)), np.atleast_1d(np.asarray(lat, float))
+    level = np.full(len(lon), -np.inf)
+    key = np.full(len(lon), "", dtype=object)
+    for lk in lakes:
+        for sh in lk.get("shapes", []):
+            if sh.get("level") is None or not sh["rings"] or year < sh["from"] or (sh["to"] is not None and year >= sh["to"]):
+                continue
+            inside = np.zeros(len(lon), dtype=bool)
+            for ring in sh["rings"]:
+                r = np.asarray(ring, float)
+                box = (lon >= r[:, 0].min()) & (lon <= r[:, 0].max()) & (lat >= r[:, 1].min()) & (lat <= r[:, 1].max())
+                if box.any():
+                    hit = np.zeros(len(lon), dtype=bool)
+                    hit[box] = point_in_poly(lon[box], lat[box], r)
+                    inside ^= hit                         # even-odd: islands are holes
+            better = inside & (sh["level"] > level)
+            level[better], key[better] = sh["level"], lk["key"]
+    return level, key
+
+
+def ocean_masks(elev, grid, sea, years):
+    """{year: hexes connected to open ocean below that year's sea level}."""
+    from .elevation import ocean_mask
+    edge = np.array([len(n) < 6 for n in grid.neighbours])
+    return {y: ocean_mask(elev, sea_level(y, sea["curve"]), grid.neighbours, edge, sea["seed_depth"]) for y in years}
+
+
+def site_water_depth(settlements, arr, tf, cfg, lakes, grid, ocean, radius=1, coast_cap=20.0):
+    """depth(n, year) for `keep_settled_land`: how deep that year's water
+    stands over settlement n's ground (negative: the site is above it), and
+    which water.
+
+    Ground: the highest ETOPO1 cell within `radius` cells of the site (a
+    2-arc-minute cell on a coast averages cliff and sea floor; the site is
+    on the dry part), less the glacio-isostatic uplift still to come after
+    the year (pipeline/isostasy.py; zero outside the Fennoscandian dome).
+    Water: a modelled lake's level where that year's shoreline encloses the
+    site; else global mean sea level ([sea] curve) where the site's hex is
+    connected to open ocean (`ocean`, {year: mask}), or a neighbour is and
+    the site's ground is within `coast_cap` m of the sea (beyond that it is
+    a basin behind higher ground: the Jordan Valley next to a coastal hex);
+    else none (an inland basin below sea level, as at Qattara, isn't the sea)."""
+    from . import isostasy
+    icfg, curve = cfg.get("isostasy"), cfg["sea"]["curve"]
+    index = {h: i for i, h in enumerate(grid.ids)}
+    sites = []
+    for f in settlements:
+        lon, lat = f["geometry"]["coordinates"][:2]
+        r, c = int(round(float(tf.row(lat)))), int(round(float(tf.col(lon))))
+        win = arr[max(r - radius, 0):r + radius + 1, max(c - radius, 0):c + radius + 1]
+        z = float(np.nanmax(win)) if win.size and np.isfinite(win).any() else np.inf
+        i = index.get(f["properties"].get("hex"))
+        sites.append((lon, lat, z, i, [] if i is None else list(grid.neighbours[i])))
+    cache = {}
+
+    def depth(n, year):
+        """(metres of water over the site's ground, water: "sea", a lake key, or "none")."""
+        if (n, year) in cache:
+            return cache[(n, year)]
+        lon, lat, z, own, near = sites[n]
+        if icfg:
+            z = z - float(isostasy.uplift(lon, lat, year, icfg))
+        lv, key = lake_levels_at(lakes, lon, lat, year)
+        sea = sea_level(year, curve) - z
+        if np.isfinite(lv[0]):
+            out = (float(lv[0]) - z, key[0])
+        elif year in ocean and own is not None and (
+                ocean[year][own] or (sea <= coast_cap and any(ocean[year][j] for j in near))):
+            out = (sea, "sea")
+        else:
+            out = (-np.inf, "none")
+        cache[(n, year)] = out
+        return out
+    return depth
+
+
+def keep_settled_land(terrain, before, settlements, grid, min_land_neighbours=1, depth=None, margin=0.0,
+                      islets=False):
+    """Settlements arrive on land, and leave only when the water really
+    reaches them.
+
+    `depth(n, year)` gives the water over settlement n's ground that year
+    and its source (`site_water_depth`); without it, a hex turning Water
+    counts as the site going under. The site is there in the frame its
+    phase starts, so it was dry then: a modelled depth d0 > 0 at the start
+    is the model's own error at that spot (shore sites sit within metres of
+    the water). It counts as under water later only where the depth exceeds
+    max(d0, 0) + `margin`.
+    For each occupation phase, from the frame where it starts:
+    - On land, or on Water touching at least `min_land_neighbours` land
+      hexes (a shore drawn a hex off, not the site): the hex is kept land
+      in every frame of the phase where the map has it Water but the site
+      is above the water. The first frame where the water has risen over
+      it (as above) ends the phase: abandoned to the water (`drowned` is set). A kept hex takes
+      its own biome from `before` (terrain before water was overlaid) when
+      that is land, else its land neighbours' majority.
+    - On Water with no land neighbour: with `islets`, a site whose ground is
+      above the water is on an islet too small for the grid, and its hex is
+      kept land as above. Otherwise it is left alone (wrong coordinates) and
+      shows in the report. If the map turns it land later, it is treated as
+      on land from then.
+
+    Returns (terrain, settlements, stats). `settlements` are copies with
+    `occupation` cut and `drowned` (the first year the water ended a phase)
+    set; stats has "kept" {year: hexes}, "drowned" (phases cut), "cuts"
+    [(name, year, water, depth at start, depth then)] and "wet_starts"
+    [(name, start frame, water, depth)]: phases that start more than
+    `margin` under the modelled water, which a dated site can't be (a
+    wrong water level, or wrong coordinates)."""
+    import copy
+    years = sorted(terrain)
+    index = {h: i for i, h in enumerate(grid.ids)}
+    keep = {y: set() for y in years}
+    out_feats, drowned, cuts, wet_starts = [], 0, [], []
+    for n, f in enumerate(settlements):
+        f = copy.deepcopy(f)
+        p = f["properties"]
+        i = index.get(p.get("hex"))
+        out_feats.append(f)
+        if i is None:
+            continue
+        cut, new = None, []
+        for a, b in phases(p, years):
+            if b <= years[0] or a > years[-1]:
+                new.append([a, b])
+                continue
+            k0 = frame_of(a, years)
+            state, end, d0 = None, b, 0.0
+            if depth:
+                d, body = depth(n, k0)
+                d0 = max(d, 0.0)
+                if d > margin:
+                    wet_starts.append((p.get("name", "?"), k0, body, round(d, 1)))
+            for k in years:
+                if k < k0 or k >= b:
+                    continue
+                t = terrain[k]
+                wet = t[i] == "Water"
+                coastal = sum(t[j] != "Water" for j in grid.neighbours[i]) >= min_land_neighbours
+                if state is None:                      # the frame the phase starts: it is there
+                    state = "offshore" if wet and not coastal else "on"
+                    if state == "offshore" and islets and depth and depth(n, k)[0] < 0:
+                        state = "on"                    # an islet too small for the grid: its hex is land
+                elif not wet:
+                    state = "on"                        # the map has caught up with the site
+                elif state == "on" and (depth is None or depth(n, k)[0] > d0 + margin):
+                    end, cut = k, k if cut is None else cut
+                    if depth:
+                        d, body = depth(n, k)
+                        cuts.append((p.get("name", "?"), k, body, round(d0, 1), round(d, 1)))
+                    break
+                if wet and state == "on":
+                    keep[k].add(i)
+            if end > a:
+                new.append([a, end])
+            drowned += end < b
+        if cut is not None:
+            p["drowned"] = cut
+            p["occupation"] = new
+    out, stats = {}, {}
+    for y in years:
+        hits = sorted(keep[y])
+        t = terrain[y]
+        if hits:
+            t = t.copy()
+            own = before.get(y)
+            todo = np.zeros(len(t), dtype=bool)
+            for i in hits:
+                if own is not None and own[i] not in ("Water", "Land", ""):
+                    t[i] = own[i]
+                else:
+                    todo[i] = True
+            if todo.any():
+                t = fill_from_neighbours(t, todo, grid.neighbours, exclude=("Water", "Alpine"))
+        out[y], stats[y] = t, len(hits)
+    return out, out_feats, {"kept": stats, "drowned": drowned, "cuts": cuts, "wet_starts": wet_starts}
+
+
+def reinterpret(t, centres, rules, year):
+    """Drawn classes the transcription got wrong, by region: each rule
+    {from, to, box [lon0, lat0, lon1, lat1], years (optional [first, last])}
+    turns `from` into `to` on hexes centred in the box. Returns (terrain,
+    {rule index: hexes changed})."""
+    out, n = t, {}
+    for k, r in enumerate(rules):
+        ys = r.get("years")
+        if ys and not (ys[0] <= year <= ys[1]):
+            continue
+        b = r["box"]
+        m = ((t == r["from"]) & (centres[:, 0] >= b[0]) & (centres[:, 0] <= b[2])
+             & (centres[:, 1] >= b[1]) & (centres[:, 1] <= b[3]))
+        if m.any():
+            out = out.copy() if out is t else out
+            out[m] = r["to"]
+            n[k] = int(m.sum())
+    return out, n

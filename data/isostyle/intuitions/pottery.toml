@@ -1,0 +1,1265 @@
+# Gap critic: pottery layer. Judgements, not data.
+# Values are the expected share of occupations with pottery (0-1) if the gap had evidence.
+# Revised 2026-11-12 after the Arabian label fix and the Dolbunova start-date fix.
+
+[meta]
+layer = "pottery"
+written = "2026-11-12"
+dossier = "build/isostyle/gaps/pottery/dossier.json"
+summary = "Most pottery gaps are compilation gaps, not archaeological ones: eastern Europe, Russia, the Caucasus, Central Asia, inner Arabia and inner Africa have dated sites in regional literatures but almost none in the open tables, so the surface there is either masked or driven by culture labels. Since the two pipeline fixes (bare 'Neolithic' etc. in Arabia now counts as no pottery; Dolbunova forager-pottery sites now start at the modelled start of their nearest modelled site, 5540-6000 BCE), the earlier artefacts have mostly gone: the Baltic is no longer at 0.87 in the 6,000 BCE slice but masked, which is honest, and the Arabian Neolithic sites now read as aceramic. What remains looks like method rather than record: (1) Arabia's evidenced cells still read 0.56-0.74 from 6,000 BCE, because the few Ubaid-labelled Gulf sites (Dosariyah, Khor, Dalma, Abu Khamis) and kernel spill from Fars, Kerman and southern Iraq dominate a peninsula whose aceramic interior has few dated sites; do not extend those values inland. The same country rule now also makes bare 'Bronze Age' labels in Arabia absent (e.g. Qannas), which is wrong for Umm an-Nar and the Yemeni Bronze Age after c. 2700 BCE: the rule should be limited to the Neolithic stage or end there. (2) The forest zone still loses coverage after 5,000 BCE (40% to 15% to 2%) because the Dolbunova spans still end at 4000 BCE, and its 6,000 BCE values (0.84-0.86) count only ceramic sites, because no aceramic Late Mesolithic site there is recorded. (3) The Caucasus at 6,000 BCE (0.94) still rests on 'Neolithic' labels. (4) The White Sea coast cells filed as drowned are a coastline-polygon artefact, and the grid's 66°E edge cuts Central Asia. Elsewhere the absences are real: no pottery north of the Sahara and east of the Levant before c. 7000 BCE, while the Sahara-Sahel and Sudan carry some of the world's earliest pottery from c. 9400 BCE, which the edge values (0.52-0.58 at 9,000 BCE) correctly hint at."
+
+# ---------------------------------------------------------------- Russian forest
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-10000, -9000, -8000]
+gap_ids = ["pottery-10000-01", "pottery-9000-28", "pottery-8000-53", "pottery-9000-47", "pottery-8000-75"]
+why_empty = ["true_absence", "research_intensity", "not_in_open_compilations"]
+why_note = "Forager sites exist (Butovo, Veretye, Kunda, Pechora Mesolithic) but none carry an open record; and none of them had pottery, so the absence is real."
+expected = 0.0
+expected_range = [0.0, 0.02]
+confidence = "high"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "The gap has 0 bordering cells with evidence and the nearest point is 918-1754 km away, so the dossier says nothing directly. The regional literature is unambiguous: the earliest pottery in the east European forest zone is Upper Volga/Elshanka-derived and starts c. 6200-5800 BCE. Butovo and Veretye are aceramic Mesolithic. Cereal-pollen means of 0.04-0.06 inside the gap are the wild-grass background, not farming."
+literature = [
+  { cite = "Dolbunova et al. 2023, 'The transmission of pottery technology among prehistoric European hunter-gatherers', Nature Human Behaviour", checked = false },
+  { cite = "Zhilin 2007, Mesolithic of the Upper Volga (Butovo, Veretye)", checked = false },
+]
+would_settle = "Ingest a list of dated Mesolithic sites in NW Russia (e.g. the Zhilin / Oshibkina site catalogues) as recorded pottery absences."
+speculative_rule = "Set pottery to 0 across the whole Russian forest zone, including the Pechora and Novaya Zemlya fringes, for 10,000-8,000 BCE."
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-7000]
+gap_ids = ["pottery-7000-78", "pottery-7000-96"]
+why_empty = ["research_intensity", "not_in_open_compilations", "true_absence"]
+why_note = "Mostly genuine absence; the slice's later edge (6,500 BCE) may just catch the first Upper Volga and Kama vessels in the far south."
+expected = 0.03
+expected_range = [0.0, 0.1]
+confidence = "medium"
+basis = ["literature", "dossier_statistics"]
+reasoning = "Gap of 2111 cells, 0 edge cells with evidence, nearest point 1175 km. The 7,000 BCE slice spans 7,500-6,500 BCE. Pottery reaches the middle Volga (Elshanka) c. 7000-6500 BCE but the Upper Volga and Kama only c. 6200-5900 BCE; the forest belt north of 56°N should be almost wholly aceramic in this window."
+literature = [
+  { cite = "Vybornov et al. 2016, early pottery of the Volga-Kama region (Elshanka chronology)", checked = false },
+  { cite = "Dolbunova et al. 2023, Nature Human Behaviour", checked = false },
+]
+would_settle = "Directly dated food crusts and charcoal from the earliest Upper Volga and Kama layers, with reservoir correction."
+speculative_rule = "Set 0.05 south of 58°N between 35° and 55°E (Upper Volga, Kama) and 0 elsewhere in the forest zone at 7,000 BCE."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [27.0, 56.0, 66.0, 77.0]
+value = 0.0
+[[judgement.adjust]]
+kind = "area"
+bbox = [35.0, 56.0, 55.0, 58.0]
+value = 0.05
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-6000]
+gap_ids = ["pottery-6000-100", "pottery-6000-115"]
+why_empty = ["not_in_open_compilations", "publication_access", "research_intensity"]
+why_note = "Dated sites exist in Russian-language literature (Zamostje, Sakhtysh, Kama, Karelian and Pechora sites) but only the Dolbunova points reach the atlas, only in the south, and with no aceramic sites beside them."
+expected = 0.4
+expected_range = [0.15, 0.65]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature", "dossier_statistics"]
+reasoning = "Coverage is 5.5% at 6,000 BCE. Edge cells average 0.841 (43 cells, range 0.83-0.85), nearest point 185 km; the region's evidenced cells average 0.86. The Dolbunova sites now start at their nearest modelled start (5540-6000 BCE) rather than 6000 BCE, so most of them enter the 6,500-5,500 BCE window late or not at all; the early-start inflation is largely gone. The remaining bias is that only ceramic sites are recorded: the aceramic Late Mesolithic occupations that still made up much of the window (Butovo, Veretye, Karelian and Pechora sites) carry no record, so the share is a share of potters. Upper Volga, Kama and Sukhona/Onega pottery appear c. 6000-5700 BCE; Karelia (Sperrings) and the Pechora only c. 5500 BCE or later. Expect roughly half the occupations in the south to be ceramic and few in the north."
+literature = [
+  { cite = "Dolbunova et al. 2023, Nature Human Behaviour", checked = false },
+  { cite = "Mazurkevich & Dolbunova 2015, 'The oldest pottery in hunter-gatherer communities and models of Neolithisation of Eastern Europe', Documenta Praehistorica 42", checked = false },
+]
+would_settle = "Dated aceramic Late Mesolithic sites of the forest zone (Zhilin, Oshibkina catalogues) as recorded absences, and the Upper Volga/Kama radiocarbon lists (Zaretskaya, Vybornov) with per-site dates."
+speculative_rule = "At 6,000 BCE set 0.55 south of 60°N, fading linearly to 0.15 at 64°N and 0.05 on the Arctic coast and Novaya Zemlya."
+
+[[judgement.adjust]]
+kind = "gradient"
+axis = "lat"
+from = [60.0, 0.55]
+to = [64.0, 0.15]
+[[judgement.adjust]]
+kind = "area"
+bbox = [27.0, 67.0, 66.0, 77.0]
+value = 0.05
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-5000, -4000, -3000]
+gap_ids = ["pottery-3000-155", "pottery-4000-138", "pottery-5000-121", "pottery-3000-167", "pottery-5000-133", "pottery-4000-152", "pottery-3000-170"]
+why_empty = ["not_in_open_compilations", "publication_access", "label_gaps"]
+why_note = "Pit-Comb, Lyalovo, Volosovo, Kama and Pechora ceramic sites are well known but unlisted; coverage falls from 40% (5,000) to 15% (4,000) and 2% (3,000 BCE) only because the Dolbunova spans still end at 4000 BCE."
+expected = 0.9
+expected_range = [0.75, 0.98]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature", "dossier_statistics"]
+reasoning = "Edge values are 0.951 (5,000), 0.974 (4,000) and 0.994 (3,000 BCE), with nearest points 49 km away at 5,000 and 4,000 BCE. Forest-zone foragers were ceramic throughout the 5th-3rd millennia (Lyalovo, Pit-Comb Ware, Volosovo, Garino-Bor, Chernaya Rechka in the Pechora). The tundra fringe and Novaya Zemlya had few people and their sites (where they exist) are often aceramic hunting camps."
+literature = [
+  { cite = "Dolbunova et al. 2023, Nature Human Behaviour", checked = false },
+  { cite = "Piezonka 2015, Jäger, Fischer, Töpfer: Wildbeutergruppen mit früher Keramik in Nordosteuropa", checked = false },
+]
+would_settle = "Ingest Russian forest-zone radiocarbon lists (e.g. the Piezonka compilation for NE Europe) with culture labels mapped to ceramic status."
+speculative_rule = "Fill the forest zone with the adjacent 0.95 south of 64°N, fading to 0.7 at the Arctic coast; leave Novaya Zemlya as unknown/unsettled."
+
+[[judgement.adjust]]
+kind = "gradient"
+axis = "lat"
+from = [64.0, 0.95]
+to = [69.0, 0.7]
+[[judgement.adjust]]
+kind = "area"
+bbox = [51.0, 70.5, 69.5, 77.0]
+value = "unknown"
+
+# ---------------------------------------------------------------- Russian steppe
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["pottery-9000-31", "pottery-7000-81", "pottery-8000-56", "pottery-10000-07"]
+why_empty = ["not_in_open_compilations", "publication_access", "true_absence"]
+why_note = "Aceramic before c. 7000 BCE; in the 7,000 BCE slice the Lower Don (Rakushechny Yar) and Middle Volga (Elshanka) carry some of Europe's earliest pottery, none of it in the open tables."
+expected = 0.05
+expected_range = [0.0, 0.3]
+confidence = "medium"
+basis = ["literature", "intuition"]
+reasoning = "0 edge cells with evidence in all four slices. The literature puts the first ceramics of the Volga-Don steppe c. 7000-6500 BCE (Elshanka, Rakushechny Yar, Varfolomeevka lower layers just after), so 10,000-8,000 BCE should be 0 and 7,000 BCE a few tenths along the Volga and Lower Don only. Dates on food crusts carry freshwater reservoir offsets that may make them too old by several centuries."
+literature = [
+  { cite = "Vybornov et al. 2016, early pottery of the Volga-Kama region (Elshanka chronology)", checked = false },
+  { cite = "Dolbunova et al. 2020, 'The earliest pottery in the Lower Don region (Rakushechny Yar)'", checked = false },
+]
+would_settle = "Reservoir-corrected dates from Elshanka and Rakushechny Yar sites, ingested as dated presences with explicit offsets."
+speculative_rule = "0 for 10,000-8,000 BCE; at 7,000 BCE 0.3 within 250 km of the Middle Volga (Samara) and Lower Don, 0.05 elsewhere in the steppe."
+
+[[judgement.adjust]]
+kind = "river"
+within_km = 250
+min_upland_km2 = 400000
+bbox = [47.0, 52.5, 51.5, 56.0]
+value = 0.3
+[[judgement.adjust]]
+kind = "river"
+within_km = 250
+min_upland_km2 = 150000
+bbox = [38.5, 46.8, 44.0, 49.6]
+value = 0.3
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000]
+value = 0.0
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-6000]
+gap_ids = ["pottery-6000-107", "pottery-6000-114"]
+why_empty = ["not_in_open_compilations", "publication_access", "research_intensity"]
+why_note = "The Volga-Don steppe had ceramic foragers in this window (Elshanka, Rakushechny Yar, Varfolomeevka, Orlovka); the dated sites are in Russian-language reports."
+expected = 0.75
+expected_range = [0.5, 0.9]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature", "dossier_statistics"]
+reasoning = "Two gaps (601 and 99 cells), edges 0.846 and 0.791, nearest points 186-355 km; ground stone inside reads 0.98-0.99. Pottery is established along the Lower Volga and Lower Don by c. 6500 BCE and on the Samara by c. 6000 BCE. The forest-steppe north of the Samara bend and the dry Caspian steppe are less certain, and food-crust dates there carry freshwater reservoir offsets."
+literature = [
+  { cite = "Vybornov et al. 2016, early pottery of the Volga-Kama region (Elshanka chronology)", checked = false },
+  { cite = "Dolbunova et al. 2020, 'The earliest pottery in the Lower Don region (Rakushechny Yar)'", checked = false },
+]
+would_settle = "Reservoir-corrected dates for Varfolomeevka, Orlovka and Rakushechny Yar entered as dated ceramic occupations."
+speculative_rule = "0.8 within 250 km of the Volga and Lower Don, 0.6 in the rest of the steppe and forest-steppe."
+
+[[judgement.adjust]]
+kind = "river"
+within_km = 250
+names = ["Volga"]
+value = 0.8
+outside = 0.6
+[[judgement.adjust]]
+kind = "river"
+within_km = 250
+min_upland_km2 = 150000
+bbox = [38.5, 46.8, 44.0, 49.6]
+value = 0.8
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-5000, -4000, -3000]
+gap_ids = ["pottery-3000-162", "pottery-4000-146", "pottery-5000-131", "pottery-5000-132", "pottery-4000-154"]
+why_empty = ["not_in_open_compilations", "publication_access"]
+why_note = "Khvalynsk, Samara, Repin and Yamnaya sites are many and ceramic; the gaps are holes in open coverage."
+expected = 0.95
+expected_range = [0.85, 1.0]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Edges 0.951-0.952 (5,000), 0.974 (4,000) and 0.993 (3,000 BCE). Every Eneolithic and Early Bronze Age culture of the steppe used pottery; some Yamnaya graves have no vessel, which is why the value is below 1."
+literature = [
+  { cite = "Anthony 2007, The Horse, the Wheel, and Language, Princeton", checked = false },
+]
+would_settle = "Open radiocarbon lists for steppe Eneolithic and Yamnaya sites (many are in AADR as burials but not as occupations)."
+speculative_rule = "Fill with 0.95."
+
+# ---------------------------------------------------------------- Ukraine & Belarus
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-10000, -9000, -8000]
+gap_ids = ["pottery-10000-12", "pottery-9000-39", "pottery-8000-64"]
+why_empty = ["true_absence", "not_in_open_compilations", "publication_access"]
+why_note = "Mesolithic sites are numerous (Grebeniki, Kukrek, Kudlaevka, Janislawice) but not compiled; none had pottery."
+expected = 0.0
+expected_range = [0.0, 0.02]
+confidence = "high"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "The whole country block (468 cells) is masked; at 8,000 BCE only 2 edge cells have evidence, averaging 0.058, which is the slice's shrinkage target rather than a signal. No pottery is claimed anywhere in Ukraine or Belarus before c. 6500 BCE."
+literature = [
+  { cite = "Telegin & Potekhina, Mesolithic of Ukraine (Kukrek, Grebeniki cultures)", checked = false },
+]
+would_settle = "A digitised list of dated Ukrainian and Belarusian Mesolithic sites (none open now; AUDIT.md finds 12 expected dates in all Belarus) as recorded absences."
+speculative_rule = "Set pottery to 0 across Ukraine and Belarus for 10,000-8,000 BCE."
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-7000]
+gap_ids = ["pottery-7000-90"]
+why_empty = ["not_in_open_compilations", "publication_access", "research_intensity"]
+why_note = "Mostly genuine absence; the earliest Surskaya, Matveev Kurgan and Azov-steppe pottery may reach the late part of the window but is undated in any open source."
+expected = 0.07
+expected_range = [0.0, 0.25]
+confidence = "low"
+basis = ["literature", "neighbouring_evidence", "intuition"]
+reasoning = "No edge cells with evidence and the nearest point 365 km off. The 7,000 BCE slice spans 7,500-6,500 BCE. Pottery appears in the Lower Don c. 7000-6500 BCE and in the Dnieper rapids (Surskaya) and Azov steppe perhaps by 6500-6200 BCE; Bug-Dniester begins c. 6200 BCE and Belarus (Neman, Upper Dnieper) only c. 5500 BCE. So a small share in SE Ukraine, none in the north-west."
+literature = [
+  { cite = "Mazurkevich & Dolbunova 2015, Documenta Praehistorica 42", checked = false },
+  { cite = "Kotova 2003, Neolithization in Ukraine, BAR IS 1109", checked = false },
+]
+would_settle = "Dates from Surskaya, Matveev Kurgan and early Bug-Dniester layers, with reservoir correction for food crusts."
+speculative_rule = "At 7,000 BCE set 0.15 east of the Dnieper and south of 49°N, fading to 0 at 52°N and in all of Belarus."
+
+[[judgement.adjust]]
+kind = "gradient"
+axis = "lat"
+from = [49.0, 0.15]
+to = [52.0, 0.0]
+[[judgement.adjust]]
+kind = "polygon"
+points = [[22.0, 52.0], [30.6, 52.0], [30.5, 50.45], [32.0, 49.6], [33.4, 49.07], [35.0, 48.45], [35.15, 47.85], [34.4, 47.55], [32.6, 46.65], [31.6, 46.4], [29.0, 45.0], [22.0, 45.0]]
+value = 0.0
+[[judgement.adjust]]
+kind = "area"
+bbox = [23.0, 51.6, 32.8, 56.2]
+value = 0.0
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-6000]
+gap_ids = ["pottery-6000-112"]
+why_empty = ["not_in_open_compilations", "true_absence", "research_intensity"]
+why_note = "The hole is Belarus, where Neman and Upper Dnieper pottery begins only c. 5500-5300 BCE; most of the window there is aceramic."
+expected = 0.15
+expected_range = [0.0, 0.4]
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "159 cells around 53°N 29°E, edge 0.763 (range 0.58-0.87), nearest point 202 km. The edge values come from Ukraine (Bug-Dniester from c. 6200 BCE, Surskaya and Dnieper-Donets I) and do not carry north. With the Dolbunova sites now dated from 5540-6000 BCE, the Belarusian points barely enter the 6,500-5,500 BCE window, which is right."
+literature = [
+  { cite = "Mazurkevich & Dolbunova 2015, Documenta Praehistorica 42", checked = false },
+  { cite = "Charniauski, Neman culture chronology, Belarus", checked = false },
+]
+would_settle = "Per-site dates for the earliest Neman and Upper Dnieper layers."
+speculative_rule = "0.1 across Belarus at 6,000 BCE, rising to 0.4 at the Ukrainian border."
+
+[[judgement.adjust]]
+kind = "gradient"
+axis = "lat"
+from = [51.5, 0.4]
+to = [53.0, 0.1]
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-3000]
+gap_ids = ["pottery-3000-173"]
+why_empty = ["not_in_open_compilations", "label_gaps"]
+why_note = "A small hole in northern Belarus after the Dolbunova span ends; Narva-derived and Corded Ware groups there all used pottery."
+expected = 0.98
+expected_range = [0.9, 1.0]
+confidence = "high"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Edge mean 0.993 (16 cells). Late Neolithic north Belarus (Usvyaty, Northern Belarus culture) is fully ceramic."
+literature = []
+would_settle = "Dated Northern Belarus culture sites (Charniauski's excavations) in any open table."
+speculative_rule = "Copy the adjacent 0.99 into the hole."
+
+# ---------------------------------------------------------------- Baltic
+
+[[judgement]]
+region = "Baltic"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["pottery-9000-45", "pottery-10000-19", "pottery-8000-69", "pottery-7000-94"]
+why_empty = ["true_absence", "not_in_open_compilations"]
+why_note = "Kunda and Butovo-related Mesolithic were aceramic; Narva pottery starts c. 5500 BCE."
+expected = 0.0
+expected_range = [0.0, 0.03]
+confidence = "high"
+basis = ["literature"]
+reasoning = "No edge evidence except 2 cells at 0.113 in 7,000 BCE, which is shrinkage toward the slice mean. Nearest points 403-631 km."
+literature = [
+  { cite = "Kriiska et al., Narva pottery chronology, Estonia", checked = false },
+]
+would_settle = "Dated Kunda sites in Estonia and Latvia (Kriiska's lists) as recorded absences."
+speculative_rule = "0 for 10,000-7,000 BCE."
+
+[[judgement]]
+region = "Baltic"
+slices = [-6000]
+gap_ids = ["pottery-6000-113"]
+why_empty = ["true_absence", "not_in_open_compilations"]
+why_note = "Now honestly empty: after the Dolbunova fix the Narva and Neman sites start c. 5500 BCE or later and drop out of this window."
+expected = 0.05
+expected_range = [0.0, 0.2]
+confidence = "medium"
+basis = ["literature", "dossier_statistics"]
+reasoning = "103 cells, no edge evidence, nearest point 397 km. Before the fix this slice read 0.87; it is now masked, which matches the literature: Narva pottery in Estonia and Latvia begins c. 5400-5300 BCE and Neman pottery in Lithuania c. 5500 BCE, at the very end of the 6,500-5,500 BCE window. Late Kunda occupations are aceramic."
+literature = [
+  { cite = "Kriiska et al., Narva pottery chronology, Estonia", checked = false },
+  { cite = "Piezonka 2015, Wildbeutergruppen mit früher Keramik in Nordosteuropa", checked = false },
+]
+would_settle = "Dated late Kunda layers as recorded absences; per-site dates for the earliest Narva sites."
+speculative_rule = "0.05 across the Baltic at 6,000 BCE."
+
+[[judgement]]
+region = "Baltic"
+slices = [-3000]
+gap_ids = ["pottery-3000-174"]
+why_empty = ["not_in_open_compilations"]
+why_note = "A small hole in Latvia and Estonia; Late Narva, Comb Ware and Corded Ware groups there all used pottery."
+expected = 0.98
+expected_range = [0.9, 1.0]
+confidence = "high"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "45 cells, edge 0.992 (7 cells), nearest point 224 km."
+literature = []
+would_settle = "Open Estonian and Latvian date lists (e.g. the Estonian radiocarbon database)."
+speculative_rule = "Copy the adjacent 0.99 into the hole."
+
+# ---------------------------------------------------------------- Scandinavia
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-10000, -9000, -8000, -7000, -6000]
+gap_ids = ["pottery-6000-105", "pottery-7000-87", "pottery-8000-65", "pottery-10000-16", "pottery-9000-43", "pottery-10000-20"]
+why_empty = ["true_absence", "ice", "low_population", "research_intensity"]
+why_note = "Ice or pioneer coastal settlement until c. 8000 BCE, then aceramic Mesolithic; the atlas's ice lasts too long (METHODS) but that does not change the pottery answer."
+expected = 0.0
+expected_range = [0.0, 0.05]
+confidence = "high"
+basis = ["literature", "environment", "neighbouring_evidence"]
+reasoning = "Edge means are 0.018-0.049 to 8,000 BCE, then 0.251 (7,000) and 0.366 (6,000 BCE). The later edge values are artefacts, now mostly of labels: sites filed as 'Neolithic' stamp that label on their early dates (METHODS), and since the Dolbunova fix the Baltic no longer feeds high values in. The earliest Fennoscandian pottery is Early Comb Ware/Sperrings and Säräisniemi 1 in Finland c. 5300-5100 BCE, and Ertebølle in the south c. 4600 BCE, both after these windows."
+literature = [
+  { cite = "Pesonen & Leskinen, Early Comb Ware and Sperrings chronology, Finland", checked = false },
+  { cite = "Damlien & Solheim, Mesolithic settlement of Norway and Sweden", checked = false },
+]
+would_settle = "Ingest the Norwegian and Swedish Mesolithic date lists (e.g. Solheim & Persson's radiocarbon compilation) as recorded absences."
+speculative_rule = "Set 0 over Norway, northern Sweden and Finland through 6,000 BCE, ignoring the 0.25-0.37 edge values."
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-5000, -4000, -3000]
+gap_ids = ["pottery-5000-130", "pottery-4000-149", "pottery-3000-166", "pottery-4000-150", "pottery-3000-169", "pottery-5000-136"]
+why_empty = ["research_intensity", "not_in_open_compilations", "true_absence"]
+why_note = "The gaps split in two: Finland (well researched, ceramic, simply not compiled) and the Scandinavian mountains and Norway (where many foragers stayed aceramic into the 3rd millennium)."
+expected = 0.5
+expected_range = [0.15, 0.9]
+confidence = "low"
+basis = ["literature", "neighbouring_evidence", "intuition"]
+reasoning = "Edges read 0.84 (5,000), 0.90 (4,000) and 0.99 (3,000 BCE), but they come from southern Sweden and Finland. Finland has Comb Ware from c. 5100 BCE, so the Finnish holes (62°N, 56-125 cells) should be 0.8-0.95 from 5,000 BCE on. Central and northern Norway and the Swedish interior were largely aceramic: some asbestos- and slate-associated ware appears in Norrland and Finnmark from c. 4000 BCE, Funnel Beaker pottery only in the south-east of Norway. The pink 64-67°N blocks should be far lower than their edges."
+literature = [
+  { cite = "Pesonen & Leskinen, Early Comb Ware and Sperrings chronology, Finland", checked = false },
+  { cite = "Hallgren 2008, Mesolithic and Neolithic pottery in Mälardalen and Norrland", checked = false },
+]
+would_settle = "Finnish Heritage Agency site register with dated ceramic layers; Norwegian Askeladden / Unimus finds with ware types."
+speculative_rule = "Finland: copy the Baltic values (0.9 at 5,000, 0.95 after). Norway and Swedish interior north of 62°N: 0.1 at 5,000, 0.25 at 4,000 and 0.35 at 3,000 BCE, rising to 0.5 near the Finnish border."
+
+[[judgement.adjust]]
+kind = "gradient"
+slices = [-5000]
+axis = "lon"
+from = [14.0, 0.1]
+to = [23.5, 0.5]
+[[judgement.adjust]]
+kind = "gradient"
+slices = [-4000]
+axis = "lon"
+from = [14.0, 0.25]
+to = [23.5, 0.5]
+[[judgement.adjust]]
+kind = "gradient"
+slices = [-3000]
+axis = "lon"
+from = [14.0, 0.35]
+to = [23.5, 0.5]
+[[judgement.adjust]]
+kind = "area"
+bbox = [4.0, 54.5, 21.0, 62.0]
+value = 0.5
+[[judgement.adjust]]
+kind = "area"
+slices = [-5000]
+bbox = [21.0, 59.7, 31.6, 64.5]
+value = 0.9
+[[judgement.adjust]]
+kind = "area"
+slices = [-5000]
+bbox = [24.0, 64.5, 31.6, 69.3]
+value = 0.9
+[[judgement.adjust]]
+kind = "area"
+slices = [-4000, -3000]
+bbox = [21.0, 59.7, 31.6, 64.5]
+value = 0.95
+[[judgement.adjust]]
+kind = "area"
+slices = [-4000, -3000]
+bbox = [24.0, 64.5, 31.6, 69.3]
+value = 0.95
+
+# ---------------------------------------------------------------- Caucasus
+
+[[judgement]]
+region = "Caucasus"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["pottery-8000-70", "pottery-7000-95", "pottery-9000-48", "pottery-10000-22"]
+why_empty = ["research_intensity", "not_in_open_compilations", "true_absence"]
+why_note = "Mesolithic and pre-Shulaveri occupation (Kotias Klde, Chokh, Trialeti) is thin and aceramic."
+expected = 0.0
+expected_range = [0.0, 0.05]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "No edge evidence in any of these slices; nearest points 470-537 km. Pottery appears in the South Caucasus with Shulaveri-Shomu and the Kura-basin Neolithic c. 6000-5800 BCE, after an aceramic first phase."
+literature = [
+  { cite = "Hamon et al. 2016, Gadachrili Gora; Shulaveri-Shomu chronology", checked = false },
+  { cite = "Meshveliani et al., Kotias Klde Mesolithic", checked = false },
+]
+would_settle = "Ingest the CAUCASUS or ArchAtlas Caucasian radiocarbon lists if licensed; otherwise digitise Badalyan & Lombard's tables."
+speculative_rule = "0 throughout the Caucasus for 10,000-7,000 BCE."
+
+[[judgement]]
+region = "Caucasus"
+slices = [-6000]
+gap_ids = []
+why_empty = ["label_gaps", "sampling_bias"]
+why_note = "Not a gap but a suspect value: the observed 0.94 rests on 'Neolithic' labels and ignores the aceramic first Shulaveri phase; unchanged by the recent fixes."
+expected = 0.6
+expected_range = [0.4, 0.8]
+confidence = "low"
+basis = ["literature", "dossier_statistics"]
+reasoning = "The 6,000 BCE slice spans 6,500-5,500 BCE. Pottery in the Kura valley appears c. 5900-5800 BCE; western Georgia and the North Caucasus foothills were later still. So roughly half to two-thirds of occupations in the window are ceramic, not 94%."
+literature = [
+  { cite = "Hamon et al. 2016, Gadachrili Gora; Shulaveri-Shomu chronology", checked = false },
+]
+would_settle = "Phase-level ceramic status for the dated Shulaveri-Shomu sites."
+speculative_rule = "Cap the Caucasus at 0.6 for 6,000 BCE in the speculative layer."
+
+[[judgement]]
+region = "Caucasus"
+slices = [-3000]
+gap_ids = ["pottery-3000-171"]
+why_empty = ["not_in_open_compilations"]
+why_note = "Kura-Araxes sites are many and ceramic; coverage drops to 18% only because the open tables thin out."
+expected = 0.99
+expected_range = [0.95, 1.0]
+confidence = "high"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Edge mean 0.993 (11 cells). Kura-Araxes is defined by its burnished pottery."
+literature = []
+would_settle = "Any open Kura-Araxes date list."
+speculative_rule = "Fill with 0.99."
+
+# ---------------------------------------------------------------- Central Asia
+
+[[judgement]]
+region = "Central Asia"
+slices = [-10000, -9000, -8000]
+gap_ids = ["pottery-8000-58", "pottery-9000-34", "pottery-10000-08"]
+why_empty = ["research_intensity", "not_in_open_compilations", "true_absence", "dataset_edge"]
+why_note = "Sparse Mesolithic (Dam-Dam Cheshme, Jebel lower layers); no pottery. The grid ends at 66°E so most of Central Asia is not even in view."
+expected = 0.0
+expected_range = [0.0, 0.03]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "No edge evidence, nearest points 1057-1511 km away. Aceramic in all known sequences."
+literature = [
+  { cite = "Brunet 2002, Asie centrale: vers une redéfinition des complexes culturels de la fin du Pléistocène et des débuts de l'Holocène, Paléorient 28", checked = false },
+]
+would_settle = "Dated Mesolithic layers from Jebel, Dam-Dam Cheshme and the Ustyurt."
+speculative_rule = "0 across the Central Asian part of the grid for 10,000-8,000 BCE."
+
+[[judgement]]
+region = "Central Asia"
+slices = [-7000, -6000]
+gap_ids = ["pottery-7000-83", "pottery-6000-104"]
+why_empty = ["research_intensity", "not_in_open_compilations", "publication_access"]
+why_note = "Jeitun in southern Turkmenistan and the early Caspian and Aral Neolithic are known but thinly dated and in Russian-language publications."
+expected = 0.35
+expected_range = [0.05, 0.7]
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "7,000 BCE: no edge evidence; Jeitun begins c. 6200 BCE so the 7,500-6,500 window is near 0 except perhaps the North Caspian. 6,000 BCE: edge 0.844 (34 cells), nearest point 795 km. Jeitun (from c. 6200 BCE) is ceramic; the Kelteminar of the Aral and Kyzylkum begins c. 5500 BCE, so the desert interior is mostly aceramic in this window. Expect ~0.05 at 7,000 and ~0.5 at 6,000 BCE."
+literature = [
+  { cite = "Harris 2010, Origins of Agriculture in Western Central Asia (Jeitun)", checked = false },
+  { cite = "Brunet 2005, Kelteminar chronology, Paléorient", checked = false },
+]
+would_settle = "Dates for Kelteminar and early Caspian Neolithic sites; Jeitun's published sequence ingested as presences."
+speculative_rule = "7,000 BCE: 0.05 everywhere. 6,000 BCE: 0.8 along the Kopet Dag piedmont (south of 39°N), 0.4 on the Caspian shore, 0.2 in the Kyzylkum and Ustyurt."
+
+[[judgement.adjust]]
+kind = "polygon"
+points = [[53.3, 45.2], [55.5, 45.6], [58.2, 45.5], [58.4, 44.5], [58.6, 43.6], [58.0, 42.6], [57.0, 41.9], [55.5, 41.5], [54.5, 41.9], [54.0, 42.8], [53.0, 43.6], [52.8, 44.5]]
+value = 0.2
+[[judgement.adjust]]
+kind = "polygon"
+points = [[61.0, 42.4], [61.8, 41.5], [63.0, 40.4], [64.2, 40.0], [66.0, 40.4], [66.0, 43.8], [65.5, 44.6], [63.5, 45.0], [61.5, 44.3], [60.8, 43.3]]
+value = 0.2
+[[judgement.adjust]]
+kind = "river"
+within_km = 100
+lakes = ["Caspian Sea"]
+value = 0.4
+[[judgement.adjust]]
+kind = "polygon"
+points = [[54.0, 37.3], [55.5, 38.6], [56.3, 39.2], [57.5, 38.85], [58.5, 38.3], [60.0, 37.8], [61.5, 37.7], [61.5, 36.5], [60.0, 36.8], [58.4, 37.3], [56.8, 37.7], [55.3, 37.3]]
+value = 0.8
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-7000]
+value = 0.05
+
+[[judgement]]
+region = "Central Asia"
+slices = [-5000, -4000, -3000]
+gap_ids = ["pottery-4000-142", "pottery-3000-160", "pottery-5000-124"]
+why_empty = ["not_in_open_compilations", "publication_access", "low_population"]
+why_note = "Kelteminar, Namazga and steppe Eneolithic sites are ceramic but unlisted; the Ustyurt and Karakum interiors are thinly settled."
+expected = 0.9
+expected_range = [0.7, 0.98]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Edge 0.949 (5,000) and 0.992 (3,000 BCE); 4,000 BCE has no edge evidence at all, which is a compilation hole between the Dolbunova span and the Bronze Age tables. Kelteminar (c. 5500-3500 BCE) and Namazga I-IV are ceramic; short-stay desert camps may lack sherds."
+literature = [
+  { cite = "Brunet 2005, Kelteminar chronology, Paléorient", checked = false },
+]
+would_settle = "A Central Asian radiocarbon compilation (none open) or digitised Kelteminar site lists."
+speculative_rule = "Fill with 0.9, lowering to 0.7 in the Ustyurt and central Karakum where occupation was ephemeral."
+
+[[judgement.adjust]]
+kind = "polygon"
+points = [[53.3, 45.2], [55.5, 45.6], [58.2, 45.5], [58.4, 44.5], [58.6, 43.6], [58.0, 42.6], [57.0, 41.9], [55.5, 41.5], [54.5, 41.9], [54.0, 42.8], [53.0, 43.6], [52.8, 44.5]]
+value = 0.7
+[[judgement.adjust]]
+kind = "polygon"
+points = [[56.5, 39.6], [58.0, 39.0], [60.0, 38.6], [61.5, 38.8], [62.4, 39.2], [61.6, 40.3], [60.5, 41.0], [58.5, 40.9], [57.0, 40.5]]
+value = 0.7
+
+# ---------------------------------------------------------------- Iran & Afghanistan
+
+[[judgement]]
+region = "Iran & Afghanistan"
+slices = [-10000, -9000, -8000]
+gap_ids = ["pottery-9000-36", "pottery-10000-10", "pottery-8000-60"]
+why_empty = ["true_absence", "research_intensity", "low_population"]
+why_note = "The plateau interior and deserts are thinly occupied; Zagros sites of the period (Sheikh-e Abad, Chogha Golan, Ganj Dareh lower) are aceramic."
+expected = 0.0
+expected_range = [0.0, 0.05]
+confidence = "medium"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Edges read 0.025 (10,000), 0.05 (9,000) and 0.221 (8,000 BCE). The 8,000 BCE edge is from the Zagros and Mesopotamian side and is probably inflated by labels: Ganj Dareh's early pottery is c. 7900-7700 BCE but rare, so a value near 0.05 fits the window."
+literature = [
+  { cite = "Riehl et al. 2013, Chogha Golan, Science", checked = false },
+  { cite = "Matthews, Mohammadifar & Matthews 2013, Sheikh-e Abad, Central Zagros Archaeological Project", checked = false },
+]
+would_settle = "Phase-level ceramic status for the dated Zagros aceramic sites (CZAP, Ganj Dareh, Asiab)."
+speculative_rule = "0 for 10,000-9,000 BCE; at 8,000 BCE 0.05 in the Zagros, 0 on the plateau and in Afghanistan."
+
+[[judgement.adjust]]
+kind = "polygon"
+points = [[44.8, 36.6], [46.5, 37.0], [48.8, 34.8], [51.0, 32.8], [53.5, 30.5], [57.0, 28.0], [56.3, 27.1], [54.0, 26.8], [51.5, 28.3], [49.5, 30.5], [47.5, 32.6], [45.3, 34.2]]
+value = 0.05
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000]
+value = 0.0
+
+[[judgement]]
+region = "Iran & Afghanistan"
+slices = [-7000, -6000]
+gap_ids = ["pottery-7000-85", "pottery-6000-109"]
+why_empty = ["research_intensity", "low_population", "not_in_open_compilations"]
+why_note = "The gap is the Dasht-e Kavir, the Lut and Afghanistan; the inhabited rims (Sang-e Chakhmaq, Sialk, Tal-i Mushki) are poorly represented in open tables."
+expected = 0.5
+expected_range = [0.2, 0.85]
+confidence = "low"
+basis = ["neighbouring_evidence", "literature", "environment"]
+reasoning = "Edge 0.539 (7,000) and 0.833 (6,000 BCE). Pottery is general in the Zagros by c. 6500 BCE, at Sang-e Chakhmaq by c. 6200 BCE and in Fars (Mushki) by c. 6000 BCE; Afghanistan's Neolithic is barely known. Expect ~0.35 at 7,000 and ~0.75 at 6,000 BCE on the plateau rims, with the desert cores mostly unoccupied."
+literature = [
+  { cite = "Roustaei, Mashkour & Tengberg 2015, Tappeh Sang-e Chakhmaq, Iranian Journal of Archaeological Studies", checked = false },
+]
+would_settle = "Ingest the Iranian Neolithic date lists (e.g. Thomalsky's or Nishiaki's compilations)."
+speculative_rule = "7,000 BCE: 0.35 on the plateau rims, 0.1 in Afghanistan. 6,000 BCE: 0.8 on the rims, 0.4 in Afghanistan; mark the Kavir and Lut deserts as low occupation rather than pottery-free."
+
+[[judgement.adjust]]
+kind = "area"
+slices = [-7000]
+bbox = [44.0, 25.0, 66.0, 40.0]
+value = 0.35
+[[judgement.adjust]]
+kind = "area"
+slices = [-7000]
+bbox = [61.0, 29.5, 66.0, 39.6]
+value = 0.1
+[[judgement.adjust]]
+kind = "area"
+slices = [-6000]
+bbox = [44.0, 25.0, 66.0, 40.0]
+value = 0.8
+[[judgement.adjust]]
+kind = "area"
+slices = [-6000]
+bbox = [61.0, 29.5, 66.0, 39.6]
+value = 0.4
+
+[[judgement]]
+region = "Iran & Afghanistan"
+slices = [-5000, -4000, -3000]
+gap_ids = ["pottery-3000-164", "pottery-4000-147", "pottery-5000-129"]
+why_empty = ["low_population", "research_intensity"]
+why_note = "Remaining holes are the eastern deserts and Afghanistan; settled communities there (Shahr-i Sokhta, Mundigak) are entirely ceramic."
+expected = 0.95
+expected_range = [0.85, 1.0]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Edges 0.938, 0.97, 0.987. Chalcolithic and Bronze Age Iran and Afghanistan (Mundigak, Shahr-i Sokhta from c. 3200 BCE) are fully ceramic."
+literature = []
+would_settle = "Dates for Mundigak, Shahr-i Sokhta and Seistan survey sites."
+speculative_rule = "Fill with the adjacent 0.95-0.99."
+
+# ---------------------------------------------------------------- Arabia
+
+[[judgement]]
+region = "Arabia"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["pottery-10000-04", "pottery-9000-30", "pottery-8000-55", "pottery-7000-80"]
+why_empty = ["true_absence", "low_population", "research_intensity"]
+why_note = "Arabia is near-empty before the Holocene humid phase and its early Holocene occupation is aceramic."
+expected = 0.0
+expected_range = [0.0, 0.02]
+confidence = "high"
+basis = ["literature", "environment", "neighbouring_evidence"]
+reasoning = "Edges 0.017-0.049 to 8,000 BCE; the 0.222 at 7,000 BCE is Levantine/Mesopotamian spill and labels. No Arabian pottery is known before Ubaid imports c. 5300 BCE."
+literature = [
+  { cite = "Magee 2014, The Archaeology of Prehistoric Arabia, Cambridge", checked = false },
+]
+would_settle = "More dated Arabian Neolithic sites (Groucutt, Petraglia et al.), which the new country rule will now record as aceramic."
+speculative_rule = "0 across the peninsula for 10,000-7,000 BCE."
+
+[[judgement]]
+region = "Arabia"
+slices = [-6000, -5000, -4000]
+gap_ids = ["pottery-6000-103", "pottery-4000-140", "pottery-5000-123"]
+why_empty = ["true_absence", "sampling_bias", "low_population"]
+why_note = "The Arabian Neolithic is aceramic, and since the fix its sites are recorded so; the remaining high edges come from a few Ubaid-labelled Gulf sites and from spill across the Gulf and from Iraq, not from the interior."
+expected = 0.05
+expected_range = [0.0, 0.2]
+confidence = "medium"
+basis = ["literature", "dossier_statistics"]
+reasoning = "Edges now read 0.46 (6,000; range 0.25-0.83), 0.62 (5,000; 0.31-0.94) and 0.65 (4,000 BCE; 0.37-0.97), down from 0.80-0.96 before the fix, and Arabia's evidenced cells average 0.56-0.74. The atlas's Arabian sites now split as the literature does: Khuzma as-Shumlya, Ash-Shumah, Sedd adh-Dhraa, Marawah and the Aramco camps are aceramic; Dosariyah, Khor FB, Dalma and Abu Khamis are Ubaid-labelled and count as present. Those four are coastal and few, and the 150 km kernel also brings in Fars and Kerman (Mushki, Bakun, Yahya) across Hormuz and southern Iraq along the northern rim. Inland, expect ~0 at 6,000, ~0.1 at 5,000 (Gulf coast only) and ~0.05 at 4,000 BCE."
+literature = [
+  { cite = "Magee 2014, The Archaeology of Prehistoric Arabia, Cambridge", checked = false },
+  { cite = "Drechsler 2011, Dosariyah excavations", checked = false },
+]
+would_settle = "More dated aceramic Arabian sites to balance the Gulf Ubaid sites; and a coast/interior split, e.g. ingesting the Gulf Ubaid-sherd site list as its own layer."
+speculative_rule = "Set 0 inland; set 0.3 within 50 km of the Gulf coast at 5,000 BCE only; do not extend the 0.5-0.7 rim values into the peninsula."
+
+[[judgement.adjust]]
+kind = "coast"
+within_km = 55
+value = 0.3
+inland = 0.0
+[[judgement.adjust]]
+kind = "area"
+bbox = [34.5, 12.5, 46.5, 32.5]
+value = 0.0
+[[judgement.adjust]]
+kind = "area"
+bbox = [46.5, 12.5, 60.0, 22.0]
+value = 0.0
+[[judgement.adjust]]
+kind = "area"
+bbox = [56.2, 22.0, 60.0, 25.7]
+value = 0.0
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-6000, -4000]
+value = 0.0
+
+[[judgement]]
+region = "Arabia"
+slices = [-3000]
+gap_ids = ["pottery-3000-157"]
+why_empty = ["research_intensity", "low_population", "label_gaps"]
+why_note = "Hafit and Umm an-Nar sites in Oman/UAE and the Yemeni Bronze Age are ceramic, but the interior is sparsely occupied by aceramic herders; the new country rule also wrongly makes bare 'Bronze Age' labels there absent."
+expected = 0.35
+expected_range = [0.15, 0.6]
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Edge 0.671 (28 cells, range 0.35-0.99), nearest point 444 km. The 3,000 BCE slice spans 3,500-2,500 BCE: Hafit graves (from c. 3200 BCE) hold imported Jemdet Nasr and Iranian wares, local Umm an-Nar pottery begins c. 2700 BCE, and Yemen's highland Bronze Age c. 3000 BCE. The Nafud, Najd and Rub' al-Khali stay aceramic or empty. The country rule added on this critic's advice turns every bare stage label in Arabia into an absence, including 'Bronze Age' (Qannas, c. 3200 BCE, now absent). That is defensible for Hafit but wrong after c. 2700 BCE, so the observed values in Oman and the UAE will run low in this slice."
+literature = [
+  { cite = "Magee 2014, The Archaeology of Prehistoric Arabia, Cambridge", checked = false },
+]
+would_settle = "Limit present_stages_absent_in_countries to the Neolithic stage (or add a cut-off at -2700 for Bronze Age); add dated Hafit/Umm an-Nar and Yemeni Bronze Age sites with ware data."
+speculative_rule = "0.7 in Oman, the UAE and highland Yemen; 0.1 in the interior and the Hejaz."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [35.0, 20.0, 40.5, 29.5]
+value = 0.1
+[[judgement.adjust]]
+kind = "area"
+bbox = [40.5, 17.0, 49.0, 32.1]
+value = 0.1
+[[judgement.adjust]]
+kind = "area"
+bbox = [49.0, 17.0, 55.0, 22.5]
+value = 0.1
+[[judgement.adjust]]
+kind = "area"
+bbox = [55.0, 16.5, 59.6, 26.5]
+value = 0.7
+[[judgement.adjust]]
+kind = "area"
+bbox = [51.5, 22.5, 56.5, 26.2]
+value = 0.7
+[[judgement.adjust]]
+kind = "polygon"
+points = [[43.4, 13.0], [43.6, 14.5], [43.4, 16.0], [43.7, 17.3], [44.6, 17.0], [45.2, 15.6], [45.4, 14.2], [44.8, 13.0]]
+value = 0.7
+
+# ---------------------------------------------------------------- Sahara–Sahel
+
+[[judgement]]
+region = "Sahara–Sahel"
+slices = [-10000]
+gap_ids = ["pottery-10000-02"]
+why_empty = ["low_population", "research_intensity", "not_in_open_compilations"]
+why_note = "The Sahara was only being reoccupied at the start of the African Humid Period; Ounjougou's pottery (c. 9400 BCE) falls at the very end of the window."
+expected = 0.1
+expected_range = [0.0, 0.35]
+confidence = "low"
+basis = ["literature", "environment"]
+reasoning = "1770 cells, 0 edge evidence, nearest point 1071 km. The 10,000 BCE slice spans 10,500-9,500 BCE, just before the earliest dated Saharan ceramics (Ounjougou, Mali, c. 9400 BCE). Occupation was thin and patchy."
+literature = [
+  { cite = "Huysecom et al. 2009, 'The emergence of pottery in Africa during the tenth millennium cal BC: new evidence from Ounjougou (Mali)', Antiquity 83", checked = false },
+]
+would_settle = "Fuller digitisation of the Jordan et al. 2016 earliest-pottery table and the Ounjougou sequence."
+speculative_rule = "0.15 in the Malian and Nigerien Sahel south of 18°N, 0.05 further north."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [-17.0, 18.0, 24.0, 27.5]
+value = 0.05
+[[judgement.adjust]]
+kind = "area"
+bbox = [-5.5, 10.0, 4.3, 18.0]
+value = 0.15
+[[judgement.adjust]]
+kind = "area"
+bbox = [-12.3, 10.0, -5.5, 15.3]
+value = 0.15
+[[judgement.adjust]]
+kind = "area"
+bbox = [0.0, 11.5, 16.0, 18.0]
+value = 0.15
+
+[[judgement]]
+region = "Sahara–Sahel"
+slices = [-9000, -8000, -7000]
+gap_ids = ["pottery-9000-29", "pottery-8000-54", "pottery-7000-79"]
+why_empty = ["research_intensity", "not_in_open_compilations", "publication_access"]
+why_note = "Early Holocene Saharan foragers were among the first potters anywhere (Ounjougou, Tagalagal, Temet, Adrar Bous); the region is vast, insecure and published largely in French."
+expected = 0.75
+expected_range = [0.5, 0.9]
+confidence = "medium"
+basis = ["literature", "neighbouring_evidence", "dossier_statistics"]
+reasoning = "Edges 0.579 (9,000), 0.414 (8,000; range 0.06-0.66) and 0.648 (7,000 BCE); region evidenced cells average 0.48-0.71. The low 8,000 BCE edge mixes Rotunno & Crema aceramic layers on the northern rim with ceramic Sahel sites. Dotted wavy-line pottery is ubiquitous in the Aïr, Ténéré, Ennedi and the Malian Sahel by 8500 BCE."
+literature = [
+  { cite = "Huysecom et al. 2009, Antiquity 83", checked = false },
+  { cite = "Jesse 2010, 'Early pottery in Northern Africa: an overview', Journal of African Archaeology 8", checked = false },
+  { cite = "Rotunno & Crema 2025 (in atlas)", checked = false },
+]
+would_settle = "Digitise Jesse 2010's site list and the Aïr/Ténéré dates (Roset, Paris), and the MedAfriCarbon extension south of 20°N."
+speculative_rule = "0.6 at 9,000 BCE and 0.8 at 8,000-7,000 BCE south of 22°N, fading to 0.5 in the hyper-arid north of Mali and Mauritania."
+
+[[judgement.adjust]]
+kind = "gradient"
+slices = [-9000]
+axis = "lat"
+from = [22.0, 0.6]
+to = [25.0, 0.5]
+[[judgement.adjust]]
+kind = "gradient"
+slices = [-8000, -7000]
+axis = "lat"
+from = [22.0, 0.8]
+to = [25.0, 0.5]
+[[judgement.adjust]]
+kind = "area"
+slices = [-9000]
+bbox = [4.3, 22.0, 24.0, 27.5]
+value = 0.6
+[[judgement.adjust]]
+kind = "area"
+slices = [-8000, -7000]
+bbox = [4.3, 22.0, 24.0, 27.5]
+value = 0.8
+
+[[judgement]]
+region = "Sahara–Sahel"
+slices = [-6000, -5000, -4000, -3000]
+gap_ids = ["pottery-3000-156", "pottery-5000-120", "pottery-4000-139", "pottery-6000-101"]
+why_empty = ["research_intensity", "not_in_open_compilations", "low_population"]
+why_note = "Pastoral Neolithic sites are numerous and ceramic but uncompiled; after c. 4000 BCE aridity empties the north."
+expected = 0.95
+expected_range = [0.85, 1.0]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature", "other_layer"]
+reasoning = "Edges 0.812, 0.904, 0.975, 0.992; inside the gaps domestic livestock reads 0.95-1.0 and ground stone ~1.0 where present. Saharan pastoral Neolithic is fully ceramic; the question after 4000 BCE is where people were, not whether they used pots."
+literature = [
+  { cite = "Jesse 2010, Journal of African Archaeology 8", checked = false },
+  { cite = "Manning & Timpson 2014, 'The demographic response to Holocene climate change in the Sahara', Quaternary Science Reviews", checked = false },
+]
+would_settle = "The Manning & Timpson Saharan radiocarbon list with ceramic status by phase."
+speculative_rule = "Fill with 0.95; from 4,000 BCE mark the area north of 20°N as low occupation rather than lowering the pottery value."
+
+# ---------------------------------------------------------------- Nile & Sudan
+
+[[judgement]]
+region = "Nile & Sudan"
+slices = [-10000]
+gap_ids = ["pottery-10000-09"]
+why_empty = ["research_intensity", "not_in_open_compilations"]
+why_note = "Kordofan, Darfur and South Sudan are almost unexcavated; Early Khartoum pottery begins near the end of the window."
+expected = 0.25
+expected_range = [0.05, 0.5]
+confidence = "low"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Edge 0.349 (13 cells), nearest point 323 km; the Khartoum cluster shows 20-40% in the gap image. Early Khartoum pottery is dated from c. 9000 BCE (Sphinx, Sabaloka), so the 10,500-9,500 window is borderline."
+literature = [
+  { cite = "Salvatori et al. 2011, Al-Khiday and Early Khartoum chronology", checked = false },
+  { cite = "Jesse 2010, Journal of African Archaeology 8", checked = false },
+]
+would_settle = "Dated layers from Wadi Howar, Kordofan and the Sabaloka sites."
+speculative_rule = "0.3 within 300 km of the Nile, 0.15 further west and in South Sudan."
+
+[[judgement.adjust]]
+kind = "river"
+within_km = 300
+names = ["Nile"]
+value = 0.3
+outside = 0.15
+[[judgement.adjust]]
+kind = "area"
+bbox = [24.0, 3.0, 36.0, 9.8]
+value = 0.15
+
+[[judgement]]
+region = "Nile & Sudan"
+slices = [-9000, -8000, -7000, -6000]
+gap_ids = ["pottery-9000-37", "pottery-8000-61", "pottery-7000-86", "pottery-6000-108"]
+why_empty = ["research_intensity", "not_in_open_compilations"]
+why_note = "Wavy-line pottery spans the Sudanese Sahel from the Nile to Wadi Howar and Ennedi; the gap is under-research, not absence."
+expected = 0.8
+expected_range = [0.6, 0.95]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature", "dossier_statistics"]
+reasoning = "Edges 0.521, 0.578, 0.568, 0.771; region evidenced cells average 0.57-0.80. Edge values are depressed by kernel shrinkage toward slice means and by aceramic Epipalaeolithic Egyptian sites. Literature makes Khartoum Mesolithic and Wadi Howar sites ceramic from c. 8500 BCE."
+literature = [
+  { cite = "Jesse 2010, Journal of African Archaeology 8", checked = false },
+  { cite = "Jesse, Keding et al., Wadi Howar sequence (ACACIA project)", checked = false },
+]
+would_settle = "Digitise the ACACIA Wadi Howar dates and Sudanese Mesolithic site lists."
+speculative_rule = "0.7 at 9,000 BCE and 0.85 at 8,000-6,000 BCE across Kordofan and Darfur; 0.5 in South Sudan where the record is unknown."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [22.0, 3.0, 39.0, 23.0]
+value = 0.85
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-9000]
+value = 0.7
+[[judgement.adjust]]
+kind = "area"
+bbox = [24.0, 3.0, 36.0, 9.8]
+value = 0.5
+
+[[judgement]]
+region = "Nile & Sudan"
+slices = [-5000, -4000, -3000]
+gap_ids = ["pottery-3000-161", "pottery-4000-143", "pottery-5000-126"]
+why_empty = ["research_intensity", "not_in_open_compilations"]
+why_note = "Neolithic and later Sudanese herders are fully ceramic; the hole is west and south of the excavated Nile."
+expected = 0.95
+expected_range = [0.85, 1.0]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Edges 0.893, 0.974, 0.992."
+literature = []
+would_settle = "Kordofan and South Sudan surveys with dated ceramic sites."
+speculative_rule = "Fill with 0.95."
+
+# ---------------------------------------------------------------- Maghreb
+
+[[judgement]]
+region = "Maghreb"
+slices = [-10000, -9000]
+gap_ids = ["pottery-10000-03", "pottery-9000-32"]
+why_empty = ["low_population", "research_intensity", "true_absence"]
+why_note = "The gap is the Algerian and Moroccan Sahara; Iberomaurusian and Capsian foragers to the north were aceramic, and the Hoggar/Tassili pottery starts c. 8800-8500 BCE."
+expected = 0.05
+expected_range = [0.0, 0.25]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature", "environment"]
+reasoning = "Edges 0.09 (10,000) and 0.132 (9,000 BCE, range 0.03-0.62: the high end touches the Hoggar). The 9,000 BCE window (9,500-8,500) catches the start of Hoggar ceramics (Amekni, Ti-n-Hanakaten); elsewhere none."
+literature = [
+  { cite = "Jesse 2010, Journal of African Archaeology 8", checked = false },
+  { cite = "Lucarini et al. 2020, MedAfriCarbon (in atlas)", checked = false },
+]
+would_settle = "Hoggar and Tassili dates (Aumassip, Camps) digitised with ceramic status."
+speculative_rule = "0 for 10,000 BCE; at 9,000 BCE 0.3 within 300 km of the Hoggar and Tassili, 0 north of the Saharan Atlas."
+
+[[judgement.adjust]]
+kind = "near"
+point = [5.6, 23.3]
+radius_km = 300
+value = 0.3
+[[judgement.adjust]]
+kind = "near"
+point = [8.5, 25.5]
+radius_km = 300
+value = 0.3
+[[judgement.adjust]]
+kind = "polygon"
+points = [[-10.0, 37.5], [12.0, 37.5], [11.5, 33.5], [10.0, 34.0], [8.3, 34.3], [7.0, 35.0], [5.5, 35.0], [2.5, 34.0], [-0.5, 33.0], [-5.0, 32.2], [-7.5, 31.2], [-9.8, 30.8]]
+value = 0.0
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000]
+value = 0.0
+
+[[judgement]]
+region = "Maghreb"
+slices = [-8000, -7000, -6000]
+gap_ids = ["pottery-8000-59", "pottery-7000-84", "pottery-6000-106"]
+why_empty = ["research_intensity", "low_population", "publication_access"]
+why_note = "Saharan Algeria was ceramic from the 9th millennium, northern Capsian foragers not until c. 5500 BCE; the gap is mostly the Saharan part, published mainly in French and little dated."
+expected = 0.6
+expected_range = [0.3, 0.85]
+confidence = "low"
+basis = ["neighbouring_evidence", "literature", "environment"]
+reasoning = "Edges 0.325 (8,000), 0.444 (7,000) and 0.673 (6,000 BCE), each with a wide range (0.05-0.87) that mirrors the north-south split. The gap centres at 26-27°N, south of the Capsian zone, where Saharan ceramic foragers and later herders lived."
+literature = [
+  { cite = "Jesse 2010, Journal of African Archaeology 8", checked = false },
+]
+would_settle = "Ingest the Saharan Algerian sites of the Rotunno & Crema compilation more completely, plus Hoggar/Tassili dates."
+speculative_rule = "South of 30°N: 0.6 at 8,000, 0.75 at 7,000-6,000 BCE; north of the Saharan Atlas keep the observed Capsian values."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [-17.0, 19.0, 12.0, 30.0]
+value = 0.75
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-8000]
+value = 0.6
+
+[[judgement]]
+region = "Maghreb"
+slices = [-5000, -4000, -3000]
+gap_ids = ["pottery-3000-159", "pottery-5000-125", "pottery-4000-144"]
+why_empty = ["low_population", "research_intensity"]
+why_note = "Increasing aridity empties the Algerian Sahara; where people remained they were ceramic herders."
+expected = 0.9
+expected_range = [0.7, 1.0]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature", "environment"]
+reasoning = "Edges 0.849, 0.904, 0.914. Low edge minima (0.4-0.6) are northern Capsian-tradition sites with weak recording. Neolithic of Capsian tradition and Saharan Neolithic are both ceramic."
+literature = []
+would_settle = "Saharan Neolithic site lists (Camps; Aumassip) with dates."
+speculative_rule = "Fill with 0.9; mark the Erg and Tanezrouft as low occupation from 4,000 BCE."
+
+# ---------------------------------------------------------------- Libya & Egypt
+
+[[judgement]]
+region = "Libya & Egypt"
+slices = [-10000]
+gap_ids = ["pottery-10000-05"]
+why_empty = ["low_population", "true_absence"]
+why_note = "The Libyan and Western deserts were still hyper-arid; reoccupation begins c. 9500 BCE, pottery c. 8800-8500 BCE (Acacus, Nabta/Kiseiba)."
+expected = 0.0
+expected_range = [0.0, 0.05]
+confidence = "medium"
+basis = ["environment", "literature", "neighbouring_evidence"]
+reasoning = "Edge 0.017, nearest point 683 km."
+literature = [
+  { cite = "Kuper & Kröpelin 2006, 'Climate-controlled Holocene occupation in the Sahara', Science 313", checked = false },
+]
+would_settle = "Nothing urgent; the record supports absence."
+speculative_rule = "0, and mark the desert as unoccupied."
+
+[[judgement]]
+region = "Libya & Egypt"
+slices = [-9000, -8000, -7000]
+gap_ids = ["pottery-9000-35", "pottery-8000-62", "pottery-7000-88", "pottery-8000-71"]
+why_empty = ["research_intensity", "low_population", "not_in_open_compilations"]
+why_note = "The Libyan desert interior, between the Acacus and the Egyptian Western Desert, both early ceramic areas; the low edges come from aceramic Nile Epipalaeolithic and Fayum sites."
+expected = 0.55
+expected_range = [0.25, 0.8]
+confidence = "low"
+basis = ["neighbouring_evidence", "literature", "environment"]
+reasoning = "Edges 0.277 (9,000), 0.402 and 0.119 (8,000, Libya and an 89-cell Egyptian hole) and 0.434 (7,000 BCE), each with a wide range (0.03-0.76). Pottery is present in the Late Acacus and at Nabta Playa and Bir Kiseiba from c. 8800-8500 BCE, while the Nile valley (Elkabian) and Fayum (Qarunian) stay aceramic. The gap lies on the desert side of that split."
+literature = [
+  { cite = "Jesse 2010, 'Early pottery in Northern Africa: an overview', Journal of African Archaeology 8", checked = false },
+  { cite = "Kuper & Kröpelin 2006, 'Climate-controlled Holocene occupation in the Sahara', Science 313", checked = false },
+]
+would_settle = "Dated Acacus, Messak, Gilf Kebir and Western Desert sites with ceramic status (Garcea; Riemer; Kuper)."
+speculative_rule = "0.3 at 9,000 BCE and 0.65 at 8,000-7,000 BCE in the desert interior; keep the observed low values within 50 km of the Nile and in the Fayum."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [9.0, 19.5, 37.0, 34.0]
+value = 0.65
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-9000]
+value = 0.3
+[[judgement.adjust]]
+kind = "river"
+within_km = 50
+names = ["Nile", "Nile (Canopic branch)", "Nile (Pelusiac branch)", "Nile (Sebennytic branch)"]
+value = "unknown"
+[[judgement.adjust]]
+kind = "polygon"
+points = [[30.3, 29.55], [30.75, 29.6], [31.05, 29.35], [30.9, 29.05], [30.5, 29.1], [30.25, 29.3]]
+value = "unknown"
+
+[[judgement]]
+region = "Libya & Egypt"
+slices = [-6000, -5000, -4000, -3000]
+gap_ids = ["pottery-3000-163", "pottery-4000-145", "pottery-5000-127", "pottery-6000-111", "pottery-6000-119"]
+why_empty = ["low_population", "research_intensity", "not_in_open_compilations"]
+why_note = "Desert herders were ceramic; after c. 5300 BCE the Libyan and Western deserts empty, so the question becomes where people were."
+expected = 0.9
+expected_range = [0.7, 1.0]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature", "other_layer", "environment"]
+reasoning = "Edges 0.625, 0.772, 0.815, 0.818; ground stone inside ~1.0 and livestock 0.96-0.98 where present. The low edge minima (0.38-0.52) are probably aceramic coastal or Epipalaeolithic-labelled layers. Saharan pastoral Neolithic and Predynastic occupations are ceramic."
+literature = [
+  { cite = "Kuper & Kröpelin 2006, Science 313", checked = false },
+]
+would_settle = "The Manning & Timpson Saharan radiocarbon list with ceramic status by phase."
+speculative_rule = "Fill with 0.9; from 5,000 BCE mark the desert interior as low occupation rather than lowering the pottery value."
+
+# ---------------------------------------------------------------- Mesopotamia
+
+[[judgement]]
+region = "Mesopotamia"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["pottery-8000-68", "pottery-10000-17", "pottery-9000-44", "pottery-7000-93"]
+why_empty = ["low_population", "research_intensity", "true_absence"]
+why_note = "Southern Iraq and Kuwait: the early alluvium is buried or under the Gulf, and the northern sequence is aceramic until c. 7000 BCE."
+expected = 0.05
+expected_range = [0.0, 0.3]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature", "environment"]
+reasoning = "Gaps of 106-169 cells, edges 0.029, 0.048, 0.092 and 0.283 (7,000 BCE), nearest points 302-316 km. Pottery appears in the north with Proto-Hassuna/Umm Dabaghiyah c. 7000-6800 BCE; the south has no known occupation before Ubaid 0 (Tell el-Oueili, c. 6500 BCE). Expect 0 to 8,000 and ~0.2 at 7,000 BCE, mostly on the gap's northern rim."
+literature = [
+  { cite = "Huot (ed.) 1996, Oueïli: travaux de 1987 et 1989", checked = false },
+]
+would_settle = "Little can: the early southern record is under alluvium; Gulf coring would help."
+speculative_rule = "0 for 10,000-8,000 BCE; 0.2 at 7,000 BCE north of 32°N, 0 south of it."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [38.5, 32.0, 49.0, 37.5]
+value = 0.2
+[[judgement.adjust]]
+kind = "area"
+bbox = [38.5, 28.5, 49.0, 32.0]
+value = 0.0
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000]
+value = 0.0
+
+[[judgement]]
+region = "Mesopotamia"
+slices = [-6000, -5000, -4000, -3000]
+gap_ids = ["pottery-3000-168", "pottery-4000-151", "pottery-6000-116", "pottery-5000-135"]
+why_empty = ["research_intensity", "not_in_open_compilations"]
+why_note = "Ubaid, Uruk and Early Dynastic sites fill the alluvium and are all ceramic; the hole is the desert edge and the marshes."
+expected = 0.95
+expected_range = [0.85, 1.0]
+confidence = "high"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Edges 0.782, 0.934, 0.96, 0.992. Every Ubaid and later settlement is ceramic; the hole is thinly occupied, not aceramic."
+literature = []
+would_settle = "Open site lists from the Iraqi surveys (Adams; Wright)."
+speculative_rule = "Fill with 0.95; mark the western desert part as low occupation."
+
+# ---------------------------------------------------------------- West Africa and Horn
+
+[[judgement]]
+region = "West Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["pottery-10000-06", "pottery-9000-33", "pottery-8000-57", "pottery-6000-102", "pottery-7000-82", "pottery-4000-141", "pottery-5000-122", "pottery-3000-158"]
+why_empty = ["dataset_edge", "research_intensity", "preservation", "not_in_open_compilations"]
+why_note = "None of the atlas's African sources covers the forest and savanna south of the Sahel well; acid forest soils also erase sites."
+expected = "unknown"
+expected_range = [0.3, 0.95]
+confidence = "low"
+basis = ["literature", "intuition"]
+reasoning = "No coverage in any slice. Savanna sites such as Ounjougou and Kintampo-precursor sites show ceramic foragers from the early Holocene in the north; forest-zone sites (Bosumpra, Shum Laka) have pottery by c. 5000-4000 BCE. The southern rim of the grid is too thin to say more."
+literature = [
+  { cite = "Huysecom et al. 2009, Antiquity 83", checked = false },
+]
+would_settle = "A West African radiocarbon compilation (e.g. from the 'African Holocene' datasets) with ceramic status."
+speculative_rule = "Extend the Sahel values 200 km south; leave the forest belt as unknown before 5,000 BCE and 0.7 after."
+
+[[judgement]]
+region = "Horn of Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["pottery-10000-11", "pottery-9000-38", "pottery-8000-63", "pottery-7000-89", "pottery-5000-128", "pottery-6000-110", "pottery-4000-148", "pottery-3000-165"]
+why_empty = ["research_intensity", "dataset_edge", "not_in_open_compilations"]
+why_note = "Few dated sites; the Ethiopian highlands are archaeologically thin for this period."
+expected = "unknown"
+expected_range = [0.0, 0.8]
+confidence = "low"
+basis = ["intuition", "literature"]
+reasoning = "No coverage in any slice. Pottery is reported from Ethiopian rock shelters (e.g. Mochena Borago, Gogoshiis Qabe) only late and patchily; the lowlands near the Sudan border may share the Sudanese ceramic horizon."
+literature = []
+would_settle = "Dated Ethiopian and Somali LSA/Neolithic layers with ceramic status."
+speculative_rule = "Do not fill before 5,000 BCE; after, 0.4 in the western lowlands and unknown in the highlands."
+
+# ---------------------------------------------------------------- Other (Pakistan edge)
+
+[[judgement]]
+region = "Other"
+slices = [-10000, -9000, -8000, -7000, -6000]
+gap_ids = ["pottery-10000-23", "pottery-9000-49", "pottery-8000-73", "pottery-7000-98", "pottery-6000-117"]
+why_empty = ["dataset_edge", "research_intensity", "true_absence"]
+why_note = "Balochistan at the grid's south-east edge; Mehrgarh's first phase is aceramic."
+expected = 0.05
+expected_range = [0.0, 0.3]
+confidence = "low"
+basis = ["literature"]
+reasoning = "69-75 cells, no edge evidence, nearest points 705-1103 km. Mehrgarh I (c. 7000-5500 BCE) is aceramic; pottery enters in Period II."
+literature = [
+  { cite = "Jarrige et al. 1995, Mehrgarh: Field Reports 1974-1985", checked = false },
+]
+would_settle = "Mehrgarh and Kili Ghul Mohammad dates ingested with phase-level ceramic status."
+speculative_rule = "0 to 7,000 BCE; 0.1 at 6,000 BCE."
+
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000, -7000]
+value = 0.0
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-6000]
+value = 0.1
+
+[[judgement]]
+region = "Other"
+slices = [-5000, -4000, -3000]
+gap_ids = ["pottery-5000-134", "pottery-4000-153", "pottery-3000-172"]
+why_empty = ["dataset_edge", "not_in_open_compilations"]
+why_note = "Chalcolithic Balochistan (Mehrgarh III-VII, Kili Ghul Mohammad, Togau) is fully ceramic."
+expected = 0.9
+expected_range = [0.7, 1.0]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "No edge evidence; 3,000 BCE has 6 ancient-genome cells inside. Mehrgarh II from c. 5500 BCE has pottery, and by Mehrgarh III it is abundant."
+literature = [
+  { cite = "Jarrige et al. 1995, Mehrgarh: Field Reports 1974-1985", checked = false },
+]
+would_settle = "Mehrgarh and Balochistan survey dates."
+speculative_rule = "0.8 at 5,000 BCE, 0.95 after."
+
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000]
+value = 0.8
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-4000, -3000]
+value = 0.95
+
+# ---------------------------------------------------------------- Drowned shelves
+
+[[judgement]]
+region = "Now-drowned shelves and islands"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["pottery-10000-24", "pottery-10000-25", "pottery-9000-50"]
+why_empty = ["submerged", "true_absence"]
+why_note = "Gulf basin and Doggerland: drowned land whose neighbours were aceramic in these slices."
+expected = 0.0
+expected_range = [0.0, 0.05]
+confidence = "medium"
+basis = ["neighbouring_evidence", "environment", "analogy"]
+reasoning = "Edge evidence only on Doggerland (0.017 at 10,000 BCE). Each shelf's adjacent coast is aceramic in these windows: Mesolithic North Sea, pre-Ubaid Arabia."
+literature = [
+  { cite = "Rose 2010, 'New light on human prehistory in the Arabo-Persian Gulf Oasis', Current Anthropology 51", checked = false },
+  { cite = "Gaffney, Fitch & Smith 2009, Europe's Lost World: the rediscovery of Doggerland", checked = false },
+]
+would_settle = "Only marine survey; the Gulf Oasis and Doggerland projects are the best hope."
+speculative_rule = "Copy the adjacent coast: 0 on the Gulf and Doggerland shelves."
+
+[[judgement]]
+region = "Now-drowned shelves and islands"
+slices = [-9000, -8000, -7000, -6000]
+gap_ids = ["pottery-7000-99", "pottery-8000-76", "pottery-9000-52", "pottery-6000-118"]
+why_empty = ["submerged", "research_intensity"]
+why_note = "The North Caspian and SE Caspian shelves were exposed during early Holocene lowstands, next to one of the early forager-pottery hearths (Lower Volga, Caspian)."
+expected = 0.3
+expected_range = [0.0, 0.85]
+confidence = "low"
+basis = ["neighbouring_evidence", "literature", "environment"]
+reasoning = "No edge evidence until 6,000 BCE (0.836). The Lower Volga and North Caspian had pottery from c. 7000-6500 BCE (Elshanka relatives, Varfolomeevka, Kairshak); the shelf would follow them: 0 at 9,000-8,000, ~0.2 at 7,000 and ~0.75 at 6,000 BCE. The SE Caspian cells near Dam-Dam Cheshme stay near 0 at 7,000 BCE."
+literature = [
+  { cite = "Vybornov et al. 2016, early pottery of the Volga-Kama region", checked = false },
+]
+would_settle = "Caspian sea-level curve plus dated North Caspian sites (Kairshak, Tenteksor)."
+speculative_rule = "Copy the adjacent Lower Volga/North Caspian coast values: 0 to 8,000, 0.2 at 7,000, 0.75 at 6,000 BCE."
+
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-9000, -8000]
+value = 0.0
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-7000]
+value = 0.2
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-6000]
+value = 0.75
+
+[[judgement]]
+region = "Now-drowned shelves and islands"
+slices = [-10000]
+gap_ids = ["pottery-10000-27"]
+why_empty = ["dataset_edge", "true_absence"]
+why_note = "White Sea and Pechora-coast cells: a coastline-polygon artefact (AUDIT.md: that land was rising, not drowning), not real drowned land."
+expected = 0.0
+expected_range = [0.0, 0.02]
+confidence = "high"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "These cells belong with the Russian forest zone judgement; that zone has no pottery before c. 6000 BCE."
+literature = []
+would_settle = "Fix the region assignment so these cells fall in 'Russia: forest north of 56°N'."
+speculative_rule = "Treat as part of the Russian forest zone and take its values."

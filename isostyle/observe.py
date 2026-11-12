@@ -37,11 +37,18 @@ def _fits(entry, year, margin):
     return (lo is None or year >= lo - margin) and (hi is None or year <= hi + margin)
 
 
-def _label_vote(rule, cultures, stages, year):
-    """1, 0 or NaN from a layer's label rules; cultures beat stages."""
+def _label_vote(rule, cultures, stages, year, country=""):
+    """1, 0 or NaN from a layer's label rules; cultures beat stages. In the
+    countries listed in `present_stages_absent_in_countries`, a stage label
+    that would imply presence implies absence instead."""
     frm = rule.get("from", {})
     for ids, pres, absn in ((cultures, "present_cultures", "absent_cultures"),
                             (stages, "present_stages", "absent_stages")):
+        if pres == "present_stages" and country in rule.get("present_stages_absent_in_countries", ()):
+            only = set(rule.get("present_stages_absent_in_countries_stages", rule[pres]))
+            if any(i in rule[absn] or i in only for i in ids):
+                return 0.0
+            ids = [i for i in ids if i not in only]
         yes = any(i in rule[pres] and year >= frm.get(i, -1e9) for i in ids)
         no = any(i in rule[absn] for i in ids)
         if yes != no:
@@ -49,6 +56,15 @@ def _label_vote(rule, cultures, stages, year):
         if yes and no:
             return np.nan
     return np.nan
+
+
+def episode_countries(lon, lat, path="build/isostyle/naturalearth/ne_50m_admin_0_countries.shp"):
+    """Modern country (Natural Earth NAME) of each point, "" if none."""
+    import geopandas as gpd
+    c = gpd.read_file(path)[["NAME", "geometry"]]
+    p = gpd.GeoDataFrame(geometry=gpd.points_from_xy(lon, lat), crs=4326)
+    j = gpd.sjoin(p, c, how="left", predicate="within")
+    return j[~j.index.duplicated()]["NAME"].fillna("").values
 
 
 def uniform_weights(tpq, taq, edges):
@@ -98,11 +114,14 @@ def build(cfg, grid, years, edges, registry, log=print):
     # A date whose sample material, or whose site's type, shows a layer.
     for L in direct:
         hit = np.zeros(len(d), dtype=bool)
+        # A site's type applies to all its dates; dates older than the
+        # structure can be (layers.toml `not_before`) are not evidence of it.
+        recent = (d["cal_median"].values >= L["not_before"]) if L.get("not_before") is not None else np.ones(len(d), bool)
         if L.get("dated_material_re"):
             hit |= d["material"].map(lambda t, rx=L["dated_material_re"]: bool(rx.search(t))).values
         if L.get("site_type_re"):
             hit |= d["site_type"].map(lambda t, rx=L["site_type_re"]: bool(rx.search(t))).values
-        d[f"dm_{L['id']}"] = hit
+        d[f"dm_{L['id']}"] = hit & recent
 
     eid, inv = np.unique(d["episode"].values, return_inverse=True)
     n = np.bincount(inv)
@@ -121,6 +140,24 @@ def build(cfg, grid, years, edges, registry, log=print):
     }).reset_index(drop=True)
     for L in direct:
         ep[f"dm_{L['id']}"] = g[f"dm_{L['id']}"].any().values
+    # Records that name a date by lab number mark that date's episode.
+    lj = sources.load_labjoin(cfg, log)
+    labjoin_pos = {m: np.zeros(len(ep), dtype=bool) for m in LAYERS}
+    if len(lj):
+        from .dates import lab_key
+        ep_of_lab = {}
+        for k, lab in zip(inv, d["labnr"].fillna("").astype(str).values):
+            if (key := lab_key(lab)):
+                ep_of_lab.setdefault(key, k)
+        hits = 0
+        for layer, lab in zip(lj["layer"], lj["labnr"].fillna("").astype(str)):
+            k = ep_of_lab.get(lab_key(lab))
+            if k is not None:
+                labjoin_pos[layer][k] = True
+                hits += 1
+        counts["labjoin_records"] = int(len(lj))
+        counts["labjoin_matched"] = hits
+        log(f"lab-number records: {hits} of {len(lj)} matched a dated episode")
 
     table = Table.load(pc["cultures"])
     rules = tomllib.load(open(pc["rules"], "rb"))
@@ -158,8 +195,11 @@ def build(cfg, grid, years, edges, registry, log=print):
     # Recorded presence and absence per episode; presence wins where both.
     pos = {m: np.zeros(len(ep), dtype=bool) for m in LAYERS}
     neg = {m: np.zeros(len(ep), dtype=bool) for m in LAYERS}
+    ep_country = episode_countries(ep["lon"].values, ep["lat"].values)
     for L in direct:
         pos[L["id"]] |= ep[f"dm_{L['id']}"].values
+    for m in LAYERS:
+        pos[m] |= labjoin_pos[m]
     tree = cKDTree(unit_xyz(ep["lon"], ep["lat"]))
     near = tree.query_ball_point(unit_xyz(ext["lon"], ext["lat"]), chord(pc["match_km"]))
     es, ee = ep["start"].values, ep["end"].values
@@ -196,7 +236,8 @@ def build(cfg, grid, years, edges, registry, log=print):
         basis = np.full(len(units), "", dtype=object)
         rule = rules.get(m)
         if rule:
-            lab = np.array([_label_vote(rule, c, s, yr) for c, s, yr in zip(ep["cultures"], ep["stages"], ep["median"])])
+            lab = np.array([_label_vote(rule, c, s, yr, ct) for c, s, yr, ct in
+                            zip(ep["cultures"], ep["stages"], ep["median"], ep_country)])
             ok = ~np.isnan(lab)
             y[:len(ep)][ok] = lab[ok]
             basis[:len(ep)][ok] = "label"

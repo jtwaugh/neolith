@@ -19,9 +19,23 @@ pub fn point_in_polygon(poly: &[[f64; 2]], p: [f64; 2]) -> bool {
     inside
 }
 
+/// Great-circle distance in km between two (lon, lat) points in degrees.
+pub fn great_circle_km(a: [f64; 2], b: [f64; 2]) -> f64 {
+    let (lon1, lat1, lon2, lat2) = (a[0].to_radians(), a[1].to_radians(), b[0].to_radians(), b[1].to_radians());
+    let h = ((lat2 - lat1) / 2.0).sin().powi(2) + lat1.cos() * lat2.cos() * ((lon2 - lon1) / 2.0).sin().powi(2);
+    2.0 * 6371.0 * h.sqrt().min(1.0).asin()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn great_circle() {
+        assert!((great_circle_km([0.0, 0.0], [0.0, 90.0]) - std::f64::consts::FRAC_PI_2 * 6371.0).abs() < 1e-6);
+        assert!((great_circle_km([0.0, 60.0], [1.0, 60.0]) - 55.6).abs() < 0.1);
+        assert_eq!(great_circle_km([12.0, 34.0], [12.0, 34.0]), 0.0);
+    }
 
     #[test]
     fn square_and_concave() {

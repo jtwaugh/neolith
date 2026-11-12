@@ -184,6 +184,7 @@ def main(argv=None):
     a = sub.add_parser("set")
     for k in ("mode", "tool", "art", "settlement"):
         a.add_argument(f"--{k}")
+    a.add_argument("--evidence", help="evidence layer id for --mode evidence, e.g. domestic_livestock")
     a.add_argument("--year", type=int)
     a.add_argument("--speed", type=float)
     a.add_argument("--inspect", help="hex id, or 'none'")
@@ -245,7 +246,7 @@ def main(argv=None):
             req = {"cmd": "screenshot", "path": os.path.abspath(path)}
         elif c == "set":
             req = {"cmd": "set"}
-            for k in ("mode", "tool", "art", "year", "speed", "playing", "editor", "flat", "relief", "rivers"):
+            for k in ("mode", "evidence", "tool", "art", "year", "speed", "playing", "editor", "flat", "relief", "rivers"):
                 if getattr(args, k) is not None:
                     req[k] = getattr(args, k)
             if args.style_window is not None:

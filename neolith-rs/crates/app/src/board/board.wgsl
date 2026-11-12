@@ -28,13 +28,41 @@ struct Globals {
 // 256 x 4: one row of colours per map mode.
 @group(0) @binding(2) var palette_tex: texture_2d<f32>;
 // (col, row) -> r: elevation band (neolith_core::elevation::band),
-// g: hillshade (neolith_core::elevation::hillshade; 128 = level ground).
+// g: hillshade (neolith_core::elevation::hillshade; 128 = level ground),
+// b: productivity band (neolith_core::productivity::band),
+// a: two bands of four bits, 15 meaning no data: low, biodiversity
+// (neolith_core::forager::biodiversity_band); high, expected population
+// (neolith_core::farming::band).
 @group(0) @binding(3) var elevation_tex: texture_2d<u32>;
 
 // (col, row) -> r: tile surface height in metres (Snapshot::height).
 @group(0) @binding(4) var height_tex: texture_2d<i32>;
 
+// (col, row) -> r: the selected evidence layer's code at the current year
+// (neolith_core::evidence: confidence * 50 + bin, 255 = no value).
+@group(0) @binding(8) var evidence_tex: texture_2d<u32>;
+
 const MODE_ELEVATION: u32 = 3u;
+const MODE_NPP: u32 = 4u;
+const MODE_BIODIVERSITY: u32 = 5u;
+const MODE_EXPECTED: u32 = 6u;
+const MODE_EVIDENCE: u32 = 7u;
+const NO_DATA: u32 = 255u;
+
+// Tile mesh by zoom, from the hex radius on screen in pixels: grout and the
+// bevel rim fade out below GROUT_PX, region borders below BORDER_PX, so
+// the far view reads as a map, not a honeycomb.
+const GROUT_PX_LO: f32 = 14.0;
+const GROUT_PX_HI: f32 = 28.0;
+const BORDER_PX_LO: f32 = 6.0;
+const BORDER_PX_HI: f32 = 14.0;
+// Closer still, with terrain art on, the mesh recedes again between these
+// radii so the tiles read as ground under the trees: land keeps a faint
+// grid (RECEDE_LAND of it), open water almost none.
+const RECEDE_PX_LO: f32 = 30.0;
+const RECEDE_PX_HI: f32 = 80.0;
+const RECEDE_LAND: f32 = 0.35;
+const RECEDE_WATER_GROUT: f32 = 0.12;
 
 // How far a hex's tile is raised (board units); must match board::relief.
 fn hex_lift(cell: vec2<i32>) -> f32 {
@@ -54,6 +82,17 @@ fn layer_value(st: vec4<u32>, cell: vec2<i32>, mode: u32) -> u32 {
     }
     if (mode != 0u && st.r == TERRAIN_WATER) {
         return SEA_INDEX;
+    }
+    if (mode == MODE_NPP) {
+        return textureLoad(elevation_tex, cell, 0).b;
+    }
+    if (mode == MODE_EVIDENCE) {
+        return textureLoad(evidence_tex, cell, 0).r;
+    }
+    if (mode == MODE_BIODIVERSITY || mode == MODE_EXPECTED) {
+        let packed = textureLoad(elevation_tex, cell, 0).a;
+        let band = select(packed & 15u, packed >> 4u, mode == MODE_EXPECTED);
+        return select(band, NO_DATA, band == 15u);
     }
     return st[mode];
 }
@@ -166,6 +205,9 @@ fn fs_board(in: BoardOut) -> @location(0) vec4<f32> {
     let dwy = dpdy(in.world);
     let dlx = dpdx(in.local);
     let dly = dpdy(in.local);
+    // Survey hatching coordinate (one stripe per unit) and its pixel width.
+    let hatch = (in.local.x + in.local.y) * 2.5;
+    let hatch_w = max(fwidth(hatch), 1e-4);
 
     // Nearest hex edge and normalised distance to it (0 centre .. 1 edge).
     var best = -1.0;
@@ -235,6 +277,11 @@ fn fs_board(in: BoardOut) -> @location(0) vec4<f32> {
         nvalue = layer_value(nst, nc, mode);
     }
 
+    // Hex radius on screen in pixels, measured as vs_prop does.
+    let hex_px = (g.hex.y / SQRT3_2) * g.art.z / max(distance(g.cam_pos.xyz, in.world), 1e-6);
+    let grout_k = smoothstep(GROUT_PX_LO, GROUT_PX_HI, hex_px);
+    let border_k = smoothstep(BORDER_PX_LO, BORDER_PX_HI, hex_px);
+
     var normal = n_top;
     let lip = g.frame_colour.a > 0.5 && !inside && rim > 0.45;
     if (lip) {
@@ -266,9 +313,12 @@ fn fs_board(in: BoardOut) -> @location(0) vec4<f32> {
             art.clip = 1.0 - smoothstep(0.84, 0.90, rim);
             art.blend = g.art.w;
             art.raised = g.art.y;
-            // Hex radius on screen in pixels, measured as vs_prop does.
-            let hex_px = (g.hex.y / SQRT3_2) * g.art.z / max(distance(g.cam_pos.xyz, in.world), 1e-6);
             art.detail = smoothstep(ART_DETAIL_LO, ART_DETAIL_HI, hex_px);
+            // Prop shadows fall away from the key light, longer the lower it is.
+            let key = g.key_light.xyz;
+            art.sun = -vec2<f32>(dot(key, normalize(tangent)), dot(key, normalize(bitangent)))
+                / max(dot(key, n_top), 0.35);
+            art.lod = smoothstep(5.0, 11.0, hex_px);
             albedo = terrain_art(in.local, in.cell, st.r, art);
             if (g.art.w > 0.5 && mode == 0u && art_blends(st.r, nst.r)) {
                 soften = art_on;
@@ -281,17 +331,40 @@ fn fs_board(in: BoardOut) -> @location(0) vec4<f32> {
             albedo *= mix(1.0, shade, g.lines.y);
         }
         // Bevel: tip the normal outwards near the rim so tiles catch light.
-        let bevel = smoothstep(0.70, 0.94, rim) * g.tile.y * detail;
+        let recede = smoothstep(RECEDE_PX_LO, RECEDE_PX_HI, hex_px) * f32(mode == 0u) * clamp(g.art.x, 0.0, 1.0);
+        let is_water = st.r == T_WATER;
+        let bevel = smoothstep(0.70, 0.94, rim) * g.tile.y * detail * grout_k
+            * mix(1.0, select(RECEDE_LAND, 0.0, is_water), recede);
         normal = normalize(n_top + outward * bevel * 0.8);
         // Grout line between tiles.
-        let grout = smoothstep(0.94 - aa, 0.94 + aa, rim) * g.tile.x * detail;
+        let grout = smoothstep(0.94 - aa, 0.94 + aa, rim) * g.tile.x * detail * grout_k
+            * mix(1.0, select(RECEDE_LAND, RECEDE_WATER_GROUT, is_water), recede);
         albedo = mix(albedo, albedo * 0.42, grout);
         // Region border: the neighbour's value differs (in elevation mode,
         // these are the contour lines between bands).
         if (inside && nvalue != value) {
-            let band = smoothstep(0.80 - aa, 0.80 + aa, rim) * g.lines.x * (1.0 - soften);
+            let band = smoothstep(0.80 - aa, 0.80 + aa, rim) * g.lines.x * (1.0 - soften) * border_k;
             albedo = mix(albedo, albedo * 0.25, band);
         }
+    }
+
+    // Survey intensity (bits 5-6; scene::FLAG_SURVEY_*): land with few dated
+    // records of any period, where an absence of sites says little. Close
+    // up, diagonal hatching (denser for the least surveyed); far out, where
+    // lines would alias, a grey wash instead.
+    let survey_none = (st.a & 64u) != 0u;
+    let survey_thin = (st.a & 32u) != 0u;
+    if (g.hex.w > 0.5 && !lip && (survey_none || survey_thin) && st.r != T_WATER && st.r < T_COUNT) {
+        // Hardly surveyed: every stripe, strong; thinly: every other, fainter.
+        let strength = select(0.55, 1.0, survey_none);
+        let period = select(2.0, 1.0, survey_none);
+        let d = abs(fract(hatch / period) - 0.5) * period;
+        let line = 1.0 - smoothstep(0.16 - hatch_w, 0.16 + hatch_w, d);
+        let hatch_k = smoothstep(10.0, 24.0, hex_px);
+        let ink = vec3<f32>(0.18, 0.16, 0.14);
+        albedo = mix(albedo, ink, line * 0.7 * strength * hatch_k * detail);
+        let grey = vec3<f32>(dot(albedo, vec3<f32>(0.299, 0.587, 0.114)));
+        albedo = mix(albedo, mix(grey, vec3<f32>(0.55), 0.3), 0.35 * strength * (1.0 - hatch_k));
     }
 
     // Selection / lasso tints.
@@ -426,7 +499,60 @@ fn vs_piece(in: PieceIn) -> PieceOut {
 
 @fragment
 fn fs_piece(in: PieceOut) -> @location(0) vec4<f32> {
-    return vec4<f32>(in.colour.rgb * lighting(normalize(in.normal)), 1.0);
+    // Opacity becomes MSAA coverage (alpha to coverage): smoke is see-through
+    // in any draw order, and everything else is solid.
+    return vec4<f32>(in.colour.rgb * lighting(normalize(in.normal)), in.colour.a);
+}
+
+// ---------------------------------------------------------- line overlays ----
+// Rivers, channel belts and lake shores: ribbons built on the CPU
+// (board::lines), shaped here from the across-the-ribbon coordinate.
+
+struct LineIn {
+    @location(0) pos: vec3<f32>,
+    @location(1) uv: vec2<f32>,
+    @location(2) along: f32,
+    @location(3) colour: vec4<f32>,
+    @location(4) params: vec4<f32>,
+};
+
+struct LineOut {
+    @builtin(position) clip: vec4<f32>,
+    @location(0) uv: vec2<f32>,
+    @location(1) along: f32,
+    @location(2) colour: vec4<f32>,
+    @location(3) params: vec4<f32>,
+    @location(4) normal: vec3<f32>,
+};
+
+@vertex
+fn vs_line(in: LineIn) -> LineOut {
+    var out: LineOut;
+    out.clip = g.view_proj * vec4<f32>(in.pos, 1.0);
+    out.uv = in.uv;
+    out.along = in.along;
+    out.colour = in.colour;
+    out.params = in.params;
+    out.normal = mix(normalize(in.pos), vec3<f32>(0.0, 1.0, 0.0), g.cam_pos.w);
+    return out;
+}
+
+@fragment
+fn fs_line(in: LineOut) -> @location(0) vec4<f32> {
+    // 0 on the centreline, 1 at the edge (and round the caps).
+    let d = length(in.uv);
+    let aa = max(fwidth(d), 1e-4);
+    let along_w = max(fwidth(in.along), 1e-5);
+    let soft = max(aa, in.params.z);
+    var alpha = in.colour.a * (1.0 - smoothstep(1.0 - soft, 1.0, d));
+    let on = in.params.x;
+    if (on > 0.0) {
+        // Dashes with soft ends.
+        let f = abs(fract(in.along) - 0.5 * on);
+        alpha *= 1.0 - smoothstep(0.5 * on - along_w, 0.5 * on + along_w, f);
+    }
+    let rgb = pow(in.colour.rgb, vec3<f32>(2.2));
+    return vec4<f32>(rgb * lighting(normalize(in.normal)), alpha);
 }
 
 // ------------------------------------------------------------------ blit ----

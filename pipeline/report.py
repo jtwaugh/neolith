@@ -31,7 +31,7 @@ def terrain_colours(settings_path="neolithic_deities/settings.py", scheme="terra
 
 
 # Classes the Django colour scheme doesn't have; same colours as neolith-rs palette.rs.
-EXTRA_COLOURS = {"Tundra": "#9fa89a", "Land": "#cfc29b", "Alpine": "#bcb3c6"}
+EXTRA_COLOURS = {"Tundra": "#8f9c8a", "Land": "#b39b73", "Alpine": "#b2a6d3", "Floodplain": "#4fc26b"}
 
 
 
@@ -58,8 +58,72 @@ def in_bbox(grid, box):
     return (c[:, 0] >= lon0) & (c[:, 0] <= lon1) & (c[:, 1] >= lat0) & (c[:, 1] <= lat1)
 
 
+def islands_section(grid, terrain, stats, watch):
+    """Report lines: island hexes added ([islands]) and the watched islands'
+    land hexes every 1000 years."""
+    years = sorted(terrain)
+    ys = [y for y in years if y % 1000 == 0] or years
+    added = sum(r[4] for v in stats.values() for r in v)
+    L = ["", "## Islands", "",
+         f"[islands]: {added} hex-frames made land on small landmasses that had fewer land hexes "
+         "than their area; most in one frame: "
+         f"{max((sum(r[4] for r in v) for v in stats.values()), default=0)}.", ""]
+    if watch:
+        c = grid.centres
+        L += ["Land hexes centred on each island:", "",
+              "| island | hexes | " + " | ".join(map(str, ys)) + " |", "|---" * (len(ys) + 2) + "|"]
+        for name, (lon0, lat0, lon1, lat1) in watch:
+            m = (c[:, 0] >= lon0) & (c[:, 0] <= lon1) & (c[:, 1] >= lat0) & (c[:, 1] <= lat1)
+            L.append(f"| {name} | {int(m.sum())} | " +
+                     " | ".join(str(int((terrain[y][m] != "Water").sum())) for y in ys) + " |")
+    return L
+
+
+def settlement_water_section(grid, terrain, settlements, top=15):
+    """Report lines: settlements whose own hex is Water in a frame they are
+    occupied (their `occupation` phases, as the game reads them). "Coastal"
+    means a neighbour hex is land that frame, so the shore is drawn a hex
+    off; "offshore" means none is, so the site's coordinates or the sea
+    itself are wrong."""
+    from .compose import alive_frames, phases
+    years = sorted(terrain)
+    index = {h: i for i, h in enumerate(grid.ids)}
+    water = {y: terrain[y] == "Water" for y in years}
+    per_year, rows = Counter(), []
+    for f in settlements:
+        p = f["properties"]
+        i = index.get(p.get("hex"))
+        if i is None:
+            continue
+        alive = alive_frames(phases(p, years), years)
+        wet = [y for y in alive if water[y][i]]
+        if not wet:
+            continue
+        per_year.update(wet)
+        offshore = sum(all(water[y][j] for j in grid.neighbours[i]) for y in wet)
+        lon, lat = f["geometry"]["coordinates"][:2]
+        rows.append((p.get("name", "?"), lon, lat, len(wet), len(alive), wet[0], wet[-1], offshore))
+    L = ["", "## Settlements on Water", "",
+         f"{len(rows)} of {len(settlements)} settlements have their own hex as Water in at least one "
+         f"frame they are occupied; for {sum(r[3] == r[4] for r in rows)} it is every such frame. "
+         "Coastal: a neighbour hex is land that frame (the shore is drawn a hex off). "
+         "Offshore: no neighbour is (the coordinates, or the drawn sea, are wrong).", ""]
+    if not rows:
+        return L
+    ys = [y for y in years if y % 500 == 0] or years
+    L += ["| year | " + " | ".join(map(str, ys)) + " |", "|---" * (len(ys) + 1) + "|",
+          "| on Water | " + " | ".join(str(per_year[y]) for y in ys) + " |", "",
+          f"Longest on Water (top {top}):", "",
+          "| settlement | lon, lat | years on Water / occupied | first…last | offshore |", "|---|---|---|---|---|"]
+    step = years[1] - years[0] if len(years) > 1 else 1
+    for name, lon, lat, n, a, y0, y1, off in sorted(rows, key=lambda r: (-r[3], -r[7], r[0]))[:top]:
+        L.append(f"| {name} | {lon:.2f}, {lat:.2f} | {n * step} / {a * step} | {y0}…{y1} | {off * step} |")
+    return L
+
+
 def write(build_dir, grid, terrain, raw_terrain, legacy_terrain, prov, sea_stats,
-          unmatched, mountains, watch, land=None, regions=(), koeppen=None):
+          unmatched, mountains, watch, land=None, regions=(), koeppen=None, clean=None,
+          settlements=None, islands_watch=()):
     os.makedirs(os.path.join(build_dir, "preview"), exist_ok=True)
     colours = {**EXTRA_COLOURS, **terrain_colours()}
     years = sorted(terrain)
@@ -147,12 +211,102 @@ def write(build_dir, grid, terrain, raw_terrain, legacy_terrain, prov, sea_stats
                                                 for k, v in c.most_common(4)))
             L.append("")
 
+    if clean:
+        L += ["", "## Biome cleanup", "",
+              "*Warped*: model-filled hexes whose biome changed when sampled at a displaced "
+              "position ([biome.edges]). *Bridged*: hexes changed to break up a forbidden "
+              "pair of neighbours ([biome.adjacency]). *Floodplain*: hexes made Floodplain "
+              "([rivers.floodplain]).", "",
+              "| year | warped | bridged | floodplain |", "|---|---|---|---|"]
+        for y in years:
+            row = [clean.get(k, {}).get(y) for k in ("warped", "adjacency", "floodplain")]
+            if any(row):
+                L.append(f"| {y} | " + " | ".join("" if v is None else str(v) for v in row) + " |")
+        L += ["", f"Population cleared on Water: {clean.get('water_population', 0)} hex-years."]
+
     L += ["", "## Watched regions: Water hexes / total", ""]
     for w in watch:
         m = in_bbox(grid, w["bbox"])
         L.append(f"- {w['name']}: " + ", ".join(
             f"{y}: {int((terrain[y][m] == 'Water').sum())}/{int(m.sum())}"
             for y in years if y % 500 == 0))
+
+    rt = (clean or {}).get("reinterpreted")
+    if rt:
+        rules = clean.get("reinterpret_rules", [])
+        L += ["", "## Reinterpreted drawn classes ([[terrain.reinterpret]])", "",
+              "| key frame | " + " | ".join(f"{r['from']} → {r['to']}" for r in rules) + " |",
+              "|---" * (len(rules) + 1) + "|"]
+        for y in sorted(rt):
+            L.append(f"| {y} | " + " | ".join(str(rt[y].get(k, 0)) for k in range(len(rules))) + " |")
+
+    up = (clean or {}).get("upland")
+    if up:
+        L += ["", "## Upland rule ([biome.upland])", "",
+              "Gap-filled upland hexes given woodland, forest-steppe or grassland by precipitation and date: "
+              + ", ".join(f"{y}: {n}" for y, n in sorted(up.items())) + "."]
+
+    hw = (clean or {}).get("high_water")
+    if hw and hw[0]:
+        hexes, elev = hw
+        L += ["", "## High drawn water ([terrain.high_water])", "",
+              "Drawn Water above the elevation limit outside every lake box, made a biome gap. "
+              "A real palaeolake among these belongs in data/lakes/lakes.toml.", "",
+              "| key frame | hexes | highest (lon, lat, m) |", "|---|---|---|"]
+        c = grid.centres
+        for y in sorted(hexes):
+            idx = hexes[y]
+            top = sorted(idx, key=lambda i: -elev[i])[:3]
+            L.append(f"| {y} | {len(idx)} | " + "; ".join(
+                f"{c[i, 0]:.2f}, {c[i, 1]:.2f}, {elev[i]:.0f}" for i in top) + " |")
+
+    isl = (clean or {}).get("islands")
+    if isl is not None:
+        L += islands_section(grid, terrain, isl, islands_watch)
+        maj = (clean or {}).get("majority_land") or {}
+        L += ["", f"Drawn Water on hexes that are mostly land at the frame's water level, outside every "
+              f"lake, made land: {sum(maj.values())} hex-frames, at most {max(maj.values(), default=0)} "
+              "in a frame."]
+
+    if settlements is not None:
+        L += settlement_water_section(grid, terrain, settlements)
+        fixes, aud = (clean or {}).get("coord_fixes"), (clean or {}).get("coord_audit")
+        if fixes is not None or aud is not None:
+            why = Counter(r for a in (aud or []) for r in a["reasons"].split(";"))
+            L += ["", f"Coordinates: {len(fixes or [])} corrections applied (data/settlements/corrections.toml: "
+                  + ", ".join(f"{n} {k}" for k, n in Counter(a for _, a in fixes or []).most_common())
+                  + f"); the audit lists {len(aud or [])} suspect sites ("
+                  + ", ".join(f"{n} {k}" for k, n in why.most_common())
+                  + ") in data/settlements/coordinate_audit.csv."]
+        sl = (clean or {}).get("settled_land")
+        if sl:
+            drowned = [f for f in settlements if f["properties"].get("drowned") is not None]
+            L += ["", f"[settled_land]: {sum(sl['kept'].values())} hex-frames kept as land under sites above the "
+                  f"water; {sl['drowned']} occupation phases of {len(drowned)} settlements ended by the water "
+                  "(site ground below sea or lake level).",
+                  "", "| drowned by | settlements |", "|---|---|"]
+            by = Counter((f["properties"]["drowned"] // 1000) * 1000 for f in drowned)
+            for y in sorted(by):
+                L.append(f"| {y}…{y + 999} | {by[y]} |")
+            cuts = sl.get("cuts", [])
+            if cuts:
+                L += ["", "Every phase ended by the water (depth: metres over the site's ground; "
+                      "at the start it is the model's own error there):", "",
+                      "| settlement | drowned | water | depth at start | depth then |", "|---|---|---|---|---|"]
+                for name, y, body, d0, d in sorted(cuts, key=lambda c: (c[2], c[1], c[0])):
+                    L.append(f"| {name} | {y} | {body} | {d0} | {d} |")
+            wet = sl.get("wet_starts", [])
+            if wet:
+                bodies = Counter(w[2] for w in wet)
+                L += ["", f"Phases starting under the modelled water ({len(wet)}: "
+                      + ", ".join(f"{n} {b}" for b, n in bodies.most_common()) + "). A dated site was dry "
+                      "then, so either that water level or the site's coordinates are wrong. Lake cases "
+                      "are evidence against the lake curve in data/lakes/lakes.toml.", "",
+                      "| settlement | start frame | water | depth (m) |", "|---|---|---|---|"]
+                for name, y, body, d in sorted(wet, key=lambda w: (w[2] == "sea", w[2], -w[3]))[:40]:
+                    L.append(f"| {name} | {y} | {body} | {d} |")
+                if len(wet) > 40:
+                    L.append(f"| … {len(wet) - 40} more | | | |")
 
     L += ["", "## Terrain class counts (every 1000 years)", ""]
     classes = sorted({v for y in years for v in terrain[y]})
