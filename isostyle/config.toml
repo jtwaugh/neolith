@@ -1,0 +1,202 @@
+# Isostyle surfaces on the game's hex grid. Paths are relative to the repo
+# root. Years are signed (negative = BCE). The Phase 1 audit keeps its own
+# config, isostyle/audit.toml (50 km equal-area grid, 250-year slices).
+
+[grid]
+# The hex-map pipeline's output: hexagons in lon/lat with id and bbox
+# properties, and a year-keyed `terrain` (Water and Ice are used here).
+file = "build/combined_map.geojson"
+
+[region]
+# Dates outside this box are not read. It is the grid's extent.
+lon_min = -17.0
+lon_max = 66.5
+lat_min = 5.5
+lat_max = 76.5
+
+[time]
+# The map keyframes. Each slice covers its year ± half the spacing.
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+
+[dates]
+raw_dir = "build/settlements"
+pipeline_config = "pipeline/config.toml"
+curve = "build/settlements/intcal20.14c"
+same_km = 1.0
+same_name_km = 10.0
+# Occupation episodes: a site's dates are chained while their 95% calibrated
+# ranges overlap or lie within this many years of each other.
+episode_gap = 200
+# A culture label counts for an episode only if the episode's median falls
+# inside the culture's range in data/cultures/cultures.toml, widened by this.
+range_margin = 200
+# Site types counted as graves (flagged, not dropped).
+grave_types = ["grave", "burial", "tomb", "tumulus", "barrow", "dolmen", "megalith", "cairn",
+               "cist", "funerary", "cemetery", "necropolis", "hypogeum"]
+
+[presence]
+# The layer registry (what each surface is); occupation layers' direct-evidence
+# rules (dated sample material, site type) live there too.
+layers = "data/isostyle/layers.toml"
+cultures = "data/cultures/cultures.toml"
+rules = "data/isostyle/label_presence.toml"
+# A dataset record within this distance of a dated site, overlapping one of
+# its episodes in time, marks that episode instead of adding a new one.
+match_km = 2.0
+# Hand-extracted tables kept in the repo: reader function -> path.
+inputs = { jordan2016 = "data/isostyle/inputs/jordan2016_africa.csv" }
+
+[surface]
+# Candidate kernel widths (km) for leave-one-site-out cross-validation.
+sigma_km = [50, 75, 100, 150, 200, 300]
+cutoff = 2.5          # R = cutoff * sigma
+alpha = 1.0           # shrinkage toward the slice mean
+# Mask below this evidence: two well-dated sites one sigma away, 2*exp(-1/2).
+e_min = 1.2
+levels = [0.25, 0.5, 0.75]
+bootstrap = 200
+seed = 20261112
+# Bone and antler: cells whose topsoil pH (SoilGrids 0-30 cm mean) is below
+# this are masked. Kendall et al. 2018 put the onset of bone mineral
+# dissolution at pH 6.0; 5.5 is the "strongly acid" class boundary.
+bone_ph_min = 5.5
+
+[output]
+build_dir = "build/isostyle"
+out_dir = "data/isostyle"
+
+# ------------------------------------------------------------------ sources
+[[sources]]
+name = "Evershed et al. 2022, lipid residue site-phases"
+kind = "github"
+id = "AdrianTimpson/2020-03-03523A"
+match = 'lipid residue summary\.csv$'
+file = "evershed2022_lipid.csv"
+
+[[sources]]
+name = "Rigaud, Manen & Garcia-Martinez de Lagran 2018, S1 Dataset"
+kind = "url"
+url = "https://journals.plos.org/plosone/article/file?type=supplementary&id=10.1371/journal.pone.0196488.s001"
+file = "rigaud2018_s1.xlsx"
+
+[[sources]]
+name = "Dolbunova et al. 2023, vessel table with site coordinates"
+kind = "zenodo"
+id = "6619101"
+match = 'SI_ORA\.xlsx$'
+file = "dolbunova2023_ora.xlsx"
+
+[[sources]]
+name = "Windler 2019, Spondylus database"
+kind = "zenodo"
+id = "2840333"
+match = '\.zip$'
+file = "windler2019_spondylus.zip"
+
+[[sources]]
+name = "Tsirintoulaki, Matzig & Riede 2023, dated barbed points"
+kind = "zenodo"
+id = "7244045"
+match = '\.zip$'
+file = "tsirintoulaki2023.zip"
+
+[[sources]]
+name = "Perrin, BDA 2021 export"
+kind = "nakala"
+id = "10.34847/nkl.dde9fnm8"
+match = '\.zip$'
+file = "bda2021.zip"
+
+[[sources]]
+name = "SoilGrids 2.0 pH(H2O) 0-5 cm, 5 km aggregate"
+kind = "url"
+url = "https://files.isric.org/soilgrids/latest/data_aggregated/5000m/phh2o/phh2o_0-5cm_mean_5000.tif"
+file = "phh2o_0-5cm_mean_5000.tif"
+
+[[sources]]
+name = "SoilGrids 2.0 pH(H2O) 5-15 cm, 5 km aggregate"
+kind = "url"
+url = "https://files.isric.org/soilgrids/latest/data_aggregated/5000m/phh2o/phh2o_5-15cm_mean_5000.tif"
+file = "phh2o_5-15cm_mean_5000.tif"
+
+[[sources]]
+name = "SoilGrids 2.0 pH(H2O) 15-30 cm, 5 km aggregate"
+kind = "url"
+url = "https://files.isric.org/soilgrids/latest/data_aggregated/5000m/phh2o/phh2o_15-30cm_mean_5000.tif"
+file = "phh2o_15-30cm_mean_5000.tif"
+
+[[sources]]
+name = "MedAfriCarbon v1.0.3 (Lucarini et al. 2020)"
+kind = "zenodo"
+id = "3689716"
+match = '\.zip$'
+file = "medafricarbon_v1.0.3.zip"
+
+[[sources]]
+name = "Rotunno & Crema 2025, Saharan pottery dates"
+kind = "github"
+id = "roccorot/OriginPotteryNAfrica"
+match = '^data/c14data\.csv$'
+file = "rotunno2025_c14data.csv"
+
+[[sources]]
+name = "DEFC sites (Digitizing Early Farming Cultures)"
+kind = "url"
+url = "https://arche.acdh.oeaw.ac.at/api/220828"
+file = "defc_sites.csv"
+
+[[sources]]
+name = "DEFC areas"
+kind = "url"
+url = "https://arche.acdh.oeaw.ac.at/api/220830"
+file = "defc_areas.csv"
+
+[[sources]]
+name = "DEFC finds"
+kind = "url"
+url = "https://arche.acdh.oeaw.ac.at/api/220831"
+file = "defc_finds.csv"
+
+[[sources]]
+name = "DObsiSS v2.0 (Batist), obsidian sourcing in SW Asia"
+kind = "zenodo"
+id = "55848"
+match = '\.zip$'
+file = "dobsiss_v2.0.zip"
+
+# ------------------------------------------------------------- subsistence
+[[sources]]
+name = "Arranz-Otaegui & Roe 2023, SW Asian Neolithic flora (CC0 data)"
+kind = "url"
+url = "https://raw.githubusercontent.com/joeroe/SWAsiaNeolithicFounderCrops/HEAD/analysis/data/derived_data/swasia_neolithic_flora.tsv"
+file = "swasia_flora.tsv"
+
+[[sources]]
+name = "ADEMNES fauna (Riehl), via Arranz-Otaegui & Roe 2023"
+kind = "url"
+url = "https://raw.githubusercontent.com/joeroe/SWAsiaNeolithicFounderCrops/HEAD/analysis/data/raw_data/ademnes/ademnes_fauna.tsv"
+file = "ademnes_fauna.tsv"
+
+[[sources]]
+name = "ADEMNES phases"
+kind = "url"
+url = "https://raw.githubusercontent.com/joeroe/SWAsiaNeolithicFounderCrops/HEAD/analysis/data/raw_data/ademnes/ademnes_phase.tsv"
+file = "ademnes_phase.tsv"
+
+[[sources]]
+name = "ADEMNES sites"
+kind = "url"
+url = "https://raw.githubusercontent.com/joeroe/SWAsiaNeolithicFounderCrops/HEAD/analysis/data/raw_data/ademnes/ademnes_site.tsv"
+file = "ademnes_site.tsv"
+
+[[sources]]
+name = "Open Context integrated Anatolian zooarchaeology, summary (CC BY)"
+kind = "url"
+url = "https://raw.githubusercontent.com/ekansa/opencontext-eol-zooarch/HEAD/Integrated-Datasets/EOL-summary-taxa.csv"
+file = "opencontext_eol_summary.csv"
+
+[[sources]]
+name = "Phelps et al. 2019, African Holocene fauna (PANGAEA 904942, CC BY)"
+kind = "url"
+url = "https://doi.pangaea.de/10.1594/PANGAEA.904942?format=zip"
+file = "phelps2019_fauna.zip"

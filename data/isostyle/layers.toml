@@ -1,0 +1,85 @@
+# Layer registry for the isostyle surfaces. Read by isostyle/layers.py.
+#
+# Each [[layer]]:
+#   id, name      identifier (y_<id> in units.csv.gz) and display name
+#   group         one of `groups` below; overlays and the viewer group by it
+#   kind          presence_absence  share of units with the trait, absences known
+#                 presence_only     no source records absence; shows recording
+#                 share             a 0/1 trait among samples (e.g. one haplogroup clade)
+#                 continuous        a measured value, kernel mean (e.g. delta15N)
+#                 grid              an external gridded field, looked up per cell
+#   unit          occupation (dated site episodes), core (off-site pollen cores),
+#                 sample (individual human remains) or grid
+#   sigma         "cv" (cross-validated where the layer has >= 20 presences and
+#                 absences) or the id of a layer whose sigma to borrow
+#   site_type     regex on the dated site's type: a match records presence
+#   dated_material regex on a dated sample's material: a match records presence
+#   mask          ["acid"] masks cells with topsoil pH below [surface] bone_ph_min
+#   levels        isoline levels (default 0.25, 0.5, 0.75; continuous: in units)
+#   units_label   for continuous and grid layers, the value's unit
+#   vmin, vmax    for continuous and grid layers, the colour scale's range
+#   licence, note shown on maps and in the viewer
+#   set           layers sharing a set (haplogroup clades) are picked together
+#   evidence_word what a unit is called on maps ("occupations", "cores", "samples")
+
+groups = ["Material culture", "Subsistence", "Environment", "Structures & organics", "People"]
+
+# ------------------------------------------------------------ material culture
+[[layer]]
+id = "pottery"
+name = "Pottery"
+group = "Material culture"
+kind = "presence_absence"
+dated_material = 'pot|sherd|ceram|food ?crust|food res|food rem|carbonised residue|charred crust|charred food|tesson|keramik|^residue'
+
+[[layer]]
+id = "flaked_stone"
+name = "Flaked stone"
+group = "Material culture"
+kind = "presence_only"
+sigma = "pottery"
+
+[[layer]]
+id = "ground_stone"
+name = "Ground stone"
+group = "Material culture"
+kind = "presence_absence"
+
+[[layer]]
+id = "bone_antler"
+name = "Bone and antler"
+group = "Material culture"
+kind = "presence_only"
+sigma = "pottery"
+mask = ["acid"]
+dated_material = 'artefact|artifact|tool|point|harpoon|mattock|worked|bevel'
+
+[[layer]]
+id = "ornaments"
+name = "Ornaments"
+group = "Material culture"
+kind = "presence_only"
+sigma = "pottery"
+
+# ----------------------------------------------------------------- subsistence
+# No label rules: these layers rest only on recorded remains, so absences are
+# real (a sampled phase without cereals, an identified bone assemblage without
+# domestic livestock).
+[[layer]]
+id = "cereals"
+name = "Cereal grain"
+group = "Subsistence"
+kind = "presence_absence"
+evidence_word = "sampled phases"
+dated_material = '\bgrains?\b|cereal|triticum|hordeum|wheat|barley|emmer|einkorn|secale'
+note = "Charred grain of wheat or barley. In SW Asia before about 8500 BCE this includes cultivated or gathered wild-type cereals. Recovery depends on flotation, which was rare before the 1970s."
+licence = "EUROEVOL CC0 (unverified for botany); Arranz-Otaegui & Roe 2023 CC0"
+
+[[layer]]
+id = "domestic_livestock"
+name = "Domestic livestock"
+group = "Subsistence"
+kind = "presence_absence"
+evidence_word = "faunal assemblages"
+note = "Domestic cattle, sheep, goat or pig. Absent means at least 50 identified specimens (or 8 taxa) with no livestock genus of domestic or uncertain status."
+licence = "EUROEVOL CC0; ADEMNES via Arranz-Otaegui & Roe (CC0); Open Context CC BY; Phelps et al. CC BY"

@@ -1,0 +1,184 @@
+# Lakes whose extent changes over -10000..-3000. Read by pipeline/lakes.py;
+# reasoning and references in SOURCES.md.
+#
+# seed:  [lon, lat] of a point that is always under the lake.
+# box:   [lon0, lat0, lon1, lat1] window the lake is computed in. Make it wide
+#        enough to contain the real outlet: the lake is held just under the
+#        level at which it first reaches the box edge.
+# level: [[year, metres], ...], interpolated linearly, held outside the keys.
+#        A level above the outlet is held at the outlet.
+# area:  [[year, km²], ...] instead of level, for lakes the literature gives
+#        by area: each year's level is the one at which the flood from the
+#        seed covers that much (0 = no lake). Linear between keys.
+# dam:   { line = [[lon, lat], ...], top = metres } raises the DEM along a
+#        line, for a barrier that has since gone (a dune dam).
+# until: year from which the lake is no longer modelled (it joined the
+#        ocean): no shoreline, and the sea step's terrain stands.
+# level = "sea-or-outlet": a basin that is open sea when the global sea can
+#        get in and otherwise a lake held at its lowest outlet, on a surface
+#        corrected for glacio-isostatic uplift ([isostasy] in the config),
+#        recomputed every year. `dam` may then take an `until` year;
+#        `downsample` coarsens the raster by that factor for speed.
+# Lakes not listed here stay as the drawn keyframes have them.
+
+[[lake]]
+key = "megachad"
+name = "Lake Megachad"
+seed = [14.3, 13.1]
+box = [9.5, 8.5, 21.5, 20.0]
+# Armitage et al. 2015: highstand at the 329 m shoreline by 11.5 ka, lowered
+# 10.4-9.4 and 8.1-6.6 ka (no elevations given; 320 m assumed), a dip to
+# 308 m about 6.0 ka, 325-330 m at 5.4-5.0 ka, then a fall of >100 m in the
+# Bodélé and >34 m in Lake Chad by 4.7 ka. 12.9-11.5 ka was arid (295 m
+# assumed for -10000).
+level = [
+  [-10000, 295.0], [-9700, 300.0], [-9550, 329.0], [-8450, 329.0],
+  [-8300, 320.0], [-7600, 320.0], [-7450, 329.0], [-6150, 329.0],
+  [-6000, 320.0], [-4800, 320.0], [-4650, 329.0], [-4100, 329.0],
+  [-4000, 308.0], [-3900, 329.0], [-3450, 329.0], [-3050, 326.0],
+  [-2750, 285.0],
+]
+confidence = "medium"
+
+[[lake]]
+key = "baltic"
+name = "Baltic"
+seed = [20.0, 57.3]
+box = [9.0, 53.0, 37.0, 71.0]
+# The stages follow from the uplift model and the global sea curve: open sea
+# when the sea can get in (Yoldia Sea through central Sweden; Littorina Sea
+# through the Danish straits), otherwise a lake at its lowest outlet (the
+# Ancylus Lake). Before the Baltic Ice Lake drained at Billingen (11.7-11.6
+# cal ka) the ice blocked central Sweden: the dam follows the ice margin of
+# the time (the Middle Swedish end moraines and Salpausselkä), so the lake
+# stands at its southern outlet. Ice hexes stay ice and block the water.
+# The window reaches the Barents and Norwegian seas and takes in Ladoga and
+# Onega; only edge cells in today's open sea count as outlets.
+level = "sea-or-outlet"
+dam = { line = [[11.6, 58.2], [13.7, 58.4], [15.0, 58.8], [16.5, 58.9], [17.6, 59.1], [18.8, 59.4], [20.5, 59.8], [22.5, 59.8], [25.0, 60.4], [27.0, 60.9], [29.5, 61.5], [31.5, 62.0]], top = 1000.0, until = -9700 }
+downsample = 3
+# The board's drawn ice covers central Sweden until about -8500, but it was
+# ice-free soon after the Baltic Ice Lake drained (the Yoldia Sea connected
+# through it); drawn Ice blocks the water only until then. Ice hexes still
+# never turn to Water.
+ice_until = -9700
+confidence = "low"
+
+[[lake]]
+key = "black-sea"
+name = "Black Sea lake"
+seed = [34.0, 43.0]
+box = [27.3, 40.9, 42.0, 47.6]
+# Before it reconnected to the Mediterranean the Black Sea was a lake with
+# its own level; the board would otherwise give it the global curve (-60 m
+# at -10000). Reconnection about 9.0 cal ka (Soulet et al. 2011): -7050.
+# Lake level just before it about -30 m (Giosan et al. 2009); the late
+# Neoeuxinian about -40 m (NW shelf studies). Ryan and colleagues argue for
+# -90 m or lower and a catastrophic flood; the shallower level is used. The
+# Bosporus is narrower than ETOPO1's cells, so the computed outlet (+5 m,
+# at the box edge) doesn't bind.
+level = [[-10000, -40.0], [-7100, -30.0]]
+until = -7050
+confidence = "low"
+
+[[lake]]
+key = "caspian"
+name = "Caspian Sea"
+seed = [51.0, 39.5]
+box = [42.0, 36.0, 56.5, 52.0]
+# Contested. Late Khvalynian near 0 m ending about 12 ka, fast fall into the
+# Mangyshlak regression (minimum about 9 ka; -50 to -113 m by author; -80 m
+# used), New Caspian rise from about 8 ka to about -25 m (peaks near -20 m).
+level = [
+  [-10000, -10.0], [-9550, -40.0], [-7050, -80.0], [-6050, -50.0],
+  [-5000, -25.0],
+]
+confidence = "low"
+
+[[lake]]
+key = "aral"
+name = "Aral Sea"
+seed = [60.0, 45.0]
+box = [57.5, 43.0, 62.5, 47.5]
+# Holocene transgressions to about 53-56 m; regressions when the Amu Darya
+# turned to Sarykamysh are not dated well enough to place. Modern pre-1960
+# level 53 m used throughout.
+level = [[-10000, 53.0]]
+confidence = "low"
+
+[[lake]]
+key = "sarykamysh"
+name = "Sarykamysh Lake"
+seed = [57.4, 41.9]
+box = [55.8, 40.6, 59.4, 43.2]
+# Kes' (1979): the Amu Darya filled Sarykamysh and overflowed down the Uzboy
+# for most of the Holocene. Full (held at its outlet) throughout.
+level = [[-10000, 200.0]]
+confidence = "low"
+
+[[lake]]
+key = "dead-sea"
+name = "Dead Sea"
+seed = [35.5, 31.5]
+box = [35.1, 30.5, 35.9, 33.0]
+# Holocene levels between about -430 and -370 m (Bookman 2004; Migowski
+# 2006), high in the wet phases 10-8.6 and 5.6-3.5 cal ka BP.
+level = [
+  [-10000, -415.0], [-8000, -380.0], [-6650, -400.0], [-5000, -420.0],
+  [-3650, -370.0], [-3000, -385.0],
+]
+confidence = "medium"
+
+# ---------------------------------------------------------------- Sahara
+# Holocene (African Humid Period) lakes known by area rather than level.
+# Drake et al. 2022, Sedimentary and geomorphic evidence of Saharan
+# megalakes: a synthesis (Quaternary Science Reviews 276:107318): of the
+# Saharan megalake basins only Chad and the Niger (Timbuktu) held megalakes in
+# the AHP; Darfur and Fezzan held smaller lakes; the Chotts and
+# Ahnet-Mouydir megalakes are MIS 5 or older and are left out.
+
+[[lake]]
+key = "west-nubian"
+name = "West Nubian Palaeolake"
+seed = [26.367, 19.267]
+box = [24.0, 17.0, 28.0, 22.0]
+# About 5330 km² (Hoelzmann et al. 2000, 2001; mapped from settlements at
+# 555 m; the flood from ETOPO1 reaches 5330 km² at 555 m). Freshwater by
+# 9.2 14C ka, low stands about 8.1 and 7.5 14C ka, highstand about
+# 6.7-6.8 14C ka, wadis flowing until 3.3-2.4 14C ka (Pachur & Altmann 2006).
+# Areas between the dated phases are assumed (Hoelzmann et al. 2000 give
+# 1100-7000 km² as the plausible range).
+area = [
+  [-8700, 0.0], [-8350, 3000.0], [-7050, 1100.0], [-6350, 1100.0],
+  [-5650, 5330.0], [-4500, 5330.0], [-3000, 3000.0],
+]
+confidence = "low"
+
+[[lake]]
+key = "timbuktu"
+name = "Megalake Timbuktu"
+seed = [-2.867, 17.367]
+box = [-7.0, 13.5, 1.0, 20.0]
+# 27,352 km² at the 264 m shoreline (ALOS DEM; Drake et al. 2022), mostly
+# 2 m deep. No direct dates: formed about 9.5 ka, gone by the mid-Holocene.
+# Dunes blocked the Niger at the Tossaye (Taoussa) gorge (Beaudet et al.
+# 1977); ETOPO1 has the gorge cut, so the dam stands in for the dunes.
+area = [[-7800, 0.0], [-7550, 27352.0], [-5500, 27352.0], [-4500, 0.0]]
+dam = { line = [[-0.7, 16.5], [-0.7, 17.5]], top = 280.0 }
+confidence = "low"
+
+[[lake]]
+key = "shati"
+name = "Wadi Shati palaeolake"
+seed = [14.033, 27.433]
+box = [11.5, 26.8, 15.5, 28.3]
+# The largest Holocene lake in the Fezzan: 660 km² (Drake et al. 2014, EGU
+# abstract EGU2014-1298; Drake et al. 2018, QSR 200:376). Perennial 7.75-6.6
+# ka, gypsum (shrinking) from 6.5 ka, dry just before 5 ka. Onset before the
+# core's base and the shrinking areas are assumed; smaller than a hex, so a
+# shoreline only.
+area = [
+  [-8000, 0.0], [-7500, 660.0], [-4650, 660.0], [-4550, 300.0],
+  [-3100, 100.0], [-3050, 0.0],
+]
+confidence = "low"

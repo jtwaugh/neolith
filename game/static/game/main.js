@@ -70,6 +70,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  document.getElementById('modeToggle').addEventListener('change', function() {
+    if(this.checked) {
+      document.getElementById('editorControls').style.display = 'block';
+      document.getElementById('gameControls').style.display = 'none';
+      if (intervalID) {
+        toggleGamePause(); // Pause while we edit
+      }
+      modeLabel.innerText = 'Editor Mode';
+    } else {
+      document.getElementById('editorControls').style.display = 'none';
+      document.getElementById('gameControls').style.display = 'block';
+      modeLabel.innerText = 'Game Mode';
+    }
+  });  
+
   document.getElementById('pencil-tool').addEventListener('click', function() {
     editingMode = "pencil";
     this.style.color = editingMode == "pencil" ? 'red' : 'black'; // Change color to indicate active state

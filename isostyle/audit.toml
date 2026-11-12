@@ -1,0 +1,46 @@
+# Phase 1 audit config (50 km equal-area grid, 250-year slices). Paths are
+# relative to the repo root. Years are signed (negative = BCE).
+
+[region]
+lon_min = -12.0
+lon_max = 45.0
+lat_min = 35.0
+lat_max = 72.0
+
+[grid]
+# A polygon grid file to use instead of building one. Empty: build
+# flat-topped hexagons `cell_km` across (flat to flat) in `crs`, keeping
+# cells whose centre is inside [region].
+file = ""
+cell_km = 50.0
+crs = "EPSG:3035"
+
+[time]
+# Slice centres; each slice covers centre ± step/2.
+slices_file = ""
+start = -10000
+end = -3000
+step = 250
+
+[dates]
+raw_dir = "build/settlements"
+pipeline_config = "pipeline/config.toml"
+curve = "build/settlements/intcal20.14c"
+same_km = 1.0
+same_name_km = 10.0
+# A site-phase or site counts as present in a slice when it has at least
+# this many expected dates there.
+present_min_dates = 0.5
+
+[context]
+countries = "build/isostyle/naturalearth/ne_50m_admin_0_countries.shp"
+etopo = "build/etopo.asc"
+# Terrain keyframes of the hex-map pipeline; only the "Ice" class is used.
+terrain = "build/combined_map.geojson"
+cultures = "data/cultures/cultures.toml"
+land_min = 0.2
+drowned_min = 0.3
+
+[output]
+build_dir = "build/isostyle/audit"
+audit_dir = "data/isostyle/audit"

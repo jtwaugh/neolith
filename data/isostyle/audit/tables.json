@@ -1,0 +1,2303 @@
+{
+ "counts": {
+  "xronos_records": 238667,
+  "xronos_unusable": 20315,
+  "p3k14c_added": 69322,
+  "neonet_added": 532,
+  "neonetatl_added": 391,
+  "in_region": 193613,
+  "sites_in_region": 20478,
+  "dates_in_region_deduplicated": 101350,
+  "dates_off_grid": 130,
+  "dates_with_mass_in_window": 38885,
+  "expected_dates_in_window": 36188.54296875,
+  "dates_std_over_200": 1196
+ },
+ "slices": [
+  -10000,
+  -9750,
+  -9500,
+  -9250,
+  -9000,
+  -8750,
+  -8500,
+  -8250,
+  -8000,
+  -7750,
+  -7500,
+  -7250,
+  -7000,
+  -6750,
+  -6500,
+  -6250,
+  -6000,
+  -5750,
+  -5500,
+  -5250,
+  -5000,
+  -4750,
+  -4500,
+  -4250,
+  -4000,
+  -3750,
+  -3500,
+  -3250,
+  -3000
+ ],
+ "half_width": 125.0,
+ "grid": {
+  "cells": 7064,
+  "cell_km": 50.0,
+  "crs": "EPSG:3035",
+  "land_cells_today": 4447
+ },
+ "by_slice": [
+  {
+   "slice": -10000,
+   "land_cells": 4948,
+   "cells_with_evidence": 60,
+   "share_with_evidence": 0.012,
+   "cells_with_2plus_sites": 10,
+   "drowned_cells": 631,
+   "ice_cells": 407,
+   "expected_dates": 149.0,
+   "site_phases": 72,
+   "sites": 77,
+   "phases_with_culture_label": 23,
+   "phases_with_stage_only": 12,
+   "phases_unlabelled": 37
+  },
+  {
+   "slice": -9750,
+   "land_cells": 4931,
+   "cells_with_evidence": 58,
+   "share_with_evidence": 0.012,
+   "cells_with_2plus_sites": 10,
+   "drowned_cells": 611,
+   "ice_cells": 407,
+   "expected_dates": 192.0,
+   "site_phases": 74,
+   "sites": 80,
+   "phases_with_culture_label": 31,
+   "phases_with_stage_only": 15,
+   "phases_unlabelled": 28
+  },
+  {
+   "slice": -9500,
+   "land_cells": 4918,
+   "cells_with_evidence": 97,
+   "share_with_evidence": 0.02,
+   "cells_with_2plus_sites": 21,
+   "drowned_cells": 598,
+   "ice_cells": 403,
+   "expected_dates": 242.0,
+   "site_phases": 129,
+   "sites": 130,
+   "phases_with_culture_label": 41,
+   "phases_with_stage_only": 31,
+   "phases_unlabelled": 57
+  },
+  {
+   "slice": -9250,
+   "land_cells": 4900,
+   "cells_with_evidence": 124,
+   "share_with_evidence": 0.025,
+   "cells_with_2plus_sites": 28,
+   "drowned_cells": 575,
+   "ice_cells": 400,
+   "expected_dates": 320.0,
+   "site_phases": 172,
+   "sites": 166,
+   "phases_with_culture_label": 58,
+   "phases_with_stage_only": 45,
+   "phases_unlabelled": 69
+  },
+  {
+   "slice": -9000,
+   "land_cells": 4884,
+   "cells_with_evidence": 101,
+   "share_with_evidence": 0.021,
+   "cells_with_2plus_sites": 22,
+   "drowned_cells": 556,
+   "ice_cells": 400,
+   "expected_dates": 257.0,
+   "site_phases": 142,
+   "sites": 141,
+   "phases_with_culture_label": 41,
+   "phases_with_stage_only": 46,
+   "phases_unlabelled": 55
+  },
+  {
+   "slice": -8750,
+   "land_cells": 4866,
+   "cells_with_evidence": 108,
+   "share_with_evidence": 0.022,
+   "cells_with_2plus_sites": 24,
+   "drowned_cells": 513,
+   "ice_cells": 408,
+   "expected_dates": 290.0,
+   "site_phases": 155,
+   "sites": 145,
+   "phases_with_culture_label": 59,
+   "phases_with_stage_only": 57,
+   "phases_unlabelled": 39
+  },
+  {
+   "slice": -8500,
+   "land_cells": 4848,
+   "cells_with_evidence": 137,
+   "share_with_evidence": 0.028,
+   "cells_with_2plus_sites": 42,
+   "drowned_cells": 493,
+   "ice_cells": 425,
+   "expected_dates": 401.0,
+   "site_phases": 211,
+   "sites": 198,
+   "phases_with_culture_label": 51,
+   "phases_with_stage_only": 92,
+   "phases_unlabelled": 68
+  },
+  {
+   "slice": -8250,
+   "land_cells": 4830,
+   "cells_with_evidence": 137,
+   "share_with_evidence": 0.028,
+   "cells_with_2plus_sites": 44,
+   "drowned_cells": 468,
+   "ice_cells": 423,
+   "expected_dates": 446.0,
+   "site_phases": 232,
+   "sites": 211,
+   "phases_with_culture_label": 65,
+   "phases_with_stage_only": 104,
+   "phases_unlabelled": 63
+  },
+  {
+   "slice": -8000,
+   "land_cells": 4811,
+   "cells_with_evidence": 126,
+   "share_with_evidence": 0.026,
+   "cells_with_2plus_sites": 31,
+   "drowned_cells": 442,
+   "ice_cells": 422,
+   "expected_dates": 347.0,
+   "site_phases": 188,
+   "sites": 181,
+   "phases_with_culture_label": 50,
+   "phases_with_stage_only": 84,
+   "phases_unlabelled": 54
+  },
+  {
+   "slice": -7750,
+   "land_cells": 4789,
+   "cells_with_evidence": 181,
+   "share_with_evidence": 0.038,
+   "cells_with_2plus_sites": 54,
+   "drowned_cells": 410,
+   "ice_cells": 302,
+   "expected_dates": 461.0,
+   "site_phases": 293,
+   "sites": 267,
+   "phases_with_culture_label": 91,
+   "phases_with_stage_only": 134,
+   "phases_unlabelled": 68
+  },
+  {
+   "slice": -7500,
+   "land_cells": 4754,
+   "cells_with_evidence": 220,
+   "share_with_evidence": 0.046,
+   "cells_with_2plus_sites": 64,
+   "drowned_cells": 355,
+   "ice_cells": 119,
+   "expected_dates": 590.0,
+   "site_phases": 339,
+   "sites": 321,
+   "phases_with_culture_label": 94,
+   "phases_with_stage_only": 152,
+   "phases_unlabelled": 93
+  },
+  {
+   "slice": -7250,
+   "land_cells": 4706,
+   "cells_with_evidence": 195,
+   "share_with_evidence": 0.041,
+   "cells_with_2plus_sites": 49,
+   "drowned_cells": 311,
+   "ice_cells": 75,
+   "expected_dates": 467.0,
+   "site_phases": 284,
+   "sites": 280,
+   "phases_with_culture_label": 84,
+   "phases_with_stage_only": 119,
+   "phases_unlabelled": 81
+  },
+  {
+   "slice": -7000,
+   "land_cells": 4684,
+   "cells_with_evidence": 213,
+   "share_with_evidence": 0.045,
+   "cells_with_2plus_sites": 62,
+   "drowned_cells": 264,
+   "ice_cells": 0,
+   "expected_dates": 591.0,
+   "site_phases": 327,
+   "sites": 321,
+   "phases_with_culture_label": 79,
+   "phases_with_stage_only": 154,
+   "phases_unlabelled": 94
+  },
+  {
+   "slice": -6750,
+   "land_cells": 4652,
+   "cells_with_evidence": 216,
+   "share_with_evidence": 0.046,
+   "cells_with_2plus_sites": 61,
+   "drowned_cells": 233,
+   "ice_cells": 0,
+   "expected_dates": 668.0,
+   "site_phases": 343,
+   "sites": 328,
+   "phases_with_culture_label": 82,
+   "phases_with_stage_only": 151,
+   "phases_unlabelled": 110
+  },
+  {
+   "slice": -6500,
+   "land_cells": 4618,
+   "cells_with_evidence": 297,
+   "share_with_evidence": 0.064,
+   "cells_with_2plus_sites": 106,
+   "drowned_cells": 188,
+   "ice_cells": 0,
+   "expected_dates": 996.0,
+   "site_phases": 523,
+   "sites": 474,
+   "phases_with_culture_label": 102,
+   "phases_with_stage_only": 267,
+   "phases_unlabelled": 154
+  },
+  {
+   "slice": -6250,
+   "land_cells": 4605,
+   "cells_with_evidence": 309,
+   "share_with_evidence": 0.067,
+   "cells_with_2plus_sites": 101,
+   "drowned_cells": 165,
+   "ice_cells": 0,
+   "expected_dates": 952.0,
+   "site_phases": 513,
+   "sites": 462,
+   "phases_with_culture_label": 93,
+   "phases_with_stage_only": 265,
+   "phases_unlabelled": 155
+  },
+  {
+   "slice": -6000,
+   "land_cells": 4588,
+   "cells_with_evidence": 359,
+   "share_with_evidence": 0.078,
+   "cells_with_2plus_sites": 119,
+   "drowned_cells": 140,
+   "ice_cells": 0,
+   "expected_dates": 1235.0,
+   "site_phases": 637,
+   "sites": 573,
+   "phases_with_culture_label": 145,
+   "phases_with_stage_only": 296,
+   "phases_unlabelled": 196
+  },
+  {
+   "slice": -5750,
+   "land_cells": 4568,
+   "cells_with_evidence": 428,
+   "share_with_evidence": 0.094,
+   "cells_with_2plus_sites": 154,
+   "drowned_cells": 106,
+   "ice_cells": 0,
+   "expected_dates": 1502.0,
+   "site_phases": 789,
+   "sites": 697,
+   "phases_with_culture_label": 233,
+   "phases_with_stage_only": 326,
+   "phases_unlabelled": 230
+  },
+  {
+   "slice": -5500,
+   "land_cells": 4556,
+   "cells_with_evidence": 491,
+   "share_with_evidence": 0.108,
+   "cells_with_2plus_sites": 201,
+   "drowned_cells": 91,
+   "ice_cells": 0,
+   "expected_dates": 1613.0,
+   "site_phases": 973,
+   "sites": 841,
+   "phases_with_culture_label": 322,
+   "phases_with_stage_only": 383,
+   "phases_unlabelled": 268
+  },
+  {
+   "slice": -5250,
+   "land_cells": 4542,
+   "cells_with_evidence": 557,
+   "share_with_evidence": 0.123,
+   "cells_with_2plus_sites": 223,
+   "drowned_cells": 72,
+   "ice_cells": 0,
+   "expected_dates": 2133.0,
+   "site_phases": 1123,
+   "sites": 989,
+   "phases_with_culture_label": 388,
+   "phases_with_stage_only": 410,
+   "phases_unlabelled": 325
+  },
+  {
+   "slice": -5000,
+   "land_cells": 4521,
+   "cells_with_evidence": 552,
+   "share_with_evidence": 0.122,
+   "cells_with_2plus_sites": 245,
+   "drowned_cells": 40,
+   "ice_cells": 0,
+   "expected_dates": 1940.0,
+   "site_phases": 1143,
+   "sites": 1018,
+   "phases_with_culture_label": 413,
+   "phases_with_stage_only": 404,
+   "phases_unlabelled": 326
+  },
+  {
+   "slice": -4750,
+   "land_cells": 4521,
+   "cells_with_evidence": 553,
+   "share_with_evidence": 0.122,
+   "cells_with_2plus_sites": 223,
+   "drowned_cells": 40,
+   "ice_cells": 0,
+   "expected_dates": 2188.0,
+   "site_phases": 1081,
+   "sites": 975,
+   "phases_with_culture_label": 368,
+   "phases_with_stage_only": 385,
+   "phases_unlabelled": 328
+  },
+  {
+   "slice": -4500,
+   "land_cells": 4510,
+   "cells_with_evidence": 622,
+   "share_with_evidence": 0.138,
+   "cells_with_2plus_sites": 248,
+   "drowned_cells": 33,
+   "ice_cells": 0,
+   "expected_dates": 2239.0,
+   "site_phases": 1188,
+   "sites": 1090,
+   "phases_with_culture_label": 394,
+   "phases_with_stage_only": 399,
+   "phases_unlabelled": 395
+  },
+  {
+   "slice": -4250,
+   "land_cells": 4494,
+   "cells_with_evidence": 635,
+   "share_with_evidence": 0.141,
+   "cells_with_2plus_sites": 249,
+   "drowned_cells": 21,
+   "ice_cells": 0,
+   "expected_dates": 2107.0,
+   "site_phases": 1220,
+   "sites": 1122,
+   "phases_with_culture_label": 375,
+   "phases_with_stage_only": 434,
+   "phases_unlabelled": 411
+  },
+  {
+   "slice": -4000,
+   "land_cells": 4494,
+   "cells_with_evidence": 600,
+   "share_with_evidence": 0.134,
+   "cells_with_2plus_sites": 251,
+   "drowned_cells": 21,
+   "ice_cells": 0,
+   "expected_dates": 2134.0,
+   "site_phases": 1281,
+   "sites": 1197,
+   "phases_with_culture_label": 409,
+   "phases_with_stage_only": 426,
+   "phases_unlabelled": 446
+  },
+  {
+   "slice": -3750,
+   "land_cells": 4494,
+   "cells_with_evidence": 697,
+   "share_with_evidence": 0.155,
+   "cells_with_2plus_sites": 316,
+   "drowned_cells": 21,
+   "ice_cells": 0,
+   "expected_dates": 3157.0,
+   "site_phases": 1735,
+   "sites": 1582,
+   "phases_with_culture_label": 463,
+   "phases_with_stage_only": 626,
+   "phases_unlabelled": 646
+  },
+  {
+   "slice": -3500,
+   "land_cells": 4452,
+   "cells_with_evidence": 681,
+   "share_with_evidence": 0.153,
+   "cells_with_2plus_sites": 315,
+   "drowned_cells": 0,
+   "ice_cells": 0,
+   "expected_dates": 3338.0,
+   "site_phases": 1744,
+   "sites": 1614,
+   "phases_with_culture_label": 456,
+   "phases_with_stage_only": 581,
+   "phases_unlabelled": 707
+  },
+  {
+   "slice": -3250,
+   "land_cells": 4452,
+   "cells_with_evidence": 609,
+   "share_with_evidence": 0.137,
+   "cells_with_2plus_sites": 281,
+   "drowned_cells": 0,
+   "ice_cells": 0,
+   "expected_dates": 2399.0,
+   "site_phases": 1376,
+   "sites": 1302,
+   "phases_with_culture_label": 405,
+   "phases_with_stage_only": 413,
+   "phases_unlabelled": 558
+  },
+  {
+   "slice": -3000,
+   "land_cells": 4452,
+   "cells_with_evidence": 677,
+   "share_with_evidence": 0.152,
+   "cells_with_2plus_sites": 285,
+   "drowned_cells": 0,
+   "ice_cells": 0,
+   "expected_dates": 2833.0,
+   "site_phases": 1460,
+   "sites": 1384,
+   "phases_with_culture_label": 430,
+   "phases_with_stage_only": 404,
+   "phases_unlabelled": 626
+  }
+ ],
+ "by_area": [
+  {
+   "level": "region",
+   "name": "Britain & Ireland",
+   "code": "",
+   "land_cells": 182,
+   "sites": 1767,
+   "expected_dates": 6993.0,
+   "dates_per_1000km2": 17.75,
+   "share_cell_slices_with_evidence": 0.266,
+   "share_cells_ever_with_evidence": 0.973,
+   "share_evidence_early": 0.132,
+   "share_evidence_late": 0.432
+  },
+  {
+   "level": "region",
+   "name": "France & Benelux",
+   "code": "",
+   "land_cells": 294,
+   "sites": 1669,
+   "expected_dates": 5953.0,
+   "dates_per_1000km2": 9.35,
+   "share_cell_slices_with_evidence": 0.205,
+   "share_cells_ever_with_evidence": 0.806,
+   "share_evidence_early": 0.114,
+   "share_evidence_late": 0.316
+  },
+  {
+   "level": "region",
+   "name": "Italy & Malta",
+   "code": "",
+   "land_cells": 164,
+   "sites": 637,
+   "expected_dates": 2748.0,
+   "dates_per_1000km2": 7.74,
+   "share_cell_slices_with_evidence": 0.166,
+   "share_cells_ever_with_evidence": 0.75,
+   "share_evidence_early": 0.073,
+   "share_evidence_late": 0.281
+  },
+  {
+   "level": "region",
+   "name": "Central Europe",
+   "code": "",
+   "land_cells": 474,
+   "sites": 1053,
+   "expected_dates": 5690.0,
+   "dates_per_1000km2": 5.54,
+   "share_cell_slices_with_evidence": 0.093,
+   "share_cells_ever_with_evidence": 0.54,
+   "share_evidence_early": 0.03,
+   "share_evidence_late": 0.169
+  },
+  {
+   "level": "region",
+   "name": "Iberia",
+   "code": "",
+   "land_cells": 294,
+   "sites": 964,
+   "expected_dates": 3380.0,
+   "dates_per_1000km2": 5.31,
+   "share_cell_slices_with_evidence": 0.131,
+   "share_cells_ever_with_evidence": 0.653,
+   "share_evidence_early": 0.051,
+   "share_evidence_late": 0.229
+  },
+  {
+   "level": "region",
+   "name": "Balkans & Greece",
+   "code": "",
+   "land_cells": 403,
+   "sites": 616,
+   "expected_dates": 3871.0,
+   "dates_per_1000km2": 4.44,
+   "share_cell_slices_with_evidence": 0.095,
+   "share_cells_ever_with_evidence": 0.531,
+   "share_evidence_early": 0.036,
+   "share_evidence_late": 0.167
+  },
+  {
+   "level": "region",
+   "name": "Other",
+   "code": "",
+   "land_cells": 3,
+   "sites": 7,
+   "expected_dates": 24.0,
+   "dates_per_1000km2": 3.7,
+   "share_cell_slices_with_evidence": 0.0,
+   "share_cells_ever_with_evidence": 0.0,
+   "share_evidence_early": 0.0,
+   "share_evidence_late": 0.0
+  },
+  {
+   "level": "region",
+   "name": "Anatolia, Caucasus, Levant",
+   "code": "",
+   "land_cells": 508,
+   "sites": 269,
+   "expected_dates": 3400.0,
+   "dates_per_1000km2": 3.09,
+   "share_cell_slices_with_evidence": 0.046,
+   "share_cells_ever_with_evidence": 0.22,
+   "share_evidence_early": 0.037,
+   "share_evidence_late": 0.057
+  },
+  {
+   "level": "region",
+   "name": "Nordic",
+   "code": "",
+   "land_cells": 597,
+   "sites": 1018,
+   "expected_dates": 3397.0,
+   "dates_per_1000km2": 2.63,
+   "share_cell_slices_with_evidence": 0.059,
+   "share_cells_ever_with_evidence": 0.315,
+   "share_evidence_early": 0.021,
+   "share_evidence_late": 0.105
+  },
+  {
+   "level": "region",
+   "name": "North Africa",
+   "code": "",
+   "land_cells": 116,
+   "sites": 81,
+   "expected_dates": 344.0,
+   "dates_per_1000km2": 1.37,
+   "share_cell_slices_with_evidence": 0.041,
+   "share_cells_ever_with_evidence": 0.198,
+   "share_evidence_early": 0.032,
+   "share_evidence_late": 0.052
+  },
+  {
+   "level": "region",
+   "name": "Baltic states",
+   "code": "",
+   "land_cells": 90,
+   "sites": 12,
+   "expected_dates": 36.0,
+   "dates_per_1000km2": 0.18,
+   "share_cell_slices_with_evidence": 0.008,
+   "share_cells_ever_with_evidence": 0.067,
+   "share_evidence_early": 0.003,
+   "share_evidence_late": 0.015
+  },
+  {
+   "level": "region",
+   "name": "Ukraine, Belarus, Russia",
+   "code": "",
+   "land_cells": 1322,
+   "sites": 106,
+   "expected_dates": 314.0,
+   "dates_per_1000km2": 0.11,
+   "share_cell_slices_with_evidence": 0.005,
+   "share_cells_ever_with_evidence": 0.056,
+   "share_evidence_early": 0.002,
+   "share_evidence_late": 0.008
+  },
+  {
+   "level": "country",
+   "name": "Netherlands",
+   "code": "NLD",
+   "land_cells": 15,
+   "sites": 262,
+   "expected_dates": 993.0,
+   "dates_per_1000km2": 30.57,
+   "share_cell_slices_with_evidence": 0.49,
+   "share_cells_ever_with_evidence": 1.0,
+   "share_evidence_early": 0.396,
+   "share_evidence_late": 0.605
+  },
+  {
+   "level": "country",
+   "name": "Ireland",
+   "code": "IRL",
+   "land_cells": 36,
+   "sites": 361,
+   "expected_dates": 1425.0,
+   "dates_per_1000km2": 18.28,
+   "share_cell_slices_with_evidence": 0.225,
+   "share_cells_ever_with_evidence": 1.0,
+   "share_evidence_early": 0.073,
+   "share_evidence_late": 0.412
+  },
+  {
+   "level": "country",
+   "name": "United Kingdom",
+   "code": "GBR",
+   "land_cells": 145,
+   "sites": 1394,
+   "expected_dates": 5528.0,
+   "dates_per_1000km2": 17.61,
+   "share_cell_slices_with_evidence": 0.276,
+   "share_cells_ever_with_evidence": 0.966,
+   "share_evidence_early": 0.146,
+   "share_evidence_late": 0.436
+  },
+  {
+   "level": "country",
+   "name": "Belgium",
+   "code": "BEL",
+   "land_cells": 13,
+   "sites": 155,
+   "expected_dates": 486.0,
+   "dates_per_1000km2": 17.26,
+   "share_cell_slices_with_evidence": 0.334,
+   "share_cells_ever_with_evidence": 0.923,
+   "share_evidence_early": 0.245,
+   "share_evidence_late": 0.444
+  },
+  {
+   "level": "country",
+   "name": "Denmark",
+   "code": "DNK",
+   "land_cells": 30,
+   "sites": 302,
+   "expected_dates": 1118.0,
+   "dates_per_1000km2": 17.21,
+   "share_cell_slices_with_evidence": 0.269,
+   "share_cells_ever_with_evidence": 0.967,
+   "share_evidence_early": 0.083,
+   "share_evidence_late": 0.497
+  },
+  {
+   "level": "country",
+   "name": "Switzerland",
+   "code": "CHE",
+   "land_cells": 17,
+   "sites": 120,
+   "expected_dates": 594.0,
+   "dates_per_1000km2": 16.14,
+   "share_cell_slices_with_evidence": 0.225,
+   "share_cells_ever_with_evidence": 0.882,
+   "share_evidence_early": 0.066,
+   "share_evidence_late": 0.421
+  },
+  {
+   "level": "country",
+   "name": "Hungary",
+   "code": "HUN",
+   "land_cells": 40,
+   "sites": 126,
+   "expected_dates": 1139.0,
+   "dates_per_1000km2": 13.15,
+   "share_cell_slices_with_evidence": 0.112,
+   "share_cells_ever_with_evidence": 0.775,
+   "share_evidence_early": 0.009,
+   "share_evidence_late": 0.238
+  },
+  {
+   "level": "country",
+   "name": "Portugal",
+   "code": "PRT",
+   "land_cells": 45,
+   "sites": 305,
+   "expected_dates": 1038.0,
+   "dates_per_1000km2": 10.65,
+   "share_cell_slices_with_evidence": 0.217,
+   "share_cells_ever_with_evidence": 0.889,
+   "share_evidence_early": 0.087,
+   "share_evidence_late": 0.376
+  },
+  {
+   "level": "country",
+   "name": "Syria",
+   "code": "SYR",
+   "land_cells": 47,
+   "sites": 67,
+   "expected_dates": 1061.0,
+   "dates_per_1000km2": 10.42,
+   "share_cell_slices_with_evidence": 0.131,
+   "share_cells_ever_with_evidence": 0.532,
+   "share_evidence_early": 0.13,
+   "share_evidence_late": 0.131
+  },
+  {
+   "level": "country",
+   "name": "Greece",
+   "code": "GRC",
+   "land_cells": 84,
+   "sites": 207,
+   "expected_dates": 1502.0,
+   "dates_per_1000km2": 8.26,
+   "share_cell_slices_with_evidence": 0.162,
+   "share_cells_ever_with_evidence": 0.655,
+   "share_evidence_early": 0.082,
+   "share_evidence_late": 0.26
+  },
+  {
+   "level": "country",
+   "name": "Serbia",
+   "code": "SRB",
+   "land_cells": 35,
+   "sites": 76,
+   "expected_dates": 592.0,
+   "dates_per_1000km2": 7.81,
+   "share_cell_slices_with_evidence": 0.129,
+   "share_cells_ever_with_evidence": 0.6,
+   "share_evidence_early": 0.071,
+   "share_evidence_late": 0.2
+  },
+  {
+   "level": "country",
+   "name": "France",
+   "code": "FRA",
+   "land_cells": 265,
+   "sites": 1244,
+   "expected_dates": 4456.0,
+   "dates_per_1000km2": 7.77,
+   "share_cell_slices_with_evidence": 0.182,
+   "share_cells_ever_with_evidence": 0.789,
+   "share_evidence_early": 0.091,
+   "share_evidence_late": 0.294
+  },
+  {
+   "level": "country",
+   "name": "Italy",
+   "code": "ITA",
+   "land_cells": 164,
+   "sites": 630,
+   "expected_dates": 2728.0,
+   "dates_per_1000km2": 7.68,
+   "share_cell_slices_with_evidence": 0.166,
+   "share_cells_ever_with_evidence": 0.75,
+   "share_evidence_early": 0.073,
+   "share_evidence_late": 0.281
+  },
+  {
+   "level": "country",
+   "name": "Slovenia",
+   "code": "SVN",
+   "land_cells": 9,
+   "sites": 27,
+   "expected_dates": 140.0,
+   "dates_per_1000km2": 7.16,
+   "share_cell_slices_with_evidence": 0.165,
+   "share_cells_ever_with_evidence": 0.667,
+   "share_evidence_early": 0.083,
+   "share_evidence_late": 0.265
+  },
+  {
+   "level": "country",
+   "name": "Germany",
+   "code": "DEU",
+   "land_cells": 173,
+   "sites": 464,
+   "expected_dates": 2455.0,
+   "dates_per_1000km2": 6.56,
+   "share_cell_slices_with_evidence": 0.121,
+   "share_cells_ever_with_evidence": 0.653,
+   "share_evidence_early": 0.055,
+   "share_evidence_late": 0.202
+  },
+  {
+   "level": "country",
+   "name": "Bulgaria",
+   "code": "BGR",
+   "land_cells": 55,
+   "sites": 77,
+   "expected_dates": 692.0,
+   "dates_per_1000km2": 5.81,
+   "share_cell_slices_with_evidence": 0.105,
+   "share_cells_ever_with_evidence": 0.655,
+   "share_evidence_early": 0.008,
+   "share_evidence_late": 0.224
+  },
+  {
+   "level": "country",
+   "name": "Austria",
+   "code": "AUT",
+   "land_cells": 37,
+   "sites": 75,
+   "expected_dates": 431.0,
+   "dates_per_1000km2": 5.38,
+   "share_cell_slices_with_evidence": 0.059,
+   "share_cells_ever_with_evidence": 0.405,
+   "share_evidence_early": 0.003,
+   "share_evidence_late": 0.127
+  },
+  {
+   "level": "country",
+   "name": "Morocco",
+   "code": "MAR",
+   "land_cells": 11,
+   "sites": 33,
+   "expected_dates": 121.0,
+   "dates_per_1000km2": 5.09,
+   "share_cell_slices_with_evidence": 0.166,
+   "share_cells_ever_with_evidence": 0.545,
+   "share_evidence_early": 0.114,
+   "share_evidence_late": 0.231
+  },
+  {
+   "level": "country",
+   "name": "Armenia",
+   "code": "ARM",
+   "land_cells": 9,
+   "sites": 10,
+   "expected_dates": 96.0,
+   "dates_per_1000km2": 4.93,
+   "share_cell_slices_with_evidence": 0.073,
+   "share_cells_ever_with_evidence": 0.556,
+   "share_evidence_early": 0.028,
+   "share_evidence_late": 0.128
+  },
+  {
+   "level": "country",
+   "name": "Croatia",
+   "code": "HRV",
+   "land_cells": 32,
+   "sites": 81,
+   "expected_dates": 328.0,
+   "dates_per_1000km2": 4.73,
+   "share_cell_slices_with_evidence": 0.114,
+   "share_cells_ever_with_evidence": 0.625,
+   "share_evidence_early": 0.041,
+   "share_evidence_late": 0.204
+  },
+  {
+   "level": "country",
+   "name": "Spain",
+   "code": "ESP",
+   "land_cells": 248,
+   "sites": 652,
+   "expected_dates": 2260.0,
+   "dates_per_1000km2": 4.21,
+   "share_cell_slices_with_evidence": 0.113,
+   "share_cells_ever_with_evidence": 0.609,
+   "share_evidence_early": 0.043,
+   "share_evidence_late": 0.2
+  },
+  {
+   "level": "country",
+   "name": "Montenegro",
+   "code": "MNE",
+   "land_cells": 6,
+   "sites": 10,
+   "expected_dates": 50.0,
+   "dates_per_1000km2": 3.88,
+   "share_cell_slices_with_evidence": 0.126,
+   "share_cells_ever_with_evidence": 1.0,
+   "share_evidence_early": 0.146,
+   "share_evidence_late": 0.103
+  },
+  {
+   "level": "country",
+   "name": "Czechia",
+   "code": "CZE",
+   "land_cells": 37,
+   "sites": 61,
+   "expected_dates": 230.0,
+   "dates_per_1000km2": 2.87,
+   "share_cell_slices_with_evidence": 0.075,
+   "share_cells_ever_with_evidence": 0.486,
+   "share_evidence_early": 0.027,
+   "share_evidence_late": 0.133
+  },
+  {
+   "level": "country",
+   "name": "Slovakia",
+   "code": "SVK",
+   "land_cells": 23,
+   "sites": 16,
+   "expected_dates": 128.0,
+   "dates_per_1000km2": 2.56,
+   "share_cell_slices_with_evidence": 0.049,
+   "share_cells_ever_with_evidence": 0.435,
+   "share_evidence_early": 0.0,
+   "share_evidence_late": 0.11
+  },
+  {
+   "level": "country",
+   "name": "Norway",
+   "code": "NOR",
+   "land_cells": 178,
+   "sites": 337,
+   "expected_dates": 982.0,
+   "dates_per_1000km2": 2.55,
+   "share_cell_slices_with_evidence": 0.06,
+   "share_cells_ever_with_evidence": 0.303,
+   "share_evidence_early": 0.027,
+   "share_evidence_late": 0.102
+  },
+  {
+   "level": "country",
+   "name": "Turkey",
+   "code": "TUR",
+   "land_cells": 381,
+   "sites": 139,
+   "expected_dates": 1950.0,
+   "dates_per_1000km2": 2.36,
+   "share_cell_slices_with_evidence": 0.035,
+   "share_cells_ever_with_evidence": 0.168,
+   "share_evidence_early": 0.026,
+   "share_evidence_late": 0.045
+  },
+  {
+   "level": "country",
+   "name": "Poland",
+   "code": "POL",
+   "land_cells": 146,
+   "sites": 191,
+   "expected_dates": 714.0,
+   "dates_per_1000km2": 2.26,
+   "share_cell_slices_with_evidence": 0.059,
+   "share_cells_ever_with_evidence": 0.363,
+   "share_evidence_early": 0.016,
+   "share_evidence_late": 0.112
+  },
+  {
+   "level": "country",
+   "name": "North Macedonia",
+   "code": "MKD",
+   "land_cells": 10,
+   "sites": 9,
+   "expected_dates": 48.0,
+   "dates_per_1000km2": 2.22,
+   "share_cell_slices_with_evidence": 0.034,
+   "share_cells_ever_with_evidence": 0.3,
+   "share_evidence_early": 0.019,
+   "share_evidence_late": 0.054
+  },
+  {
+   "level": "country",
+   "name": "Sweden",
+   "code": "SWE",
+   "land_cells": 224,
+   "sites": 300,
+   "expected_dates": 1047.0,
+   "dates_per_1000km2": 2.16,
+   "share_cell_slices_with_evidence": 0.046,
+   "share_cells_ever_with_evidence": 0.259,
+   "share_evidence_early": 0.017,
+   "share_evidence_late": 0.082
+  },
+  {
+   "level": "country",
+   "name": "Georgia",
+   "code": "GEO",
+   "land_cells": 24,
+   "sites": 23,
+   "expected_dates": 110.0,
+   "dates_per_1000km2": 2.13,
+   "share_cell_slices_with_evidence": 0.052,
+   "share_cells_ever_with_evidence": 0.333,
+   "share_evidence_early": 0.018,
+   "share_evidence_late": 0.093
+  },
+  {
+   "level": "country",
+   "name": "Bosnia and Herz.",
+   "code": "BIH",
+   "land_cells": 24,
+   "sites": 28,
+   "expected_dates": 106.0,
+   "dates_per_1000km2": 2.04,
+   "share_cell_slices_with_evidence": 0.085,
+   "share_cells_ever_with_evidence": 0.542,
+   "share_evidence_early": 0.013,
+   "share_evidence_late": 0.173
+  },
+  {
+   "level": "country",
+   "name": "Iraq",
+   "code": "IRQ",
+   "land_cells": 36,
+   "sites": 20,
+   "expected_dates": 141.0,
+   "dates_per_1000km2": 1.81,
+   "share_cell_slices_with_evidence": 0.051,
+   "share_cells_ever_with_evidence": 0.222,
+   "share_evidence_early": 0.052,
+   "share_evidence_late": 0.049
+  },
+  {
+   "level": "country",
+   "name": "Romania",
+   "code": "ROU",
+   "land_cells": 110,
+   "sites": 80,
+   "expected_dates": 373.0,
+   "dates_per_1000km2": 1.57,
+   "share_cell_slices_with_evidence": 0.047,
+   "share_cells_ever_with_evidence": 0.391,
+   "share_evidence_early": 0.011,
+   "share_evidence_late": 0.091
+  },
+  {
+   "level": "country",
+   "name": "Tunisia",
+   "code": "TUN",
+   "land_cells": 26,
+   "sites": 13,
+   "expected_dates": 79.0,
+   "dates_per_1000km2": 1.4,
+   "share_cell_slices_with_evidence": 0.028,
+   "share_cells_ever_with_evidence": 0.231,
+   "share_evidence_early": 0.019,
+   "share_evidence_late": 0.038
+  },
+  {
+   "level": "country",
+   "name": "Algeria",
+   "code": "DZA",
+   "land_cells": 79,
+   "sites": 35,
+   "expected_dates": 144.0,
+   "dates_per_1000km2": 0.84,
+   "share_cell_slices_with_evidence": 0.027,
+   "share_cells_ever_with_evidence": 0.139,
+   "share_evidence_early": 0.025,
+   "share_evidence_late": 0.031
+  },
+  {
+   "level": "country",
+   "name": "Moldova",
+   "code": "MDA",
+   "land_cells": 16,
+   "sites": 15,
+   "expected_dates": 26.0,
+   "dates_per_1000km2": 0.76,
+   "share_cell_slices_with_evidence": 0.028,
+   "share_cells_ever_with_evidence": 0.375,
+   "share_evidence_early": 0.0,
+   "share_evidence_late": 0.062
+  },
+  {
+   "level": "country",
+   "name": "Finland",
+   "code": "FIN",
+   "land_cells": 165,
+   "sites": 79,
+   "expected_dates": 250.0,
+   "dates_per_1000km2": 0.7,
+   "share_cell_slices_with_evidence": 0.035,
+   "share_cells_ever_with_evidence": 0.285,
+   "share_evidence_early": 0.009,
+   "share_evidence_late": 0.067
+  },
+  {
+   "level": "country",
+   "name": "Latvia",
+   "code": "LVA",
+   "land_cells": 30,
+   "sites": 5,
+   "expected_dates": 27.0,
+   "dates_per_1000km2": 0.41,
+   "share_cell_slices_with_evidence": 0.005,
+   "share_cells_ever_with_evidence": 0.033,
+   "share_evidence_early": 0.004,
+   "share_evidence_late": 0.005
+  },
+  {
+   "level": "country",
+   "name": "Ukraine",
+   "code": "UKR",
+   "land_cells": 267,
+   "sites": 70,
+   "expected_dates": 209.0,
+   "dates_per_1000km2": 0.36,
+   "share_cell_slices_with_evidence": 0.015,
+   "share_cells_ever_with_evidence": 0.184,
+   "share_evidence_early": 0.006,
+   "share_evidence_late": 0.027
+  },
+  {
+   "level": "country",
+   "name": "Kosovo",
+   "code": "KOS",
+   "land_cells": 5,
+   "sites": 4,
+   "expected_dates": 3.0,
+   "dates_per_1000km2": 0.32,
+   "share_cell_slices_with_evidence": 0.021,
+   "share_cells_ever_with_evidence": 0.6,
+   "share_evidence_early": 0.0,
+   "share_evidence_late": 0.046
+  },
+  {
+   "level": "country",
+   "name": "Albania",
+   "code": "ALB",
+   "land_cells": 17,
+   "sites": 2,
+   "expected_dates": 11.0,
+   "dates_per_1000km2": 0.3,
+   "share_cell_slices_with_evidence": 0.022,
+   "share_cells_ever_with_evidence": 0.118,
+   "share_evidence_early": 0.015,
+   "share_evidence_late": 0.032
+  },
+  {
+   "level": "country",
+   "name": "Lithuania",
+   "code": "LTU",
+   "land_cells": 32,
+   "sites": 6,
+   "expected_dates": 8.0,
+   "dates_per_1000km2": 0.11,
+   "share_cell_slices_with_evidence": 0.018,
+   "share_cells_ever_with_evidence": 0.156,
+   "share_evidence_early": 0.004,
+   "share_evidence_late": 0.036
+  },
+  {
+   "level": "country",
+   "name": "Belarus",
+   "code": "BLR",
+   "land_cells": 96,
+   "sites": 1,
+   "expected_dates": 12.0,
+   "dates_per_1000km2": 0.06,
+   "share_cell_slices_with_evidence": 0.003,
+   "share_cells_ever_with_evidence": 0.021,
+   "share_evidence_early": 0.001,
+   "share_evidence_late": 0.006
+  },
+  {
+   "level": "country",
+   "name": "Russia",
+   "code": "RUS",
+   "land_cells": 959,
+   "sites": 35,
+   "expected_dates": 93.0,
+   "dates_per_1000km2": 0.04,
+   "share_cell_slices_with_evidence": 0.002,
+   "share_cells_ever_with_evidence": 0.024,
+   "share_evidence_early": 0.001,
+   "share_evidence_late": 0.003
+  },
+  {
+   "level": "country",
+   "name": "Estonia",
+   "code": "EST",
+   "land_cells": 28,
+   "sites": 1,
+   "expected_dates": 1.0,
+   "dates_per_1000km2": 0.02,
+   "share_cell_slices_with_evidence": 0.0,
+   "share_cells_ever_with_evidence": 0.0,
+   "share_evidence_early": 0.0,
+   "share_evidence_late": 0.0
+  },
+  {
+   "level": "country",
+   "name": "Iran",
+   "code": "IRN",
+   "land_cells": 8,
+   "sites": 0,
+   "expected_dates": 0.0,
+   "dates_per_1000km2": 0.0,
+   "share_cell_slices_with_evidence": 0.0,
+   "share_cells_ever_with_evidence": 0.0,
+   "share_evidence_early": 0.0,
+   "share_evidence_late": 0.0
+  }
+ ],
+ "by_compilation": [
+  {
+   "name": "p3k14c",
+   "expected_dates": 22391,
+   "regions": {
+    "Britain & Ireland": 5723,
+    "Central Europe": 4216,
+    "France & Benelux": 3799,
+    "Nordic": 2373,
+    "Balkans & Greece": 2138,
+    "Anatolia, Caucasus, Levant": 1957,
+    "Iberia": 1076,
+    "Italy & Malta": 572,
+    "Ukraine, Belarus, Russia": 246,
+    "North Africa": 201,
+    "Baltic states": 35,
+    "Offshore": 31,
+    "Other": 23
+   },
+   "by_millennium": {
+    "-10000": 605,
+    "-9000": 821,
+    "-8000": 1137,
+    "-7000": 1851,
+    "-6000": 3423,
+    "-5000": 5143,
+    "-4000": 7579,
+    "-3000": 1832
+   }
+  },
+  {
+   "name": "CalPal",
+   "expected_dates": 21260,
+   "regions": {
+    "Central Europe": 4146,
+    "Britain & Ireland": 3783,
+    "France & Benelux": 3648,
+    "Anatolia, Caucasus, Levant": 2299,
+    "Iberia": 2244,
+    "Nordic": 2022,
+    "Balkans & Greece": 1925,
+    "Italy & Malta": 734,
+    "Ukraine, Belarus, Russia": 237,
+    "North Africa": 150,
+    "Offshore": 32,
+    "Baltic states": 26,
+    "Other": 14
+   },
+   "by_millennium": {
+    "-10000": 355,
+    "-9000": 757,
+    "-8000": 1049,
+    "-7000": 1864,
+    "-6000": 3779,
+    "-5000": 4918,
+    "-4000": 6917,
+    "-3000": 1621
+   }
+  },
+  {
+   "name": "RADON",
+   "expected_dates": 12435,
+   "regions": {
+    "Britain & Ireland": 3288,
+    "France & Benelux": 3257,
+    "Central Europe": 3135,
+    "Nordic": 1499,
+    "Iberia": 495,
+    "Balkans & Greece": 440,
+    "Italy & Malta": 186,
+    "Ukraine, Belarus, Russia": 67,
+    "Anatolia, Caucasus, Levant": 52,
+    "Baltic states": 8,
+    "Other": 5,
+    "Offshore": 4
+   },
+   "by_millennium": {
+    "-10000": 129,
+    "-9000": 348,
+    "-8000": 550,
+    "-7000": 686,
+    "-6000": 1434,
+    "-5000": 2837,
+    "-4000": 5283,
+    "-3000": 1168
+   }
+  },
+  {
+   "name": "EUROEVOL",
+   "expected_dates": 9185,
+   "regions": {
+    "France & Benelux": 3074,
+    "Central Europe": 2741,
+    "Britain & Ireland": 2408,
+    "Nordic": 891,
+    "Italy & Malta": 26,
+    "North Africa": 19,
+    "Iberia": 14,
+    "Other": 5,
+    "Offshore": 4,
+    "Ukraine, Belarus, Russia": 2
+   },
+   "by_millennium": {
+    "-10000": 66,
+    "-9000": 224,
+    "-8000": 412,
+    "-7000": 487,
+    "-6000": 930,
+    "-5000": 2204,
+    "-4000": 4010,
+    "-3000": 850
+   }
+  },
+  {
+   "name": "BDA",
+   "expected_dates": 2614,
+   "regions": {
+    "France & Benelux": 1361,
+    "Iberia": 498,
+    "Italy & Malta": 368,
+    "Anatolia, Caucasus, Levant": 225,
+    "Balkans & Greece": 73,
+    "North Africa": 71,
+    "Central Europe": 11,
+    "Offshore": 4,
+    "Britain & Ireland": 2,
+    "Ukraine, Belarus, Russia": 2
+   },
+   "by_millennium": {
+    "-10000": 105,
+    "-9000": 207,
+    "-8000": 323,
+    "-7000": 318,
+    "-6000": 639,
+    "-5000": 587,
+    "-4000": 382,
+    "-3000": 53
+   }
+  },
+  {
+   "name": "NERD",
+   "expected_dates": 2486,
+   "regions": {
+    "Anatolia, Caucasus, Levant": 2287,
+    "Italy & Malta": 187,
+    "Ukraine, Belarus, Russia": 12
+   },
+   "by_millennium": {
+    "-10000": 216,
+    "-9000": 217,
+    "-8000": 208,
+    "-7000": 618,
+    "-6000": 479,
+    "-5000": 250,
+    "-4000": 318,
+    "-3000": 180
+   }
+  },
+  {
+   "name": "Bevan 2017 (Britain/Ireland)",
+   "expected_dates": 2149,
+   "regions": {
+    "Britain & Ireland": 2148,
+    "Ukraine, Belarus, Russia": 1
+   },
+   "by_millennium": {
+    "-10000": 0,
+    "-9000": 56,
+    "-8000": 93,
+    "-7000": 62,
+    "-6000": 72,
+    "-5000": 140,
+    "-4000": 1318,
+    "-3000": 405
+   }
+  },
+  {
+   "name": "AIDA",
+   "expected_dates": 2020,
+   "regions": {
+    "Italy & Malta": 1982,
+    "Central Europe": 30,
+    "Balkans & Greece": 8
+   },
+   "by_millennium": {
+    "-10000": 56,
+    "-9000": 72,
+    "-8000": 114,
+    "-7000": 94,
+    "-6000": 496,
+    "-5000": 560,
+    "-4000": 485,
+    "-3000": 143
+   }
+  },
+  {
+   "name": "IRDD",
+   "expected_dates": 1636,
+   "regions": {
+    "Britain & Ireland": 1636
+   },
+   "by_millennium": {
+    "-10000": 7,
+    "-9000": 17,
+    "-8000": 72,
+    "-7000": 59,
+    "-6000": 92,
+    "-5000": 180,
+    "-4000": 1053,
+    "-3000": 156
+   }
+  },
+  {
+   "name": "Balsera (Iberia)",
+   "expected_dates": 1625,
+   "regions": {
+    "Iberia": 1618,
+    "Balkans & Greece": 3,
+    "France & Benelux": 2,
+    "Offshore": 1
+   },
+   "by_millennium": {
+    "-10000": 0,
+    "-9000": 1,
+    "-8000": 1,
+    "-7000": 101,
+    "-6000": 317,
+    "-5000": 365,
+    "-4000": 604,
+    "-3000": 236
+   }
+  },
+  {
+   "name": "PACEA/Vermeersch",
+   "expected_dates": 1577,
+   "regions": {
+    "France & Benelux": 583,
+    "Central Europe": 261,
+    "Britain & Ireland": 213,
+    "Balkans & Greece": 206,
+    "Italy & Malta": 76,
+    "Nordic": 76,
+    "Iberia": 75,
+    "Anatolia, Caucasus, Levant": 52,
+    "Baltic states": 18,
+    "Ukraine, Belarus, Russia": 15,
+    "Offshore": 2,
+    "North Africa": 1
+   },
+   "by_millennium": {
+    "-10000": 236,
+    "-9000": 269,
+    "-8000": 266,
+    "-7000": 239,
+    "-6000": 225,
+    "-5000": 178,
+    "-4000": 133,
+    "-3000": 30
+   }
+  },
+  {
+   "name": "Larsson 2019",
+   "expected_dates": 1050,
+   "regions": {
+    "Britain & Ireland": 408,
+    "France & Benelux": 215,
+    "Iberia": 164,
+    "Nordic": 125,
+    "Central Europe": 87,
+    "Italy & Malta": 37,
+    "Other": 12,
+    "North Africa": 2,
+    "Offshore": 1
+   },
+   "by_millennium": {
+    "-10000": 2,
+    "-9000": 0,
+    "-8000": 3,
+    "-7000": 10,
+    "-6000": 35,
+    "-5000": 141,
+    "-4000": 675,
+    "-3000": 183
+   }
+  },
+  {
+   "name": "Katsianis (Aegean)",
+   "expected_dates": 1012,
+   "regions": {
+    "Balkans & Greece": 1012
+   },
+   "by_millennium": {
+    "-10000": 17,
+    "-9000": 57,
+    "-8000": 46,
+    "-7000": 140,
+    "-6000": 315,
+    "-5000": 268,
+    "-4000": 133,
+    "-3000": 36
+   }
+  },
+  {
+   "name": "CONTEXT",
+   "expected_dates": 918,
+   "regions": {
+    "Anatolia, Caucasus, Levant": 918
+   },
+   "by_millennium": {
+    "-10000": 65,
+    "-9000": 116,
+    "-8000": 136,
+    "-7000": 235,
+    "-6000": 191,
+    "-5000": 56,
+    "-4000": 88,
+    "-3000": 32
+   }
+  },
+  {
+   "name": "NeoNet",
+   "expected_dates": 914,
+   "regions": {
+    "Iberia": 443,
+    "France & Benelux": 234,
+    "Italy & Malta": 200,
+    "Balkans & Greece": 19,
+    "Central Europe": 18
+   },
+   "by_millennium": {
+    "-10000": 0,
+    "-9000": 1,
+    "-8000": 19,
+    "-7000": 133,
+    "-6000": 372,
+    "-5000": 343,
+    "-4000": 47,
+    "-3000": 0
+   }
+  },
+  {
+   "name": "RADON-B",
+   "expected_dates": 559,
+   "regions": {
+    "Central Europe": 215,
+    "Britain & Ireland": 87,
+    "Nordic": 71,
+    "Iberia": 50,
+    "Anatolia, Caucasus, Levant": 46,
+    "France & Benelux": 39,
+    "Italy & Malta": 27,
+    "Balkans & Greece": 19,
+    "Ukraine, Belarus, Russia": 3,
+    "Baltic states": 2
+   },
+   "by_millennium": {
+    "-10000": 1,
+    "-9000": 2,
+    "-8000": 3,
+    "-7000": 0,
+    "-6000": 6,
+    "-5000": 20,
+    "-4000": 258,
+    "-3000": 270
+   }
+  },
+  {
+   "name": "Solheim (Norway)",
+   "expected_dates": 468,
+   "regions": {
+    "Nordic": 467,
+    "France & Benelux": 1
+   },
+   "by_millennium": {
+    "-10000": 0,
+    "-9000": 0,
+    "-8000": 56,
+    "-7000": 46,
+    "-6000": 102,
+    "-5000": 86,
+    "-4000": 139,
+    "-3000": 38
+   }
+  },
+  {
+   "name": "14SEA",
+   "expected_dates": 348,
+   "regions": {
+    "Anatolia, Caucasus, Levant": 208,
+    "Balkans & Greece": 140
+   },
+   "by_millennium": {
+    "-10000": 0,
+    "-9000": 14,
+    "-8000": 21,
+    "-7000": 189,
+    "-6000": 76,
+    "-5000": 37,
+    "-4000": 11,
+    "-3000": 1
+   }
+  },
+  {
+   "name": "Banadora",
+   "expected_dates": 302,
+   "regions": {
+    "France & Benelux": 184,
+    "Anatolia, Caucasus, Levant": 61,
+    "Italy & Malta": 33,
+    "Balkans & Greece": 19,
+    "Central Europe": 3,
+    "Nordic": 1
+   },
+   "by_millennium": {
+    "-10000": 27,
+    "-9000": 51,
+    "-8000": 35,
+    "-7000": 23,
+    "-6000": 63,
+    "-5000": 55,
+    "-4000": 42,
+    "-3000": 6
+   }
+  },
+  {
+   "name": "CBA index",
+   "expected_dates": 231,
+   "regions": {
+    "Britain & Ireland": 231
+   },
+   "by_millennium": {
+    "-10000": 10,
+    "-9000": 44,
+    "-8000": 41,
+    "-7000": 25,
+    "-6000": 39,
+    "-5000": 54,
+    "-4000": 16,
+    "-3000": 1
+   }
+  },
+  {
+   "name": "MedAfriCarbon",
+   "expected_dates": 224,
+   "regions": {
+    "North Africa": 224
+   },
+   "by_millennium": {
+    "-10000": 7,
+    "-9000": 10,
+    "-8000": 16,
+    "-7000": 61,
+    "-6000": 58,
+    "-5000": 48,
+    "-4000": 19,
+    "-3000": 4
+   }
+  },
+  {
+   "name": "AgriChange",
+   "expected_dates": 172,
+   "regions": {
+    "Iberia": 118,
+    "Central Europe": 54
+   },
+   "by_millennium": {
+    "-10000": 1,
+    "-9000": 0,
+    "-8000": 0,
+    "-7000": 1,
+    "-6000": 61,
+    "-5000": 67,
+    "-4000": 34,
+    "-3000": 7
+   }
+  },
+  {
+   "name": "EUBAR",
+   "expected_dates": 31,
+   "regions": {
+    "Iberia": 7,
+    "France & Benelux": 7,
+    "Italy & Malta": 3,
+    "Central Europe": 3,
+    "Balkans & Greece": 3,
+    "Anatolia, Caucasus, Levant": 2,
+    "Britain & Ireland": 2,
+    "Nordic": 2,
+    "North Africa": 1
+   },
+   "by_millennium": {
+    "-10000": 6,
+    "-9000": 1,
+    "-8000": 1,
+    "-7000": 3,
+    "-6000": 3,
+    "-5000": 7,
+    "-4000": 10,
+    "-3000": 0
+   }
+  }
+ ],
+ "labels": {
+  "site_phases_mostly_in_window": 9410,
+  "by_kind": {
+   "stage": 3713,
+   "culture": 2770,
+   "none": 2762,
+   "unmapped": 165
+  },
+  "by_kind_and_region": {
+   "Anatolia, Caucasus, Levant": {
+    "culture": 77,
+    "none": 98,
+    "stage": 92,
+    "unmapped": 3
+   },
+   "Balkans & Greece": {
+    "culture": 163,
+    "none": 250,
+    "stage": 405,
+    "unmapped": 28
+   },
+   "Baltic states": {
+    "culture": 0,
+    "none": 7,
+    "stage": 3,
+    "unmapped": 0
+   },
+   "Britain & Ireland": {
+    "culture": 50,
+    "none": 603,
+    "stage": 827,
+    "unmapped": 22
+   },
+   "Central Europe": {
+    "culture": 896,
+    "none": 132,
+    "stage": 222,
+    "unmapped": 20
+   },
+   "France & Benelux": {
+    "culture": 780,
+    "none": 349,
+    "stage": 1011,
+    "unmapped": 26
+   },
+   "Iberia": {
+    "culture": 120,
+    "none": 452,
+    "stage": 637,
+    "unmapped": 33
+   },
+   "Italy & Malta": {
+    "culture": 136,
+    "none": 394,
+    "stage": 278,
+    "unmapped": 12
+   },
+   "Nordic": {
+    "culture": 446,
+    "none": 428,
+    "stage": 176,
+    "unmapped": 13
+   },
+   "North Africa": {
+    "culture": 63,
+    "none": 23,
+    "stage": 25,
+    "unmapped": 0
+   },
+   "Offshore": {
+    "culture": 0,
+    "none": 1,
+    "stage": 6,
+    "unmapped": 1
+   },
+   "Other": {
+    "culture": 1,
+    "none": 5,
+    "stage": 1,
+    "unmapped": 0
+   },
+   "Ukraine, Belarus, Russia": {
+    "culture": 38,
+    "none": 20,
+    "stage": 30,
+    "unmapped": 7
+   }
+  },
+  "top_cultures": [
+   [
+    "funnelbeaker",
+    550
+   ],
+   [
+    "lbk",
+    329
+   ],
+   [
+    "cardial",
+    239
+   ],
+   [
+    "chasseen",
+    207
+   ],
+   [
+    "sauveterrian",
+    189
+   ],
+   [
+    "ertebolle",
+    178
+   ],
+   [
+    "lengyel",
+    116
+   ],
+   [
+    "michelsberg",
+    99
+   ],
+   [
+    "impressed_ware",
+    97
+   ],
+   [
+    "starcevo_koros_cris",
+    82
+   ],
+   [
+    "magdalenian",
+    68
+   ],
+   [
+    "bell_beaker",
+    66
+   ],
+   [
+    "azilian",
+    63
+   ],
+   [
+    "corded_ware",
+    62
+   ],
+   [
+    "pitted_ware",
+    61
+   ],
+   [
+    "cucuteni_trypillia",
+    51
+   ],
+   [
+    "baden",
+    50
+   ],
+   [
+    "swifterbant",
+    44
+   ],
+   [
+    "globular_amphora",
+    43
+   ],
+   [
+    "cortaillod",
+    42
+   ],
+   [
+    "stroke_ornamented",
+    42
+   ],
+   [
+    "ppnb",
+    41
+   ],
+   [
+    "maglemosian",
+    32
+   ],
+   [
+    "rossen",
+    31
+   ],
+   [
+    "pfyn",
+    29
+   ],
+   [
+    "british_early_neolithic",
+    28
+   ],
+   [
+    "capsian",
+    28
+   ],
+   [
+    "montbolo",
+    28
+   ],
+   [
+    "horgen",
+    27
+   ],
+   [
+    "gumelnita",
+    26
+   ],
+   [
+    "veraza",
+    26
+   ],
+   [
+    "grossgartach",
+    25
+   ],
+   [
+    "wartberg",
+    22
+   ],
+   [
+    "vinca",
+    22
+   ],
+   [
+    "kongemose",
+    21
+   ],
+   [
+    "karanovo",
+    21
+   ],
+   [
+    "epigravettian",
+    21
+   ],
+   [
+    "federmesser",
+    20
+   ],
+   [
+    "ahrensburgian",
+    19
+   ],
+   [
+    "tardenoisian",
+    18
+   ]
+  ],
+  "cultures_with_pottery_trait": [
+   "cardial",
+   "corded_ware",
+   "cucuteni_trypillia",
+   "ertebolle",
+   "halaf",
+   "hassuna",
+   "impressed_ware",
+   "lbk",
+   "lengyel",
+   "naqada",
+   "pitted_ware",
+   "ppna",
+   "ppnb",
+   "ppnc",
+   "square_mouthed_pottery",
+   "ubaid",
+   "yarmukian"
+  ]
+ },
+ "dated_materials": [
+  [
+   "charcoal",
+   12744
+  ],
+  [
+   "bone",
+   6259
+  ],
+  [
+   "na",
+   5062
+  ],
+  [
+   "wood",
+   1563
+  ],
+  [
+   "collagen, bone",
+   803
+  ],
+  [
+   "charbon",
+   791
+  ],
+  [
+   "seed/fruit",
+   785
+  ],
+  [
+   "shell",
+   602
+  ],
+  [
+   "os (collagène)",
+   408
+  ],
+  [
+   "collagen bone",
+   393
+  ],
+  [
+   "animal bone",
+   368
+  ],
+  [
+   "human bone",
+   360
+  ],
+  [
+   "wood charcoal",
+   323
+  ],
+  [
+   "antler",
+   315
+  ],
+  [
+   "food residue",
+   287
+  ],
+  [
+   "peat",
+   245
+  ],
+  [
+   "nutshell",
+   222
+  ],
+  [
+   "grain",
+   208
+  ],
+  [
+   "seed",
+   206
+  ],
+  [
+   "tooth",
+   205
+  ],
+  [
+   "miscellaneous",
+   172
+  ],
+  [
+   "nutshell (charred)",
+   165
+  ],
+  [
+   "grain (charred)",
+   159
+  ],
+  [
+   "inconnu",
+   157
+  ],
+  [
+   "(not given)",
+   131
+  ],
+  [
+   "seeds",
+   127
+  ],
+  [
+   "plant macrofossils",
+   121
+  ],
+  [
+   "charred plant macrofossils",
+   107
+  ],
+  [
+   "food remains",
+   105
+  ],
+  [
+   "plant seed",
+   101
+  ],
+  [
+   "plant remains",
+   91
+  ],
+  [
+   "soil",
+   69
+  ],
+  [
+   "pottery",
+   63
+  ],
+  [
+   "organic temper",
+   61
+  ],
+  [
+   "graine",
+   58
+  ],
+  [
+   "carbonised residue",
+   55
+  ],
+  [
+   "organic",
+   50
+  ],
+  [
+   "bone (cremated)",
+   50
+  ],
+  [
+   "marine shell",
+   47
+  ],
+  [
+   "sediment",
+   47
+  ]
+ ],
+ "site_types": [
+  [
+   "(not given)",
+   16040
+  ],
+  [
+   "settlement",
+   7655
+  ],
+  [
+   "cave",
+   1950
+  ],
+  [
+   "enclosure",
+   1399
+  ],
+  [
+   "abri/grotte",
+   878
+  ],
+  [
+   "plein air",
+   679
+  ],
+  [
+   "single grave",
+   426
+  ],
+  [
+   "passage grave",
+   425
+  ],
+  [
+   "miscellaneous",
+   406
+  ],
+  [
+   "central anatolia",
+   350
+  ],
+  [
+   "rockshelter/cave",
+   307
+  ],
+  [
+   "shelter",
+   241
+  ],
+  [
+   "open-air",
+   183
+  ],
+  [
+   "cave/rockshelter",
+   157
+  ],
+  [
+   "shell midden",
+   146
+  ],
+  [
+   "rock shelter",
+   138
+  ],
+  [
+   "passage graves in long tumulus",
+   134
+  ],
+  [
+   "hoard",
+   117
+  ],
+  [
+   "dolmen",
+   116
+  ],
+  [
+   "long tumulus/earthern long barrow",
+   100
+  ],
+  [
+   "open air",
+   99
+  ],
+  [
+   "b",
+   94
+  ],
+  [
+   "mine",
+   91
+  ],
+  [
+   "house",
+   90
+  ],
+  [
+   "cemetery",
+   83
+  ],
+  [
+   "burial mound",
+   82
+  ],
+  [
+   "long tumulus",
+   81
+  ],
+  [
+   "abri",
+   76
+  ],
+  [
+   "marmara",
+   72
+  ],
+  [
+   "grave",
+   71
+  ]
+ ]
+}

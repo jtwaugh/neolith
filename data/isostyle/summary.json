@@ -1,0 +1,816 @@
+{
+ "slices": [
+  -10000,
+  -9000,
+  -8000,
+  -7000,
+  -6000,
+  -5000,
+  -4000,
+  -3000
+ ],
+ "half_width": 500.0,
+ "counts": {
+  "xronos_records": 238667,
+  "xronos_unusable": 20315,
+  "p3k14c_added": 69322,
+  "neonet_added": 532,
+  "neonetatl_added": 391,
+  "in_region": 219981,
+  "sites_in_region": 23418,
+  "dates_in_region_deduplicated": 116588,
+  "dates_calibrated_on_grid": 72913,
+  "episodes": 21085,
+  "episodes_in_window": 14944,
+  "sites_with_episode_in_window": 11653,
+  "external_records": 5676,
+  "external_matched_to_episode": 2230,
+  "external_by_source": {
+   "ADEMNES fauna (Riehl)": {
+    "records": 247,
+    "matched": 84
+   },
+   "Arranz-Otaegui & Roe 2023 (SW Asia flora)": {
+    "records": 238,
+    "matched": 100
+   },
+   "BDA (Perrin 2021)": {
+    "records": 1459,
+    "matched": 579
+   },
+   "DEFC (Asp\u00f6ck et al.)": {
+    "records": 1366,
+    "matched": 301
+   },
+   "DObsiSS v2.0 (Batist)": {
+    "records": 177,
+    "matched": 48
+   },
+   "Dolbunova et al. 2023 (dataset-wide span)": {
+    "records": 156,
+    "matched": 7
+   },
+   "Evershed et al. 2022": {
+    "records": 312,
+    "matched": 127
+   },
+   "Jordan et al. 2016 (earliest pottery)": {
+    "records": 58,
+    "matched": 1
+   },
+   "MedAfriCarbon (Lucarini et al. 2020)": {
+    "records": 556,
+    "matched": 500
+   },
+   "Open Context Anatolian zooarchaeology": {
+    "records": 19,
+    "matched": 1
+   },
+   "Phelps et al. 2019 (Africa)": {
+    "records": 268,
+    "matched": 28
+   },
+   "Rigaud et al. 2018": {
+    "records": 88,
+    "matched": 62
+   },
+   "Rotunno & Crema 2025": {
+    "records": 275,
+    "matched": 244
+   },
+   "Tsirintoulaki et al. 2023": {
+    "records": 40,
+    "matched": 8
+   },
+   "Windler 2019 (dated by culture)": {
+    "records": 417,
+    "matched": 140
+   }
+  },
+  "units_in_window": 18581,
+  "grave_units": 1570,
+  "pottery": {
+   "present_recorded": 2137,
+   "absent_recorded": 196,
+   "present_label": 5285,
+   "absent_label": 1901,
+   "unknown": 9062
+  },
+  "flaked_stone": {
+   "present_recorded": 1386,
+   "absent_recorded": 0,
+   "present_label": 0,
+   "absent_label": 0,
+   "unknown": 17195
+  },
+  "ground_stone": {
+   "present_recorded": 419,
+   "absent_recorded": 0,
+   "present_label": 6338,
+   "absent_label": 308,
+   "unknown": 11516
+  },
+  "bone_antler": {
+   "present_recorded": 231,
+   "absent_recorded": 0,
+   "present_label": 0,
+   "absent_label": 0,
+   "unknown": 18350
+  },
+  "ornaments": {
+   "present_recorded": 627,
+   "absent_recorded": 0,
+   "present_label": 0,
+   "absent_label": 0,
+   "unknown": 17954
+  },
+  "cereals": {
+   "present_recorded": 468,
+   "absent_recorded": 19,
+   "present_label": 0,
+   "absent_label": 0,
+   "unknown": 18094
+  },
+  "domestic_livestock": {
+   "present_recorded": 220,
+   "absent_recorded": 22,
+   "present_label": 0,
+   "absent_label": 0,
+   "unknown": 18339
+  }
+ },
+ "layers": {
+  "pottery": {
+   "cv": {
+    "50": {
+     "log_loss": 0.23122350875270403,
+     "share_with_neighbours": 0.987223272357984
+    },
+    "75": {
+     "log_loss": 0.22906236282140433,
+     "share_with_neighbours": 0.9937343685928972
+    },
+    "100": {
+     "log_loss": 0.2285663588005989,
+     "share_with_neighbours": 0.9961092810099988
+    },
+    "150": {
+     "log_loss": 0.22778831659536009,
+     "share_with_neighbours": 0.9977725866821562
+    },
+    "200": {
+     "log_loss": 0.22828112547836152,
+     "share_with_neighbours": 0.9989948317703937
+    },
+    "300": {
+     "log_loss": 0.2317116841716662,
+     "share_with_neighbours": 0.9996631493002052
+    }
+   },
+   "kind": "presence_absence",
+   "sigma_km": 150,
+   "sigma_from": "",
+   "has_absences": true,
+   "units_known": 9519,
+   "f0": [
+    0.044,
+    0.093,
+    0.132,
+    0.255,
+    0.642,
+    0.885,
+    0.94,
+    0.984
+   ],
+   "by_slice": [
+    {
+     "slice": -10000,
+     "occupations": 143.6,
+     "label_share": 0.936,
+     "land_cells": 17220,
+     "cells_unmasked": 1640,
+     "cells_firm": 1611
+    },
+    {
+     "slice": -9000,
+     "occupations": 245.1,
+     "label_share": 0.866,
+     "land_cells": 17314,
+     "cells_unmasked": 2450,
+     "cells_firm": 2338
+    },
+    {
+     "slice": -8000,
+     "occupations": 439.8,
+     "label_share": 0.833,
+     "land_cells": 17126,
+     "cells_unmasked": 3386,
+     "cells_firm": 3104
+    },
+    {
+     "slice": -7000,
+     "occupations": 579.9,
+     "label_share": 0.745,
+     "land_cells": 17421,
+     "cells_unmasked": 4027,
+     "cells_firm": 3030
+    },
+    {
+     "slice": -6000,
+     "occupations": 1235.9,
+     "label_share": 0.637,
+     "land_cells": 17194,
+     "cells_unmasked": 6590,
+     "cells_firm": 5746
+    },
+    {
+     "slice": -5000,
+     "occupations": 1913.6,
+     "label_share": 0.601,
+     "land_cells": 16972,
+     "cells_unmasked": 6686,
+     "cells_firm": 6273
+    },
+    {
+     "slice": -4000,
+     "occupations": 2087.0,
+     "label_share": 0.766,
+     "land_cells": 16958,
+     "cells_unmasked": 5442,
+     "cells_firm": 5382
+    },
+    {
+     "slice": -3000,
+     "occupations": 1852.8,
+     "label_share": 0.847,
+     "land_cells": 16878,
+     "cells_unmasked": 4658,
+     "cells_firm": 4657
+    }
+   ]
+  },
+  "ground_stone": {
+   "cv": {
+    "50": {
+     "log_loss": 0.08269867040342796,
+     "share_with_neighbours": 0.9843911823056097
+    },
+    "75": {
+     "log_loss": 0.0795534924632277,
+     "share_with_neighbours": 0.9929248461739493
+    },
+    "100": {
+     "log_loss": 0.07798890815365643,
+     "share_with_neighbours": 0.9955734520165496
+    },
+    "150": {
+     "log_loss": 0.0764896206217013,
+     "share_with_neighbours": 0.9971898516305743
+    },
+    "200": {
+     "log_loss": 0.07626018587262012,
+     "share_with_neighbours": 0.9976465234558499
+    },
+    "300": {
+     "log_loss": 0.07611761033111107,
+     "share_with_neighbours": 0.9982231249072951
+    }
+   },
+   "kind": "presence_absence",
+   "sigma_km": 300,
+   "sigma_from": "",
+   "has_absences": true,
+   "units_known": 7065,
+   "f0": [
+    0.292,
+    0.636,
+    0.799,
+    0.862,
+    0.945,
+    0.986,
+    0.995,
+    0.999
+   ],
+   "by_slice": [
+    {
+     "slice": -10000,
+     "occupations": 81.2,
+     "label_share": 0.972,
+     "land_cells": 17220,
+     "cells_unmasked": 2767,
+     "cells_firm": 2629
+    },
+    {
+     "slice": -9000,
+     "occupations": 120.1,
+     "label_share": 0.925,
+     "land_cells": 17314,
+     "cells_unmasked": 3820,
+     "cells_firm": 2446
+    },
+    {
+     "slice": -8000,
+     "occupations": 193.7,
+     "label_share": 0.938,
+     "land_cells": 17126,
+     "cells_unmasked": 4989,
+     "cells_firm": 4177
+    },
+    {
+     "slice": -7000,
+     "occupations": 253.4,
+     "label_share": 0.925,
+     "land_cells": 17421,
+     "cells_unmasked": 5430,
+     "cells_firm": 5039
+    },
+    {
+     "slice": -6000,
+     "occupations": 687.0,
+     "label_share": 0.838,
+     "land_cells": 17194,
+     "cells_unmasked": 7980,
+     "cells_firm": 7980
+    },
+    {
+     "slice": -5000,
+     "occupations": 1327.6,
+     "label_share": 0.881,
+     "land_cells": 16972,
+     "cells_unmasked": 7246,
+     "cells_firm": 7246
+    },
+    {
+     "slice": -4000,
+     "occupations": 1756.4,
+     "label_share": 0.957,
+     "land_cells": 16958,
+     "cells_unmasked": 7703,
+     "cells_firm": 7703
+    },
+    {
+     "slice": -3000,
+     "occupations": 1700.4,
+     "label_share": 0.986,
+     "land_cells": 16878,
+     "cells_unmasked": 6832,
+     "cells_firm": 6832
+    }
+   ]
+  },
+  "domestic_livestock": {
+   "cv": {
+    "50": {
+     "log_loss": 0.23018272745397023,
+     "share_with_neighbours": 0.7462556361801095
+    },
+    "75": {
+     "log_loss": 0.22909630740203965,
+     "share_with_neighbours": 0.8310012125902934
+    },
+    "100": {
+     "log_loss": 0.22840912414829273,
+     "share_with_neighbours": 0.873993761244697
+    },
+    "150": {
+     "log_loss": 0.22142354199527944,
+     "share_with_neighbours": 0.9548766887324749
+    },
+    "200": {
+     "log_loss": 0.21210462696346205,
+     "share_with_neighbours": 0.9722945578843931
+    },
+    "300": {
+     "log_loss": 0.20602123332253833,
+     "share_with_neighbours": 0.9793499501913797
+    }
+   },
+   "kind": "presence_absence",
+   "sigma_km": 300,
+   "sigma_from": "",
+   "has_absences": true,
+   "units_known": 242,
+   "f0": [
+    0.0,
+    0.605,
+    0.888,
+    0.719,
+    0.804,
+    0.919,
+    0.977,
+    0.981
+   ],
+   "by_slice": [
+    {
+     "slice": -10000,
+     "occupations": 1.5,
+     "label_share": 0.0,
+     "land_cells": 17220,
+     "cells_unmasked": 4,
+     "cells_firm": 4
+    },
+    {
+     "slice": -9000,
+     "occupations": 3.5,
+     "label_share": 0.0,
+     "land_cells": 17314,
+     "cells_unmasked": 61,
+     "cells_firm": 61
+    },
+    {
+     "slice": -8000,
+     "occupations": 17.7,
+     "label_share": 0.0,
+     "land_cells": 17126,
+     "cells_unmasked": 457,
+     "cells_firm": 457
+    },
+    {
+     "slice": -7000,
+     "occupations": 16.8,
+     "label_share": 0.0,
+     "land_cells": 17421,
+     "cells_unmasked": 998,
+     "cells_firm": 671
+    },
+    {
+     "slice": -6000,
+     "occupations": 23.0,
+     "label_share": 0.0,
+     "land_cells": 17194,
+     "cells_unmasked": 1152,
+     "cells_firm": 783
+    },
+    {
+     "slice": -5000,
+     "occupations": 45.9,
+     "label_share": 0.0,
+     "land_cells": 16972,
+     "cells_unmasked": 1956,
+     "cells_firm": 1654
+    },
+    {
+     "slice": -4000,
+     "occupations": 42.3,
+     "label_share": 0.0,
+     "land_cells": 16958,
+     "cells_unmasked": 1900,
+     "cells_firm": 1857
+    },
+    {
+     "slice": -3000,
+     "occupations": 50.5,
+     "label_share": 0.0,
+     "land_cells": 16878,
+     "cells_unmasked": 2242,
+     "cells_firm": 2242
+    }
+   ]
+  },
+  "flaked_stone": {
+   "kind": "presence_only",
+   "sigma_km": 150,
+   "sigma_from": "pottery",
+   "has_absences": false,
+   "units_known": 1386,
+   "f0": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "by_slice": [
+    {
+     "slice": -10000,
+     "occupations": 22.1,
+     "label_share": 0.0,
+     "land_cells": 17220,
+     "cells_unmasked": 273,
+     "cells_firm": 273
+    },
+    {
+     "slice": -9000,
+     "occupations": 49.0,
+     "label_share": 0.0,
+     "land_cells": 17314,
+     "cells_unmasked": 760,
+     "cells_firm": 760
+    },
+    {
+     "slice": -8000,
+     "occupations": 129.2,
+     "label_share": 0.0,
+     "land_cells": 17126,
+     "cells_unmasked": 1328,
+     "cells_firm": 1328
+    },
+    {
+     "slice": -7000,
+     "occupations": 151.0,
+     "label_share": 0.0,
+     "land_cells": 17421,
+     "cells_unmasked": 1601,
+     "cells_firm": 1601
+    },
+    {
+     "slice": -6000,
+     "occupations": 298.7,
+     "label_share": 0.0,
+     "land_cells": 17194,
+     "cells_unmasked": 1912,
+     "cells_firm": 1912
+    },
+    {
+     "slice": -5000,
+     "occupations": 345.4,
+     "label_share": 0.0,
+     "land_cells": 16972,
+     "cells_unmasked": 1935,
+     "cells_firm": 1935
+    },
+    {
+     "slice": -4000,
+     "occupations": 271.6,
+     "label_share": 0.0,
+     "land_cells": 16958,
+     "cells_unmasked": 1329,
+     "cells_firm": 1329
+    },
+    {
+     "slice": -3000,
+     "occupations": 77.4,
+     "label_share": 0.0,
+     "land_cells": 16878,
+     "cells_unmasked": 524,
+     "cells_firm": 524
+    }
+   ]
+  },
+  "bone_antler": {
+   "kind": "presence_only",
+   "sigma_km": 150,
+   "sigma_from": "pottery",
+   "has_absences": false,
+   "units_known": 231,
+   "f0": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "by_slice": [
+    {
+     "slice": -10000,
+     "occupations": 5.6,
+     "label_share": 0.0,
+     "land_cells": 17220,
+     "cells_unmasked": 26,
+     "cells_firm": 26
+    },
+    {
+     "slice": -9000,
+     "occupations": 25.5,
+     "label_share": 0.0,
+     "land_cells": 17314,
+     "cells_unmasked": 528,
+     "cells_firm": 528
+    },
+    {
+     "slice": -8000,
+     "occupations": 20.4,
+     "label_share": 0.0,
+     "land_cells": 17126,
+     "cells_unmasked": 302,
+     "cells_firm": 302
+    },
+    {
+     "slice": -7000,
+     "occupations": 25.6,
+     "label_share": 0.0,
+     "land_cells": 17421,
+     "cells_unmasked": 330,
+     "cells_firm": 330
+    },
+    {
+     "slice": -6000,
+     "occupations": 57.5,
+     "label_share": 0.0,
+     "land_cells": 17194,
+     "cells_unmasked": 740,
+     "cells_firm": 740
+    },
+    {
+     "slice": -5000,
+     "occupations": 48.1,
+     "label_share": 0.0,
+     "land_cells": 16972,
+     "cells_unmasked": 485,
+     "cells_firm": 485
+    },
+    {
+     "slice": -4000,
+     "occupations": 22.5,
+     "label_share": 0.0,
+     "land_cells": 16958,
+     "cells_unmasked": 183,
+     "cells_firm": 183
+    },
+    {
+     "slice": -3000,
+     "occupations": 13.5,
+     "label_share": 0.0,
+     "land_cells": 16878,
+     "cells_unmasked": 120,
+     "cells_firm": 120
+    }
+   ]
+  },
+  "ornaments": {
+   "kind": "presence_only",
+   "sigma_km": 150,
+   "sigma_from": "pottery",
+   "has_absences": false,
+   "units_known": 627,
+   "f0": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "by_slice": [
+    {
+     "slice": -10000,
+     "occupations": 1.7,
+     "label_share": 0.0,
+     "land_cells": 17220,
+     "cells_unmasked": 11,
+     "cells_firm": 11
+    },
+    {
+     "slice": -9000,
+     "occupations": 6.1,
+     "label_share": 0.0,
+     "land_cells": 17314,
+     "cells_unmasked": 122,
+     "cells_firm": 122
+    },
+    {
+     "slice": -8000,
+     "occupations": 6.9,
+     "label_share": 0.0,
+     "land_cells": 17126,
+     "cells_unmasked": 121,
+     "cells_firm": 121
+    },
+    {
+     "slice": -7000,
+     "occupations": 51.6,
+     "label_share": 0.0,
+     "land_cells": 17421,
+     "cells_unmasked": 989,
+     "cells_firm": 989
+    },
+    {
+     "slice": -6000,
+     "occupations": 144.7,
+     "label_share": 0.0,
+     "land_cells": 17194,
+     "cells_unmasked": 1373,
+     "cells_firm": 1373
+    },
+    {
+     "slice": -5000,
+     "occupations": 214.2,
+     "label_share": 0.0,
+     "land_cells": 16972,
+     "cells_unmasked": 1482,
+     "cells_firm": 1482
+    },
+    {
+     "slice": -4000,
+     "occupations": 130.1,
+     "label_share": 0.0,
+     "land_cells": 16958,
+     "cells_unmasked": 1302,
+     "cells_firm": 1302
+    },
+    {
+     "slice": -3000,
+     "occupations": 67.1,
+     "label_share": 0.0,
+     "land_cells": 16878,
+     "cells_unmasked": 1096,
+     "cells_firm": 1096
+    }
+   ]
+  },
+  "cereals": {
+   "kind": "presence_absence",
+   "sigma_km": 150,
+   "sigma_from": "",
+   "has_absences": false,
+   "units_known": 487,
+   "f0": [
+    0.825,
+    0.918,
+    0.947,
+    0.952,
+    0.963,
+    0.985,
+    0.983,
+    0.959
+   ],
+   "by_slice": [
+    {
+     "slice": -10000,
+     "occupations": 7.5,
+     "label_share": 0.0,
+     "land_cells": 17220,
+     "cells_unmasked": 107,
+     "cells_firm": 80
+    },
+    {
+     "slice": -9000,
+     "occupations": 25.7,
+     "label_share": 0.0,
+     "land_cells": 17314,
+     "cells_unmasked": 392,
+     "cells_firm": 346
+    },
+    {
+     "slice": -8000,
+     "occupations": 36.9,
+     "label_share": 0.0,
+     "land_cells": 17126,
+     "cells_unmasked": 463,
+     "cells_firm": 463
+    },
+    {
+     "slice": -7000,
+     "occupations": 34.4,
+     "label_share": 0.0,
+     "land_cells": 17421,
+     "cells_unmasked": 427,
+     "cells_firm": 427
+    },
+    {
+     "slice": -6000,
+     "occupations": 53.8,
+     "label_share": 0.0,
+     "land_cells": 17194,
+     "cells_unmasked": 730,
+     "cells_firm": 717
+    },
+    {
+     "slice": -5000,
+     "occupations": 62.1,
+     "label_share": 0.0,
+     "land_cells": 16972,
+     "cells_unmasked": 976,
+     "cells_firm": 976
+    },
+    {
+     "slice": -4000,
+     "occupations": 97.2,
+     "label_share": 0.0,
+     "land_cells": 16958,
+     "cells_unmasked": 1202,
+     "cells_firm": 1199
+    },
+    {
+     "slice": -3000,
+     "occupations": 104.8,
+     "label_share": 0.0,
+     "land_cells": 16878,
+     "cells_unmasked": 1006,
+     "cells_firm": 1006
+    }
+   ]
+  }
+ },
+ "groups": [
+  "Material culture",
+  "Subsistence",
+  "Environment",
+  "Structures & organics",
+  "People"
+ ],
+ "e_min": 1.2,
+ "alpha": 1.0,
+ "cutoff": 2.5,
+ "bootstrap": 200,
+ "bone_ph_min": 5.5,
+ "acid_cells": 2872
+}

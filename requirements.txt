@@ -1,0 +1,11 @@
+asgiref==3.6.0
+backports.zoneinfo==0.2.1
+distlib==0.3.4
+Django==4.2
+filelock==3.6.0
+platformdirs==2.5.2
+six @ file:///AppleInternal/BuildRoot/Library/Caches/com.apple.xbs/Sources/python3/python3-103/six-1.15.0-py2.py3-none-any.whl
+snakeviz==2.1.1
+sqlparse==0.4.4
+tornado==6.2
+virtualenv==20.14.1

@@ -1,0 +1,6 @@
+# Web build: `trunk serve` for development, `trunk build --release` for dist/.
+[build]
+target = "index.html"
+dist = "dist"
+# Relative URLs, so dist/ can be served from any path (S3, GitHub Pages, Django /static/).
+public_url = "./"

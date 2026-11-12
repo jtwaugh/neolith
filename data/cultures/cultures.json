@@ -1,0 +1,4183 @@
+[
+ {
+  "id": "palaeolithic",
+  "kind": "stage",
+  "name": "Palaeolithic (Lower and Middle)",
+  "traits": {
+   "economy": "foraging"
+  },
+  "wikipedia": {
+   "title": "Paleolithic",
+   "revid": 1384355404,
+   "url": "https://en.wikipedia.org/w/index.php?title=Paleolithic&oldid=1384355404",
+   "wikidata": "Q40203"
+  },
+  "unverified": [],
+  "sites": 22,
+  "observed": {
+   "start_p10": -18985,
+   "start_median": -9075,
+   "start_p90": -6405,
+   "centre": [
+    5.09,
+    44.3
+   ],
+   "bbox_p5_p95": [
+    -5.42,
+    35.87,
+    23.01,
+    51.23
+   ]
+  }
+ },
+ {
+  "id": "upper_palaeolithic",
+  "kind": "stage",
+  "name": "Upper Palaeolithic",
+  "traits": {
+   "economy": "foraging"
+  },
+  "range": {
+   "start": -48050,
+   "start_source": "cited",
+   "end": -10050,
+   "end_source": "cited",
+   "quotes": [
+    "between 50,000 and 12,000 years ago"
+   ]
+  },
+  "wikipedia": {
+   "title": "Upper Paleolithic",
+   "revid": 1379545961,
+   "url": "https://en.wikipedia.org/w/index.php?title=Upper_Paleolithic&oldid=1379545961",
+   "wikidata": "Q479505"
+  },
+  "unverified": [],
+  "sites": 146,
+  "observed": {
+   "start_p10": -20365,
+   "start_median": -13270,
+   "start_p90": -8840,
+   "centre": [
+    4.19,
+    44.65
+   ],
+   "bbox_p5_p95": [
+    -5.02,
+    38.31,
+    21.42,
+    51.45
+   ]
+  }
+ },
+ {
+  "id": "epipalaeolithic",
+  "kind": "stage",
+  "name": "Epipalaeolithic",
+  "traits": {
+   "economy": "foraging"
+  },
+  "range": {
+   "start": -18050,
+   "start_source": "cited",
+   "end": -3050,
+   "end_source": "cited",
+   "quotes": [
+    "20,000 bp to 10,000 bp in the levant, but later in europe",
+    "5,000 bp or even later"
+   ]
+  },
+  "wikipedia": {
+   "title": "Epipalaeolithic",
+   "revid": 1369638583,
+   "url": "https://en.wikipedia.org/w/index.php?title=Epipalaeolithic&oldid=1369638583",
+   "wikidata": "Q829005"
+  },
+  "unverified": [],
+  "sites": 351,
+  "observed": {
+   "start_p10": -12610,
+   "start_median": -8320,
+   "start_p90": -5580,
+   "centre": [
+    5.55,
+    44.02
+   ],
+   "bbox_p5_p95": [
+    -8.35,
+    30.0,
+    35.51,
+    55.53
+   ]
+  }
+ },
+ {
+  "id": "mesolithic",
+  "kind": "stage",
+  "name": "Mesolithic",
+  "traits": {
+   "economy": "foraging"
+  },
+  "range": {
+   "start": -13050,
+   "start_source": "cited",
+   "end": -3050,
+   "end_source": "cited",
+   "quotes": [
+    "15,000 to 5,000 bp"
+   ]
+  },
+  "wikipedia": {
+   "title": "Mesolithic",
+   "revid": 1374999382,
+   "url": "https://en.wikipedia.org/w/index.php?title=Mesolithic&oldid=1374999382",
+   "wikidata": "Q44155"
+  },
+  "unverified": [],
+  "sites": 593,
+  "observed": {
+   "start_p10": -8626,
+   "start_median": -6470,
+   "start_p90": -4840,
+   "centre": [
+    5.39,
+    47.99
+   ],
+   "bbox_p5_p95": [
+    -8.39,
+    38.25,
+    14.53,
+    56.02
+   ]
+  }
+ },
+ {
+  "id": "aceramic_neolithic",
+  "kind": "stage",
+  "name": "Aceramic Neolithic",
+  "traits": {
+   "economy": "farming",
+   "pottery": "none"
+  },
+  "range": {
+   "start": -10000,
+   "start_source": "cited",
+   "end": -6500,
+   "end_source": "cited",
+   "quotes": [
+    "(10000 – 6500 bce)"
+   ]
+  },
+  "wikipedia": {
+   "title": "Pre-Pottery Neolithic",
+   "revid": 1360754480,
+   "url": "https://en.wikipedia.org/w/index.php?title=Pre-Pottery_Neolithic&oldid=1360754480",
+   "wikidata": "Q1190360"
+  },
+  "unverified": [],
+  "sites": 98,
+  "observed": {
+   "start_p10": -9515,
+   "start_median": -8075,
+   "start_p90": -7077,
+   "centre": [
+    35.89,
+    33.46
+   ],
+   "bbox_p5_p95": [
+    33.1,
+    30.0,
+    42.81,
+    37.74
+   ]
+  }
+ },
+ {
+  "id": "neolithic",
+  "kind": "stage",
+  "name": "Neolithic",
+  "traits": {
+   "economy": "farming"
+  },
+  "range": {
+   "start": -10000,
+   "start_source": "cited",
+   "end": -2000,
+   "end_source": "cited",
+   "quotes": [
+    "10,000 bc to c",
+    "2,000 bc)"
+   ]
+  },
+  "wikipedia": {
+   "title": "Neolithic",
+   "revid": 1384848321,
+   "url": "https://en.wikipedia.org/w/index.php?title=Neolithic&oldid=1384848321",
+   "wikidata": "Q36422"
+  },
+  "unverified": [],
+  "sites": 2833,
+  "observed": {
+   "start_p10": -6110,
+   "start_median": -4590,
+   "start_p90": -3401,
+   "centre": [
+    7.7,
+    47.28
+   ],
+   "bbox_p5_p95": [
+    -6.41,
+    29.6,
+    36.52,
+    56.5
+   ]
+  }
+ },
+ {
+  "id": "chalcolithic",
+  "kind": "stage",
+  "name": "Chalcolithic (Copper Age)",
+  "traits": {
+   "economy": "farming",
+   "metal": [
+    "copper"
+   ]
+  },
+  "range": {
+   "start": -6500,
+   "start_source": "cited",
+   "end": -2200,
+   "end_source": "cited",
+   "quotes": [
+    "6,500 bc",
+    "2,500 and 2,200 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Chalcolithic",
+   "revid": 1384441085,
+   "url": "https://en.wikipedia.org/w/index.php?title=Chalcolithic&oldid=1384441085",
+   "wikidata": "Q130253"
+  },
+  "unverified": [],
+  "sites": 407,
+  "observed": {
+   "start_p10": -5048,
+   "start_median": -3710,
+   "start_p90": -2647,
+   "centre": [
+    23.53,
+    45.27
+   ],
+   "bbox_p5_p95": [
+    1.77,
+    25.97,
+    47.19,
+    52.74
+   ]
+  }
+ },
+ {
+  "id": "bronze_age",
+  "kind": "stage",
+  "name": "Bronze Age",
+  "traits": {
+   "economy": "farming",
+   "metal": [
+    "bronze"
+   ]
+  },
+  "wikipedia": {
+   "title": "Bronze Age",
+   "revid": 1384631621,
+   "url": "https://en.wikipedia.org/w/index.php?title=Bronze_Age&oldid=1384631621",
+   "wikidata": "Q11761"
+  },
+  "unverified": [],
+  "sites": 358,
+  "observed": {
+   "start_p10": -3703,
+   "start_median": -1770,
+   "start_p90": -1020,
+   "centre": [
+    1.58,
+    47.99
+   ],
+   "bbox_p5_p95": [
+    -7.94,
+    34.9,
+    35.52,
+    55.13
+   ]
+  }
+ },
+ {
+  "id": "iron_age",
+  "kind": "stage",
+  "name": "Iron Age",
+  "traits": {
+   "economy": "farming",
+   "metal": [
+    "iron"
+   ]
+  },
+  "wikipedia": {
+   "title": "Iron Age",
+   "revid": 1384918549,
+   "url": "https://en.wikipedia.org/w/index.php?title=Iron_Age&oldid=1384918549",
+   "wikidata": "Q11764"
+  },
+  "unverified": [],
+  "sites": 20,
+  "observed": {
+   "start_p10": -947,
+   "start_median": -555,
+   "start_p90": -248,
+   "centre": [
+    0.72,
+    48.55
+   ],
+   "bbox_p5_p95": [
+    -6.69,
+    41.43,
+    10.39,
+    55.14
+   ]
+  }
+ },
+ {
+  "id": "kebaran",
+  "kind": "culture",
+  "name": "Kebaran",
+  "stage": "epipalaeolithic",
+  "traits": {
+   "economy": "foraging",
+   "other": [
+    "microliths"
+   ]
+  },
+  "range": {
+   "start": -21050,
+   "start_source": "cited",
+   "end": -14550,
+   "end_source": "cited",
+   "quotes": [
+    "23,000 and ca. 16,500 bp"
+   ]
+  },
+  "wikipedia": {
+   "title": "Kebaran culture",
+   "revid": 1360699391,
+   "url": "https://en.wikipedia.org/w/index.php?title=Kebaran_culture&oldid=1360699391",
+   "wikidata": "Q1088939"
+  },
+  "unverified": [],
+  "sites": 4,
+  "observed": {
+   "start_p10": -18053,
+   "start_median": -17340,
+   "start_p90": -16438,
+   "centre": [
+    36.06,
+    31.62
+   ],
+   "bbox_p5_p95": [
+    34.75,
+    31.23,
+    36.44,
+    32.41
+   ]
+  },
+  "dates_used": 11,
+  "dates_outside_range": 24
+ },
+ {
+  "id": "natufian",
+  "kind": "culture",
+  "name": "Natufian",
+  "stage": "epipalaeolithic",
+  "traits": {
+   "economy": "foraging",
+   "houses": [
+    "round"
+   ],
+   "burial": [
+    "cemetery"
+   ],
+   "domesticates": [
+    "dog"
+   ],
+   "other": [
+    "wild cereal harvesting",
+    "sedentism"
+   ]
+  },
+  "range": {
+   "start": -12500,
+   "start_source": "cited",
+   "end": -9500,
+   "end_source": "cited",
+   "quotes": [
+    "12,500 and 9,500 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Natufian culture",
+   "revid": 1380535068,
+   "url": "https://en.wikipedia.org/w/index.php?title=Natufian_culture&oldid=1380535068",
+   "wikidata": "Q733489"
+  },
+  "unverified": [],
+  "sites": 10,
+  "observed": {
+   "start_p10": -11923,
+   "start_median": -11085,
+   "start_p90": -10580,
+   "centre": [
+    35.65,
+    33.0
+   ],
+   "bbox_p5_p95": [
+    35.09,
+    31.0,
+    46.73,
+    36.41
+   ]
+  },
+  "dates_used": 55,
+  "dates_outside_range": 185
+ },
+ {
+  "id": "ppna",
+  "kind": "culture",
+  "name": "Pre-Pottery Neolithic A",
+  "stage": "aceramic_neolithic",
+  "traits": {
+   "economy": "farming",
+   "pottery": "none",
+   "houses": [
+    "round"
+   ],
+   "monuments": [
+    "tower"
+   ]
+  },
+  "range": {
+   "start": -10000,
+   "start_source": "cited",
+   "end": -8800,
+   "end_source": "cited",
+   "quotes": [
+    "10,000–8800 bce"
+   ]
+  },
+  "wikipedia": {
+   "title": "Pre-Pottery Neolithic A",
+   "revid": 1369643085,
+   "url": "https://en.wikipedia.org/w/index.php?title=Pre-Pottery_Neolithic_A&oldid=1369643085",
+   "wikidata": "Q1047444"
+  },
+  "unverified": [],
+  "sites": 23,
+  "observed": {
+   "start_p10": -9990,
+   "start_median": -9510,
+   "start_p90": -9036,
+   "centre": [
+    35.72,
+    34.72
+   ],
+   "bbox_p5_p95": [
+    33.53,
+    30.68,
+    41.78,
+    38.17
+   ]
+  },
+  "dates_used": 283,
+  "dates_outside_range": 243
+ },
+ {
+  "id": "ppnb",
+  "kind": "culture",
+  "name": "Pre-Pottery Neolithic B",
+  "stage": "aceramic_neolithic",
+  "traits": {
+   "economy": "farming",
+   "pottery": "none",
+   "houses": [
+    "rectangular"
+   ],
+   "burial": [
+    "skull removal"
+   ],
+   "domesticates": [
+    "sheep/goat",
+    "cattle"
+   ],
+   "other": [
+    "plastered floors"
+   ]
+  },
+  "range": {
+   "start": -8800,
+   "start_source": "cited",
+   "end": -6500,
+   "end_source": "cited",
+   "quotes": [
+    "8800–6500 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Pre-Pottery Neolithic B",
+   "revid": 1379583086,
+   "url": "https://en.wikipedia.org/w/index.php?title=Pre-Pottery_Neolithic_B&oldid=1379583086",
+   "wikidata": "Q897323"
+  },
+  "unverified": [],
+  "sites": 73,
+  "observed": {
+   "start_p10": -8594,
+   "start_median": -7950,
+   "start_p90": -7160,
+   "centre": [
+    36.41,
+    33.73
+   ],
+   "bbox_p5_p95": [
+    33.08,
+    29.97,
+    43.63,
+    37.56
+   ]
+  },
+  "dates_used": 786,
+  "dates_outside_range": 244
+ },
+ {
+  "id": "ppnc",
+  "kind": "culture",
+  "name": "Pre-Pottery Neolithic C",
+  "stage": "aceramic_neolithic",
+  "traits": {
+   "economy": "farming",
+   "pottery": "none"
+  },
+  "range": {
+   "start": -8090,
+   "start_source": "observed",
+   "end": -4411,
+   "end_source": "observed"
+  },
+  "wikipedia": {
+   "title": "Pre-Pottery Neolithic",
+   "revid": 1360754480,
+   "url": "https://en.wikipedia.org/w/index.php?title=Pre-Pottery_Neolithic&oldid=1360754480",
+   "wikidata": "Q1190360"
+  },
+  "unverified": [],
+  "sites": 10,
+  "observed": {
+   "start_p10": -7515,
+   "start_median": -6730,
+   "start_p90": -5697,
+   "centre": [
+    35.4,
+    32.62
+   ],
+   "bbox_p5_p95": [
+    32.46,
+    31.6,
+    36.87,
+    36.18
+   ]
+  },
+  "dates_used": 51,
+  "dates_outside_range": 27
+ },
+ {
+  "id": "yarmukian",
+  "kind": "culture",
+  "name": "Yarmukian",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming",
+   "pottery": "yes",
+   "other": [
+    "figurines"
+   ]
+  },
+  "range": {
+   "start": -6400,
+   "start_source": "cited",
+   "end": -6000,
+   "end_source": "cited",
+   "quotes": [
+    "6400–6000 bce"
+   ]
+  },
+  "wikipedia": {
+   "title": "Yarmukian culture",
+   "revid": 1365740888,
+   "url": "https://en.wikipedia.org/w/index.php?title=Yarmukian_culture&oldid=1365740888",
+   "wikidata": "Q2915635"
+  },
+  "unverified": [],
+  "sites": 4,
+  "observed": {
+   "start_p10": -6344,
+   "start_median": -6255,
+   "start_p90": -5998,
+   "centre": [
+    35.57,
+    32.65
+   ],
+   "bbox_p5_p95": [
+    35.36,
+    32.6,
+    35.88,
+    32.74
+   ]
+  },
+  "dates_used": 11,
+  "dates_outside_range": 69
+ },
+ {
+  "id": "hassuna",
+  "kind": "culture",
+  "name": "Hassuna",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming",
+   "pottery": "painted",
+   "houses": [
+    "mudbrick"
+   ]
+  },
+  "range": {
+   "start": -7000,
+   "start_source": "cited",
+   "end": -6000,
+   "end_source": "cited",
+   "quotes": [
+    "7000-6700 bc",
+    "6300-6000 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Hassuna culture",
+   "revid": 1372152289,
+   "url": "https://en.wikipedia.org/w/index.php?title=Hassuna_culture&oldid=1372152289",
+   "wikidata": "Q1588784"
+  },
+  "unverified": [],
+  "sites": 5,
+  "observed": {
+   "start_p10": -6822,
+   "start_median": -6630,
+   "start_p90": -5810,
+   "centre": [
+    43.3,
+    36.45
+   ],
+   "bbox_p5_p95": [
+    41.01,
+    36.11,
+    44.77,
+    36.61
+   ]
+  },
+  "dates_used": 20,
+  "dates_outside_range": 2
+ },
+ {
+  "id": "samarra",
+  "kind": "culture",
+  "name": "Samarra",
+  "stage": "chalcolithic",
+  "traits": {
+   "other": [
+    "irrigation"
+   ]
+  },
+  "range": {
+   "start": -5500,
+   "start_source": "cited",
+   "end": -4800,
+   "end_source": "cited",
+   "quotes": [
+    "5500 and 4800 bce"
+   ]
+  },
+  "wikipedia": {
+   "title": "Samarra culture",
+   "revid": 1382045696,
+   "url": "https://en.wikipedia.org/w/index.php?title=Samarra_culture&oldid=1382045696",
+   "wikidata": "Q1502858"
+  },
+  "unverified": [],
+  "sites": 1,
+  "observed": {
+   "start_p10": -5700,
+   "start_median": -5700,
+   "start_p90": -5700,
+   "centre": [
+    43.93,
+    34.12
+   ],
+   "bbox_p5_p95": [
+    43.93,
+    34.12,
+    43.93,
+    34.12
+   ]
+  },
+  "dates_used": 1,
+  "dates_outside_range": 9
+ },
+ {
+  "id": "halaf",
+  "kind": "culture",
+  "name": "Halaf",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming",
+   "pottery": "painted"
+  },
+  "range": {
+   "start": -6100,
+   "start_source": "cited",
+   "end": -5100,
+   "end_source": "cited",
+   "quotes": [
+    "6100 bc and 5100 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Halaf culture",
+   "revid": 1382323524,
+   "url": "https://en.wikipedia.org/w/index.php?title=Halaf_culture&oldid=1382323524",
+   "wikidata": "Q904998"
+  },
+  "unverified": [],
+  "sites": 12,
+  "observed": {
+   "start_p10": -6049,
+   "start_median": -5900,
+   "start_p90": -5560,
+   "centre": [
+    40.77,
+    36.47
+   ],
+   "bbox_p5_p95": [
+    36.97,
+    35.39,
+    45.25,
+    38.41
+   ]
+  },
+  "dates_used": 138,
+  "dates_outside_range": 116
+ },
+ {
+  "id": "ubaid",
+  "kind": "culture",
+  "name": "Ubaid",
+  "stage": "chalcolithic",
+  "traits": {
+   "economy": "farming",
+   "pottery": "painted",
+   "houses": [
+    "mudbrick"
+   ],
+   "monuments": [
+    "temple"
+   ],
+   "other": [
+    "irrigation"
+   ]
+  },
+  "range": {
+   "start": -6500,
+   "start_source": "cited",
+   "end": -3800,
+   "end_source": "cited",
+   "quotes": [
+    "6500–3800 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Ubaid period",
+   "revid": 1383053503,
+   "url": "https://en.wikipedia.org/w/index.php?title=Ubaid_period&oldid=1383053503",
+   "wikidata": "Q245156"
+  },
+  "unverified": [],
+  "sites": 18,
+  "observed": {
+   "start_p10": -6000,
+   "start_median": -5020,
+   "start_p90": -4347,
+   "centre": [
+    47.12,
+    32.59
+   ],
+   "bbox_p5_p95": [
+    40.65,
+    25.5,
+    51.6,
+    36.9
+   ]
+  },
+  "dates_used": 58,
+  "dates_outside_range": 81
+ },
+ {
+  "id": "uruk",
+  "kind": "culture",
+  "name": "Uruk",
+  "stage": "chalcolithic",
+  "traits": {
+   "economy": "farming",
+   "houses": [
+    "large settlement"
+   ],
+   "monuments": [
+    "temple"
+   ],
+   "other": [
+    "writing"
+   ]
+  },
+  "range": {
+   "start": -3736,
+   "start_source": "observed",
+   "end": -1775,
+   "end_source": "observed"
+  },
+  "wikipedia": {
+   "title": "Uruk period",
+   "revid": 1384906777,
+   "url": "https://en.wikipedia.org/w/index.php?title=Uruk_period&oldid=1384906777",
+   "wikidata": "Q731494"
+  },
+  "unverified": [],
+  "sites": 10,
+  "observed": {
+   "start_p10": -3753,
+   "start_median": -3560,
+   "start_p90": -3296,
+   "centre": [
+    41.26,
+    36.18
+   ],
+   "bbox_p5_p95": [
+    37.2,
+    31.65,
+    47.15,
+    38.13
+   ]
+  },
+  "dates_used": 153,
+  "dates_outside_range": 28
+ },
+ {
+  "id": "ghassulian",
+  "kind": "culture",
+  "name": "Ghassulian",
+  "stage": "chalcolithic",
+  "traits": {
+   "economy": "farming",
+   "metal": [
+    "copper"
+   ]
+  },
+  "range": {
+   "start": -4400,
+   "start_source": "cited",
+   "end": -3500,
+   "end_source": "cited",
+   "quotes": [
+    "4400 – c. 3500 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Ghassulian",
+   "revid": 1382058699,
+   "url": "https://en.wikipedia.org/w/index.php?title=Ghassulian&oldid=1382058699",
+   "wikidata": "Q1521465"
+  },
+  "unverified": [],
+  "sites": 1,
+  "observed": {
+   "start_p10": -4510,
+   "start_median": -4510,
+   "start_p90": -4510,
+   "centre": [
+    35.6,
+    31.8
+   ],
+   "bbox_p5_p95": [
+    35.6,
+    31.8,
+    35.6,
+    31.8
+   ]
+  },
+  "dates_used": 23,
+  "dates_outside_range": 11
+ },
+ {
+  "id": "shulaveri_shomu",
+  "kind": "culture",
+  "name": "Shulaveri–Shomu",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming",
+   "houses": [
+    "round",
+    "mudbrick"
+   ]
+  },
+  "range": {
+   "start": -6100,
+   "start_source": "cited",
+   "end": -4900,
+   "end_source": "cited",
+   "quotes": [
+    "end of the seventh millennium bc to the beginning of the fifth millennium bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Shulaveri–Shomu culture",
+   "revid": 1360735933,
+   "url": "https://en.wikipedia.org/w/index.php?title=Shulaveri%E2%80%93Shomu_culture&oldid=1360735933",
+   "wikidata": "Q4246675"
+  },
+  "unverified": [],
+  "sites": 5,
+  "observed": {
+   "start_p10": -5928,
+   "start_median": -5620,
+   "start_p90": -5288,
+   "centre": [
+    44.69,
+    41.32
+   ],
+   "bbox_p5_p95": [
+    44.25,
+    41.04,
+    45.59,
+    41.47
+   ]
+  },
+  "dates_used": 33,
+  "dates_outside_range": 2
+ },
+ {
+  "id": "qarunian",
+  "kind": "culture",
+  "name": "Qarunian",
+  "stage": "epipalaeolithic",
+  "traits": {},
+  "range": {
+   "start": -6500,
+   "start_source": "cited",
+   "end": -5190,
+   "end_source": "cited",
+   "quotes": [
+    "6500 to - 5190 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Prehistoric Egypt",
+   "revid": 1384518337,
+   "url": "https://en.wikipedia.org/w/index.php?title=Prehistoric_Egypt&oldid=1384518337",
+   "wikidata": "Q208520"
+  },
+  "unverified": [],
+  "sites": 5,
+  "observed": {
+   "start_p10": -6556,
+   "start_median": -6550,
+   "start_p90": -6142,
+   "centre": [
+    30.66,
+    29.56
+   ],
+   "bbox_p5_p95": [
+    30.5,
+    29.36,
+    30.74,
+    29.73
+   ]
+  },
+  "dates_used": 8,
+  "dates_outside_range": 5
+ },
+ {
+  "id": "faiyum_a",
+  "kind": "culture",
+  "name": "Faiyum A",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming",
+   "domesticates": [
+    "wheat",
+    "barley",
+    "sheep/goat"
+   ]
+  },
+  "range": {
+   "start": -5600,
+   "start_source": "cited",
+   "end": -4400,
+   "end_source": "cited",
+   "quotes": [
+    "5600-4400 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Prehistoric Egypt",
+   "revid": 1384518337,
+   "url": "https://en.wikipedia.org/w/index.php?title=Prehistoric_Egypt&oldid=1384518337",
+   "wikidata": "Q208520"
+  },
+  "unverified": [],
+  "sites": 16,
+  "observed": {
+   "start_p10": -5390,
+   "start_median": -5245,
+   "start_p90": -4690,
+   "centre": [
+    30.67,
+    29.59
+   ],
+   "bbox_p5_p95": [
+    30.5,
+    29.5,
+    30.82,
+    29.59
+   ]
+  },
+  "dates_used": 35,
+  "dates_outside_range": 8
+ },
+ {
+  "id": "merimde",
+  "kind": "culture",
+  "name": "Merimde",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming"
+  },
+  "range": {
+   "start": -4800,
+   "start_source": "cited",
+   "end": -4300,
+   "end_source": "cited",
+   "quotes": [
+    "4800 and 4300 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Merimde culture",
+   "revid": 1343931071,
+   "url": "https://en.wikipedia.org/w/index.php?title=Merimde_culture&oldid=1343931071",
+   "wikidata": "Q1262502"
+  },
+  "unverified": [],
+  "sites": 2,
+  "observed": {
+   "start_p10": -4962,
+   "start_median": -4810,
+   "start_p90": -4658,
+   "centre": [
+    30.85,
+    30.31
+   ],
+   "bbox_p5_p95": [
+    30.84,
+    30.3,
+    30.85,
+    30.32
+   ]
+  },
+  "dates_used": 21,
+  "dates_outside_range": 3
+ },
+ {
+  "id": "el_omari",
+  "kind": "culture",
+  "name": "El Omari",
+  "stage": "neolithic",
+  "traits": {},
+  "range": {
+   "start": -4000,
+   "start_source": "cited",
+   "end": -3100,
+   "end_source": "cited",
+   "quotes": [
+    "4000 bc to the archaic period (3,100 bc)"
+   ]
+  },
+  "wikipedia": {
+   "title": "Prehistoric Egypt",
+   "revid": 1384518337,
+   "url": "https://en.wikipedia.org/w/index.php?title=Prehistoric_Egypt&oldid=1384518337",
+   "wikidata": "Q208520"
+  },
+  "unverified": [],
+  "sites": 1,
+  "observed": {
+   "start_p10": -3550,
+   "start_median": -3550,
+   "start_p90": -3550,
+   "centre": [
+    31.33,
+    29.88
+   ],
+   "bbox_p5_p95": [
+    31.33,
+    29.88,
+    31.33,
+    29.88
+   ]
+  },
+  "dates_used": 1,
+  "dates_outside_range": 8
+ },
+ {
+  "id": "badarian",
+  "kind": "culture",
+  "name": "Badarian",
+  "stage": "chalcolithic",
+  "traits": {
+   "economy": "farming",
+   "burial": [
+    "cemetery"
+   ],
+   "metal": [
+    "copper"
+   ]
+  },
+  "range": {
+   "start": -4400,
+   "start_source": "cited",
+   "end": -4000,
+   "end_source": "cited",
+   "quotes": [
+    "4400 and 4000 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Badarian culture",
+   "revid": 1382464528,
+   "url": "https://en.wikipedia.org/w/index.php?title=Badarian_culture&oldid=1382464528",
+   "wikidata": "Q798844"
+  },
+  "unverified": [],
+  "sites": 4,
+  "observed": {
+   "start_p10": -4309,
+   "start_median": -4195,
+   "start_p90": -3976,
+   "centre": [
+    31.6,
+    26.76
+   ],
+   "bbox_p5_p95": [
+    31.28,
+    26.23,
+    32.57,
+    27.54
+   ]
+  },
+  "dates_used": 10,
+  "dates_outside_range": 5
+ },
+ {
+  "id": "naqada",
+  "kind": "culture",
+  "name": "Naqada",
+  "stage": "chalcolithic",
+  "traits": {
+   "economy": "farming",
+   "pottery": "painted",
+   "burial": [
+    "cemetery"
+   ],
+   "metal": [
+    "copper"
+   ]
+  },
+  "range": {
+   "start": -4000,
+   "start_source": "cited",
+   "end": -3000,
+   "end_source": "cited",
+   "quotes": [
+    "4000–3000 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Naqada culture",
+   "revid": 1375256530,
+   "url": "https://en.wikipedia.org/w/index.php?title=Naqada_culture&oldid=1375256530",
+   "wikidata": "Q753391"
+  },
+  "unverified": [],
+  "sites": 25,
+  "observed": {
+   "start_p10": -3952,
+   "start_median": -3720,
+   "start_p90": -3504,
+   "centre": [
+    32.72,
+    25.9
+   ],
+   "bbox_p5_p95": [
+    32.03,
+    25.09,
+    32.77,
+    26.33
+   ]
+  },
+  "dates_used": 166,
+  "dates_outside_range": 14
+ },
+ {
+  "id": "maadi_buto",
+  "kind": "culture",
+  "name": "Maadi–Buto",
+  "stage": "chalcolithic",
+  "traits": {},
+  "range": {
+   "start": -3910,
+   "start_source": "observed",
+   "end": -1146,
+   "end_source": "observed"
+  },
+  "wikipedia": {
+   "title": "Maadi-Buto culture",
+   "revid": 1381077639,
+   "url": "https://en.wikipedia.org/w/index.php?title=Maadi-Buto_culture&oldid=1381077639",
+   "wikidata": "Q1882262"
+  },
+  "unverified": [],
+  "sites": 4,
+  "observed": {
+   "start_p10": -3990,
+   "start_median": -3810,
+   "start_p90": -3714,
+   "centre": [
+    31.25,
+    29.97
+   ],
+   "bbox_p5_p95": [
+    30.82,
+    29.97,
+    31.29,
+    31.01
+   ]
+  },
+  "dates_used": 23,
+  "dates_outside_range": 4
+ },
+ {
+  "id": "dynastic_egypt",
+  "kind": "culture",
+  "name": "Dynastic Egypt",
+  "stage": "bronze_age",
+  "traits": {
+   "economy": "farming",
+   "other": [
+    "writing"
+   ]
+  },
+  "range": {
+   "start": -3150,
+   "start_source": "cited",
+   "end": -2686,
+   "end_source": "cited",
+   "quotes": [
+    "3150 bc",
+    "2686 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Early Dynastic Period of Egypt",
+   "revid": 1384914774,
+   "url": "https://en.wikipedia.org/w/index.php?title=Early_Dynastic_Period_of_Egypt&oldid=1384914774",
+   "wikidata": "Q187979"
+  },
+  "unverified": [],
+  "sites": 6,
+  "observed": {
+   "start_p10": -3210,
+   "start_median": -3170,
+   "start_p90": -3055,
+   "centre": [
+    31.24,
+    28.01
+   ],
+   "bbox_p5_p95": [
+    31.13,
+    22.93,
+    31.92,
+    29.96
+   ]
+  },
+  "dates_used": 274,
+  "dates_outside_range": 128
+ },
+ {
+  "id": "iberomaurusian",
+  "kind": "culture",
+  "name": "Iberomaurusian",
+  "stage": "epipalaeolithic",
+  "traits": {
+   "economy": "foraging",
+   "other": [
+    "microliths"
+   ]
+  },
+  "range": {
+   "start": -23050,
+   "start_source": "cited",
+   "end": -9050,
+   "end_source": "cited",
+   "quotes": [
+    "25,000 and 23,000 cal bp",
+    "11,000 cal bp"
+   ]
+  },
+  "wikipedia": {
+   "title": "Iberomaurusian",
+   "revid": 1374169940,
+   "url": "https://en.wikipedia.org/w/index.php?title=Iberomaurusian&oldid=1374169940",
+   "wikidata": "Q1470903"
+  },
+  "unverified": [],
+  "sites": 18,
+  "observed": {
+   "start_p10": -14298,
+   "start_median": -11150,
+   "start_p90": -9076,
+   "centre": [
+    -3.25,
+    34.98
+   ],
+   "bbox_p5_p95": [
+    -5.42,
+    34.09,
+    4.09,
+    35.88
+   ]
+  },
+  "dates_used": 94,
+  "dates_outside_range": 76
+ },
+ {
+  "id": "capsian",
+  "kind": "culture",
+  "name": "Capsian",
+  "stage": "epipalaeolithic",
+  "traits": {
+   "economy": "foraging",
+   "other": [
+    "land snails",
+    "ostrich eggshell"
+   ]
+  },
+  "range": {
+   "start": -9000,
+   "start_source": "cited",
+   "end": -5400,
+   "end_source": "cited",
+   "quotes": [
+    "9000 to 5400 cal bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Capsian",
+   "revid": 1384679790,
+   "url": "https://en.wikipedia.org/w/index.php?title=Capsian&oldid=1384679790",
+   "wikidata": "Q766150"
+  },
+  "unverified": [],
+  "sites": 32,
+  "observed": {
+   "start_p10": -8401,
+   "start_median": -6965,
+   "start_p90": -5895,
+   "centre": [
+    7.37,
+    35.26
+   ],
+   "bbox_p5_p95": [
+    1.58,
+    33.13,
+    10.5,
+    36.19
+   ]
+  },
+  "dates_used": 195,
+  "dates_outside_range": 24
+ },
+ {
+  "id": "capsian_neolithic",
+  "kind": "culture",
+  "name": "Neolithic of Capsian Tradition",
+  "stage": "neolithic",
+  "traits": {
+   "domesticates": [
+    "sheep/goat"
+   ]
+  },
+  "range": {
+   "start": -5808,
+   "start_source": "observed",
+   "end": -3018,
+   "end_source": "observed"
+  },
+  "wikipedia": {
+   "title": "Capsian",
+   "revid": 1384679790,
+   "url": "https://en.wikipedia.org/w/index.php?title=Capsian&oldid=1384679790",
+   "wikidata": "Q766150"
+  },
+  "unverified": [],
+  "sites": 14,
+  "observed": {
+   "start_p10": -5639,
+   "start_median": -4650,
+   "start_p90": -3091,
+   "centre": [
+    4.17,
+    34.37
+   ],
+   "bbox_p5_p95": [
+    -12.91,
+    27.86,
+    8.96,
+    36.21
+   ]
+  },
+  "dates_used": 23,
+  "dates_outside_range": 4
+ },
+ {
+  "id": "kiffian",
+  "kind": "culture",
+  "name": "Kiffian",
+  "stage": "epipalaeolithic",
+  "traits": {
+   "economy": "foraging",
+   "burial": [
+    "cemetery"
+   ]
+  },
+  "range": {
+   "start": -8000,
+   "start_source": "cited",
+   "end": -6000,
+   "end_source": "cited",
+   "quotes": [
+    "8,000 bc and 6,000 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Kiffian culture",
+   "revid": 1367045255,
+   "url": "https://en.wikipedia.org/w/index.php?title=Kiffian_culture&oldid=1367045255",
+   "wikidata": "Q3196496"
+  },
+  "unverified": [],
+  "sites": 3,
+  "observed": {
+   "start_p10": -7858,
+   "start_median": -7650,
+   "start_p90": -6754,
+   "centre": [
+    9.0,
+    17.0
+   ],
+   "bbox_p5_p95": [
+    9.0,
+    17.0,
+    9.0,
+    17.0
+   ]
+  },
+  "dates_used": 14,
+  "dates_outside_range": 37
+ },
+ {
+  "id": "tenerian",
+  "kind": "culture",
+  "name": "Tenerian",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "herding",
+   "domesticates": [
+    "cattle"
+   ],
+   "burial": [
+    "cemetery"
+   ]
+  },
+  "range": {
+   "start": -5000,
+   "start_source": "cited",
+   "end": -2500,
+   "end_source": "cited",
+   "quotes": [
+    "between the 5th millennium bce and mid-3rd millennium bce"
+   ]
+  },
+  "wikipedia": {
+   "title": "Tenerian culture",
+   "revid": 1369338834,
+   "url": "https://en.wikipedia.org/w/index.php?title=Tenerian_culture&oldid=1369338834",
+   "wikidata": "Q3916582"
+  },
+  "unverified": [],
+  "sites": 5,
+  "observed": {
+   "start_p10": -4868,
+   "start_median": -4050,
+   "start_p90": -3836,
+   "centre": [
+    9.0,
+    17.0
+   ],
+   "bbox_p5_p95": [
+    9.0,
+    17.0,
+    9.0,
+    17.0
+   ]
+  },
+  "dates_used": 35,
+  "dates_outside_range": 18
+ },
+ {
+  "id": "magdalenian",
+  "kind": "culture",
+  "name": "Magdalenian",
+  "stage": "upper_palaeolithic",
+  "traits": {
+   "economy": "foraging",
+   "other": [
+    "cave art",
+    "reindeer"
+   ]
+  },
+  "range": {
+   "start": -16864,
+   "start_source": "observed",
+   "end": -6867,
+   "end_source": "observed"
+  },
+  "wikipedia": {
+   "title": "Magdalenian",
+   "revid": 1384617270,
+   "url": "https://en.wikipedia.org/w/index.php?title=Magdalenian&oldid=1384617270",
+   "wikidata": "Q693549"
+  },
+  "unverified": [],
+  "sites": 100,
+  "observed": {
+   "start_p10": -16200,
+   "start_median": -13320,
+   "start_p90": -8248,
+   "centre": [
+    2.26,
+    45.07
+   ],
+   "bbox_p5_p95": [
+    -8.55,
+    39.31,
+    10.12,
+    50.44
+   ]
+  },
+  "dates_used": 408,
+  "dates_outside_range": 104
+ },
+ {
+  "id": "epigravettian",
+  "kind": "culture",
+  "name": "Epigravettian",
+  "stage": "upper_palaeolithic",
+  "traits": {
+   "economy": "foraging"
+  },
+  "range": {
+   "start": -18050,
+   "start_source": "cited",
+   "end": -6050,
+   "end_source": "cited",
+   "quotes": [
+    "20,000 to 16,000 bp",
+    "14,000 to 8,000 bp"
+   ]
+  },
+  "wikipedia": {
+   "title": "Epigravettian",
+   "revid": 1376524877,
+   "url": "https://en.wikipedia.org/w/index.php?title=Epigravettian&oldid=1376524877",
+   "wikidata": "Q3589150"
+  },
+  "unverified": [],
+  "sites": 24,
+  "observed": {
+   "start_p10": -15473,
+   "start_median": -10165,
+   "start_p90": -7178,
+   "centre": [
+    12.93,
+    41.72
+   ],
+   "bbox_p5_p95": [
+    7.1,
+    37.73,
+    22.42,
+    44.08
+   ]
+  },
+  "dates_used": 104,
+  "dates_outside_range": 8
+ },
+ {
+  "id": "hamburgian",
+  "kind": "culture",
+  "name": "Hamburgian",
+  "stage": "upper_palaeolithic",
+  "traits": {
+   "economy": "foraging",
+   "other": [
+    "reindeer"
+   ]
+  },
+  "range": {
+   "start": -13550,
+   "start_source": "cited",
+   "end": -11150,
+   "end_source": "cited",
+   "quotes": [
+    "15,500-13,100 bp"
+   ]
+  },
+  "wikipedia": {
+   "title": "Hamburg culture",
+   "revid": 1383319216,
+   "url": "https://en.wikipedia.org/w/index.php?title=Hamburg_culture&oldid=1383319216",
+   "wikidata": "Q502702"
+  },
+  "unverified": [],
+  "sites": 4,
+  "observed": {
+   "start_p10": -13377,
+   "start_median": -12595,
+   "start_p90": -11960,
+   "centre": [
+    10.17,
+    53.62
+   ],
+   "bbox_p5_p95": [
+    6.63,
+    53.01,
+    10.21,
+    53.64
+   ]
+  },
+  "dates_used": 16,
+  "dates_outside_range": 19
+ },
+ {
+  "id": "creswellian",
+  "kind": "culture",
+  "name": "Creswellian",
+  "stage": "upper_palaeolithic",
+  "traits": {
+   "economy": "foraging"
+  },
+  "range": {
+   "start": -11050,
+   "start_source": "cited",
+   "end": -9850,
+   "end_source": "cited",
+   "quotes": [
+    "13,000 and 11,800 bp"
+   ]
+  },
+  "wikipedia": {
+   "title": "Creswellian culture",
+   "revid": 1349026187,
+   "url": "https://en.wikipedia.org/w/index.php?title=Creswellian_culture&oldid=1349026187",
+   "wikidata": "Q1139760"
+  },
+  "unverified": [],
+  "sites": 3,
+  "observed": {
+   "start_p10": -11060,
+   "start_median": -10380,
+   "start_p90": -10356,
+   "centre": [
+    -2.75,
+    51.31
+   ],
+   "bbox_p5_p95": [
+    -2.82,
+    51.12,
+    -1.09,
+    52.93
+   ]
+  },
+  "dates_used": 7,
+  "dates_outside_range": 63
+ },
+ {
+  "id": "federmesser",
+  "kind": "culture",
+  "name": "Federmesser",
+  "stage": "epipalaeolithic",
+  "traits": {
+   "economy": "foraging"
+  },
+  "range": {
+   "start": -12050,
+   "start_source": "cited",
+   "end": -10850,
+   "end_source": "cited",
+   "quotes": [
+    "14,000 and 12,800 years ago"
+   ]
+  },
+  "wikipedia": {
+   "title": "Federmesser culture",
+   "revid": 1360125186,
+   "url": "https://en.wikipedia.org/w/index.php?title=Federmesser_culture&oldid=1360125186",
+   "wikidata": "Q1400660"
+  },
+  "unverified": [],
+  "sites": 5,
+  "observed": {
+   "start_p10": -11666,
+   "start_median": -11290,
+   "start_p90": -10962,
+   "centre": [
+    5.78,
+    50.92
+   ],
+   "bbox_p5_p95": [
+    2.8,
+    50.08,
+    7.8,
+    52.16
+   ]
+  },
+  "dates_used": 7,
+  "dates_outside_range": 66
+ },
+ {
+  "id": "azilian",
+  "kind": "culture",
+  "name": "Azilian",
+  "stage": "epipalaeolithic",
+  "traits": {
+   "economy": "foraging",
+   "other": [
+    "painted pebbles"
+   ]
+  },
+  "range": {
+   "start": -11380,
+   "start_source": "cited",
+   "end": -9990,
+   "end_source": "cited",
+   "quotes": [
+    "11,380-9,990 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Azilian",
+   "revid": 1373678621,
+   "url": "https://en.wikipedia.org/w/index.php?title=Azilian&oldid=1373678621",
+   "wikidata": "Q793777"
+  },
+  "unverified": [],
+  "sites": 18,
+  "observed": {
+   "start_p10": -11454,
+   "start_median": -11110,
+   "start_p90": -10446,
+   "centre": [
+    1.79,
+    44.56
+   ],
+   "bbox_p5_p95": [
+    -2.2,
+    41.38,
+    6.71,
+    47.82
+   ]
+  },
+  "dates_used": 44,
+  "dates_outside_range": 237
+ },
+ {
+  "id": "ahrensburgian",
+  "kind": "culture",
+  "name": "Ahrensburgian",
+  "stage": "epipalaeolithic",
+  "traits": {
+   "economy": "foraging",
+   "other": [
+    "reindeer"
+   ]
+  },
+  "range": {
+   "start": -10950,
+   "start_source": "cited",
+   "end": -9750,
+   "end_source": "cited",
+   "quotes": [
+    "12,900 to 11,700 bp"
+   ]
+  },
+  "wikipedia": {
+   "title": "Ahrensburg culture",
+   "revid": 1382895470,
+   "url": "https://en.wikipedia.org/w/index.php?title=Ahrensburg_culture&oldid=1382895470",
+   "wikidata": "Q402743"
+  },
+  "unverified": [],
+  "sites": 6,
+  "observed": {
+   "start_p10": -10905,
+   "start_median": -10345,
+   "start_p90": -9760,
+   "centre": [
+    6.17,
+    51.69
+   ],
+   "bbox_p5_p95": [
+    4.16,
+    50.81,
+    11.99,
+    53.38
+   ]
+  },
+  "dates_used": 15,
+  "dates_outside_range": 54
+ },
+ {
+  "id": "maglemosian",
+  "kind": "culture",
+  "name": "Maglemosian",
+  "stage": "mesolithic",
+  "traits": {
+   "economy": "foraging"
+  },
+  "range": {
+   "start": -9000,
+   "start_source": "cited",
+   "end": -6000,
+   "end_source": "cited",
+   "quotes": [
+    "9000 bc – c. 6000 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Maglemosian culture",
+   "revid": 1384843337,
+   "url": "https://en.wikipedia.org/w/index.php?title=Maglemosian_culture&oldid=1384843337",
+   "wikidata": "Q928511"
+  },
+  "unverified": [],
+  "sites": 18,
+  "observed": {
+   "start_p10": -8778,
+   "start_median": -7740,
+   "start_p90": -7194,
+   "centre": [
+    10.68,
+    55.28
+   ],
+   "bbox_p5_p95": [
+    -1.71,
+    51.4,
+    13.64,
+    56.08
+   ]
+  },
+  "dates_used": 89,
+  "dates_outside_range": 14
+ },
+ {
+  "id": "kongemose",
+  "kind": "culture",
+  "name": "Kongemose",
+  "stage": "mesolithic",
+  "traits": {
+   "economy": "foraging"
+  },
+  "range": {
+   "start": -6000,
+   "start_source": "cited",
+   "end": -5200,
+   "end_source": "cited",
+   "quotes": [
+    "6000 bc–5200 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Kongemose culture",
+   "revid": 1349026664,
+   "url": "https://en.wikipedia.org/w/index.php?title=Kongemose_culture&oldid=1349026664",
+   "wikidata": "Q1781546"
+  },
+  "unverified": [],
+  "sites": 11,
+  "observed": {
+   "start_p10": -6150,
+   "start_median": -5940,
+   "start_p90": -5550,
+   "centre": [
+    11.69,
+    55.79
+   ],
+   "bbox_p5_p95": [
+    9.96,
+    55.22,
+    12.56,
+    56.41
+   ]
+  },
+  "dates_used": 38,
+  "dates_outside_range": 51
+ },
+ {
+  "id": "ertebolle",
+  "kind": "culture",
+  "name": "Ertebølle",
+  "stage": "mesolithic",
+  "traits": {
+   "economy": "foraging",
+   "pottery": "yes",
+   "other": [
+    "shell middens"
+   ]
+  },
+  "range": {
+   "start": -5400,
+   "start_source": "cited",
+   "end": -3950,
+   "end_source": "cited",
+   "quotes": [
+    "5,400 bce – 3,950 bce"
+   ]
+  },
+  "wikipedia": {
+   "title": "Ertebølle culture",
+   "revid": 1353280461,
+   "url": "https://en.wikipedia.org/w/index.php?title=Erteb%C3%B8lle_culture&oldid=1353280461",
+   "wikidata": "Q1362485"
+  },
+  "unverified": [],
+  "sites": 88,
+  "observed": {
+   "start_p10": -5453,
+   "start_median": -4940,
+   "start_p90": -4178,
+   "centre": [
+    10.65,
+    55.45
+   ],
+   "bbox_p5_p95": [
+    9.55,
+    53.93,
+    13.64,
+    56.88
+   ]
+  },
+  "dates_used": 528,
+  "dates_outside_range": 214
+ },
+ {
+  "id": "sauveterrian",
+  "kind": "culture",
+  "name": "Sauveterrian",
+  "stage": "mesolithic",
+  "traits": {
+   "other": [
+    "microliths"
+   ]
+  },
+  "range": {
+   "start": -6550,
+   "start_source": "cited",
+   "end": -4550,
+   "end_source": "cited",
+   "quotes": [
+    "8500 to 6500 years bp"
+   ]
+  },
+  "wikipedia": {
+   "title": "Sauveterrian",
+   "revid": 1372959614,
+   "url": "https://en.wikipedia.org/w/index.php?title=Sauveterrian&oldid=1372959614",
+   "wikidata": "Q2985529"
+  },
+  "unverified": [],
+  "sites": 44,
+  "observed": {
+   "start_p10": -6697,
+   "start_median": -6460,
+   "start_p90": -5147,
+   "centre": [
+    4.83,
+    44.94
+   ],
+   "bbox_p5_p95": [
+    -1.08,
+    42.8,
+    13.56,
+    46.15
+   ]
+  },
+  "dates_used": 101,
+  "dates_outside_range": 365
+ },
+ {
+  "id": "tardenoisian",
+  "kind": "culture",
+  "name": "Tardenoisian",
+  "stage": "mesolithic",
+  "traits": {
+   "other": [
+    "microliths"
+   ]
+  },
+  "range": {
+   "start": -9000,
+   "start_source": "cited",
+   "end": -4000,
+   "end_source": "cited",
+   "quotes": [
+    "9000 bc until 4000 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Tardenoisian",
+   "revid": 1375019025,
+   "url": "https://en.wikipedia.org/w/index.php?title=Tardenoisian&oldid=1375019025",
+   "wikidata": "Q1808482"
+  },
+  "unverified": [],
+  "sites": 10,
+  "observed": {
+   "start_p10": -7958,
+   "start_median": -5895,
+   "start_p90": -5082,
+   "centre": [
+    3.6,
+    48.33
+   ],
+   "bbox_p5_p95": [
+    1.8,
+    44.43,
+    6.53,
+    49.89
+   ]
+  },
+  "dates_used": 15,
+  "dates_outside_range": 8
+ },
+ {
+  "id": "asturian",
+  "kind": "culture",
+  "name": "Asturian",
+  "stage": "mesolithic",
+  "traits": {
+   "economy": "foraging",
+   "other": [
+    "shell middens"
+   ]
+  },
+  "range": {
+   "start": -5050,
+   "start_source": "cited",
+   "end": -4550,
+   "end_source": "cited",
+   "quotes": [
+    "7000 and 6500 bp"
+   ]
+  },
+  "wikipedia": {
+   "title": "Asturian culture",
+   "revid": 1329932108,
+   "url": "https://en.wikipedia.org/w/index.php?title=Asturian_culture&oldid=1329932108",
+   "wikidata": "Q2666408"
+  },
+  "unverified": [],
+  "sites": 0,
+  "dates_used": 0,
+  "dates_outside_range": 19
+ },
+ {
+  "id": "starcevo_koros_cris",
+  "kind": "culture",
+  "name": "Starčevo–Körös–Criș",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming"
+  },
+  "range": {
+   "start": -6200,
+   "start_source": "cited",
+   "end": -4500,
+   "end_source": "cited",
+   "quotes": [
+    "6200 and 5200 bce",
+    "5500 and 4500 bce"
+   ]
+  },
+  "wikipedia": {
+   "title": "Starčevo–Körös–Criș culture",
+   "revid": 1382898294,
+   "url": "https://en.wikipedia.org/w/index.php?title=Star%C4%8Devo%E2%80%93K%C3%B6r%C3%B6s%E2%80%93Cri%C8%99_culture&oldid=1382898294",
+   "wikidata": "Q7602903"
+  },
+  "unverified": [],
+  "sites": 64,
+  "observed": {
+   "start_p10": -6107,
+   "start_median": -5805,
+   "start_p90": -5543,
+   "centre": [
+    20.75,
+    45.92
+   ],
+   "bbox_p5_p95": [
+    18.59,
+    43.01,
+    23.79,
+    47.32
+   ]
+  },
+  "dates_used": 316,
+  "dates_outside_range": 33
+ },
+ {
+  "id": "karanovo",
+  "kind": "culture",
+  "name": "Karanovo",
+  "stage": "neolithic",
+  "traits": {
+   "houses": [
+    "tell"
+   ]
+  },
+  "range": {
+   "start": -6900,
+   "start_source": "cited",
+   "end": -4000,
+   "end_source": "cited",
+   "quotes": [
+    "from the early 7th",
+    "collapsed around 4000 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Karanovo culture",
+   "revid": 1357599658,
+   "url": "https://en.wikipedia.org/w/index.php?title=Karanovo_culture&oldid=1357599658",
+   "wikidata": "Q1728968"
+  },
+  "unverified": [],
+  "sites": 7,
+  "observed": {
+   "start_p10": -6074,
+   "start_median": -5380,
+   "start_p90": -4944,
+   "centre": [
+    25.87,
+    42.47
+   ],
+   "bbox_p5_p95": [
+    24.72,
+    42.32,
+    26.72,
+    42.77
+   ]
+  },
+  "dates_used": 73,
+  "dates_outside_range": 56
+ },
+ {
+  "id": "vinca",
+  "kind": "culture",
+  "name": "Vinča",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming",
+   "houses": [
+    "tell"
+   ],
+   "metal": [
+    "copper"
+   ],
+   "other": [
+    "figurines"
+   ]
+  },
+  "range": {
+   "start": -5700,
+   "start_source": "cited",
+   "end": -4200,
+   "end_source": "cited",
+   "quotes": [
+    "5700 and 4200 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Vinča culture",
+   "revid": 1379346763,
+   "url": "https://en.wikipedia.org/w/index.php?title=Vin%C4%8Da_culture&oldid=1379346763",
+   "wikidata": "Q831336"
+  },
+  "unverified": [],
+  "sites": 12,
+  "observed": {
+   "start_p10": -5420,
+   "start_median": -5245,
+   "start_p90": -4742,
+   "centre": [
+    20.73,
+    45.13
+   ],
+   "bbox_p5_p95": [
+    19.21,
+    41.91,
+    22.34,
+    46.19
+   ]
+  },
+  "dates_used": 87,
+  "dates_outside_range": 21
+ },
+ {
+  "id": "sopot",
+  "kind": "culture",
+  "name": "Sopot",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming"
+  },
+  "range": {
+   "start": -5480,
+   "start_source": "cited",
+   "end": -3790,
+   "end_source": "cited",
+   "quotes": [
+    "5480–3790 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Sopot culture",
+   "revid": 1330760650,
+   "url": "https://en.wikipedia.org/w/index.php?title=Sopot_culture&oldid=1330760650",
+   "wikidata": "Q48998314"
+  },
+  "unverified": [],
+  "sites": 9,
+  "observed": {
+   "start_p10": -5120,
+   "start_median": -4880,
+   "start_p90": -4368,
+   "centre": [
+    18.68,
+    45.26
+   ],
+   "bbox_p5_p95": [
+    16.07,
+    44.49,
+    19.4,
+    45.83
+   ]
+  },
+  "dates_used": 30,
+  "dates_outside_range": 9
+ },
+ {
+  "id": "alfold_linear_pottery",
+  "kind": "culture",
+  "name": "Alföld Linear Pottery",
+  "stage": "neolithic",
+  "traits": {},
+  "range": {
+   "start": -5330,
+   "start_source": "cited",
+   "end": -4940,
+   "end_source": "cited",
+   "quotes": [
+    "5330 – 4940 bce"
+   ]
+  },
+  "wikipedia": {
+   "title": "Alföld culture",
+   "revid": 1280939237,
+   "url": "https://en.wikipedia.org/w/index.php?title=Alf%C3%B6ld_culture&oldid=1280939237",
+   "wikidata": "Q55085058"
+  },
+  "unverified": [],
+  "sites": 8,
+  "observed": {
+   "start_p10": -5480,
+   "start_median": -5240,
+   "start_p90": -5086,
+   "centre": [
+    21.01,
+    47.76
+   ],
+   "bbox_p5_p95": [
+    20.39,
+    47.29,
+    21.47,
+    48.47
+   ]
+  },
+  "dates_used": 38,
+  "dates_outside_range": 12
+ },
+ {
+  "id": "tisza",
+  "kind": "culture",
+  "name": "Tisza",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming",
+   "houses": [
+    "tell"
+   ]
+  },
+  "range": {
+   "start": -5000,
+   "start_source": "cited",
+   "end": -4500,
+   "end_source": "cited",
+   "quotes": [
+    "5000–4500 bce"
+   ]
+  },
+  "wikipedia": {
+   "title": "Tisza culture",
+   "revid": 1334768932,
+   "url": "https://en.wikipedia.org/w/index.php?title=Tisza_culture&oldid=1334768932",
+   "wikidata": "Q1041623"
+  },
+  "unverified": [],
+  "sites": 9,
+  "observed": {
+   "start_p10": -5172,
+   "start_median": -5100,
+   "start_p90": -4780,
+   "centre": [
+    20.33,
+    46.78
+   ],
+   "bbox_p5_p95": [
+    20.22,
+    46.27,
+    21.17,
+    47.72
+   ]
+  },
+  "dates_used": 85,
+  "dates_outside_range": 22
+ },
+ {
+  "id": "tiszapolgar",
+  "kind": "culture",
+  "name": "Tiszapolgár",
+  "stage": "chalcolithic",
+  "traits": {
+   "economy": "farming",
+   "burial": [
+    "cemetery"
+   ],
+   "metal": [
+    "copper"
+   ]
+  },
+  "range": {
+   "start": -4500,
+   "start_source": "cited",
+   "end": -4000,
+   "end_source": "cited",
+   "quotes": [
+    "4500–4000 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Tiszapolgár culture",
+   "revid": 1368853665,
+   "url": "https://en.wikipedia.org/w/index.php?title=Tiszapolg%C3%A1r_culture&oldid=1368853665",
+   "wikidata": "Q1263312"
+  },
+  "unverified": [],
+  "sites": 7,
+  "observed": {
+   "start_p10": -4634,
+   "start_median": -4330,
+   "start_p90": -4274,
+   "centre": [
+    21.1,
+    47.2
+   ],
+   "bbox_p5_p95": [
+    20.28,
+    46.81,
+    21.5,
+    47.81
+   ]
+  },
+  "dates_used": 79,
+  "dates_outside_range": 21
+ },
+ {
+  "id": "gumelnita",
+  "kind": "culture",
+  "name": "Kodjadermen–Gumelnița–Karanovo VI",
+  "stage": "chalcolithic",
+  "traits": {
+   "economy": "farming",
+   "metal": [
+    "copper"
+   ]
+  },
+  "range": {
+   "start": -5000,
+   "start_source": "cited",
+   "end": -4000,
+   "end_source": "cited",
+   "quotes": [
+    "fifth millennium bc",
+    "4000 bc gumel"
+   ]
+  },
+  "wikipedia": {
+   "title": "Gumelnița–Kodžadermen-Karanovo VI complex",
+   "revid": 1360731703,
+   "url": "https://en.wikipedia.org/w/index.php?title=Gumelni%C8%9Ba%E2%80%93Kod%C5%BEadermen-Karanovo_VI_complex&oldid=1360731703",
+   "wikidata": "Q138012976"
+  },
+  "unverified": [],
+  "sites": 14,
+  "observed": {
+   "start_p10": -4880,
+   "start_median": -4565,
+   "start_p90": -4291,
+   "centre": [
+    26.6,
+    43.98
+   ],
+   "bbox_p5_p95": [
+    25.38,
+    42.35,
+    27.94,
+    44.56
+   ]
+  },
+  "dates_used": 169,
+  "dates_outside_range": 141
+ },
+ {
+  "id": "cucuteni_trypillia",
+  "kind": "culture",
+  "name": "Cucuteni–Trypillia",
+  "stage": "chalcolithic",
+  "traits": {
+   "economy": "farming",
+   "pottery": "painted",
+   "houses": [
+    "large settlement"
+   ],
+   "metal": [
+    "copper"
+   ],
+   "other": [
+    "figurines",
+    "house burning"
+   ]
+  },
+  "range": {
+   "start": -5050,
+   "start_source": "cited",
+   "end": -2950,
+   "end_source": "cited",
+   "quotes": [
+    "5050 to 2950 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Cucuteni–Trypillia culture",
+   "revid": 1380722213,
+   "url": "https://en.wikipedia.org/w/index.php?title=Cucuteni%E2%80%93Trypillia_culture&oldid=1380722213",
+   "wikidata": "Q1162419"
+  },
+  "unverified": [],
+  "sites": 46,
+  "observed": {
+   "start_p10": -4800,
+   "start_median": -3920,
+   "start_p90": -3225,
+   "centre": [
+    28.17,
+    47.8
+   ],
+   "bbox_p5_p95": [
+    25.02,
+    45.19,
+    31.1,
+    50.3
+   ]
+  },
+  "dates_used": 148,
+  "dates_outside_range": 6
+ },
+ {
+  "id": "baden",
+  "kind": "culture",
+  "name": "Baden",
+  "stage": "chalcolithic",
+  "traits": {
+   "economy": "farming",
+   "metal": [
+    "copper"
+   ],
+   "other": [
+    "wheeled vehicles"
+   ]
+  },
+  "range": {
+   "start": -3600,
+   "start_source": "cited",
+   "end": -2850,
+   "end_source": "cited",
+   "quotes": [
+    "from 3600 to 2850 bce"
+   ]
+  },
+  "wikipedia": {
+   "title": "Baden culture",
+   "revid": 1377271760,
+   "url": "https://en.wikipedia.org/w/index.php?title=Baden_culture&oldid=1377271760",
+   "wikidata": "Q687230"
+  },
+  "unverified": [],
+  "sites": 40,
+  "observed": {
+   "start_p10": -3576,
+   "start_median": -3210,
+   "start_p90": -3060,
+   "centre": [
+    17.25,
+    47.92
+   ],
+   "bbox_p5_p95": [
+    15.69,
+    45.52,
+    20.2,
+    50.07
+   ]
+  },
+  "dates_used": 146,
+  "dates_outside_range": 35
+ },
+ {
+  "id": "bug_dniester",
+  "kind": "culture",
+  "name": "Bug–Dniester",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "mixed"
+  },
+  "range": {
+   "start": -6300,
+   "start_source": "cited",
+   "end": -5000,
+   "end_source": "cited",
+   "quotes": [
+    "6300–5000 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Bug–Dniester culture",
+   "revid": 1383604126,
+   "url": "https://en.wikipedia.org/w/index.php?title=Bug%E2%80%93Dniester_culture&oldid=1383604126",
+   "wikidata": "Q1002169"
+  },
+  "unverified": [],
+  "sites": 5,
+  "observed": {
+   "start_p10": -6348,
+   "start_median": -6100,
+   "start_p90": -5260,
+   "centre": [
+    28.32,
+    48.24
+   ],
+   "bbox_p5_p95": [
+    26.74,
+    48.18,
+    29.79,
+    48.63
+   ]
+  },
+  "dates_used": 10,
+  "dates_outside_range": 0
+ },
+ {
+  "id": "yamnaya",
+  "kind": "culture",
+  "name": "Yamnaya",
+  "stage": "chalcolithic",
+  "traits": {
+   "economy": "herding",
+   "burial": [
+    "kurgan"
+   ],
+   "domesticates": [
+    "horse",
+    "cattle"
+   ],
+   "other": [
+    "wheeled vehicles"
+   ]
+  },
+  "range": {
+   "start": -3300,
+   "start_source": "cited",
+   "end": -2600,
+   "end_source": "cited",
+   "quotes": [
+    "3300–2600 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Yamnaya culture",
+   "revid": 1384637244,
+   "url": "https://en.wikipedia.org/w/index.php?title=Yamnaya_culture&oldid=1384637244",
+   "wikidata": "Q426737"
+  },
+  "unverified": [],
+  "sites": 6,
+  "observed": {
+   "start_p10": -3265,
+   "start_median": -3160,
+   "start_p90": -3055,
+   "centre": [
+    34.8,
+    49.16
+   ],
+   "bbox_p5_p95": [
+    30.11,
+    45.7,
+    50.96,
+    53.36
+   ]
+  },
+  "dates_used": 18,
+  "dates_outside_range": 3
+ },
+ {
+  "id": "lbk",
+  "kind": "culture",
+  "name": "Linear Pottery (LBK)",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming",
+   "pottery": "incised linear bands",
+   "houses": [
+    "longhouse"
+   ],
+   "burial": [
+    "cemetery"
+   ],
+   "domesticates": [
+    "cattle",
+    "wheat"
+   ]
+  },
+  "range": {
+   "start": -5500,
+   "start_source": "cited",
+   "end": -4500,
+   "end_source": "cited",
+   "quotes": [
+    "5500–4500 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Linear Pottery culture",
+   "revid": 1383367696,
+   "url": "https://en.wikipedia.org/w/index.php?title=Linear_Pottery_culture&oldid=1383367696",
+   "wikidata": "Q806348"
+  },
+  "unverified": [],
+  "sites": 170,
+  "observed": {
+   "start_p10": -5510,
+   "start_median": -5210,
+   "start_p90": -4880,
+   "centre": [
+    11.01,
+    49.82
+   ],
+   "bbox_p5_p95": [
+    3.31,
+    47.04,
+    20.59,
+    52.64
+   ]
+  },
+  "dates_used": 887,
+  "dates_outside_range": 233
+ },
+ {
+  "id": "stroke_ornamented",
+  "kind": "culture",
+  "name": "Stroke-ornamented Ware (SBK)",
+  "stage": "neolithic",
+  "traits": {
+   "houses": [
+    "longhouse"
+   ]
+  },
+  "range": {
+   "start": -4900,
+   "start_source": "cited",
+   "end": -4400,
+   "end_source": "cited",
+   "quotes": [
+    "4900-4400 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Stroke-ornamented ware culture",
+   "revid": 1383728815,
+   "url": "https://en.wikipedia.org/w/index.php?title=Stroke-ornamented_ware_culture&oldid=1383728815",
+   "wikidata": "Q1932196"
+  },
+  "unverified": [],
+  "sites": 10,
+  "observed": {
+   "start_p10": -4974,
+   "start_median": -4800,
+   "start_p90": -4268,
+   "centre": [
+    14.49,
+    50.58
+   ],
+   "bbox_p5_p95": [
+    7.33,
+    48.68,
+    18.47,
+    52.55
+   ]
+  },
+  "dates_used": 38,
+  "dates_outside_range": 69
+ },
+ {
+  "id": "grossgartach",
+  "kind": "culture",
+  "name": "Großgartach",
+  "stage": "neolithic",
+  "traits": {},
+  "range": {
+   "start": -5489,
+   "start_source": "observed",
+   "end": -4300,
+   "end_source": "cited",
+   "quotes": [
+    "between 4600 and 4300 bce"
+   ]
+  },
+  "wikipedia": {
+   "title": "Grossgartach culture",
+   "revid": 1344276271,
+   "url": "https://en.wikipedia.org/w/index.php?title=Grossgartach_culture&oldid=1344276271",
+   "wikidata": "Q1549257"
+  },
+  "unverified": [],
+  "sites": 6,
+  "observed": {
+   "start_p10": -5155,
+   "start_median": -4810,
+   "start_p90": -4425,
+   "centre": [
+    8.06,
+    50.14
+   ],
+   "bbox_p5_p95": [
+    6.39,
+    47.07,
+    10.0,
+    50.98
+   ]
+  },
+  "dates_used": 20,
+  "dates_outside_range": 15
+ },
+ {
+  "id": "rossen",
+  "kind": "culture",
+  "name": "Rössen",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming",
+   "houses": [
+    "longhouse"
+   ]
+  },
+  "range": {
+   "start": -4600,
+   "start_source": "cited",
+   "end": -4300,
+   "end_source": "cited",
+   "quotes": [
+    "4,600–4,300 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Rössen culture",
+   "revid": 1325126170,
+   "url": "https://en.wikipedia.org/w/index.php?title=R%C3%B6ssen_culture&oldid=1325126170",
+   "wikidata": "Q1886212"
+  },
+  "unverified": [],
+  "sites": 21,
+  "observed": {
+   "start_p10": -4750,
+   "start_median": -4620,
+   "start_p90": -4270,
+   "centre": [
+    6.64,
+    50.87
+   ],
+   "bbox_p5_p95": [
+    4.29,
+    48.18,
+    11.78,
+    52.1
+   ]
+  },
+  "dates_used": 48,
+  "dates_outside_range": 16
+ },
+ {
+  "id": "lengyel",
+  "kind": "culture",
+  "name": "Lengyel",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming",
+   "pottery": "painted",
+   "monuments": [
+    "roundel"
+   ]
+  },
+  "range": {
+   "start": -5000,
+   "start_source": "cited",
+   "end": -4000,
+   "end_source": "cited",
+   "quotes": [
+    "from 5000 to 4000 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Lengyel culture",
+   "revid": 1383351602,
+   "url": "https://en.wikipedia.org/w/index.php?title=Lengyel_culture&oldid=1383351602",
+   "wikidata": "Q668742"
+  },
+  "unverified": [],
+  "sites": 66,
+  "observed": {
+   "start_p10": -4885,
+   "start_median": -4580,
+   "start_p90": -4135,
+   "centre": [
+    16.71,
+    48.7
+   ],
+   "bbox_p5_p95": [
+    14.45,
+    46.88,
+    21.75,
+    52.78
+   ]
+  },
+  "dates_used": 245,
+  "dates_outside_range": 134
+ },
+ {
+  "id": "michelsberg",
+  "kind": "culture",
+  "name": "Michelsberg",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming",
+   "monuments": [
+    "enclosure"
+   ]
+  },
+  "range": {
+   "start": -4400,
+   "start_source": "cited",
+   "end": -3500,
+   "end_source": "cited",
+   "quotes": [
+    "4400–3500 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Michelsberg culture",
+   "revid": 1375608220,
+   "url": "https://en.wikipedia.org/w/index.php?title=Michelsberg_culture&oldid=1375608220",
+   "wikidata": "Q570798"
+  },
+  "unverified": [],
+  "sites": 60,
+  "observed": {
+   "start_p10": -4461,
+   "start_median": -4130,
+   "start_p90": -3658,
+   "centre": [
+    5.64,
+    50.44
+   ],
+   "bbox_p5_p95": [
+    3.16,
+    48.46,
+    9.42,
+    51.93
+   ]
+  },
+  "dates_used": 212,
+  "dates_outside_range": 98
+ },
+ {
+  "id": "funnelbeaker",
+  "kind": "culture",
+  "name": "Funnel Beaker (TRB)",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming",
+   "burial": [
+    "megalithic tomb"
+   ],
+   "monuments": [
+    "megaliths"
+   ]
+  },
+  "range": {
+   "start": -4100,
+   "start_source": "cited",
+   "end": -2800,
+   "end_source": "cited",
+   "quotes": [
+    "4100–2800 bce"
+   ]
+  },
+  "wikipedia": {
+   "title": "Funnelbeaker culture",
+   "revid": 1373647642,
+   "url": "https://en.wikipedia.org/w/index.php?title=Funnelbeaker_culture&oldid=1373647642",
+   "wikidata": "Q875115"
+  },
+  "unverified": [],
+  "sites": 233,
+  "observed": {
+   "start_p10": -4006,
+   "start_median": -3580,
+   "start_p90": -3182,
+   "centre": [
+    12.68,
+    54.38
+   ],
+   "bbox_p5_p95": [
+    8.89,
+    50.72,
+    20.4,
+    59.14
+   ]
+  },
+  "dates_used": 990,
+  "dates_outside_range": 442
+ },
+ {
+  "id": "globular_amphora",
+  "kind": "culture",
+  "name": "Globular Amphora",
+  "stage": "chalcolithic",
+  "traits": {
+   "economy": "farming",
+   "burial": [
+    "megalithic tomb"
+   ],
+   "domesticates": [
+    "cattle"
+   ]
+  },
+  "range": {
+   "start": -3400,
+   "start_source": "cited",
+   "end": -2800,
+   "end_source": "cited",
+   "quotes": [
+    "3400–2800 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Globular Amphora culture",
+   "revid": 1377032753,
+   "url": "https://en.wikipedia.org/w/index.php?title=Globular_Amphora_culture&oldid=1377032753",
+   "wikidata": "Q218257"
+  },
+  "unverified": [],
+  "sites": 13,
+  "observed": {
+   "start_p10": -3406,
+   "start_median": -3160,
+   "start_p90": -2976,
+   "centre": [
+    17.23,
+    52.6
+   ],
+   "bbox_p5_p95": [
+    12.19,
+    49.57,
+    19.94,
+    54.14
+   ]
+  },
+  "dates_used": 24,
+  "dates_outside_range": 116
+ },
+ {
+  "id": "corded_ware",
+  "kind": "culture",
+  "name": "Corded Ware",
+  "stage": "chalcolithic",
+  "traits": {
+   "economy": "herding",
+   "pottery": "cord impressed",
+   "burial": [
+    "barrow",
+    "individual"
+   ],
+   "metal": [
+    "copper"
+   ],
+   "other": [
+    "battle axes"
+   ]
+  },
+  "range": {
+   "start": -2900,
+   "start_source": "cited",
+   "end": -2300,
+   "end_source": "cited",
+   "quotes": [
+    "2900 bc and 2300 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Corded Ware culture",
+   "revid": 1381228762,
+   "url": "https://en.wikipedia.org/w/index.php?title=Corded_Ware_culture&oldid=1381228762",
+   "wikidata": "Q933996"
+  },
+  "unverified": [],
+  "sites": 17,
+  "observed": {
+   "start_p10": -3048,
+   "start_median": -2530,
+   "start_p90": -2190,
+   "centre": [
+    11.67,
+    52.26
+   ],
+   "bbox_p5_p95": [
+    6.42,
+    47.39,
+    19.41,
+    55.54
+   ]
+  },
+  "dates_used": 33,
+  "dates_outside_range": 186
+ },
+ {
+  "id": "bell_beaker",
+  "kind": "culture",
+  "name": "Bell Beaker",
+  "stage": "chalcolithic",
+  "traits": {
+   "economy": "farming",
+   "burial": [
+    "individual"
+   ],
+   "metal": [
+    "copper",
+    "gold"
+   ],
+   "other": [
+    "archery"
+   ]
+  },
+  "range": {
+   "start": -2800,
+   "start_source": "cited",
+   "end": -1800,
+   "end_source": "cited",
+   "quotes": [
+    "2800-1800 bce"
+   ]
+  },
+  "wikipedia": {
+   "title": "Bell Beaker culture",
+   "revid": 1381906404,
+   "url": "https://en.wikipedia.org/w/index.php?title=Bell_Beaker_culture&oldid=1381906404",
+   "wikidata": "Q470867"
+  },
+  "unverified": [],
+  "sites": 49,
+  "observed": {
+   "start_p10": -2922,
+   "start_median": -2390,
+   "start_p90": -1977,
+   "centre": [
+    4.8,
+    49.42
+   ],
+   "bbox_p5_p95": [
+    -8.98,
+    38.74,
+    17.88,
+    54.47
+   ]
+  },
+  "dates_used": 205,
+  "dates_outside_range": 321
+ },
+ {
+  "id": "swifterbant",
+  "kind": "culture",
+  "name": "Swifterbant",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "mixed"
+  },
+  "range": {
+   "start": -5300,
+   "start_source": "cited",
+   "end": -3400,
+   "end_source": "cited",
+   "quotes": [
+    "between 5300 bc and 3400 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Swifterbant culture",
+   "revid": 1382135390,
+   "url": "https://en.wikipedia.org/w/index.php?title=Swifterbant_culture&oldid=1382135390",
+   "wikidata": "Q4410983"
+  },
+  "unverified": [],
+  "sites": 30,
+  "observed": {
+   "start_p10": -5155,
+   "start_median": -4230,
+   "start_p90": -3887,
+   "centre": [
+    5.03,
+    51.97
+   ],
+   "bbox_p5_p95": [
+    4.37,
+    51.52,
+    6.85,
+    52.94
+   ]
+  },
+  "dates_used": 203,
+  "dates_outside_range": 27
+ },
+ {
+  "id": "vlaardingen",
+  "kind": "culture",
+  "name": "Vlaardingen",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming"
+  },
+  "range": {
+   "start": -3500,
+   "start_source": "cited",
+   "end": -2500,
+   "end_source": "cited",
+   "quotes": [
+    "3500 bc and 2500 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Vlaardingen culture",
+   "revid": 1382136212,
+   "url": "https://en.wikipedia.org/w/index.php?title=Vlaardingen_culture&oldid=1382136212",
+   "wikidata": "Q378100"
+  },
+  "unverified": [],
+  "sites": 8,
+  "observed": {
+   "start_p10": -3227,
+   "start_median": -3060,
+   "start_p90": -2865,
+   "centre": [
+    4.59,
+    51.89
+   ],
+   "bbox_p5_p95": [
+    3.73,
+    51.68,
+    5.07,
+    52.13
+   ]
+  },
+  "dates_used": 10,
+  "dates_outside_range": 17
+ },
+ {
+  "id": "pitted_ware",
+  "kind": "culture",
+  "name": "Pitted Ware",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "foraging",
+   "pottery": "pitted",
+   "other": [
+    "seal hunting"
+   ]
+  },
+  "range": {
+   "start": -3500,
+   "start_source": "cited",
+   "end": -2300,
+   "end_source": "cited",
+   "quotes": [
+    "3500 bc–c. 2300 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Pitted Ware culture",
+   "revid": 1368849338,
+   "url": "https://en.wikipedia.org/w/index.php?title=Pitted_Ware_culture&oldid=1368849338",
+   "wikidata": "Q1551765"
+  },
+  "unverified": [],
+  "sites": 46,
+  "observed": {
+   "start_p10": -3450,
+   "start_median": -3200,
+   "start_p90": -3005,
+   "centre": [
+    16.51,
+    58.65
+   ],
+   "bbox_p5_p95": [
+    11.16,
+    56.45,
+    18.12,
+    61.99
+   ]
+  },
+  "dates_used": 250,
+  "dates_outside_range": 99
+ },
+ {
+  "id": "wartberg",
+  "kind": "culture",
+  "name": "Wartberg",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming",
+   "burial": [
+    "megalithic tomb"
+   ]
+  },
+  "range": {
+   "start": -3600,
+   "start_source": "cited",
+   "end": -2800,
+   "end_source": "cited",
+   "quotes": [
+    "3,600 -2,800 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Wartberg culture",
+   "revid": 1361175720,
+   "url": "https://en.wikipedia.org/w/index.php?title=Wartberg_culture&oldid=1361175720",
+   "wikidata": "Q875479"
+  },
+  "unverified": [],
+  "sites": 5,
+  "observed": {
+   "start_p10": -3348,
+   "start_median": -3160,
+   "start_p90": -2770,
+   "centre": [
+    9.4,
+    51.4
+   ],
+   "bbox_p5_p95": [
+    9.12,
+    49.15,
+    11.93,
+    51.51
+   ]
+  },
+  "dates_used": 7,
+  "dates_outside_range": 10
+ },
+ {
+  "id": "egolzwil",
+  "kind": "culture",
+  "name": "Egolzwil",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming",
+   "houses": [
+    "pile dwelling"
+   ]
+  },
+  "range": {
+   "start": -4340,
+   "start_source": "observed",
+   "end": -2990,
+   "end_source": "observed"
+  },
+  "wikipedia": {
+   "title": "Wauwilermoos pile dwelling settlement (Egolzwil 3)",
+   "revid": 1324391627,
+   "url": "https://en.wikipedia.org/w/index.php?title=Wauwilermoos_pile_dwelling_settlement_%28Egolzwil_3%29&oldid=1324391627",
+   "wikidata": "Q3049225"
+  },
+  "unverified": [],
+  "sites": 2,
+  "observed": {
+   "start_p10": -4381,
+   "start_median": -4305,
+   "start_p90": -4229,
+   "centre": [
+    8.27,
+    47.28
+   ],
+   "bbox_p5_p95": [
+    8.03,
+    47.19,
+    8.52,
+    47.36
+   ]
+  },
+  "dates_used": 6,
+  "dates_outside_range": 2
+ },
+ {
+  "id": "cortaillod",
+  "kind": "culture",
+  "name": "Cortaillod",
+  "stage": "neolithic",
+  "traits": {},
+  "range": {
+   "start": -4300,
+   "start_source": "cited",
+   "end": -3500,
+   "end_source": "cited",
+   "quotes": [
+    "4300-3900 bc",
+    "3900-3500 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Cortaillod culture",
+   "revid": 1381902264,
+   "url": "https://en.wikipedia.org/w/index.php?title=Cortaillod_culture&oldid=1381902264",
+   "wikidata": "Q671984"
+  },
+  "unverified": [],
+  "sites": 26,
+  "observed": {
+   "start_p10": -4335,
+   "start_median": -3945,
+   "start_p90": -3530,
+   "centre": [
+    7.13,
+    46.93
+   ],
+   "bbox_p5_p95": [
+    5.88,
+    46.23,
+    8.54,
+    47.39
+   ]
+  },
+  "dates_used": 100,
+  "dates_outside_range": 109
+ },
+ {
+  "id": "pfyn",
+  "kind": "culture",
+  "name": "Pfyn",
+  "stage": "chalcolithic",
+  "traits": {
+   "economy": "farming",
+   "houses": [
+    "pile dwelling"
+   ],
+   "metal": [
+    "copper"
+   ]
+  },
+  "range": {
+   "start": -4300,
+   "start_source": "cited",
+   "end": -3500,
+   "end_source": "cited",
+   "quotes": [
+    "4300 bc to c. 3500 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Pfyn culture",
+   "revid": 1354705802,
+   "url": "https://en.wikipedia.org/w/index.php?title=Pfyn_culture&oldid=1354705802",
+   "wikidata": "Q685970"
+  },
+  "unverified": [],
+  "sites": 22,
+  "observed": {
+   "start_p10": -4147,
+   "start_median": -3845,
+   "start_p90": -3518,
+   "centre": [
+    8.87,
+    47.58
+   ],
+   "bbox_p5_p95": [
+    8.54,
+    47.28,
+    9.63,
+    47.89
+   ]
+  },
+  "dates_used": 92,
+  "dates_outside_range": 37
+ },
+ {
+  "id": "horgen",
+  "kind": "culture",
+  "name": "Horgen",
+  "stage": "neolithic",
+  "traits": {
+   "houses": [
+    "pile dwelling"
+   ]
+  },
+  "range": {
+   "start": -3400,
+   "start_source": "cited",
+   "end": -2850,
+   "end_source": "cited",
+   "quotes": [
+    "3500/3400 cal bc and lasted until 2850 cal bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Horgen culture",
+   "revid": 1353167688,
+   "url": "https://en.wikipedia.org/w/index.php?title=Horgen_culture&oldid=1353167688",
+   "wikidata": "Q672010"
+  },
+  "unverified": [],
+  "sites": 21,
+  "observed": {
+   "start_p10": -3270,
+   "start_median": -3180,
+   "start_p90": -2890,
+   "centre": [
+    9.0,
+    47.69
+   ],
+   "bbox_p5_p95": [
+    7.62,
+    47.17,
+    9.62,
+    48.1
+   ]
+  },
+  "dates_used": 143,
+  "dates_outside_range": 51
+ },
+ {
+  "id": "altheim",
+  "kind": "culture",
+  "name": "Altheim",
+  "stage": "chalcolithic",
+  "traits": {},
+  "range": {
+   "start": -3800,
+   "start_source": "cited",
+   "end": -3400,
+   "end_source": "cited",
+   "quotes": [
+    "3800 and 3400 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Altheim culture",
+   "revid": 1349897756,
+   "url": "https://en.wikipedia.org/w/index.php?title=Altheim_culture&oldid=1349897756",
+   "wikidata": "Q319562"
+  },
+  "unverified": [],
+  "sites": 2,
+  "observed": {
+   "start_p10": -3690,
+   "start_median": -3610,
+   "start_p90": -3530,
+   "centre": [
+    12.4,
+    48.67
+   ],
+   "bbox_p5_p95": [
+    12.18,
+    48.57,
+    12.62,
+    48.78
+   ]
+  },
+  "dates_used": 12,
+  "dates_outside_range": 72
+ },
+ {
+  "id": "mondsee",
+  "kind": "culture",
+  "name": "Mondsee",
+  "stage": "chalcolithic",
+  "traits": {
+   "houses": [
+    "pile dwelling"
+   ],
+   "metal": [
+    "copper"
+   ]
+  },
+  "range": {
+   "start": -3800,
+   "start_source": "cited",
+   "end": -2800,
+   "end_source": "cited",
+   "quotes": [
+    "3800–2800 cal bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Mondsee group",
+   "revid": 1355329586,
+   "url": "https://en.wikipedia.org/w/index.php?title=Mondsee_group&oldid=1355329586",
+   "wikidata": "Q646379"
+  },
+  "unverified": [],
+  "sites": 7,
+  "observed": {
+   "start_p10": -3720,
+   "start_median": -3490,
+   "start_p90": -3210,
+   "centre": [
+    13.48,
+    47.81
+   ],
+   "bbox_p5_p95": [
+    13.39,
+    46.95,
+    13.95,
+    47.91
+   ]
+  },
+  "dates_used": 24,
+  "dates_outside_range": 1
+ },
+ {
+  "id": "cerny",
+  "kind": "culture",
+  "name": "Cerny",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming"
+  },
+  "range": {
+   "start": -4500,
+   "start_source": "cited",
+   "end": -4000,
+   "end_source": "cited",
+   "quotes": [
+    "second half of the 5th millennium bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Cerny culture",
+   "revid": 1344502342,
+   "url": "https://en.wikipedia.org/w/index.php?title=Cerny_culture&oldid=1344502342",
+   "wikidata": "Q2666940"
+  },
+  "unverified": [],
+  "sites": 10,
+  "observed": {
+   "start_p10": -4504,
+   "start_median": -4385,
+   "start_p90": -4126,
+   "centre": [
+    2.05,
+    48.47
+   ],
+   "bbox_p5_p95": [
+    -2.18,
+    47.33,
+    3.43,
+    50.63
+   ]
+  },
+  "dates_used": 13,
+  "dates_outside_range": 7
+ },
+ {
+  "id": "villeneuve_saint_germain",
+  "kind": "culture",
+  "name": "Villeneuve-Saint-Germain / Blicquy",
+  "stage": "neolithic",
+  "traits": {},
+  "range": {
+   "start": -5442,
+   "start_source": "observed",
+   "end": -3716,
+   "end_source": "observed"
+  },
+  "wikipedia": {
+   "title": "Villeneuve-Saint-Germain",
+   "revid": 1381816527,
+   "url": "https://en.wikipedia.org/w/index.php?title=Villeneuve-Saint-Germain&oldid=1381816527",
+   "wikidata": "Q1020361"
+  },
+  "unverified": [],
+  "sites": 8,
+  "observed": {
+   "start_p10": -5472,
+   "start_median": -5220,
+   "start_p90": -4888,
+   "centre": [
+    3.02,
+    49.03
+   ],
+   "bbox_p5_p95": [
+    1.69,
+    48.35,
+    5.1,
+    50.52
+   ]
+  },
+  "dates_used": 39,
+  "dates_outside_range": 5
+ },
+ {
+  "id": "chasseen",
+  "kind": "culture",
+  "name": "Chasséen",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming"
+  },
+  "range": {
+   "start": -4500,
+   "start_source": "cited",
+   "end": -3500,
+   "end_source": "cited",
+   "quotes": [
+    "4500 bc and 3500 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Chasséen culture",
+   "revid": 1357473489,
+   "url": "https://en.wikipedia.org/w/index.php?title=Chass%C3%A9en_culture&oldid=1357473489",
+   "wikidata": "Q688898"
+  },
+  "unverified": [],
+  "sites": 107,
+  "observed": {
+   "start_p10": -4568,
+   "start_median": -4180,
+   "start_p90": -3678,
+   "centre": [
+    3.9,
+    44.1
+   ],
+   "bbox_p5_p95": [
+    0.56,
+    43.26,
+    7.78,
+    48.29
+   ]
+  },
+  "dates_used": 509,
+  "dates_outside_range": 277
+ },
+ {
+  "id": "seine_oise_marne",
+  "kind": "culture",
+  "name": "Seine-Oise-Marne",
+  "stage": "chalcolithic",
+  "traits": {
+   "economy": "farming",
+   "burial": [
+    "megalithic tomb",
+    "collective"
+   ]
+  },
+  "range": {
+   "start": -3100,
+   "start_source": "cited",
+   "end": -2000,
+   "end_source": "cited",
+   "quotes": [
+    "3100 to 2000 bce"
+   ]
+  },
+  "wikipedia": {
+   "title": "Seine–Oise–Marne culture",
+   "revid": 1350573375,
+   "url": "https://en.wikipedia.org/w/index.php?title=Seine%E2%80%93Oise%E2%80%93Marne_culture&oldid=1350573375",
+   "wikidata": "Q770563"
+  },
+  "unverified": [],
+  "sites": 5,
+  "observed": {
+   "start_p10": -3244,
+   "start_median": -3180,
+   "start_p90": -2398,
+   "centre": [
+    2.49,
+    49.39
+   ],
+   "bbox_p5_p95": [
+    2.12,
+    48.16,
+    4.46,
+    50.28
+   ]
+  },
+  "dates_used": 11,
+  "dates_outside_range": 37
+ },
+ {
+  "id": "artenac",
+  "kind": "culture",
+  "name": "Artenac",
+  "stage": "chalcolithic",
+  "traits": {},
+  "range": {
+   "start": -3415,
+   "start_source": "observed",
+   "end": -2492,
+   "end_source": "observed"
+  },
+  "wikipedia": {
+   "title": "Artenacian culture",
+   "revid": 1381229245,
+   "url": "https://en.wikipedia.org/w/index.php?title=Artenacian_culture&oldid=1381229245",
+   "wikidata": "Q2864890"
+  },
+  "unverified": [],
+  "sites": 3,
+  "observed": {
+   "start_p10": -3310,
+   "start_median": -3270,
+   "start_p90": -3214,
+   "centre": [
+    0.34,
+    45.72
+   ],
+   "bbox_p5_p95": [
+    -0.54,
+    45.31,
+    1.01,
+    46.04
+   ]
+  },
+  "dates_used": 26,
+  "dates_outside_range": 4
+ },
+ {
+  "id": "veraza",
+  "kind": "culture",
+  "name": "Véraza",
+  "stage": "chalcolithic",
+  "traits": {
+   "economy": "farming"
+  },
+  "range": {
+   "start": -3500,
+   "start_source": "cited",
+   "end": -2000,
+   "end_source": "cited",
+   "quotes": [
+    "3500 and 2000 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Véraza culture",
+   "revid": 1323829885,
+   "url": "https://en.wikipedia.org/w/index.php?title=V%C3%A9raza_culture&oldid=1323829885",
+   "wikidata": "Q3007227"
+  },
+  "unverified": [],
+  "sites": 16,
+  "observed": {
+   "start_p10": -3340,
+   "start_median": -3100,
+   "start_p90": -2670,
+   "centre": [
+    2.46,
+    43.36
+   ],
+   "bbox_p5_p95": [
+    1.66,
+    42.82,
+    3.07,
+    43.56
+   ]
+  },
+  "dates_used": 33,
+  "dates_outside_range": 50
+ },
+ {
+  "id": "montbolo",
+  "kind": "culture",
+  "name": "Montbolo",
+  "stage": "neolithic",
+  "traits": {},
+  "range": {
+   "start": -5212,
+   "start_source": "observed",
+   "end": -2457,
+   "end_source": "observed"
+  },
+  "wikipedia": {
+   "title": "Montbolo culture",
+   "revid": 1370887730,
+   "url": "https://en.wikipedia.org/w/index.php?title=Montbolo_culture&oldid=1370887730",
+   "wikidata": "Q121745656"
+  },
+  "unverified": [],
+  "sites": 10,
+  "observed": {
+   "start_p10": -4643,
+   "start_median": -4075,
+   "start_p90": -3323,
+   "centre": [
+    2.58,
+    42.69
+   ],
+   "bbox_p5_p95": [
+    1.69,
+    41.38,
+    2.76,
+    42.83
+   ]
+  },
+  "dates_used": 30,
+  "dates_outside_range": 9
+ },
+ {
+  "id": "impressed_ware",
+  "kind": "culture",
+  "name": "Impressed Ware",
+  "stage": "neolithic",
+  "traits": {
+   "pottery": "impressed"
+  },
+  "range": {
+   "start": -6400,
+   "start_source": "cited",
+   "end": -3015,
+   "end_source": "observed",
+   "quotes": [
+    "6400–6200 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Cardium pottery",
+   "revid": 1376493748,
+   "url": "https://en.wikipedia.org/w/index.php?title=Cardium_pottery&oldid=1376493748",
+   "wikidata": "Q1035710"
+  },
+  "unverified": [],
+  "sites": 58,
+  "observed": {
+   "start_p10": -6296,
+   "start_median": -5765,
+   "start_p90": -5208,
+   "centre": [
+    15.81,
+    41.9
+   ],
+   "bbox_p5_p95": [
+    6.19,
+    39.55,
+    18.71,
+    44.67
+   ]
+  },
+  "dates_used": 238,
+  "dates_outside_range": 59
+ },
+ {
+  "id": "cardial",
+  "kind": "culture",
+  "name": "Cardial",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming",
+   "pottery": "cardium impressed"
+  },
+  "range": {
+   "start": -6450,
+   "start_source": "observed",
+   "end": -3371,
+   "end_source": "observed"
+  },
+  "wikipedia": {
+   "title": "Cardium pottery",
+   "revid": 1376493748,
+   "url": "https://en.wikipedia.org/w/index.php?title=Cardium_pottery&oldid=1376493748",
+   "wikidata": "Q1035710"
+  },
+  "unverified": [],
+  "sites": 131,
+  "observed": {
+   "start_p10": -6300,
+   "start_median": -5410,
+   "start_p90": -4840,
+   "centre": [
+    2.71,
+    42.25
+   ],
+   "bbox_p5_p95": [
+    -6.0,
+    35.5,
+    9.21,
+    45.48
+   ]
+  },
+  "dates_used": 571,
+  "dates_outside_range": 164
+ },
+ {
+  "id": "stentinello",
+  "kind": "culture",
+  "name": "Stentinello",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming",
+   "monuments": [
+    "enclosure"
+   ]
+  },
+  "range": {
+   "start": -5000,
+   "start_source": "cited",
+   "end": -4000,
+   "end_source": "cited",
+   "quotes": [
+    "fifth millennium bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Stentinello culture",
+   "revid": 1373253743,
+   "url": "https://en.wikipedia.org/w/index.php?title=Stentinello_culture&oldid=1373253743",
+   "wikidata": "Q16545225"
+  },
+  "unverified": [],
+  "sites": 5,
+  "observed": {
+   "start_p10": -5110,
+   "start_median": -4840,
+   "start_p90": -4636,
+   "centre": [
+    15.92,
+    38.17
+   ],
+   "bbox_p5_p95": [
+    13.38,
+    37.96,
+    17.01,
+    38.99
+   ]
+  },
+  "dates_used": 11,
+  "dates_outside_range": 46
+ },
+ {
+  "id": "square_mouthed_pottery",
+  "kind": "culture",
+  "name": "Square-mouthed Pottery (VBQ)",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming",
+   "pottery": "square mouthed"
+  },
+  "range": {
+   "start": -5000,
+   "start_source": "cited",
+   "end": -4000,
+   "end_source": "cited",
+   "quotes": [
+    "fifth millennium bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Square-mouthed vases culture",
+   "revid": 1332368707,
+   "url": "https://en.wikipedia.org/w/index.php?title=Square-mouthed_vases_culture&oldid=1332368707",
+   "wikidata": "Q2511062"
+  },
+  "unverified": [],
+  "sites": 9,
+  "observed": {
+   "start_p10": -4978,
+   "start_median": -4600,
+   "start_p90": -4384,
+   "centre": [
+    11.02,
+    45.47
+   ],
+   "bbox_p5_p95": [
+    6.27,
+    43.95,
+    11.65,
+    46.06
+   ]
+  },
+  "dates_used": 42,
+  "dates_outside_range": 39
+ },
+ {
+  "id": "ozieri",
+  "kind": "culture",
+  "name": "Ozieri",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming"
+  },
+  "range": {
+   "start": -4200,
+   "start_source": "cited",
+   "end": -2800,
+   "end_source": "cited",
+   "quotes": [
+    "4200 and 3400 cal. bce",
+    "3200 and 2800 bce"
+   ]
+  },
+  "wikipedia": {
+   "title": "Ozieri culture",
+   "revid": 1358759482,
+   "url": "https://en.wikipedia.org/w/index.php?title=Ozieri_culture&oldid=1358759482",
+   "wikidata": "Q1473758"
+  },
+  "unverified": [],
+  "sites": 3,
+  "observed": {
+   "start_p10": -3834,
+   "start_median": -3690,
+   "start_p90": -3210,
+   "centre": [
+    8.64,
+    40.41
+   ],
+   "bbox_p5_p95": [
+    8.63,
+    40.3,
+    9.42,
+    40.44
+   ]
+  },
+  "dates_used": 8,
+  "dates_outside_range": 9
+ },
+ {
+  "id": "british_early_neolithic",
+  "kind": "culture",
+  "name": "Early Neolithic of Britain and Ireland",
+  "stage": "neolithic",
+  "traits": {
+   "economy": "farming",
+   "monuments": [
+    "megaliths"
+   ]
+  },
+  "range": {
+   "start": -4000,
+   "start_source": "cited",
+   "end": -2900,
+   "end_source": "cited",
+   "quotes": [
+    "early and middle neolithic: 4000–2900 bc"
+   ]
+  },
+  "wikipedia": {
+   "title": "Neolithic British Isles",
+   "revid": 1367503164,
+   "url": "https://en.wikipedia.org/w/index.php?title=Neolithic_British_Isles&oldid=1367503164",
+   "wikidata": "Q6993183"
+  },
+  "unverified": [],
+  "sites": 11,
+  "observed": {
+   "start_p10": -4080,
+   "start_median": -3770,
+   "start_p90": -3490,
+   "centre": [
+    -1.96,
+    51.43
+   ],
+   "bbox_p5_p95": [
+    -5.76,
+    50.84,
+    -0.49,
+    58.23
+   ]
+  },
+  "dates_used": 173,
+  "dates_outside_range": 14
+ }
+]
