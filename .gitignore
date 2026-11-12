@@ -13,3 +13,6 @@ build/
 
 # Vercel
 .vercel
+
+# Python
+__pycache__/
