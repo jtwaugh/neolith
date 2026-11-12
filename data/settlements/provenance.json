@@ -1,0 +1,858 @@
+[
+ {
+  "dataset": "intcal20",
+  "url": "https://intcal.org/curves/intcal20.14c",
+  "path": "build/settlements/intcal20.14c",
+  "sha256": "974a66649f2ac8a53e6c99e256b019ac6982f999b12dcf7193162d4c1c09168e",
+  "bytes": 221617,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "neonetatl",
+  "url": "https://digitallib.unipi.it/fedora/objects/mag:2627/datastreams/MM54ff3698c0ea78b77469ce6462c2ca36/content",
+  "path": "build/settlements/neonet_atl_v1.tsv",
+  "sha256": "e135a1060a7bf51db7c162b3920cb6bdc1afce0309ee8010e11dc8d5e4c1a0ae",
+  "bytes": 168615,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "neonet",
+  "url": "https://digitallib.unipi.it/fedora/objects/mag:2814/datastreams/MMb714bbfacf4af2ce1fd7025e3789a99b/content",
+  "path": "build/settlements/neonet_med_v2.tsv",
+  "sha256": "6534cdaf2e43a0a1b1c8df81dfc223498020ffa2ac2b0a55f1179dfd77b592cb",
+  "bytes": 386913,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "p3k14c",
+  "url": "https://raw.githubusercontent.com/people3k/p3k14c/refs/tags/2025.07/inst/p3k14c_scrubbed_fuzzed.csv",
+  "path": "build/settlements/p3k14c_2025.07.csv",
+  "sha256": "5c92b7ae96959bc2924409cf66a8919aac955a4abac5545fad26f3fb209eca0c",
+  "bytes": 25855422,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=AD",
+  "path": "build/settlements/xronos_country_AD.json",
+  "sha256": "aa03059db28d8216196e4dcd23853760e4ce0d8e52a0bcdaf09daa3b8b8beed2",
+  "bytes": 534892,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=AE",
+  "path": "build/settlements/xronos_country_AE.json",
+  "sha256": "38b59154cf254bbb8b74cec4466520cdcaa70c6cf7122e029d79f0f40ab21609",
+  "bytes": 120977,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=AF",
+  "path": "build/settlements/xronos_country_AF.json",
+  "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+  "bytes": 4,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=AL",
+  "path": "build/settlements/xronos_country_AL.json",
+  "sha256": "69343350bde8f9a5f17ea4472c7d7f8b7949321ce07ad97893be5647c2c56504",
+  "bytes": 74166,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=AM",
+  "path": "build/settlements/xronos_country_AM.json",
+  "sha256": "ffbcdf8983ea3c840b6fe87a74ad74a50b72043b5f2ec90ce54b154c83b2ead4",
+  "bytes": 291732,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=AT",
+  "path": "build/settlements/xronos_country_AT.json",
+  "sha256": "57e99ab71c13f54db825b1b47f3078b359dfca52fb9552dfc3c52c8040da836a",
+  "bytes": 5314599,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=AZ",
+  "path": "build/settlements/xronos_country_AZ.json",
+  "sha256": "9d1f4a9b72f7c9b0298fea84676321f1d544a3cc7c3017b7decba7c4e073e752",
+  "bytes": 218206,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=BA",
+  "path": "build/settlements/xronos_country_BA.json",
+  "sha256": "d6307a247c6e258a55d1c3cbfcf5dd62027fb2c62477eb4006ad86e499e22c6a",
+  "bytes": 232857,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=BE",
+  "path": "build/settlements/xronos_country_BE.json",
+  "sha256": "39c3a90fb02ee60611d2f1ececddec9a58e24551a606d63bbb7b4a7cc659d9d6",
+  "bytes": 6147775,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=BF",
+  "path": "build/settlements/xronos_country_BF.json",
+  "sha256": "920d364cd7793a12bf8f8809302d9bda77386a203508feebfecbfd819e4fd603",
+  "bytes": 61945,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=BG",
+  "path": "build/settlements/xronos_country_BG.json",
+  "sha256": "24c6393a7433413262ce1c9f8bd78a85adb4981dc8777c54d94ef05b953a9366",
+  "bytes": 6457895,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=BH",
+  "path": "build/settlements/xronos_country_BH.json",
+  "sha256": "312751372770257135ef7094d9937480ee36970595b5229af429cfb613e70af0",
+  "bytes": 13069,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=BJ",
+  "path": "build/settlements/xronos_country_BJ.json",
+  "sha256": "b5f22c5d434bd7fd49588c8d525c780e06a08caac615fa98d990a0fa3a785061",
+  "bytes": 30620,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=BY",
+  "path": "build/settlements/xronos_country_BY.json",
+  "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+  "bytes": 4,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=CF",
+  "path": "build/settlements/xronos_country_CF.json",
+  "sha256": "03b03fe6a249a94ce3575691cac88f6734f103d8533fc06473361cad49391974",
+  "bytes": 438,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=CH",
+  "path": "build/settlements/xronos_country_CH.json",
+  "sha256": "ff995f98ca1f43cea51f74e4a5ba9a14cb0c06739876bf2cf179507086b18744",
+  "bytes": 15449198,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=CI",
+  "path": "build/settlements/xronos_country_CI.json",
+  "sha256": "883458dbe82a6ddfeb281afc97233e63115df9be5bea9b51fdb6b1c0b5f122c2",
+  "bytes": 35039,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=CM",
+  "path": "build/settlements/xronos_country_CM.json",
+  "sha256": "abec8e711b68d4551caa201bf87424d67eb5614a2e1fd1035dfbd2c87184fa96",
+  "bytes": 153929,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=CY",
+  "path": "build/settlements/xronos_country_CY.json",
+  "sha256": "376c4b9c19098cadc82cbf1ee6b22e36138719998f763b6d8c473730da7483ae",
+  "bytes": 3893133,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=CZ",
+  "path": "build/settlements/xronos_country_CZ.json",
+  "sha256": "c18878769d9b2979e5d3f3678ea72a3e27ae22cb5ae66e134667a0759654ce0a",
+  "bytes": 2998105,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=Crete",
+  "path": "build/settlements/xronos_country_Crete.json",
+  "sha256": "b6540523dc165e3e001836d61a016ba8f9a789abc88c04d6985fa4cccb231d53",
+  "bytes": 663445,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=DE",
+  "path": "build/settlements/xronos_country_DE.json",
+  "sha256": "907ec3c7e13c08d7cf1fcfd40bad62e8ee2f2947c0eb3eda5fb427004fefd28b",
+  "bytes": 69528388,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=DJ",
+  "path": "build/settlements/xronos_country_DJ.json",
+  "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+  "bytes": 4,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=DK",
+  "path": "build/settlements/xronos_country_DK.json",
+  "sha256": "ec417f1edbf6f7d1ce813661622049e6d00e7321e5dc8903e8cc216af18694a3",
+  "bytes": 8264310,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=DZ",
+  "path": "build/settlements/xronos_country_DZ.json",
+  "sha256": "bcbd5aaee4a009461b8c779ba4773feaf9150df7251ccb20238b719c664d64be",
+  "bytes": 1266567,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=EE",
+  "path": "build/settlements/xronos_country_EE.json",
+  "sha256": "e48f2682acb9eac1862c4ec0b93e29a0867e4f24aa98f78e23ded99577aa6704",
+  "bytes": 20898,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=EG",
+  "path": "build/settlements/xronos_country_EG.json",
+  "sha256": "32d8bef8b96abaafd13b054a4ed220dfe10e2e7b681847e84ce7d6fef7494226",
+  "bytes": 29257632,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=EH",
+  "path": "build/settlements/xronos_country_EH.json",
+  "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+  "bytes": 4,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=ER",
+  "path": "build/settlements/xronos_country_ER.json",
+  "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+  "bytes": 4,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=ES",
+  "path": "build/settlements/xronos_country_ES.json",
+  "sha256": "c81ce96660a59aa18c4bf78b690c162eb8b9e4326d669320814dea9bad66d98c",
+  "bytes": 16679560,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=ET",
+  "path": "build/settlements/xronos_country_ET.json",
+  "sha256": "8f552a5e3e553dcdc5563bd830af004767fa9bc30b7792f29fb7b95e3313e40a",
+  "bytes": 22319,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=England%2FWales",
+  "path": "build/settlements/xronos_country_England_Wales.json",
+  "sha256": "8e08a38ccd386ca62e7cf1784e0e96fc9d456a3369f08e69bac3f70aee2fdb48",
+  "bytes": 24723333,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=Espa%C3%B1a",
+  "path": "build/settlements/xronos_country_Espa\u00f1a.json",
+  "sha256": "c61a50eb2c2a93f61331f256a8ab47d2ebca400f29bdebbc2291c68c66be8cdf",
+  "bytes": 37089,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=FI",
+  "path": "build/settlements/xronos_country_FI.json",
+  "sha256": "239e15dbb270277a308ed631b788bece88ff8267ceb3138bbdfe67ca3c73b8ea",
+  "bytes": 763053,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=FR",
+  "path": "build/settlements/xronos_country_FR.json",
+  "sha256": "91f2833bd07ccca37bfd85a478011350f845ce3e10b30b18f58f5b883c8b4561",
+  "bytes": 43567130,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=GB",
+  "path": "build/settlements/xronos_country_GB.json",
+  "sha256": "b3cecbc5bfb0e748a9ab654cae7bff7293f9954f7050652af84da629ac97592e",
+  "bytes": 34969145,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=GE",
+  "path": "build/settlements/xronos_country_GE.json",
+  "sha256": "dbb43c798b123b981d2a203cd541b0dc3ae8d382dcca36133dba5a3ffd28dc1d",
+  "bytes": 348432,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=GH",
+  "path": "build/settlements/xronos_country_GH.json",
+  "sha256": "0defc96beb8ef07cb6d0746297fa368f903e0e606c4f303f2c88f8f1180ad50c",
+  "bytes": 106900,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=GM",
+  "path": "build/settlements/xronos_country_GM.json",
+  "sha256": "22c1e90d9b3d2080d1a1bfe7fcd9d347981cb1058d02c228ba4a699db9f559a7",
+  "bytes": 616,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=GN",
+  "path": "build/settlements/xronos_country_GN.json",
+  "sha256": "ec5579c8dff1125aa8cb3690be33590b59f10487f4a898468cf40ddef4c073da",
+  "bytes": 3082,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=GR",
+  "path": "build/settlements/xronos_country_GR.json",
+  "sha256": "86a1114b318da49d080bb2858bc1fb436617afef91e35d81e21746b9ce636539",
+  "bytes": 25082546,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=GW",
+  "path": "build/settlements/xronos_country_GW.json",
+  "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+  "bytes": 4,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=HR",
+  "path": "build/settlements/xronos_country_HR.json",
+  "sha256": "edb3f0f312c907f9d0c6a30f8fef033521943a9b6de10d3a596ef5b78a5cfda6",
+  "bytes": 1346205,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=HU",
+  "path": "build/settlements/xronos_country_HU.json",
+  "sha256": "60ab6e192ad251747bd4ec8ee2a8ed795a2bfb5753162c855b2dcef9362294cc",
+  "bytes": 8319707,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=IE",
+  "path": "build/settlements/xronos_country_IE.json",
+  "sha256": "a41f4352eb04eae0cad5dbc654f68487c904e1f262d8f9a24288780de92cff83",
+  "bytes": 27360125,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=IL",
+  "path": "build/settlements/xronos_country_IL.json",
+  "sha256": "aa58a0dad79dd2a60344c5cb296e674f79c7d49ed6baf8d37d674dbc44c77c99",
+  "bytes": 7932668,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=IQ",
+  "path": "build/settlements/xronos_country_IQ.json",
+  "sha256": "57548cd4a5554ac353f527ec96f4321360fb95df9b9100b6af8150de5bc9f72c",
+  "bytes": 5963107,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=IR",
+  "path": "build/settlements/xronos_country_IR.json",
+  "sha256": "633bf57c47e8385a8747f2866ecf1b5f7636941b91dfc71e0ab9850e1d531ffd",
+  "bytes": 7968974,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=IS",
+  "path": "build/settlements/xronos_country_IS.json",
+  "sha256": "ddec47ab9f29c7cfc7f5088e4f0c3ad19b810d35cba382f97d95c39c690b0118",
+  "bytes": 31089,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=IT",
+  "path": "build/settlements/xronos_country_IT.json",
+  "sha256": "facc97a26414f37466f0bafc8826f0ffbdbe8ae6e67e6aaff2f14f9bfeb32410",
+  "bytes": 24062466,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=Israel%2FWest+Bank%2FGaza+Strip",
+  "path": "build/settlements/xronos_country_Israel_West_Bank_Gaza_Strip.json",
+  "sha256": "7174c3f107a2914baf537b70a8340e5de5553be883b00cef94674ba855cd3345",
+  "bytes": 24610,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=Israel%2C+Palestine",
+  "path": "build/settlements/xronos_country_Israel__Palestine.json",
+  "sha256": "a74ec250581526e19aea03b118e18ccb1ad32eb62a48b7f388b8a44c2340a6ac",
+  "bytes": 382213,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=JO",
+  "path": "build/settlements/xronos_country_JO.json",
+  "sha256": "c806c3125c449b68bf3d66bb441b8c0fd54fc69bb895c8629b11e70d2f04ce74",
+  "bytes": 10135054,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=KW",
+  "path": "build/settlements/xronos_country_KW.json",
+  "sha256": "a890040ab9ef93a9f13a15d5f27e77709d18dfe4de493284e2661b7091f3374d",
+  "bytes": 467,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=KZ",
+  "path": "build/settlements/xronos_country_KZ.json",
+  "sha256": "04b1bae8c99775e64a54f3cd939aa91c36c158649d40ca1a72ce3e19f3803831",
+  "bytes": 57608,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=Kosovo",
+  "path": "build/settlements/xronos_country_Kosovo.json",
+  "sha256": "c5e0c7fa3ce6f2d8aa3266d4dc31b7c1a5739401cb10bce734ecf996c04d88ae",
+  "bytes": 3614,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=LB",
+  "path": "build/settlements/xronos_country_LB.json",
+  "sha256": "d3288817ed535661aa4bffa38b6cfc5134bc1eff36f085a5ab656d7767b61917",
+  "bytes": 258905,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=LR",
+  "path": "build/settlements/xronos_country_LR.json",
+  "sha256": "cec364878f0f515210db5509dbb42f53ce53a66baf303690d3247ad2c5faf102",
+  "bytes": 4984,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=LT",
+  "path": "build/settlements/xronos_country_LT.json",
+  "sha256": "64fbe6f1d5c7f3261ee9827ca191613833a44a28d0c00b6957f96bc8ecd26223",
+  "bytes": 44101,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=LU",
+  "path": "build/settlements/xronos_country_LU.json",
+  "sha256": "f5d13d4309e48f6ff083500d69902446dbcefa7e7f2b348a4af49f08185ecfb9",
+  "bytes": 126667,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=LV",
+  "path": "build/settlements/xronos_country_LV.json",
+  "sha256": "85496ad34866b8f0e78a4ed98fa3c57c4474ba1d626b6b8d8dd8211cd35bde18",
+  "bytes": 85080,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=LY",
+  "path": "build/settlements/xronos_country_LY.json",
+  "sha256": "94d471fbef716bcf320cda50605ce2ccde68a963db3a0da322842d5338a0fab4",
+  "bytes": 850210,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=MA",
+  "path": "build/settlements/xronos_country_MA.json",
+  "sha256": "2fa6789463a4a50f76aa3b84def1736955f03245f75776f84d02021393d787b6",
+  "bytes": 4229116,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=MD",
+  "path": "build/settlements/xronos_country_MD.json",
+  "sha256": "c30e8bef97a390e3d547e24f09b1099ce242ca407dfb0a197cf55f26233a1f23",
+  "bytes": 220468,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=ME",
+  "path": "build/settlements/xronos_country_ME.json",
+  "sha256": "7439e858f587a1ed6c96cb14843f6f3503a26f2976bfdda9fe7d75a2d5189019",
+  "bytes": 51363,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=MK",
+  "path": "build/settlements/xronos_country_MK.json",
+  "sha256": "1d0528ff42bd7ab5514088769e3b2142073a2ef0d17b7696de05011eb2c96e28",
+  "bytes": 70010,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=ML",
+  "path": "build/settlements/xronos_country_ML.json",
+  "sha256": "e18748c259377583c01e425db0341c1a838360a9f1cadbcb5e9cd535349cc92e",
+  "bytes": 422857,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=MR",
+  "path": "build/settlements/xronos_country_MR.json",
+  "sha256": "7c5ac38cbafcced2421419a490d4b24b981d801037eaaff815c6f5b0024c9d5d",
+  "bytes": 44599,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=MT",
+  "path": "build/settlements/xronos_country_MT.json",
+  "sha256": "f539056e6bbd31faeb8b668376c47c3a30b5d1fa813d006932abac22d9672a7d",
+  "bytes": 48311,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=Moldavia",
+  "path": "build/settlements/xronos_country_Moldavia.json",
+  "sha256": "cd527e1e0de486c1c9f22af55ac6fc6a70ac0893828f853c13a04e88cc07dd89",
+  "bytes": 23793,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=NE",
+  "path": "build/settlements/xronos_country_NE.json",
+  "sha256": "e34045dc7f1fa384e55757cd85aa93a8bb5bb62cce08cc97c407cbd11441a0df",
+  "bytes": 710121,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=NG",
+  "path": "build/settlements/xronos_country_NG.json",
+  "sha256": "f2b8174866fa56a4a323585dc7849cafb65a92d21748e13668167f9893617f65",
+  "bytes": 311628,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=NL",
+  "path": "build/settlements/xronos_country_NL.json",
+  "sha256": "c73dd11003ac8c77d4fea787410ef35489e2f86ba4a4d1c8149f42c75f93e340",
+  "bytes": 12541023,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=NO",
+  "path": "build/settlements/xronos_country_NO.json",
+  "sha256": "9d40ba2618f31f1de761a944b7fbfa833900c383142b9742415f31b81ea54a5a",
+  "bytes": 3034138,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=OM",
+  "path": "build/settlements/xronos_country_OM.json",
+  "sha256": "6c34ce0ea00a750d608ef47cc6298b5fc562e6042a0e67dd75a14af4dc2c05c7",
+  "bytes": 1464487,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=PL",
+  "path": "build/settlements/xronos_country_PL.json",
+  "sha256": "a7db94f73e529c52c330d5d1b177b95fcc5014f9a6eaa1391684d200a95f67f2",
+  "bytes": 23907553,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=PS",
+  "path": "build/settlements/xronos_country_PS.json",
+  "sha256": "3cba330e34e6e2fd1747beee5986dbd78ff2ffc6102ae71435529399641e2458",
+  "bytes": 5879293,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=PT",
+  "path": "build/settlements/xronos_country_PT.json",
+  "sha256": "4f00f4b73f8f8801f920c6325462bb9879afe58ae565b4d95772fb66909cc32b",
+  "bytes": 2403676,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=QA",
+  "path": "build/settlements/xronos_country_QA.json",
+  "sha256": "b4a4cde36ba1d8e72ff84021cc56c09a864f872ae2dc8e473b6e169bfee2e523",
+  "bytes": 27761,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=RO",
+  "path": "build/settlements/xronos_country_RO.json",
+  "sha256": "c4bb55b83f7d13e0efd4070735ab12d7c820f0d3b4a102fa58fc09412f3706e8",
+  "bytes": 4245451,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=RS",
+  "path": "build/settlements/xronos_country_RS.json",
+  "sha256": "dfd18818176597e33212bdb0b72ea137d87a6b527aea3f746bb4cc3801932c2d",
+  "bytes": 4160647,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=RU",
+  "path": "build/settlements/xronos_country_RU.json",
+  "sha256": "12eeefd598af99d93d226ba57ecfb50a4b18cf1bb19ca0e683c3346a069575c0",
+  "bytes": 2467535,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=SA",
+  "path": "build/settlements/xronos_country_SA.json",
+  "sha256": "386bbb44a89c9be8ee1dfa3f345b13fbb7e830495ac3f0d48c166a025a254a30",
+  "bytes": 88409,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=SD",
+  "path": "build/settlements/xronos_country_SD.json",
+  "sha256": "dcef4bdfb5c3eded2911a8d7c4ab561c22f899157fc94dafb7892b9f8408323e",
+  "bytes": 560169,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=SE",
+  "path": "build/settlements/xronos_country_SE.json",
+  "sha256": "d1a0bc18b32d14ae7accab45a128e7508a08b991cd616c3d44f99cfbb018ae63",
+  "bytes": 13254100,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=SI",
+  "path": "build/settlements/xronos_country_SI.json",
+  "sha256": "6b6982ec85960ffbe29988d5158dec0f8194a2ee46c5be663bcbdf7fd662cfbe",
+  "bytes": 2287567,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=SK",
+  "path": "build/settlements/xronos_country_SK.json",
+  "sha256": "44e932cc84d89a6cb0a0f1ead6c36b2e3278f8f18708362663c6d638214e92fd",
+  "bytes": 3864641,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=SL",
+  "path": "build/settlements/xronos_country_SL.json",
+  "sha256": "63bc97ea49b2f3f719048cfb74daf0d4429518a640cd71c08ff1204983c3a100",
+  "bytes": 3644,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=SN",
+  "path": "build/settlements/xronos_country_SN.json",
+  "sha256": "d8ec85f78fe1a598b24a79b5ce55eab61c84fe34eb99a1d970d8e6228e40eedf",
+  "bytes": 128770,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=SO",
+  "path": "build/settlements/xronos_country_SO.json",
+  "sha256": "64d31e86d6050cca679f09a4e12f5213abaf415cc56b842e8b79487a7cdd8d8d",
+  "bytes": 686,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=SS",
+  "path": "build/settlements/xronos_country_SS.json",
+  "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+  "bytes": 4,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=SY",
+  "path": "build/settlements/xronos_country_SY.json",
+  "sha256": "e9aafb85bcfff13a06065b9afd04b17b56159cf3928e15204aaaf85385ca4346",
+  "bytes": 29549200,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=Scotland",
+  "path": "build/settlements/xronos_country_Scotland.json",
+  "sha256": "c7faa8e3bc26f0cc3c83ae67729e888095e281fab0278fee76ae2af880ac4aa0",
+  "bytes": 2724519,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=TD",
+  "path": "build/settlements/xronos_country_TD.json",
+  "sha256": "402bd9e4cef61ae89f9478a9f29e06832276d3904d61b83f280934abfada23b8",
+  "bytes": 152123,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=TG",
+  "path": "build/settlements/xronos_country_TG.json",
+  "sha256": "0edcc9e38dbbcbbc3836352bec18aae2ce66c15e7e55ab5c2d9daa55b69ae5d7",
+  "bytes": 16966,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=TM",
+  "path": "build/settlements/xronos_country_TM.json",
+  "sha256": "5f88d6bc4eae91eefe2be3cfd60166d4e5ab93be352536de2fcae1360f070451",
+  "bytes": 96259,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=TN",
+  "path": "build/settlements/xronos_country_TN.json",
+  "sha256": "3a47ed9599a90625baaa6ab7cfb083bc53988d6effb4745a96adfca6e2cdd76d",
+  "bytes": 358692,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=TR",
+  "path": "build/settlements/xronos_country_TR.json",
+  "sha256": "a4e563aa806c09b4c64d3ec74004bf19d9d9cb5d93e6c48a472fb01412f9f45b",
+  "bytes": 45469607,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=UA",
+  "path": "build/settlements/xronos_country_UA.json",
+  "sha256": "bdb0b55357d5095eff275f2ae8adb04d2dc7dc984af0074ea9ca43c1e396df05",
+  "bytes": 1593737,
+  "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=UZ",
+  "path": "build/settlements/xronos_country_UZ.json",
+  "sha256": "9f08baf11e15db6ba6f1b38cdbcc41d0f0895449e23b012e2309a6ad5191e47d",
+  "bytes": 579,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=XK",
+  "path": "build/settlements/xronos_country_XK.json",
+  "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+  "bytes": 4,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_country=YE",
+  "path": "build/settlements/xronos_country_YE.json",
+  "sha256": "5df836ce2a4b03f7a4eab2a988e5941408e01b51f611ff369630515bf62446e6",
+  "bytes": 155674,
+  "fetched": "2026-11-12"
+ },
+ {
+  "dataset": "xronos",
+  "url": "https://xronos.ch/api/v1/data?query_site_type=settlement",
+  "path": "build/settlements/xronos_type_settlement.json",
+  "sha256": "0f6da930fe3e8d6a4e0a0200048f2dadc5a79196105e129df60c272e07f7707f",
+  "bytes": 71663761,
+  "fetched": "2026-11-11"
+ }
+]

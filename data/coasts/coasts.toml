@@ -1,0 +1,87 @@
+# Dated shorelines inland of today's coast. Read by pipeline/coasts.py;
+# reasoning and references in SOURCES.md.
+#
+# ETOPO1 is today's surface, so where rivers have since filled in former sea
+# the board's coast (ETOPO1 plus the sea curve) can't reach far enough
+# inland. Each stage's polygon is the area that was sea or open lagoon from
+# `from` until `to` (omit `to` for "until the map's end"). Hexes mostly inside
+# it become Water for those years. Polygons are [lon, lat] rings, drawn by
+# hand from the sources' maps and descriptions: approximate to about 0.1°.
+# Run the seaward edge out into today's sea: a river is cut only where an
+# unbroken run of Water reaches its mouth, so a coastal hex left as land
+# would keep a river drawn across the new sea.
+# Later stages don't need to contain earlier ones; stages may overlap.
+
+[[coast]]
+key = "gulf-head"
+name = "Persian Gulf head"
+# Transgression into the Mesopotamian plain from about 7.8 cal ka, estuarine
+# for 2000-2500 years, progradation from about 4.9 ka (Bogemans et al.
+# 2016, 2017). Its inland limit is contested: Kut and Diwaniyah (Cooke
+# 1987), Samawah (Hritz & Pournelle 2015), Nasiriyah and Amarah (Aqrawi
+# 1995, 2001). Aqrawi's line is used for the maximum: the further limits
+# would put Uruk under the sea, and Uruk stayed freshwater throughout the
+# Holocene (Jotheri et al. 2017). Bogemans et al. find the tidal influence
+# confined to channels, so this is the generous reading. The east edge takes
+# in the Shatt al-Arab mouth and the Abadan peninsula (recent delta) but no
+# more of Khuzestan, which no source here covers.
+[[coast.stage]]
+# Onset: the estuary up to Qurna and Basra.
+from = -5850
+to = -5000
+polygon = [
+  [46.6, 30.45], [47.4, 30.95], [47.7, 31.05], [48.2, 30.75], [48.6, 30.65],
+  [49.1, 30.45], [49.6, 30.1], [49.3, 29.3], [48.3, 29.5], [48.0, 29.85], [47.3, 30.1],
+]
+[[coast.stage]]
+# Maximum: to Nasiriyah and Amarah (Aqrawi), through the map's end
+# (progradation began about 4.9 ka, after -3000).
+from = -5000
+polygon = [
+  [46.0, 30.75], [46.26, 31.1], [46.8, 31.5], [47.15, 31.85], [47.7, 31.75],
+  [48.2, 31.3], [48.6, 30.75], [49.1, 30.5], [49.6, 30.1], [49.3, 29.3],
+  [48.3, 29.5], [48.0, 29.85], [47.2, 30.15], [46.6, 30.4],
+]
+
+[[coast]]
+key = "po"
+name = "Po coastal plain"
+# Bruno et al. 2017: a wave-dominated estuary migrated landward 11.5-7.0 cal
+# ka; the shoreline reached its furthest inland position about 7.7 cal ka,
+# roughly 30 km inland of today's coast. The late-Holocene delta
+# progradation (from about 5.5 ka) left Adria near the coast as late as
+# about 2.5 ka, so the strip is kept through the map's end.
+[[coast.stage]]
+from = -5750
+polygon = [
+  [12.28, 44.3], [12.02, 44.42], [11.88, 44.6], [11.85, 44.8], [11.95, 45.0],
+  [12.1, 45.2], [12.35, 45.25], [12.55, 45.15], [12.65, 44.95], [12.42, 44.75],
+  [12.32, 44.5],
+]
+
+[[coast]]
+key = "nile-delta"
+name = "Northern Nile delta"
+# The early-Holocene transgression put the coast south of today's northern
+# delta lagoons: marine and shallow-marine sediments 12.0-7.5 ka in the
+# Burullus area, with the coastline further south (Arbouille & Stanley 1991,
+# via Giaime et al. 2022), locally as much as 30 km south of today's eastern
+# delta coast (the Manzala region). The delta built seaward from about
+# 7.5 ka; the Burullus coast was seaward again by 7-5.7 ka (Giaime et al.
+# 2022). The Manzala lagoon region stayed the most marine.
+[[coast.stage]]
+from = -7000
+to = -5000
+polygon = [
+  [29.95, 31.2], [30.3, 31.1], [30.7, 31.2], [31.1, 31.3], [31.5, 31.15],
+  [31.9, 31.0], [32.3, 30.85], [32.65, 30.95], [32.75, 31.6], [32.2, 31.75],
+  [31.8, 31.85], [31.3, 31.9], [30.8, 31.9], [30.3, 31.8], [29.95, 31.6],
+]
+[[coast.stage]]
+# From about 7 ka the western and central coast had built out; only the
+# Manzala region stays sea.
+from = -5000
+polygon = [
+  [31.6, 31.25], [31.9, 31.05], [32.3, 30.9], [32.65, 30.95], [32.75, 31.6],
+  [32.2, 31.75], [31.8, 31.85], [31.6, 31.7],
+]

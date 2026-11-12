@@ -1,0 +1,595 @@
+# Hex-map build pipeline config. Paths are relative to the repo root.
+# Years are negative integers (BCE), matching combined_map.geojson keys.
+
+[output]
+# Intermediate GeoJSON (SPEC §3.2 shape); `make maps` converts it into
+# neolith-rs/assets/world.bin for the Rust app.
+combined = "build/combined_map.geojson"
+build_dir = "build"
+# Write a year key only when a hex's value changes (SPEC §3.2 step function).
+sparse = true
+
+[time]
+start = -10000
+end = -3000
+step = 100
+# How years between/outside keyframes get values. "hold": latest earlier
+# keyframe. "fronts": between keyframes, changes spread as fronts from where
+# the new value already is; outside the keyframe range, hold.
+fill = "fronts"
+
+[grid]
+# Canonical hex geometry, ids and bboxes come from this file.
+source = "game/static/game/assets/maps/5000_bce.geojson"
+
+# ---------------------------------------------------------------- terrain
+[terrain]
+# Pixels within this RGB distance of a palette colour count as that class;
+# anything further (anti-aliasing, labels) doesn't vote.
+tolerance = 30.0
+
+# RGB -> terrain class. Moved from scripts/convert_terrain.py.
+palette = [
+  [[255, 0, 0], "Chaparral"],
+  [[255, 0, 255], "Extreme Desert"],
+  [[0, 0, 255], "Semi-Desert"],
+  [[0, 255, 255], "Ice"],
+  [[0, 255, 0], "Free"],
+  [[255, 255, 0], "Savannah"],
+  [[127, 0, 0], "Woodlands"],
+  [[127, 0, 127], "Mountains"],
+  [[0, 0, 127], "Tropical Forest"],
+  [[0, 127, 127], "Grassland"],
+  [[0, 127, 0], "Temperate Forest"],
+  [[130, 127, 0], "Steppe-Forest"],
+  [[102, 102, 102], "Boreal Forest"],
+  [[178, 178, 178], "Land"],
+  [[51, 51, 51], "Water"],
+]
+
+# Georeferenced keyframes: PNG + world file (.pgw).
+[[terrain.sources]]
+year = -9000
+image = "raw/maps/composite/terrain_9000_bce_georeferenced_2.png"
+world = "raw/maps/composite/terrain_9000_bce_georeferenced_2.pgw"
+
+[[terrain.sources]]
+year = -8000
+image = "raw/maps/composite/terrain_8000_bce_georeferenced.png"
+world = "raw/maps/composite/terrain_8000_bce_georeferenced.pgw"
+
+[[terrain.sources]]
+year = -7000
+image = "raw/maps/composite/terrain_7000_bce_georeferenced.png"
+world = "raw/maps/composite/terrain_7000_bce_georeferenced.pgw"
+
+[[terrain.sources]]
+year = -6000
+image = "raw/maps/composite/terrain_6000_bce_georeferenced.png"
+world = "raw/maps/composite/terrain_6000_bce_georeferenced.pgw"
+
+[[terrain.sources]]
+year = -5000
+image = "raw/maps/composite/terrain_5000_bce_georeferenced.png"
+world = "raw/maps/composite/terrain_5000_bce_georeferenced.pgw"
+
+# ---------------------------------------------------------------- mountains
+# Mountains are a landform, not a biome. The keyframes' hand-drawn Mountains
+# are biome gaps, filled like Land ([paleobiome]), and the landform comes from
+# the elevation raster ([sea] elevation). A cell is mountain if it passes any band:
+# at least `above` metres, and, where given, a slope of `slope` degrees or
+# (`rugged`) more than `relief` metres of relief within `relief_radius` metres.
+# Bands follow Kapos et al. 2000 (UNEP-WCMC mountain classes).
+[mountains]
+relief = 300.0
+relief_radius = 7000.0
+bands = [
+  { above = 2500.0 },
+  { above = 1500.0, slope = 2.0 },
+  { above = 1000.0, slope = 5.0, rugged = true },
+  { above = 300.0, rugged = true },
+]
+# Landform is static and separate from the biome (`landform` property,
+# 0 flat, 1 hills, 2 mountains, 3 high mountains). A hex is mountains when at
+# least `min_fraction` of its cells are mountain cells. That's below a half so
+# that narrow ranges (Apennines, Pyrenees) stay connected. Mountains whose
+# median is at or above `high_elevation` m are high mountains. Hills are hexes
+# with at least `hills_fraction` mountain cells.
+min_fraction = 0.4
+hills_fraction = 0.15
+high_elevation = 2000.0
+
+# Mountain hexes whose growing season is too cold or short for trees are
+# Alpine (above the treeline). After Paulsen & Körner 2014 (Alpine Botany
+# 124:1-12): the season is the days with a mean above `season_min` degC, and
+# trees need a season mean of `season_mean` degC over `season_days` days.
+# Monthly means stand in for days. Model temperatures are moved to each hex's
+# own elevation first ([paleobiome.lapse]).
+[mountains.treeline]
+season_min = 0.9
+season_mean = 6.4
+season_days = 94
+
+# ---------------------------------------------------------------- sea level
+[sea]
+# ETOPO1 subset (2 arc-min), fetched by `make build/etopo.asc`.
+elevation = "build/etopo.asc"
+# Hexes deeper than this always count as open ocean (seeds the flood fill,
+# along with below-sea-level hexes on the grid's edge).
+seed_depth = -1500.0
+# Global mean sea level (metres) by year. APPROXIMATE values read off the
+# Lambeck et al. 2014 (PNAS 111:15296) GMSL curve, converted from BP
+# (BCE = BP - 1950). Replace with tabulated values before trusting details.
+# Ignores isostatic rebound here; the Baltic basin is handled with an
+# uplift-corrected surface in the lakes stage ([isostasy]).
+curve = [
+  [-12050, -70.0],
+  [-10050, -60.0],
+  [-9050, -50.0],
+  [-8050, -40.0],
+  [-7050, -25.0],
+  [-6050, -13.0],
+  [-5050, -4.0],
+  [-4050, -1.5],
+  [-3050, -0.5],
+  [1950, 0.0],
+]
+
+# ------------------------------------------------------------ paleobiome
+# The drawn keyframes have no biome (grey, "Land") over Arabia, Russia east of
+# the Volga, Central Asia and the Iranian/Levantine uplands. Those hexes take
+# modelled biomes from Beyer, Krapp & Manica 2020 (Sci. Data 7:236; HadCM3 +
+# BIOME4, 0.5 degrees, 1000-year slices; CC BY 4.0). `make build/biome.npz`
+# downloads the 1.3 GB NetCDF once and cuts it down with `python -m pipeline biome`.
+[paleobiome]
+source = "build/LateQuaternary_Environment.nc"
+url = "https://ndownloader.figshare.com/files/22659026"
+data = "build/biome.npz"
+box = [-17.5, 5.5, 67.0, 76.5]  # lon0, lat0, lon1, lat1
+bp_min = 4000
+bp_max = 13000
+# Extra keyframes outside the drawn range (-9000..-5000): the nearest drawn
+# map, with its Land hexes taking that year's modelled biome.
+extend_keyframes = [-10000, -4000, -3000]
+# Codes that aren't vegetation; hexes fall back to neighbours instead.
+ignore_codes = [0]
+# Drawn classes that are biome gaps, filled from the model: unlabelled land,
+# and the drawn Mountains (a landform: the maps give no biome under them).
+gaps = ["Land", "Mountains"]
+# Monthly climatologies (t, month, lat, lon) for the Köppen classification.
+monthly_vars = ["temperature", "precipitation"]
+
+# The model climate is for each 0.5-degree cell at its mean land elevation;
+# a hex's temperatures (BIO1/5/6/8/9/10/11 and monthly means, for the
+# calibration and the treeline) are moved to the hex's median elevation at
+# `rate` degC per metre (the standard environmental lapse rate). Precipitation
+# is left as it is.
+[paleobiome.lapse]
+enabled = true
+rate = 0.0065
+
+# The model is drier than the drawn maps (HadCM3 underplays the Holocene
+# monsoon), so its biomes alone leave Arabia desert beside a green Sahara.
+# Calibration learns the drawn maps' biome from the model's own climate on the
+# hexes both cover (k nearest neighbours in standardised climate space), then
+# applies that to the gaps; the model's wet bias cancels because both sides
+# use the same model climate. Years with no drawn map use the nearest drawn
+# map's relation with their own climate. A gap hex keeps the model's biome
+# when its climate is far from every drawn hex: its mean distance to its k
+# nearest is over `max_distance_factor` times the `max_distance_quantile`
+# of drawn hexes' own. At 2.5 that keeps the model in the cold deserts of
+# Turan and the far north-east, which have no counterpart in the hot Sahara,
+# and calibrates Arabia, Iran and the Volga, whose climates the drawn maps span.
+[paleobiome.calibrate]
+enabled = true
+k = 15
+max_distance_quantile = 0.99
+max_distance_factor = 2.5
+# Spatial cross-validation tile size for the report's accuracy figure.
+block_degrees = 10.0
+features = [
+  ["BIO1", "linear"],   # annual mean temperature
+  ["BIO6", "linear"],   # min temperature of coldest month
+  ["BIO10", "linear"],  # mean temperature of warmest quarter
+  ["BIO12", "log"],     # annual precipitation
+  ["BIO18", "log"],     # precipitation of warmest quarter (summer drought)
+]
+
+# BIOME4 code -> terrain class.
+[paleobiome.classes]
+"1" = "Tropical Forest"    # tropical evergreen forest
+"2" = "Tropical Forest"    # tropical semi-deciduous forest
+"3" = "Woodlands"          # tropical deciduous forest/woodland
+"4" = "Temperate Forest"   # temperate deciduous forest
+"5" = "Temperate Forest"   # temperate conifer forest
+"6" = "Temperate Forest"   # warm mixed forest
+"7" = "Temperate Forest"   # cool mixed forest
+"8" = "Boreal Forest"      # cool conifer forest
+"9" = "Boreal Forest"      # cold mixed forest
+"10" = "Boreal Forest"     # evergreen taiga/montane forest
+"11" = "Boreal Forest"     # deciduous taiga/montane forest
+"12" = "Savannah"          # tropical savanna
+"13" = "Semi-Desert"       # tropical xerophytic shrubland
+"14" = "Semi-Desert"       # temperate xerophytic shrubland
+"15" = "Chaparral"         # temperate sclerophyll woodland
+"16" = "Woodlands"         # temperate broadleaved savanna
+"17" = "Woodlands"         # open conifer woodland
+"18" = "Steppe-Forest"     # boreal parkland
+"19" = "Savannah"          # tropical grassland
+"20" = "Grassland"         # temperate grassland
+"21" = "Extreme Desert"    # desert
+"22" = "Tundra"            # steppe tundra
+"23" = "Tundra"            # shrub tundra
+"24" = "Tundra"            # dwarf shrub tundra
+"25" = "Tundra"            # prostrate shrub tundra
+"26" = "Tundra"            # cushion forbs, lichen and moss
+"27" = "Extreme Desert"    # barren
+"28" = "Ice"               # land ice
+
+# ------------------------------------------------------------------ Köppen
+# Köppen-Geiger per key frame (Beck et al. 2018 rules) from the monthly
+# Beyer et al. 2020 temperature/precipitation in build/biome.npz; "legacy"
+# copies the committed epoch files' modern Köppen instead. Water hexes are
+# Ocean each year; exposed shelf takes its land neighbours' class.
+[koeppen]
+source = "beyer2020"
+years = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+# Terrain classes with a fixed climate.
+force = { Ice = "EF" }
+# Classify each hex's own mean monthly climate with its temperatures moved
+# to the hex's median elevation ([paleobiome.lapse]), instead of taking the
+# majority class of the 0.5-degree model cells. The 0 BP validation uses
+# the same method.
+lapse = true
+
+# Each key frame is the modern (0 BP) climatology plus the model anomaly,
+# averaged over `months` (circular, odd) and +-`slices` neighbouring 1 ka
+# slices. Unsmoothed, single-month noise in the anomalies (0 mm Julys in
+# Karelia) turns ~1,400 boreal cells summer-dry (Ds); smoothed, the classes
+# converge steadily on modern. months = 1, slices = 0 uses the raw slice.
+[koeppen.smooth]
+months = 3
+slices = 1
+
+# HadCM3 is too dry over the Holocene Sahara and Arabia (see
+# [paleobiome.calibrate]). Hexes whose terrain that year (drawn, or
+# calibrated to the drawn maps) is wetter than their modelled climate step
+# up BW -> BS -> the classifier's non-arid class: "BS" = at least steppe,
+# "humid" = not arid. Never makes a hex drier.
+[koeppen.nudge]
+enabled = true
+[koeppen.nudge.wanted]
+"Semi-Desert" = "BS"
+"Grassland" = "BS"
+"Savannah" = "BS"
+"Chaparral" = "BS"
+"Steppe-Forest" = "BS"
+"Woodlands" = "humid"
+"Tropical Forest" = "humid"
+"Temperate Forest" = "humid"
+"Boreal Forest" = "humid"
+
+# --------------------------------------------------- legacy-only properties
+# No rasters for these yet: read them from the committed per-epoch files.
+[legacy]
+dir = "game/static/game/assets/maps"
+years = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+
+# Grey level -> people/km². From scripts/convert_population_density.py, with
+# 199 and 215 swapped so density rises with grey level (SPEC defect 15).
+[legacy.population_lookup]
+"0" = 0.0
+"23" = 0.0
+"31" = 0.0
+"39" = 0.0
+"63" = 0.0
+"127" = 0.1
+"151" = 0.3
+"175" = 0.5
+"183" = 0.8
+"199" = 1.0
+"215" = 1.5
+"231" = 2.0
+"247" = 5.0
+
+# ------------------------------------------------------------ settlements
+# `make settlements`: dated sites from XRONOS (xronos.ch), calibrated with
+# IntCal20. A site needs at least one date inside [time] start..end.
+[settlements]
+out = "data/settlements/settlements.geojson"
+# Hand entries; their properties override the dated site named by `match`,
+# else the nearest within merge_km. A null geometry takes that site's.
+curated = "data/settlements/curated.geojson"
+merge_km = 5.0
+raw_dir = "build/settlements"
+curve_url = "https://intcal.org/curves/intcal20.14c"
+# Dates with a larger 1-sigma error (14C years) are ignored.
+max_std = 200
+min_dates = 1
+# founding/abandoned are this quantile (and 1 minus it) of a site's dates, so
+# stray dates at well-dated sites are ignored. Below 1/trim dates: min/max.
+trim = 0.05
+# Entries this close whose names differ only by extra words are one site.
+same_km = 1.0
+# Entries with the same name (ignoring case, accents, punctuation) this close
+# are one site filed at differing coordinates.
+same_name_km = 10.0
+
+# SOURCES.md lists original references behind at least this many dates.
+min_refs_listed = 200
+
+# Extra date tables, read in this order after XRONOS. A date whose lab number
+# is already in hand is skipped, so these only add what XRONOS lacks.
+# `columns` maps our fields to the table's headers; `refs` columns are kept
+# as each date's references.
+[[settlements.tables]]
+name = "p3k14c"
+url = "https://raw.githubusercontent.com/people3k/p3k14c/refs/tags/2025.07/inst/p3k14c_scrubbed_fuzzed.csv"
+file = "p3k14c_2025.07.csv"
+columns = { labnr = "LabID", bp = "Age", std = "Error", lon = "Long", lat = "Lat", site = "SiteName", period = "Period", refs = ["Source", "Reference"] }
+
+[[settlements.tables]]
+name = "neonet"
+url = "https://digitallib.unipi.it/fedora/objects/mag:2814/datastreams/MMb714bbfacf4af2ce1fd7025e3789a99b/content"
+file = "neonet_med_v2.tsv"
+delimiter = "\t"
+columns = { labnr = "LabCode", bp = "C14Age", std = "C14SD", lon = "Longitude", lat = "Latitude", site = "SiteName", period = "Period", refs = ["bib", "bib_url"] }
+
+[[settlements.tables]]
+name = "neonetatl"
+url = "https://digitallib.unipi.it/fedora/objects/mag:2627/datastreams/MM54ff3698c0ea78b77469ce6462c2ca36/content"
+file = "neonet_atl_v1.tsv"
+delimiter = "\t"
+columns = { labnr = "LabCode", bp = "C14Age", std = "C14SD", lon = "Longitude", lat = "Latitude", site = "SiteName", period = "Period", refs = ["bib", "bib_url"] }
+
+# Names, Wikipedia links and cultures for sites that Wikidata classes as an
+# archaeological site and that have an English Wikipedia article. Items with
+# an inception date in [time] start..end that match no dated site are added.
+#
+# Off until `contact` is set: the query service answered this client with
+# 429 and a 1000 s Retry-After (2026-11-11). Wikimedia's User-Agent policy
+# asks automated clients to give contact details; put a URL or email in
+# `contact` (it is sent in the User-Agent header) and set enabled = true.
+[settlements.wikidata]
+enabled = false
+contact = ""
+url = "https://query.wikidata.org/sparql"
+tile_degrees = 10.0
+match_km = 5.0
+
+# What SOURCES.md says about each dataset. Keys are the names used in each
+# site's `sources` property.
+[settlements.citations.xronos]
+title = "XRONOS"
+citation = "Roe, J., Schmid, C., Ebrahimiabareghi, S., Heitz, C. & Hinz, M., 2025. XRONOS: An Open Data Infrastructure for Archaeological Chronology. Journal of Computer Applications in Archaeology 8(1): 242–263. https://doi.org/10.5334/jcaa.191"
+licence = "CC BY 4.0"
+url = "https://xronos.ch"
+note = "XRONOS compiles dates from other databases and publications and asks that those are cited too; see the last section."
+
+[settlements.citations.p3k14c]
+title = "p3k14c, release 2025.07"
+citation = "Bird, D., Miranda, L., Vander Linden, M. et al., 2022. p3k14c, a synthetic global database of archaeological radiocarbon dates. Scientific Data 9, 27. https://doi.org/10.1038/s41597-022-01118-7"
+licence = "The article is CC BY 4.0. The repository states CC BY 4.0 for text and figures and MIT for code, and gives no separate licence for the data file."
+url = "https://github.com/people3k/p3k14c"
+note = "Only dates whose lab number XRONOS does not have. The file is the \"scrubbed and fuzzed\" one."
+
+[settlements.citations.neonet]
+title = "NeoNet (Mediterranean), version 2"
+citation = "Mazzucco et al. 2021, NeoNet radiocarbon database version 1, Pisa: MOD. https://doi.org/10.13131/archelogicadata-yb11-yb66. Data paper: Huet, T., Cubas, M., Gibaja, J.F., Oms, F.X. & Mazzucco, N., 2022. NeoNet Dataset. Radiocarbon Dates for the Late Mesolithic/Early Neolithic Transition in the North Central-Western Mediterranean Basin. Journal of Open Archaeology Data 10: 3. https://doi.org/10.5334/joad.87"
+licence = "CC BY-SA according to the Pisa repository; CC BY 4.0 according to the data paper."
+url = "https://github.com/zoometh/neonet"
+note = "Only dates whose lab number is not already in hand. The file is the version c14bazAAR points to (2023-12-08)."
+
+[settlements.citations.neonetatl]
+title = "NeoNet Atlantic, version 1"
+citation = "Huet, T., Basílio, A.C., Carvalho, A.F., Cubas, M., Gibaja, J.F., López-Romero, E., Oms, F.X. & Mazzucco, N., 2023. NeoNetAtl radiocarbon database, Pisa: MOD. https://doi.org/10.13131/unipi/z332-ye56"
+licence = "CC BY-SA according to the Pisa repository."
+url = "https://github.com/zoometh/neonet"
+note = "Only dates whose lab number is not already in hand. The author list is as given by c14bazAAR."
+
+[settlements.citations.wikidata]
+title = "Wikidata"
+citation = "Wikidata contributors. Wikidata. https://www.wikidata.org. Each site gives its item id in the `wikidata` property."
+licence = "CC0 1.0"
+url = "https://query.wikidata.org"
+note = "Supplies `wikidata`, `wikipedia` and `culture`, and the whole record for sites whose only source is `wikidata`."
+
+[settlements.citations.curated]
+title = "Hand entries"
+citation = "`data/settlements/curated.geojson` in this repository, carried over from the 2023 `settlements.geojson`."
+licence = "Project's own."
+note = "Names, founding years and populations entered by hand without recorded sources. The populations are placeholders."
+
+[settlements.citations.intcal20]
+title = "IntCal20 calibration curve"
+citation = "Reimer, P.J., Austin, W.E.N., Bard, E. et al., 2020. The IntCal20 Northern Hemisphere radiocarbon age calibration curve (0–55 cal kBP). Radiocarbon 62. https://doi.org/10.1017/RDC.2020.41"
+licence = "Not stated in the file."
+url = "https://intcal.org/curves/intcal20.14c"
+note = "Used to calibrate every radiocarbon date."
+
+# Cultures and stages from the period labels on each site's dates; see
+# data/cultures/cultures.toml. Labels nothing matched go to unmapped_labels.tsv.
+[settlements.cultures]
+table = "data/cultures/cultures.toml"
+out_dir = "data/cultures"
+wikipedia_cache = "build/cultures/wikipedia"
+unmapped = "build/cultures/unmapped_labels.tsv"
+# Years a date may fall outside a culture's cited range and still count
+# (calibrated medians scatter by a century or two).
+range_margin = 200
+
+# Guess a culture (stage) for dates whose own labels give none, from labelled
+# sites nearby. Written as culture_inferred / stage_inferred, never mixed
+# with the labelled timelines. The holdout rates go to data/cultures/SOURCES.md.
+[settlements.cultures.infer]
+radius_km = 50
+window_years = 250
+min_sites = 2
+min_share = 0.67
+
+[settlements.xronos]
+url = "https://xronos.ch/api/v1/data"
+# One download per entry, cached; a date returned by several is used once.
+# Countries are XRONOS's own labels: mostly ISO codes, plus a few oddities.
+countries = [
+  # Europe
+  "IS", "IE", "GB", "England/Wales", "Scotland", "FR", "ES", "España", "PT", "AD",
+  "BE", "NL", "LU", "DE", "CH", "AT", "IT", "MT", "DK", "NO", "SE", "FI", "EE",
+  "LV", "LT", "PL", "CZ", "SK", "HU", "SI", "HR", "BA", "RS", "ME", "MK", "AL",
+  "XK", "Kosovo", "GR", "Crete", "BG", "RO", "MD", "Moldavia", "UA", "BY", "RU",
+  # Near East, Caucasus, Central Asia
+  "TR", "CY", "SY", "LB", "IL", "PS", "Israel/West Bank/Gaza Strip",
+  "Israel, Palestine", "JO", "IQ", "IR", "SA", "YE", "OM", "AE", "QA", "BH", "KW",
+  "GE", "AM", "AZ", "KZ", "UZ", "TM", "AF",
+  # North Africa, Sahara, Sahel (the grid reaches 6°N)
+  "MA", "DZ", "TN", "LY", "EG", "EH", "MR", "ML", "NE", "TD", "SD", "SS", "ER",
+  "ET", "DJ", "SO", "SN", "GM", "GW", "GN", "SL", "LR", "CI", "BF", "GH", "TG",
+  "BJ", "NG", "CM", "CF",
+]
+# Catches settlement-typed sites filed under a country label not listed above.
+site_types = ["settlement"]
+# Dates whose normalised site type contains any of these are ignored.
+# This drops graves, hoards and non-site samples.
+exclude_types = [
+  "grave", "burial", "tomb", "tumulus", "barrow", "dolmen", "megalith", "cairn",
+  "cist", "funerary", "cemetery", "necropolis", "hypogeum", "hoard", "logboat",
+  "trackway", "palaeosol", "environmental", "landscape", "beach", "bone point",
+  "pine dates",
+]
+
+# Site-type spellings folded together (keys are lower case). An unknown or
+# empty type becomes "site".
+[settlements.xronos.type_aliases]
+"plein air" = "open air"
+"open air site" = "open air"
+"open-air" = "open air"
+"abri/grotte" = "rock shelter"
+"abri" = "rock shelter"
+"shelter" = "rock shelter"
+"rockshelter" = "rock shelter"
+"rockshelter/cave" = "cave"
+"cave/rockshelter" = "cave"
+"house" = "settlement"
+"neolithic house" = "settlement"
+"early neolithic house" = "settlement"
+"palafitte" = "settlement"
+"pile dwelling" = "settlement"
+"camp site" = "camp"
+"miscellaneous" = "site"
+"prehistoric" = "site"
+"neolithic" = "site"
+"mesolithic" = "site"
+"mesolithic site" = "site"
+"central anatolia" = "site"
+"b" = "site"
+"b mou" = "site"
+
+# ---------------------------------------------------------------- report
+# Regions whose Water count the report tracks per year.
+[[report.watch]]
+name = "Doggerland"
+bbox = [0.0, 53.0, 6.0, 56.0]  # lon0, lat0, lon1, lat1
+
+[[report.watch]]
+name = "Persian Gulf"
+bbox = [48.0, 24.0, 56.5, 30.5]
+
+# Regions whose terrain mix the report lists per 1000 years (the Land gaps).
+[[report.regions]]
+name = "Arabia"
+bbox = [36.0, 13.0, 58.0, 30.0]
+
+[[report.regions]]
+name = "Volga-Urals"
+bbox = [45.0, 50.0, 62.0, 62.0]
+
+[[report.regions]]
+name = "Turan lowland"
+bbox = [52.0, 37.0, 66.0, 46.0]
+
+[[report.regions]]
+name = "Iranian plateau"
+bbox = [46.0, 27.0, 62.0, 37.0]
+
+# ---------------------------------------------------------------- rivers
+# Rivers are polylines with a state step function (data/rivers/rivers.toml),
+# drawn over the board; hexes only get a derived `river` class.
+[rivers]
+catalogue = "data/rivers/rivers.toml"
+geojson = "build/rivers.geojson"
+# Sample spacing (degrees) for hex lookup, and Douglas-Peucker tolerance.
+sample = 0.02
+simplify = 0.02
+# A river counts for a hex only with at least this much length (degrees) in it.
+hex_min_length = 0.15
+# Warn when a `from` point is further than this (degrees) from its reach.
+snap_max = 0.5
+# Half size (degrees) of the ETOPO window searched for shelf extensions.
+shelf_window = 9.0
+
+# HydroRIVERS v1.0 (Lehner & Grill 2013), fetched by `make build/hydrorivers`.
+[rivers.hydrorivers]
+shapefiles = [
+  "build/hydrorivers/HydroRIVERS_v10_af_shp/HydroRIVERS_v10_af.shp",
+  "build/hydrorivers/HydroRIVERS_v10_eu_shp/HydroRIVERS_v10_eu.shp",
+  "build/hydrorivers/HydroRIVERS_v10_as_shp/HydroRIVERS_v10_as.shp",
+]
+cache = "build/hydrorivers/reaches.pkl"
+# Only reaches with at least this upstream area (km²) are kept.
+min_upland = 1000.0
+
+# ---------------------------------------------------------------- coasts
+# Dated shorelines inland of today's (data/coasts/coasts.toml): where rivers
+# have since filled in former sea, which ETOPO1's modern surface can't show.
+# Applied right after the sea step.
+[coasts]
+catalogue = "data/coasts/coasts.toml"
+geojson = "build/coasts.geojson"
+# A hex becomes Water when at least this share of it is inside the polygon.
+hex_fraction = 0.5
+
+# ------------------------------------------------------------- isostasy
+# Fennoscandian glacio-isostatic uplift (pipeline/isostasy.py), used by
+# lakes with `level = "sea-or-outlet"` (the Baltic). Present uplift rate: an
+# elliptical dome centred on the Gulf of Bothnia, long axis to the NE;
+# rate grows exponentially into the past with time constant tau (ka).
+# scale, tau and the axes are fitted (least squares) to the calibration
+# points below; see data/lakes/SOURCES.md (Baltic) and test_isostasy.py.
+[isostasy]
+centre = [20.0, 63.5]
+azimuth = 55.0          # long axis, degrees clockwise from north
+axes = [879.6, 585.6]   # semi-axes (km) along and across
+peak_rate = 9.5         # mm/yr at the centre today
+scale = 0.852
+tau = 4.805
+# [name, lon, lat, age (ka cal BP), uplift since then (m): shoreline
+# elevation today minus the water level then], with the source in SOURCES.md.
+calibration = [
+  ["Skuleberget highest shoreline", 18.43, 63.08, 10.4, 306.0],
+  ["Gästrikland highest shoreline", 17.1, 60.6, 10.7, 247.0],
+  ["Tallinn Ancylus shoreline", 24.75, 59.44, 10.3, 55.0],
+  ["Saaremaa Ancylus shoreline", 22.5, 58.4, 10.3, 50.0],
+  ["Kõpu Ancylus transgression", 22.2, 58.9, 10.3, 67.0],
+  ["Tallinn Littorina maximum", 24.75, 59.44, 7.4, 29.0],
+  ["Narva-Luga Littorina shoreline", 28.3, 59.7, 7.5, 22.0],
+  ["Mecklenburg Bay (no uplift)", 11.5, 54.2, 9.0, 0.0],
+]
+# Largest acceptable misfit (m) at a calibration point (the test checks it).
+tolerance = 25.0
+
+# ---------------------------------------------------------------- lakes
+# Lake levels over time (data/lakes/lakes.toml): extents from ETOPO1, applied
+# to terrain as Water after the sea; shorelines drawn over the hexes.
+[lakes]
+catalogue = "data/lakes/lakes.toml"
+geojson = "build/lakes.geojson"
+# A hex is lake when at least this share of its cells is under water.
+hex_fraction = 0.5
+# Drawn Water this far (metres) above the lake's highest level counts as its
+# basin, so the lake can expose it in drier years.
+basin_margin = 25.0
+# A new shoreline shape when the level moves this many metres.
+shore_step = 2.0
+# Rings around fewer raster cells than this are dropped; simplify tolerance (°).
+min_ring_cells = 12
+simplify = 0.02

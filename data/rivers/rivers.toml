@@ -1,0 +1,655 @@
+# Great rivers of the map, with their history over -10000..-3000.
+# Read by pipeline/rivers.py; reasoning and references in SOURCES.md.
+#
+# Course, one of:
+#   from = [lon, lat]   headwater point. The nearest HydroRIVERS reach with at
+#                       least `min_upland` km² upstream is traced downstream to
+#                       its outlet, or to the point nearest `to`.
+#   points = [[lon, lat], ...]  hand-entered waypoints (upstream first), for
+#                       channels HydroRIVERS can't follow (buried under sand).
+#   With `from`: `before` waypoints are prepended (linking a distributary to
+#   its parent) and `then` waypoints appended. A river whose course changed is
+#   several entries: the shared upper course (`to` stops it at the fork) and
+#   one entry per branch, each with its own `state`.
+# A course that reaches the sea is extended across the shelf exposed at the
+# run's lowest sea level (`shelf = false` turns this off, `true` forces it).
+# Each year a river ends where the run of Water hexes at its mouth begins.
+#
+# size: 1 minor, 2 large, 3 great (line width; size >= 2 perennial rivers
+#       make hexes `major`).
+# state: step function, year (BCE negative) -> "perennial" | "seasonal" |
+#       "absent"; absent before the first key.
+# confidence: how well the course and timing are supported (high/medium/low).
+
+# ===================================================================== Nile
+[[river]]
+key = "nile"
+name = "Nile"
+size = 3
+from = [31.6, 6.6]
+min_upland = 200000
+# To the delta head near Cairo; the delta branches are below.
+to = [31.23, 30.1]
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+# Nile delta. The modern delta began forming 8-7 ka as the sea steadied
+# (Stanley & Warne 1993, 1994); earlier the branches crossed a wider,
+# exposed delta plain (the shelf rule extends them). The Rosetta (Bolbitine)
+# branch formed about 1000 BC and the Damietta (Phatnitic) later still, so
+# neither is drawn. Waypoints follow the branch towns.
+[[river]]
+key = "nile-canopic"
+name = "Nile (Canopic branch)"
+size = 2
+# The largest branch, active for "thousands of years" before 1000 BC
+# (Stanley, Warne & Schnepp 2004, J. Coastal Research 20:920): past
+# Naukratis to Canopus (Abu Qir).
+points = [[31.23, 30.1], [31.0, 30.3], [30.85, 30.5], [30.72, 30.75], [30.6, 30.9], [30.45, 31.05], [30.25, 31.2], [30.07, 31.32]]
+shelf = true
+state = { "-10000" = "perennial" }
+confidence = "medium"
+
+[[river]]
+key = "nile-pelusiac"
+name = "Nile (Pelusiac branch)"
+size = 2
+# The eastern branch, past Bubastis to Pelusium.
+points = [[31.23, 30.1], [31.35, 30.3], [31.51, 30.57], [31.75, 30.75], [31.95, 30.88], [32.25, 30.98], [32.55, 31.04]]
+shelf = true
+state = { "-10000" = "perennial" }
+confidence = "medium"
+
+[[river]]
+key = "nile-sebennytic"
+name = "Nile (Sebennytic branch)"
+size = 2
+# The central branch, past Athribis and Sebennytos to the Burullus coast.
+# Channel deposits from about 7 ka cal BP (Stanley 2021, Quaternary 4:39).
+points = [[31.23, 30.1], [31.2, 30.3], [31.18, 30.47], [31.2, 30.7], [31.24, 30.96], [31.2, 31.2], [31.1, 31.4], [31.05, 31.55]]
+shelf = true
+state = { "-5050" = "perennial" }
+confidence = "low"
+
+[[river]]
+key = "blue-nile"
+name = "Blue Nile"
+size = 2
+from = [37.4, 11.6]
+min_upland = 5000
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "atbara"
+name = "Atbara"
+size = 1
+from = [37.0, 13.0]
+min_upland = 5000
+state = { "-10000" = "perennial", "-3500" = "seasonal" }
+confidence = "medium"
+
+[[river]]
+key = "wadi-howar"
+name = "Wadi Howar (Yellow Nile)"
+size = 2
+# HydroRIVERS loses the channel in a sink at 27.4°E; the rest is waypoints.
+from = [24.5, 16.8]
+min_upland = 3000
+then = [[28.3, 17.55], [29.2, 17.7], [30.0, 17.95], [30.6, 18.1]]
+state = { "-10000" = "seasonal", "-8500" = "perennial", "-3300" = "seasonal" }
+confidence = "medium"
+
+# ==================================================== Niger, Benue, Senegal
+[[river]]
+key = "niger"
+name = "Niger"
+size = 3
+from = [-9.5, 10.5]
+min_upland = 10000
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "benue"
+name = "Benue"
+size = 2
+from = [13.9, 8.2]
+min_upland = 3000
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "senegal"
+name = "Senegal"
+size = 2
+from = [-10.8, 13.75]
+min_upland = 20000
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "tilemsi"
+name = "Tilemsi"
+size = 1
+from = [1.3, 19.6]
+min_upland = 1000
+state = { "-10000" = "seasonal", "-3500" = "absent" }
+confidence = "low"
+
+[[river]]
+key = "azawagh"
+name = "Azawagh"
+size = 1
+from = [7.8, 18.0]
+min_upland = 1000
+state = { "-10000" = "seasonal", "-3500" = "absent" }
+confidence = "low"
+
+# ============================================================ Lake Megachad
+# Megachad drained south (Mayo Kébbi -> Benue), not north. See SOURCES.md.
+[[river]]
+key = "chari"
+name = "Chari"
+size = 2
+from = [18.8, 8.8]
+min_upland = 30000
+to = [14.5, 12.9]
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "logone"
+name = "Logone"
+size = 1
+from = [15.9, 8.2]
+min_upland = 5000
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "mayo-kebbi"
+name = "Mayo Kébbi (Megachad spillway)"
+size = 2
+from = [14.9, 9.85]
+min_upland = 1000
+# Flows while Megachad is at its outlet (327 m in ETOPO1; 325 m in Armitage 2015).
+spill = { lake = "megachad", above = "outlet" }
+state = { "-10000" = "perennial" }
+confidence = "medium"
+
+[[river]]
+key = "bahr-el-ghazal"
+name = "Bahr el Ghazal (Chad)"
+size = 1
+points = [[15.0, 13.3], [15.8, 13.45], [16.5, 13.65], [17.2, 14.85], [17.9, 15.6], [18.3, 16.05], [17.9, 16.6]]
+shelf = false
+# Links the Chad and Bodélé basins once Lake Chad tops the 287 m sill. Above
+# about 300 m it is under the lake (a strait), and the board shows Water there.
+spill = { lake = "megachad", above = 287.0 }
+state = { "-10000" = "perennial" }
+confidence = "medium"
+
+[[river]]
+key = "tibesti-south"
+name = "Tibesti wadis (Angamma delta)"
+size = 1
+from = [18.3, 20.3]
+min_upland = 1000
+state = { "-10000" = "seasonal" }
+confidence = "low"
+
+# =========================================== Central and eastern Sahara
+[[river]]
+key = "kufrah"
+name = "Kufrah River"
+size = 1
+points = [[19.8, 21.6], [21.0, 22.6], [22.4, 23.6], [23.2, 24.2], [22.8, 25.5], [22.4, 26.8], [22.0, 28.0], [21.5, 29.0], [20.7, 29.9], [20.1, 30.6]]
+shelf = true
+state = { "-10000" = "absent", "-8500" = "seasonal", "-5300" = "absent" }
+confidence = "low"
+
+[[river]]
+key = "kufrah-uweinat"
+name = "Kufrah River (Uweinat branch)"
+size = 1
+points = [[24.8, 22.0], [24.0, 23.0], [23.2, 24.2]]
+shelf = false
+state = { "-10000" = "absent", "-8500" = "seasonal", "-5300" = "absent" }
+confidence = "low"
+
+[[river]]
+key = "irharhar"
+name = "Irharhar"
+size = 1
+from = [5.8, 23.8]
+min_upland = 1000
+# HydroRIVERS ends in a sink at 27.4°N; on to Chott Melrhir by the Oued Righ.
+then = [[6.0, 28.5], [6.1, 30.0], [5.9, 31.5], [6.0, 32.5], [6.05, 33.2], [6.3, 34.0]]
+state = { "-10000" = "seasonal", "-3500" = "absent" }
+confidence = "low"
+
+[[river]]
+key = "saoura"
+name = "Saoura"
+size = 1
+from = [-3.0, 32.3]
+min_upland = 3000
+# On past Kerzaz as the Oued Messaoud towards the Erg Chech.
+then = [[-0.6, 28.4], [0.1, 27.4], [0.3, 26.5]]
+state = { "-10000" = "seasonal" }
+confidence = "medium"
+
+[[river]]
+key = "tamanrasett"
+name = "Tamanrasett (lower course)"
+size = 2
+points = [[-11.5, 21.2], [-12.5, 21.0], [-13.6, 20.7], [-14.6, 20.4], [-15.5, 20.0], [-16.4, 19.6]]
+shelf = true
+state = { "-10000" = "seasonal", "-3500" = "absent" }
+confidence = "low"
+
+# ============================================================ Western Asia
+[[river]]
+key = "tigris"
+name = "Tigris"
+size = 3
+# From Diyarbakır (a point nearer the source snaps to a Euphrates
+# headwater). Its present course past Baghdad, Kut and Amarah. Uruk-period
+# joint Tigris-Euphrates channel belts and a Tigris course along the
+# Gharraf (past Girsu and Lagash) have been argued, but not dated well
+# enough to place.
+from = [40.23, 37.91]
+min_upland = 5000
+state = { "-10000" = "perennial" }
+confidence = "medium"
+
+[[river]]
+key = "euphrates"
+name = "Euphrates"
+size = 3
+from = [41.3, 39.9]
+min_upland = 1000
+# Upper course, to the head of the old southern course near Sippar.
+to = [44.03, 33.15]
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "euphrates-old"
+name = "Euphrates (old course)"
+size = 3
+# The levee ridge the 4th-millennium cities sit on (Adams 1981): Sippar,
+# Kish, Nippur, Shuruppak, Uruk, Larsa, Ur, then through the marshes to the
+# Tigris. Uruk had a freshwater channel from the 8th millennium BCE
+# (Jotheri et al. 2017). The present course to the west (Hilla, Diwaniyah,
+# Samawah, Nasiriyah) is later, so not drawn.
+points = [
+  [44.03, 33.15], [44.25, 33.06], [44.45, 32.8], [44.6, 32.54], [44.95, 32.33],
+  [45.23, 32.13], [45.4, 31.95], [45.51, 31.78], [45.6, 31.55], [45.64, 31.32],
+  [45.85, 31.29], [46.1, 30.96], [46.45, 30.92], [46.9, 30.94], [47.43, 30.98],
+]
+state = { "-10000" = "perennial" }
+confidence = "low"
+
+[[river]]
+key = "jordan"
+name = "Jordan"
+size = 1
+from = [35.6, 33.1]
+min_upland = 1000
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+# ============================================ Amu Darya, Syr Darya (deltas)
+# Krivonogov et al. 2014 (Gondwana Research 26:284): both deltas shifted
+# north through the Holocene. In -10000..-3000 the Amu Darya fed Sarykamysh
+# (and the Uzboy) through the Daudan channel, and the Aral through the
+# Akchadarya; the modern Aral sub-delta dates from antiquity on. The Syr
+# Darya ran through its southern courses (Krivonogov's Karadarya and
+# Daryalyk); the Inkardarya (4-3 ka), Janadarya and Kuvandarya (from 2.7 ka)
+# and the modern northern course to the Small Aral are later, so not drawn.
+# All the branch courses are HydroRIVERS channels (from SRTM, so dry beds
+# show), linked to the main river by a waypoint or two.
+
+[[river]]
+key = "amu-darya"
+name = "Amu Darya"
+size = 3
+from = [65.2, 37.8]
+min_upland = 100000
+# Upper course, to the delta head below Tuyamuyun.
+to = [61.1, 41.45]
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "amu-darya-daudan"
+name = "Amu Darya (Daudan)"
+size = 2
+# Past Khiva and Dashoguz into the Sarykamysh depression.
+from = [60.82, 41.28]
+before = [[61.1, 41.45]]
+state = { "-10000" = "perennial" }
+confidence = "low"
+
+[[river]]
+key = "akchadarya"
+name = "Amu Darya (Akchadarya)"
+size = 2
+# North across the eastern delta to the Aral. Dated channel fill
+# 6490-6940 cal BP at 42.06N 61.46E; Kelteminar and Bronze Age sites along
+# it 5-3 ka cal BP. Earlier activity unknown.
+from = [61.43, 42.06]
+before = [[61.1, 41.45], [61.3, 41.75]]
+state = { "-5000" = "perennial" }
+confidence = "low"
+
+[[river]]
+key = "uzboy"
+name = "Uzboy"
+size = 1
+# From the Sarykamysh outlet to the Caspian. HydroRIVERS drains the other
+# way (into the Sarykamysh sink), so waypoints.
+points = [[57.0, 41.4], [56.6, 40.9], [56.4, 40.3], [56.0, 39.8], [55.4, 39.4], [54.7, 39.3], [54.0, 39.4], [53.4, 39.4]]
+# Out to the Caspian at its lowest level, drowning as it rises.
+lake = "caspian"
+spill = { lake = "sarykamysh", above = "outlet", state = "seasonal" }
+state = { "-10000" = "seasonal" }
+confidence = "low"
+
+[[river]]
+key = "syr-darya"
+name = "Syr Darya"
+size = 2
+from = [65.99, 44.47]
+min_upland = 100000
+# To the head of the southern courses, above Kyzylorda.
+to = [65.75, 44.72]
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "syr-darya-south"
+name = "Syr Darya (southern course)"
+size = 2
+# Krivonogov's Daryalyk: floodplain shells 10,770-11,190 cal BP at 44.61N
+# 65.21E. West across the Kyzylkum to the south-east Aral.
+from = [65.31, 44.57]
+before = [[65.75, 44.72]]
+state = { "-10000" = "perennial" }
+confidence = "low"
+
+[[river]]
+key = "karadarya"
+name = "Karadarya"
+size = 1
+# A southern Syr Darya branch: Potamogeton in the bed 6170-6290 cal BP at
+# 44.29N 65.10E. Leaves the Syr Darya east of the grid edge; ends in the
+# Kyzylkum.
+from = [65.95, 44.21]
+state = { "-10000" = "seasonal" }
+confidence = "low"
+
+[[river]]
+key = "volga"
+name = "Volga"
+size = 3
+from = [33.0, 57.2]
+min_upland = 1000
+# Out to the Caspian at its lowest (Mangyshlak) level; drowns as it rises.
+lake = "caspian"
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "ural"
+name = "Ural"
+size = 2
+from = [59.4, 54.3]
+min_upland = 1000
+# Out to the Caspian at its lowest (Mangyshlak) level; drowns as it rises.
+lake = "caspian"
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "don"
+name = "Don"
+size = 2
+from = [38.3, 53.9]
+min_upland = 1000
+state = { "-10000" = "perennial" }
+# Out to the Black Sea lake at its lowest level (lakes.toml); drowns as it
+# rises and at the reconnection.
+lake = "black-sea"
+confidence = "high"
+
+# ================================================================== Europe
+[[river]]
+key = "dnieper"
+name = "Dnieper"
+size = 3
+from = [33.6, 55.8]
+min_upland = 1000
+state = { "-10000" = "perennial" }
+# Out to the Black Sea lake at its lowest level (lakes.toml); drowns as it
+# rises and at the reconnection.
+lake = "black-sea"
+confidence = "high"
+
+[[river]]
+key = "danube"
+name = "Danube"
+size = 3
+from = [8.6, 48.0]
+min_upland = 1000
+# To the delta head at the Chilia fork above Tulcea; the delta branches are
+# below.
+to = [28.71, 45.22]
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+# Danube delta: Vespremeanu-Stroe et al. 2017 (Marine Geology; AMS
+# 14C and OSL): St George I lobe 8900-7200 BP, Sulina lobe 7200-2000 BP,
+# St George II and Chilia lobes after 2000 BP (so not drawn). Giosan et al.
+# 2006 (Geology 34:757) date the lobes younger (St George I about
+# 5.5-3.6 ka, Sulina 3.6-2.0 ka). The delta grew inside a bay closed by the
+# Letea-Caraorman barrier.
+[[river]]
+key = "danube-st-george"
+name = "Danube (St George branch)"
+size = 3
+# Past Mahmudia to the Sfântu Gheorghe mouth. The St George I lobe; before
+# about 8900 BP the same outlet crossed the exposed shelf (the shelf rule).
+points = [[28.71, 45.22], [28.8, 45.18], [29.08, 45.08], [29.3, 44.98], [29.6, 44.89]]
+# Out to the Black Sea lake at its lowest level (lakes.toml).
+lake = "black-sea"
+state = { "-10000" = "perennial", "-5250" = "absent" }
+confidence = "low"
+
+[[river]]
+key = "danube-sulina"
+name = "Danube (Sulina branch)"
+size = 3
+# Past Crişan to Sulina: the Sulina lobe, the main delta from about 7200 BP.
+points = [[28.71, 45.22], [28.8, 45.18], [28.95, 45.17], [29.4, 45.17], [29.66, 45.16]]
+shelf = true
+state = { "-5250" = "perennial" }
+confidence = "low"
+
+[[river]]
+key = "rhine"
+name = "Rhine"
+size = 3
+from = [9.6, 46.9]
+min_upland = 1000
+# To Wijk bij Duurstede, the delta's main avulsion node; the lower courses
+# below are timed branches.
+to = [5.33, 51.96]
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+# Rhine-Meuse delta: Berendsen & Stouthamer 2002 (Netherlands Journal of
+# Geosciences 81:97; ~1200 14C dates). 14C ages calibrated roughly:
+# 8000 BP = 8.9 cal ka, 6500 BP = 7.4 cal ka, 5500 BP = 6.3 cal ka.
+# Smaller channels branching to the SW existed throughout but aren't drawn.
+[[river]]
+key = "rhine-valley"
+name = "Rhine (valley course)"
+size = 3
+# Early Holocene: a few large incised channels in the Late Weichselian
+# valley, to its mouth near Rotterdam; the Benschop system (from 7600 14C
+# BP) stayed in the valley until it avulsed near Gouda about 6500 14C BP.
+points = [[5.33, 51.96], [5.09, 51.99], [4.8, 51.92], [4.51, 51.91], [4.21, 51.94], [4.15, 51.96]]
+shelf = true
+state = { "-10000" = "perennial", "-5450" = "absent" }
+confidence = "medium"
+
+[[river]]
+key = "rhine-benschop"
+name = "Rhine (Benschop course)"
+size = 3
+# After the avulsion near Gouda (about 6500 14C BP): past IJsselstein and
+# Benschop, across the valley's northern edge, into the tidal area between
+# Den Haag and Leiden. Abandoned for the Utrecht system about 5500 14C BP.
+points = [[5.33, 51.96], [5.04, 52.02], [4.98, 52.01], [4.71, 52.01], [4.55, 52.08], [4.38, 52.13]]
+shelf = true
+state = { "-5450" = "perennial", "-4350" = "absent" }
+confidence = "medium"
+
+[[river]]
+key = "rhine-oude-rijn"
+name = "Rhine (Oude Rijn)"
+size = 3
+# The Utrecht river system: avulsion at Wijk bij Duurstede about 5500 14C
+# BP; past Utrecht, Woerden and Leiden to the sea at Katwijk. The main Rhine
+# course until it was dammed in AD 1122.
+points = [[5.33, 51.96], [5.2, 52.05], [5.12, 52.09], [4.88, 52.08], [4.65, 52.13], [4.49, 52.16], [4.4, 52.2]]
+shelf = true
+state = { "-4350" = "perennial" }
+confidence = "medium"
+
+[[river]]
+key = "meuse"
+name = "Meuse"
+size = 2
+# Followed the southern margin of the Late Weichselian valley to the
+# estuary near Rotterdam (Berendsen & Stouthamer 2002); channel belts older
+# than 6000 14C BP survive only in fragments, so its modern course stands in
+# down to the Biesbosch, then waypoints to the estuary near Rotterdam (its
+# modern mouth would send the shelf path north through the polders, which
+# ETOPO has below sea level).
+from = [5.6, 48.1]
+min_upland = 1000
+to = [4.95, 51.75]
+then = [[4.75, 51.82], [4.5, 51.88], [4.25, 51.9], [4.1, 51.95]]
+shelf = true
+state = { "-10000" = "perennial" }
+confidence = "medium"
+
+[[river]]
+key = "thames"
+name = "Thames"
+size = 1
+from = [-1.3, 51.75]
+min_upland = 1000
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "elbe"
+name = "Elbe"
+size = 2
+from = [15.8, 50.05]
+min_upland = 1000
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "seine"
+name = "Seine"
+size = 1
+from = [3.5, 48.5]
+min_upland = 1000
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "rhone"
+name = "Rhône"
+size = 2
+from = [7.5, 46.25]
+min_upland = 1000
+# To Arles, the delta head; the delta branches are below.
+to = [4.63, 43.69]
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+# Rhône delta: Vella et al. 2005 (Marine Geology 222-223:235). The delta
+# plain builds from about 7000 14C BP; the first input ran down a
+# palaeothalweg south of Arles to the centre (Saint-Ferréol); distributaries
+# multiplied west (Peccaïs) and in the centre (Ulmet) from about 6000-5800
+# 14C BP; Ulmet and Saint-Ferréol were both active to about 2000 BP. The
+# Grand Rhône and Petit Rhône are later, so not drawn. 14C ages calibrated
+# roughly: 6000 BP = 6.85 cal ka, 5780 BP = 6.6 cal ka. The whole delta is
+# about one hex across; waypoints are approximate.
+[[river]]
+key = "rhone-st-ferreol"
+name = "Rhône (Saint-Ferréol branch)"
+size = 2
+points = [[4.63, 43.69], [4.66, 43.58], [4.67, 43.5], [4.64, 43.42], [4.6, 43.37]]
+shelf = true
+state = { "-10000" = "perennial" }
+confidence = "low"
+
+[[river]]
+key = "rhone-ulmet"
+name = "Rhône (Ulmet branch)"
+size = 1
+# Oldest dated channel 5780 14C BP.
+points = [[4.63, 43.69], [4.55, 43.62], [4.48, 43.55], [4.44, 43.46]]
+shelf = true
+state = { "-4650" = "perennial" }
+confidence = "low"
+
+[[river]]
+key = "rhone-peccais"
+name = "Rhône (Peccaïs branch)"
+size = 1
+# Western distributaries from about 6000 14C BP; the Peccaïs lobe built
+# 5400-4350 14C BP towards Aigues-Mortes.
+points = [[4.63, 43.69], [4.5, 43.65], [4.35, 43.6], [4.2, 43.53]]
+shelf = true
+state = { "-4900" = "perennial" }
+confidence = "low"
+
+[[river]]
+key = "po"
+name = "Po"
+size = 2
+from = [7.6, 44.9]
+min_upland = 1000
+# The modern course below Ficarolo dates from the AD 1152 avulsion, and the
+# delta tip beyond about 12.25°E is later still. No main course downstream
+# of Ficarolo is attested before the Po di Adria (4.0-2.5 ka), so the modern
+# line stands in, stopped short of the modern delta; the shelf rule takes it
+# across the dry Adriatic early on. The shoreline reached its furthest
+# inland position about 7.7 cal ka (Bruno et al. 2017), which the board's
+# coast (ETOPO1 and the sea curve) can't show.
+to = [12.24, 45.0]
+shelf = true
+state = { "-10000" = "perennial" }
+confidence = "medium"
+
+[[river]]
+key = "vistula"
+name = "Vistula"
+size = 2
+from = [19.0, 50.0]
+min_upland = 1000
+# No extension: the Baltic's levels come from an uplift-corrected surface
+# (lakes.toml), and a path across today's sea floor doesn't follow them.
+shelf = false
+state = { "-10000" = "perennial" }
+confidence = "high"

@@ -1,0 +1,719 @@
+<title>Neolith Presence Atlas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one-screen atlas. A control rail on the left, the hex map filling the rest; on phones the map sits on top and the rail follows. */
+:root {
+  --bg: #eef0ee; --panel: #f8f9f8; --ink: #15191a; --ink-2: #4a5355; --muted: #6f787a; --rule: #d5dad8;
+  --accent: #2368bd; --accent-ink: #ffffff; --focus: #2368bd;
+  --sea: #dde5e8; --land-none: #d2d0c9; --land-plain: #e7e7e2; --ice: #e4dcf0; --acid: #d8c49a; --below: #bab8b0;
+  --r1: #b7d3f6; --r2: #6da7ec; --r3: #2a78d6; --r4: #184f95; --r5: #0d366b;
+  --d1: #c2352f; --d2: #eaa39b; --d3: #f6f5f2; --d4: #9ec5f4; --d5: #256abf;
+  --line-ink: #15191a; --border-line: rgba(21, 25, 26, 0.32);
+  --m1: #2a78d6; --m2: #eb6834; --m3: #1baf7a; --m4: #eda100; --m5: #e87ba4;
+  --dot-on: #d9531f; --dot-off: #2f3638;
+  --font-ui: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-num: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101315; --panel: #161a1c; --ink: #e7ebea; --ink-2: #a8b1b2; --muted: #8a9395; --rule: #2a3133;
+    --accent: #6da7ec; --accent-ink: #0b0f11; --focus: #8bbcf2;
+    --sea: #0b0f11; --land-none: #242625; --land-plain: #1f2322; --ice: #37324a; --acid: #4b412e; --below: #3e403d;
+    --r1: #17345a; --r2: #1f5398; --r3: #3080dc; --r4: #73abee; --r5: #c6ddf8;
+    --d1: #e66767; --d2: #8c4a46; --d3: #4c4e50; --d4: #3b679e; --d5: #79b0f0;
+    --line-ink: #f2f4f3; --border-line: rgba(231, 235, 234, 0.26);
+    --m1: #3987e5; --m2: #d95926; --m3: #199e70; --m4: #c98500; --m5: #d55181;
+    --dot-on: #f2804f; --dot-off: #c3cacb;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101315; --panel: #161a1c; --ink: #e7ebea; --ink-2: #a8b1b2; --muted: #8a9395; --rule: #2a3133;
+  --accent: #6da7ec; --accent-ink: #0b0f11; --focus: #8bbcf2;
+  --sea: #0b0f11; --land-none: #242625; --land-plain: #1f2322; --ice: #37324a; --acid: #4b412e; --below: #3e403d;
+  --r1: #17345a; --r2: #1f5398; --r3: #3080dc; --r4: #73abee; --r5: #c6ddf8;
+  --d1: #e66767; --d2: #8c4a46; --d3: #4c4e50; --d4: #3b679e; --d5: #79b0f0;
+  --line-ink: #f2f4f3; --border-line: rgba(231, 235, 234, 0.26);
+  --m1: #3987e5; --m2: #d95926; --m3: #199e70; --m4: #c98500; --m5: #d55181;
+  --dot-on: #f2804f; --dot-off: #c3cacb;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 var(--font-ui); -webkit-font-smoothing: antialiased; }
+* { box-sizing: border-box; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.app { height: 100%; display: grid; grid-template-columns: minmax(300px, 360px) 1fr; }
+.rail {
+  background: var(--panel); border-right: 1px solid var(--rule); overflow-y: auto; min-width: 0;
+  padding-block: 20px 28px; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: 20px;
+  display: flex; flex-direction: column; gap: 22px;
+}
+.stage { position: relative; min-width: 0; min-height: 0; overflow: hidden; background: var(--sea); }
+canvas#map { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
+canvas#map.dragging { cursor: grabbing; }
+
+.eyebrow { margin: 0; font: 500 11px/1.2 var(--font-num); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+h1 { margin: 6px 0 8px; font-weight: 600; font-size: 24px; line-height: 1.15; letter-spacing: -0.01em; text-wrap: balance; }
+.lede { margin: 0; color: var(--ink-2); max-width: 60ch; }
+
+.ctl { display: flex; flex-direction: column; gap: 16px; }
+.field { display: flex; flex-direction: column; gap: 7px; }
+.label { font: 500 11px/1.2 var(--font-num); letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button {
+  border: 1px solid var(--rule); background: var(--bg); border-radius: 6px; padding: 5px 10px; cursor: pointer;
+  font-size: 13px; line-height: 1.3; display: inline-flex; align-items: center; gap: 7px;
+}
+.seg button:hover:not(:disabled) { border-color: var(--muted); }
+.seg button[aria-checked="true"] { background: var(--ink); color: var(--panel); border-color: var(--ink); }
+.seg button:disabled { opacity: 0.45; cursor: not-allowed; }
+.seg .chip { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+.seg.dim button[aria-checked="true"] { background: var(--bg); color: var(--ink); border-color: var(--rule); }
+
+.slice-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.slice-head output { font: 500 22px/1 var(--font-num); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.slice-head span { font: 12px/1.2 var(--font-num); color: var(--muted); }
+.slider-row { display: flex; align-items: center; gap: 10px; }
+.slider-row input { flex: 1; min-width: 0; accent-color: var(--accent); }
+.btn { border: 1px solid var(--rule); background: var(--bg); border-radius: 6px; padding: 5px 10px; cursor: pointer; font-size: 13px; }
+.btn:hover { border-color: var(--muted); }
+.ticks { display: flex; justify-content: space-between; font: 10.5px/1 var(--font-num); color: var(--muted); padding-left: 64px; }
+.toggles { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.toggles label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 13px; }
+.toggles input { accent-color: var(--accent); margin: 0; }
+
+.readout { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--rule); padding-top: 18px; }
+.readout h2 { margin: 0; font-size: 15px; font-weight: 600; }
+.note { margin: 0; color: var(--ink-2); font-size: 13px; }
+.note.warn { color: var(--ink); border-left: 3px solid var(--d1); padding-left: 9px; }
+.stats { display: grid; grid-template-columns: 1fr auto; gap: 4px 14px; margin: 0; font-size: 13px; }
+.stats dt { color: var(--ink-2); }
+.stats dd { margin: 0; text-align: right; font: 13px/1.45 var(--font-num); font-variant-numeric: tabular-nums; }
+.status { display: flex; flex-direction: column; gap: 8px; margin: 0; font-size: 13px; }
+.status dt { font-weight: 500; display: flex; align-items: center; gap: 7px; }
+.status dd { margin: 0 0 0 16px; color: var(--ink-2); }
+.status .chip { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+
+.legend { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--rule); padding-top: 18px; }
+.legend ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 5px 12px; font-size: 12.5px; }
+.legend li { display: flex; align-items: center; gap: 7px; min-width: 0; }
+.legend li.wide { grid-column: 1 / -1; }
+.sw { width: 16px; height: 12px; border-radius: 2px; flex: none; border: 1px solid var(--border-line); }
+.legend svg { flex: none; overflow: visible; }
+
+details.about { border-top: 1px solid var(--rule); padding-top: 16px; font-size: 13px; color: var(--ink-2); }
+details.about summary { cursor: pointer; color: var(--ink); font-weight: 500; }
+details.about ul { padding-left: 18px; margin: 10px 0 0; display: flex; flex-direction: column; gap: 6px; }
+details.about code { font: 12px var(--font-num); }
+
+.mapbar { position: absolute; top: max(12px, env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); display: flex; gap: 6px; }
+.mapbar .btn { background: var(--panel); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08); }
+.inspect {
+  position: absolute; left: 12px; bottom: max(12px, env(safe-area-inset-bottom, 0px)); max-width: min(340px, calc(100% - 24px));
+  background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; font-size: 12.5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12); pointer-events: none;
+}
+.inspect h3 { margin: 0 0 6px; font-size: 13px; font-weight: 600; overflow-wrap: anywhere; }
+.inspect dl { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; margin: 0; }
+.inspect dt { color: var(--muted); }
+.inspect dd { margin: 0; font-family: var(--font-num); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.loading { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ink-2); font: 13px var(--font-num); }
+
+@media (max-width: 760px) {
+  .app { grid-template-columns: 1fr; grid-template-rows: 62svh auto; height: auto; min-height: 100%; }
+  .stage { grid-row: 1; height: 62svh; }
+  .rail { grid-row: 2; border-right: 0; border-top: 1px solid var(--rule); overflow: visible;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .legend ul { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="app">
+  <aside class="rail">
+    <header>
+      <p class="eyebrow">Neolith · 10,000–3,000 BCE</p>
+      <h1>Presence Atlas</h1>
+      <p class="lede">Where five classes of material culture are attested, smoothed from dated occupations onto the game's hex grid. Grey always means too little evidence, never absence.</p>
+    </header>
+
+    <section class="ctl" aria-label="Map controls">
+      <div class="field">
+        <span class="label" id="lab-mat">Material</span>
+        <div class="seg" id="mat" role="radiogroup" aria-labelledby="lab-mat"></div>
+      </div>
+      <div class="field">
+        <span class="label" id="lab-layer">Layer</span>
+        <div class="seg" id="layer" role="radiogroup" aria-labelledby="lab-layer">
+          <button type="button" role="radio" data-layer="presence">Presence</button>
+          <button type="button" role="radio" data-layer="evidence">Evidence</button>
+          <button type="button" role="radio" data-layer="firmness">Firmness</button>
+          <button type="button" role="radio" data-layer="boundaries">All boundaries</button>
+        </div>
+      </div>
+      <div class="field">
+        <div class="slice-head"><output id="year" for="slice">5,000 BCE</output><span id="span"></span></div>
+        <div class="slider-row">
+          <button type="button" class="btn" id="play" aria-pressed="false">Play</button>
+          <input type="range" id="slice" min="0" max="7" step="1" value="5" aria-label="Time slice">
+        </div>
+        <div class="ticks" id="ticks" aria-hidden="true"></div>
+      </div>
+      <div class="field toggles">
+        <label><input type="checkbox" id="t-iso" checked> Isolines</label>
+        <label><input type="checkbox" id="t-dots" checked> Occupations</label>
+        <label><input type="checkbox" id="t-borders" checked> Modern borders</label>
+      </div>
+    </section>
+
+    <section class="readout" id="readout" aria-live="polite"></section>
+    <section class="legend" id="legend" aria-label="Legend"></section>
+
+    <details class="about">
+      <summary>How these surfaces were made</summary>
+      <ul>
+        <li>Radiocarbon dates from XRONOS, p3k14c and NeoNet, calibrated with IntCal20 and grouped into occupation episodes per site. Graves are kept.</li>
+        <li>Presence is recorded by ten open datasets (lipid residues, Rigaud 2018, Dolbunova 2023, Windler's Spondylus, dated barbed points, BDA, MedAfriCarbon, Rotunno &amp; Crema 2025, DEFC, DObsiSS) and Jordan et al. 2016's earliest-pottery table for Africa or implied by a culture or stage label. Absences come from labels, except pottery absences in North Africa, which MedAfriCarbon and Rotunno &amp; Crema record.</li>
+        <li>Each slice is its keyframe year ± 500 years. A cell's presence is the kernel-weighted share of occupations with the material, pulled toward the slice mean: f = (Σ wKy + f₀) / (E + 1).</li>
+        <li>Cells are masked below an evidence of <span id="emin-a">1.2</span>, under ice, and for bone and antler where topsoil pH is below 5.5.</li>
+        <li>Firmness: share of <span id="nboot">200</span> bootstrap runs (occupations resampled, one date drawn from each) in which a cell is at or above 50%.</li>
+        <li>Full notes: <code>data/isostyle/METHODS.md</code> and <code>data/isostyle/audit/AUDIT.md</code>.</li>
+      </ul>
+    </details>
+  </aside>
+
+  <main class="stage" id="stage">
+    <canvas id="map" role="img" aria-label="Hex map of the selected surface"></canvas>
+    <div class="mapbar">
+      <button type="button" class="btn" id="v-eu">Europe</button>
+      <button type="button" class="btn" id="v-all">Full grid</button>
+      <button type="button" class="btn" id="z-in" aria-label="Zoom in">+</button>
+      <button type="button" class="btn" id="z-out" aria-label="Zoom out">−</button>
+    </div>
+    <div class="inspect" id="inspect" hidden></div>
+    <div class="loading" id="loading">Unpacking surfaces…</div>
+  </main>
+</div>
+
+<script type="application/json" id="iso-data">__ISO_DATA__</script>
+<script>
+(() => {
+"use strict";
+const $ = (id) => document.getElementById(id);
+const nf = new Intl.NumberFormat("en-GB");
+const raw = JSON.parse($("iso-data").textContent);
+const meta = raw.meta;
+const MATS = meta.materials, YEARS = meta.years, S = YEARS.length, N = meta.n, NU = meta.nUnits;
+const K = Math.cos(48 * Math.PI / 180);           // equirectangular, true at 48°N
+const HW = meta.hexW, HH = meta.hexH, EMIN = meta.eMin;
+const VX = [HW / 2, HW / 4, -HW / 4, -HW / 2, -HW / 4, HW / 4];
+const VY = [0, HH / 2, HH / 2, 0, -HH / 2, -HH / 2];
+const DIRS = [[1, 1], [0, 2], [-1, 1], [-1, -1], [0, -2], [1, -1]];
+const DASH = { pottery: [], flaked_stone: [1.5, 3], ground_stone: [7, 3], bone_antler: [1.5, 3], ornaments: [1.5, 3] };
+const LAYERS = ["presence", "evidence", "firmness", "boundaries"];
+const EQ = new Float32Array(256);
+for (let q = 1; q < 256; q++) EQ[q] = Math.pow(10, q / 32) / 100;
+const yearLabel = (y) => `${nf.format(Math.abs(y))} ${y < 0 ? "BCE" : "CE"}`;
+const pct = (v) => `${Math.round(v * 100)}%`;
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+async function gunzip(b64) {
+  const bin = atob(b64), u = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+  const stream = new Blob([u]).stream().pipeThrough(new DecompressionStream("gzip"));
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+const asJSON = (u8) => JSON.parse(new TextDecoder().decode(u8));
+
+const state = { m: 0, layer: "presence", s: Math.max(0, YEARS.indexOf(-5000)), iso: true, dots: true, borders: true };
+let lon, lat, X, Y, layers, uX, uY, uW, uSt, uFlag, uNames, borders, contours, nb, keyIndex;
+let ready = false, pal = {}, hover = null, hoverUnit = -1;
+
+// ---------------------------------------------------------------- data
+function field(m, s, f) { const o = ((m * S + s) * 5 + f) * N; return layers.subarray(o, o + N); }
+function cellKey(lo, la) {
+  const c = Math.round((lo - meta.lon0) / (0.75 * HW)), r = Math.round(2 * (la - meta.lat0) / HH);
+  return [c, r];
+}
+const keyOf = (c, r) => (c + 16) * 4096 + (r + 16);
+
+async function load() {
+  const [cB, lB, xyB, wB, stB, fB, nB, bB, kB] = await Promise.all(
+    ["cells", "layers", "uxy", "uw", "ust", "uflag", "unames", "borders", "contours"].map((k) => gunzip(raw[k])));
+  const cells = new Int32Array(cB.buffer, 0, 2 * N);
+  lon = new Float64Array(N); lat = new Float64Array(N); X = new Float64Array(N); Y = new Float64Array(N);
+  keyIndex = new Map();
+  for (let i = 0; i < N; i++) {
+    lon[i] = cells[2 * i] / 1e4; lat[i] = cells[2 * i + 1] / 1e4; X[i] = lon[i] * K; Y[i] = -lat[i];
+    const [c, r] = cellKey(lon[i], lat[i]); keyIndex.set(keyOf(c, r), i);
+  }
+  nb = new Int32Array(6 * N).fill(-1);
+  for (let i = 0; i < N; i++) {
+    const [c, r] = cellKey(lon[i], lat[i]);
+    for (let d = 0; d < 6; d++) { const j = keyIndex.get(keyOf(c + DIRS[d][0], r + DIRS[d][1])); if (j !== undefined) nb[6 * i + d] = j; }
+  }
+  layers = lB;
+  const uxy = new Int32Array(xyB.buffer, 0, 2 * NU);
+  uX = new Float64Array(NU); uY = new Float64Array(NU);
+  for (let u = 0; u < NU; u++) { uX[u] = uxy[2 * u] / 1e4 * K; uY[u] = -uxy[2 * u + 1] / 1e4; }
+  uW = wB; uSt = stB; uFlag = fB;
+  uNames = new TextDecoder().decode(nB).split("\n");
+  borders = asJSON(bB); contours = asJSON(kB);
+}
+
+// ---------------------------------------------------------------- theme
+const PAL_KEYS = ["--sea", "--land-none", "--ice", "--acid", "--below", "--r1", "--r2", "--r3", "--r4", "--r5",
+  "--d1", "--d2", "--d3", "--d4", "--d5", "--land-plain"];
+function readTheme() {
+  const cs = getComputedStyle(document.documentElement);
+  const g = (k) => cs.getPropertyValue(k).trim();
+  pal = { fills: PAL_KEYS.map(g), ink: g("--line-ink"), border: g("--border-line"), dotOn: g("--dot-on"),
+    dotOff: g("--dot-off"), m: [g("--m1"), g("--m2"), g("--m3"), g("--m4"), g("--m5")], sea: g("--sea") };
+}
+
+// ---------------------------------------------------------------- classify
+let cache = { key: "", buckets: null };
+function buckets() {
+  const key = `${state.layer}|${state.m}|${state.s}`;
+  if (cache.key === key) return cache.buckets;
+  const m = state.layer === "boundaries" ? 0 : state.m, s = state.s;
+  const P = field(m, s, 0), E = field(m, s, 1), B = field(m, s, 2), Mk = field(m, s, 4);
+  const lists = Array.from({ length: PAL_KEYS.length }, () => []);
+  for (let i = 0; i < N; i++) {
+    const mk = Mk[i];
+    let c;
+    if (mk === 4) continue;
+    if (state.layer === "boundaries") c = mk === 2 ? 2 : 15;
+    else if (mk === 2) c = 2;
+    else if (mk === 3) c = 3;
+    else if (state.layer === "evidence") {
+      const e = EQ[E[i]];
+      c = e < 0.05 ? 1 : e < EMIN ? 4 : e < 3 ? 5 : e < 10 ? 6 : e < 30 ? 7 : e < 100 ? 8 : 9;
+    } else if (mk === 1) c = 1;
+    else if (state.layer === "presence") {
+      const p = P[i] / 200; c = 5 + (p >= 0.8 ? 4 : p >= 0.6 ? 3 : p >= 0.4 ? 2 : p >= 0.2 ? 1 : 0);
+    } else {
+      const v = B[i];
+      if (v === 255) c = 1; else { const f = v / 200; c = 10 + (f >= 0.9 ? 4 : f >= 0.65 ? 3 : f >= 0.35 ? 2 : f >= 0.1 ? 1 : 0); }
+    }
+    lists[c].push(i);
+  }
+  cache = { key, buckets: lists.map((l) => Int32Array.from(l)) };
+  return cache.buckets;
+}
+
+// ---------------------------------------------------------------- view
+const cv = $("map"), ctx = cv.getContext("2d");
+let W = 0, H = 0, dpr = 1;
+const view = { cx: 0, cy: 0, sc: 1 };
+const sx = (x) => (x - view.cx) * view.sc + W / 2;
+const sy = (y) => (y - view.cy) * view.sc + H / 2;
+function fit(lo0, lo1, la0, la1) {
+  view.cx = (lo0 + lo1) / 2 * K; view.cy = -(la0 + la1) / 2;
+  view.sc = Math.min(W / ((lo1 - lo0) * K), H / (la1 - la0)) * 0.97;
+}
+let fitScale = 1;
+function fitAll() { const b = meta.bounds; fit(b[0], b[2], b[1], b[3]); fitScale = view.sc; }
+function fitEurope() { fit(-12, 45, 35, 72); }
+function resize() {
+  const r = cv.getBoundingClientRect();
+  const first = W === 0;
+  dpr = window.devicePixelRatio || 1; W = r.width; H = r.height;
+  cv.width = Math.max(1, Math.round(W * dpr)); cv.height = Math.max(1, Math.round(H * dpr));
+  if (first && ready) { fitAll(); fitEurope(); }
+  draw();
+}
+function zoomAt(px, py, f) {
+  const x = (px - W / 2) / view.sc + view.cx, y = (py - H / 2) / view.sc + view.cy;
+  view.sc = Math.min(Math.max(view.sc * f, fitScale * 0.6), fitScale * 60);
+  view.cx = x - (px - W / 2) / view.sc; view.cy = y - (py - H / 2) / view.sc;
+  draw();
+}
+
+// ---------------------------------------------------------------- draw
+function polyline(flat, scaleDiv, close) {
+  for (let k = 0; k < flat.length; k += 2) {
+    const x = sx(flat[k] / scaleDiv * K), y = sy(-flat[k + 1] / scaleDiv);
+    if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+}
+function drawContours(mat, level, width, colour, dash) {
+  const list = contours[`${mat}|${YEARS[state.s]}|${level}`];
+  if (!list) return;
+  ctx.beginPath();
+  for (const line of list) polyline(line, 1000);
+  ctx.setLineDash(dash || []); ctx.lineWidth = width; ctx.strokeStyle = colour; ctx.lineJoin = "round"; ctx.stroke();
+  ctx.setLineDash([]);
+}
+// Outline the cells shown for material m where they meet masked cells or sea.
+// With aboveOnly, only cells at or above 50% count: where such a region runs
+// into the edge of the evidence, that edge stands in for the missing isoline.
+function drawExtent(m, colour, dash, aboveOnly) {
+  const Mk = field(m, state.s, 4), P = field(m, state.s, 0);
+  ctx.beginPath();
+  for (let i = 0; i < N; i++) {
+    if (Mk[i] !== 0 || (aboveOnly && P[i] < 100)) continue;
+    for (let d = 0; d < 6; d++) {
+      const j = nb[6 * i + d];
+      if (j >= 0 && Mk[j] === 0) continue;
+      const a = d, b = (d + 1) % 6;
+      ctx.moveTo(sx((lon[i] + VX[a]) * K), sy(-(lat[i] + VY[a])));
+      ctx.lineTo(sx((lon[i] + VX[b]) * K), sy(-(lat[i] + VY[b])));
+    }
+  }
+  ctx.setLineDash(dash); ctx.lineWidth = 1.6; ctx.strokeStyle = colour; ctx.lineCap = "round"; ctx.stroke();
+  ctx.setLineDash([]); ctx.lineCap = "butt";
+}
+function hexPath(i, grow) {
+  const cx = sx(X[i]), cy = sy(Y[i]);
+  const hw = HW / 2 * K * view.sc + grow, hh = HH / 2 * view.sc + grow * 0.87;
+  ctx.moveTo(cx + hw, cy); ctx.lineTo(cx + hw / 2, cy - hh); ctx.lineTo(cx - hw / 2, cy - hh);
+  ctx.lineTo(cx - hw, cy); ctx.lineTo(cx - hw / 2, cy + hh); ctx.lineTo(cx + hw / 2, cy + hh); ctx.closePath();
+}
+function unitsInSlice() {
+  const out = [], o = state.s * NU;
+  for (let u = 0; u < NU; u++) if (uW[o + u] >= 51) out.push(u);
+  return out;
+}
+let sliceUnits = { s: -1, list: [] };
+function visibleUnits() {
+  if (sliceUnits.s !== state.s) sliceUnits = { s: state.s, list: unitsInSlice() };
+  return sliceUnits.list;
+}
+function draw() {
+  if (!W) return;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.fillStyle = pal.sea || "#000"; ctx.fillRect(0, 0, W, H);
+  if (!ready) return;
+  const lists = buckets();
+  const hw = HW / 2 * K * view.sc + 1, hh = HH / 2 * view.sc + 1;
+  for (let c = 1; c < lists.length; c++) {
+    const l = lists[c];
+    if (!l.length) continue;
+    ctx.beginPath();
+    for (let k = 0; k < l.length; k++) {
+      const i = l[k], x = sx(X[i]), y = sy(Y[i]);
+      if (x < -hw || x > W + hw || y < -hh || y > H + hh) continue;
+      ctx.moveTo(x + hw, y); ctx.lineTo(x + hw / 2, y - hh); ctx.lineTo(x - hw / 2, y - hh);
+      ctx.lineTo(x - hw, y); ctx.lineTo(x - hw / 2, y + hh); ctx.lineTo(x + hw / 2, y + hh); ctx.closePath();
+    }
+    ctx.fillStyle = pal.fills[c]; ctx.fill();
+  }
+  if (state.borders && borders) {
+    ctx.beginPath();
+    for (const line of borders) polyline(line, 100);
+    ctx.lineWidth = 0.7; ctx.strokeStyle = pal.border; ctx.stroke();
+  }
+  const mat = MATS[state.m];
+  if (state.layer === "boundaries") {
+    MATS.forEach((mm, k) => drawExtent(k, pal.m[k], [1.5, 3], mm.hasAbsences));
+    MATS.forEach((mm, k) => { if (mm.hasAbsences) drawContours(mm.id, "0.5", 2.4, pal.m[k], DASH[mm.id]); });
+  } else if (state.iso && state.layer === "presence" && mat.hasAbsences) {
+    drawContours(mat.id, "0.25", 0.9, pal.ink); drawContours(mat.id, "0.75", 0.9, pal.ink);
+    drawContours(mat.id, "0.5", 2, pal.ink);
+  } else if (state.iso && state.layer === "firmness") {
+    drawContours(mat.id, "0.5", 1.8, pal.ink);
+  }
+  if (state.dots) drawDots();
+  if (hover !== null) {
+    ctx.beginPath(); hexPath(hover, 0.5); ctx.lineWidth = 2; ctx.strokeStyle = pal.ink; ctx.stroke();
+  }
+}
+function drawDots() {
+  const list = visibleUnits(), boundaries = state.layer === "boundaries", o = state.m * NU;
+  const r0 = Math.min(2.2, Math.max(1, view.sc / fitScale)) ;
+  const groups = [[], [], [], [], []];
+  for (const u of list) {
+    const x = sx(uX[u]), y = sy(uY[u]);
+    if (x < -6 || x > W + 6 || y < -6 || y > H + 6) continue;
+    groups[boundaries ? 0 : uSt[o + u]].push(x, y);
+  }
+  const circles = (pts, r) => { ctx.beginPath(); for (let k = 0; k < pts.length; k += 2) { ctx.moveTo(pts[k] + r, pts[k + 1]); ctx.arc(pts[k], pts[k + 1], r, 0, 6.2832); } };
+  ctx.globalAlpha = 0.55; circles(groups[0], 1.3 * r0); ctx.fillStyle = pal.dotOff; ctx.fill(); ctx.globalAlpha = 1;
+  circles(groups[3], 2.4 * r0); ctx.lineWidth = 1.1; ctx.strokeStyle = pal.dotOff; ctx.stroke();
+  circles(groups[4], 2.8 * r0); ctx.fillStyle = pal.dotOff; ctx.fill(); ctx.lineWidth = 0.8; ctx.strokeStyle = pal.sea; ctx.stroke();
+  circles(groups[2], 2.4 * r0); ctx.lineWidth = 1.2; ctx.strokeStyle = pal.dotOn; ctx.stroke();
+  circles(groups[1], 2.8 * r0); ctx.fillStyle = pal.dotOn; ctx.fill(); ctx.lineWidth = 0.8; ctx.strokeStyle = pal.sea; ctx.stroke();
+}
+
+// ---------------------------------------------------------------- panels
+function sliceStats() { return MATS[state.m].bySlice[state.s]; }
+function renderReadout() {
+  const mat = MATS[state.m], st = sliceStats(), y = YEARS[state.s];
+  const el = $("readout");
+  if (state.layer === "boundaries") {
+    const rows = !ready ? "" : MATS.map((mm, k) => {
+      const Mk = field(k, state.s, 4), P = field(k, state.s, 0);
+      let above = 0, below = 0;
+      for (let i = 0; i < N; i++) if (Mk[i] === 0) { if (P[i] >= 100) above++; else below++; }
+      let txt;
+      if (!above && !below) txt = "no cell has enough evidence";
+      else if (!mm.hasAbsences) txt = `recorded in ${nf.format(above)} cells; no absences, so no boundary`;
+      else if (!below) txt = `at or above 50% in all ${nf.format(above)} cells with evidence: no boundary, only the dotted evidence edge`;
+      else if (!above) txt = `below 50% in all ${nf.format(below)} cells with evidence: no boundary`;
+      else txt = `crosses 50%: ${nf.format(above)} cells above, ${nf.format(below)} below`;
+      return `<dt><span class="chip" style="background:var(--m${k + 1})"></span>${mm.name}</dt><dd>${txt}</dd>`;
+    }).join("");
+    el.innerHTML = `<h2>All materials, ${yearLabel(y)}</h2>
+      <p class="note">Solid and dashed lines are true 50% presence boundaries. Dotted outlines mark where a material runs to the edge of its evidence: for pottery and ground stone, cells at or above 50%; for the other three, cells with recorded finds, since nothing records their absence.</p>
+      <dl class="status">${rows}</dl>`;
+    return;
+  }
+  const caveat = meta.caveats[`${mat.id}|${y}`];
+  const note = mat.hasAbsences
+    ? (mat.absentRecorded
+        ? `Most absences come from culture and stage labels; ${nf.format(mat.absentRecorded)} occupations in North Africa have a recorded absence (MedAfriCarbon, Rotunno & Crema). In this slice ${pct(st.label_share)} of the evidence weight is label-derived.`
+        : `Absences come only from culture and stage labels. In this slice ${pct(st.label_share)} of the evidence weight is label-derived.`)
+    : `No source records absence, so presence is 100% wherever there is enough evidence. This shows where finds are recorded, not where the material was used.`;
+  const acid = mat.acid ? `<p class="note">Cells with topsoil pH below ${meta.phMin} are masked: bone rarely survives there, though bogs and lake beds inside them can preserve it.</p>` : "";
+  const firm = mat.hasAbsences ? `<dt>Cells firm in ≥ 90% of runs</dt><dd>${nf.format(st.cells_firm)}</dd>` : "";
+  el.innerHTML = `<h2>${mat.name}, ${yearLabel(y)}</h2>
+    <p class="note">${note}</p>${acid}${caveat ? `<p class="note warn">${esc(caveat)}</p>` : ""}
+    <dl class="stats">
+      <dt>Occupations with known status</dt><dd>${nf.format(Math.round(st.occupations))}</dd>
+      <dt>Slice mean presence f₀</dt><dd>${pct(mat.f0[state.s])}</dd>
+      <dt>Cells shown / land cells</dt><dd>${nf.format(st.cells_unmasked)} / ${nf.format(st.land_cells)}</dd>
+      ${firm}
+      <dt>Kernel width σ</dt><dd>${mat.sigma} km${mat.sigmaCv ? "" : "*"}</dd>
+    </dl>
+    ${mat.sigmaCv ? "" : `<p class="note">* Taken from pottery: with no absences there is nothing to cross-validate.</p>`}`;
+}
+const sw = (v) => `<span class="sw" style="background:var(${v})"></span>`;
+const lineSw = (colourVar, w, dash) => `<svg width="26" height="10" aria-hidden="true"><line x1="1" y1="5" x2="25" y2="5" style="stroke:var(${colourVar});stroke-width:${w};stroke-dasharray:${(dash || []).join(" ")};stroke-linecap:round"></line></svg>`;
+const dotSw = (kind) => {
+  const s = kind === "rec" ? `fill:var(--dot-on);stroke:var(--sea)` : kind === "lab" ? `fill:none;stroke:var(--dot-on);stroke-width:1.3`
+    : kind === "abs" ? `fill:none;stroke:var(--dot-off);stroke-width:1.2` : kind === "absrec" ? `fill:var(--dot-off);stroke:var(--sea)` : `fill:var(--dot-off);opacity:.55`;
+  const r = kind === "unk" ? 2 : 4;
+  return `<svg width="16" height="12" aria-hidden="true"><circle cx="8" cy="6" r="${r}" style="${s}"></circle></svg>`;
+};
+function renderLegend() {
+  const mat = MATS[state.m];
+  let items = [];
+  const neutral = [];
+  if (state.layer === "presence") {
+    ["0–20%", "20–40%", "40–60%", "60–80%", "80–100%"].forEach((l, k) => items.push(`<li>${sw(`--r${k + 1}`)}${l}</li>`));
+    if (state.iso && mat.hasAbsences) items.push(`<li>${lineSw("--line-ink", 2)}50% isoline</li>`, `<li>${lineSw("--line-ink", 1)}25% and 75%</li>`);
+  } else if (state.layer === "evidence") {
+    [`E ${EMIN}–3`, "E 3–10", "E 10–30", "E 30–100", "E 100+"].forEach((l, k) => items.push(`<li>${sw(`--r${k + 1}`)}${l}</li>`));
+    items.push(`<li class="wide">${sw("--below")}Some evidence, under ${EMIN} (masked)</li>`);
+  } else if (state.layer === "firmness") {
+    ["Under 10% of runs: firmly below", "10–35%", "35–65%: undecided", "65–90%", "Over 90% of runs: firmly above"]
+      .forEach((l, k) => items.push(`<li class="${k % 4 === 0 || k === 2 ? "wide" : ""}">${sw(`--d${k + 1}`)}${l}</li>`));
+    if (state.iso) items.push(`<li class="wide">${lineSw("--line-ink", 1.8)}Main run's 50% isoline</li>`);
+  } else {
+    MATS.forEach((mm, k) => { if (mm.hasAbsences) items.push(`<li class="wide">${lineSw(`--m${k + 1}`, 2.4, DASH[mm.id])}${mm.name}: 50% boundary</li>`); });
+    MATS.forEach((mm, k) => items.push(`<li class="wide">${lineSw(`--m${k + 1}`, 1.6, [1.5, 3])}${mm.name}: ${mm.hasAbsences ? "≥ 50% up to the edge of its evidence" : "edge of recorded finds"}</li>`));
+  }
+  if (state.layer === "boundaries") neutral.push(`<li>${sw("--land-plain")}Land</li>`);
+  else neutral.push(`<li class="wide">${sw("--land-none")}${state.layer === "evidence" ? "No evidence within reach" : "Too little evidence (masked)"}</li>`);
+  neutral.push(`<li>${sw("--ice")}Ice</li>`, `<li>${sw("--sea")}Sea</li>`);
+  if (mat.acid && state.layer !== "boundaries") neutral.push(`<li class="wide">${sw("--acid")}Acid soil, pH under ${meta.phMin} (masked)</li>`);
+  let dots = "";
+  if (state.dots) {
+    dots = state.layer === "boundaries"
+      ? `<ul><li class="wide">${dotSw("unk")}Dated occupation in this slice</li></ul>`
+      : `<ul><li class="wide">${dotSw("rec")}${mat.name} recorded</li><li class="wide">${dotSw("lab")}Implied by its label</li>
+         <li class="wide">${dotSw("abs")}Absent, by its label</li>${mat.absentRecorded ? `<li class="wide">${dotSw("absrec")}Absent, recorded</li>` : ""}<li class="wide">${dotSw("unk")}Status unknown (not used)</li></ul>`;
+  }
+  $("legend").innerHTML = `<span class="label">Key</span><ul>${items.join("")}</ul><ul>${neutral.join("")}</ul>${dots}`;
+}
+function renderControls() {
+  const matBox = $("mat");
+  [...matBox.children].forEach((b, k) => b.setAttribute("aria-checked", String(k === state.m)));
+  matBox.classList.toggle("dim", state.layer === "boundaries");
+  const firmBtn = document.querySelector('[data-layer="firmness"]');
+  firmBtn.disabled = !MATS[state.m].hasAbsences;
+  firmBtn.title = firmBtn.disabled ? "Only for materials with known absences (pottery, ground stone)" : "";
+  document.querySelectorAll("#layer button").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.layer === state.layer)));
+  $("slice").value = state.s;
+  const y = YEARS[state.s];
+  $("year").textContent = yearLabel(y);
+  $("span").textContent = `${nf.format(Math.abs(y - meta.half))}–${nf.format(Math.abs(y + meta.half))} BCE`;
+}
+function setHash() {
+  const slug = state.layer === "boundaries" ? "all" : MATS[state.m].slug;
+  try { history.replaceState(null, "", `#${slug}-${state.layer}-${Math.abs(YEARS[state.s])}`); } catch (e) { /* framed viewers may refuse */ }
+}
+function readHash() {
+  const m = /^#([a-z-]+)-(presence|evidence|firmness|boundaries)-(\d+)$/.exec(location.hash);
+  if (!m) return;
+  const k = MATS.findIndex((x) => x.slug === m[1]);
+  if (k >= 0) state.m = k;
+  state.layer = m[2];
+  const s = YEARS.indexOf(-Number(m[3]));
+  if (s >= 0) state.s = s;
+  if (state.layer === "firmness" && !MATS[state.m].hasAbsences) state.layer = "presence";
+}
+function update() {
+  hover = null; hideInspect(); renderControls(); renderReadout(); renderLegend(); setHash(); draw();
+}
+
+// ---------------------------------------------------------------- inspect
+const insp = $("inspect");
+function hideInspect() { insp.hidden = true; }
+function cellAt(px, py) {
+  const x = (px - W / 2) / view.sc + view.cx, y = (py - H / 2) / view.sc + view.cy;
+  const lo = x / K, la = -y;
+  const [c, r] = cellKey(lo, la);
+  let best = null, bd = Infinity;
+  for (let dc = -1; dc <= 1; dc++) for (let dr = -2; dr <= 2; dr++) {
+    const i = keyIndex.get(keyOf(c + dc, r + dr));
+    if (i === undefined) continue;
+    const d = (X[i] - x) ** 2 + (Y[i] - y) ** 2;
+    if (d < bd) { bd = d; best = i; }
+  }
+  return best !== null && Math.sqrt(bd) < HW * K ? best : null;
+}
+function unitAt(px, py) {
+  if (!state.dots) return -1;
+  let best = -1, bd = 64;
+  for (const u of visibleUnits()) {
+    const d = (sx(uX[u]) - px) ** 2 + (sy(uY[u]) - py) ** 2;
+    if (d < bd) { bd = d; best = u; }
+  }
+  return best;
+}
+const MASKTXT = ["", "too little evidence", "ice", "acid soil", "sea"];
+const STATUS = ["unknown, not used", "recorded", "implied by its label", "absent, by its label", "absent, recorded"];
+function showInspect(px, py) {
+  const u = unitAt(px, py), i = cellAt(px, py);
+  hover = i; hoverUnit = u;
+  if (u >= 0) {
+    const [name, src, nd] = (uNames[u] || "").split("\t");
+    const f = uFlag[u], w = uW[state.s * NU + u] / 255;
+    const rows = state.layer === "boundaries"
+      ? MATS.map((mm, k) => `<dt>${mm.name}</dt><dd>${STATUS[uSt[k * NU + u]]}</dd>`).join("")
+      : `<dt>${MATS[state.m].name}</dt><dd>${STATUS[uSt[state.m * NU + u]]}</dd>`;
+    insp.innerHTML = `<h3>${esc(name || "Unnamed site")}</h3><dl>
+      <dt>Dating</dt><dd>${f & 2 ? "published date range" : `${nd} radiocarbon date${nd === "1" ? "" : "s"}`}</dd>
+      <dt>Weight in slice</dt><dd>${pct(w)}</dd>${f & 1 ? "<dt>Context</dt><dd>grave</dd>" : ""}
+      ${rows}<dt>Source</dt><dd>${esc(src || "")}</dd></dl>`;
+    insp.hidden = false;
+  } else if (i !== null) {
+    const m = state.layer === "boundaries" ? 0 : state.m;
+    const mk = field(m, state.s, 4)[i];
+    const id = meta.ids ? meta.ids[i] : i + 1;
+    const ll = `${Math.abs(lat[i]).toFixed(2)}°${lat[i] >= 0 ? "N" : "S"} ${Math.abs(lon[i]).toFixed(2)}°${lon[i] >= 0 ? "E" : "W"}`;
+    let rows;
+    if (mk === 4) rows = `<dt>Surface</dt><dd>sea in this slice</dd>`;
+    else if (state.layer === "boundaries") {
+      rows = MATS.map((mm, k) => {
+        const mk2 = field(k, state.s, 4)[i], p = field(k, state.s, 0)[i];
+        return `<dt>${mm.name}</dt><dd>${mk2 ? MASKTXT[mk2] : pct(p / 200)}</dd>`;
+      }).join("");
+    } else {
+      const p = field(m, state.s, 0)[i], e = EQ[field(m, state.s, 1)[i]], b = field(m, state.s, 2)[i], l = field(m, state.s, 3)[i];
+      rows = `<dt>Presence</dt><dd>${mk ? `masked: ${MASKTXT[mk]}` : pct(p / 200)}</dd>
+        <dt>Evidence E</dt><dd>${e < 0.01 ? "0" : e.toFixed(e < 10 ? 2 : 0)} (threshold ${EMIN})</dd>
+        ${l !== 255 ? `<dt>From labels</dt><dd>${pct(l / 200)} of E</dd>` : ""}
+        ${MATS[m].hasAbsences && b !== 255 && !mk ? `<dt>Bootstrap</dt><dd>≥ 50% in ${pct(b / 200)} of runs</dd>` : ""}`;
+    }
+    insp.innerHTML = `<h3>Hex ${id}</h3><dl><dt>Centre</dt><dd>${ll}</dd>${rows}</dl>`;
+    insp.hidden = false;
+  } else hideInspect();
+  draw();
+}
+
+// ---------------------------------------------------------------- input
+const pointers = new Map();
+let drag = null, pinch = null, moved = false;
+cv.addEventListener("pointerdown", (e) => {
+  cv.setPointerCapture(e.pointerId);
+  pointers.set(e.pointerId, { x: e.offsetX, y: e.offsetY });
+  moved = false;
+  if (pointers.size === 1) drag = { x: e.offsetX, y: e.offsetY, cx: view.cx, cy: view.cy };
+  else if (pointers.size === 2) {
+    const [a, b] = [...pointers.values()];
+    pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), sc: view.sc }; drag = null;
+  }
+});
+cv.addEventListener("pointermove", (e) => {
+  if (!ready) return;
+  if (pointers.has(e.pointerId)) pointers.set(e.pointerId, { x: e.offsetX, y: e.offsetY });
+  if (pinch && pointers.size === 2) {
+    const [a, b] = [...pointers.values()];
+    const f = Math.hypot(a.x - b.x, a.y - b.y) / pinch.d * pinch.sc / view.sc;
+    zoomAt((a.x + b.x) / 2, (a.y + b.y) / 2, f); moved = true; return;
+  }
+  if (drag) {
+    const dx = e.offsetX - drag.x, dy = e.offsetY - drag.y;
+    if (Math.abs(dx) + Math.abs(dy) > 3) { moved = true; cv.classList.add("dragging"); }
+    if (moved) { view.cx = drag.cx - dx / view.sc; view.cy = drag.cy - dy / view.sc; hideInspect(); hover = null; draw(); }
+    return;
+  }
+  if (e.pointerType === "mouse") showInspect(e.offsetX, e.offsetY);
+});
+const endPointer = (e) => {
+  pointers.delete(e.pointerId);
+  if (pointers.size < 2) pinch = null;
+  if (pointers.size === 0) {
+    if (!moved && ready && e.type === "pointerup") showInspect(e.offsetX, e.offsetY);
+    drag = null; cv.classList.remove("dragging");
+  }
+};
+cv.addEventListener("pointerup", endPointer);
+cv.addEventListener("pointercancel", endPointer);
+cv.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse" && !drag) { hover = null; hideInspect(); draw(); } });
+cv.addEventListener("wheel", (e) => { e.preventDefault(); zoomAt(e.offsetX, e.offsetY, Math.exp(-e.deltaY * 0.0016)); }, { passive: false });
+$("z-in").onclick = () => zoomAt(W / 2, H / 2, 1.5);
+$("z-out").onclick = () => zoomAt(W / 2, H / 2, 1 / 1.5);
+$("v-all").onclick = () => { fitAll(); draw(); };
+$("v-eu").onclick = () => { fitEurope(); draw(); };
+
+MATS.forEach((mm, k) => {
+  const b = document.createElement("button");
+  b.type = "button"; b.setAttribute("role", "radio");
+  b.innerHTML = `<span class="chip" style="background:var(--m${k + 1})"></span>${mm.name}`;
+  b.onclick = () => {
+    state.m = k;
+    if (state.layer === "boundaries") state.layer = "presence";
+    if (state.layer === "firmness" && !mm.hasAbsences) state.layer = "presence";
+    update();
+  };
+  matBox().appendChild(b);
+});
+function matBox() { return $("mat"); }
+document.querySelectorAll("#layer button").forEach((b) => { b.onclick = () => { state.layer = b.dataset.layer; update(); }; });
+$("slice").max = String(S - 1);
+$("slice").addEventListener("input", (e) => { state.s = Number(e.target.value); update(); });
+$("ticks").innerHTML = YEARS.map((y) => `<span>${Math.abs(y) / 1000}k</span>`).join("");
+$("t-iso").onchange = (e) => { state.iso = e.target.checked; renderLegend(); draw(); };
+$("t-dots").onchange = (e) => { state.dots = e.target.checked; renderLegend(); draw(); };
+$("t-borders").onchange = (e) => { state.borders = e.target.checked; draw(); };
+let timer = null;
+$("play").onclick = () => {
+  if (timer) { clearInterval(timer); timer = null; $("play").textContent = "Play"; $("play").setAttribute("aria-pressed", "false"); return; }
+  $("play").textContent = "Pause"; $("play").setAttribute("aria-pressed", "true");
+  timer = setInterval(() => { state.s = (state.s + 1) % S; update(); }, 1200);
+};
+document.addEventListener("keydown", (e) => {
+  if (e.target.tagName === "INPUT") return;
+  if (e.key === "ArrowRight" && state.s < S - 1) { state.s++; update(); }
+  if (e.key === "ArrowLeft" && state.s > 0) { state.s--; update(); }
+});
+window.addEventListener("hashchange", () => { readHash(); update(); });
+$("emin-a").textContent = EMIN; $("nboot").textContent = meta.bootstrap;
+
+const onTheme = () => { readTheme(); renderLegend(); draw(); };
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", onTheme);
+new MutationObserver(onTheme).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+new ResizeObserver(resize).observe($("stage"));
+
+readTheme();
+readHash();
+renderControls(); renderReadout(); renderLegend();
+load().then(() => {
+  ready = true; $("loading").hidden = true;
+  if (W) { fitAll(); fitEurope(); }
+  update();
+}).catch((err) => {
+  $("loading").textContent = `Could not unpack the surfaces in this browser (${err.message}). It needs DecompressionStream: a 2023 or later browser.`;
+});
+})();
+</script>

@@ -1,0 +1,15 @@
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+# Hex-map pipeline
+build/
+.venv/
+
+# macOS
+.DS_Store
+
+# Vercel
+.vercel

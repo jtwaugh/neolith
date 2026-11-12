@@ -1,0 +1,33 @@
+[package]
+name = "neolith-app"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Neolith: the map, clock and editor as an eframe app (native + web)."
+
+[[bin]]
+name = "neolith"
+path = "src/main.rs"
+
+[dependencies]
+neolith-core.workspace = true
+eframe = { version = "0.37", default-features = false, features = ["wgpu", "default_fonts", "wayland", "x11"] }
+egui = "0.37"
+egui-wgpu = "0.37"
+bytemuck = { version = "1", features = ["derive"] }
+glam = { version = "0.30", features = ["bytemuck"] }
+log = "0.4"
+rfd = "0.15"
+serde_json.workspace = true
+serde.workspace = true
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+env_logger = "0.11"
+pollster = "0.4"
+image = { version = "0.25", default-features = false, features = ["png"] }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen-futures = "0.4"
+wasm-bindgen = "0.2"
+ehttp = "0.5"
+web-sys = { version = "0.3", features = ["Window", "Document", "Element", "HtmlCanvasElement"] }

@@ -1,0 +1,70 @@
+# Presence or absence of a material class implied by a culture or stage
+# label. HAND-CODED for this project from general knowledge of the cultures;
+# not taken from any dataset and not checked against a cited source. Every
+# observation made through this file is marked basis = "label" and the maps
+# report how much of each surface rests on it.
+#
+# ids are those of data/cultures/cultures.toml. A culture rule beats a stage
+# rule. An id in neither list means "the label does not decide it": the
+# occupation is then left out of that material's surface, not counted as
+# absent. `from` limits a "present" rule to episodes whose median is at or
+# after that year.
+#
+# Flaked stone, bone/antler and ornaments have no rules: no label implies
+# their absence, so labels cannot give those surfaces any contrast.
+
+[pottery]
+definition = "fired clay vessels"
+present_cultures = [
+  "yarmukian", "hassuna", "samarra", "halaf", "ubaid", "uruk", "ghassulian", "shulaveri_shomu",
+  "faiyum_a", "merimde", "el_omari", "badarian", "naqada", "maadi_buto", "dynastic_egypt",
+  "capsian_neolithic", "tenerian", "ertebolle", "starcevo_koros_cris", "karanovo", "vinca", "sopot",
+  "alfold_linear_pottery", "tisza", "tiszapolgar", "gumelnita", "cucuteni_trypillia", "baden",
+  "bug_dniester", "yamnaya", "lbk", "stroke_ornamented", "grossgartach", "rossen", "lengyel",
+  "michelsberg", "funnelbeaker", "globular_amphora", "corded_ware", "bell_beaker", "swifterbant",
+  "vlaardingen", "pitted_ware", "wartberg", "egolzwil", "cortaillod", "pfyn", "horgen", "altheim",
+  "mondsee", "cerny", "villeneuve_saint_germain", "chasseen", "seine_oise_marne", "artenac",
+  "veraza", "montbolo", "impressed_ware", "cardial", "stentinello", "square_mouthed_pottery",
+  "ozieri", "british_early_neolithic",
+]
+absent_cultures = [
+  "kebaran", "natufian", "ppna", "ppnb", "ppnc", "qarunian", "iberomaurusian", "capsian",
+  "magdalenian", "epigravettian", "hamburgian", "creswellian", "federmesser", "azilian",
+  "ahrensburgian", "maglemosian", "kongemose", "sauveterrian", "tardenoisian", "asturian",
+]
+# "Mesolithic" as absent is wrong for pottery-using foragers that sources file
+# under that stage without a culture name; "Neolithic" as present is wrong
+# for aceramic Neolithic sites filed without the "aceramic" qualifier, hence
+# the `from` limit.
+present_stages = ["neolithic", "chalcolithic", "bronze_age", "iron_age"]
+absent_stages = ["palaeolithic", "upper_palaeolithic", "epipalaeolithic", "mesolithic", "aceramic_neolithic"]
+[pottery.from]
+neolithic = -7000      # earlier "Neolithic" labels may be pre-pottery
+ertebolle = -4700      # early Ertebølle is aceramic
+swifterbant = -5000
+
+[ground_stone]
+definition = "ground or polished stone tools: axes, adzes, querns, mortars"
+present_cultures = [
+  "natufian", "ppna", "ppnb", "ppnc",
+  "yarmukian", "hassuna", "samarra", "halaf", "ubaid", "uruk", "ghassulian", "shulaveri_shomu",
+  "faiyum_a", "merimde", "el_omari", "badarian", "naqada", "maadi_buto", "dynastic_egypt",
+  "capsian_neolithic", "tenerian", "starcevo_koros_cris", "karanovo", "vinca", "sopot",
+  "alfold_linear_pottery", "tisza", "tiszapolgar", "gumelnita", "cucuteni_trypillia", "baden",
+  "lbk", "stroke_ornamented", "grossgartach", "rossen", "lengyel", "michelsberg", "funnelbeaker",
+  "globular_amphora", "corded_ware", "bell_beaker", "vlaardingen", "pitted_ware", "wartberg",
+  "egolzwil", "cortaillod", "pfyn", "horgen", "altheim", "mondsee", "cerny",
+  "villeneuve_saint_germain", "chasseen", "seine_oise_marne", "artenac", "veraza", "montbolo",
+  "impressed_ware", "cardial", "stentinello", "square_mouthed_pottery", "ozieri",
+  "british_early_neolithic",
+]
+# Left undecided on purpose: Maglemosian, Kongemose, Ertebølle, Swifterbant,
+# Asturian, Capsian, Kebaran and the plain "Mesolithic" and "Epipalaeolithic"
+# stages (pecked and ground axes, mortars or grinding slabs occur in some).
+absent_cultures = [
+  "magdalenian", "epigravettian", "hamburgian", "creswellian", "federmesser", "azilian",
+  "ahrensburgian", "sauveterrian", "tardenoisian",
+]
+present_stages = ["aceramic_neolithic", "neolithic", "chalcolithic", "bronze_age", "iron_age"]
+absent_stages = ["palaeolithic", "upper_palaeolithic"]
+[ground_stone.from]

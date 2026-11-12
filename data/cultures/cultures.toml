@@ -1,0 +1,1121 @@
+# Archaeological cultures and stages, matched to the period labels on
+# radiocarbon dates. Read by `make settlements`; checked against the cited
+# Wikipedia articles by `make cultures-check`.
+#
+# Each entry:
+#   id, name      identifier used in settlements.geojson, and display name
+#   key           (optional) words the cited article must contain to count as
+#                 being about this entry; default: the name without (...)
+#   stage         (cultures only) the stage it belongs to
+#   wikipedia     English Wikipedia title the traits are cited to
+#   start, end    (optional) the culture's date range in signed years
+#                 (negative = BCE), from the cited article; `quotes` holds
+#                 the article's own words for it, checked to still be there
+#   match         regular expression searched in each normalised label
+#                 (lower case, accents folded, punctuation as spaces)
+#   traits        economy, pottery, houses, burial, monuments, metal,
+#                 domesticates, other. A trait that is absent means
+#                 "not recorded here", not "absent in the culture".
+#
+# A label that matches two cultures (e.g. "Horgen/Schnurkeramik"), or no
+# culture and two stages, is ignored as ambiguous. A culture match beats a
+# stage match. Many sources label every date at a site with all of the
+# site's periods, so a date counts toward a culture only if it also falls
+# within the culture's start..end, widened by `range_margin` years (set in
+# pipeline/config.toml). A culture without a range counts only on dates
+# no other culture's label competes for, and for those the missing ends of
+# the range are taken from the dates themselves (reported as "observed").
+# Stage labels count only where their range fits, too; a stage and its
+# `parent` together count as the parent.
+#
+# Traits are short summaries written for this project, cited to an article
+# revision; `make cultures-check` lists any trait the article doesn't
+# mention, and cultures.json carries that list as `unverified`.
+
+# Labels never matched: transitions, phases and mixed attributions.
+ignore = [
+  '\b(ubergang|transition|transi|or|und|bis|nicht gesichert|terminus|expected|expeced|analogie|einfluss|elemente|einflussen|beginn|ende|zuweisung)\b',
+  '^(meso neo|meso neolithikum|lmen|lneba|sn ii|sn i|antic|mig|mig final|spate|fruhe|jungere|jungeres|alteres|mittlere|early|late|middle|final|unspec|abt|tcz|tci|nmb|nfv|nav|ia|em|eb|c|b|a|v|i|ii|iii|vi|1a)$',
+]
+
+# ------------------------------------------------------------------ stages
+[[stage]]
+id = "palaeolithic"
+key = "paleolithic"
+name = "Palaeolithic (Lower and Middle)"
+wikipedia = "Paleolithic"
+match = '^(pal(a)?eolithic|middle pal(a)?eolithic|lower pal(a)?eolithic|pleistocene)$|\b(mousterian|micoquian)\b'
+traits = { economy = "foraging" }
+
+[[stage]]
+id = "upper_palaeolithic"
+key = "upper paleolithic"
+name = "Upper Palaeolithic"
+wikipedia = "Upper Paleolithic"
+start = -48050
+end = -10050
+quotes = ["between 50,000 and 12,000 years ago"]
+match = '\b(upper|middle upper|late) pal(a)?eolithic\b|paleolithique superieur|^up$|\b(aurignacian|gravettian|gravettien|solutrean|badegoulian|chatelperronian|uluzzian|ahmarian|gorodtsovian|streletskayan|masraqan|nizzanan|protomagdalenian)\b'
+traits = { economy = "foraging" }
+
+[[stage]]
+id = "epipalaeolithic"
+name = "Epipalaeolithic"
+wikipedia = "Epipalaeolithic"
+start = -18050
+end = -3050
+quotes = ["20,000 bp to 10,000 bp in the levant, but later in europe", "5,000 bp or even later"]
+match = '\bepi ?pal(a)?(e)?olithi|\bepipaleolithique\b|^ep$|\b(mushabian|harifian|microlaminar|laborien|laborian|epilaborian)\b'
+traits = { economy = "foraging" }
+
+[[stage]]
+id = "mesolithic"
+name = "Mesolithic"
+wikipedia = "Mesolithic"
+start = -13050
+end = -3050
+quotes = ["15,000 to 5,000 bp"]
+match = '\bmesolithi|\bmesolithikum\b|^(um|lm|mm)$|\blate meso$|muescas y denticulados|fase geometrica|meso recent|castelnov'
+traits = { economy = "foraging" }
+
+[[stage]]
+id = "aceramic_neolithic"
+key = "pre pottery neolithic"
+name = "Aceramic Neolithic"
+wikipedia = "Pre-Pottery Neolithic"
+start = -10000
+end = -6500
+quotes = ["(10000 – 6500 bce)"]
+parent = "neolithic"
+match = '^(acn|ppn|aceramic|aceramique|pre pottery)$'
+traits = { economy = "farming", pottery = "none" }
+
+[[stage]]
+id = "neolithic"
+name = "Neolithic"
+wikipedia = "Neolithic"
+start = -10000
+end = -2000
+quotes = ["10,000 bc to c", "2,000 bc)"]
+match = '\bneolith|^(en|mn|ln|fn|un|emn|neo|pn|na nm|neo moyen i|mln|minl|jungnl)$|earlyneolithic|middleneolithic|lateneolithic|fruhneolithikum|mittelneolithikum|spatneolithikum|^(en|mn|ln|fn) [iv]+\b|hazendonk|schussenried|peu richard|matignons|fiorano|epicardial'
+traits = { economy = "farming" }
+
+[[stage]]
+id = "chalcolithic"
+name = "Chalcolithic (Copper Age)"
+wikipedia = "Chalcolithic"
+start = -6500
+end = -2200
+quotes = ["6,500 bc", "2,500 and 2,200 bc"]
+match = 'chalcolithic|^chalc$|^ch$|copper age|calcolitic|eneolithic|^e ch$|^l ?ch$|^cham$|ferrieres|treilles|fontbouisse'
+traits = { economy = "farming", metal = ["copper"] }
+
+[[stage]]
+id = "bronze_age"
+name = "Bronze Age"
+wikipedia = "Bronze Age"
+match = '\bbronze\b|bronzezeit|^(eba|mba|lba|uba|br|bz|fbz)$|\b(helladic|minoan|cycladic)\b|nordic ba\b|^periode [iv]+'
+traits = { economy = "farming", metal = ["bronze"] }
+
+[[stage]]
+id = "iron_age"
+name = "Iron Age"
+wikipedia = "Iron Age"
+match = 'iron age|age du fer|eisenzeit|\bferro\b|la tene|vorromische'
+traits = { economy = "farming", metal = ["iron"] }
+
+# ------------------------------------------------- Levant and Mesopotamia
+[[culture]]
+id = "kebaran"
+name = "Kebaran"
+stage = "epipalaeolithic"
+wikipedia = "Kebaran culture"
+start = -21050
+end = -14550
+quotes = ["23,000 and ca. 16,500 bp"]
+match = '\bkebaran\b'
+traits = { economy = "foraging", other = ["microliths"] }
+
+[[culture]]
+id = "natufian"
+name = "Natufian"
+stage = "epipalaeolithic"
+wikipedia = "Natufian culture"
+start = -12500
+end = -9500
+quotes = ["12,500 and 9,500 bc"]
+match = 'natufian|natoufien'
+traits = { economy = "foraging", houses = ["round"], burial = ["cemetery"], domesticates = ["dog"], other = ["wild cereal harvesting", "sedentism"] }
+
+[[culture]]
+id = "ppna"
+name = "Pre-Pottery Neolithic A"
+stage = "aceramic_neolithic"
+wikipedia = "Pre-Pottery Neolithic A"
+start = -10000
+end = -8800
+quotes = ["10,000–8800 bce"]
+match = '\bppna\b'
+traits = { economy = "farming", pottery = "none", houses = ["round"], monuments = ["tower"] }
+
+[[culture]]
+id = "ppnb"
+name = "Pre-Pottery Neolithic B"
+stage = "aceramic_neolithic"
+wikipedia = "Pre-Pottery Neolithic B"
+start = -8800
+end = -6500
+quotes = ["8800–6500 bc"]
+match = '\b[eml]?ppnb\b|cypro [el]?ppnb'
+traits = { economy = "farming", pottery = "none", houses = ["rectangular"], burial = ["skull removal"], domesticates = ["sheep/goat", "cattle"], other = ["plastered floors"] }
+
+[[culture]]
+id = "ppnc"
+name = "Pre-Pottery Neolithic C"
+stage = "aceramic_neolithic"
+wikipedia = "Pre-Pottery Neolithic C"
+match = '\bppnc\b'
+traits = { economy = "farming", pottery = "none" }
+
+[[culture]]
+id = "yarmukian"
+name = "Yarmukian"
+stage = "neolithic"
+wikipedia = "Yarmukian culture"
+start = -6400
+end = -6000
+quotes = ["6400–6000 bce"]
+match = 'yarmuk'
+traits = { economy = "farming", pottery = "yes", other = ["figurines"] }
+
+[[culture]]
+id = "hassuna"
+name = "Hassuna"
+stage = "neolithic"
+wikipedia = "Hassuna culture"
+start = -7000
+end = -6000
+quotes = ["7000-6700 bc", "6300-6000 bc"]
+match = '\bhassuna\b'
+traits = { economy = "farming", pottery = "painted", houses = ["mudbrick"] }
+
+[[culture]]
+id = "samarra"
+name = "Samarra"
+stage = "chalcolithic"
+wikipedia = "Samarra culture"
+start = -5500
+end = -4800
+quotes = ["5500 and 4800 bce"]
+match = '\bsamarra\b'
+traits = { other = ["irrigation"] }
+
+[[culture]]
+id = "halaf"
+name = "Halaf"
+stage = "neolithic"
+wikipedia = "Halaf culture"
+start = -6100
+end = -5100
+quotes = ["6100 bc and 5100 bc"]
+match = '^(?!.*\b(pre|proto|post|epi)\b).*\bhalaf\b'
+traits = { economy = "farming", pottery = "painted" }
+
+[[culture]]
+id = "ubaid"
+name = "Ubaid"
+stage = "chalcolithic"
+wikipedia = "Ubaid period"
+start = -6500
+end = -3800
+quotes = ["6500–3800 bc"]
+match = '^(?!.*\b(pre|proto|post)\b).*\b(ubaid|obeid)\b'
+traits = { economy = "farming", pottery = "painted", houses = ["mudbrick"], monuments = ["temple"], other = ["irrigation"] }
+
+[[culture]]
+id = "uruk"
+name = "Uruk"
+stage = "chalcolithic"
+wikipedia = "Uruk period"
+match = '\buruk\b'
+traits = { economy = "farming", houses = ["large settlement"], monuments = ["temple"], other = ["writing"] }
+
+[[culture]]
+id = "ghassulian"
+name = "Ghassulian"
+stage = "chalcolithic"
+wikipedia = "Ghassulian"
+start = -4400
+end = -3500
+quotes = ["4400 – c. 3500 bc"]
+match = 'ghassul'
+traits = { economy = "farming", metal = ["copper"] }
+
+[[culture]]
+id = "shulaveri_shomu"
+name = "Shulaveri–Shomu"
+stage = "neolithic"
+wikipedia = "Shulaveri–Shomu culture"
+start = -6100
+end = -4900
+quotes = ["end of the seventh millennium bc to the beginning of the fifth millennium bc"]
+match = 'sulaveri|shulaveri'
+traits = { economy = "farming", houses = ["round", "mudbrick"] }
+
+# ----------------------------------------------------- Egypt and the Nile
+[[culture]]
+id = "qarunian"
+name = "Qarunian"
+stage = "epipalaeolithic"
+wikipedia = "Prehistoric Egypt"
+start = -6500
+end = -5190
+quotes = ["6500 to - 5190 bc"]
+match = 'qaroun|qarun'
+traits = {}
+
+[[culture]]
+id = "faiyum_a"
+name = "Faiyum A"
+stage = "neolithic"
+wikipedia = "Prehistoric Egypt"
+start = -5600
+end = -4400
+quotes = ["5600-4400 bc"]
+key = "faiyum"
+match = 'fayou|faiyum|fayum'
+traits = { economy = "farming", domesticates = ["wheat", "barley", "sheep/goat"] }
+
+[[culture]]
+id = "merimde"
+name = "Merimde"
+stage = "neolithic"
+wikipedia = "Merimde culture"
+start = -4800
+end = -4300
+quotes = ["4800 and 4300 bc"]
+match = 'merimde'
+traits = { economy = "farming" }
+
+[[culture]]
+id = "el_omari"
+name = "El Omari"
+stage = "neolithic"
+wikipedia = "Prehistoric Egypt"
+start = -4000
+end = -3100
+quotes = ["4000 bc to the archaic period (3,100 bc)"]
+key = "omari"
+match = '\bomari\b'
+traits = {}
+
+[[culture]]
+id = "badarian"
+name = "Badarian"
+stage = "chalcolithic"
+wikipedia = "Badarian culture"
+start = -4400
+end = -4000
+quotes = ["4400 and 4000 bc"]
+match = 'badari'
+traits = { economy = "farming", burial = ["cemetery"], metal = ["copper"] }
+
+[[culture]]
+id = "naqada"
+name = "Naqada"
+stage = "chalcolithic"
+wikipedia = "Naqada culture"
+start = -4000
+end = -3000
+quotes = ["4000–3000 bc"]
+match = '\bnaqada\b'
+traits = { economy = "farming", pottery = "painted", burial = ["cemetery"], metal = ["copper"] }
+
+[[culture]]
+id = "maadi_buto"
+name = "Maadi–Buto"
+stage = "chalcolithic"
+wikipedia = "Maadi culture"
+match = '\bmaadi\b|\bbuto\b'
+traits = {}
+
+[[culture]]
+id = "dynastic_egypt"
+name = "Dynastic Egypt"
+stage = "bronze_age"
+wikipedia = "Early Dynastic Period (Egypt)"
+start = -3150
+end = -2686
+quotes = ["3150 bc", "2686 bc"]
+key = "early dynastic"
+match = '\bdynast|old kingdom|middle kingdom|intermediate period|^(djer|djet|den|djoser|khufu|sneferu|unas|userkaf|djedefre|hor aha|qaa)$'
+traits = { economy = "farming", other = ["writing"] }
+
+# ------------------------------------------------- Maghreb and the Sahara
+[[culture]]
+id = "iberomaurusian"
+name = "Iberomaurusian"
+stage = "epipalaeolithic"
+wikipedia = "Iberomaurusian"
+start = -23050
+end = -9050
+quotes = ["25,000 and 23,000 cal bp", "11,000 cal bp"]
+match = 'iberomau|iberomarousian'
+traits = { economy = "foraging", other = ["microliths"] }
+
+[[culture]]
+id = "capsian"
+name = "Capsian"
+stage = "epipalaeolithic"
+wikipedia = "Capsian culture"
+start = -9000
+end = -5400
+quotes = ["9000 to 5400 cal bc"]
+match = '^(?!.*(neolithic of capsian|\bpre\b)).*\b(capsian|capsien)\b'
+traits = { economy = "foraging", other = ["land snails", "ostrich eggshell"] }
+
+[[culture]]
+id = "capsian_neolithic"
+name = "Neolithic of Capsian Tradition"
+stage = "neolithic"
+wikipedia = "Capsian culture"
+match = 'neolithic of capsian tradition|^ntc$'
+traits = { domesticates = ["sheep/goat"] }
+
+[[culture]]
+id = "kiffian"
+name = "Kiffian"
+stage = "epipalaeolithic"
+wikipedia = "Kiffian culture"
+start = -8000
+end = -6000
+quotes = ["8,000 bc and 6,000 bc"]
+match = 'kiffi'
+traits = { economy = "foraging", burial = ["cemetery"] }
+
+[[culture]]
+id = "tenerian"
+name = "Tenerian"
+stage = "neolithic"
+wikipedia = "Tenerian culture"
+start = -5000
+end = -2500
+quotes = ["between the 5th millennium bce and mid-3rd millennium bce"]
+match = 'tenereen|tenerian'
+traits = { economy = "herding", domesticates = ["cattle"], burial = ["cemetery"] }
+
+# ------------------------------------------- Late Glacial and Mesolithic
+[[culture]]
+id = "magdalenian"
+name = "Magdalenian"
+stage = "upper_palaeolithic"
+wikipedia = "Magdalenian"
+match = '^(?!.*(azil|federmesser|epi ?magdal|protomagdal|badegoul|solutr|epipal|gravett|laborian)).*\bmagdal'
+traits = { economy = "foraging", other = ["cave art", "reindeer"] }
+
+[[culture]]
+id = "epigravettian"
+name = "Epigravettian"
+stage = "upper_palaeolithic"
+wikipedia = "Epigravettian"
+start = -18050
+end = -6050
+quotes = ["20,000 to 16,000 bp", "14,000 to 8,000 bp"]
+match = 'epi ?gravett|tradition epigravettienne'
+traits = { economy = "foraging" }
+
+[[culture]]
+id = "hamburgian"
+name = "Hamburgian"
+stage = "upper_palaeolithic"
+wikipedia = "Hamburg culture"
+start = -13550
+end = -11150
+quotes = ["15,500-13,100 bp"]
+key = "hamburg"
+match = 'hamburgian'
+traits = { economy = "foraging", other = ["reindeer"] }
+
+[[culture]]
+id = "creswellian"
+name = "Creswellian"
+stage = "upper_palaeolithic"
+wikipedia = "Creswellian culture"
+start = -11050
+end = -9850
+quotes = ["13,000 and 11,800 bp"]
+match = 'creswell'
+traits = { economy = "foraging" }
+
+[[culture]]
+id = "federmesser"
+name = "Federmesser"
+stage = "epipalaeolithic"
+wikipedia = "Federmesser culture"
+start = -12050
+end = -10850
+quotes = ["14,000 and 12,800 years ago"]
+match = 'federmesser|tjonger'
+traits = { economy = "foraging" }
+
+[[culture]]
+id = "azilian"
+name = "Azilian"
+stage = "epipalaeolithic"
+wikipedia = "Azilian"
+start = -11380
+end = -9990
+quotes = ["11,380-9,990 bc"]
+match = '^(?!.*(laborien|laborian|magdalen|federmesser|post azilian)).*\bazili'
+traits = { economy = "foraging", other = ["painted pebbles"] }
+
+[[culture]]
+id = "ahrensburgian"
+name = "Ahrensburgian"
+stage = "epipalaeolithic"
+wikipedia = "Ahrensburg culture"
+start = -10950
+end = -9750
+quotes = ["12,900 to 11,700 bp"]
+key = "ahrensburg"
+match = 'ahrensburg'
+traits = { economy = "foraging", other = ["reindeer"] }
+
+[[culture]]
+id = "maglemosian"
+name = "Maglemosian"
+stage = "mesolithic"
+wikipedia = "Maglemosian culture"
+start = -9000
+end = -6000
+quotes = ["9000 bc – c. 6000 bc"]
+match = 'maglemos|magelmos'
+traits = { economy = "foraging" }
+
+[[culture]]
+id = "kongemose"
+name = "Kongemose"
+stage = "mesolithic"
+wikipedia = "Kongemose culture"
+start = -6000
+end = -5200
+quotes = ["6000 bc–5200 bc"]
+match = 'kongemose|kongmose'
+traits = { economy = "foraging" }
+
+[[culture]]
+id = "ertebolle"
+name = "Ertebølle"
+stage = "mesolithic"
+wikipedia = "Ertebølle culture"
+start = -5400
+end = -3950
+quotes = ["5,400 bce – 3,950 bce"]
+match = '^(?!.*(trichterbecher|\btbk\b|\bfn\b|neolithic)).*\bertebolle\b'
+traits = { economy = "foraging", pottery = "yes", other = ["shell middens"] }
+
+[[culture]]
+id = "sauveterrian"
+name = "Sauveterrian"
+stage = "mesolithic"
+wikipedia = "Sauveterrian"
+start = -6550
+end = -4550
+quotes = ["8500 to 6500 years bp"]
+match = 'sauveterr'
+traits = { other = ["microliths"] }
+
+[[culture]]
+id = "tardenoisian"
+name = "Tardenoisian"
+stage = "mesolithic"
+wikipedia = "Tardenoisian"
+start = -9000
+end = -4000
+quotes = ["9000 bc until 4000 bc"]
+match = 'tardeno'
+traits = { other = ["microliths"] }
+
+[[culture]]
+id = "asturian"
+name = "Asturian"
+stage = "mesolithic"
+wikipedia = "Asturian culture"
+start = -5050
+end = -4550
+quotes = ["7000 and 6500 bp"]
+match = 'asturi'
+traits = { economy = "foraging", other = ["shell middens"] }
+
+# ------------------------------------------- Balkans and Carpathian Basin
+[[culture]]
+id = "starcevo_koros_cris"
+name = "Starčevo–Körös–Criș"
+stage = "neolithic"
+wikipedia = "Starčevo–Körös–Criș culture"
+start = -6200
+end = -4500
+quotes = ["6200 and 5200 bce", "5500 and 4500 bce"]
+match = 'starcevo|\bkoros\b|\bcris\b'
+traits = { economy = "farming" }
+
+[[culture]]
+id = "karanovo"
+name = "Karanovo"
+stage = "neolithic"
+wikipedia = "Karanovo culture"
+start = -6900
+end = -4000
+quotes = ["from the early 7th", "collapsed around 4000 bc"]
+match = 'karanovo culture|^karan i$'
+traits = { houses = ["tell"] }
+
+[[culture]]
+id = "vinca"
+name = "Vinča"
+stage = "neolithic"
+wikipedia = "Vinča culture"
+start = -5700
+end = -4200
+quotes = ["5700 and 4200 bc"]
+match = '\bvinca\b'
+traits = { economy = "farming", houses = ["tell"], metal = ["copper"], other = ["figurines"] }
+
+[[culture]]
+id = "sopot"
+name = "Sopot"
+stage = "neolithic"
+wikipedia = "Sopot culture"
+start = -5480
+end = -3790
+quotes = ["5480–3790 bc"]
+match = '\bsopot\b'
+traits = { economy = "farming" }
+
+[[culture]]
+id = "alfold_linear_pottery"
+name = "Alföld Linear Pottery"
+stage = "neolithic"
+wikipedia = "Alföld culture"
+start = -5330
+end = -4940
+quotes = ["5330 – 4940 bce"]
+key = "alfold"
+match = 'eastern linear pottery|^alpc\b'
+traits = {}
+
+[[culture]]
+id = "tisza"
+name = "Tisza"
+stage = "neolithic"
+wikipedia = "Tisza culture"
+start = -5000
+end = -4500
+quotes = ["5000–4500 bce"]
+match = '^tisza\b'
+traits = { economy = "farming", houses = ["tell"] }
+
+[[culture]]
+id = "tiszapolgar"
+name = "Tiszapolgár"
+stage = "chalcolithic"
+wikipedia = "Tiszapolgár culture"
+start = -4500
+end = -4000
+quotes = ["4500–4000 bc"]
+match = 'tiszapolgar'
+traits = { economy = "farming", burial = ["cemetery"], metal = ["copper"] }
+
+[[culture]]
+id = "gumelnita"
+name = "Kodjadermen–Gumelnița–Karanovo VI"
+stage = "chalcolithic"
+wikipedia = "Gumelnița–Karanovo culture"
+start = -5000
+end = -4000
+quotes = ["fifth millennium bc", "4000 bc gumel"]
+key = "gumelnita"
+match = '^kgk vi$|^karan vi$|gumelni'
+traits = { economy = "farming", metal = ["copper"] }
+
+[[culture]]
+id = "cucuteni_trypillia"
+name = "Cucuteni–Trypillia"
+stage = "chalcolithic"
+wikipedia = "Cucuteni–Trypillia culture"
+start = -5050
+end = -2950
+quotes = ["5050 to 2950 bc"]
+match = 'cucuteni|tripol|trypil'
+traits = { economy = "farming", pottery = "painted", houses = ["large settlement"], metal = ["copper"], other = ["figurines", "house burning"] }
+
+[[culture]]
+id = "baden"
+name = "Baden"
+stage = "chalcolithic"
+wikipedia = "Baden culture"
+start = -3600
+end = -2850
+quotes = ["from 3600 to 2850 bce"]
+match = '^(?!.*(wurttemberg|trichterbecher|horgen)).*(\bbaden|boleraz)'
+traits = { economy = "farming", metal = ["copper"], other = ["wheeled vehicles"] }
+
+# ------------------------------------------------------ Steppe and Pontic
+[[culture]]
+id = "bug_dniester"
+name = "Bug–Dniester"
+stage = "neolithic"
+wikipedia = "Bug–Dniester culture"
+start = -6300
+end = -5000
+quotes = ["6300–5000 bc"]
+match = 'bug dniester'
+traits = { economy = "mixed" }
+
+[[culture]]
+id = "yamnaya"
+name = "Yamnaya"
+stage = "chalcolithic"
+wikipedia = "Yamnaya culture"
+start = -3300
+end = -2600
+quotes = ["3300–2600 bc"]
+match = '\byamna|pit grave'
+traits = { economy = "herding", burial = ["kurgan"], domesticates = ["horse", "cattle"], other = ["wheeled vehicles"] }
+
+# -------------------------------------------------------- Central Europe
+[[culture]]
+id = "lbk"
+name = "Linear Pottery (LBK)"
+stage = "neolithic"
+wikipedia = "Linear Pottery culture"
+start = -5500
+end = -4500
+quotes = ["5500–4500 bc"]
+match = '^(?!.*(hinkelstein|grossgartach|lengyel|stichband|eastern|alfold)).*(\blbk\b|bandkeramik|linienband|\brubane|linear pottery)'
+traits = { economy = "farming", pottery = "incised linear bands", houses = ["longhouse"], burial = ["cemetery"], domesticates = ["cattle", "wheat"] }
+
+[[culture]]
+id = "stroke_ornamented"
+name = "Stroke-ornamented Ware (SBK)"
+stage = "neolithic"
+wikipedia = "Stroke-ornamented ware culture"
+start = -4900
+end = -4400
+quotes = ["4900-4400 bc"]
+match = 'stichband|stroke ornamented'
+traits = { houses = ["longhouse"] }
+
+[[culture]]
+id = "grossgartach"
+name = "Großgartach"
+stage = "neolithic"
+wikipedia = "Grossgartach culture"
+end = -4300
+quotes = ["between 4600 and 4300 bce"]
+match = 'grossgartach'
+traits = {}
+
+[[culture]]
+id = "rossen"
+name = "Rössen"
+stage = "neolithic"
+wikipedia = "Rössen culture"
+start = -4600
+end = -4300
+quotes = ["4,600–4,300 bc"]
+match = '\brossen\b'
+traits = { economy = "farming", houses = ["longhouse"] }
+
+[[culture]]
+id = "lengyel"
+name = "Lengyel"
+stage = "neolithic"
+wikipedia = "Lengyel culture"
+start = -5000
+end = -4000
+quotes = ["from 5000 to 4000 bc"]
+match = '^(?!.*(linearband|epi ?lengyel)).*lengyel|mahrish bemalt|moravian painted'
+traits = { economy = "farming", pottery = "painted", monuments = ["roundel"] }
+
+[[culture]]
+id = "michelsberg"
+name = "Michelsberg"
+stage = "neolithic"
+wikipedia = "Michelsberg culture"
+start = -4400
+end = -3500
+quotes = ["4400–3500 bc"]
+match = 'michelsberg'
+traits = { economy = "farming", monuments = ["enclosure"] }
+
+[[culture]]
+id = "funnelbeaker"
+name = "Funnel Beaker (TRB)"
+stage = "neolithic"
+wikipedia = "Funnelbeaker culture"
+start = -4100
+end = -2800
+quotes = ["4100–2800 bce"]
+key = "funnelbeaker"
+match = '^(?!.*(ertebolle|\bebk\b|bell beaker|kugelamph|badener|schnur|corded|single grave)).*(trichterbecher|trichtbecher|funnel ?beaker|\btrb\b|baalberge|salzmunde|bernburg|walternienburg|tiefstich|volling|svaleklint|virum|fuchsberg|\boxie\b)'
+traits = { economy = "farming", burial = ["megalithic tomb"], monuments = ["megaliths"] }
+
+[[culture]]
+id = "globular_amphora"
+name = "Globular Amphora"
+stage = "chalcolithic"
+wikipedia = "Globular Amphora culture"
+start = -3400
+end = -2800
+quotes = ["3400–2800 bc"]
+match = '^(?!.*(single grave|bernburg|schnur|corded)).*(kugelamphor|globular amphora)'
+traits = { economy = "farming", burial = ["megalithic tomb"], domesticates = ["cattle"] }
+
+[[culture]]
+id = "corded_ware"
+name = "Corded Ware"
+stage = "chalcolithic"
+wikipedia = "Corded Ware culture"
+start = -2900
+end = -2300
+quotes = ["2900 bc and 2300 bc"]
+match = '^(?!.*(bell beaker|glockenbecher|horg|bernburg|kugelam|unetice)).*(corded ware|schnurkeramik|einzelgrab|single grave|streitaxt|battle axe|untergrabzeit|bodengrabzeit|obergrabzeit)'
+traits = { economy = "herding", pottery = "cord impressed", burial = ["barrow", "individual"], metal = ["copper"], other = ["battle axes"] }
+
+[[culture]]
+id = "bell_beaker"
+name = "Bell Beaker"
+stage = "chalcolithic"
+wikipedia = "Bell Beaker culture"
+start = -2800
+end = -1800
+quotes = ["2800-1800 bce"]
+match = '^(?!.*(corded|schnur|trichterbecher|bernburg|saone rhone)).*(bell beaker|glockenbecher|campaniforme|^beaker$)'
+traits = { economy = "farming", burial = ["individual"], metal = ["copper", "gold"], other = ["archery"] }
+
+[[culture]]
+id = "swifterbant"
+name = "Swifterbant"
+stage = "neolithic"
+wikipedia = "Swifterbant culture"
+start = -5300
+end = -3400
+quotes = ["between 5300 bc and 3400 bc"]
+match = 'swifterbant'
+traits = { economy = "mixed" }
+
+[[culture]]
+id = "vlaardingen"
+name = "Vlaardingen"
+stage = "neolithic"
+wikipedia = "Vlaardingen culture"
+start = -3500
+end = -2500
+quotes = ["3500 bc and 2500 bc"]
+match = 'vlaardingen|^vl \d'
+traits = { economy = "farming" }
+
+[[culture]]
+id = "pitted_ware"
+name = "Pitted Ware"
+stage = "neolithic"
+wikipedia = "Pitted Ware culture"
+start = -3500
+end = -2300
+quotes = ["3500 bc–c. 2300 bc"]
+match = 'pitted ware|grubchenkeramik|^v? ?grk\b'
+traits = { economy = "foraging", pottery = "pitted", other = ["seal hunting"] }
+
+[[culture]]
+id = "wartberg"
+name = "Wartberg"
+stage = "neolithic"
+wikipedia = "Wartberg culture"
+start = -3600
+end = -2800
+quotes = ["3,600 -2,800 bc"]
+match = 'wartberg'
+traits = { economy = "farming", burial = ["megalithic tomb"] }
+
+# ------------------------------------------------------- Alps and France
+[[culture]]
+id = "egolzwil"
+name = "Egolzwil"
+stage = "neolithic"
+wikipedia = "Egolzwil culture"
+match = 'egolzwil'
+traits = { economy = "farming", houses = ["pile dwelling"] }
+
+[[culture]]
+id = "cortaillod"
+name = "Cortaillod"
+stage = "neolithic"
+wikipedia = "Cortaillod culture"
+start = -4300
+end = -3500
+quotes = ["4300-3900 bc", "3900-3500 bc"]
+match = 'cortaillod|^cort( latt)?$'
+traits = {}
+
+[[culture]]
+id = "pfyn"
+name = "Pfyn"
+stage = "chalcolithic"
+wikipedia = "Pfyn culture"
+start = -4300
+end = -3500
+quotes = ["4300 bc to c. 3500 bc"]
+match = '\bpfyn\b'
+traits = { economy = "farming", houses = ["pile dwelling"], metal = ["copper"] }
+
+[[culture]]
+id = "horgen"
+name = "Horgen"
+stage = "neolithic"
+wikipedia = "Horgen culture"
+start = -3400
+end = -2850
+quotes = ["3500/3400 cal bc and lasted until 2850 cal bc"]
+match = '\bhorg(en)?\b'
+traits = { houses = ["pile dwelling"] }
+
+[[culture]]
+id = "altheim"
+name = "Altheim"
+stage = "chalcolithic"
+wikipedia = "Altheim culture"
+start = -3800
+end = -3400
+quotes = ["3800 and 3400 bc"]
+match = 'altheim'
+traits = {}
+
+[[culture]]
+id = "mondsee"
+name = "Mondsee"
+stage = "chalcolithic"
+wikipedia = "Mondsee group"
+start = -3800
+end = -2800
+quotes = ["3800–2800 cal bc"]
+match = 'mondsee'
+traits = { houses = ["pile dwelling"], metal = ["copper"] }
+
+[[culture]]
+id = "cerny"
+name = "Cerny"
+stage = "neolithic"
+wikipedia = "Cerny culture"
+start = -4500
+end = -4000
+quotes = ["second half of the 5th millennium bc"]
+match = '\bcerny\b'
+traits = { economy = "farming" }
+
+[[culture]]
+id = "villeneuve_saint_germain"
+name = "Villeneuve-Saint-Germain / Blicquy"
+stage = "neolithic"
+wikipedia = "Villeneuve-Saint-Germain"
+key = "villeneuve saint germain"
+match = 'villeneuve saint germain|blicquy'
+traits = {}
+
+[[culture]]
+id = "chasseen"
+name = "Chasséen"
+stage = "neolithic"
+wikipedia = "Chasséen culture"
+start = -4500
+end = -3500
+quotes = ["4500 bc and 3500 bc"]
+match = '^(?!.*(cortaillod|prechass|pre chass|proto chass)).*(chass(e|a)en|chassey)'
+traits = { economy = "farming" }
+
+[[culture]]
+id = "seine_oise_marne"
+name = "Seine-Oise-Marne"
+stage = "chalcolithic"
+wikipedia = "Seine-Oise-Marne culture"
+start = -3100
+end = -2000
+quotes = ["3100 to 2000 bce"]
+match = 'seine oise marne'
+traits = { economy = "farming", burial = ["megalithic tomb", "collective"] }
+
+[[culture]]
+id = "artenac"
+name = "Artenac"
+stage = "chalcolithic"
+wikipedia = "Artenacian culture"
+key = "artenac"
+match = 'artenac'
+traits = {}
+
+[[culture]]
+id = "veraza"
+name = "Véraza"
+stage = "chalcolithic"
+wikipedia = "Véraza culture"
+start = -3500
+end = -2000
+quotes = ["3500 and 2000 bc"]
+match = 'veraz'
+traits = { economy = "farming" }
+
+[[culture]]
+id = "montbolo"
+name = "Montbolo"
+stage = "neolithic"
+wikipedia = "Montbolo culture"
+match = 'montbolo'
+traits = {}
+
+# ------------------------------------------------------- Mediterranean
+[[culture]]
+id = "impressed_ware"
+name = "Impressed Ware"
+stage = "neolithic"
+wikipedia = "Impressed Ware culture"
+start = -6400
+quotes = ["6400–6200 bc"]
+match = '^(?!.*(stentinello|starcevo|fiorano|cardial|red band)).*\bimpress'
+traits = { pottery = "impressed" }
+
+[[culture]]
+id = "cardial"
+name = "Cardial"
+stage = "neolithic"
+wikipedia = "Cardium pottery"
+key = "cardium"
+match = '^(?!.*(epi|post|peri|impress)).*\bcardial\b'
+traits = { economy = "farming", pottery = "cardium impressed" }
+
+[[culture]]
+id = "stentinello"
+name = "Stentinello"
+stage = "neolithic"
+wikipedia = "Stentinello culture"
+start = -5000
+end = -4000
+quotes = ["fifth millennium bc"]
+match = 'stentinello'
+traits = { economy = "farming", monuments = ["enclosure"] }
+
+[[culture]]
+id = "square_mouthed_pottery"
+name = "Square-mouthed Pottery (VBQ)"
+stage = "neolithic"
+wikipedia = "Square-mouthed vases culture"
+start = -5000
+end = -4000
+quotes = ["fifth millennium bc"]
+key = "square mouthed"
+match = '\bvbq\b|bocca quadrata'
+traits = { economy = "farming", pottery = "square mouthed" }
+
+[[culture]]
+id = "ozieri"
+name = "Ozieri"
+stage = "neolithic"
+wikipedia = "Ozieri culture"
+start = -4200
+end = -2800
+quotes = ["4200 and 3400 cal. bce", "3200 and 2800 bce"]
+match = 'ozieri'
+traits = { economy = "farming" }
+
+# --------------------------------------------------------- British Isles
+[[culture]]
+id = "british_early_neolithic"
+name = "Early Neolithic of Britain and Ireland"
+stage = "neolithic"
+wikipedia = "Neolithic British Isles"
+start = -4000
+end = -2900
+quotes = ["early and middle neolithic: 4000–2900 bc"]
+key = "neolithic"
+match = '^(british|irish) en$'
+traits = { economy = "farming", monuments = ["megaliths"] }
+
+# ------------------------------------------------------------------ vocab
+# What `make cultures-check` looks for in an article's text to count a trait
+# as supported (regular expressions, lower case). A value not listed here is
+# supported when every word of five letters or more appears in the article.
+[vocab.economy]
+foraging = 'hunt|gather|forag|fishing|fisher'
+farming = 'agricultur|farm|cultivat|domesticat|cereal|crop'
+herding = 'pastoral|herd|herder|livestock|cattle'
+mixed = '(?s)(?=.*(hunt|forag|fish))(?=.*(domestic|agricultur|farm|herd|livestock))'
+
+[vocab.pottery]
+none = 'pre-?pottery|aceramic|without pottery|no pottery|before pottery'
+yes = 'pottery|ceramic'
+painted = 'painted'
+incised = 'incis'
+impressed = 'impress'
+
+[vocab.houses]
+longhouse = 'long ?house'
+rectangular = 'rectangular'
+round = '\bround|circular'
+mudbrick = 'mud ?-?brick|adobe'
+"pile dwelling" = '\bpiles?\b|stilt|lake[- ]?dwell|pile[- ]dwell|lakeside|lake shore|wetland'
+tell = '\btells?\b'
+"large settlement" = 'mega-?site|large settlement|town|proto-?cit|\bcit(y|ies)\b|urban'
+
+[vocab.burial]
+cemetery = 'cemeter|burial ground|burial place|burial site|grave ?field|necropol'
+intramural = 'under (the )?(house )?floors?|beneath (the )?(house )?floors?|below (the )?floors?|intramural|within (the )?(houses|settlement)'
+"skull removal" = 'skull|crani'
+"megalithic tomb" = 'megalith|dolmen|passage grave|passage tomb|gallery grave|chambered'
+barrow = 'barrow|tumul'
+kurgan = 'kurgan'
+collective = 'collective'
+individual = 'individual|single grave|single burial'
+
+[vocab.monuments]
+enclosure = 'enclosure|ditch'
+roundel = 'rondel|roundel|circular enclosure|circular ditch'
+megaliths = 'megalith|menhir|dolmen|standing stone'
+temple = 'temple|shrine|sanctuar'
+tower = '\btower'
+
+[vocab.metal]
+copper = 'copper'
+gold = '\bgold'
+bronze = 'bronze'
+iron = '\biron\b'
+
+[vocab.domesticates]
+wheat = 'wheat|emmer|einkorn'
+barley = 'barley'
+cattle = 'cattle|\bcows?\b|bovine|\boxen\b'
+"sheep/goat" = 'sheep|goats?\b|caprine|ovicaprid'
+pig = '\bpigs?\b|swine'
+dog = '\bdogs?\b'
+horse = '\bhorses?\b'
+
+[vocab.other]
+microliths = 'microlith'
+"wild cereal harvesting" = 'wild (cereal|grain|wheat|barley|grass)|harvest'
+sedentism = 'sedentar|sedentism|permanent settlement'
+figurines = 'figurin'
+irrigation = 'irrigat'
+writing = 'writing|script|cuneiform|tablet'
+granaries = 'granar|silo|storage pit'
+"tooth avulsion" = 'avulsion|tooth|teeth|incisor'
+"shell middens" = 'midden|escargot'
+"land snails" = 'snail|escargot'
+"plastered floors" = 'plaster'
+"ostrich eggshell" = 'ostrich'
+fishing = 'fish'
+"cave art" = 'cave art|cave painting|parietal|rock art'
+reindeer = 'reindeer'
+"painted pebbles" = 'pebble'
+"house burning" = 'burn'
+"wheeled vehicles" = 'wheel|wagon|cart\b'
+"battle axes" = 'battle[- ]?axe|axe'
+archery = 'archer|wrist[- ]?guard|bracer|arrow'
+"seal hunting" = '\bseals?\b'
