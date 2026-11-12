@@ -13,6 +13,9 @@
 #   sigma         "cv" (cross-validated where the layer has >= 20 presences and
 #                 absences) or the id of a layer whose sigma to borrow
 #   site_type     regex on the dated site's type: a match records presence
+#   not_before    signed year: site-type and dated-material matches on dates
+#                 older than this are ignored (a site's type applies to all its
+#                 phases, including those before the structure existed)
 #   dated_material regex on a dated sample's material: a match records presence
 #   mask          ["acid"] masks cells with topsoil pH below [surface] bone_ph_min
 #   levels        isoline levels (default 0.25, 0.5, 0.75; continuous: in units)
@@ -83,3 +86,365 @@ kind = "presence_absence"
 evidence_word = "faunal assemblages"
 note = "Domestic cattle, sheep, goat or pig. Absent means at least 50 identified specimens (or 8 taxa) with no livestock genus of domestic or uncertain status."
 licence = "EUROEVOL CC0; ADEMNES via Arranz-Otaegui & Roe (CC0); Open Context CC BY; Phelps et al. CC BY"
+
+# -------------------------------------------------------- structures & organics
+# Presence-only: a dated site whose type (XRONOS free text) or dated sample
+# shows the structure. A site without one says nothing, so these map where
+# structures have been dated, not where they were absent.
+[[layer]]
+id = "enclosures"
+not_before = -6000   # ditched enclosures begin with the LBK and Impressa; the regex also catches later stone enclosures
+name = "Enclosures"
+group = "Structures & organics"
+kind = "presence_only"
+sigma = "pottery"
+site_type = 'enclos|causewayed|rondel|roundel|kreisgraben|henge|ring.?ditch'
+note = "Ditched enclosures: causewayed camps, rondels, henges. Rondels are dated as a class to 4850–4500 BCE."
+licence = "XRONOS CC BY; rondel dataset CC BY"
+
+[[layer]]
+id = "megalithic_tombs"
+not_before = -5000   # the earliest megalithic tombs (Brittany) are c. 4800 BCE
+name = "Megalithic tombs"
+group = "Structures & organics"
+kind = "presence_only"
+sigma = "pottery"
+site_type = '^(?!.*non-megalithic).*(dolmen|megalith|passage (grave|tomb)|gallery grave|court tomb|portal tomb|wedge tomb|chambered|long barrow|hällkista|maes howe|boyne)'
+note = "Dolmens, passage and gallery graves, court and portal tombs, chambered cairns and long barrows."
+licence = "XRONOS CC BY"
+
+[[layer]]
+id = "pile_dwellings"
+not_before = -6000   # La Marmotta, the earliest lake dwelling, is c. 5700 BCE
+name = "Pile dwellings"
+group = "Structures & organics"
+kind = "presence_only"
+sigma = "pottery"
+site_type = 'palaf|pile|pfahl|lake.?dwell|ufersiedlung|lakeside settlement'
+note = "Lake and wetland settlements on piles. Most are dendro-dated, which this layer does not yet use; only radiocarbon-dated ones appear."
+licence = "XRONOS CC BY"
+
+[[layer]]
+id = "houses"
+name = "Houses"
+group = "Structures & organics"
+kind = "presence_only"
+sigma = "pottery"
+site_type = '^(?!.*dead house).*\b(long ?)?house\b'
+note = "Dated sites recorded as houses or longhouses. Most excavated houses are filed as plain settlements, so this undercounts heavily."
+licence = "XRONOS CC BY"
+
+[[layer]]
+id = "mines"
+name = "Flint and stone mines"
+group = "Structures & organics"
+kind = "presence_only"
+sigma = "pottery"
+site_type = '\b(mine|mines|mining|quarry|flint ?mine)\b'
+licence = "XRONOS CC BY"
+
+[[layer]]
+id = "metallurgy"
+not_before = -6500   # the earliest smelting is in the 6th millennium BCE (Belovode, Anatolia)
+name = "Metallurgy"
+group = "Structures & organics"
+kind = "presence_only"
+sigma = "pottery"
+site_type = 'smelt|slag|furnace|crucible|metallurg|copper ?(mine|work)'
+dated_material = '\bslag\b|crucible'
+note = "Smelting sites, slag and crucibles. Before 3000 BCE this is mostly the Balkans and Anatolia."
+licence = "XRONOS CC BY"
+
+[[layer]]
+id = "waterlogged_organics"
+name = "Waterlogged organics"
+group = "Structures & organics"
+kind = "presence_only"
+sigma = "pottery"
+site_type = 'logboat|dugout|trackway|fish ?weir|\bweir\b|fish ?trap'
+dated_material = 'paddle|\bbows?\b|textile|\bnets?\b|cordage|basket|logboat|dugout|fish ?trap|weir|trackway'
+note = "Dugouts, paddles, bows, fish weirs and traps, trackways, nets and textiles. They survive only in wet ground, so this maps preservation as much as use."
+licence = "XRONOS CC BY"
+
+# ----------------------------------------------------------------- environment
+# Off-site pollen cores (Neotoma / European Pollen Database): one unit per
+# core and slice with counted levels. Absent means the core was counted in
+# that slice and no level had it. Independent of where sites were dug.
+[[layer]]
+id = "cereal_pollen"
+name = "Cereal pollen in cores"
+group = "Environment"
+kind = "presence_absence"
+unit = "core"
+levels = [0.1, 0.25, 0.5]
+note = "Cerealia-type pollen (Triticum, Hordeum, Avena, Secale types) in lake and bog cores. Pollen travels a few kilometres, not a site. Some wild grasses fall in these types, and SW Asia has wild cereals, so cereal pollen there before farming is natural vegetation, not cultivation. Before farming about 6% of counted levels in Europe already have cereal-type grains, from large wild grasses."
+licence = "Neotoma / EPD, CC BY 4.0"
+
+[[layer]]
+id = "dung_spores"
+name = "Dung-fungus spores in cores"
+group = "Environment"
+kind = "presence_absence"
+unit = "core"
+sigma = "cereal_pollen"
+note = "Sporormiella, Sordaria, Cercophora and Podospora spores, which grow on herbivore dung. Only cores that count non-pollen palynomorphs; wild herbivores produce them too."
+licence = "Neotoma / EPD, CC BY 4.0"
+
+[[layer]]
+id = "open_land"
+name = "Open land (pollen-based)"
+group = "Environment"
+kind = "grid"
+file = "landclim2_reveals.zip"
+column = "OL"
+units_label = "% open land"
+vmin = 0
+vmax = 100
+levels = [25, 50, 75]
+note = "Share of open land (grassland, heath, crops) in each 1° cell, reconstructed from 1,128 pollen records with the REVEALS model. Natural steppe and alpine land count as open too, so read change through time, not the level. Covers 30–75°N, 25°W–50°E only."
+licence = "LandClimII (Fyfe et al. 2021), CC BY 4.0"
+
+# ---------------------------------------------------------------------- people
+# Individual ancient genomes (AADR v66.p1, CC0). Each clade layer is the share
+# of samples with a call of that kind (Y: males only) that fall in the clade.
+# Sampling follows burials and research interest, not population.
+[[layer]]
+id = "adna_samples"
+name = "Ancient genomes"
+group = "People"
+kind = "presence_only"
+unit = "sample"
+sigma = "y_i2"
+note = "Where dated, quality-passing ancient genomes come from. Read the evidence map: it is the denominator for every haplogroup layer."
+licence = "AADR v66.p1, CC0"
+
+[[layer]]
+id = "y_i2"
+name = "Y: I2"
+group = "People"
+set = "Y haplogroup"
+kind = "share"
+unit = "sample"
+field = "y"
+prefixes = ["I2"]
+
+evidence_word = "male genomes"
+note = "Mainly western European hunter-gatherers; persists among early farmers."
+licence = "AADR v66.p1, CC0"
+
+[[layer]]
+id = "y_g2a"
+name = "Y: G2a"
+group = "People"
+set = "Y haplogroup"
+kind = "share"
+unit = "sample"
+field = "y"
+prefixes = ["G2a"]
+sigma = "y_i2"
+evidence_word = "male genomes"
+note = "The commonest Y lineage of the first farmers from Anatolia."
+licence = "AADR v66.p1, CC0"
+
+[[layer]]
+id = "y_r1b"
+name = "Y: R1b"
+group = "People"
+set = "Y haplogroup"
+kind = "share"
+unit = "sample"
+field = "y"
+prefixes = ["R1b"]
+sigma = "y_i2"
+evidence_word = "male genomes"
+note = "Before 3500 BCE rare (some hunter-gatherers); spreads with steppe ancestry after 3000 BCE."
+licence = "AADR v66.p1, CC0"
+
+[[layer]]
+id = "y_r1a"
+name = "Y: R1a"
+group = "People"
+set = "Y haplogroup"
+kind = "share"
+unit = "sample"
+field = "y"
+prefixes = ["R1a"]
+sigma = "y_i2"
+evidence_word = "male genomes"
+note = "Eastern hunter-gatherers; later the Corded Ware expansion."
+licence = "AADR v66.p1, CC0"
+
+[[layer]]
+id = "y_c"
+name = "Y: C"
+group = "People"
+set = "Y haplogroup"
+kind = "share"
+unit = "sample"
+field = "y"
+prefixes = ["C"]
+sigma = "y_i2"
+evidence_word = "male genomes"
+note = "Old European and Near Eastern hunter-gatherer lineage."
+licence = "AADR v66.p1, CC0"
+
+[[layer]]
+id = "y_j2"
+name = "Y: J2"
+group = "People"
+set = "Y haplogroup"
+kind = "share"
+unit = "sample"
+field = "y"
+prefixes = ["J2"]
+sigma = "y_i2"
+evidence_word = "male genomes"
+note = "Caucasus and Near Eastern farmers."
+licence = "AADR v66.p1, CC0"
+
+[[layer]]
+id = "y_h2"
+name = "Y: H2"
+group = "People"
+set = "Y haplogroup"
+kind = "share"
+unit = "sample"
+field = "y"
+prefixes = ["H2"]
+sigma = "y_i2"
+evidence_word = "male genomes"
+note = "A rare early-farmer lineage."
+licence = "AADR v66.p1, CC0"
+
+[[layer]]
+id = "y_other"
+name = "Y: other"
+group = "People"
+set = "Y haplogroup"
+kind = "share"
+unit = "sample"
+field = "y"
+other = true
+sigma = "y_i2"
+evidence_word = "male genomes"
+note = "Every other Y lineage (E, F, H1, I1, J1, Q, T and unresolved calls)."
+licence = "AADR v66.p1, CC0"
+
+[[layer]]
+id = "mt_u5"
+name = "mt: U5"
+group = "People"
+set = "mt haplogroup"
+kind = "share"
+unit = "sample"
+field = "mt"
+prefixes = ["U5"]
+exclude = []
+
+evidence_word = "genomes"
+note = "The dominant maternal lineage of European hunter-gatherers."
+licence = "AADR v66.p1, CC0"
+
+[[layer]]
+id = "mt_u4"
+name = "mt: U4"
+group = "People"
+set = "mt haplogroup"
+kind = "share"
+unit = "sample"
+field = "mt"
+prefixes = ["U4"]
+exclude = []
+sigma = "mt_u5"
+evidence_word = "genomes"
+note = "Eastern and Scandinavian hunter-gatherers."
+licence = "AADR v66.p1, CC0"
+
+[[layer]]
+id = "mt_h"
+name = "mt: H"
+group = "People"
+set = "mt haplogroup"
+kind = "share"
+unit = "sample"
+field = "mt"
+prefixes = ["H"]
+exclude = ["HV"]
+sigma = "mt_u5"
+evidence_word = "genomes"
+note = "Common among farmers; the most common lineage in Europe today."
+licence = "AADR v66.p1, CC0"
+
+[[layer]]
+id = "mt_k"
+name = "mt: K"
+group = "People"
+set = "mt haplogroup"
+kind = "share"
+unit = "sample"
+field = "mt"
+prefixes = ["K"]
+exclude = []
+sigma = "mt_u5"
+evidence_word = "genomes"
+note = "Frequent among early farmers."
+licence = "AADR v66.p1, CC0"
+
+[[layer]]
+id = "mt_j"
+name = "mt: J"
+group = "People"
+set = "mt haplogroup"
+kind = "share"
+unit = "sample"
+field = "mt"
+prefixes = ["J"]
+exclude = []
+sigma = "mt_u5"
+evidence_word = "genomes"
+note = "Early farmers."
+licence = "AADR v66.p1, CC0"
+
+[[layer]]
+id = "mt_t2"
+name = "mt: T2"
+group = "People"
+set = "mt haplogroup"
+kind = "share"
+unit = "sample"
+field = "mt"
+prefixes = ["T2"]
+exclude = []
+sigma = "mt_u5"
+evidence_word = "genomes"
+note = "Early farmers."
+licence = "AADR v66.p1, CC0"
+
+[[layer]]
+id = "mt_n1a"
+name = "mt: N1a"
+group = "People"
+set = "mt haplogroup"
+kind = "share"
+unit = "sample"
+field = "mt"
+prefixes = ["N1a"]
+exclude = []
+sigma = "mt_u5"
+evidence_word = "genomes"
+note = "Characteristic of the LBK, rare later."
+licence = "AADR v66.p1, CC0"
+
+[[layer]]
+id = "mt_other"
+name = "mt: other"
+group = "People"
+set = "mt haplogroup"
+kind = "share"
+unit = "sample"
+field = "mt"
+other = true
+sigma = "mt_u5"
+evidence_word = "genomes"
+note = "Every other mitochondrial lineage, including U2 and X."
+licence = "AADR v66.p1, CC0"

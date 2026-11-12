@@ -208,8 +208,20 @@ fn brief_state(v: &mut Value) {
     }
     for k in ["hover", "inspected"] {
         if let Some(Value::Object(h)) = m.get_mut(k) {
-            h.retain(|k, _| ["id", "lon", "lat", "values", "elevation_m"].contains(&k.as_str()));
+            h.retain(|k, _| ["id", "lon", "lat", "values", "elevation_m", "npp", "shore_km", "expected_density_per_km2", "farmed", "farming_arrives", "evidence"].contains(&k.as_str()));
         }
+    }
+}
+
+/// A view-summary label for an evidence code: the value bin and confidence.
+fn evidence_label(layer: Option<&neolith_core::EvidenceLayer>, code: Option<u8>) -> String {
+    use neolith_core::evidence;
+    match (layer, code) {
+        (Some(l), Some(c)) => match (l.value(c), evidence::confidence(c)) {
+            (Some(v), Some(k)) => format!("{} ({})", l.format_value(v), evidence::confidence_label(k)),
+            _ => "no value".into(),
+        },
+        _ => "no data".into(),
     }
 }
 
@@ -271,11 +283,24 @@ fn hex_json(app: &NeolithApp, hex: HexId) -> Value {
         .collect();
     let rivers: Vec<_> =
         crate::panels::rivers_in_hex(w, hex, year).into_iter().map(|(n, st)| json!({"name": n, "state": format!("{st:?}")})).collect();
+    let shore = w.shore_km(year)[hex.index()];
+    let expected = w.expected_given(hex, year, shore as f64);
+    let evidence = s.evidence().map_or(Value::Null, |l| {
+        let code = l.code_at(hex, year);
+        json!({"layer": l.id, "code": code, "value": l.value(code), "units": l.units,
+               "confidence": neolith_core::evidence::confidence(code).map(neolith_core::evidence::confidence_label)})
+    });
     json!({
         "id": hex.geojson_id(), "col": col, "row": row, "lon": c.lon, "lat": c.lat,
         "values": props,
         "elevation_m": match w.elevation[hex.index()] { NO_ELEVATION => Value::Null, z => json!(z) },
+        "npp": w.npp_at(hex, year).map_or(Value::Null, |v| json!(v)),
+        "shore_km": if shore.is_finite() { json!(shore) } else { Value::Null },
+        "expected_density_per_km2": expected.map_or(Value::Null, |e| json!(e.density)),
+        "farmed": expected.is_some_and(|e| e.farmed),
+        "farming_arrives": w.farming.get(hex.index()).copied().flatten().map_or(Value::Null, |y| json!(y.0)),
         "landform": w.landform[hex.index()].map_or(Value::Null, |l| json!(l.label())),
+        "evidence": evidence,
         "lakes": lakes, "rivers": rivers,
         "selected": s.selection.contains(hex),
     })
@@ -616,6 +641,7 @@ impl NeolithApp {
             "playing": s.clock.playing,
             "years_per_sec": s.clock.years_per_sec,
             "map_mode": s.mode.label(),
+            "evidence_layer": s.evidence().map(|l| l.id.clone()),
             "editor": s.editor,
             "flat": s.morph_target() > 0.5,
             "camera": {"lon": c.target.lon, "lat": c.target.lat, "yaw_deg": c.yaw.to_degrees(),
@@ -624,6 +650,10 @@ impl NeolithApp {
             "inspected": s.inspected.map(|h| h.geojson_id()),
             "settlement_popup": s.settlement.map(|i| s.world.settlements[i].name.clone()),
             "hovered_settlement": s.input.drawn.piece_hover.map(|i| s.world.settlements[i].name.clone()),
+            "speed_step": s.clock.speed_step() + 1,
+            "events": crate::events::recent(&s.events, s.year(), 12)
+                .map(|e| json!({"year": e.year.0, "kind": e.kind.name(), "text": e.text}))
+                .collect::<Vec<_>>(),
         })
     }
 
@@ -641,6 +671,9 @@ impl NeolithApp {
         }
         if let Some(v) = req.get("rivers").and_then(Value::as_bool) {
             self.style.rivers = v;
+        }
+        if let Some(v) = req.get("survey").and_then(Value::as_bool) {
+            self.style.survey = v;
         }
         // Board-style layers, to look at one at a time.
         let st = &mut self.style;
@@ -676,10 +709,21 @@ impl NeolithApp {
         if let Some(v) = f(req, "speed") {
             s.clock.years_per_sec = v.clamp(crate::clock::SPEED_MIN, crate::clock::SPEED_MAX);
         }
+        if let Some(id) = req.get("evidence").and_then(Value::as_str) {
+            if !s.select_evidence(id) {
+                let ids: Vec<&str> = s.world.evidence.iter().map(|l| l.id.as_str()).collect();
+                return err(format!("evidence: no layer {id:?}; this world has {}", if ids.is_empty() { "none".into() } else { ids.join(", ") }));
+            }
+        }
         if let Some(m) = req.get("mode").and_then(Value::as_str) {
             match MapMode::from_arg(m) {
+                Some(MapMode::Evidence) if s.world.evidence.is_empty() => return err("mode: this world has no evidence layers"),
                 Some(m) => s.mode = m,
-                None => return err(format!("mode: terrain, koeppen, pop or elevation, not {m:?}")),
+                None => {
+                    return err(format!(
+                        "mode: terrain, koeppen, pop, elevation, npp, biodiversity, expected or evidence, not {m:?}"
+                    ))
+                }
             }
         }
         if let Some(v) = req.get("editor").and_then(Value::as_bool) {
@@ -734,6 +778,7 @@ impl NeolithApp {
                 "relief": self.style.relief,
                 "terrain_art": self.style.terrain_art.label(),
                 "rivers": self.style.rivers,
+                "survey": self.style.survey,
                 "hillshade": self.style.hillshade,
                 "borders": self.style.borders,
                 "grout": self.style.grout,
@@ -755,8 +800,20 @@ impl NeolithApp {
         let d = &s.input.drawn;
         let settlement_json = |i: usize| {
             let st = &s.world.settlements[i];
-            json!({"index": i, "name": st.name, "lon": st.pos.lon, "lat": st.pos.lat, "founded": st.founded.0,
-                   "population": st.population_at(year)})
+            let mut v = json!({"index": i, "name": st.name, "lon": st.pos.lon, "lat": st.pos.lat, "founded": st.founded.0,
+                   "population": st.population_at(year)});
+            if let Some(info) = s.world.site_info(i) {
+                let att = |stage| crate::site_record::attribution(&s.world, info, year, st.phase_at(year), stage).map(|a| json!({"name": a.name, "wikipedia": a.wikipedia, "inferred": a.inferred}));
+                v["record"] = json!({
+                    "kind": info.kind, "last_date": info.abandoned.map(|y| y.0), "n_dates": info.dates.len(),
+                    "abandoned_by": st.abandoned_by().map(|y| y.0),
+                    "occupation": st.occupation.iter().map(|(a, b)| [a.0, b.0]).collect::<Vec<_>>(),
+                    "dates_by_now": info.dates.iter().filter(|d| d.cal <= year).count(),
+                    "culture": att(false), "stage": att(true), "features": info.features,
+                    "wikipedia": info.wikipedia, "wikidata": info.wikidata,
+                });
+            }
+            v
         };
         // What the board shows: hexes whose centre is on screen, by value.
         let mut summary = Value::Null;
@@ -778,6 +835,15 @@ impl NeolithApp {
                 n += 1;
                 let label = match prop {
                     Some(prop) => s.world.value_at(hex, prop, year).map_or("no data".into(), |v| v.label()),
+                    None if s.mode == MapMode::Npp => neolith_core::productivity::band_label(s.snapshot.npp[hex.index()])
+                        .map_or("no data".into(), |l| format!("{l} {}", neolith_core::productivity::UNIT)),
+                    None if s.mode == MapMode::Expected => neolith_core::farming::band_label(s.snapshot.expected[hex.index()])
+                        .map_or("no data".into(), |l| format!("{l} per 100 km²")),
+                    None if s.mode == MapMode::Evidence => evidence_label(s.evidence(), s.evidence_codes().get(hex.index()).copied()),
+                    None if s.mode == MapMode::Biodiversity => {
+                        neolith_core::forager::biodiversity_band_label(s.snapshot.biodiversity[hex.index()])
+                            .unwrap_or("no data".into())
+                    }
                     None => match s.world.elevation[hex.index()] {
                         NO_ELEVATION => "no data".into(),
                         z => format!("{}–{} m", z.div_euclid(500) * 500, z.div_euclid(500) * 500 + 500),
@@ -807,9 +873,15 @@ impl NeolithApp {
         let extra = json!({
             "file": s.file_name, "unsaved": s.unsaved,
             "year": year.0, "year_label": year.to_string(),
-            "clock": {"playing": s.clock.playing, "years_per_sec": s.clock.years_per_sec, "min": min.0, "max": max.0},
+            "clock": {"playing": s.clock.playing, "years_per_sec": s.clock.years_per_sec, "speed_step": s.clock.speed_step() + 1,
+                      "min": min.0, "max": max.0},
+            "chronicle": crate::events::recent(&s.events, s.year(), 12)
+                .map(|e| json!({"year": e.year.0, "kind": e.kind.name(), "text": e.text}))
+                .collect::<Vec<_>>(),
             "keyframes": s.keyframes.iter().map(|k| k.0).collect::<Vec<_>>(),
             "map_mode": s.mode.label(),
+            "evidence_layer": s.evidence().map(|l| l.id.clone()),
+            "evidence_layers": s.world.evidence.iter().map(|l| l.id.clone()).collect::<Vec<_>>(),
             "editor": s.editor, "tool": format!("{:?}", s.tool),
             "history": {"can_undo": s.history.can_undo(), "can_redo": s.history.can_redo()},
             "selection_count": s.selection.count(),
@@ -822,7 +894,8 @@ impl NeolithApp {
             "settlement_popup": s.settlement.map_or(Value::Null, settlement_json),
             "settlements": {
                 "total": s.world.settlements.len(),
-                "founded_by_now": s.world.settlements.iter().filter(|st| st.exists_at(year)).count(),
+                "founded_by_now": s.world.settlements.iter().filter(|st| st.founded <= year).count(),
+                "occupied_now": s.world.settlements.iter().filter(|st| st.exists_at(year)).count(),
                 "on_screen": d.pieces.len(),
                 "hovered": d.piece_hover.map_or(Value::Null, settlement_json),
                 // The first 60 on screen, biggest first, with where to click them.

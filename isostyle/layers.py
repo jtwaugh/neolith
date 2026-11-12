@@ -36,6 +36,8 @@ class Registry:
             L.setdefault("licence", "")
             L.setdefault("note", "")
             L.setdefault("set", "")
+            if L["kind"] == "share" and not (L.get("prefixes") or L.get("other")):
+                raise ValueError(f"{path}: {L['id']}: a share layer needs `prefixes` or `other = true`")
             L.setdefault("evidence_word", WORD[L["unit"]])
             L["slug"] = L["id"].replace("_", "-")
             for k in ("site_type", "dated_material"):

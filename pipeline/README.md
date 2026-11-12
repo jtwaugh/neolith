@@ -259,10 +259,16 @@ cached file to refetch it.
    `1 - trim` quantiles of its dates, which is the earliest and latest date
    for sites with fewer than `1/trim` dates. `founding` is a "no later
    than" bound: it reflects what was sampled.
+   `occupation` lists phases `[start, abandoned_by]` from the dates
+   between those two: dates more than `abandon_after` years apart start a
+   new phase, and each phase is assumed to end `abandon_after` years after
+   its last date (no evidence for that long is read as abandonment). The
+   app hides a site outside its phases. `abandoned_by` is an upper bound
+   and the last date a lower one; under-sampled sites will show false gaps.
 5. **Wikidata**: an item matches the nearest site within `match_km` whose
    name shares its distinctive words. Items that match nothing and have an
    inception date inside the time window become sites with
-   `sources = ["wikidata"]` and no `abandoned`.
+   `sources = ["wikidata"]` and no `abandoned` or `occupation` (they never end).
 6. **Curated entries**: each one overrides, key by key, the dated site
    whose name or alias equals its `match` property, or else the nearest
    within `merge_km`. With a null geometry it takes that site's point.
@@ -272,10 +278,10 @@ cached file to refetch it.
 
 ### Site properties
 
-`name`, `founding`, `abandoned`, `type`, `population` (empty unless
-curated), `n_dates`, `periods` (the sources' most common period labels,
+`name`, `founding`, `abandoned` (last date), `occupation`, `type`,
+`population` (empty unless curated), `n_dates`, `importance`, `evidence`, `periods` (the sources' most common period labels,
 unnormalised), `hex`, `key`, and where known `aliases`, `wikidata`,
-`wikipedia` and `culture`.
+`wikipedia`, `wikidata_culture`, `culture`, `stage` and `features`.
 
 For citation: `sources` lists the datasets the site rests on (the keys of
 `[settlements.citations]`, described in `SOURCES.md`), and `references`
@@ -284,6 +290,43 @@ first. `dates.csv.gz` joins to sites on `site_id`.
 
 Ids are the curated id, or a CRC32 of `key`, so they stay the same across
 rebuilds unless a site's kept name or point changes.
+
+### Piece size and visibility bias
+
+Almost no site has a population figure, so the board sizes pieces from
+`importance` (0–3) instead (`score_sites`, `[settlements.importance]`):
+
+- the base is the class of the site type: tells, enclosures, hillforts and
+  pile dwellings 3; settlements and houses 2; caves, camps and plain
+  "site" 1; pits, hearths, kilns and find-spots 0.
+- there is +1 for a long total occupation and +1 for many dates. Both are
+  judged against sites within 150 km, not against the whole map, because
+  occupation span and date counts grow with research effort. A
+  well-dated site in Ireland competes with Irish sites; one in Ukraine
+  competes with Ukrainian sites.
+- `references` and `sources` are never used, because they measure only
+  how much a site has been studied.
+
+A recorded population, where there is one, overrides `importance` in the
+app. `evidence` (0–2: one date or none, 2–4, 5+) makes single-date sites
+look tentative (pale) rather than smaller.
+
+**Survey intensity** (`survey_intensity`, `[settlements.survey]`,
+`data/settlements/survey.csv.gz`) is a detection layer, built with the
+"target-group background" idea from species-distribution modelling:
+
+- every dated record of any period and any site type in the cached dumps
+  (graves, medieval kilns, Bronze Age hillforts) counts as fieldwork.
+- the records are smoothed with a 100 km Gaussian and cut into levels 0/1/2.
+- where there are few records of any age, few early sites says little
+  about early people. The board hatches those hexes, and `make maps`
+  writes the level as a static `survey` hex property.
+
+Limits:
+- the layer is time-independent.
+- modern borders show through it (national dating programmes).
+- it is never an input to expected population density, so the comparison
+  between expected and observed sites stays independent.
 
 ## Cultures
 

@@ -100,38 +100,40 @@ class ResolveLand(unittest.TestCase):
         self.assertEqual(stats, {"gap": 3, "model": 2, "neighbours": 1})
 
 
+class CalibrationDistance(unittest.TestCase):
+    def test_far_training_rows_dont_vote(self):
+        """Same climate, 4000 km apart: with max_km the far label can't win."""
+        rng = np.random.default_rng(0)
+        x = np.array([[0.0, 0.0]] * 6 + [[5.0, 5.0]] * 6) + rng.normal(0, 0.3, (12, 2))
+        y = np.array(["Chaparral"] * 6 + ["Grassland"] * 6, dtype=object)
+        ll = np.array([[-5.0, 35.0]] * 6 + [[47.0, 33.0]] * 6)       # Morocco; the Zagros
+        near = paleobiome.Calibration(x, y, k=3, max_distance_quantile=0.99, factor=50.0, ll=ll, max_km=1500)
+        anywhere = paleobiome.Calibration(x, y, k=3, max_distance_quantile=0.99, factor=50.0)
+        q = np.array([[0.2, 0.2]])                                     # Morocco's climate
+        self.assertEqual(anywhere.predict(q)[0], "Chaparral")
+        self.assertEqual(near.predict(q, np.array([[47.5, 33.5]]))[0], "Grassland")
+        self.assertEqual(near.predict(q, np.array([[100.0, 10.0]]))[0], "")    # nothing in range
+
+    def test_literature_labels_skip_held_out(self):
+        import csv
+        import os
+        import tempfile
+        from pipeline.anchors import holdout
+        from pipeline.tests.test_pipeline import make_grid
+        g = make_grid(3, 3)
+        ids = [f"lit:site-{k}" for k in range(12)]
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "lit.csv")
+            with open(p, "w", newline="") as f:
+                w = csv.writer(f)
+                w.writerow(["id", "name", "lon", "lat", "year", "game_classes", "description", "reference"])
+                for a in ids:
+                    w.writerow([a, a, 0.0, 0.0, -5000, "Woodlands;Grassland", "", "x"])
+            got = paleobiome.literature_labels(p, 3, g)
+        kept = [a for a in ids if not holdout(a, 3)]
+        self.assertEqual(len(got[-5000]), len(kept))
+        self.assertTrue(all(cls == "Woodlands" for _, cls in got[-5000]))
+
+
 if __name__ == "__main__":
     unittest.main()
-
-
-class Elevation(unittest.TestCase):
-    def test_cell_elevation_is_the_land_mean(self):
-        # A 2 x 2 model grid of 1-degree cells over a 4 x 4 DEM of 0.5-degree cells.
-        tf = Affine(1.0, -1.0, 0.5, 1.5)
-        z_tf = Affine(0.5, -0.5, 0.25, 1.75)
-        z = np.array([[100, 300, 1000, 1000],
-                      [100, 300, 1000, 3000],
-                      [-50, -50, -20, 0],
-                      [-50, 400, -20, 0]], dtype=np.float32)
-        out = paleobiome.cell_elevation(z, z_tf, tf, (2, 2))
-        self.assertEqual(out.tolist(), [[200.0, 1500.0], [400.0, 0.0]])
-
-    def test_temperature_features_take_the_shift(self):
-        g = make_grid(1, 1)
-        tf = Affine(0.25, -0.25, -0.625, 0.625)
-        clim = {"BIO1": np.full((1, 6, 6), 10.0), "BIO12": np.full((1, 6, 6), 500.0)}
-        x = paleobiome.features(g, clim, tf, 0, [["BIO1", "linear"], ["BIO12", "linear"]],
-                                shift=np.array([-6.5]))
-        self.assertEqual(x.tolist(), [[3.5, 500.0]])
-
-
-class Treeline(unittest.TestCase):
-    CFG = {"season_min": 0.9, "season_mean": 6.4, "season_days": 94}
-
-    def test_paulsen_koerner_rule(self):
-        warm = [-2, 0, 4, 8, 12, 15, 17, 16, 12, 7, 2, -1]       # forest
-        cool = [-8, -7, -4, 0, 3, 6, 8, 7, 4, 0, -4, -7]          # mean ~5.6 -> alpine
-        short = [-15, -14, -10, -5, 0, 5, 12, 10, 0, -5, -10, -14]  # 3 months -> alpine
-        T = np.array([warm, cool, short, [np.nan] * 12], float)
-        self.assertEqual(paleobiome.above_treeline(T, self.CFG).tolist(),
-                         [False, True, True, False])

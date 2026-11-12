@@ -220,7 +220,7 @@ class Wikidata(unittest.TestCase):
         out, matched, added = st.enrich_wikidata(feats, self.ITEMS, 5.0, (-10000, -3000))
         self.assertEqual((matched, added, len(out)), (1, 1, 3))
         p = out[0]["properties"]
-        self.assertEqual((p["wikidata"], p["wikipedia"], p["culture"]), ("Q1", "Franchthi Cave", ["X culture"]))
+        self.assertEqual((p["wikidata"], p["wikipedia"], p["wikidata_culture"]), ("Q1", "Franchthi Cave", ["X culture"]))
         self.assertEqual(p["sources"], ["xronos", "wikidata"])
         self.assertNotIn("wikidata", out[1]["properties"])
         new = out[2]["properties"]
@@ -257,6 +257,22 @@ class Hex(unittest.TestCase):
         self.assertTrue(np.allclose(g.centres[i], [0.75, -np.sqrt(3) / 2 - np.sqrt(3) / 4], atol=0.5))
 
 
+class Occupation(unittest.TestCase):
+    def test_phases_split_at_gaps_and_end_after_gap(self):
+        self.assertEqual(st.occupation([-9000, -8500, -7900, -5000, -4800], 1000),
+                         [[-9000, -6900], [-5000, -3800]])
+        self.assertEqual(st.occupation([-6000], 1000), [[-6000, -5000]])
+        self.assertEqual(st.occupation([-6000, -5000], 1000), [[-6000, -4000]])  # exactly gap: one phase
+        self.assertEqual(st.occupation([-6000], 0), [])
+        self.assertEqual(st.occupation([], 1000), [])
+
+    def test_derive_sites_uses_trimmed_dates(self):
+        dates = [{"site": "S", "lon": 1.0, "lat": 2.0, "type": "site", "periods": [], "dataset": "x",
+                  "refs": [], "labnr": f"L-{i}", "bp": i, "std": 0} for i in range(3)]
+        p = st.derive_sites(dates, np.array([-7000, -6800, -3000]), (-10000, -3000), gap=1000)[0]["properties"]
+        self.assertEqual(p["occupation"], [[-7000, -5800], [-3000, -2000]])
+
+
 class Curated(unittest.TestCase):
     def test_merge_by_distance_by_name_and_unmatched(self):
         feats = [point("Tell es-Sultan", 35.47, 31.86, -9000, n_dates=5),
@@ -280,6 +296,15 @@ class Curated(unittest.TestCase):
         self.assertEqual(j["properties"]["sources"], ["xronos", "curated"])
         self.assertEqual(j["properties"]["references"], ["RADON"])
 
+    def test_features_and_wikipedia_pass_through(self):
+        feats = [point("Valcamonica", 10.35, 46.03, -8000, n_dates=3)]
+        cur = [{"type": "Feature", "geometry": None,
+                "properties": {"name": "Val Camonica", "founding": -8000, "match": "Valcamonica",
+                               "features": ["rock art"], "wikipedia": "Rock Drawings in Valcamonica"}}]
+        (out,) = st.merge_curated(feats, cur, 5.0)
+        self.assertEqual(out["properties"]["features"], ["rock art"])
+        self.assertEqual(out["properties"]["wikipedia"], "Rock Drawings in Valcamonica")
+
     def test_unknown_match_raises(self):
         cur = [{"type": "Feature", "geometry": None, "properties": {"name": "X", "founding": 0, "match": "nope"}}]
         with self.assertRaises(ValueError):
@@ -288,3 +313,65 @@ class Curated(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+CLASSES = {"default": 1, "3": ["tell", "enclosure"], "2": ["settlement"], "1": ["cave"], "0": ["pit", "hearth"]}
+IMPORTANCE = {"min_span": 1000, "persist_top": 0.75, "local_km": 150, "local_top": 0.9, "local_min_dates": 5, "class": CLASSES}
+
+
+class Importance(unittest.TestCase):
+    def test_site_class_highest_keyword_wins(self):
+        self.assertEqual(st.site_class("causewayed enclosure", CLASSES), 3)
+        self.assertEqual(st.site_class("settlement (pit)", CLASSES), 2)
+        self.assertEqual(st.site_class("isolated pit", CLASSES), 0)
+        self.assertEqual(st.site_class("something new", CLASSES), 1)
+
+    def test_local_rank_compares_with_neighbours_only(self):
+        # A cluster of ten 8-date sites, and one 8-date site 1,000 km away
+        # among 1-date sites.
+        pts = [[0.0 + 0.01 * i, 50.0] for i in range(10)] + [[14.0, 50.0]] + [[14.0 + 0.01 * i, 50.1] for i in range(1, 10)]
+        n = [8] * 10 + [8] + [1] * 9
+        r = st.local_rank(pts, n, 150)
+        self.assertEqual(r[0], 0.0)
+        self.assertEqual(r[10], 1.0)
+
+    def test_isolated_site_is_rank_one(self):
+        self.assertEqual(st.local_rank([[0, 0], [90, 0]], [1, 1], 150).tolist(), [1.0, 1.0])
+
+    def test_score_uses_class_bonuses_and_clamps(self):
+        feats = [
+            point("tell", 0, 40, -7000, type="tell", n_dates=30, occupation=[[-7000, -5000], [-4000, -2000]]),
+            point("pit", 0.01, 40, -5000, type="pit", n_dates=1, occupation=[[-5000, -4000]]),
+            point("camp", 0.02, 40, -5000, type="camp", n_dates=1, occupation=[[-5000, -4000]]),
+            point("wd", 20, 40, -5000, type="settlement", n_dates=0, sources=["wikidata"]),
+        ]
+        st.score_sites(feats, IMPORTANCE)
+        got = {f["properties"]["name"]: (f["properties"]["importance"], f["properties"]["evidence"]) for f in feats}
+        self.assertEqual(got, {"tell": (3, 2), "pit": (0, 0), "camp": (1, 0), "wd": (2, 1)})
+
+    def test_well_dated_site_in_dug_region_gets_no_local_bonus(self):
+        dug = [point(f"s{i}", 0.01 * i, 50, -5000, type="settlement", n_dates=8) for i in range(20)]
+        lone = point("lone", 30, 50, -5000, type="settlement", n_dates=8)
+        st.score_sites(dug + [lone], IMPORTANCE)
+        self.assertEqual(dug[0]["properties"]["importance"], 2)
+        self.assertEqual(lone["properties"]["importance"], 3)
+
+
+class Survey(unittest.TestCase):
+    def test_density_follows_records_and_levels_cut(self):
+        g = make_grid(6, 6, w=1.0)
+        left, top, right, bottom = g.bbox.T
+        cx, cy = (left[0] + right[0]) / 2, (top[0] + bottom[0]) / 2
+        dates = [date("a", cx, cy, 0) for _ in range(500)]
+        dens, level = st.survey_intensity(g, dates, {"sigma_km": 100, "thin": 5, "well": 25})
+        self.assertEqual(int(np.argmax(dens)), 0)
+        self.assertEqual(level[0], 2)
+        self.assertEqual(level[-1], 0)  # ~5 hexes (~400 km) away
+
+    def test_round_trip(self):
+        import os, tempfile
+        g = make_grid(2, 2)
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "s.csv.gz")
+            st.write_survey(p, g, np.array([0.0, 6.0, 30.0, 1.0]), np.array([0, 1, 2, 0]))
+            self.assertEqual(st.read_survey(p), {1: 0, 2: 1, 3: 2, 4: 0})

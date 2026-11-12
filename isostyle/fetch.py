@@ -59,6 +59,17 @@ def run(cfg, log=print):
         path = os.path.join(d, spec["file"])
         if os.path.exists(path) and spec["file"] in prov:
             continue
+        if spec["kind"] == "manual":
+            # Downloaded by hand (the host refuses scripted downloads).
+            if not os.path.exists(path):
+                log(f"fetch {spec['name']}: download {spec['url']} by hand into {d}/")
+                continue
+            data = open(path, "rb").read()
+            prov[spec["file"]] = {"name": spec["name"], "url": spec["url"], "bytes": len(data),
+                                  "sha256": hashlib.sha256(data).hexdigest(), "retrieved": "manual download",
+                                  "recorded": time.strftime("%Y-%m-%d")}
+            json.dump(prov, open(ppath, "w"), indent=1)
+            continue
         try:
             url = resolve(spec)
             data = _get(url)

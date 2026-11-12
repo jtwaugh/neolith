@@ -1,0 +1,47 @@
+# Hand corrections to settlement positions (pipeline/coords.py). The map build
+# applies them to the shipped settlements before anything reads a position.
+# Each [[fix]] names a site, where it is now (`was`, matched within 0.02°), one
+# action (`to = [lon, lat]`, `drop = true` or `submerged = true`), a `source`
+# link and a `note`. Sources are listed in data/settlements/SOURCES.md.
+
+[[fix]]
+name = "Parnwell, Peterborough"
+was = [-0.2105, 50.5925]
+to = [-0.2105, 52.5925]
+source = "https://archaeologydataservice.ac.uk/catalogue/adsdata/arch-1352-1/dissemination/pdf/Cambs_grey_lit_reports/GL2018_Fen_edge_landscape_Parnwell.pdf"
+note = "Latitude mistyped 50 for 52: the record put it in the English Channel. Parnwell is on the north-eastern edge of Peterborough, 2 km north of Fengate."
+
+[[fix]]
+name = "Lockarp 7E"
+was = [4.1318, 55.55]
+to = [13.07, 55.55]
+source = "https://radonb.ufg.uni-kiel.de/samples/16488"
+note = "Longitude wrong (in the North Sea). Lockarp is in Malmö, Skåne; position to the parish, about 5 km."
+
+[[fix]]
+name = "El Collado"
+was = [-0.103, 36.89]
+to = [-0.1189, 38.9113]
+source = "https://doi.org/10.1371/journal.pone.0115505"
+note = "Latitude mistyped 36.89 for 38.91 (off Almería). El Collado is at Oliva, Valencia, 3 km from the shore at about 100 m; the NeoNet entry for the same site has 38.9113, -0.1189, used here."
+
+[[fix]]
+name = "Cocina Cave"
+was = [1.033, 39.79]
+to = [-0.80, 39.29]
+source = "https://es.hispanopedia.com/wiki/Cueva_de_la_Cocina"
+note = "Position at sea east of Valencia. The Cueva de la Cocina is in Dos Aguas (Valencia), Barranco de Cinto Ventanas, at about 400 m; position to the municipality, about 5 km."
+
+[[fix]]
+name = "Villa Comunale, Foggia"
+was = [14.3057, 40.7302]
+to = [15.55, 41.46]
+source = "https://xronos.ch/sites/12897"
+note = "The record put the site in the Bay of Naples; XRONOS gives no coordinates for 'Villa Communale di Foggia'. Placed at Foggia, whose public gardens (the Villa Comunale) are in the town centre."
+
+[[fix]]
+name = "Almonda"
+was = [8.9369, 47.0131]
+to = [-8.6157, 39.5057]
+source = "https://en.wikipedia.org/wiki/Almonda"
+note = "Placed in Switzerland; the Almonda karst caves (Gruta do Almonda, Gruta da Aroeira) are at Zibreira, Torres Novas, Portugal."

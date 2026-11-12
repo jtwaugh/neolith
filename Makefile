@@ -3,19 +3,35 @@
 PY := .venv/bin/python
 ETOPO_URL := https://coastwatch.pfeg.noaa.gov/erddap/griddap/etopo180.esriAscii?altitude%5B(76.5):2:(5.5)%5D%5B(-17.0):2:(66.5)%5D
 
-# `make settlements` output when present, else the original hand-made list.
-SETTLEMENTS := $(firstword $(wildcard data/settlements/settlements.geojson) \
-	game/static/game/assets/settlements.geojson)
+# Settlements: `pipeline build` reads the `make settlements` output when
+# present, else the original hand-made list, and writes build/settlements.geojson
+# with occupation cut where the sea takes a site ([settled_land]); that's what
+# gets converted.
 WORLD := neolith-rs/assets/world.bin
 
-.PHONY: maps test settlements cultures-check
+.PHONY: maps maps-unlocked test settlements cultures-check anchors residuals
 BIOME_URL := https://ndownloader.figshare.com/files/22659026
 HYDRORIVERS := $(foreach r,af eu as,build/hydrorivers/HydroRIVERS_v10_$(r)_shp/HydroRIVERS_v10_$(r).shp)
 
+# The whole recipe runs under build/.lock (pipeline/lock.py), so no other
+# pipeline run can rewrite build/ between the two steps.
 maps: .venv build/etopo.asc build/biome.npz $(HYDRORIVERS)
+	$(PY) -m pipeline.lock build -- $(MAKE) --no-print-directory maps-unlocked
+
+maps-unlocked:
 	$(PY) -m pipeline build
 	cd neolith-rs && cargo run --release -q -p neolith-convert -- \
-		../build/combined_map.geojson ../$(SETTLEMENTS) --rivers ../build/rivers.geojson --lakes ../build/lakes.geojson -o ../$(WORLD)
+		../build/combined_map.geojson ../build/settlements.geojson --rivers ../build/rivers.geojson --lakes ../build/lakes.geojson \
+		$(if $(wildcard data/settlements/dates.csv.gz),--dates ../data/settlements/dates.csv.gz) \
+		$(if $(wildcard data/isostyle/speculative/evidence_layers.json),--evidence ../data/isostyle/speculative/evidence_layers.json) \
+		--cultures ../data/cultures/cultures.json -o ../$(WORLD)
+
+# Where the site list falls short of expected population, and why
+# (data/population/). Needs `make maps` and the `make settlements` downloads.
+residuals: .venv
+	mkdir -p build/population
+	cd neolith-rs && cargo run --release -q -p neolith-convert -- assets/world.bin --expected ../build/population/expected.csv
+	$(PY) -m pipeline residuals
 
 # Downloads to build/settlements/ once (about 660 MB; the Wikidata part can take an hour), writes data/settlements/.
 settlements: .venv
@@ -25,6 +41,11 @@ settlements: .venv
 # cites and records which traits it supports. Rerun `make settlements` after.
 cultures-check: .venv
 	$(PY) -m pipeline cultures-check
+
+# Pollen anchor records for checking the biome maps (data/terrain/anchors*.csv).
+# Downloads about 30 MB once to build/anchors/, plus one Neotoma record per anchor.
+anchors: .venv build/combined_map.geojson
+	$(PY) -m pipeline anchors
 
 test: .venv
 	$(PY) -m unittest discover -s pipeline/tests -t .

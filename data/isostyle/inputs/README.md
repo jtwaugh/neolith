@@ -19,3 +19,16 @@ https://doi.org/10.15184/aqy.2016.68
 - Coordinates are to 0.1°.
 - The supplement states no licence. These are bibliographic facts
   (site, place, date) restated with citation; check before redistributing.
+
+## `dolbunova2023_starts.csv`
+
+Modelled start dates (years BC) of pottery at eight sites, from the comment
+block in `SI_Spatial_Temporal.r` of the Dolbunova et al. 2023 data deposit
+(Zenodo 6619101, CC BY 4.0): Bayesian models of each site's earliest
+pottery-bearing dates. Coordinates are those of Dolbunova's own site table
+(SI_ORA.xlsx), except Rakushechny Yar, which is not in it: its point was entered
+from general knowledge (lower Don, near Razdorskaya) and is approximate.
+
+The pipeline dates each of Dolbunova's 156 sites from the start of its nearest
+modelled site to 4000 BC (uniform), instead of giving every site the
+dataset-wide 6000-4000 BC span.

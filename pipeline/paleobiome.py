@@ -249,25 +249,42 @@ def treeline(grid, cfg, tcfg, years, shift=None):
     return out
 
 
-def _knn(train_x, train_y, query_x, k, exclude_self=False):
-    """Majority label and mean distance of the k nearest training rows."""
+def _km(a, b):
+    """(len(a), len(b)) approximate distances in km between lon/lat rows."""
+    lat = np.radians((a[:, 1][:, None] + b[:, 1][None, :]) / 2)
+    dx = (a[:, 0][:, None] - b[:, 0][None, :]) * np.cos(lat)
+    dy = a[:, 1][:, None] - b[:, 1][None, :]
+    return 111.2 * np.hypot(dx, dy)
+
+
+def _knn(train_x, train_y, query_x, k, exclude_self=False, train_ll=None, query_ll=None, max_km=None):
+    """Majority label and mean distance of the k nearest training rows. With
+    `max_km`, only training rows within that many km of the query (lon/lat
+    rows `train_ll`, `query_ll`) count; a query with none gets "" and an
+    infinite distance."""
     labels = np.unique(train_y)
     lab_idx = np.searchsorted(labels, train_y)
     pred = np.empty(len(query_x), dtype=object)
     dist = np.empty(len(query_x))
     tn = (train_x ** 2).sum(1)
+    kk = min(k, len(train_x) - 1) if exclude_self else min(k, len(train_x))
     for s in range(0, len(query_x), 1000):
         q = query_x[s:s + 1000]
         d = np.maximum((q ** 2).sum(1)[:, None] + tn[None, :] - 2 * q @ train_x.T, 0)
         if exclude_self:
             d[np.arange(len(q)), np.arange(s, s + len(q))] = np.inf
-        nn = np.argpartition(d, k, axis=1)[:, :k]
+        if max_km is not None:
+            d[_km(query_ll[s:s + len(q)], train_ll) > max_km] = np.inf
+        nn = np.argpartition(d, kk - 1, axis=1)[:, :kk]
         nd = np.sqrt(np.take_along_axis(d, nn, axis=1))
+        ok = np.isfinite(nd)
         # Distance-weighted vote, so the nearest neighbours settle near-ties.
         votes = np.zeros((len(q), len(labels)))
-        np.add.at(votes, (np.arange(len(q))[:, None], lab_idx[nn]), 1 / (0.1 + nd))
-        pred[s:s + len(q)] = labels[votes.argmax(1)]
-        dist[s:s + len(q)] = nd.mean(1)
+        np.add.at(votes, (np.arange(len(q))[:, None], lab_idx[nn]), np.where(ok, 1 / (0.1 + np.where(ok, nd, 0)), 0))
+        any_ok = ok.any(1)
+        pred[s:s + len(q)] = np.where(any_ok, labels[votes.argmax(1)], "")
+        with np.errstate(invalid="ignore"):
+            dist[s:s + len(q)] = np.where(any_ok, np.nanmean(np.where(ok, nd, np.nan), 1), np.inf)
     return pred, dist
 
 
@@ -283,17 +300,24 @@ class Calibration:
     a factor of 1 rejects hexes whose every feature is within the drawn range.)
     """
 
-    def __init__(self, x, labels, k, max_distance_quantile, factor=1.0):
+    def __init__(self, x, labels, k, max_distance_quantile, factor=1.0, ll=None, max_km=None):
         ok = np.isfinite(x).all(1)
         self.mu, self.sd = x[ok].mean(0), x[ok].std(0) + 1e-9
         self.x, self.y, self.k = (x[ok] - self.mu) / self.sd, labels[ok], k
-        _, d = _knn(self.x, self.y, self.x, k, exclude_self=True)
+        self.ll = None if ll is None else np.asarray(ll, float)[ok]
+        self.max_km = max_km if ll is not None else None
+        _, d = _knn(self.x, self.y, self.x, k, exclude_self=True, train_ll=self.ll, query_ll=self.ll,
+                    max_km=self.max_km)
+        d = d[np.isfinite(d)]
         self.max_dist = factor * float(np.quantile(d, max_distance_quantile))
 
-    def predict(self, x):
+    def predict(self, x, ll=None):
+        """Labels for climate rows x; with `max_km`, `ll` are their lon/lat."""
         out = np.full(len(x), "", dtype=object)
         ok = np.isfinite(x).all(1)
-        pred, d = _knn(self.x, self.y, (x[ok] - self.mu) / self.sd, self.k)
+        q_ll = None if ll is None or self.max_km is None else np.asarray(ll, float)[ok]
+        pred, d = _knn(self.x, self.y, (x[ok] - self.mu) / self.sd, self.k, train_ll=self.ll, query_ll=q_ll,
+                       max_km=self.max_km if q_ll is not None else None)
         pred[d > self.max_dist] = ""
         out[ok] = pred
         return out
@@ -338,14 +362,42 @@ def hex_biomes(grid, cfg, years):
     return out, used
 
 
-def calibrated_biomes(grid, cfg, years, drawn, model, shift=None):
+def literature_labels(path, holdout_k, grid):
+    """{year: [(hex index, class)]} from data/terrain/anchors_literature.csv:
+    each anchor's first class per slice, at the hex nearest it, for the
+    anchors not held out (pipeline.anchors.holdout), so the held-out ones
+    still test the map."""
+    import csv
+    import os
+    from .anchors import holdout
+    out = {}
+    if not path or not os.path.exists(path):
+        return out
+    c = grid.centres
+    with open(path, encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            if holdout(r["id"], holdout_k):
+                continue
+            lon, lat = float(r["lon"]), float(r["lat"])
+            i = int(np.argmin(((c[:, 0] - lon) * np.cos(np.radians(lat))) ** 2 + (c[:, 1] - lat) ** 2))
+            out.setdefault(int(r["year"]), []).append((i, r["game_classes"].split(";")[0]))
+    return out
+
+
+def calibrated_biomes(grid, cfg, years, drawn, model, shift=None, anchors=None):
     """Gap biomes for each year from the drawn maps' biome-climate relation.
 
     For year y, a Calibration is trained on the drawn keyframe nearest y
     (its biome hexes, with the model climate of that keyframe's year) and
     applied to the model climate of y. Hexes whose climate is unlike any
     drawn hex keep `model[y]`. `shift` (degC per hex) moves the model's
-    temperatures to each hex's elevation. Returns ({year: names}, {year: stats}).
+    temperatures to each hex's elevation. With `max_km`, only drawn hexes
+    that near count, so a Zagros gap doesn't borrow Morocco's Chaparral.
+    `anchors` ({year: [(hex, class)]}, `literature_labels`) are added to the
+    training for the keyframe of their year, each `anchor_weight` times: they
+    give the classes the drawings never use for these climates (the drawn maps
+    leave the Irano-Anatolian uplands as "Mountains"). Returns
+    ({year: names}, {year: stats}).
     """
     c = cfg["calibrate"]
     spec = c["features"]
@@ -367,13 +419,71 @@ def calibrated_biomes(grid, cfg, years, drawn, model, shift=None):
             m = ~np.isin(lab, NON_BIOME + tuple(cfg.get("gaps", ())))
             x = feat(ty)
             raw_m = m & ~np.isin(model[ty], NON_BIOME)
-            fits[ty] = (Calibration(x[m], lab[m], c["k"], c["max_distance_quantile"],
-                                    c.get("max_distance_factor", 1.0)),
+            tx, ty_lab, tll = x[m], lab[m], grid.centres[m]
+            extra = (anchors or {}).get(ty, [])
+            if extra:
+                w = int(c.get("anchor_weight", 1))
+                idx = np.repeat([i for i, _ in extra], w)
+                tx = np.vstack([tx, x[idx]])
+                ty_lab = np.concatenate([ty_lab, np.repeat([k for _, k in extra], w).astype(object)])
+                tll = np.vstack([tll, grid.centres[idx]])
+            fits[ty] = (Calibration(tx, ty_lab, c["k"], c["max_distance_quantile"],
+                                    c.get("max_distance_factor", 1.0), ll=tll, max_km=c.get("max_km") or None),
                         block_cv(x[m], lab[m], grid.centres[m], c["k"], c["block_degrees"]),
                         float((model[ty][raw_m] == lab[raw_m]).mean()))
         cal, cv, raw_agree = fits[ty]
-        pred = cal.predict(feat(y))
+        pred = cal.predict(feat(y), grid.centres)
         out[y] = np.where(pred != "", pred, model[y])
         stats[y] = {"trained_on": ty, "cv": cv, "raw": raw_agree, "pred": pred}
     return out, stats
 
+
+def hex_climate(grid, cfg, years, spec, shift=None):
+    """{year: (N, len(spec)) climate per hex} for the model slice nearest
+    each year (`features`, temperatures moved by `shift`)."""
+    clim = load_climate(cfg["data"], [n for n, _ in spec])
+    _, bp, tf = load(cfg["data"])
+    cells = hex_cells(grid, tf, next(iter(clim.values())).shape[1:])
+    done, out = {}, {}
+    for y in years:
+        t = bp_index(y, bp)
+        if t not in done:
+            done[t] = features(grid, clim, tf, t, spec, cells, shift)
+        out[y] = done[t]
+    return out
+
+
+def upland_class(year, precip, coldest, ucfg):
+    """The class the upland rule gives a hex, or "" to leave it: woodland
+    after `woodland_from` where annual precipitation reaches
+    `woodland_precip`, else forest-steppe from `forest_steppe_precip`, else
+    grassland; nothing where winters are mild (coldest month above
+    `max_coldest`, the Mediterranean) or the land is drier than `min_precip`."""
+    if not np.isfinite(precip) or not np.isfinite(coldest):
+        return ""
+    if coldest > ucfg["max_coldest"] or precip < ucfg["min_precip"]:
+        return ""
+    if year >= ucfg["woodland_from"] and precip >= ucfg["woodland_precip"]:
+        return "Woodlands"
+    return "Steppe-Forest" if precip >= ucfg["forest_steppe_precip"] else "Grassland"
+
+
+def apply_upland(t, gap, elev, centres, clim, year, ucfg):
+    """Apply `upland_class` to gap-filled hexes (`gap`) in `box` at or above
+    `min_elevation` that aren't Alpine, Water or Ice. clim: (N, 2) annual
+    precipitation (mm) and coldest-month minimum (degC). Returns (terrain,
+    hexes changed)."""
+    b = ucfg["box"]
+    cand = np.flatnonzero(gap & (elev >= ucfg["min_elevation"])
+                          & (centres[:, 0] >= b[0]) & (centres[:, 0] <= b[2])
+                          & (centres[:, 1] >= b[1]) & (centres[:, 1] <= b[3])
+                          & ~np.isin(t, ["Alpine", "Water", "Ice"]))
+    out, n = t, 0
+    for i in cand:
+        k = upland_class(year, clim[i, 0], clim[i, 1], ucfg)
+        if k and k != t[i]:
+            if out is t:
+                out = t.copy()
+            out[i] = k
+            n += 1
+    return out, n

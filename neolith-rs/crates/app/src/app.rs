@@ -52,6 +52,12 @@ pub struct Session {
     world_changed: bool,
 
     pub mode: MapMode,
+    /// Index into `world.evidence` of the layer the Evidence mode shows.
+    pub evidence_layer: Option<usize>,
+    /// The (layer, slice) whose codes are on the GPU; see [`Session::tick`].
+    evidence_shown: Option<(usize, usize)>,
+    /// The GPU evidence texture needs re-uploading.
+    pub evidence_dirty: bool,
     pub editor: bool,
     pub tool: Tool,
     /// The palette choice per map mode. Typed, never a string.
@@ -80,6 +86,10 @@ pub struct Session {
     /// The scale `relief` was built with, or `None` when the snapshot changed since.
     relief_scale: Option<f64>,
     pub input: BoardInput,
+    /// The chronicle ([`crate::events`]), in year order.
+    pub events: Vec<crate::events::Event>,
+    /// The world was edited since `events` was built.
+    events_stale: bool,
 }
 
 impl Session {
@@ -110,6 +120,9 @@ impl Session {
             snapshot_epoch,
             world_changed: false,
             mode: MapMode::Terrain,
+            evidence_layer: (!world.evidence.is_empty()).then_some(0),
+            evidence_shown: None,
+            evidence_dirty: true,
             editor: false,
             tool: Tool::Select,
             paint: [
@@ -132,6 +145,8 @@ impl Session {
             relief: Arc::new(Relief::flat(&world.grid)),
             relief_scale: None,
             input: BoardInput::default(),
+            events: crate::events::build(&world),
+            events_stale: false,
             world,
             file_name,
             unsaved: false,
@@ -153,6 +168,28 @@ impl Session {
         }
     }
 
+    /// The evidence layer the Evidence mode shows, if the world has any.
+    pub fn evidence(&self) -> Option<&neolith_core::EvidenceLayer> {
+        self.evidence_layer.and_then(|i| self.world.evidence.get(i))
+    }
+
+    /// The selected evidence layer's code per hex at the current year (file
+    /// order), or nothing without a layer.
+    pub fn evidence_codes(&self) -> &[u8] {
+        self.evidence().map_or(&[], |l| l.codes_at(self.year()))
+    }
+
+    /// Picks the evidence layer with this id; false if there is none.
+    pub fn select_evidence(&mut self, id: &str) -> bool {
+        match self.world.evidence.iter().position(|l| l.id == id) {
+            Some(i) => {
+                self.evidence_layer = Some(i);
+                true
+            }
+            None => false,
+        }
+    }
+
     /// The value the pencil and fill tools paint in the current map mode
     /// (none in a read-only mode).
     pub fn paint_value(&self) -> Option<Value> {
@@ -170,6 +207,7 @@ impl Session {
 
     fn after_edit(&mut self, inserted_keys: bool) {
         self.world_changed = true;
+        self.events_stale = true;
         self.unsaved = true;
         if inserted_keys {
             self.keyframes = self.world.keyframe_years();
@@ -254,7 +292,24 @@ impl Session {
             self.state_dirty = true;
             self.relief_scale = None;
         }
+        // The evidence texture follows the picked layer and its slice in
+        // effect, like the snapshot follows keyframes.
+        let shown = self.evidence_layer.and_then(|i| Some((i, self.world.evidence.get(i)?.slice_at(self.year())?)));
+        if shown != self.evidence_shown {
+            self.evidence_shown = shown;
+            self.evidence_dirty = true;
+        }
+        // Rebuilt once a stroke is finished, not per painted hex.
+        if self.events_stale && self.input.is_idle() {
+            self.events = crate::events::build(&self.world);
+            self.events_stale = false;
+        }
         animating || self.clock.playing
+    }
+
+    /// Glides the camera to `to` (the double-click animation).
+    pub fn glide_to(&mut self, to: neolith_core::LonLat, now: f64) {
+        self.input.glide_to(self.camera.target, to, now);
     }
 }
 

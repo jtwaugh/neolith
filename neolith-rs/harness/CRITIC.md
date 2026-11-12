@@ -64,6 +64,29 @@ The map should fill the screen and be the thing you want to stare at.
 - Check: does the inspector feel like an in-world dossier, or like a property
   sheet? Is there an outliner? Are there any top-bar resources or stats? Do the
   tooltips explain things?
+- **Hierarchical sidebars.** Expect information to live in docked sidebars with
+  a clear hierarchy: a few top-level sections (tabs or headers), collapsible
+  groups beneath them, and the details of one item nested under it. Victoria 3's
+  left panel goes nation → tab → group → item, and CK3's character panel goes
+  character → tab → section. Flag flat walls of controls, related settings split
+  across panels, sections with no headers, inconsistent ordering, and anything
+  more than three levels deep.
+- **As few popups as possible.** Selection, inspection and settings belong in
+  the sidebars. A floating window or modal is justified only for an event the
+  player must answer or a confirmation of something destructive. Count every
+  popup, floating window and modal you open, say what triggered each one, and
+  name the sidebar section it should move into. Popups that overlap each other
+  or cover the map's focus are defects, and so is a popup that needs a separate
+  close click.
+- **Meaningful icons.** Expect a consistent icon set: every mode button, tab,
+  stat and resource has an icon whose shape suggests its meaning (a wheat ear
+  for cereals, a wave for sea level), drawn in one style at one size, with a
+  tooltip naming it. Flag text-only buttons where shipped games use icons,
+  emoji or Unicode glyphs standing in for icons, generic shapes (dots, squares,
+  letters) that don't say what they mean, and icons that are reused for
+  different things.
+- Score cap: a UI that relies mostly on floating popups, or whose sidebars are
+  flat lists of controls with no hierarchy, can't score above 2 here.
 
 ## 6. Art direction & UI skin (weight 2)
 
@@ -87,6 +110,10 @@ consequences.
 - Check: zoom-to-cursor, smooth pans, a hover highlight and click feedback.
   Does double-click glide? Do pieces and labels reflow sensibly when zoomed? Are
   there dead clicks?
+- Check camera stability: does orbiting (right-drag) change only yaw and pitch, or
+  does the camera get pushed, clamped, snapped or drift? Does the UI (labels,
+  panels, hover, pieces) jitter or flicker while the camera moves? A camera that
+  fights the player caps this category at 2, whatever else is good.
 
 ## 9. Biome map aesthetics (weight 3)
 
@@ -174,7 +201,10 @@ Write `build/critic/<YYYYMMDD-HHMM>/report.md` with:
    reference (with path), and the **top 1–3 concrete changes**. The biome
    aesthetics section also gets a list of named problem spots (lon/lat, the
    biomes on each side, a crop path) and a layer table (layer, keep / tone down /
-   drop, at which zoom, and why). Name the code
+   drop, at which zoom, and why). The information architecture section also
+   gets each sidebar's tree (section → group → item), a popup tally (what
+   opened it, justified or which sidebar section it belongs in) and an icon
+   list (element, icon or "text only", problem). Name the code
    where the state readout or your reading points to it (for example
    `neolith-rs/crates/app/src/panels.rs`).
 4. A play log: the actions you took, in order, with what the state readout

@@ -1,0 +1,857 @@
+# Gap critic: open_land layer. Judgements, not data.
+# Values are the expected % open land (REVEALS-style: grassland, heath, steppe,
+# desert scrub and crops all count as open) if a 1° reconstruction existed.
+
+[meta]
+layer = "open_land"
+written = "2026-11-12"
+dossier = "build/isostyle/gaps/open_land/dossier.json"
+summary = """The biggest problem in this layer is not a gap but a reading error. LandClimII's TW*.RV.estimates files list all 420 1° cells in every window. Cells with no reconstruction in a window are rows of zeros (every taxon, every land-cover class, OL = 0): 44 to 211 of the 420 cells, depending on the window, and up to half of all cells in the oldest window. isostyle/landcover.py reads those rows as 0% open land and averages them with real values. So (a) the 0.0 minima in almost every edge range, the Levant edges of exactly 0 at 10,000-8,000 BCE, and the Mesopotamian edge of 10.7% at 7,000 BCE are artefacts, (b) cells valid in only one of a slice's windows are halved, and (c) the per-slice mean (30% to 23% to 27%) understates the real valid-cell mean (about 60% at 11,450 BP to about 31% in the mid-Holocene to 40% by 3,000 BCE) and flattens the early-Holocene closing of the forest. Rows whose land-cover columns sum to 0 should be treated as missing. \
+The real gaps have two causes: the dataset's window (30-75°N, 25°W-50°E) and where pollen cores exist. Everything in Africa, Arabia, Central Asia, Iran east of 50°E and the Russian forest and steppe east of 50°E is outside the window. Inside it, the Maghreb, Levant, Mesopotamia and the Caspian lowland have no cells with records. Those regions are mostly steppe or desert, which REVEALS counts as open, so the gaps should be filled high (85-98%), not by extending the forested European mean."""
+
+# ---------------------------------------------------------------- Deserts and steppes outside or at the edge of the window
+
+[[judgement]]
+region = "Sahara–Sahel"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-02", "open_land-9000-35", "open_land-8000-69", "open_land-7000-102", "open_land-6000-134", "open_land-5000-166", "open_land-4000-197", "open_land-3000-228"]
+why_empty = ["dataset_edge", "research_intensity"]
+why_note = "LandClimII stops at 30°N, and REVEALS has no pollen-productivity estimates for African taxa. Even the green Sahara was grassland and wooded savanna, with trees only along wadis and in mountains."
+expected = 95
+expected_range = [80, 100]
+confidence = "medium"
+basis = ["environment", "literature"]
+reasoning = "There are no edges, so this rests on environment. African Humid Period pollen (Yoa, Chad, Oursi) shows grass-dominated savanna with Sudanian trees at low cover. After c. 4000-3000 BCE it was desert. Both are 'open' in REVEALS terms. Tree cover under 15% is plausible everywhere except the Tibesti, Aïr and Hoggar wadis during the humid phase."
+literature = [
+  { cite = "Watrin, Lézine & Hély 2009, 'Plant migration and plant communities at the time of the green Sahara', CR Geoscience 341", checked = false },
+  { cite = "Hély et al. 2014, 'Holocene changes in African vegetation: tradeoff between climate and water availability', Climate of the Past 10", checked = false },
+]
+would_settle = "A REVEALS or biome reconstruction from African Pollen Database records (e.g. Hély et al. biomisation)."
+speculative_rule = "Fill at 95%. In the southern Sahel (south of 15°N), use 85% for 9,000-5,000 BCE."
+[[judgement.adjust]]
+kind = "area"
+bbox = [-17.0, 7.0, 24.0, 15.0]
+value = 85
+slices = [-9000, -8000, -7000, -6000, -5000]
+
+[[judgement]]
+region = "Libya & Egypt"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-05", "open_land-9000-38", "open_land-8000-72", "open_land-7000-105", "open_land-6000-137", "open_land-5000-169", "open_land-4000-200", "open_land-3000-231"]
+why_empty = ["dataset_edge"]
+why_note = "This is outside the LandClim window (south of 30°N) and is desert or desert-steppe throughout. The Nile valley had gallery woodland along the river only."
+expected = 98
+expected_range = [90, 100]
+confidence = "high"
+basis = ["environment"]
+reasoning = "Hyperarid or at best semi-arid grassland. Trees were limited to the Nile and the Jebel Akhdar of Cyrenaica (which is north of 30°N but has no records)."
+literature = []
+would_settle = "None needed."
+speculative_rule = "Fill at 98%. Use 70% on the Jebel Akhdar and 85% in a 10 km Nile strip."
+[[judgement.adjust]]
+kind = "polygon"                         # Jebel Akhdar of Cyrenaica
+points = [[20.5, 32.35], [21.0, 32.7], [21.7, 32.9], [22.6, 32.85], [22.9, 32.6], [22.4, 32.4], [21.5, 32.2], [20.8, 32.1]]
+value = 70
+[[judgement.adjust]]
+kind = "river"
+within_km = 10
+names = ["Nile"]
+value = 85
+
+[[judgement]]
+region = "Arabia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-04", "open_land-9000-37", "open_land-8000-71", "open_land-7000-104", "open_land-6000-136", "open_land-5000-168", "open_land-4000-199", "open_land-3000-230"]
+why_empty = ["dataset_edge"]
+why_note = "This is outside the window. The peninsula was desert, with grassland and savanna during the humid phase. There was juniper and acacia woodland only on the Asir, Yemen and Hajar escarpments."
+expected = 95
+expected_range = [85, 100]
+confidence = "high"
+basis = ["environment", "literature"]
+reasoning = "Humid-phase lake pollen (Wahalah, Awafi, Tayma) shows grass and herb steppe with some Acacia and Prosopis. Tree cover never closed."
+literature = [
+  { cite = "Parker et al. 2004, 'Holocene vegetation dynamics in the northeastern Rub al-Khali desert', Holocene 14", checked = false },
+]
+would_settle = "None needed."
+speculative_rule = "Fill at 95%, and at 70% on the Asir, Yemeni and Hajar highlands above 1,500 m."
+[[judgement.adjust]]
+kind = "polygon"                         # Asir and Yemeni highlands
+points = [[39.9, 21.8], [41.2, 21.8], [43.3, 18.5], [44.8, 16.5], [45.8, 15.0], [45.7, 13.6], [44.5, 12.9], [43.5, 13.0], [43.2, 14.5], [42.7, 16.5], [42.0, 18.0], [40.6, 20.5]]
+value = 70
+[[judgement.adjust]]
+kind = "polygon"                         # Hajar mountains
+points = [[56.0, 26.3], [56.5, 26.4], [56.6, 24.8], [57.5, 23.9], [58.7, 23.6], [59.8, 22.6], [59.4, 22.3], [58.3, 22.9], [57.3, 23.2], [56.3, 24.0], [55.9, 25.0]]
+value = 70
+[[judgement.adjust]]
+kind = "elevation"
+below_m = 1500
+value = 95
+
+[[judgement]]
+region = "Central Asia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-08", "open_land-9000-41", "open_land-8000-75", "open_land-7000-108", "open_land-6000-140", "open_land-5000-172", "open_land-4000-203", "open_land-3000-234"]
+why_empty = ["dataset_edge"]
+why_note = "This is east of 50°E. The Kyzylkum, Karakum and Ustyurt are desert and steppe, with tugai gallery forest only on the Amu and Syr Darya."
+expected = 92
+expected_range = [80, 99]
+confidence = "high"
+basis = ["environment"]
+reasoning = "Aral and Caspian pollen is dominated by Artemisia and Chenopodiaceae throughout the Holocene."
+literature = []
+would_settle = "None needed."
+speculative_rule = "Fill at 92%, and at 75% in the river deltas."
+[[judgement.adjust]]
+kind = "polygon"                         # Amu Darya delta
+points = [[58.6, 42.3], [59.5, 41.8], [60.5, 42.0], [61.0, 42.6], [60.6, 43.7], [59.6, 44.0], [58.6, 43.7]]
+value = 75
+[[judgement.adjust]]
+kind = "polygon"                         # Syr Darya delta
+points = [[60.9, 45.9], [61.5, 46.3], [62.5, 46.0], [62.8, 45.7], [62.0, 45.5], [61.2, 45.6]]
+value = 75
+
+[[judgement]]
+region = "Other"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-21", "open_land-9000-55", "open_land-8000-87", "open_land-7000-124", "open_land-6000-155", "open_land-5000-187", "open_land-4000-218", "open_land-3000-249"]
+why_empty = ["dataset_edge"]
+why_note = "This is the Baluchistan desert, outside the window."
+expected = 95
+expected_range = [85, 100]
+confidence = "high"
+basis = ["environment"]
+reasoning = "Arid shrub-steppe."
+literature = []
+would_settle = "None needed."
+speculative_rule = "Fill at 95%."
+
+[[judgement]]
+region = "Iran & Afghanistan"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-10", "open_land-9000-43", "open_land-8000-77", "open_land-7000-110", "open_land-6000-142", "open_land-5000-174", "open_land-4000-205", "open_land-3000-236"]
+why_empty = ["dataset_edge", "research_intensity"]
+why_note = "The plateau is east of 50°E (outside the window), and the plateau basins have no cores. The Zagros oak woodland and the Hyrcanian forest on the Caspian are the only wooded parts."
+expected = 88
+expected_range = [70, 98]
+confidence = "medium"
+basis = ["neighbouring_evidence", "environment", "literature"]
+reasoning = "Valid LandClim cells in NW Iran (44-50°E) read 97% at 10,000 BCE, falling to 84-90% by 5,000-3,000 BCE as Zagros oak spread. The dossier edges (27-43%) are dragged down by zero-filled no-data rows. The interior plateau is drier than the Zagros and should be at least as open."
+literature = [
+  { cite = "Djamali et al. 2008, 'A late Pleistocene long pollen record from Lake Urmia, NW Iran', QR 69", checked = false },
+]
+would_settle = "Fix the zero-row bug and the edges will read correctly. Beyond 50°E, use a biome map."
+speculative_rule = "Fill at 92% on the plateau, 75% in the Zagros and the Afghan highlands, and 40% in the Hyrcanian strip."
+[[judgement.adjust]]
+kind = "area"
+bbox = [43.5, 24.5, 66.0, 40.0]
+value = 92
+[[judgement.adjust]]
+kind = "polygon"                         # Zagros
+points = [[44.3, 37.5], [45.3, 37.5], [47.0, 35.8], [48.8, 34.4], [51.0, 32.6], [53.0, 30.3], [55.0, 28.8], [56.0, 27.6], [53.5, 27.6], [50.5, 29.8], [47.8, 32.3], [45.0, 34.6]]
+value = 75
+[[judgement.adjust]]
+kind = "polygon"                         # Afghan central highlands
+points = [[63.0, 34.0], [64.0, 35.5], [66.5, 35.9], [66.5, 33.0], [64.5, 32.9], [63.3, 33.4]]
+value = 75
+[[judgement.adjust]]
+kind = "polygon"                         # Hyrcanian strip between the Caspian and the Alborz crest
+points = [[48.8, 38.5], [49.2, 37.6], [50.3, 37.3], [51.5, 36.9], [53.0, 37.0], [55.8, 37.4], [55.8, 37.0], [54.5, 36.5], [53.0, 36.3], [51.0, 36.3], [49.5, 36.7], [48.4, 38.0]]
+value = 40
+
+[[judgement]]
+region = "Mesopotamia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-17", "open_land-9000-50", "open_land-8000-84", "open_land-7000-118", "open_land-6000-149", "open_land-5000-183", "open_land-4000-214", "open_land-3000-245"]
+why_empty = ["research_intensity", "dataset_edge"]
+why_note = "There are no records in the alluvium or the western desert, and the region south of 30°N is outside the window."
+expected = 93
+expected_range = [85, 100]
+confidence = "high"
+basis = ["neighbouring_evidence", "environment"]
+reasoning = "Valid edge cells read 92-98% in every slice, and 85-88% at 5,000-3,000 BCE. The 10.7% at 7,000 BCE and 20-33% at 10,000-6,000 BCE in the dossier are averages including zero rows. The region is steppe, desert and marsh."
+literature = []
+would_settle = "Fix the zero-row bug."
+speculative_rule = "Fill at 93%, with 85% in the marshes."
+[[judgement.adjust]]
+kind = "polygon"                         # Mesopotamian marshes (Hawizeh, Central, Hammar)
+points = [[46.2, 30.85], [46.5, 31.2], [47.0, 31.55], [47.5, 31.95], [47.85, 31.6], [47.7, 31.0], [47.5, 30.55], [46.8, 30.5]]
+value = 85
+
+[[judgement]]
+region = "Levant"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-19", "open_land-9000-52", "open_land-8000-86", "open_land-7000-121", "open_land-6000-153", "open_land-5000-185", "open_land-4000-216", "open_land-3000-247"]
+why_empty = ["research_intensity"]
+why_note = "The Syrian Badia, inside the window, has no reconstructed cells."
+expected = 92
+expected_range = [80, 98]
+confidence = "medium"
+basis = ["neighbouring_evidence", "environment"]
+reasoning = "The edge cells read exactly 0.0 at 10,000-8,000 BCE because they are zero-filled no-data rows, which is impossible for the Levant. Where valid (from 7,000 BCE), they read 89-96%. Steppe-desert."
+literature = []
+would_settle = "Fix the zero-row bug."
+speculative_rule = "Fill at 92%, ignoring the 0% edges."
+
+[[judgement]]
+region = "Maghreb"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-03", "open_land-9000-36", "open_land-8000-70", "open_land-7000-103", "open_land-6000-135", "open_land-5000-167", "open_land-4000-198", "open_land-3000-229"]
+why_empty = ["research_intensity", "dataset_edge"]
+why_note = "LandClimII has no North African cells even north of 30°N. South of 30°N it is outside the window. The gap is mostly Saharan Algeria."
+expected = 85
+expected_range = [45, 98]
+confidence = "medium"
+basis = ["environment", "literature"]
+reasoning = "Most of the gap is desert (95%+). The Tell and Atlas carried cedar, evergreen oak and pine forest, with Middle Atlas pollen showing woodland expansion after c. 7000 BCE, so 40-60% open there. Region-wide, the desert dominates."
+literature = [
+  { cite = "Cheddadi et al. 2016/2017, Middle Atlas cedar forest history (Tigalmamine, Sidi Ali)", checked = false },
+]
+would_settle = "Run REVEALS on Moroccan and Tunisian EPD cores."
+speculative_rule = "Fill at 95% south of the Saharan Atlas. In the Tell and Atlas, use 60% at 10,000-9,000 BCE and 45% from 8,000 BCE."
+
+# ---------------------------------------------------------------- African savannas and highlands
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000]
+value = 60
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-8000, -7000, -6000, -5000, -4000, -3000]
+value = 45
+[[judgement.adjust]]
+kind = "polygon"                         # Sahara south of the Atlas and Saharan Atlas
+points = [[-17.5, 19.0], [-17.5, 27.9], [-9.8, 29.0], [-6.5, 29.6], [-4.0, 31.3], [-1.5, 32.3], [0.5, 33.0], [3.0, 33.8], [5.8, 34.7], [10.2, 33.7], [12.0, 33.0], [12.0, 19.0]]
+value = 95
+
+[[judgement]]
+region = "West Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-06", "open_land-9000-39", "open_land-8000-73", "open_land-7000-106", "open_land-6000-138", "open_land-5000-170", "open_land-4000-201", "open_land-3000-232"]
+why_empty = ["dataset_edge"]
+why_note = "This is outside the window. The gap is the Guinea-Sudan savanna belt (Nigeria, Burkina Faso, CAR), where forest pushed north in the humid phase and the savanna reopened after c. 3000 BCE."
+expected = 55
+expected_range = [30, 80]
+confidence = "low"
+basis = ["environment", "literature"]
+reasoning = "Pollen from Lake Tilla and Bosumtwi shows wooded savanna, with forest elements maximal at 8,000-5,000 BCE. REVEALS-style open land would be about 40-50% then and 60-70% before and after."
+literature = [
+  { cite = "Salzmann & Hoelzmann 2005, 'The Dahomey Gap: an abrupt climatically induced rain forest fragmentation in West Africa during the late Holocene', Holocene 15", checked = false },
+]
+would_settle = "A biomisation of West African APD cores."
+speculative_rule = "Fill at 65% at 10,000 BCE, 45% for 9,000-5,000 BCE and 60% for 4,000-3,000 BCE. Make it 15% more open north of 11°N."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000]
+value = 65
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-9000, -8000, -7000, -6000, -5000]
+value = 45
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-4000, -3000]
+value = 60
+[[judgement.adjust]]
+kind = "area"
+bbox = [-17.0, 11.0, 27.0, 17.0]
+value = 15
+mode = "add"
+
+[[judgement]]
+region = "Nile & Sudan"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-09", "open_land-9000-42", "open_land-8000-76", "open_land-7000-109", "open_land-6000-141", "open_land-5000-173", "open_land-4000-204", "open_land-3000-235"]
+why_empty = ["dataset_edge"]
+why_note = "This is outside the window. Kordofan and Darfur are savanna and acacia steppe."
+expected = 80
+expected_range = [60, 95]
+confidence = "medium"
+basis = ["environment"]
+reasoning = "Grass-dominated savanna in the humid phase, then semi-desert."
+literature = []
+would_settle = "None needed for the game."
+speculative_rule = "Fill at 75% for 9,000-5,000 BCE and 88% otherwise. Use 60% on Jebel Marra."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-9000, -8000, -7000, -6000, -5000]
+value = 75
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -4000, -3000]
+value = 88
+[[judgement.adjust]]
+kind = "polygon"                         # Jebel Marra massif
+points = [[24.0, 13.6], [24.5, 13.5], [24.6, 13.0], [24.5, 12.6], [24.2, 12.5], [23.9, 12.8], [23.9, 13.3]]
+value = 60
+
+[[judgement]]
+region = "Horn of Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-11", "open_land-9000-44", "open_land-8000-78", "open_land-7000-111", "open_land-6000-143", "open_land-5000-175", "open_land-4000-206", "open_land-3000-237"]
+why_empty = ["dataset_edge"]
+why_note = "This is outside the window. The gap centre is the Afar and Somali lowlands, which are desert-steppe. The Ethiopian highlands at its edge had Afromontane forest mixed with grassland."
+expected = 85
+expected_range = [55, 98]
+confidence = "medium"
+basis = ["environment"]
+reasoning = "The lowlands are near-treeless. The highland plateau was a forest-grassland mosaic, about 50% open."
+literature = []
+would_settle = "None needed for the lowlands. Highland REVEALS would help."
+speculative_rule = "Fill at 90% below 1,500 m and 50% above."
+
+# ---------------------------------------------------------------- Eastern Europe and the steppe
+[[judgement.adjust]]
+kind = "area"
+bbox = [33.0, 3.0, 52.0, 18.0]
+value = 90
+[[judgement.adjust]]
+kind = "elevation"
+above_m = 1500
+value = 50
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-07", "open_land-9000-40", "open_land-8000-74", "open_land-7000-107", "open_land-6000-139", "open_land-5000-171", "open_land-4000-202", "open_land-3000-233"]
+why_empty = ["research_intensity", "publication_access", "dataset_edge"]
+why_note = "There are few cores on the lower Don, Volga and Caspian lowland, and those that exist are mostly in the Russian Pollen Database rather than EPD. Everything east of 50°E (to the Urals) is outside the window."
+expected = 80
+expected_range = [55, 95]
+confidence = "medium"
+basis = ["environment", "neighbouring_evidence", "literature"]
+reasoning = "The edges (15-17%, range 0-89) are dominated by zero rows. The few valid cells at the Ukrainian forest-steppe read 44-88%. The Pontic-Caspian steppe was grassland and Artemisia steppe through the Holocene, with forest only in ravines and floodplains."
+literature = [
+  { cite = "Kremenetski 2003, 'Steppe and forest-steppe belt of Eurasia: Holocene environmental history', in Prehistoric Steppe Adaptation and the Horse", checked = false },
+]
+would_settle = "Run REVEALS on Russian Pollen Database records for the lower Volga."
+speculative_rule = "Fill at 85% south of 50°N and 60% in the forest-steppe from 50°N to 54°N. Add 10 points at 10,000 BCE."
+[[judgement.adjust]]
+kind = "area"
+bbox = [30.0, 41.0, 66.0, 50.0]
+value = 85
+[[judgement.adjust]]
+kind = "area"
+bbox = [30.0, 50.0, 66.0, 54.0]
+value = 60
+[[judgement.adjust]]
+kind = "area"
+bbox = [19.0, 41.0, 66.0, 56.0]
+value = 10
+slices = [-10000]
+mode = "add"
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-10000, -9000, -8000]
+gap_ids = ["open_land-10000-01", "open_land-9000-34", "open_land-9000-54", "open_land-8000-68", "open_land-8000-97"]
+why_empty = ["dataset_edge", "publication_access"]
+why_note = "Only the strip west of 50°E is inside the window, and there it is sparse. Komi, Pechora and the Urals are outside it. The Early Holocene forest was still spreading north."
+expected = 40
+expected_range = [20, 65]
+confidence = "medium"
+basis = ["neighbouring_evidence", "environment"]
+reasoning = "Valid cells (30-50°E) read 52% at 10,000 BCE, 44% at 9,000 BCE and 38% at 8,000 BCE. The dossier edges (9-13%) are pulled down by zero rows. Tundra persisted on the Barents coast."
+literature = [
+  { cite = "Binney et al. 2017, 'Vegetation of Eurasia from the last glacial maximum to present', QSR 157", checked = false },
+]
+would_settle = "REVEALS on RPD records for Komi and the Pechora."
+speculative_rule = "Fill at 55% at 10,000 BCE, 40% at 9,000 BCE and 30% at 8,000 BCE. Use 80% north of 66°N."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000]
+value = 55
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-9000]
+value = 40
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-8000]
+value = 30
+[[judgement.adjust]]
+kind = "area"
+bbox = [28.0, 66.0, 66.0, 76.0]
+value = 80
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-7000-101", "open_land-7000-122", "open_land-6000-133", "open_land-6000-154", "open_land-5000-165", "open_land-5000-186", "open_land-4000-196", "open_land-4000-217", "open_land-3000-227", "open_land-3000-248"]
+why_empty = ["dataset_edge", "publication_access"]
+why_note = "These are the same causes in a closed boreal forest of foragers."
+expected = 14
+expected_range = [8, 25]
+confidence = "medium"
+basis = ["neighbouring_evidence", "environment"]
+reasoning = "Valid cells read 22-26% at 7,000-6,000 BCE and 10-16% from 5,000 BCE. The 6,000 BCE bump may be one reconstruction from a mire. Tundra lay only on the Arctic coast."
+literature = []
+would_settle = "REVEALS on RPD records."
+speculative_rule = "Fill at 15%, 12% from 5,000 BCE. Use 60% north of 67°N."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-7000, -6000]
+value = 15
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000, -3000]
+value = 12
+[[judgement.adjust]]
+kind = "area"
+bbox = [28.0, 67.0, 66.0, 76.0]
+value = 60
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-12", "open_land-9000-45", "open_land-8000-79", "open_land-7000-112", "open_land-6000-144", "open_land-5000-176", "open_land-4000-207", "open_land-3000-238"]
+why_empty = ["research_intensity", "publication_access"]
+why_note = "This is the Kyiv region and southern Polesia. There are few cores in EPD, and Ukrainian work is not in the open compilations."
+expected = 50
+expected_range = [30, 85]
+confidence = "medium"
+basis = ["neighbouring_evidence", "environment"]
+reasoning = "The valid forest-steppe cells (28-36°E, 48-52°N) read 88% at 10,000 BCE, 73% at 9,000 BCE, 59% at 8,000 BCE, 44-48% for 7,000-5,000 BCE and 52-53% for 4,000-3,000 BCE (Trypillia clearance). The dossier edges (18-24%) are halved by zero rows. Polesia would be lower (about 25%)."
+literature = []
+would_settle = "Fix the zero-row bug; ingest Ukrainian records."
+speculative_rule = "Fill at 80% at 10,000 BCE, 70% at 9,000 BCE, 55% at 8,000 BCE, 45% for 7,000-5,000 BCE and 50% for 4,000-3,000 BCE. Subtract 20 points in Polesia north of 51°N."
+
+# ---------------------------------------------------------------- Anatolia and Caucasus
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000]
+value = 80
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-9000]
+value = 70
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-8000]
+value = 55
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-7000, -6000, -5000]
+value = 45
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-4000, -3000]
+value = 50
+[[judgement.adjust]]
+kind = "polygon"                         # Polesia north of 51°N
+points = [[23.6, 51.0], [32.0, 51.0], [32.5, 51.8], [31.0, 52.7], [28.5, 52.8], [26.0, 52.6], [24.0, 52.2], [23.6, 51.6]]
+value = -20
+mode = "add"
+
+[[judgement]]
+region = "Anatolia & Cyprus"
+slices = [-10000, -9000, -8000]
+gap_ids = ["open_land-10000-13", "open_land-9000-46", "open_land-8000-80"]
+why_empty = ["research_intensity"]
+why_note = "The central plateau (Kızılırmak bend, around Ankara-Kırşehir) has few cores. In the Early Holocene, oak woodland spread slowly here."
+expected = 65
+expected_range = [50, 85]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Valid central Anatolian cells read 70%, 65% and 56%. The dossier edges (31-40%) are depressed by zero rows. Eastern Anatolian cells are 80-94%."
+literature = [
+  { cite = "Woldring & Bottema 2003, 'The vegetation history of east-central Anatolia in relation to archaeology: the Eski Acıgöl pollen evidence', Palaeohistoria 43/44", checked = false },
+  { cite = "Roberts et al. 2001, 'The tempo of Holocene climatic change in the eastern Mediterranean region', Holocene 11", checked = false },
+]
+would_settle = "Fix the zero-row bug."
+speculative_rule = "Fill at 70% at 10,000 BCE, 65% at 9,000 BCE and 58% at 8,000 BCE."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000]
+value = 70
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-9000]
+value = 65
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-8000]
+value = 58
+
+[[judgement]]
+region = "Anatolia & Cyprus"
+slices = [-7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-7000-113", "open_land-6000-145", "open_land-5000-177", "open_land-4000-208", "open_land-3000-239"]
+why_empty = ["research_intensity"]
+why_note = "The same plateau, now an open oak-parkland and steppe mosaic with farming (Çatalhöyük to Early Bronze Age)."
+expected = 45
+expected_range = [35, 65]
+confidence = "medium"
+basis = ["neighbouring_evidence", "other_layer"]
+reasoning = "Valid cells read 41-46% throughout, and the dossier edges are 28-35% because of zero rows. The steppe core of the plateau is probably more open than the cored, wetter margins."
+literature = []
+would_settle = "Fix the zero-row bug; add cores from the Tuz Gölü basin."
+speculative_rule = "Fill at 48%, and at 60% within 50 km of Tuz Gölü."
+[[judgement.adjust]]
+kind = "area"
+bbox = [25.5, 34.4, 45.0, 42.5]
+value = 48
+[[judgement.adjust]]
+kind = "polygon"                         # within about 50 km of Tuz Gölü
+points = [[32.5, 38.6], [32.6, 39.2], [33.1, 39.6], [33.8, 39.6], [34.3, 39.2], [34.3, 38.5], [33.8, 38.0], [33.0, 38.0]]
+value = 60
+
+[[judgement]]
+region = "Caucasus"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-24", "open_land-9000-56", "open_land-8000-88", "open_land-7000-123", "open_land-6000-156", "open_land-5000-188", "open_land-4000-219", "open_land-3000-250"]
+why_empty = ["research_intensity", "publication_access"]
+why_note = "The Kura-Araxes lowland of Azerbaijan is semi-desert with no records in EPD."
+expected = 75
+expected_range = [50, 92]
+confidence = "low"
+basis = ["environment", "neighbouring_evidence"]
+reasoning = "Valid Caucasus cells read 89% at 10,000 BCE, 76% at 9,000 BCE and 29-45% later, but these are mostly wooded Georgian mountain cells. The Kura lowland is Artemisia semi-desert and should stay well above them. The dossier edges (29-45%) mix the two and include zero rows."
+literature = [
+  { cite = "Connor & Kvavadze 2009, Georgian pollen data synthesis, J. Biogeography", checked = false },
+]
+would_settle = "REVEALS on Azerbaijani lowland records."
+speculative_rule = "Fill at 85% at 10,000-9,000 BCE and 75% thereafter below 500 m. In the foothills, follow the Georgian edge values."
+
+# ---------------------------------------------------------------- Europe inside the window
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000]
+value = 85
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-8000, -7000, -6000, -5000, -4000, -3000]
+value = 75
+[[judgement.adjust]]
+kind = "elevation"
+above_m = 500
+value = 89
+slices = [-10000]
+[[judgement.adjust]]
+kind = "elevation"
+above_m = 500
+value = 76
+slices = [-9000]
+[[judgement.adjust]]
+kind = "elevation"
+above_m = 500
+value = 37
+slices = [-8000, -7000, -6000, -5000, -4000, -3000]
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-10000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-23", "open_land-8000-90", "open_land-8000-91", "open_land-8000-95", "open_land-7000-115", "open_land-7000-120", "open_land-7000-125", "open_land-6000-146", "open_land-6000-152", "open_land-6000-157", "open_land-5000-179", "open_land-5000-180", "open_land-5000-189", "open_land-4000-209", "open_land-4000-211", "open_land-4000-220", "open_land-3000-240", "open_land-3000-242", "open_land-3000-251"]
+why_empty = ["research_intensity", "ice"]
+why_note = "The gaps are the Scandes mountains, Jämtland-Västerbotten and northern Finland: few 1° cells with enough records, and recently deglaciated before 8,000 BCE."
+expected = 30
+expected_range = [12, 65]
+confidence = "medium"
+basis = ["neighbouring_evidence", "environment"]
+reasoning = "Valid northern Fennoscandian cells read 45-50% at 10,000-9,000 BCE, 40% at 8,000 BCE and 22-30% after. Above the treeline in the Norwegian mountains the edges are 54-67%. Elsewhere the dossier edges of 16-32% are partly depressed by zero rows."
+literature = []
+would_settle = "Fix the zero-row bug."
+speculative_rule = "Fill at 25% in the boreal lowlands and 60% above 800 m in the Scandes. Add 15 points before 8,000 BCE."
+[[judgement.adjust]]
+kind = "area"
+bbox = [-25.0, 54.0, 32.0, 81.0]
+value = 25
+[[judgement.adjust]]
+kind = "elevation"
+above_m = 800
+value = 60
+[[judgement.adjust]]
+kind = "area"
+bbox = [-25.0, 62.0, -12.0, 67.5]
+value = 25
+[[judgement.adjust]]
+kind = "area"
+bbox = [-25.0, 54.0, 32.0, 81.0]
+value = 15
+slices = [-10000]
+mode = "add"
+
+[[judgement]]
+region = "Baltic"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-33", "open_land-9000-64", "open_land-8000-100", "open_land-7000-132", "open_land-6000-164", "open_land-5000-195", "open_land-4000-226", "open_land-3000-257"]
+why_empty = ["research_intensity"]
+why_note = "This is a single 1° cell in Lithuania-Latvia without a reconstruction."
+expected = 20
+expected_range = [10, 40]
+confidence = "medium"
+basis = ["neighbouring_evidence"]
+reasoning = "The edges are 13-24% with the zero rows included. Mixed forest throughout, and more open at 10,000 BCE."
+literature = []
+would_settle = "Fix the zero-row bug."
+speculative_rule = "Fill at 35% at 10,000 BCE and 20% after."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000]
+value = 35
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-9000, -8000, -7000, -6000, -5000, -4000, -3000]
+value = 20
+
+[[judgement]]
+region = "Central Europe"
+slices = [-10000, -9000, -8000]
+gap_ids = ["open_land-10000-14", "open_land-10000-27", "open_land-10000-28", "open_land-9000-47", "open_land-9000-59", "open_land-9000-61", "open_land-8000-81", "open_land-8000-94", "open_land-8000-96"]
+why_empty = ["research_intensity"]
+why_note = "The gaps are Bavaria-Upper Austria and the Hungarian plain edge, plus two Polish cells, which have few cores with REVEALS-ready counts."
+expected = 55
+expected_range = [35, 75]
+confidence = "medium"
+basis = ["neighbouring_evidence"]
+reasoning = "Valid cells (10-23°E, 46-50°N) read 61%, 62% and 53%. The dossier edges (23-48%) are lower because of zero rows."
+literature = []
+would_settle = "Fix the zero-row bug."
+speculative_rule = "Fill at 60% at 10,000-9,000 BCE and 50% at 8,000 BCE. Add 10 points on the Hungarian plain."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000]
+value = 60
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-8000]
+value = 50
+[[judgement.adjust]]
+kind = "polygon"                         # Great Hungarian Plain
+points = [[19.0, 47.6], [20.3, 47.9], [21.2, 48.2], [22.4, 48.3], [22.7, 47.9], [22.0, 47.0], [21.4, 46.2], [21.0, 45.4], [19.8, 45.2], [19.0, 45.8], [18.9, 46.6]]
+value = 10
+mode = "add"
+
+[[judgement]]
+region = "Central Europe"
+slices = [-7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-7000-114", "open_land-7000-127", "open_land-7000-129", "open_land-6000-147", "open_land-6000-159", "open_land-6000-161", "open_land-5000-178", "open_land-5000-190", "open_land-5000-193", "open_land-4000-210", "open_land-4000-221", "open_land-4000-224", "open_land-3000-241", "open_land-3000-252", "open_land-3000-255"]
+why_empty = ["research_intensity"]
+why_note = "These are the same cells under mid-Holocene forest, with LBK and later clearance on the loess."
+expected = 32
+expected_range = [20, 45]
+confidence = "medium"
+basis = ["neighbouring_evidence", "other_layer"]
+reasoning = "Valid cells read 40%, 39%, 34%, 31% and 31%. The dossier edges (14-23%) are depressed by zero rows."
+literature = [
+  { cite = "Trondman et al. 2015, 'Pollen-based quantitative reconstructions of Holocene regional vegetation cover in Europe', Global Change Biology 21", checked = false },
+]
+would_settle = "Fix the zero-row bug."
+speculative_rule = "Fill at 35% for 7,000-6,000 BCE and 30% from 5,000 BCE. Add 10 points on the Hungarian plain."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-7000, -6000]
+value = 35
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000, -3000]
+value = 30
+[[judgement.adjust]]
+kind = "polygon"                         # Great Hungarian Plain
+points = [[19.0, 47.6], [20.3, 47.9], [21.2, 48.2], [22.4, 48.3], [22.7, 47.9], [22.0, 47.0], [21.4, 46.2], [21.0, 45.4], [19.8, 45.2], [19.0, 45.8], [18.9, 46.6]]
+value = 10
+mode = "add"
+
+[[judgement]]
+region = "France & Low Countries"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-15", "open_land-9000-48", "open_land-8000-83", "open_land-7000-117", "open_land-6000-151", "open_land-5000-184", "open_land-4000-215", "open_land-3000-246"]
+why_empty = ["research_intensity"]
+why_note = "The Paris Basin has few lakes, and its records are mostly valley peats."
+expected = 55
+expected_range = [40, 80]
+confidence = "medium"
+basis = ["neighbouring_evidence"]
+reasoning = "Valid Paris Basin cells read 80%, 75%, 63%, 50%, 42%, 49%, 54% and 56%. That is open early, lowest at 6,000 BCE, and reopening with Neolithic farming. The dossier edges (22-33%) are depressed by zero rows."
+literature = [
+  { cite = "Fyfe et al. 2015, 'From forest to farmland: pollen-inferred land cover change across Europe using the pseudobiomization approach', Global Change Biology 21", checked = false },
+]
+would_settle = "Fix the zero-row bug."
+speculative_rule = "Fill with the valid-cell curve: 80, 75, 63, 50, 42, 49, 54, 56% from 10,000 to 3,000 BCE."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000]
+value = 80
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-9000]
+value = 75
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-8000]
+value = 63
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-7000]
+value = 50
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-6000]
+value = 42
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000]
+value = 49
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-4000]
+value = 54
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-3000]
+value = 56
+
+[[judgement]]
+region = "Iberia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-18", "open_land-9000-51", "open_land-8000-85", "open_land-7000-119", "open_land-6000-150", "open_land-5000-182", "open_land-4000-213", "open_land-3000-244"]
+why_empty = ["research_intensity"]
+why_note = "The Meseta and Extremadura have few permanent lakes, and their records are concentrated in the mountains."
+expected = 50
+expected_range = [35, 80]
+confidence = "medium"
+basis = ["neighbouring_evidence", "environment"]
+reasoning = "Valid Meseta cells read 79%, 64%, 46%, 39%, 44%, 54%, 54% and 47%. The dossier edges (29-36%) are depressed by zero rows. The open, dry Meseta was probably more open than the cored mountain margins."
+literature = []
+would_settle = "Fix the zero-row bug."
+speculative_rule = "Fill with the valid-cell curve: 79, 64, 46, 40, 45, 54, 54, 48% from 10,000 to 3,000 BCE."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000]
+value = 79
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-9000]
+value = 64
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-8000]
+value = 46
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-7000]
+value = 40
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-6000]
+value = 45
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000]
+value = 54
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-3000]
+value = 48
+
+[[judgement]]
+region = "Balkans & Greece"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-16", "open_land-10000-26", "open_land-9000-49", "open_land-9000-60", "open_land-8000-82", "open_land-8000-93", "open_land-7000-116", "open_land-7000-128", "open_land-6000-148", "open_land-6000-160", "open_land-5000-181", "open_land-5000-192", "open_land-4000-212", "open_land-4000-223", "open_land-3000-243", "open_land-3000-254"]
+why_empty = ["research_intensity"]
+why_note = "This is Serbia-Wallachia and Moldova. Wallachia has few lakes, and the lowland records are in Romanian publications."
+expected = 25
+expected_range = [10, 70]
+confidence = "low"
+basis = ["neighbouring_evidence", "environment"]
+reasoning = "Valid Wallachia-Serbia cells read 69%, 55% and 40% from 10,000 to 8,000 BCE, then 11-23%. Those are mostly Carpathian and Dinaric mountain cells. The Bărăgan and Moldavian lowlands were forest-steppe and should be more open (35-50%). The dossier edges (10-38%) include zero rows."
+literature = [
+  { cite = "Feurdean et al. 2015, 'Broadleaf deciduous forest counterbalanced the direct effect of climate on Holocene fire regime', QSR (Romanian REVEALS)", checked = false },
+]
+would_settle = "REVEALS on lowland Romanian records."
+speculative_rule = "Fill with the mountain curve (69, 55, 40, then 20%) above 400 m, and at 45% in the Danube and Moldavian lowlands from 7,000 BCE."
+[[judgement.adjust]]
+kind = "polygon"                         # Wallachian and lower Danube plain
+points = [[22.5, 44.6], [23.5, 44.9], [24.5, 44.95], [26.0, 45.1], [27.0, 45.4], [28.0, 45.45], [28.0, 44.4], [27.0, 44.1], [25.5, 43.65], [24.0, 43.7], [22.9, 43.85]]
+value = 45
+slices = [-7000, -6000, -5000, -4000, -3000]
+[[judgement.adjust]]
+kind = "polygon"                         # Moldavian lowlands
+points = [[26.5, 48.3], [27.8, 48.4], [29.2, 48.0], [30.2, 46.6], [29.7, 45.3], [28.2, 45.3], [27.3, 45.8], [26.5, 47.0]]
+value = 45
+slices = [-7000, -6000, -5000, -4000, -3000]
+[[judgement.adjust]]
+kind = "elevation"
+above_m = 400
+value = 69
+slices = [-10000]
+[[judgement.adjust]]
+kind = "elevation"
+above_m = 400
+value = 55
+slices = [-9000]
+[[judgement.adjust]]
+kind = "elevation"
+above_m = 400
+value = 40
+slices = [-8000]
+[[judgement.adjust]]
+kind = "elevation"
+above_m = 400
+value = 20
+slices = [-7000, -6000, -5000, -4000, -3000]
+
+[[judgement]]
+region = "Italy & islands"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["open_land-10000-25", "open_land-9000-58", "open_land-8000-92", "open_land-7000-126", "open_land-6000-158", "open_land-5000-191", "open_land-4000-222", "open_land-3000-253"]
+why_empty = ["research_intensity", "sampling_bias"]
+why_note = "The Po plain and the Tavoliere are alluvial lowlands with few lakes, and Italian records cluster in the Alps and Apennines."
+expected = 30
+expected_range = [12, 55]
+confidence = "low"
+basis = ["neighbouring_evidence", "other_layer"]
+reasoning = "The edges are 13-20% (Po) and 9-42% (Apulia), with zero rows included. The Tavoliere, with its dense Neolithic ditched villages from 6,000 BCE, was probably open (40%+). The Po plain was a wet oak-hornbeam forest (20%)."
+literature = []
+would_settle = "Fix the zero-row bug; REVEALS on Lago di Lesina."
+speculative_rule = "Fill the Po plain at 20% and the Tavoliere at 35% before 6,000 BCE and 45% after."
+[[judgement.adjust]]
+kind = "polygon"                         # Po plain
+points = [[7.6, 44.9], [7.7, 45.4], [8.6, 45.7], [9.5, 45.7], [10.5, 45.5], [11.5, 45.7], [12.4, 45.6], [12.5, 44.6], [12.2, 44.4], [11.3, 44.5], [10.0, 44.8], [8.8, 44.9]]
+value = 20
+[[judgement.adjust]]
+kind = "polygon"                         # Tavoliere
+points = [[15.15, 41.35], [15.2, 41.6], [15.5, 41.75], [15.9, 41.6], [16.2, 41.35], [15.9, 41.15], [15.4, 41.2]]
+value = 35
+slices = [-10000, -9000, -8000, -7000]
+[[judgement.adjust]]
+kind = "polygon"                         # Tavoliere
+points = [[15.15, 41.35], [15.2, 41.6], [15.5, 41.75], [15.9, 41.6], [16.2, 41.35], [15.9, 41.15], [15.4, 41.2]]
+value = 45
+slices = [-6000, -5000, -4000, -3000]
+
+[[judgement]]
+region = "Now-drowned shelves and islands"
+slices = [-10000, -9000, -8000]
+gap_ids = ["open_land-10000-20", "open_land-10000-22", "open_land-9000-53", "open_land-9000-57", "open_land-8000-89"]
+why_empty = ["submerged", "dataset_edge"]
+why_note = "This covers Doggerland (inside the window), the Persian Gulf floor and the north Caspian shelf (outside it)."
+expected = 50
+expected_range = [35, 95]
+confidence = "low"
+basis = ["neighbouring_evidence", "environment", "literature"]
+reasoning = "Doggerland's edges are 16-25% with zero rows included. North Sea vibrocore pollen shows open wetland and birch-pine at 10,000-9,000 BCE, closing by 8,000 BCE. That is about 50%, then 30%. The Gulf and Caspian shelves were desert-steppe, about 95%."
+literature = [
+  { cite = "Gearey et al. 2017 / Europe's Lost Frontiers project, Southern North Sea palaeoenvironments", checked = false },
+]
+would_settle = "Pollen from North Sea vibrocores; marine cores for the Gulf."
+speculative_rule = "Fill Doggerland at 55% at 10,000 BCE, 45% at 9,000 BCE and 30% at 8,000 BCE. Fill the Gulf and Caspian shelves at 95% while dry."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000]
+value = 55
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-9000]
+value = 45
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-8000]
+value = 30
+[[judgement.adjust]]
+kind = "area"
+bbox = [47.5, 24.0, 57.0, 30.5]
+value = 95
+[[judgement.adjust]]
+kind = "area"
+bbox = [46.5, 36.5, 55.0, 47.5]
+value = 95

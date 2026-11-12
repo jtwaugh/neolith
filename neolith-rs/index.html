@@ -4,14 +4,27 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <title>Neolith</title>
-    <link data-trunk rel="rust" href="crates/app/Cargo.toml" data-bin="neolith" data-wasm-opt="2" />
+    <!-- Size-tuned build: see [profile.web] in Cargo.toml. -->
+    <link data-trunk rel="rust" href="crates/app/Cargo.toml" data-bin="neolith" data-cargo-profile="web" data-wasm-opt="z" />
     <link data-trunk rel="copy-file" href="assets/world.bin" />
+    <!-- Start fetching the world alongside the wasm, not after it starts.
+         crossorigin matches the fetch() credentials mode, so the app reuses
+         this response instead of downloading the file again. -->
+    <link rel="preload" href="world.bin" as="fetch" type="application/octet-stream" crossorigin="anonymous" />
     <style>
       html, body { margin: 0; height: 100%; overflow: hidden; background: #1b1b1b; }
       canvas { display: block; width: 100%; height: 100%; outline: none; }
+      #loading {
+        position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+        color: #b9ad94; font: italic 20px/1.4 Georgia, "Times New Roman", serif; letter-spacing: 0.08em;
+        pointer-events: none;
+      }
+      #loading.error { color: #e0a090; font-style: normal; font-size: 15px; padding: 0 16px; text-align: center; }
     </style>
   </head>
   <body>
     <canvas id="neolith_canvas"></canvas>
+    <!-- Removed by the app once it is running (main.rs). -->
+    <div id="loading">Loading Neolith…</div>
   </body>
 </html>

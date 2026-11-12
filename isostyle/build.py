@@ -92,7 +92,9 @@ def run(cfg, log=print):
     tables = {"occupation": (units, W)}
     for unit, fn in EXTRA_UNITS.items():
         if registry.by_unit(unit):
-            tables[unit] = fn(cfg, grid, years, edges, registry, counts, log)
+            got = fn(cfg, grid, years, edges, registry, counts, log)
+            if got is not None:
+                tables[unit] = got
 
     cv = maps.Canvas(grid, "build/isostyle/naturalearth/ne_50m_admin_0_countries.shp")
     summary = {"slices": years.tolist(), "half_width": float(half), "counts": counts, "layers": {},
@@ -137,7 +139,13 @@ def run(cfg, log=print):
             all_segs[m] = maps.presence(cv, os.path.join(out, "maps", f"presence_{m}.png"), L, years, res, ok,
                                         land, ice, None, L["levels"], layer_note(L, 0, "", False),
                                         [""] * len(years))
-            summary["layers"][m] = {"kind": "grid", "sigma_km": None, "has_absences": False}
+            maps.uncertainty(cv, os.path.join(out, "maps", f"uncertainty_{m}.png"), L, years, res, ok, land, ice, None,
+                             0)
+            summary["layers"][m] = {"kind": "grid", "sigma_km": None, "has_absences": False,
+                                    "f0": [None if np.isnan(v) else round(float(v), 2) for v in res["f0"]],
+                                    "by_slice": [{"slice": int(yv), "cells_unmasked": int(ok[:, j].sum()),
+                                                  "land_cells": int((land[:, j] & ~ice[:, j]).sum())}
+                                                 for j, yv in enumerate(years)]}
             rows += surface_rows(grid, years, land, ice, m, res, ok, None, sc)
             continue
         if L["unit"] not in tables:
@@ -192,8 +200,13 @@ def run(cfg, log=print):
                                   for j, yv in enumerate(years)]})
         rows += surface_rows(grid, years, land, ice, m, res, ok, acid, sc)
         log(f"{m}: surfaces and maps done (sigma {sg} km)")
+    for sname in sorted({L["set"] for L in registry if L["set"]}):
+        members = [L for L in registry if L["set"] == sname and L["id"] in results]
+        if members:
+            maps.dominant(cv, os.path.join(out, "maps", f"dominant_{sname.split()[0].lower()}.png"), years, members,
+                          results, oks, land, ice, sname)
     for gname in registry.groups:
-        members = [L for L in registry if L["group"] == gname and L["id"] in results]
+        members = [L for L in registry if L["group"] == gname and L["id"] in results and not L["set"]]
         if members:
             slug = gname.lower().replace(" & ", "_").replace(" ", "_")
             maps.overlay(cv, os.path.join(out, "maps", f"overlay_{slug}.png"), years, members, results, oks,
@@ -227,7 +240,11 @@ def surface_rows(grid, years, land, ice, m, res, ok, acid, sc):
 # Unit types beyond occupations: unit -> function(cfg, grid, years, edges,
 # registry, counts, log) returning (units with y_/basis_ columns, W). Filled
 # by the pollen and people modules.
-EXTRA_UNITS = {}
+from . import people, pollen  # noqa: E402
+
+EXTRA_UNITS = {"core": pollen.units, "sample": people.units}
 # Grid layers: layer id -> function(cfg, grid, years, layer, log) returning a
 # result dict like surface.surfaces (f, E, ...) or None.
-GRID_LAYERS = {}
+from . import landcover  # noqa: E402
+
+GRID_LAYERS = {"open_land": landcover.surface}

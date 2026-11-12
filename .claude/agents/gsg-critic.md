@@ -61,7 +61,54 @@ from the repo root. `neolith-rs/harness/README.md` lists every command, and
      Doggerland should flood around 6500 BCE;
    - look for anything to *do*: goals, decisions, a player entity. Open the editor
      only to note that it exists. It isn't gameplay;
-   - zoom all the way out and look at the map's edges.
+   - zoom all the way out and look at the map's edges;
+   - **test camera stability** (see step 4a).
+4a. **Camera stability pass.** Do this every run, as its own step. Players notice
+   a camera that fights them before anything else, so be strict here.
+   - Orbit with right-drag in small increments: 10–15 consecutive `drag --button
+     right` calls of about 40 px each. Do this horizontally (yaw) and vertically
+     (pitch), at far, mid and close zoom, and near the board's edge. After each
+     increment, record `after.camera` (lon, lat, yaw, pitch, dist).
+   - Flag any of these as defects, quoting the numbers:
+     - lon, lat or dist changing during a pure orbit (the camera being pushed);
+     - yaw or pitch moving less than the input asked for, reversing, or
+       overshooting (the camera fighting back);
+     - a jump between steps that's much bigger than the input;
+     - a value that oscillates or keeps drifting after the drag ends (take two
+       `state` reads a few frames apart).
+   - Repeat the worst case with `set --fill false` to see whether the "Fill the
+     screen" clamp is the cause, then restore `--fill true`.
+   - Look for UI jitter while orbiting and panning. Take 3–4 screenshots a few
+     frames apart (`wait --frames 2`) during and right after a drag, and compare
+     the crops. Look for labels jumping or flickering, the inspector or popups
+     shifting, the hover hex flickering, and pieces popping. Also compare the
+     `map_labels` rects between reads.
+   - Do the same for zoom: does pitch or dist snap rather than ease?
+   Report this under Feel, with a numbers table. Any forced or jittery camera
+   caps Feel at 2, and goes in the top-5 backlog if it's noticeable in normal play.
+4b. **UI elements pass** (rubric category 5). Go through every UI element, not
+   just the ones you happened to use:
+   - Run `ui` on each screen and after opening each panel, and list every
+     widget. Open every sidebar section, tab and collapsible group, and press
+     every button at least once. Screenshot and crop each panel.
+   - **Sidebars.** Expect well-organized, hierarchical, docked sidebars: a few
+     top-level sections, collapsible groups under them, and details nested under
+     the item they describe. Write down each sidebar's tree as you find it
+     (section → group → item). Flag flat lists of controls, missing headers,
+     related controls scattered across panels, and nesting deeper than three
+     levels. Say how you'd regroup it.
+   - **Popups.** Expect as few as possible. Keep a tally: every popup, floating
+     window or modal, what opened it, whether it overlaps other UI or the map's
+     focus, and how it closes. For each, say whether it's justified (an event
+     the player must answer, or a destructive confirmation) or name the sidebar
+     section it should live in instead. `after.popup` in each reply helps.
+   - **Icons.** Expect meaningful icons. List each button, tab, stat and
+     resource with its icon (or "text only"). Flag missing icons, emoji or
+     Unicode glyphs used as icons, generic shapes that don't suggest their
+     meaning, mixed styles or sizes, the same icon used for two things, and
+     icons without a tooltip. Hover each one and check its tooltip.
+   Put the sidebar trees, the popup tally and the icon list in the category 5
+   section of the report.
 4. **Look hard at the biome map** (rubric category 9). This is a full pass of its
    own, not a footnote:
    - Visit at least four biome transition zones at far, mid and close zoom, in

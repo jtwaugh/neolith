@@ -3,8 +3,9 @@
 //! names for their labels.
 //!
 //! Sea and region names are sized to their curve on screen, as on a Paradox
-//! map: they appear when zoomed out, grow with the zoom, and fade once they
-//! would be bigger than their kind allows. Rivers and lakes are named from
+//! map: they appear when zoomed out, grow with the zoom, and drop out (with
+//! a short fade, never left half-transparent) once they would be bigger than
+//! their kind allows. Rivers and lakes are named from
 //! the world file, at a fixed size, once there is room on screen.
 
 use crate::board::camera::View;
@@ -12,6 +13,7 @@ use crate::board::relief::Relief;
 use egui::{Color32, FontFamily, FontId, Painter, Pos2, Rect, Shape};
 use glam::DVec2;
 use neolith_core::{LonLat, RiverState, Terrain, World, Year};
+use std::collections::HashSet;
 use std::sync::{Arc, OnceLock};
 
 pub const SERIF: &str = "serif";
@@ -25,18 +27,19 @@ pub fn serif_italic(size: f32) -> FontId {
     FontId::new(size, FontFamily::Name(SERIF_ITALIC.into()))
 }
 
-/// Registers EB Garamond (SIL Open Font License, `assets/fonts/OFL.txt`) as
+/// Registers EB Garamond (SIL Open Font License, `assets/fonts/OFL.txt`;
+/// web-sized by `scripts/subset_fonts.py`) as
 /// the `serif` and `serif-italic` families, falling back to egui's fonts for
 /// glyphs it lacks.
 pub fn install_fonts(ctx: &egui::Context) {
     let mut fonts = egui::FontDefinitions::default();
     fonts.font_data.insert(
         "garamond".into(),
-        Arc::new(egui::FontData::from_static(include_bytes!("../assets/fonts/EBGaramond.ttf"))),
+        Arc::new(egui::FontData::from_static(include_bytes!("../assets/fonts/EBGaramond.subset.ttf"))),
     );
     fonts.font_data.insert(
         "garamond-italic".into(),
-        Arc::new(egui::FontData::from_static(include_bytes!("../assets/fonts/EBGaramond-Italic.ttf"))),
+        Arc::new(egui::FontData::from_static(include_bytes!("../assets/fonts/EBGaramond-Italic.subset.ttf"))),
     );
     let fallback = fonts.families.get(&FontFamily::Proportional).cloned().unwrap_or_default();
     for (family, font) in [(SERIF, "garamond"), (SERIF_ITALIC, "garamond-italic")] {
@@ -61,7 +64,7 @@ impl Kind {
         matches!(self, Kind::Ocean | Kind::Sea)
     }
 
-    /// Largest font size before the name fades out (zoomed in too far).
+    /// Largest font size; a name that would be much bigger drops out (zoomed in too far).
     fn max_size(self) -> f32 {
         match self {
             Kind::Ocean => 34.0,
@@ -236,7 +239,13 @@ fn on_screen(view: &View, rect: Rect, p: Pos2, ll: LonLat, grid: &neolith_core::
     rect.contains(p) && view.pick(local).and_then(|q| grid.hex_at(q)) == grid.hex_at(ll)
 }
 
+/// Smallest font size a sea or region name is set in.
+const MIN_SIZE: f32 = 11.0;
+
 /// Draws the geography labels for this frame and returns what it drew.
+/// `shown` holds the sea and region names visible last frame (for hysteresis)
+/// and is updated.
+#[allow(clippy::too_many_arguments)]
 pub fn draw_geography(
     painter: &Painter,
     rect: Rect,
@@ -246,6 +255,7 @@ pub fn draw_geography(
     terrain: &[u8],
     year: Year,
     cam_dist: f64,
+    shown: &mut HashSet<String>,
 ) -> Vec<DrawnLabel> {
     let grid = &world.grid;
     let mut drawn = Vec::new();
@@ -266,15 +276,26 @@ pub fn draw_geography(
         let n = text.chars().count() as f32;
         // Size the name to fill about 80% of its curve.
         let size = len * 0.8 / (n * (0.52 + l.kind.tracking()));
-        if size < 11.0 {
-            continue;
-        }
+        // Shown or not, never left half-faded: the name is in while its
+        // natural size is between MIN_SIZE and 1.3× its kind's maximum (a
+        // little wider once shown, so it doesn't flicker at the threshold),
+        // and only the 150 ms transition between the two is faded.
         let max = l.kind.max_size();
-        let alpha = 1.0 - ((size - max * 1.3) / (max * 0.6)).clamp(0.0, 1.0);
-        if alpha <= 0.02 {
+        let was = shown.contains(&l.name);
+        let (lo, hi) = if was { (MIN_SIZE - 1.0, max * 1.4) } else { (MIN_SIZE, max * 1.3) };
+        let visible = size >= lo && size <= hi;
+        let alpha = painter.ctx().animate_bool_with_time(egui::Id::unique(("geo-label", &l.name)), visible, 0.15);
+        if visible {
+            if !was {
+                shown.insert(l.name.clone());
+            }
+        } else if was {
+            shown.remove(&l.name);
+        }
+        if alpha <= 0.01 {
             continue;
         }
-        let size = size.min(max);
+        let size = size.clamp(MIN_SIZE - 1.0, max);
         let font = if l.kind.is_water() { serif_italic(size) } else { serif(size) };
         let (c, halo) = l.kind.colours();
         if let Some(bounds) = draw_along(painter, &line, &text, font, l.kind.tracking(), faded(c, alpha), faded(halo, alpha)) {
@@ -284,7 +305,9 @@ pub fn draw_geography(
                 Kind::Region => "region",
                 Kind::Mountains => "mountains",
             };
-            drawn.push(DrawnLabel { name: l.name.clone(), kind, bounds, size });
+            if visible {
+                drawn.push(DrawnLabel { name: l.name.clone(), kind, bounds, size });
+            }
         }
     }
 

@@ -2019,6 +2019,7 @@ dependencies = [
 name = "neolith-convert"
 version = "0.1.0"
 dependencies = [
+ "flate2",
  "neolith-core",
  "serde",
  "serde_json",

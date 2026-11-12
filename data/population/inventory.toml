@@ -1,0 +1,194 @@
+# Inventory for the expected-vs-observed population work. Written up in
+# SOURCES.md next to this file; pipeline/tests/test_sources.py checks that
+# every entry and every link here appears there.
+#
+# role:
+#   "expected"  may feed expected occupation (uses no site or date counts)
+#   "compare"   built from sites or dates, so only ever compared against
+#   "check"     independent product used as a sanity check
+#   "framework" statistical method, not a data source
+# status (factors): "sourced" has a reference; "unsourced" still needs one
+# before its covariate goes into the detection model.
+
+# ---------------------------------------------------------------- methods
+
+[[method]]
+name = "Forager density from environment"
+role = "expected"
+output = "absolute people/km2 for hunter-gatherers"
+inputs = "Miami-model productivity from annual temperature and rainfall, present-day species richness, kriged historical pathogen prevalence; 300 ethnographic densities"
+caveat = "The pathogen surface over the map's box lies mostly above the range the model was fitted on. No aquatic resources."
+refs = [
+  "https://doi.org/10.1073/pnas.1715638115",
+  "https://doi.org/10.5281/zenodo.1167852",
+  "https://doi.org/10.1073/pnas.1503784112",
+  "https://github.com/benmarwick/binford",
+]
+
+[[method]]
+name = "Distance to the sea"
+role = "expected"
+output = "a multiplier on forager density near coasts"
+inputs = "distance from each hex to the nearest sea or large lake at the epoch, from the map's own terrain"
+caveat = "In the model with this project's own fit to Binford's data. Kavanagh et al. 2018 use the same predictor but the paper has not been read. Rivers are not counted."
+refs = [
+  "https://doi.org/10.1038/s41562-018-0358-8",
+  "https://github.com/D-PLACE/dplace-dataset-binford",
+  "https://doi.org/10.1038/s41559-021-01548-3",
+  "https://doi.org/10.1038/s41467-022-32750-x",
+]
+
+[[method]]
+name = "Farming dispersal front"
+role = "expected"
+output = "arrival time of farming per hex"
+inputs = "one origin (Çayönü), one start date (8800 BCE), one speed (0.9 km/yr), shortest path over land with sea crossings up to 100 km"
+caveat = "Published speeds were fitted to dated sites. We take the published parameters and do not refit them to our site list. Median misfit against conventional dates is about 700 years."
+refs = [
+  "https://doi.org/10.1371/journal.pbio.0030410",
+  "https://doi.org/10.1073/pnas.1200662109",
+  "https://doi.org/10.1016/j.jas.2014.04.021",
+]
+
+[[method]]
+name = "Farmer ceiling and growth"
+role = "expected"
+output = "people/km2 on farmed land"
+inputs = "ceiling of 3.5 people/km2 thinning northward, logistic growth at 0.02 a year from the forager density"
+caveat = "One ceiling for all farmable land. Which land is farmable is this project's own rule from Koeppen classes and rivers."
+refs = [
+  "https://doi.org/10.1016/j.jas.2005.09.017",
+  "https://arxiv.org/abs/q-bio/0505013",
+]
+
+[[method]]
+name = "Gridded back-casts"
+role = "check"
+output = "people/km2 and land use on a global grid, 10,000 BCE onward"
+inputs = "regional population totals allocated by weighting maps"
+caveat = "HYDE gives 4.4 million people worldwide at 10,000 BCE with a range of under 0.01 to 8.9 million. The allocation rules for the early Holocene have not been read yet (the paper's methods section, not its abstract)."
+refs = [
+  "https://doi.org/10.5194/essd-9-927-2017",
+  "https://doi.org/10.1177/0959683610386983",
+]
+
+[[method]]
+name = "Pollen land cover"
+role = "check"
+output = "share of open and farmed land through time"
+inputs = "982 European Pollen Database records, 9000 BP to present"
+caveat = "Europe only. Neolithic land use shows from about 6000 BP."
+refs = ["https://doi.org/10.1111/gcb.12776"]
+
+[[method]]
+name = "Dates as data"
+role = "compare"
+output = "relative change in the number of dated occupations"
+inputs = "radiocarbon dates"
+caveat = "This is our observed side. It is shaped by survival and by research effort."
+refs = [
+  "https://doi.org/10.1038/ncomms3486",
+  "https://doi.org/10.1073/pnas.1709190114",
+  "https://doi.org/10.1007/s10816-022-09559-5",
+]
+
+[[method]]
+name = "Site counts scaled from key areas"
+role = "compare"
+output = "absolute people/km2 for well-surveyed areas"
+inputs = "house and site counts, household size, transfer functions between scales"
+caveat = "Useful as hold-out anchors (Rhineland LBK), never as an input."
+refs = ["https://doi.org/10.3378/027.081.0313"]
+
+[[method]]
+name = "Cemetery age structure"
+role = "compare"
+output = "growth and fertility change at the transition to farming"
+inputs = "share of juvenile skeletons in cemeteries"
+caveat = "Gives rates, not densities."
+refs = ["https://doi.org/10.1126/science.1208880"]
+
+[[method]]
+name = "Presence-only models with sampling bias"
+role = "framework"
+output = "observed intensity = expected occupation x detection"
+inputs = "site points, expected-occupation covariates, detection covariates"
+refs = [
+  "https://doi.org/10.1890/07-2153.1",
+  "https://doi.org/10.1111/2041-210X.12242",
+  "https://doi.org/10.1111/2041-210X.12352",
+  "https://doi.org/10.1007/s10816-011-9102-7",
+]
+
+# ---------------------------------------------------------------- factors
+# What stops a place that was lived in from showing up as a site today.
+
+[[factor]]
+name = "Submergence"
+status = "sourced"
+effect = "Coasts and plains drowned by post-glacial sea-level rise are almost unsampled."
+covariate = "hex is land at the epoch and Water today; share of the epoch's coast now offshore"
+have = "yes: per-epoch terrain in build/combined_map.geojson"
+refs = ["https://doi.org/10.1016/j.quascirev.2008.08.012"]
+
+[[factor]]
+name = "Alluvial burial"
+status = "sourced"
+effect = "Floodplains and deltas bury early sites under metres of sediment; survey finds only later or mounded sites."
+covariate = "floodplain and delta share of the hex"
+have = "partly: data/rivers and elevation give valley floors; no sediment-thickness layer yet"
+refs = [
+  "https://doi.org/10.1023/a:1009487620969",
+  "https://doi.org/10.1007/s10816-023-09634-5",
+]
+
+[[factor]]
+name = "Age-dependent loss"
+status = "sourced"
+effect = "Older deposits are more likely to have been destroyed, so early epochs are thinner everywhere."
+covariate = "epoch age, with the published loss curve"
+have = "yes: the epoch itself"
+refs = ["https://doi.org/10.1016/j.jas.2009.03.029"]
+
+[[factor]]
+name = "Research effort"
+status = "sourced"
+effect = "Dates pile up where archaeologists work and where developer-funded digs are routine."
+covariate = "density of out-of-period dates per hex (target-group background)"
+have = "partly: the cached raw dumps hold about 43,000 out-of-range dates; the committed dates.csv.gz keeps only 9,540 later than 2500 BCE"
+refs = [
+  "https://doi.org/10.1890/07-2153.1",
+  "https://doi.org/10.1007/s10816-022-09559-5",
+]
+
+[[factor]]
+name = "Soil acidity"
+status = "sourced"
+effect = "Acid soils destroy bone, removing the most commonly dated material."
+covariate = "topsoil pH per hex"
+have = "yes: SoilGrids pH is already fetched for isostyle's bone and antler mask"
+refs = ["https://files.isric.org/soilgrids/latest/data_aggregated/5000m/phh2o/phh2o_0-5cm_mean_5000.tif"]
+
+[[factor]]
+name = "Desert deflation"
+status = "unsourced"
+effect = "Wind strips fine sediment, leaving undatable surface scatters; elsewhere dunes bury sites."
+covariate = "aridity and sand-sea extent"
+have = "partly: Koeppen and biome per epoch"
+refs = []
+
+[[factor]]
+name = "Modern ground cover"
+status = "unsourced"
+effect = "Forest, pasture and built-up land hide surface finds; ploughland exposes them."
+covariate = "modern land-cover class shares per hex"
+have = "no"
+refs = []
+
+[[factor]]
+name = "Access barriers"
+status = "unsourced"
+effect = "Conflict, borders and closed zones stop fieldwork for decades."
+covariate = "none chosen; the research-effort proxy may already absorb it"
+have = "no"
+refs = []

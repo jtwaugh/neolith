@@ -1,0 +1,183 @@
+id,name,kind,database,record,lon,lat,basin,levels,coverage,max_gap,rank_score,holdout,out_of_domain,distrust_biomised,reference
+emb:1690,GeoTü SL152,timeseries,EMBSeCBIO,1690,24.3600,40.1000,LARG,99,0.98,302,0.982,0,0,,"Kotthoff U, Pross J, Muller UC, Peyron O, Schmiedl G, Schulz H, Bordon A (2008) Climate dynamics in the borderlands of the Aegean Sea during formation of sapropel S1 deduced from a marine pollen record. Quaternary Science Reviews 27 (7-8):832-845"
+emb:1108,Van - Wick Core,timeseries,EMBSeCBIO,1108,42.4700,38.5300,VELG,162,0.98,255,0.977,1,0,,"Wick, L., Lemcke, G. and Sturm, M. 2003. Evidence of Lateglacial and Holocne climatic change and human impact in eastern Anatolia: high-resolution pollen, charcoal, isotopic and geochemical records from the laminated sediments of Lake Van, Turkey. The Holocene 13 (5): 665-675."
+emb:1823,GGC18BSE (Bulgarian Black Sea),timeseries,EMBSeCBIO,1823,28.4064,42.4656,LARG,34,0.95,400,0.954,0,0,,"Filipova, M.V.F.M., D. Pavlov, M. Coolen, L. Giosan, and S. Vergiev. 2014. Contributions to the European Pollen Database. 22. Vegetation development in the central part of the Bulgarian Black Sea coast during the last 13 000 years. Grana, 53(3):249-251."
+emb:1691,Steregoiu,timeseries,EMBSeCBIO,1691,23.5447,47.8130,MEDI,150,1.00,420,0.798,1,0,,"Björkman, L., Feurdean, A., and Wohlfarth, B., (2003) Late-Glacial and Holocene forest dynamics at Steregoiu in the Gutaiului Mountains, Northwest Romania. Review of Palaeobotany and palynology 124:79-111"
+emb:1073,Lake Maliq S1,timeseries,EMBSeCBIO,1073,20.7833,40.7667,MEDI,77,0.99,119,0.792,0,0,,"Bordon, A., O. Peyron, A.M. Lezine, S. Brewer, and E. Fouache. (2009) Pollen-inferred Late-Glacial and Holocene climate in southern Balkans (Lake Maliq). Quaternary International, 200:19-30."
+emb:1694,Dry Lake 2,timeseries,EMBSeCBIO,1694,23.5330,42.0380,MEDI,40,0.99,353,0.788,0,0,,"Bozilova, E., and A.G. Smit 1979. Palynology of lake Sucho Ezero from South Rila Mountain (Bulgaria). Phytologia 11:54-67."
+emb:1686,Avrig 1,timeseries,EMBSeCBIO,1686,45.7160,45.7160,MEDI,71,0.98,203,0.785,1,0,,"Tantau, I. 2003. Pollen analytic researches in the Eastern Romanian Carpathians. History of vegetation and human impact. Thesis of environmental Sciences, Paleontology and Stratigraphy. Aix-Marseille III University and Babes-Bolyai of Cluj-Napoca University."
+emb:1053,Core-149,timeseries,EMBSeCBIO,1053,27.5800,42.0400,LARG,28,0.90,573,0.731,0,0,,"Filipova-Marinova, M. 2003. Postglacial vegetation dynamics in the coastal part of the Strandza Mountains, Southeastern Bulgaria. In: Tonkov, S. (ed.), Aspects of Palynology and Palaeoecology: Festschrift in honour of Elissaveta Bozilova. Pp. 213-231. Pensoft, Sofia-Moscow."
+emb:1831,Orestias G25,timeseries,EMBSeCBIO,1831,21.2578,40.5117,MEDI,44,0.93,511,0.727,1,0,,"Kouli, K., and M.D. Dermitzakis. 2010. Contributions to the European Pollen Database. 11. Lake Orestiás (Kastoria, northern Greece). Grana, 49(3):154-156."
+neotoma:3938,Bledowo Lake,timeseries,European Pollen Database,3938,20.6758,52.5432,,165,1.00,99,0.699,0,0,,https://doi.org/10.21233/b0fw-9e91
+neotoma:40569,Bibersee,timeseries,European Pollen Database,40569,8.4654,47.2067,,176,1.00,114,0.698,1,0,,https://doi.org/10.21233/ygbz-tf05
+neotoma:3872,Ampoix,timeseries,European Pollen Database,3872,2.9333,45.6333,,89,1.00,303,0.698,1,0,,https://doi.org/10.21233/tk7w-th94
+neotoma:48968,Brugeroux,timeseries,European Pollen Database,48968,2.8489,45.1472,,63,1.00,333,0.697,0,0,,https://doi.org/10.21233/WBXY-VB66
+neotoma:22817,Tegeler See,timeseries,European Pollen Database,22817,13.2569,52.5858,,135,1.00,96,0.697,0,0,,https://doi.org/10.21233/0nty-tb40
+neotoma:4211,Lac Long Inférieur,timeseries,European Pollen Database,4211,7.4500,44.0578,,32,1.00,460,0.697,0,0,,https://doi.org/10.21233/b18z-e808
+neotoma:14529,Black Lough,timeseries,European Pollen Database,14529,-7.8266,53.1702,,78,1.00,188,0.697,1,0,,https://doi.org/10.21233/p4mc-9f34
+neotoma:22759,Lake Gosciaz,timeseries,European Pollen Database,22759,19.3404,52.5830,,148,1.00,154,0.697,0,0,,https://doi.org/10.21233/vzkg-4b47
+neotoma:52218,Rachelsee,timeseries,European Pollen Database,52218,13.4014,48.9743,,31,0.99,334,0.696,0,0,,https://doi.org/10.21233/63B1-ME05
+neotoma:22820,Löddigsee,timeseries,European Pollen Database,22820,11.8500,53.4333,,102,0.99,169,0.695,0,0,,https://doi.org/10.21233/0kw2-2170
+neotoma:57659,Lake Gales,timeseries,European Pollen Database,57659,22.9087,45.3853,,52,0.99,349,0.695,1,0,,https://doi.org/10.21233/4W53-NS27
+neotoma:48769,Flögelner Holz,timeseries,European Pollen Database,48769,8.7696,53.6548,,64,0.99,467,0.695,1,0,,https://doi.org/10.21233/F76T-YX94
+neotoma:41467,Lago di Origlio,timeseries,Alpine Palynological Database,41467,8.9433,46.0515,,222,0.99,175,0.695,1,0,,https://doi.org/10.21233/jpfc-1908
+neotoma:24412,La Chaumette,timeseries,European Pollen Database,24412,3.0850,44.7472,,53,0.99,159,0.695,0,0,,https://doi.org/10.21233/1vz8-h207
+neotoma:363,Chernikhovo,timeseries,European Pollen Database,363,26.4333,53.4167,,32,0.99,403,0.694,1,0,,https://doi.org/10.21233/n3tx2j
+neotoma:42563,Altar Lough,timeseries,European Pollen Database,42563,-8.3889,55.0186,,44,0.99,233,0.694,1,0,,https://doi.org/10.21233/59ks-w850
+neotoma:59835,Mbi Crater,timeseries,African Pollen Database,59835,10.3485,6.0893,,69,0.99,284,0.694,0,1,,https://doi.org/10.21233/65BH-DM68
+neotoma:24055,Dura-Moor,timeseries,European Pollen Database,24055,11.4576,46.6378,,65,0.99,212,0.694,1,0,,https://doi.org/10.21233/fw4s-2605
+neotoma:49513,Hybkaňa,timeseries,European Pollen Database,49513,22.1633,48.9133,,118,0.99,141,0.694,0,0,,https://doi.org/10.21233/4A6W-KG66
+neotoma:22636,Lake Hancza,timeseries,European Pollen Database,22636,22.8167,54.2667,,107,0.99,251,0.694,0,0,,https://doi.org/10.21233/gjbn-9951
+neotoma:4425,Lac Saint Léger,timeseries,European Pollen Database,4425,6.3364,44.4200,,75,0.99,311,0.694,1,0,,https://doi.org/10.21233/f01b-cg73
+neotoma:16214,Laguna Mesagosa,timeseries,European Pollen Database,16214,-2.8119,41.9650,,61,0.99,247,0.693,0,0,,https://doi.org/10.21233/7k06-yk60
+neotoma:41351,Saham Mere,timeseries,European Pollen Database,41351,0.8064,52.5814,,65,0.99,448,0.692,0,0,,https://doi.org/10.21233/cxq0-9608
+neotoma:25213,Peyre peat-bog,timeseries,European Pollen Database,25213,2.7189,44.9603,,94,0.99,165,0.692,0,0,,https://doi.org/10.21233/p3md-9032
+neotoma:48072,Dářko,timeseries,European Pollen Database,48072,15.8728,49.6392,,36,0.99,357,0.692,0,0,,https://doi.org/10.21233/ET35-P931
+neotoma:49519,Lake Sidi Ali,timeseries,European Pollen Database,49519,-4.9983,33.0681,,91,0.99,267,0.692,0,0,,https://doi.org/10.21233/1DKQ-E288
+neotoma:40940,Bambili 1,timeseries,African Pollen Database,40940,10.2433,5.9345,,42,0.99,248,0.692,0,1,,https://doi.org/10.21233/h4gb-ka72
+neotoma:4436,Sluggan Moss,timeseries,European Pollen Database,4436,-6.2583,54.7769,,54,0.99,393,0.691,0,0,,https://doi.org/10.21233/1f47-fs20
+neotoma:24110,Mabo Moss,timeseries,European Pollen Database,24110,16.0560,58.0211,,64,0.99,357,0.691,0,0,,https://doi.org/10.21233/sq7c-9a90
+neotoma:22836,Dury,timeseries,European Pollen Database,22836,18.3532,53.6389,,32,0.99,400,0.691,0,0,,https://doi.org/10.21233/4ykq-xk55
+neotoma:4092,Hirvilampi,timeseries,European Pollen Database,4092,24.2512,60.6240,,93,0.99,202,0.691,1,0,,https://doi.org/10.21233/3vvs-zb43
+neotoma:4150,King's Pool,timeseries,European Pollen Database,4150,-2.1091,52.8078,,64,0.99,289,0.690,0,0,,https://doi.org/10.21233/shhz-0f61
+neotoma:45343,Svartvatnet,timeseries,European Pollen Database,45343,8.8778,63.3514,,36,0.99,309,0.690,1,0,,https://doi.org/10.21233/4k7v-pp08
+neotoma:47525,Lago Grande di Monticchio,timeseries,European Pollen Database,47525,15.6043,40.9305,,87,0.99,469,0.690,0,0,,https://doi.org/10.21233/KVNC-0856
+neotoma:4421,Loch Sionascaig,timeseries,European Pollen Database,4421,-5.2008,58.0690,,58,0.98,258,0.689,1,0,,https://doi.org/10.21233/hfmb-2e61
+neotoma:4118,Liptovský Ján,timeseries,European Pollen Database,4118,19.6778,49.0417,,43,0.98,214,0.688,0,0,,https://doi.org/10.21233/sczz-2g33
+neotoma:44951,Kis-Mohos Tó,timeseries,European Pollen Database,44951,20.4248,48.3372,,52,0.98,384,0.688,1,0,,https://doi.org/10.21233/y4ss-7811
+neotoma:41909,Charco da Candieira,timeseries,European Pollen Database,41909,-7.5764,40.3417,,145,0.98,228,0.687,1,0,,https://doi.org/10.21233/6tgg-3a45
+neotoma:4325,Osvea,timeseries,European Pollen Database,4325,28.0833,56.0500,,34,0.98,270,0.686,0,0,,https://doi.org/10.21233/nr1k-kx95
+neotoma:4332,Påidre,timeseries,European Pollen Database,4332,25.5048,58.2759,,58,0.98,192,0.686,0,0,,https://doi.org/10.21233/xa3s-kj49
+neotoma:48966,Uddelermeer,timeseries,European Pollen Database,48966,5.7610,52.2459,,43,0.98,329,0.685,0,0,,https://doi.org/10.21233/ZV8K-Z481
+neotoma:46485,Myshetskoe-Dolgoe,timeseries,European Pollen Database,46485,37.3333,56.0667,,38,0.98,386,0.685,0,0,,https://doi.org/10.21233/s2j6-5w36
+neotoma:4037,Färskesjön,timeseries,European Pollen Database,4037,15.8605,56.1591,,71,0.98,111,0.685,1,0,,https://doi.org/10.21233/5sjg-nn53
+neotoma:45701,Kinnshaugen,timeseries,European Pollen Database,45701,10.3590,61.1084,,31,0.98,453,0.685,1,0,,https://doi.org/10.21233/epv2-3m87
+neotoma:41911,Lagoa Comprida 2,timeseries,European Pollen Database,41911,-7.6361,40.3628,,36,0.98,365,0.684,0,0,,https://doi.org/10.21233/xfh1-6085
+neotoma:45107,Lake Gramousti,timeseries,European Pollen Database,45107,20.5953,39.8850,,55,0.98,391,0.684,1,0,,https://doi.org/10.21233/dptw-0b10
+neotoma:54024,Flinkasjön,timeseries,European Pollen Database,54024,13.2433,56.2544,,63,0.98,217,0.683,1,0,,https://doi.org/10.21233/8TSN-1G04
+neotoma:59607,Garba Guracha Lake,timeseries,African Pollen Database,59607,39.8615,6.8780,,129,0.98,162,0.683,0,1,,https://doi.org/10.21233/1ZTQ-Z553
+neotoma:49177,Siles lake,timeseries,European Pollen Database,49177,-2.5095,38.3890,,33,0.98,453,0.683,0,0,,https://doi.org/10.21233/5GYP-BH87
+neotoma:20020,Lake Ifjord,timeseries,European Pollen Database,20020,27.6333,70.4333,,66,0.97,371,0.682,0,0,,https://doi.org/10.21233/1r8k-p831
+neotoma:4330,Lago Padule,timeseries,European Pollen Database,4330,10.2147,44.2986,,48,0.97,335,0.682,0,0,,https://doi.org/10.21233/qxv2-w585
+neotoma:45704,Øygardstjønn,timeseries,European Pollen Database,45704,7.9864,59.6259,,31,0.97,351,0.681,0,0,,https://doi.org/10.21233/bfpc-jd87
+neotoma:4042,Lake Flarken,timeseries,European Pollen Database,4042,13.6732,58.5568,,81,0.97,193,0.680,0,0,,https://doi.org/10.21233/xq55-z804
+neotoma:4466,Sudoble Lake,timeseries,European Pollen Database,4466,28.1000,54.0333,,30,0.97,469,0.680,0,0,,https://doi.org/10.21233/wwj8-s239
+neotoma:53098,Lake Store Finnsjøen,timeseries,European Pollen Database,53098,9.6833,62.4000,,38,0.97,452,0.679,0,0,,https://doi.org/10.21233/5XR8-GV26
+neotoma:58029,Zminje Jezero,timeseries,European Pollen Database,58029,19.0704,43.1555,,30,0.97,412,0.677,0,0,,https://doi.org/10.21233/9BC8-ZK56
+neotoma:20050,Vestre Øykjamyrtjørn,timeseries,European Pollen Database,20050,6.0000,59.8167,,39,0.96,291,0.675,0,0,,https://doi.org/10.21233/c7eh-we69
+neotoma:52975,Timan Ridge,timeseries,European Pollen Database,52975,48.7167,67.2667,,29,0.99,412,0.670,0,0,,https://doi.org/10.21233/5MZ1-5H70
+neotoma:3928,Bezdonnoe,timeseries,European Pollen Database,3928,32.7667,62.0333,,35,0.95,275,0.668,1,0,,https://doi.org/10.21233/y0cr-gc25
+neotoma:41421,Pannel Bridge,timeseries,European Pollen Database,41421,0.6753,50.9058,,81,0.95,285,0.667,0,0,,https://doi.org/10.21233/q9sk-t894
+neotoma:45377,Mustjärve bog,timeseries,European Pollen Database,45377,24.1000,59.0750,,67,0.95,294,0.664,0,0,,https://doi.org/10.21233/3pzj-0y37
+neotoma:20018,Lake Flåfattjønna,timeseries,European Pollen Database,20018,10.3975,62.3312,,91,0.95,275,0.663,0,0,,https://doi.org/10.21233/g7c8-hk59
+neotoma:20279,Liten Cap’pesjav’ri,timeseries,European Pollen Database,20279,25.3678,71.0744,,35,0.94,300,0.659,0,0,,https://doi.org/10.21233/d73q-6954
+neotoma:46469,Lembolovskoye lake,timeseries,European Pollen Database,46469,30.3133,60.3575,,43,0.94,471,0.657,1,0,,https://doi.org/10.21233/grh1-ap74
+neotoma:4500,Tytuvenu Tyrelis,timeseries,European Pollen Database,4500,23.3000,55.5833,,33,0.94,285,0.656,0,0,,https://doi.org/10.21233/8c0b-z895
+neotoma:52987,Jikariya,timeseries,African Pollen Database,52987,11.0770,13.3137,,45,0.94,409,0.655,0,1,,https://doi.org/10.21233/49QJ-5910
+neotoma:48935,Espinosa de Cerrato,timeseries,European Pollen Database,48935,-3.9394,41.9521,,90,0.93,450,0.654,1,0,,https://doi.org/10.21233/VBG8-BW42
+neotoma:41631,Lago del Greppo,timeseries,Alpine Palynological Database,41631,10.6738,44.1199,,69,0.93,350,0.652,0,0,,https://doi.org/10.21233/dayz-mr34
+emb:1344,Yenicaga - Bottema Section,timeseries,EMBSeCBIO,1344,32.0333,40.7833,MEDI,32,0.94,580,0.647,1,0,,"Bottema,S., Woldring, H. and Aytug, B. (1993) Late Quaternary vegetation history of northern Turkey. Palaeohistoria 35/36: 13-72"
+neotoma:46488,Lake Kharinei,timeseries,Alpine Palynological Database,46488,62.7500,67.3667,,45,0.92,447,0.647,1,1,,https://doi.org/10.21233/c0s8-4k74
+neotoma:46447,Poteryanny Zub,timeseries,European Pollen Database,46447,35.3282,68.8267,,61,0.92,333,0.646,0,0,,https://doi.org/10.21233/0vhe-5b77
+neotoma:75580,Lake Kasplya,timeseries,European Pollen Database,75580,31.5904,54.9575,,47,0.92,423,0.646,0,0,,https://doi.org/10.21233/3s7z-qh38
+neotoma:4401,Saksunarvatn,timeseries,European Pollen Database,4401,-7.1578,62.2411,,29,0.95,486,0.645,0,1,,https://doi.org/10.21233/ehyh-vn64
+neotoma:45642,Bjørnfjelltjørn,timeseries,European Pollen Database,45642,18.0717,68.4442,,33,0.92,435,0.643,1,0,,https://doi.org/10.21233/0d1q-p773
+neotoma:49499,Al Jourd,timeseries,European Pollen Database,49499,36.2000,34.3500,,28,0.97,359,0.635,1,0,,https://doi.org/10.21233/3ZCE-6H27
+neotoma:49530,Lago Trifoglietti,timeseries,European Pollen Database,49530,16.0222,39.5489,,108,0.92,511,0.633,0,0,,https://doi.org/10.21233/MRA4-Z194
+emb:1114,Abant Gölü,timeseries,EMBSeCBIO,1114,31.2833,40.6000,MEDI,25,0.95,390,0.633,0,0,,https://doi.org/10.17864/1947.309
+emb:1821,Straldzha mire QUARRY,timeseries,EMBSeCBIO,1821,26.7728,42.6308,MEDI,27,0.93,535,0.626,1,0,,"Connor, S.E., S.A. Ross, A. Sobotkova, A.I.R. Herries, S.D. Mooney, C. Longford, and I. Iliev. 2013. Environmental conditions in the SE Balkans since the Last Glacial Maximum and their influence on the spread of agriculture into Europe. Quaternary Science Reviews, 68:200-215."
+neotoma:24867,Marais de la Poupinière,timeseries,European Pollen Database,24867,-1.5028,47.4028,,27,0.95,428,0.597,0,0,,https://doi.org/10.21233/0ax2-vj66
+neotoma:46445,Lake Yarnyshnoe,timeseries,European Pollen Database,46445,36.0667,69.0667,,32,0.98,573,0.596,0,0,,https://doi.org/10.21233/jw93-c102
+neotoma:4286,Mukkavaara,timeseries,European Pollen Database,4286,21.0000,68.9167,,26,0.98,352,0.593,1,0,,https://doi.org/10.21233/pvn2-a273
+neotoma:4321,Onego Lake,timeseries,European Pollen Database,4321,35.1781,61.6513,,26,0.95,268,0.578,0,0,,https://doi.org/10.21233/t554-fn29
+neotoma:4552,Zuratkul',timeseries,European Pollen Database,4552,59.2667,54.9000,,26,0.95,379,0.573,0,0,,https://doi.org/10.21233/kgng-gg83
+neotoma:46481,Staroselsky Moch,timeseries,European Pollen Database,46481,32.0275,56.2853,,26,0.94,355,0.570,0,0,,https://doi.org/10.21233/gmfj-ka45
+neotoma:4372,Råttuvarri,timeseries,European Pollen Database,4372,20.3167,69.3500,,25,0.95,409,0.553,0,0,,https://doi.org/10.21233/zqse-ep64
+emb:1126,Limni Kopais,timeseries,EMBSeCBIO,1126,23.0000,38.4830,MEDI,29,0.88,645,0.525,1,0,,"Turner, J., and J.R.A. Greig. 1975. Some Holocene pollen diagrams from Greece. Review of Palaeobotany and Palynology 20:171-204."
+neotoma:3866,Aholammi,timeseries,European Pollen Database,3866,25.2169,61.8947,,26,0.92,533,0.525,1,0,,https://doi.org/10.21233/tcav-fn36
+emb:1808,Lake Iznik,timeseries,EMBSeCBIO,1808,29.5330,40.4330,MEDI,29,0.96,719,0.515,0,0,,"Miebach, Andrea; Niestrath, Phoebe; Roeser, Patricia A; Litt, Thomas (2016): Impacts of climate and humans on the vegetation in northwestern Turkey: palynological insights from Lake Iznik since the Last Glacial. Climate of the Past, 12(2), 575-593"
+emb:8,Urmia core 20,timeseries,EMBSeCBIO,8,45.5000,37.5000,VELG,22,0.98,719,0.501,0,0,,"Bottema, S, (1986) A late Quaternary pollen diagram from Lake Urmia (northwestern Iran). Review of Palaeobotany and Palynology 47: 241-261."
+emb:1359,Lake Zeribar,timeseries,EMBSeCBIO,1359,46.1167,35.5333,MEDI,30,0.95,762,0.497,0,0,,"Van Zeist, W., Bottema, S. (1977) Palynological investigations in Western Iran. Paleohistoria 17: 19-85"
+neotoma:4190,Loch Dungeon,timeseries,European Pollen Database,4190,-4.3076,55.1347,,30,0.94,666,0.492,0,0,,https://doi.org/10.21233/6bbq-7s34
+neotoma:45636,Litlvatnet,timeseries,European Pollen Database,45636,14.9305,68.5267,,26,0.96,593,0.490,0,0,,https://doi.org/10.21233/pr2m-cc37
+neotoma:46477,Nikolsko-Lutinskoye bog,timeseries,European Pollen Database,46477,30.9830,58.0893,,26,0.97,612,0.483,0,0,,https://doi.org/10.21233/7ntn-k111
+neotoma:49261,Lake Tilla,timeseries,African Pollen Database,49261,12.1297,10.3956,,34,0.98,717,0.476,1,1,,https://doi.org/10.21233/KJ7A-M315
+neotoma:46514,Vishnevskoe Lake,timeseries,European Pollen Database,46514,29.5169,60.5022,,52,0.94,695,0.474,1,0,,https://doi.org/10.21233/7M90-YN39
+neotoma:41273,Tigalmamine,timeseries,European Pollen Database,41273,-5.3500,32.9000,,55,0.95,705,0.472,1,0,evergreen-oak and grass assemblages (Quercus evergreen 32-42%) are read as xeric shrubland; the published 6 ka label is warm-temperate evergreen forest,https://doi.org/10.21233/6n89-7w11
+emb:1693,Mohos1,timeseries,EMBSeCBIO,1693,25.9167,46.0830,SMAL,100,0.94,385,0.471,0,0,,"Tantau, I. 2003. Pollen analytic researches in the Eastern Romanian Carpathians. History of vegetation and human impact Thesis of environmental Sciences, Paleontology and Stratigraphy. Aix-Marseille III University and Babes-Bolyai of Cluj-Napoca University."
+emb:2101,Didachara core,timeseries,EMBSeCBIO,2101,42.4969,41.6839,SMAL,34,0.97,513,0.471,0,0,,"Connor, S.E., D. Colombaroli, F. Confortini, E. Gobet, B.P. Ilyashuk, E.A. Ilyashuk, J.F.N. van Leeuwen, M. Lamentowicz, W.O. van der Knaap, E. Malysheva, A. Marchetto, N. Margalitadze, Y. Mazei, E.A.D. Mitchell, R.J. Payne, and B. Ammann. 2017. Long-term population dynamics  theory and reality in a peatland ecosystem. Journal of Ecology DOI: 10.1111/1365-2745.12865. "
+neotoma:49501,Aammiq,timeseries,European Pollen Database,49501,35.7936,33.7322,,39,0.97,739,0.459,1,0,,https://doi.org/10.21233/RTCM-7875
+neotoma:45105,Rezina marsh,timeseries,European Pollen Database,45105,20.7756,39.9878,,29,0.97,730,0.451,0,0,,https://doi.org/10.21233/94ex-9803
+neotoma:44941,Myrvatnet,timeseries,European Pollen Database,44941,16.3805,68.6601,,33,0.98,764,0.448,0,0,,https://doi.org/10.21233/phqc-me73
+neotoma:49503,Chamsine,timeseries,European Pollen Database,49503,35.9481,33.7528,,27,0.95,684,0.436,0,0,,https://doi.org/10.21233/AE2N-2A76
+neotoma:3997,Cooran Lane,timeseries,European Pollen Database,3997,-4.3900,55.1263,,24,0.86,570,0.423,0,0,,https://doi.org/10.21233/cyb3-wk97
+neotoma:24323,Majen Ben H'mida,timeseries,European Pollen Database,24323,9.0833,37.1333,,39,0.94,782,0.421,0,1,,https://doi.org/10.21233/kfxk-5f39
+neotoma:225,Ballinloghig Lake,timeseries,European Pollen Database,225,-10.3083,52.2000,,25,0.99,707,0.409,1,0,,https://doi.org/10.21233/n3d60t
+neotoma:24481,La Guérivière,timeseries,European Pollen Database,24481,-0.9192,46.9636,,43,0.88,776,0.398,0,0,,https://doi.org/10.21233/chjr-t175
+neotoma:53991,Gilltjärnen,timeseries,European Pollen Database,53991,15.8333,60.0833,,66,0.88,850,0.361,1,0,,https://doi.org/10.21233/FPF4-A449
+neotoma:4074,Glubokoe,timeseries,European Pollen Database,4074,36.6259,61.8878,,19,0.91,577,0.351,0,0,,https://doi.org/10.21233/2gp1-m674
+neotoma:4012,Dallican Water,timeseries,European Pollen Database,4012,-1.0965,60.3874,,46,0.87,866,0.350,1,0,,https://doi.org/10.21233/f3pc-ac31
+emb:11,Gagra #471,timeseries,EMBSeCBIO,11,40.2700,43.2800,SMAL,47,0.92,660,0.350,0,0,,"Kvavadze, Eliso V (1982): The new data on the stratigraphy and palaeogeoraphy of the Holocene of the Colchida lowland. In: Quaternary system of Georgia. Tbilisi, Metsniereba (in Russian), 123-130"
+emb:2080,Iezerul Calimani core,timeseries,EMBSeCBIO,2080,25.2736,47.1125,SMAL,27,0.96,645,0.334,0,0,,"Farcas, S., J.L. de Beaulieu, M. Reille, G. Coldea, B. Diaconeasa, C. Goeury, T. Goslar, and T. Jull. 1999. First 14C dating of Late Glacial and Holocene pollen sequences from Romanian Carpathes. Compte Rendu de l'Académie des Sciences Paris, Série III, Sciences de la vie, 322:799-807."
+emb:1351,Ioannina I,timeseries,EMBSeCBIO,1351,20.7306,39.7625,MEDI,17,0.94,676,0.316,1,0,,"Bottema, S. (1974) Late Quaternary vegetation history of northwestern Greece. Ph.D. Dissertation. University of Groningen, Groningen, The Netherlands"
+neotoma:74655,Dubh-Lochan,timeseries,European Pollen Database,74655,4.4353,57.2906,,38,0.81,898,0.315,0,0,,https://doi.org/10.21233/xt9d-yd18
+neotoma:4302,Lake Nero,timeseries,European Pollen Database,4302,39.4514,57.1833,,18,0.96,638,0.315,0,0,,https://doi.org/10.21233/a9sa-sf94
+emb:1063,Eski Acigol,timeseries,EMBSeCBIO,1063,34.5400,38.5500,SMAL,31,0.97,777,0.311,0,0,,"Woldring H, Bottema S (2003) The vegetation history of East-Central Anatolia in relation to archaeology: The Eski Acigol pollen evidence compared with the Near Eastern environment. Palaeohistoria, 43"
+neotoma:26563,Cape Shpindler,timeseries,European Pollen Database,26563,62.8000,69.7167,,26,0.92,945,0.296,1,1,,https://doi.org/10.21233/5mtf-w128
+neotoma:57879,Pay Hassal mire,timeseries,European Pollen Database,57879,51.4169,36.5203,,16,0.92,593,0.288,0,0,,https://doi.org/10.21233/4KJJ-H181
+neotoma:720,Domsvatnet,timeseries,European Pollen Database,720,31.0246,70.3253,,23,0.83,916,0.244,0,0,,https://doi.org/10.21233/n32g8h
+neotoma:52251,Levantine Basin,timeseries,European Pollen Database,52251,34.2833,32.0333,,17,0.97,790,0.242,0,0,,https://doi.org/10.21233/GBXA-1B07
+emb:1830,Caspian core GS05,timeseries,EMBSeCBIO,1830,51.5378,38.7608,VELG,15,0.85,940,0.227,0,0,,"Leroy, S.A.G., A. Tudryn, F. Chalié, L. López-Merino, and F. Gasse. 2013. From the Aller¢d to the mid-Holocene: palynological evidence from the south basin of the Caspian Sea. Quaternary Science Reviews, 78:77-97."
+neotoma:49515,Ras El Ma,timeseries,European Pollen Database,49515,-5.1386,33.4736,,16,0.93,776,0.225,0,0,,https://doi.org/10.21233/46GV-ZT46
+neotoma:4239,Maanselänsuo,timeseries,European Pollen Database,4239,29.6112,65.6171,,18,0.86,957,0.188,1,0,,https://doi.org/10.21233/1g98-ct07
+emb:1115,Akgöl Adabag_NOAA,timeseries,EMBSeCBIO,1115,33.7333,37.5000,MEDI,15,0.91,987,0.184,1,0,,"Bottema, S. (1987) Chronologies and climatic phases in the near East from 16,000 to 10,000 BP. Aurenche, O., Evin, J. and Hours, F. eds. BAR International series: 295-310."
+biome6000:Paden’ga,Paden’ga,6ka,BIOME 6000,Paden’ga,42.9300,62.8000,,,,,,1,0,,https://doi.org/10.17864/1947.99
+biome6000:S19kstrm,S19kstrm,6ka,BIOME 6000,S19kstrm,40.0000,57.0000,,,,,,0,0,,https://doi.org/10.17864/1947.99
+biome6000:Aiatskoe,Aiatskoe,6ka,BIOME 6000,Aiatskoe,60.0800,57.0000,,,,,,0,0,,https://doi.org/10.17864/1947.99
+biome6000:Khor,Khor,6ka,BIOME 6000,Khor,51.5000,26.0000,,,,,,1,0,,https://doi.org/10.17864/1947.99
+biome6000:Agorgott,Agorgott,6ka,BIOME 6000,Agorgott,-4.0300,22.4700,,,,,,0,0,,https://doi.org/10.17864/1947.99
+biome6000:Enneri,Enneri,6ka,BIOME 6000,Enneri,17.1300,21.5000,,,,,,1,0,,https://doi.org/10.17864/1947.99
+biome6000:Markhida,Markhida,6ka,BIOME 6000,Markhida,52.5500,67.1700,,,,,,1,0,,https://doi.org/10.17864/1947.99
+biome6000:E097,E097,6ka,BIOME 6000,E097,31.3500,49.8100,,,,,,1,0,,https://doi.org/10.17864/1947.99
+biome6000:Kepskoe,Kepskoe,6ka,BIOME 6000,Kepskoe,32.1700,65.0800,,,,,,0,0,,https://doi.org/10.17864/1947.99
+biome6000:Ulanovo,Ulanovo,6ka,BIOME 6000,Ulanovo,48.7200,55.5500,,,,,,1,0,,https://doi.org/10.17864/1947.99
+biome6000:Mulianka,Mulianka,6ka,BIOME 6000,Mulianka,56.3200,57.7800,,,,,,1,0,,https://doi.org/10.17864/1947.99
+biome6000:Balkashkinskii,Balkashkinskii,6ka,BIOME 6000,Balkashkinskii,35.3700,53.0300,,,,,,0,0,,https://doi.org/10.17864/1947.99
+biome6000:Liman,Liman,6ka,BIOME 6000,Liman,37.6700,49.7300,,,,,,0,0,,https://doi.org/10.17864/1947.99
+biome6000:Ti-n tora,Ti-n tora,6ka,BIOME 6000,Ti-n tora,10.5800,25.8000,,,,,,0,0,,https://doi.org/10.17864/1947.99
+biome6000:Uan Muhuggiag,Uan Muhuggiag,6ka,BIOME 6000,Uan Muhuggiag,10.4800,24.8300,,,,,,0,0,,https://doi.org/10.17864/1947.99
+biome6000:Rub'al Khali,Rub'al Khali,6ka,BIOME 6000,Rub'al Khali,46.6200,20.4800,,,,,,0,0,,https://doi.org/10.17864/1947.99
+biome6000:Achenouma,Achenouma,6ka,BIOME 6000,Achenouma,12.9000,19.1200,,,,,,0,0,,https://doi.org/10.17864/1947.99
+biome6000:Oursi,Oursi,6ka,BIOME 6000,Oursi,0.4800,14.6500,,,,,,0,0,,https://doi.org/10.17864/1947.99
+biome6000:6993,6993,6ka,BIOME 6000,6993,61.5000,46.6600,,,,,,1,0,,https://doi.org/10.17864/1947.99
+biome6000:Abu Minqar (c),Abu Minqar (c),6ka,BIOME 6000,Abu Minqar (c),27.8000,25.7700,,,,,,0,0,,https://doi.org/10.17864/1947.99
+biome6000:Tjeri,Tjeri,6ka,BIOME 6000,Tjeri,16.5000,13.7300,,,,,,0,0,,https://doi.org/10.17864/1947.99
+biome6000:Bosumtwi,Bosumtwi,6ka,BIOME 6000,Bosumtwi,-1.3300,6.5300,,,,,,0,0,,https://doi.org/10.17864/1947.99
+biome6000:Izriten,Izriten,6ka,BIOME 6000,Izriten,-11.8000,28.5000,,,,,,1,0,,https://doi.org/10.17864/1947.99
+biome6000:La chataigneraie,La chataigneraie,6ka,BIOME 6000,La chataigneraie,4.5800,36.8000,,,,,,0,0,,https://doi.org/10.17864/1947.99
+biome6000:Morzouba,Morzouba,6ka,BIOME 6000,Morzouba,-16.2000,21.0000,,,,,,1,0,,https://doi.org/10.17864/1947.99
+biome6000:Diogo,Diogo,6ka,BIOME 6000,Diogo,-16.8000,15.2700,,,,,,0,0,,https://doi.org/10.17864/1947.99
+biome6000:Tanma,Tanma,6ka,BIOME 6000,Tanma,-17.0800,14.9200,,,,,,0,0,,https://doi.org/10.17864/1947.99
+biome6000:Baidara,Baidara,6ka,BIOME 6000,Baidara,66.9000,68.8500,,,,,,1,0,,https://doi.org/10.17864/1947.99
+biome6000:Chesnok Village,Chesnok Village,6ka,BIOME 6000,Chesnok Village,66.5000,60.0000,,,,,,1,0,,https://doi.org/10.17864/1947.99
+lit:oyo,"Oyo (palaeolake, NW Sudan)",literature,literature,lit:oyo,26.1747,19.2560,,,,,,1,0,,https://doi.org/10.1177/095968369400400102
+lit:selima-oasis,"Selima Oasis (palaeolake, NW Sudan)",literature,literature,lit:selima-oasis,29.3060,21.3667,,,,,,0,0,,https://doi.org/10.1016/0277-3791(89)90001-2
+lit:el-atrun,"El Atrun (palaeolake, N Sudan)",literature,literature,lit:el-atrun,27.1500,18.0167,,,,,,0,0,,https://doi.org/10.1007/BF00198612
+lit:nabta-playa-e-75-6,"Nabta Playa E-75-6 (SW Desert, Egypt)",literature,literature,lit:nabta-playa-e-75-6,30.7256,22.5080,,,,,,1,0,,https://doi.org/10.1007/s10963-017-9112-9
+lit:sodmein-cave,"Sodmein Cave (Red Sea Mountains, Egypt)",literature,literature,lit:sodmein-cave,33.9700,26.2408,,,,,,1,0,,https://doi.org/10.1007/s10437-015-9195-6
+lit:kassala,"Kassala, Jebel Tareg JT1 (eastern Sudan)",literature,literature,lit:kassala,36.4525,15.4387,,,,,,0,0,,https://doi.org/10.1177/09596836231176501
+lit:hashilan-wetland,Hashilan Wetland (central Zagros),literature,literature,lit:hashilan-wetland,46.8870,34.5820,,,,,,0,0,,https://doi.org/10.1002/jqs.3557
+lit:lake-neor,"Lake Neor, Talesh Mountains",literature,literature,lit:lake-neor,48.5640,37.9990,,,,,,1,0,,https://doi.org/10.1007/s10933-017-9969-8
+lit:lake-mirabad,"Lake Mirabad (western Zagros, Lorestan)",literature,literature,lit:lake-mirabad,47.7170,33.0830,,,,,,0,0,,https://doi.org/10.1016/j.yqres.2006.06.008
+lit:nar-golu,"Nar Gölü, Cappadocia",literature,literature,lit:nar-golu,34.4560,38.3400,,,,,,1,0,,https://doi.org/10.1002/jqs.2852
+lit:lake-hazar,"Lake Hazar (Elazığ), eastern Turkey",literature,literature,lit:lake-hazar,39.4170,38.5170,,,,,,0,0,,https://doi.org/10.1002/jqs.3037
+lit:golhisar-golu,"Gölhisar Gölü, SW Turkey",literature,literature,lit:golhisar-golu,29.6000,37.1330,,,,,,0,0,,https://doi.org/10.1016/S0277-3791(98)00104-8
+lit:gusir-hoyuk,"Gusir Höyük (Upper Tigris), SE Turkey",literature,literature,lit:gusir-hoyuk,41.8210,37.7270,,,,,,1,0,,https://doi.org/10.1038/s41598-021-81757-9
+lit:tayma-palaeolake,Tayma palaeolake (NW Saudi Arabia),literature,literature,lit:tayma-palaeolake,38.5500,27.6300,,,,,,0,0,,https://doi.org/10.1016/j.quaint.2015.03.007
+lit:awafi-palaeolake,"Awafi palaeolake (Ras al-Khaimah, UAE)",literature,literature,lit:awafi-palaeolake,56.1000,25.7200,,,,,,0,0,,https://doi.org/10.1002/jqs.880
+lit:al-hawa-palaeolake,al-Hawa palaeolake (inland Yemen),literature,literature,lit:al-hawa-palaeolake,46.8830,15.8670,,,,,,1,0,,https://doi.org/10.1016/j.palaeo.2006.05.019
+lit:kwar-al-jaramah,Kwar al Jaramah (Gulf of Oman coast),literature,literature,lit:kwar-al-jaramah,59.7650,22.4920,,,,,,0,0,,https://doi.org/10.1016/j.crte.2009.01.001
+lit:wadi-sana-hyrax-middens,"Wadi Sana hyrax middens (Hadramawt, Yemen)",literature,literature,lit:wadi-sana-hyrax-middens,49.6000,16.0200,,,,,,0,0,,https://doi.org/10.1111/jbi.14226
+lit:shotota-swamp,"Shotota swamp (Khunzakh plateau, Dagestan)",literature,literature,lit:shotota-swamp,46.9830,42.9830,,,,,,0,0,,https://doi.org/10.1088/1755-1315/438/1/012024
+lit:gomishan-lagoon-core-tm,"Gomishan lagoon core TM (SE Caspian coast, Iran)",literature,literature,lit:gomishan-lagoon-core-tm,54.0565,37.1657,,,,,,0,0,,https://doi.org/10.1016/j.margeo.2014.12.007
+lit:kongor-lake,"Kongor Lake (eastern Gorgan Plain, NE Iran)",literature,literature,lit:kongor-lake,55.3908,37.3558,,,,,,0,0,,https://doi.org/10.1177/0959683616646841

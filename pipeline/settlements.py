@@ -392,8 +392,28 @@ def _by_count(counter):
     return [k for k, _ in sorted(counter.items(), key=lambda kv: (-kv[1], kv[0]))]
 
 
+def occupation(ys, gap):
+    """Occupation phases [[start, abandoned_by], ...] from calibrated years.
+
+    Dates more than `gap` years apart start a new phase. A phase is taken to
+    end `gap` years after its last date: with no evidence for that long, the
+    site is assumed abandoned by then. (So "abandoned_by" is an upper bound;
+    the last date is the lower one.) gap <= 0 gives no phases.
+    """
+    ys = sorted(ys)
+    if gap <= 0 or not ys:
+        return []
+    phases = [[ys[0], ys[0]]]
+    for y in ys[1:]:
+        if y - phases[-1][1] > gap:
+            phases.append([y, y])
+        else:
+            phases[-1][1] = y
+    return [[a, b + gap] for a, b in phases]
+
+
 def derive_sites(dates, years, window, trim=0.0, same_km=0.0, same_name_km=0.0,
-                 max_periods=5, dated=None):
+                 max_periods=5, dated=None, gap=0):
     """Group dated measurements into site features.
 
     dates: date rows. years: calibrated signed year per row (NaN to skip).
@@ -402,6 +422,7 @@ def derive_sites(dates, years, window, trim=0.0, same_km=0.0, same_name_km=0.0,
     dates, so stray old or young dates at well-dated sites don't set them.
     With fewer than 1/trim dates this is the plain earliest and latest.
     dated: if a dict, filled with site key -> [(year, date row)].
+    gap: see `occupation`; phases use the dates left after trimming.
     """
     groups = defaultdict(list)
     for d, y in zip(dates, years):
@@ -416,6 +437,7 @@ def derive_sites(dates, years, window, trim=0.0, same_km=0.0, same_name_km=0.0,
         founding = int(np.quantile(ys, trim, method="lower"))
         if founding > window[1]:  # its only in-window dates were trimmed as strays
             continue
+        last = int(np.quantile(ys, 1 - trim, method="higher"))
         key = f"c14:{name}@{lon},{lat}"
         fid = site_id(key)
         if fid in seen:
@@ -429,7 +451,9 @@ def derive_sites(dates, years, window, trim=0.0, same_km=0.0, same_name_km=0.0,
             "properties": {
                 "name": name,
                 "founding": founding,
-                "abandoned": int(np.quantile(ys, 1 - trim, method="higher")),
+                "abandoned": last,
+                **({"occupation": phases} if (phases := occupation(
+                    [y for y in ys if founding <= y <= last], gap)) else {}),
                 "type": Counter(d["type"] for _, d in rows).most_common(1)[0][0], "population": {},
                 "n_dates": len(ys),
                 "periods": _by_count(Counter(p for _, d in rows for p in d["periods"]))[:max_periods],
@@ -528,7 +552,7 @@ def enrich_wikidata(feats, items, match_km, window):
         p = feats[i]["properties"]
         p.update(wikidata=it["qid"], wikipedia=it["wikipedia"], sources=p["sources"] + ["wikidata"])
         if it["cultures"]:
-            p["culture"] = it["cultures"]
+            p["wikidata_culture"] = it["cultures"]
     added = []
     for it in unmatched:
         if it["inception"] is None or not window[0] <= it["inception"] <= window[1]:
@@ -542,7 +566,7 @@ def enrich_wikidata(feats, items, match_km, window):
                 "type": "site", "population": {}, "n_dates": 0, "periods": [],
                 "sources": ["wikidata"], "references": [f"Wikidata {it['qid']}"], "key": key,
                 "wikidata": it["qid"], "wikipedia": it["wikipedia"],
-                **({"culture": it["cultures"]} if it["cultures"] else {}),
+                **({"wikidata_culture": it["cultures"]} if it["cultures"] else {}),
             },
         })
     return feats + added, len(best), len(added)
@@ -593,6 +617,127 @@ def merge_curated(feats, curated, merge_km):
         feats.append({"type": "Feature", "id": c.get("id", site_id("curated:" + props["name"])),
                       "geometry": geom, "properties": props})
     return feats
+
+
+# ------------------------------------------------------------ importance
+# How a piece is sized when a site has no population figure. Only what the
+# record says about the past counts: what kind of place it was, how long and
+# how often it was lived in, and whether it stands out among its neighbours.
+# `references` and `sources` are never used: they measure research effort.
+
+def site_class(kind, classes):
+    """Class 0-3 of a normalised site type: the highest class with a keyword
+    in the type, else classes["default"]."""
+    for c in sorted((int(k) for k in classes if k != "default"), reverse=True):
+        if any(w in kind for w in classes[str(c)]):
+            return c
+    return int(classes.get("default", 1))
+
+
+def _unit(lonlat):
+    lon, lat = np.radians(np.asarray(lonlat, dtype=float)).T
+    return np.stack([np.cos(lat) * np.cos(lon), np.cos(lat) * np.sin(lon), np.sin(lat)], axis=1)
+
+
+def _within(a, b, km, chunk=1024):
+    """For each point of a, the indices of points of b within km
+    (great-circle), as a list of arrays. a, b: (n, 2) lon/lat."""
+    ua, ub = _unit(a), _unit(b)
+    cos_max = math.cos(km / 6371.0)
+    out = []
+    for i in range(0, len(ua), chunk):
+        near = ua[i:i + chunk] @ ub.T >= cos_max
+        out += [np.flatnonzero(r) for r in near]
+    return out
+
+
+def local_rank(lonlat, n_dates, km):
+    """Per site, the share of the *other* sites within km that have fewer
+    dates; 1.0 for a site with no neighbours."""
+    n = np.asarray(n_dates)
+    out = np.ones(len(n))
+    for i, idx in enumerate(_within(lonlat, lonlat, km)):
+        others = idx[idx != i]
+        if len(others):
+            out[i] = float(np.mean(n[others] < n[i]))
+    return out
+
+
+def score_sites(feats, cfg):
+    """Set properties.importance (0-3) and properties.evidence (0-2).
+
+    importance = the site-type class, plus one for persistence (total
+    occupied years over `min_span`, i.e. more than one date's worth, and a
+    `local_rank` of `persist_top` or more within `local_km`), plus one for standing out locally (at
+    least `local_min_dates` dates and a `local_rank` of `local_top` or more
+    within `local_km`), clamped to 0-3. Both bonuses compare a site with its
+    own region, since span and date counts grow with research effort: a
+    heavily dug region doesn't get bigger pieces just for being dug.
+    evidence: 0 for one date or none (unless the site is known from
+    Wikidata or a hand entry), 1 for 2-4, 2 for 5 or more.
+    """
+    if not feats:
+        return feats
+    P = [f["properties"] for f in feats]
+    xy = [f["geometry"]["coordinates"] for f in feats]
+    span = np.array([sum(b - a for a, b in p.get("occupation", [])) for p in P], dtype=float)
+    span_rank = local_rank(xy, span, cfg["local_km"])
+    n = np.array([p.get("n_dates", 0) for p in P])
+    rank = local_rank(xy, n, cfg["local_km"])
+    for i, p in enumerate(P):
+        persistent = span[i] > cfg["min_span"] and span_rank[i] >= cfg["persist_top"]
+        stands_out = n[i] >= cfg["local_min_dates"] and rank[i] >= cfg["local_top"]
+        score = site_class(p.get("type") or "site", cfg["class"]) + persistent + stands_out
+        p["importance"] = int(min(3, max(0, score)))
+        known = bool({"wikidata", "curated"} & set(p.get("sources", [])))
+        p["evidence"] = 2 if n[i] >= 5 else 1 if n[i] >= 2 or known else 0
+    return feats
+
+
+# ---------------------------------------------------------------- survey
+def survey_intensity(grid, dates, cfg):
+    """Research effort per hex: every dated record of any period and site
+    type (graves, medieval kilns and all), Gaussian-smoothed over
+    `sigma_km` and given as records per 10,000 km². Dense dating of any age
+    marks a region where people dig, so few early sites there mean
+    something; few records of any age mean an absence says little.
+
+    This is a detection model only. It must never feed expected density.
+    Returns (density array per hex, level array 0/1/2 per hex).
+    """
+    left, top, right, bottom = grid.bbox.T
+    centres = np.stack([(left + right) / 2, (top + bottom) / 2], axis=1)
+    pts = np.array([[d["lon"], d["lat"]] for d in dates]) if dates else np.zeros((0, 2))
+    # Records per hex (nearest centre is close enough for a 100 km kernel).
+    counts = np.zeros(len(centres))
+    if len(pts):
+        uc, up = _unit(centres), _unit(pts)
+        for i in range(0, len(up), 4096):
+            counts += np.bincount(np.argmax(up[i:i + 4096] @ uc.T, axis=1), minlength=len(centres))
+    sigma = cfg["sigma_km"]
+    uc = _unit(centres)
+    dens = np.zeros(len(centres))
+    has = np.flatnonzero(counts)
+    for i in range(0, len(uc), 1024):
+        d = np.arccos(np.clip(uc[i:i + 1024] @ uc[has].T, -1, 1)) * 6371.0
+        dens[i:i + 1024] = (np.exp(-0.5 * (d / sigma) ** 2) * counts[has]).sum(axis=1)
+    dens *= 1e4 / (2 * math.pi * sigma ** 2)
+    level = np.where(dens >= cfg["well"], 2, np.where(dens >= cfg["thin"], 1, 0))
+    return dens, level
+
+
+def write_survey(path, grid, dens, level):
+    with gzip.open(path, "wt", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["hex", "records_per_10k_km2", "level"])
+        for hid, d, l in zip(grid.ids, dens, level):
+            w.writerow([int(hid), round(float(d), 2), int(l)])
+
+
+def read_survey(path):
+    """{hex id: level} from write_survey's file."""
+    with gzip.open(path, "rt", newline="") as f:
+        return {int(r["hex"]): int(r["level"]) for r in csv.DictReader(f)}
 
 
 # ------------------------------------------------------------- citations
@@ -701,6 +846,14 @@ def build(cfg, grid, log=print):
 
     left, top, right, bottom = grid.bbox.T
     bounds = (float(left.min()), float(bottom.min()), float(right.max()), float(top.max()))
+    if sc.get("survey"):
+        everything = [d for d in dates if d["std"] <= sc["max_std"]
+                      and bounds[0] <= d["lon"] <= bounds[2] and bounds[1] <= d["lat"] <= bounds[3]]
+        dens, level = survey_intensity(grid, everything, sc["survey"])
+        os.makedirs(out_dir, exist_ok=True)
+        write_survey(sc["survey"]["out"], grid, dens, level)
+        log(f"survey: {len(everything)} records of any period; hexes by level "
+            f"{np.bincount(level, minlength=3).tolist()} -> {sc['survey']['out']}")
     skip = xc.get("exclude_types", [])
     dates = [d for d in dates
              if d["std"] <= sc["max_std"] and not any(x in d["type"] for x in skip)
@@ -709,7 +862,8 @@ def build(cfg, grid, log=print):
     cal = calibrate([d["bp"] for d in dates], [d["std"] for d in dates], curve)
     years = np.array([to_year(c) if not np.isnan(c) else np.nan for c in cal])
     dated = {}
-    feats = derive_sites(dates, years, window, sc["trim"], sc["same_km"], sc["same_name_km"], dated=dated)
+    feats = derive_sites(dates, years, window, sc["trim"], sc["same_km"], sc["same_name_km"], dated=dated,
+                         gap=sc.get("abandon_after", 0))
     feats = [f for f in feats if f["properties"]["n_dates"] >= sc["min_dates"]]
     log(f"{len(feats)} dated sites in {window[0]}..{window[1]}")
 
@@ -736,6 +890,10 @@ def build(cfg, grid, log=print):
     n = len(feats)
     feats = assign_hex(grid, feats)
     log(f"{n - len(feats)} sites off the grid dropped")
+    if sc.get("importance"):
+        score_sites(feats, sc["importance"])
+        log("importance tiers: " + str(np.bincount([f["properties"]["importance"] for f in feats], minlength=4).tolist())
+            + ", evidence levels: " + str(np.bincount([f["properties"]["evidence"] for f in feats], minlength=3).tolist()))
 
     cc = sc.get("cultures")
     if cc:

@@ -3,6 +3,7 @@
 mod app;
 mod board;
 mod clock;
+mod events;
 mod files;
 mod labels;
 #[cfg(not(target_arch = "wasm32"))]
@@ -11,12 +12,14 @@ mod palette;
 mod panels;
 #[cfg(not(target_arch = "wasm32"))]
 mod screenshot;
+mod site_record;
 mod view;
 
 #[cfg(not(target_arch = "wasm32"))]
 const USAGE: &str = "\
 neolith [world.bin]
-neolith --screenshot <out.png> [--world <world.bin>] [--year <y>] [--mode terrain|koeppen|pop|elevation]
+neolith --screenshot <out.png> [--world <world.bin>] [--year <y>] [--mode terrain|koeppen|pop|elevation|evidence]
+        [--evidence <layer id>]
         [--flat <0..1>] [--yaw <deg>] [--pitch <deg>] [--dist <d>] [--lon <deg>] [--lat <deg>]
         [--size <W>x<H>] [--lip] [--art off|2d|3d] [--no-blend] [--material wood|slate|cardboard]
         [--hillshade <0..1>] [--relief <exaggeration, 0 = off>]
@@ -156,6 +159,7 @@ fn screenshot_cli(args: &[String]) -> Result<(), String> {
         blend: !args.iter().any(|a| a == "--no-blend"),
         hillshade: num("--hillshade")?,
         relief: num("--relief")?,
+        evidence: get("--evidence"),
     };
     screenshot::run(&world, &opt)?;
     println!("wrote {}", opt.out);
@@ -175,8 +179,23 @@ fn main() {
         let result = eframe::WebRunner::new()
             .start(canvas, eframe::WebOptions::default(), Box::new(|cc| Ok(Box::new(app::NeolithApp::new(cc, None)))))
             .await;
-        if let Err(e) = result {
-            log::error!("failed to start: {e:?}");
+        // Clear the page's "Loading…" placeholder, or turn it into the error.
+        let loading = web_sys::window().and_then(|w| w.document()).and_then(|d| d.get_element_by_id("loading"));
+        match result {
+            Ok(()) => {
+                if let Some(el) = loading {
+                    el.remove();
+                }
+            }
+            Err(e) => {
+                log::error!("failed to start: {e:?}");
+                if let Some(el) = loading {
+                    el.set_class_name("error");
+                    el.set_text_content(Some(
+                        "Neolith could not start. It needs a browser with WebGPU or WebGL 2; see the console for details.",
+                    ));
+                }
+            }
         }
     });
 }

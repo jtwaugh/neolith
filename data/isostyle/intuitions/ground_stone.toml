@@ -1,0 +1,712 @@
+# Gap critic: ground stone layer. Judgements, not data.
+# Values are the expected share of occupations with ground or polished stone (0-1) if the gap had evidence.
+
+[meta]
+layer = "ground_stone"
+written = "2026-11-12"
+dossier = "build/isostyle/gaps/ground_stone/dossier.json"
+summary = "Ground stone (axes, adzes, querns, mortars, grinding slabs) is a presence/absence layer, but 84-99% of its observations come from labels and all 308 absences are label-derived (Late Upper Palaeolithic culture names). Two consequences. First, the edge values around almost every gap are the same within a slice (0.91 at 8,000, 0.94 at 7,000, 0.977 at 6,000, 0.994 at 5,000, 0.998 at 4,000, 1.0 at 3,000 BCE) whatever the region: that is the slice-wide level the 300 km kernel shrinks toward, a method artefact, not local evidence, and it should not be copied into gaps. Second, 'Mesolithic' and 'Epipalaeolithic' labels are left undecided, so forager regions are masked rather than low. The real pattern is not universal presence: grinding equipment is near-universal in the Holocene Sahara, the Nile, SW Asia and Arabia (wild-grass and cereal processing), and polished or pecked axes and adzes are common in the forest Mesolithic of Scandinavia and Russia, but many European Mesolithic camps and steppe graves have no ground stone at all. Before c. 9,500 BCE the share is low outside SW Asia and the Nile. The largest gaps (Russia, Scandinavia's north, the Sahara, Arabia's interior, Central Asia, West Africa) are research and compilation gaps."
+
+# ---------------------------------------------------------------- Eastern Europe
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-10000]
+gap_ids = ["ground_stone-10000-01"]
+why_empty = ["research_intensity", "not_in_open_compilations", "label_gaps", "low_population"]
+why_note = "Final Palaeolithic and earliest Mesolithic camps in a thinly settled forest-tundra; no source and no deciding label."
+expected = 0.1
+expected_range = [0.0, 0.3]
+confidence = "low"
+basis = ["literature", "environment"]
+reasoning = "2,002 cells, no edge evidence, nearest point 1,755 km. Swiderian-related and earliest Butovo assemblages are flaked; ground tools are rare before the Boreal."
+literature = [
+  { cite = "Zhilin 2007, Mesolithic of the Upper Volga (Butovo, Veretye)", checked = false },
+]
+would_settle = "Dated Final Palaeolithic and Mesolithic sites of NW Russia with tool inventories."
+speculative_rule = "0.1 across the zone."
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-9000, -8000, -7000]
+gap_ids = ["ground_stone-7000-67", "ground_stone-9000-26", "ground_stone-8000-48", "ground_stone-9000-41", "ground_stone-7000-80", "ground_stone-8000-65"]
+why_empty = ["research_intensity", "not_in_open_compilations", "label_gaps"]
+why_note = "Mesolithic forest sites: 'Mesolithic' labels leave ground stone undecided, so the zone is masked though polished adzes and chisels are typical finds."
+expected = 0.55
+expected_range = [0.3, 0.8]
+confidence = "low"
+basis = ["literature", "analogy"]
+reasoning = "1,992-2,111 cells, no edge evidence, nearest points 1,175-1,991 km. Veretye, Butovo and Kunda-related sites yield ground adzes and chisels; Karelian and Onega sites have ground slate. Many short-stay camps do not."
+literature = [
+  { cite = "Oshibkina, Veretye culture monographs", checked = false },
+]
+would_settle = "Tool inventories from the Zhilin and Oshibkina site catalogues."
+speculative_rule = "0.55 across the zone, 0.65 within 300 km of Lake Onega and the Upper Volga."
+
+[[judgement.adjust]]
+kind = "near"
+point = [35.5, 61.7]
+radius_km = 300
+value = 0.65
+[[judgement.adjust]]
+kind = "river"
+within_km = 300
+min_upland_km2 = 20000
+bbox = [35.0, 56.4, 42.0, 58.3]
+value = 0.65
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-6000, -5000, -4000, -3000]
+gap_ids = ["ground_stone-5000-100", "ground_stone-4000-116", "ground_stone-3000-133", "ground_stone-6000-86", "ground_stone-6000-98", "ground_stone-5000-114", "ground_stone-4000-130", "ground_stone-3000-145"]
+why_empty = ["research_intensity", "not_in_open_compilations", "label_gaps"]
+why_note = "Neolithic forest foragers (Upper Volga, Lyalovo, Pit-Comb, Volosovo) used polished adzes and slate tools; their sites are not compiled."
+expected = 0.85
+expected_range = [0.65, 0.95]
+confidence = "medium"
+basis = ["literature", "analogy", "other_layer"]
+reasoning = "1,701-2,047 cells; edges 0.976-1.0 but those are the slice-wide shrinkage level. Pottery inside the gaps reads 0.84-0.99 where present."
+literature = [
+  { cite = "Piezonka 2015, Wildbeutergruppen mit früher Keramik in Nordosteuropa", checked = false },
+]
+would_settle = "Russian forest-zone site lists with tool types (Piezonka's compilation)."
+speculative_rule = "0.85 across the zone."
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-10000, -9000, -8000]
+gap_ids = ["ground_stone-9000-28", "ground_stone-8000-50", "ground_stone-10000-06"]
+why_empty = ["research_intensity", "not_in_open_compilations", "label_gaps", "low_population"]
+why_note = "Steppe Mesolithic sites are few and published in Russian; grinding slabs occur at some."
+expected = 0.3
+expected_range = [0.1, 0.5]
+confidence = "low"
+basis = ["literature", "intuition"]
+reasoning = "1,052-1,093 cells, no edge evidence, nearest 820-1,484 km."
+literature = []
+would_settle = "Dated steppe Mesolithic sites with inventories."
+speculative_rule = "0.3 across the steppe."
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-7000, -6000, -5000, -4000, -3000]
+gap_ids = ["ground_stone-7000-70", "ground_stone-5000-106", "ground_stone-3000-142", "ground_stone-4000-123", "ground_stone-6000-95"]
+why_empty = ["research_intensity", "not_in_open_compilations", "label_gaps"]
+why_note = "Steppe Neolithic and Eneolithic sites have grinders, polished axes and stone maces; kurgan graves often have none, which lowers the share."
+expected = 0.75
+expected_range = [0.5, 0.95]
+confidence = "medium"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "355-985 cells; edges 0.939-1.0 (slice-wide shrinkage level). Khvalynsk and Sredny Stog have polished maces and axes; Yamnaya graves rarely contain ground stone."
+literature = [
+  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false },
+]
+would_settle = "Open steppe site lists with inventories, separating graves from settlements."
+speculative_rule = "0.8 for settlements; 0.6 where the occupations are mostly kurgans (from 4,000 BCE)."
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["ground_stone-10000-12", "ground_stone-9000-37", "ground_stone-8000-58", "ground_stone-7000-79"]
+why_empty = ["research_intensity", "not_in_open_compilations", "label_gaps"]
+why_note = "Mesolithic Ukraine and Belarus are masked because 'Mesolithic' does not decide ground stone."
+expected = 0.35
+expected_range = [0.1, 0.6]
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "468 cells; edges 0.543 (9,000), 0.904 (8,000), 0.932 (7,000 BCE) but those reflect the slice level. Kukrek and Grebeniki assemblages are flaked; grinding stones and occasional ground axes appear late."
+literature = []
+would_settle = "Ukrainian Mesolithic site inventories (Telegin; Zaliznyak)."
+speculative_rule = "0.2 at 10,000-9,000 BCE, 0.4 at 8,000-7,000 BCE."
+
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000]
+value = 0.2
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-8000, -7000]
+value = 0.4
+
+[[judgement]]
+region = "Baltic"
+slices = [-10000, -9000]
+gap_ids = ["ground_stone-9000-40", "ground_stone-10000-17"]
+why_empty = ["research_intensity", "not_in_open_compilations", "label_gaps"]
+why_note = "Final Palaeolithic and early Kunda sites; ground tools rare."
+expected = 0.2
+expected_range = [0.05, 0.45]
+confidence = "low"
+basis = ["literature"]
+reasoning = "107-122 cells, no edge evidence, nearest 672-718 km. Pulli and early Kunda sites have flaked flint and bone; ground stone becomes common later."
+literature = []
+would_settle = "Estonian and Latvian Mesolithic inventories."
+speculative_rule = "0.2."
+
+# ---------------------------------------------------------------- Northern and western Europe
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-10000]
+gap_ids = ["ground_stone-10000-13", "ground_stone-10000-19"]
+why_empty = ["ice", "low_population", "label_gaps"]
+why_note = "Ahrensburgian and pioneer coastal sites, partly under the atlas's ice."
+expected = 0.1
+expected_range = [0.0, 0.3]
+confidence = "medium"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "265 cells, edge 0.256. Ahrensburgian and early Fosna-Hensbacka assemblages are flaked."
+literature = []
+would_settle = "Norwegian and Swedish early Mesolithic site lists."
+speculative_rule = "0.1 on ice-free land."
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-9000, -8000, -7000, -6000]
+gap_ids = ["ground_stone-6000-93", "ground_stone-7000-76", "ground_stone-8000-60", "ground_stone-9000-38"]
+why_empty = ["research_intensity", "not_in_open_compilations", "label_gaps"]
+why_note = "Mesolithic Scandinavia: pecked and ground axes (Nøstvet, Lihult, Limhamn) are common, but sites are labelled 'Mesolithic' and left undecided."
+expected = 0.55
+expected_range = [0.3, 0.8]
+confidence = "low"
+basis = ["literature", "analogy"]
+reasoning = "200-537 cells; edges 0.79-0.98 (slice level). Ground axes appear from c. 8000 BCE in southern Norway and western Sweden; the north adds ground slate from c. 6000 BCE."
+literature = [
+  { cite = "Glørstad 2010, The Structure and History of the Late Mesolithic Societies in the Oslo Fjord Area", checked = false },
+]
+would_settle = "Norwegian and Swedish site records with axe types."
+speculative_rule = "0.4 at 9,000 BCE, 0.6 at 8,000-6,000 BCE; 0.7 in southern Norway and western Sweden."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [4.0, 55.0, 32.0, 71.5]
+value = 0.6
+[[judgement.adjust]]
+kind = "area"
+bbox = [4.6, 57.0, 13.5, 62.5]
+value = 0.7
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-9000]
+value = 0.4
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-5000, -4000, -3000]
+gap_ids = ["ground_stone-5000-105", "ground_stone-4000-125", "ground_stone-3000-144"]
+why_empty = ["research_intensity", "not_in_open_compilations", "label_gaps"]
+why_note = "Northern foragers (slate culture, Comb Ware) and southern farmers (TRB) both used ground tools; the north is unrecorded."
+expected = 0.85
+expected_range = [0.65, 0.95]
+confidence = "medium"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "207-600 cells; edges 0.994-1.0 (slice level); pottery inside 0.88-0.99."
+literature = []
+would_settle = "Finnish and Norwegian site registers."
+speculative_rule = "0.85 across the gap."
+
+[[judgement]]
+region = "British Isles"
+slices = [-10000]
+gap_ids = ["ground_stone-10000-14"]
+why_empty = ["label_gaps", "low_population"]
+why_note = "Late Upper Palaeolithic and earliest Mesolithic Britain; ground stone rare."
+expected = 0.1
+expected_range = [0.0, 0.3]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "169 cells, edge 0.259."
+literature = []
+would_settle = "Nothing urgent."
+speculative_rule = "0.1."
+
+[[judgement]]
+region = "Central Europe"
+slices = [-10000]
+gap_ids = ["ground_stone-10000-16"]
+why_empty = ["label_gaps"]
+why_note = "Federmesser and Late Magdalenian camps; labels coded absent elsewhere."
+expected = 0.1
+expected_range = [0.0, 0.3]
+confidence = "medium"
+basis = ["neighbouring_evidence"]
+reasoning = "157 cells, edge 0.176."
+literature = []
+would_settle = "Nothing urgent."
+speculative_rule = "0.1."
+
+# ---------------------------------------------------------------- Central and southern Europe
+
+[[judgement]]
+region = "Balkans & Greece"
+slices = [-10000, -9000, -8000]
+gap_ids = ["ground_stone-9000-39", "ground_stone-10000-15", "ground_stone-8000-61"]
+why_empty = ["research_intensity", "not_in_open_compilations", "label_gaps"]
+why_note = "Epigravettian and Mesolithic Romania and Bulgaria; Iron Gates sites (Lepenski Vir, Vlasac) have ground stone, most others little."
+expected = 0.4
+expected_range = [0.15, 0.7]
+confidence = "low"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "118-185 cells; edges 0.186 (10,000), 0.683 (9,000), 0.848 (8,000 BCE)."
+literature = []
+would_settle = "Iron Gates and Dobrogea Mesolithic inventories."
+speculative_rule = "0.15 at 10,000 BCE; 0.45 at 9,000-8,000 BCE, 0.7 along the Danube gorges."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [15.0, 40.0, 30.0, 48.5]
+value = 0.45
+[[judgement.adjust]]
+kind = "river"
+within_km = 40
+min_upland_km2 = 100000
+bbox = [21.3, 44.3, 22.8, 44.9]
+value = 0.7
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000]
+value = 0.15
+
+[[judgement]]
+region = "Anatolia & Cyprus"
+slices = [-10000]
+gap_ids = ["ground_stone-10000-18"]
+why_empty = ["research_intensity", "label_gaps"]
+why_note = "Late Epipalaeolithic and PPNA Anatolia: grinding stones at Pınarbaşı, Hallan Çemi and Göbekli Tepe."
+expected = 0.55
+expected_range = [0.3, 0.8]
+confidence = "low"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "100 cells, edge 0.486 (range 0.19-0.69)."
+literature = []
+would_settle = "Phase-level inventories for Anatolian Epipalaeolithic sites."
+speculative_rule = "0.6 in the south-east, 0.4 on the plateau."
+
+[[judgement.adjust]]
+kind = "polygon"
+points = [[29.5, 38.3], [29.8, 39.7], [31.5, 40.2], [33.5, 40.5], [35.5, 40.3], [36.8, 39.8], [37.0, 38.7], [35.5, 37.9], [34.0, 37.4], [32.5, 37.1], [31.0, 37.4], [30.0, 37.8]]
+value = 0.4
+[[judgement.adjust]]
+kind = "area"
+bbox = [36.5, 36.0, 44.8, 39.0]
+value = 0.6
+
+# ---------------------------------------------------------------- SW Asia
+
+[[judgement]]
+region = "Iran & Afghanistan"
+slices = [-10000, -9000]
+gap_ids = ["ground_stone-10000-10", "ground_stone-9000-35"]
+why_empty = ["research_intensity", "not_in_open_compilations", "label_gaps", "low_population"]
+why_note = "Zarzian and early Holocene Zagros sites have grinding stones; the plateau interior is near empty."
+expected = 0.6
+expected_range = [0.35, 0.85]
+confidence = "low"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "679-776 cells; edges 0.689 and 0.846. Zawi Chemi, Karim Shahir and Sheikh-e Abad have querns and mortars."
+literature = []
+would_settle = "Iranian Epipalaeolithic site inventories."
+speculative_rule = "0.7 in the Zagros, 0.4 on the plateau and in Afghanistan."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [44.0, 25.0, 66.0, 40.0]
+value = 0.4
+[[judgement.adjust]]
+kind = "polygon"
+points = [[44.8, 36.6], [46.5, 37.0], [48.8, 34.8], [51.0, 32.8], [53.5, 30.5], [57.0, 28.0], [56.3, 27.1], [54.0, 26.8], [51.5, 28.3], [49.5, 30.5], [47.5, 32.6], [45.3, 34.2]]
+value = 0.7
+
+[[judgement]]
+region = "Iran & Afghanistan"
+slices = [-8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["ground_stone-7000-78", "ground_stone-8000-59", "ground_stone-3000-143", "ground_stone-4000-127", "ground_stone-6000-97", "ground_stone-5000-111"]
+why_empty = ["research_intensity", "not_in_open_compilations", "label_gaps", "low_population"]
+why_note = "Neolithic and later plateau sites all have grinding equipment; the gaps are the deserts and Afghanistan."
+expected = 0.95
+expected_range = [0.85, 1.0]
+confidence = "medium"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "213-440 cells; edges 0.91-1.0 (slice level, but here it agrees with the literature)."
+literature = []
+would_settle = "Iranian and Afghan site reports."
+speculative_rule = "0.95 on the plateau rims; mark the Kavir and Lut as low occupation."
+
+[[judgement]]
+region = "Arabia"
+slices = [-10000, -9000]
+gap_ids = ["ground_stone-10000-04", "ground_stone-9000-31"]
+why_empty = ["low_population", "research_intensity"]
+why_note = "Early Holocene reoccupation of the peninsula; few sites."
+expected = 0.5
+expected_range = [0.2, 0.8]
+confidence = "low"
+basis = ["neighbouring_evidence", "environment"]
+reasoning = "1,052-1,083 cells; edges 0.679 and 0.852, from the Levant rim."
+literature = []
+would_settle = "Dated early Holocene Arabian sites with inventories."
+speculative_rule = "0.5 on the northern rim and in Yemen, unoccupied in the Rub' al-Khali."
+
+[[judgement]]
+region = "Arabia"
+slices = [-8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["ground_stone-8000-52", "ground_stone-7000-73", "ground_stone-3000-137", "ground_stone-6000-90", "ground_stone-4000-121", "ground_stone-5000-110", "ground_stone-5000-113", "ground_stone-4000-132"]
+why_empty = ["research_intensity", "low_population", "not_in_open_compilations"]
+why_note = "Arabian Neolithic herders used grinding stones widely; many sites are surface lithic scatters where they may be missed."
+expected = 0.8
+expected_range = [0.5, 0.95]
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "368-978 cells; edges 0.92-1.0 (slice level). Grinding stones are reported from Jebel Qattar, the Gulf coastal sites and Yemeni highland Neolithic sites."
+literature = [
+  { cite = "Magee 2014, The Archaeology of Prehistoric Arabia, Cambridge", checked = false },
+]
+would_settle = "Arabian Neolithic site lists with inventories."
+speculative_rule = "0.8 where occupied; leave the Rub' al-Khali as low occupation."
+
+[[judgement]]
+region = "Central Asia"
+slices = [-10000, -9000]
+gap_ids = ["ground_stone-9000-32", "ground_stone-10000-08"]
+why_empty = ["research_intensity", "not_in_open_compilations", "label_gaps", "dataset_edge"]
+why_note = "Sparse Mesolithic (Dam-Dam Cheshme, Jebel), mostly flaked."
+expected = 0.25
+expected_range = [0.05, 0.5]
+confidence = "low"
+basis = ["literature"]
+reasoning = "893-1,002 cells, no edge evidence."
+literature = []
+would_settle = "Dated Central Asian Mesolithic layers."
+speculative_rule = "0.25."
+
+[[judgement]]
+region = "Central Asia"
+slices = [-8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["ground_stone-8000-53", "ground_stone-7000-71", "ground_stone-4000-119", "ground_stone-3000-136", "ground_stone-5000-103", "ground_stone-6000-91"]
+why_empty = ["research_intensity", "not_in_open_compilations", "label_gaps", "dataset_edge"]
+why_note = "Jeitun is rich in grinding stones; Kelteminar forager sites less so."
+expected = 0.75
+expected_range = [0.5, 0.95]
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "645-959 cells; edges 0.91-1.0 (slice level)."
+literature = [
+  { cite = "Harris 2010, Origins of Agriculture in Western Central Asia", checked = false },
+]
+would_settle = "Kelteminar and Jeitun inventories."
+speculative_rule = "0.95 on the Kopet Dag piedmont, 0.6 in the Kyzylkum and Ustyurt."
+
+[[judgement.adjust]]
+kind = "polygon"
+points = [[54.0, 37.3], [55.5, 38.6], [56.3, 39.2], [57.5, 38.85], [58.5, 38.3], [60.0, 37.8], [61.5, 37.7], [61.5, 36.5], [60.0, 36.8], [58.4, 37.3], [56.8, 37.7], [55.3, 37.3]]
+value = 0.95
+[[judgement.adjust]]
+kind = "polygon"
+points = [[61.0, 42.4], [61.8, 41.5], [63.0, 40.4], [64.2, 40.0], [66.0, 40.4], [66.0, 43.8], [65.5, 44.6], [63.5, 45.0], [61.5, 44.3], [60.8, 43.3]]
+value = 0.6
+[[judgement.adjust]]
+kind = "polygon"
+points = [[53.3, 45.2], [55.5, 45.6], [58.2, 45.5], [58.4, 44.5], [58.6, 43.6], [58.0, 42.6], [57.0, 41.9], [55.5, 41.5], [54.5, 41.9], [54.0, 42.8], [53.0, 43.6], [52.8, 44.5]]
+value = 0.6
+
+# ---------------------------------------------------------------- Africa
+
+[[judgement]]
+region = "Maghreb"
+slices = [-10000, -9000]
+gap_ids = ["ground_stone-10000-03", "ground_stone-9000-29"]
+why_empty = ["label_gaps", "low_population"]
+why_note = "Iberomaurusian and Capsian are left undecided; both have grinding stones for ochre and plants at many sites."
+expected = 0.45
+expected_range = [0.2, 0.7]
+confidence = "low"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "1,092-1,235 cells; edges 0.317 and 0.582."
+literature = []
+would_settle = "Capsian site inventories (Rahmani)."
+speculative_rule = "0.35 at 10,000, 0.55 at 9,000 BCE; the Sahara part as low occupation at 10,000 BCE."
+
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000]
+value = 0.35
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-9000]
+value = 0.55
+
+[[judgement]]
+region = "Maghreb"
+slices = [-8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["ground_stone-8000-54", "ground_stone-7000-72", "ground_stone-3000-139", "ground_stone-6000-92", "ground_stone-5000-108", "ground_stone-4000-128", "ground_stone-4000-129", "ground_stone-5000-112", "ground_stone-3000-147"]
+why_empty = ["low_population", "research_intensity"]
+why_note = "Saharan Algerian sites are rich in grinding equipment; the gap is mostly desert."
+expected = 0.85
+expected_range = [0.65, 0.98]
+confidence = "medium"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "305-880 cells; edges 0.88-1.0."
+literature = []
+would_settle = "Saharan Algerian site lists."
+speculative_rule = "0.9 south of the Saharan Atlas, 0.8 in the Capsian north; mark the ergs as low occupation from 4,000 BCE."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [-17.0, 19.0, 12.0, 37.5]
+value = 0.9
+[[judgement.adjust]]
+kind = "polygon"
+points = [[-10.0, 37.5], [12.0, 37.5], [11.5, 33.5], [10.0, 34.0], [8.3, 34.3], [7.0, 35.0], [5.5, 35.0], [2.5, 34.0], [-0.5, 33.0], [-5.0, 32.2], [-7.5, 31.2], [-9.8, 30.8]]
+value = 0.8
+
+[[judgement]]
+region = "Sahara–Sahel"
+slices = [-10000]
+gap_ids = ["ground_stone-10000-02"]
+why_empty = ["low_population", "research_intensity"]
+why_note = "Barely reoccupied at the start of the humid period."
+expected = 0.4
+expected_range = [0.1, 0.7]
+confidence = "low"
+basis = ["environment", "literature"]
+reasoning = "1,770 cells, no edge evidence."
+literature = []
+would_settle = "Ounjougou sequence ingested."
+speculative_rule = "0.4 south of 20°N; unoccupied north of it."
+
+[[judgement]]
+region = "Sahara–Sahel"
+slices = [-9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["ground_stone-9000-27", "ground_stone-5000-101", "ground_stone-3000-134", "ground_stone-6000-87", "ground_stone-8000-49", "ground_stone-7000-68", "ground_stone-4000-118", "ground_stone-4000-124"]
+why_empty = ["research_intensity", "not_in_open_compilations", "low_population"]
+why_note = "Early Holocene Saharan foragers and later herders processed wild grasses on grinding stones at almost every site."
+expected = 0.9
+expected_range = [0.75, 1.0]
+confidence = "medium"
+basis = ["literature", "other_layer"]
+reasoning = "466-1,729 cells; edges 0.91-1.0; pottery and livestock inside where present."
+literature = [
+  { cite = "Jesse 2010, Journal of African Archaeology 8", checked = false },
+]
+would_settle = "Saharan site lists with inventories."
+speculative_rule = "0.9 where occupied; mark the north as low occupation after 4,000 BCE."
+
+[[judgement]]
+region = "Libya & Egypt"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["ground_stone-10000-07", "ground_stone-9000-34", "ground_stone-3000-140", "ground_stone-8000-57", "ground_stone-7000-77", "ground_stone-5000-109", "ground_stone-4000-126", "ground_stone-6000-96", "ground_stone-9000-42"]
+why_empty = ["low_population", "research_intensity"]
+why_note = "Late Palaeolithic Nile sites already had grinding stones; the desert sites of the humid period too."
+expected = 0.85
+expected_range = [0.6, 1.0]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "296-1,027 cells; edges 0.653 (10,000) rising to 1.0. Isnan and Qadan sites have grinding stones; Western Desert Neolithic sites are rich in them."
+literature = []
+would_settle = "Western Desert site lists (Kuper)."
+speculative_rule = "0.65 at 10,000 BCE (and unoccupied desert), 0.9 after."
+
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000]
+value = 0.65
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-9000, -8000, -7000, -6000, -5000, -4000, -3000]
+value = 0.9
+
+[[judgement]]
+region = "Nile & Sudan"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["ground_stone-10000-09", "ground_stone-9000-33", "ground_stone-6000-89", "ground_stone-8000-55", "ground_stone-3000-138", "ground_stone-7000-74", "ground_stone-5000-104", "ground_stone-4000-120"]
+why_empty = ["research_intensity", "not_in_open_compilations"]
+why_note = "Khartoum Mesolithic and Neolithic sites have grinding stones almost without exception."
+expected = 0.9
+expected_range = [0.7, 1.0]
+confidence = "medium"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "684-888 cells; edges 0.84-1.0."
+literature = []
+would_settle = "Sudanese site reports."
+speculative_rule = "0.75 at 10,000 BCE, 0.95 after."
+
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000]
+value = 0.75
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-9000, -8000, -7000, -6000, -5000, -4000, -3000]
+value = 0.95
+
+[[judgement]]
+region = "West Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["ground_stone-10000-05", "ground_stone-9000-30", "ground_stone-7000-69", "ground_stone-8000-51", "ground_stone-6000-88", "ground_stone-5000-102", "ground_stone-3000-135", "ground_stone-4000-117"]
+why_empty = ["dataset_edge", "research_intensity", "preservation"]
+why_note = "Barely researched; Kintampo and later sites have ground axes and grinders, earlier forest sites few."
+expected = 0.6
+expected_range = [0.3, 0.9]
+confidence = "low"
+basis = ["literature", "intuition"]
+reasoning = "1,044-1,074 cells; edge only at 4,000 BCE (0.998, slice level)."
+literature = []
+would_settle = "West African site reports."
+speculative_rule = "0.4 before 5,000 BCE, 0.8 after."
+
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000, -7000, -6000]
+value = 0.4
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000, -3000]
+value = 0.8
+
+[[judgement]]
+region = "Horn of Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["ground_stone-10000-11", "ground_stone-9000-36", "ground_stone-8000-56", "ground_stone-7000-75", "ground_stone-5000-107", "ground_stone-4000-122", "ground_stone-3000-141", "ground_stone-6000-94"]
+why_empty = ["research_intensity", "dataset_edge"]
+why_note = "Few dated sites; grinding stones are known from Holocene Ethiopian rock shelters."
+expected = 0.6
+expected_range = [0.3, 0.9]
+confidence = "low"
+basis = ["intuition", "literature"]
+reasoning = "495-527 cells; edges 0.94-0.99 in 7,000-5,000 BCE (slice level)."
+literature = []
+would_settle = "Dated Ethiopian LSA layers with inventories."
+speculative_rule = "0.6."
+
+# ---------------------------------------------------------------- Smaller gaps
+
+[[judgement]]
+region = "Baltic"
+slices = [-8000, -7000]
+gap_ids = ["ground_stone-8000-62", "ground_stone-7000-81"]
+why_empty = ["research_intensity", "not_in_open_compilations", "label_gaps"]
+why_note = "Kunda Mesolithic; ground axes and adzes occur at some sites (Pulli, Zvejnieki) but most assemblages are flint, quartz and bone."
+expected = 0.4
+expected_range = [0.15, 0.65]
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "74-78 cells in Latvia; edges 0.874 and 0.938 (slice level)."
+literature = []
+would_settle = "Estonian and Latvian Mesolithic inventories."
+speculative_rule = "0.4."
+
+[[judgement]]
+region = "Central Europe"
+slices = [-9000]
+gap_ids = ["ground_stone-9000-46"]
+why_empty = ["label_gaps"]
+why_note = "A Mesolithic hole in eastern Poland; Komornica and Janisławice assemblages are flaked, with rare ground pieces."
+expected = 0.3
+expected_range = [0.1, 0.5]
+confidence = "low"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "34 cells, edge 0.596."
+literature = []
+would_settle = "Polish Mesolithic site inventories."
+speculative_rule = "0.3."
+
+[[judgement]]
+region = "Balkans & Greece"
+slices = [-7000]
+gap_ids = ["ground_stone-7000-83"]
+why_empty = ["research_intensity", "not_in_open_compilations"]
+why_note = "Moldova and eastern Romania c. 7,500-6,500 BCE: late Mesolithic then the first Criş and Bug-Dniester settlements, which have querns and polished axes."
+expected = 0.85
+expected_range = [0.6, 1.0]
+confidence = "medium"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "46 cells, edge 0.94."
+literature = []
+would_settle = "Moldovan and Romanian site lists."
+speculative_rule = "0.85."
+
+[[judgement]]
+region = "Caucasus"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["ground_stone-8000-63", "ground_stone-10000-22", "ground_stone-9000-45", "ground_stone-7000-84"]
+why_empty = ["research_intensity", "not_in_open_compilations", "label_gaps"]
+why_note = "Mesolithic and pre-Shulaveri Caucasus: grinding stones at Chokh and in Trialeti; few dated sites."
+expected = 0.55
+expected_range = [0.3, 0.8]
+confidence = "low"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "41-76 cells; edges 0.696 (10,000) to 0.943 (7,000 BCE)."
+literature = []
+would_settle = "Caucasian site inventories (Badalyan & Lombard)."
+speculative_rule = "0.5 at 10,000-9,000 BCE, 0.65 at 8,000-7,000 BCE."
+
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000]
+value = 0.5
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-8000, -7000]
+value = 0.65
+
+[[judgement]]
+region = "Mesopotamia"
+slices = [-10000]
+gap_ids = ["ground_stone-10000-21"]
+why_empty = ["low_population", "research_intensity"]
+why_note = "Southern Iraq before the Holocene transgression: probably near empty; the north has Zawi Chemi-type grinding stones."
+expected = 0.5
+expected_range = [0.2, 0.8]
+confidence = "low"
+basis = ["neighbouring_evidence", "environment"]
+reasoning = "72 cells around 30.6°N, edge 0.69."
+literature = []
+would_settle = "Little can: the surface is under alluvium."
+speculative_rule = "0.5, marked as low occupation."
+
+[[judgement]]
+region = "Other"
+slices = [-10000, -9000, -8000]
+gap_ids = ["ground_stone-10000-20", "ground_stone-9000-43", "ground_stone-8000-64"]
+why_empty = ["dataset_edge", "research_intensity", "low_population"]
+why_note = "Balochistan before Mehrgarh: almost unknown."
+expected = 0.3
+expected_range = [0.0, 0.7]
+confidence = "low"
+basis = ["intuition"]
+reasoning = "75 cells, no edge evidence."
+literature = []
+would_settle = "Survey of early Holocene Balochistan."
+speculative_rule = "Leave as unknown occupation; 0.3 if filled."
+
+[[judgement]]
+region = "Other"
+slices = [-7000, -6000, -5000, -4000, -3000]
+gap_ids = ["ground_stone-7000-82", "ground_stone-6000-99", "ground_stone-5000-115", "ground_stone-4000-131", "ground_stone-3000-146"]
+why_empty = ["dataset_edge", "not_in_open_compilations"]
+why_note = "Mehrgarh from Period I has abundant grinding stones and later polished axes."
+expected = 0.9
+expected_range = [0.7, 1.0]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "69-73 cells, no edge evidence."
+literature = [
+  { cite = "Jarrige et al. 1995, Mehrgarh: Field Reports 1974-1985", checked = false },
+]
+would_settle = "Mehrgarh reports."
+speculative_rule = "0.9."
+
+[[judgement]]
+region = "Now-drowned shelves and islands"
+slices = [-10000, -9000, -8000, -7000]
+gap_ids = ["ground_stone-10000-23", "ground_stone-9000-44", "ground_stone-7000-85", "ground_stone-8000-66", "ground_stone-10000-24", "ground_stone-10000-25", "ground_stone-9000-47"]
+why_empty = ["submerged"]
+why_note = "The Gulf basin, the North Caspian shelf, Doggerland and the White Sea coast (a polygon artefact): copy each adjacent coast."
+expected = 0.4
+expected_range = [0.1, 0.8]
+confidence = "low"
+basis = ["analogy", "environment"]
+reasoning = "29-62 cells; edges 0.234 (Doggerland, 10,000), 0.85 (Gulf, 9,000 BCE). The Gulf Oasis would follow Arabia and Mesopotamia (0.5-0.8); Doggerland the Mesolithic North Sea (0.1-0.3); the Caspian shelf the steppe (0.3-0.75)."
+literature = []
+would_settle = "Marine survey only."
+speculative_rule = "Copy the adjacent coast's speculative value."

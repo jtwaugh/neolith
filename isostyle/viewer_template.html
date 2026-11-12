@@ -1,4 +1,4 @@
-<title>Neolith Presence Atlas</title>
+<title>Neolith Evidence Atlas</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -74,6 +74,12 @@ h1 { margin: 6px 0 8px; font-weight: 600; font-size: 24px; line-height: 1.15; le
 .seg button[aria-checked="true"] { background: var(--ink); color: var(--panel); border-color: var(--ink); }
 .seg button:disabled { opacity: 0.45; cursor: not-allowed; }
 .seg .chip { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+select.pick {
+  width: 100%; border: 1px solid var(--rule); background: var(--bg); color: var(--ink); border-radius: 6px;
+  padding: 6px 8px; font: inherit; font-size: 13.5px; cursor: pointer;
+}
+select.pick:hover { border-color: var(--muted); }
+.kind { font: 11px/1.3 var(--font-num); color: var(--muted); }
 .seg.dim button[aria-checked="true"] { background: var(--bg); color: var(--ink); border-color: var(--rule); }
 
 .slice-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
@@ -139,22 +145,28 @@ details.about code { font: 12px var(--font-num); }
   <aside class="rail">
     <header>
       <p class="eyebrow">Neolith · 10,000–3,000 BCE</p>
-      <h1>Presence Atlas</h1>
-      <p class="lede">Where five classes of material culture are attested, smoothed from dated occupations onto the game's hex grid. Grey always means too little evidence, never absence.</p>
+      <h1>Evidence Atlas</h1>
+      <p class="lede">What the dated record shows about how people lived: material culture, crops and herds, land cover, structures and ancestry, smoothed onto the game's hex grid. Grey always means too little evidence, never absence.</p>
     </header>
 
     <section class="ctl" aria-label="Map controls">
       <div class="field">
-        <span class="label" id="lab-mat">Material</span>
-        <div class="seg" id="mat" role="radiogroup" aria-labelledby="lab-mat"></div>
+        <span class="label" id="lab-group">Theme</span>
+        <div class="seg" id="group" role="radiogroup" aria-labelledby="lab-group"></div>
       </div>
       <div class="field">
-        <span class="label" id="lab-layer">Layer</span>
-        <div class="seg" id="layer" role="radiogroup" aria-labelledby="lab-layer">
-          <button type="button" role="radio" data-layer="presence">Presence</button>
-          <button type="button" role="radio" data-layer="evidence">Evidence</button>
-          <button type="button" role="radio" data-layer="firmness">Firmness</button>
-          <button type="button" role="radio" data-layer="boundaries">All boundaries</button>
+        <label class="label" for="layer">Layer</label>
+        <select id="layer" class="pick"></select>
+        <span class="kind" id="kind"></span>
+      </div>
+      <div class="field">
+        <span class="label" id="lab-view">View</span>
+        <div class="seg" id="view" role="radiogroup" aria-labelledby="lab-view">
+          <button type="button" role="radio" data-view="presence">Presence</button>
+          <button type="button" role="radio" data-view="evidence">Evidence</button>
+          <button type="button" role="radio" data-view="firmness">Firmness</button>
+          <button type="button" role="radio" data-view="boundaries">Boundaries</button>
+          <button type="button" role="radio" data-view="speculative" id="v-spec">Speculative</button>
         </div>
       </div>
       <div class="field">
@@ -167,7 +179,7 @@ details.about code { font: 12px var(--font-num); }
       </div>
       <div class="field toggles">
         <label><input type="checkbox" id="t-iso" checked> Isolines</label>
-        <label><input type="checkbox" id="t-dots" checked> Occupations</label>
+        <label><input type="checkbox" id="t-dots" checked> <span id="dots-word">Evidence points</span></label>
         <label><input type="checkbox" id="t-borders" checked> Modern borders</label>
       </div>
     </section>
@@ -178,18 +190,18 @@ details.about code { font: 12px var(--font-num); }
     <details class="about">
       <summary>How these surfaces were made</summary>
       <ul>
-        <li>Radiocarbon dates from XRONOS, p3k14c and NeoNet, calibrated with IntCal20 and grouped into occupation episodes per site. Graves are kept.</li>
-        <li>Presence is recorded by ten open datasets (lipid residues, Rigaud 2018, Dolbunova 2023, Windler's Spondylus, dated barbed points, BDA, MedAfriCarbon, Rotunno &amp; Crema 2025, DEFC, DObsiSS) and Jordan et al. 2016's earliest-pottery table for Africa or implied by a culture or stage label. Absences come from labels, except pottery absences in North Africa, which MedAfriCarbon and Rotunno &amp; Crema record.</li>
-        <li>Each slice is its keyframe year ± 500 years. A cell's presence is the kernel-weighted share of occupations with the material, pulled toward the slice mean: f = (Σ wKy + f₀) / (E + 1).</li>
+        <li>Each slice is its keyframe year ± 500 years. Radiocarbon dates (XRONOS, p3k14c, NeoNet) are calibrated with IntCal20 and grouped into occupation episodes per site; graves are kept.</li>
+        <li>Three kinds of evidence point: dated occupations, off-site pollen cores (Neotoma), and individual ancient genomes (AADR). Each layer uses one kind; the evidence view shows how many are within reach.</li>
+        <li>A cell's value is the kernel-weighted share of evidence points with the trait, pulled toward the slice mean: f = (Σ wKy + f₀) / (E + 1). Open land is a published 1° reconstruction, looked up per cell.</li>
         <li>Cells are masked below an evidence of <span id="emin-a">1.2</span>, under ice, and for bone and antler where topsoil pH is below 5.5.</li>
-        <li>Firmness: share of <span id="nboot">200</span> bootstrap runs (occupations resampled, one date drawn from each) in which a cell is at or above 50%.</li>
-        <li>Full notes: <code>data/isostyle/METHODS.md</code> and <code>data/isostyle/audit/AUDIT.md</code>.</li>
+        <li>Firmness: share of <span id="nboot">200</span> bootstrap runs (evidence resampled, one date drawn from each) in which a cell is at or above the middle level.</li>
+        <li>Presence-only layers (no source records absence) show where something is recorded, not where it was absent. Sources and licences for each layer are under the layer's notes; full notes in <code>data/isostyle/METHODS.md</code>.</li>
       </ul>
     </details>
   </aside>
 
   <main class="stage" id="stage">
-    <canvas id="map" role="img" aria-label="Hex map of the selected surface"></canvas>
+    <canvas id="map" role="img" aria-label="Hex map of the selected layer"></canvas>
     <div class="mapbar">
       <button type="button" class="btn" id="v-eu">Europe</button>
       <button type="button" class="btn" id="v-all">Full grid</button>
@@ -197,7 +209,7 @@ details.about code { font: 12px var(--font-num); }
       <button type="button" class="btn" id="z-out" aria-label="Zoom out">−</button>
     </div>
     <div class="inspect" id="inspect" hidden></div>
-    <div class="loading" id="loading">Unpacking surfaces…</div>
+    <div class="loading" id="loading">Unpacking…</div>
   </main>
 </div>
 
@@ -209,19 +221,27 @@ const $ = (id) => document.getElementById(id);
 const nf = new Intl.NumberFormat("en-GB");
 const raw = JSON.parse($("iso-data").textContent);
 const meta = raw.meta;
-const MATS = meta.materials, YEARS = meta.years, S = YEARS.length, N = meta.n, NU = meta.nUnits;
+const LAYERS = meta.layers, YEARS = meta.years, S = YEARS.length, N = meta.n;
+const BY = Object.fromEntries(LAYERS.map((L) => [L.id, L]));
 const K = Math.cos(48 * Math.PI / 180);           // equirectangular, true at 48°N
 const HW = meta.hexW, HH = meta.hexH, EMIN = meta.eMin;
 const VX = [HW / 2, HW / 4, -HW / 4, -HW / 2, -HW / 4, HW / 4];
 const VY = [0, HH / 2, HH / 2, 0, -HH / 2, -HH / 2];
 const DIRS = [[1, 1], [0, 2], [-1, 1], [-1, -1], [0, -2], [1, -1]];
-const DASH = { pottery: [], flaked_stone: [1.5, 3], ground_stone: [7, 3], bone_antler: [1.5, 3], ornaments: [1.5, 3] };
-const LAYERS = ["presence", "evidence", "firmness", "boundaries"];
+const DASHES = [[], [7, 3], [3, 2], [7, 2, 1, 2], [], [7, 3], [3, 2], [7, 2, 1, 2]];
+const VIEWS = ["presence", "evidence", "firmness", "boundaries", "speculative"];
+const NF = 7;                                      // bytes per layer, slice and cell
+const CONFNAME = ["observed", "judged, high confidence", "judged, medium confidence", "judged, low confidence", "extrapolated"];
 const EQ = new Float32Array(256);
 for (let q = 1; q < 256; q++) EQ[q] = Math.pow(10, q / 32) / 100;
 const yearLabel = (y) => `${nf.format(Math.abs(y))} ${y < 0 ? "BCE" : "CE"}`;
 const pct = (v) => `${Math.round(v * 100)}%`;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const isValue = (L) => L.kind === "continuous" || L.kind === "grid";
+const hasFirm = (L) => L.hasAbsences || isValue(L);
+const fmtLevel = (L, v) => isValue(L) ? `${v}${L.units_label ? " " + L.units_label : ""}` : `${Math.round(v * 100)}%`;
+const valueOf = (L, p) => isValue(L) ? L.vmin + p / 200 * (L.vmax - L.vmin) : p / 200;
+const showValue = (L, p) => isValue(L) ? `${valueOf(L, p).toFixed(0)}${L.units_label ? " " + L.units_label : ""}` : pct(p / 200);
 
 async function gunzip(b64) {
   const bin = atob(b64), u = new Uint8Array(bin.length);
@@ -231,21 +251,39 @@ async function gunzip(b64) {
 }
 const asJSON = (u8) => JSON.parse(new TextDecoder().decode(u8));
 
-const state = { m: 0, layer: "presence", s: Math.max(0, YEARS.indexOf(-5000)), iso: true, dots: true, borders: true };
-let lon, lat, X, Y, layers, uX, uY, uW, uSt, uFlag, uNames, borders, contours, nb, keyIndex;
-let ready = false, pal = {}, hover = null, hoverUnit = -1;
+const state = { layer: LAYERS[0].id, view: "presence", s: Math.max(0, YEARS.indexOf(-5000)), iso: true, dots: true, borders: true };
+let lon, lat, X, Y, borders, contours, nb, keyIndex, regionIx;
+let ready = false, pal = {}, hover = null;
+const layerData = new Map(), unitData = new Map();
 
 // ---------------------------------------------------------------- data
-function field(m, s, f) { const o = ((m * S + s) * 5 + f) * N; return layers.subarray(o, o + N); }
-function cellKey(lo, la) {
-  const c = Math.round((lo - meta.lon0) / (0.75 * HW)), r = Math.round(2 * (la - meta.lat0) / HH);
-  return [c, r];
+async function ensureLayers(ids) {
+  await Promise.all(ids.filter((id) => !layerData.has(id)).map(async (id) => layerData.set(id, await gunzip(raw.layers[id]))));
 }
+async function ensureUnits(unit) {
+  if (!unit || unitData.has(unit) || !raw.units[unit]) return;
+  const r = raw.units[unit], m = meta.units[unit], n = m.n;
+  const [xyB, w, st, flags, names] = await Promise.all(["xy", "w", "st", "flags", "names"].map((k) => gunzip(r[k])));
+  const xy = new Int32Array(xyB.buffer, 0, 2 * n);
+  const ux = new Float64Array(n), uy = new Float64Array(n);
+  for (let u = 0; u < n; u++) { ux[u] = xy[2 * u] / 1e4 * K; uy[u] = -xy[2 * u + 1] / 1e4; }
+  unitData.set(unit, { n, ux, uy, w, st, flags, names: new TextDecoder().decode(names).split("\n"),
+    index: Object.fromEntries(m.layers.map((id, k) => [id, k])), slice: -1, list: [] });
+}
+function field(id, s, f) { const a = layerData.get(id); const o = (s * NF + f) * N; return a.subarray(o, o + N); }
+function cellKey(lo, la) { return [Math.round((lo - meta.lon0) / (0.75 * HW)), Math.round(2 * (la - meta.lat0) / HH)]; }
 const keyOf = (c, r) => (c + 16) * 4096 + (r + 16);
+const groupOf = (L) => LAYERS.filter((x) => x.group === L.group && !x.set);
+const setOf = (L) => LAYERS.filter((x) => L.set && x.set === L.set);
+function viewLayers() {
+  const L = BY[state.layer];
+  if (state.view !== "boundaries") return [L.id];
+  return (L.set ? setOf(L) : groupOf(L)).map((x) => x.id);
+}
 
-async function load() {
-  const [cB, lB, xyB, wB, stB, fB, nB, bB, kB] = await Promise.all(
-    ["cells", "layers", "uxy", "uw", "ust", "uflag", "unames", "borders", "contours"].map((k) => gunzip(raw[k])));
+async function loadBase() {
+  const [cB, bB, kB, rB] = await Promise.all(["cells", "borders", "contours", "region"].map((k) => gunzip(raw[k])));
+  regionIx = rB;
   const cells = new Int32Array(cB.buffer, 0, 2 * N);
   lon = new Float64Array(N); lat = new Float64Array(N); X = new Float64Array(N); Y = new Float64Array(N);
   keyIndex = new Map();
@@ -258,59 +296,112 @@ async function load() {
     const [c, r] = cellKey(lon[i], lat[i]);
     for (let d = 0; d < 6; d++) { const j = keyIndex.get(keyOf(c + DIRS[d][0], r + DIRS[d][1])); if (j !== undefined) nb[6 * i + d] = j; }
   }
-  layers = lB;
-  const uxy = new Int32Array(xyB.buffer, 0, 2 * NU);
-  uX = new Float64Array(NU); uY = new Float64Array(NU);
-  for (let u = 0; u < NU; u++) { uX[u] = uxy[2 * u] / 1e4 * K; uY[u] = -uxy[2 * u + 1] / 1e4; }
-  uW = wB; uSt = stB; uFlag = fB;
-  uNames = new TextDecoder().decode(nB).split("\n");
   borders = asJSON(bB); contours = asJSON(kB);
 }
 
 // ---------------------------------------------------------------- theme
 const PAL_KEYS = ["--sea", "--land-none", "--ice", "--acid", "--below", "--r1", "--r2", "--r3", "--r4", "--r5",
   "--d1", "--d2", "--d3", "--d4", "--d5", "--land-plain"];
+function dark() {
+  const t = document.documentElement.getAttribute("data-theme");
+  return t === "dark" || (t !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+}
 function readTheme() {
   const cs = getComputedStyle(document.documentElement);
   const g = (k) => cs.getPropertyValue(k).trim();
   pal = { fills: PAL_KEYS.map(g), ink: g("--line-ink"), border: g("--border-line"), dotOn: g("--dot-on"),
-    dotOff: g("--dot-off"), m: [g("--m1"), g("--m2"), g("--m3"), g("--m4"), g("--m5")], sea: g("--sea") };
+    dotOff: g("--dot-off"), sea: g("--sea"), plain: g("--land-plain") };
+}
+const colourOf = (L) => dark() ? L.colour_dark : L.colour;
+function mixToPlain(hex, t) {
+  const a = parseInt(hex.slice(1), 16), b = parseInt((pal.plain || "#e7e7e2").slice(1), 16);
+  const ch = (v, s) => (v >> s) & 255;
+  const m = (s) => Math.round(ch(a, s) * t + ch(b, s) * (1 - t));
+  return `rgb(${m(16)},${m(8)},${m(0)})`;
 }
 
 // ---------------------------------------------------------------- classify
-let cache = { key: "", buckets: null };
+let cache = { key: "", buckets: null, fills: null, hatch: null };
+let hatch = null;
+// Hatch patterns for judged cells: sparser = more confident; crosshatch = extrapolated.
+const patterns = {};
+function pattern(code) {
+  const key = `${code}|${dark()}`;
+  if (patterns[key]) return patterns[key];
+  const gap = [0, 9, 6, 4, 5][code], c = document.createElement("canvas");
+  c.width = c.height = gap * 4;
+  const g = c.getContext("2d");
+  g.strokeStyle = dark() ? "rgba(11,15,17,0.75)" : "rgba(252,252,251,0.8)";
+  g.lineWidth = code === 4 ? 1.1 : 1.3;
+  g.beginPath();
+  for (let k = -c.width; k <= c.width * 2; k += gap) { g.moveTo(k, 0); g.lineTo(k - c.width, c.height); }
+  if (code === 4) for (let k = -c.width; k <= c.width * 2; k += gap) { g.moveTo(k - c.width, 0); g.lineTo(k, c.height); }
+  g.stroke();
+  return (patterns[key] = ctx.createPattern(c, "repeat"));
+}
 function buckets() {
-  const key = `${state.layer}|${state.m}|${state.s}`;
-  if (cache.key === key) return cache.buckets;
-  const m = state.layer === "boundaries" ? 0 : state.m, s = state.s;
-  const P = field(m, s, 0), E = field(m, s, 1), B = field(m, s, 2), Mk = field(m, s, 4);
-  const lists = Array.from({ length: PAL_KEYS.length }, () => []);
-  for (let i = 0; i < N; i++) {
-    const mk = Mk[i];
-    let c;
-    if (mk === 4) continue;
-    if (state.layer === "boundaries") c = mk === 2 ? 2 : 15;
-    else if (mk === 2) c = 2;
-    else if (mk === 3) c = 3;
-    else if (state.layer === "evidence") {
-      const e = EQ[E[i]];
-      c = e < 0.05 ? 1 : e < EMIN ? 4 : e < 3 ? 5 : e < 10 ? 6 : e < 30 ? 7 : e < 100 ? 8 : 9;
-    } else if (mk === 1) c = 1;
-    else if (state.layer === "presence") {
-      const p = P[i] / 200; c = 5 + (p >= 0.8 ? 4 : p >= 0.6 ? 3 : p >= 0.4 ? 2 : p >= 0.2 ? 1 : 0);
-    } else {
-      const v = B[i];
-      if (v === 255) c = 1; else { const f = v / 200; c = 10 + (f >= 0.9 ? 4 : f >= 0.65 ? 3 : f >= 0.35 ? 2 : f >= 0.1 ? 1 : 0); }
+  const L = BY[state.layer], s = state.s;
+  const key = `${state.view}|${state.layer}|${s}|${dark()}`;
+  if (cache.key === key) return cache;
+  const lists = [], fills = [];
+  const add = (fill) => { const k = fills.indexOf(fill); if (k >= 0) return k; fills.push(fill); lists.push([]); return fills.length - 1; };
+  PAL_KEYS.forEach((k, i) => add(pal.fills[i]));
+  const F = pal.fills;
+  if (state.view === "boundaries" && L.set) {
+    const mem = setOf(L), Ms = mem.map((x) => field(x.id, s, 4)), Ps = mem.map((x) => field(x.id, s, 0));
+    const strong = mem.map((x) => add(colourOf(x))), weak = mem.map((x) => add(mixToPlain(colourOf(x), 0.4)));
+    for (let i = 0; i < N; i++) {
+      const mk = Ms[0][i];
+      if (mk === 4) continue;
+      if (mk === 2) { lists[2].push(i); continue; }
+      let best = -1, top = -1;
+      for (let k = 0; k < mem.length; k++) if (Ms[k][i] === 0 && Ps[k][i] > top) { top = Ps[k][i]; best = k; }
+      if (best < 0) lists[1].push(i);
+      else lists[top >= 80 ? strong[best] : weak[best]].push(i);
     }
-    lists[c].push(i);
+  } else if (state.view === "speculative") {
+    const Mk = field(L.id, s, 4), V = field(L.id, s, 5), C = field(L.id, s, 6);
+    hatch = [[], [], [], [], []];
+    for (let i = 0; i < N; i++) {
+      const mk = Mk[i];
+      if (mk === 4) continue;
+      if (mk === 2) { lists[2].push(i); continue; }
+      const v = V[i];
+      if (v === 255) { lists[1].push(i); continue; }
+      const p = v / 200;
+      lists[5 + (p >= 0.8 ? 4 : p >= 0.6 ? 3 : p >= 0.4 ? 2 : p >= 0.2 ? 1 : 0)].push(i);
+      if (C[i] >= 1 && C[i] <= 4) hatch[C[i]].push(i);
+    }
+  } else {
+    const P = field(L.id, s, 0), E = field(L.id, s, 1), B = field(L.id, s, 2), Mk = field(L.id, s, 4);
+    for (let i = 0; i < N; i++) {
+      const mk = Mk[i];
+      let c;
+      if (mk === 4) continue;
+      if (state.view === "boundaries") c = mk === 2 ? 2 : 15;
+      else if (mk === 2) c = 2;
+      else if (mk === 3) c = 3;
+      else if (state.view === "evidence") {
+        if (L.kind === "grid") { c = mk ? 1 : 7; }
+        else { const e = EQ[E[i]]; c = e < 0.05 ? 1 : e < EMIN ? 4 : e < 3 ? 5 : e < 10 ? 6 : e < 30 ? 7 : e < 100 ? 8 : 9; }
+      } else if (mk === 1) c = 1;
+      else if (state.view === "presence") {
+        const p = P[i] / 200; c = 5 + (p >= 0.8 ? 4 : p >= 0.6 ? 3 : p >= 0.4 ? 2 : p >= 0.2 ? 1 : 0);
+      } else {
+        const v = B[i];
+        if (v === 255) c = 1; else { const f = v / 200; c = 10 + (f >= 0.9 ? 4 : f >= 0.65 ? 3 : f >= 0.35 ? 2 : f >= 0.1 ? 1 : 0); }
+      }
+      lists[c].push(i);
+    }
   }
-  cache = { key, buckets: lists.map((l) => Int32Array.from(l)) };
-  return cache.buckets;
+  cache = { key, buckets: lists.map((l) => Int32Array.from(l)), fills,
+    hatch: state.view === "speculative" ? hatch.map((l) => Int32Array.from(l)) : null };
+  return cache;
 }
 
 // ---------------------------------------------------------------- view
 const cv = $("map"), ctx = cv.getContext("2d");
-let W = 0, H = 0, dpr = 1;
+let W = 0, H = 0, dpr = 1, fitScale = 1;
 const view = { cx: 0, cy: 0, sc: 1 };
 const sx = (x) => (x - view.cx) * view.sc + W / 2;
 const sy = (y) => (y - view.cy) * view.sc + H / 2;
@@ -318,7 +409,6 @@ function fit(lo0, lo1, la0, la1) {
   view.cx = (lo0 + lo1) / 2 * K; view.cy = -(la0 + la1) / 2;
   view.sc = Math.min(W / ((lo1 - lo0) * K), H / (la1 - la0)) * 0.97;
 }
-let fitScale = 1;
 function fitAll() { const b = meta.bounds; fit(b[0], b[2], b[1], b[3]); fitScale = view.sc; }
 function fitEurope() { fit(-12, 45, 35, 72); }
 function resize() {
@@ -337,28 +427,29 @@ function zoomAt(px, py, f) {
 }
 
 // ---------------------------------------------------------------- draw
-function polyline(flat, scaleDiv, close) {
+function polyline(flat, d) {
   for (let k = 0; k < flat.length; k += 2) {
-    const x = sx(flat[k] / scaleDiv * K), y = sy(-flat[k + 1] / scaleDiv);
+    const x = sx(flat[k] / d * K), y = sy(-flat[k + 1] / d);
     if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
   }
 }
-function drawContours(mat, level, width, colour, dash) {
-  const list = contours[`${mat}|${YEARS[state.s]}|${level}`];
+function midLevel(L) { return L.levels[Math.floor(L.levels.length / 2)]; }
+function drawContours(id, level, width, colour, dash) {
+  const list = contours[`${id}|${YEARS[state.s]}|${level}`];
   if (!list) return;
   ctx.beginPath();
   for (const line of list) polyline(line, 1000);
   ctx.setLineDash(dash || []); ctx.lineWidth = width; ctx.strokeStyle = colour; ctx.lineJoin = "round"; ctx.stroke();
   ctx.setLineDash([]);
 }
-// Outline the cells shown for material m where they meet masked cells or sea.
-// With aboveOnly, only cells at or above 50% count: where such a region runs
-// into the edge of the evidence, that edge stands in for the missing isoline.
-function drawExtent(m, colour, dash, aboveOnly) {
-  const Mk = field(m, state.s, 4), P = field(m, state.s, 0);
+// Outline the cells shown for a layer where they meet masked cells or sea.
+// With aboveOnly, only cells at or above the middle level count.
+function drawExtent(id, colour, aboveOnly) {
+  const L = BY[id], Mk = field(id, state.s, 4), P = field(id, state.s, 0);
+  const thr = isValue(L) ? (midLevel(L) - L.vmin) / (L.vmax - L.vmin) * 200 : midLevel(L) * 200;
   ctx.beginPath();
   for (let i = 0; i < N; i++) {
-    if (Mk[i] !== 0 || (aboveOnly && P[i] < 100)) continue;
+    if (Mk[i] !== 0 || (aboveOnly && P[i] < thr)) continue;
     for (let d = 0; d < 6; d++) {
       const j = nb[6 * i + d];
       if (j >= 0 && Mk[j] === 0) continue;
@@ -367,7 +458,7 @@ function drawExtent(m, colour, dash, aboveOnly) {
       ctx.lineTo(sx((lon[i] + VX[b]) * K), sy(-(lat[i] + VY[b])));
     }
   }
-  ctx.setLineDash(dash); ctx.lineWidth = 1.6; ctx.strokeStyle = colour; ctx.lineCap = "round"; ctx.stroke();
+  ctx.setLineDash([1.5, 3]); ctx.lineWidth = 1.6; ctx.strokeStyle = colour; ctx.lineCap = "round"; ctx.stroke();
   ctx.setLineDash([]); ctx.lineCap = "butt";
 }
 function hexPath(i, grow) {
@@ -376,22 +467,22 @@ function hexPath(i, grow) {
   ctx.moveTo(cx + hw, cy); ctx.lineTo(cx + hw / 2, cy - hh); ctx.lineTo(cx - hw / 2, cy - hh);
   ctx.lineTo(cx - hw, cy); ctx.lineTo(cx - hw / 2, cy + hh); ctx.lineTo(cx + hw / 2, cy + hh); ctx.closePath();
 }
-function unitsInSlice() {
-  const out = [], o = state.s * NU;
-  for (let u = 0; u < NU; u++) if (uW[o + u] >= 51) out.push(u);
-  return out;
-}
-let sliceUnits = { s: -1, list: [] };
 function visibleUnits() {
-  if (sliceUnits.s !== state.s) sliceUnits = { s: state.s, list: unitsInSlice() };
-  return sliceUnits.list;
+  const U = unitData.get(BY[state.layer].unit);
+  if (!U) return null;
+  if (U.slice !== state.s) {
+    const out = [], o = state.s * U.n;
+    for (let u = 0; u < U.n; u++) if (U.w[o + u] >= 51) out.push(u);
+    U.slice = state.s; U.list = out;
+  }
+  return U;
 }
 function draw() {
   if (!W) return;
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.fillStyle = pal.sea || "#000"; ctx.fillRect(0, 0, W, H);
-  if (!ready) return;
-  const lists = buckets();
+  if (!ready || !viewLayers().every((id) => layerData.has(id))) return;
+  const { buckets: lists, fills } = buckets();
   const hw = HW / 2 * K * view.sc + 1, hh = HH / 2 * view.sc + 1;
   for (let c = 1; c < lists.length; c++) {
     const l = lists[c];
@@ -403,36 +494,52 @@ function draw() {
       ctx.moveTo(x + hw, y); ctx.lineTo(x + hw / 2, y - hh); ctx.lineTo(x - hw / 2, y - hh);
       ctx.lineTo(x - hw, y); ctx.lineTo(x - hw / 2, y + hh); ctx.lineTo(x + hw / 2, y + hh); ctx.closePath();
     }
-    ctx.fillStyle = pal.fills[c]; ctx.fill();
+    ctx.fillStyle = fills[c]; ctx.fill();
+  }
+  if (state.view === "speculative" && cache.hatch) {
+    for (let code = 1; code <= 4; code++) {
+      const l = cache.hatch[code];
+      if (!l.length) continue;
+      ctx.beginPath();
+      for (let k = 0; k < l.length; k++) {
+        const i = l[k], x = sx(X[i]), y = sy(Y[i]);
+        if (x < -hw || x > W + hw || y < -hh || y > H + hh) continue;
+        ctx.moveTo(x + hw, y); ctx.lineTo(x + hw / 2, y - hh); ctx.lineTo(x - hw / 2, y - hh);
+        ctx.lineTo(x - hw, y); ctx.lineTo(x - hw / 2, y + hh); ctx.lineTo(x + hw / 2, y + hh); ctx.closePath();
+      }
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.save(); ctx.scale(dpr, dpr); ctx.fillStyle = pattern(code); ctx.fill(); ctx.restore();
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
   }
   if (state.borders && borders) {
     ctx.beginPath();
     for (const line of borders) polyline(line, 100);
     ctx.lineWidth = 0.7; ctx.strokeStyle = pal.border; ctx.stroke();
   }
-  const mat = MATS[state.m];
-  if (state.layer === "boundaries") {
-    MATS.forEach((mm, k) => drawExtent(k, pal.m[k], [1.5, 3], mm.hasAbsences));
-    MATS.forEach((mm, k) => { if (mm.hasAbsences) drawContours(mm.id, "0.5", 2.4, pal.m[k], DASH[mm.id]); });
-  } else if (state.iso && state.layer === "presence" && mat.hasAbsences) {
-    drawContours(mat.id, "0.25", 0.9, pal.ink); drawContours(mat.id, "0.75", 0.9, pal.ink);
-    drawContours(mat.id, "0.5", 2, pal.ink);
-  } else if (state.iso && state.layer === "firmness") {
-    drawContours(mat.id, "0.5", 1.8, pal.ink);
+  const L = BY[state.layer];
+  if (state.view === "boundaries" && !L.set) {
+    const mem = groupOf(L);
+    mem.forEach((m) => drawExtent(m.id, colourOf(m), hasFirm(m)));
+    mem.forEach((m, k) => { if (hasFirm(m)) drawContours(m.id, String(midLevel(m)), 2.4, colourOf(m), DASHES[k % DASHES.length]); });
+  } else if (state.iso && state.view === "presence" && hasFirm(L)) {
+    L.levels.forEach((v) => drawContours(L.id, String(v), v === midLevel(L) ? 2 : 0.9, pal.ink));
+  } else if (state.iso && state.view === "firmness") {
+    drawContours(L.id, String(midLevel(L)), 1.8, pal.ink);
   }
   if (state.dots) drawDots();
-  if (hover !== null) {
-    ctx.beginPath(); hexPath(hover, 0.5); ctx.lineWidth = 2; ctx.strokeStyle = pal.ink; ctx.stroke();
-  }
+  if (hover !== null) { ctx.beginPath(); hexPath(hover, 0.5); ctx.lineWidth = 2; ctx.strokeStyle = pal.ink; ctx.stroke(); }
 }
 function drawDots() {
-  const list = visibleUnits(), boundaries = state.layer === "boundaries", o = state.m * NU;
-  const r0 = Math.min(2.2, Math.max(1, view.sc / fitScale)) ;
+  const U = visibleUnits();
+  if (!U) return;
+  const L = BY[state.layer], plain = state.view === "boundaries", li = U.index[L.id], o = li * U.n;
+  const r0 = Math.min(2.2, Math.max(1, view.sc / fitScale));
   const groups = [[], [], [], [], []];
-  for (const u of list) {
-    const x = sx(uX[u]), y = sy(uY[u]);
+  for (const u of U.list) {
+    const x = sx(U.ux[u]), y = sy(U.uy[u]);
     if (x < -6 || x > W + 6 || y < -6 || y > H + 6) continue;
-    groups[boundaries ? 0 : uSt[o + u]].push(x, y);
+    groups[plain || li === undefined ? 0 : U.st[o + u]].push(x, y);
   }
   const circles = (pts, r) => { ctx.beginPath(); for (let k = 0; k < pts.length; k += 2) { ctx.moveTo(pts[k] + r, pts[k + 1]); ctx.arc(pts[k], pts[k + 1], r, 0, 6.2832); } };
   ctx.globalAlpha = 0.55; circles(groups[0], 1.3 * r0); ctx.fillStyle = pal.dotOff; ctx.fill(); ctx.globalAlpha = 1;
@@ -443,115 +550,190 @@ function drawDots() {
 }
 
 // ---------------------------------------------------------------- panels
-function sliceStats() { return MATS[state.m].bySlice[state.s]; }
-function renderReadout() {
-  const mat = MATS[state.m], st = sliceStats(), y = YEARS[state.s];
-  const el = $("readout");
-  if (state.layer === "boundaries") {
-    const rows = !ready ? "" : MATS.map((mm, k) => {
-      const Mk = field(k, state.s, 4), P = field(k, state.s, 0);
-      let above = 0, below = 0;
-      for (let i = 0; i < N; i++) if (Mk[i] === 0) { if (P[i] >= 100) above++; else below++; }
-      let txt;
-      if (!above && !below) txt = "no cell has enough evidence";
-      else if (!mm.hasAbsences) txt = `recorded in ${nf.format(above)} cells; no absences, so no boundary`;
-      else if (!below) txt = `at or above 50% in all ${nf.format(above)} cells with evidence: no boundary, only the dotted evidence edge`;
-      else if (!above) txt = `below 50% in all ${nf.format(below)} cells with evidence: no boundary`;
-      else txt = `crosses 50%: ${nf.format(above)} cells above, ${nf.format(below)} below`;
-      return `<dt><span class="chip" style="background:var(--m${k + 1})"></span>${mm.name}</dt><dd>${txt}</dd>`;
-    }).join("");
-    el.innerHTML = `<h2>All materials, ${yearLabel(y)}</h2>
-      <p class="note">Solid and dashed lines are true 50% presence boundaries. Dotted outlines mark where a material runs to the edge of its evidence: for pottery and ground stone, cells at or above 50%; for the other three, cells with recorded finds, since nothing records their absence.</p>
-      <dl class="status">${rows}</dl>`;
-    return;
-  }
-  const caveat = meta.caveats[`${mat.id}|${y}`];
-  const note = mat.hasAbsences
-    ? (mat.absentRecorded
-        ? `Most absences come from culture and stage labels; ${nf.format(mat.absentRecorded)} occupations in North Africa have a recorded absence (MedAfriCarbon, Rotunno & Crema). In this slice ${pct(st.label_share)} of the evidence weight is label-derived.`
-        : `Absences come only from culture and stage labels. In this slice ${pct(st.label_share)} of the evidence weight is label-derived.`)
-    : `No source records absence, so presence is 100% wherever there is enough evidence. This shows where finds are recorded, not where the material was used.`;
-  const acid = mat.acid ? `<p class="note">Cells with topsoil pH below ${meta.phMin} are masked: bone rarely survives there, though bogs and lake beds inside them can preserve it.</p>` : "";
-  const firm = mat.hasAbsences ? `<dt>Cells firm in ≥ 90% of runs</dt><dd>${nf.format(st.cells_firm)}</dd>` : "";
-  el.innerHTML = `<h2>${mat.name}, ${yearLabel(y)}</h2>
-    <p class="note">${note}</p>${acid}${caveat ? `<p class="note warn">${esc(caveat)}</p>` : ""}
-    <dl class="stats">
-      <dt>Occupations with known status</dt><dd>${nf.format(Math.round(st.occupations))}</dd>
-      <dt>Slice mean presence f₀</dt><dd>${pct(mat.f0[state.s])}</dd>
-      <dt>Cells shown / land cells</dt><dd>${nf.format(st.cells_unmasked)} / ${nf.format(st.land_cells)}</dd>
-      ${firm}
-      <dt>Kernel width σ</dt><dd>${mat.sigma} km${mat.sigmaCv ? "" : "*"}</dd>
-    </dl>
-    ${mat.sigmaCv ? "" : `<p class="note">* Taken from pottery: with no absences there is nothing to cross-validate.</p>`}`;
-}
-const sw = (v) => `<span class="sw" style="background:var(${v})"></span>`;
-const lineSw = (colourVar, w, dash) => `<svg width="26" height="10" aria-hidden="true"><line x1="1" y1="5" x2="25" y2="5" style="stroke:var(${colourVar});stroke-width:${w};stroke-dasharray:${(dash || []).join(" ")};stroke-linecap:round"></line></svg>`;
-const dotSw = (kind) => {
-  const s = kind === "rec" ? `fill:var(--dot-on);stroke:var(--sea)` : kind === "lab" ? `fill:none;stroke:var(--dot-on);stroke-width:1.3`
-    : kind === "abs" ? `fill:none;stroke:var(--dot-off);stroke-width:1.2` : kind === "absrec" ? `fill:var(--dot-off);stroke:var(--sea)` : `fill:var(--dot-off);opacity:.55`;
-  const r = kind === "unk" ? 2 : 4;
-  return `<svg width="16" height="12" aria-hidden="true"><circle cx="8" cy="6" r="${r}" style="${s}"></circle></svg>`;
-};
-function renderLegend() {
-  const mat = MATS[state.m];
-  let items = [];
-  const neutral = [];
-  if (state.layer === "presence") {
-    ["0–20%", "20–40%", "40–60%", "60–80%", "80–100%"].forEach((l, k) => items.push(`<li>${sw(`--r${k + 1}`)}${l}</li>`));
-    if (state.iso && mat.hasAbsences) items.push(`<li>${lineSw("--line-ink", 2)}50% isoline</li>`, `<li>${lineSw("--line-ink", 1)}25% and 75%</li>`);
-  } else if (state.layer === "evidence") {
-    [`E ${EMIN}–3`, "E 3–10", "E 10–30", "E 30–100", "E 100+"].forEach((l, k) => items.push(`<li>${sw(`--r${k + 1}`)}${l}</li>`));
-    items.push(`<li class="wide">${sw("--below")}Some evidence, under ${EMIN} (masked)</li>`);
-  } else if (state.layer === "firmness") {
-    ["Under 10% of runs: firmly below", "10–35%", "35–65%: undecided", "65–90%", "Over 90% of runs: firmly above"]
-      .forEach((l, k) => items.push(`<li class="${k % 4 === 0 || k === 2 ? "wide" : ""}">${sw(`--d${k + 1}`)}${l}</li>`));
-    if (state.iso) items.push(`<li class="wide">${lineSw("--line-ink", 1.8)}Main run's 50% isoline</li>`);
-  } else {
-    MATS.forEach((mm, k) => { if (mm.hasAbsences) items.push(`<li class="wide">${lineSw(`--m${k + 1}`, 2.4, DASH[mm.id])}${mm.name}: 50% boundary</li>`); });
-    MATS.forEach((mm, k) => items.push(`<li class="wide">${lineSw(`--m${k + 1}`, 1.6, [1.5, 3])}${mm.name}: ${mm.hasAbsences ? "≥ 50% up to the edge of its evidence" : "edge of recorded finds"}</li>`));
-  }
-  if (state.layer === "boundaries") neutral.push(`<li>${sw("--land-plain")}Land</li>`);
-  else neutral.push(`<li class="wide">${sw("--land-none")}${state.layer === "evidence" ? "No evidence within reach" : "Too little evidence (masked)"}</li>`);
-  neutral.push(`<li>${sw("--ice")}Ice</li>`, `<li>${sw("--sea")}Sea</li>`);
-  if (mat.acid && state.layer !== "boundaries") neutral.push(`<li class="wide">${sw("--acid")}Acid soil, pH under ${meta.phMin} (masked)</li>`);
-  let dots = "";
-  if (state.dots) {
-    dots = state.layer === "boundaries"
-      ? `<ul><li class="wide">${dotSw("unk")}Dated occupation in this slice</li></ul>`
-      : `<ul><li class="wide">${dotSw("rec")}${mat.name} recorded</li><li class="wide">${dotSw("lab")}Implied by its label</li>
-         <li class="wide">${dotSw("abs")}Absent, by its label</li>${mat.absentRecorded ? `<li class="wide">${dotSw("absrec")}Absent, recorded</li>` : ""}<li class="wide">${dotSw("unk")}Status unknown (not used)</li></ul>`;
-  }
-  $("legend").innerHTML = `<span class="label">Key</span><ul>${items.join("")}</ul><ul>${neutral.join("")}</ul>${dots}`;
-}
+const KIND = { presence_absence: "Presence and recorded absence", presence_only: "Presence only: nothing records absence",
+  share: "Share among sampled individuals", continuous: "Measured value", grid: "Published gridded reconstruction" };
+const UNITWORD = { occupation: "dated occupations", core: "pollen cores", sample: "ancient genomes" };
 function renderControls() {
-  const matBox = $("mat");
-  [...matBox.children].forEach((b, k) => b.setAttribute("aria-checked", String(k === state.m)));
-  matBox.classList.toggle("dim", state.layer === "boundaries");
-  const firmBtn = document.querySelector('[data-layer="firmness"]');
-  firmBtn.disabled = !MATS[state.m].hasAbsences;
-  firmBtn.title = firmBtn.disabled ? "Only for materials with known absences (pottery, ground stone)" : "";
-  document.querySelectorAll("#layer button").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.layer === state.layer)));
+  const L = BY[state.layer];
+  [...$("group").children].forEach((b) => b.setAttribute("aria-checked", String(b.dataset.group === L.group)));
+  const sel = $("layer");
+  if (sel.dataset.group !== L.group) {
+    sel.dataset.group = L.group;
+    const inGroup = LAYERS.filter((x) => x.group === L.group);
+    let html = "", openSet = null;
+    for (const x of inGroup) {
+      if (x.set !== openSet) { if (openSet) html += "</optgroup>"; if (x.set) html += `<optgroup label="${esc(x.set)}">`; openSet = x.set || null; }
+      html += `<option value="${x.id}">${esc(x.name)}</option>`;
+    }
+    if (openSet) html += "</optgroup>";
+    sel.innerHTML = html;
+  }
+  sel.value = L.id;
+  $("kind").textContent = `${KIND[L.kind]}${L.unit !== "grid" ? " · " + UNITWORD[L.unit] : ""}`;
+  document.querySelectorAll("#view button").forEach((b) => {
+    const v = b.dataset.view;
+    b.setAttribute("aria-checked", String(v === state.view));
+    if (v === "presence") b.textContent = isValue(L) ? "Value" : L.kind === "share" ? "Share" : "Presence";
+    if (v === "boundaries") b.textContent = L.set ? "Most common" : "Boundaries";
+    if (v === "firmness") { b.disabled = !hasFirm(L); b.title = b.disabled ? "Only for layers with recorded absences or measured values" : ""; }
+    if (v === "evidence") { b.disabled = L.kind === "grid"; b.title = b.disabled ? "A published reconstruction: no evidence count" : ""; }
+    if (v === "speculative") { b.hidden = !meta.speculative; b.title = "Gaps filled from the gap critic's judgements: for the game, not evidence"; }
+  });
+  $("dots-word").textContent = L.unit === "grid" ? "Evidence points" : UNITWORD[L.unit][0].toUpperCase() + UNITWORD[L.unit].slice(1);
+  $("t-dots").disabled = L.unit === "grid";
   $("slice").value = state.s;
   const y = YEARS[state.s];
   $("year").textContent = yearLabel(y);
   $("span").textContent = `${nf.format(Math.abs(y - meta.half))}–${nf.format(Math.abs(y + meta.half))} BCE`;
 }
+function statusLine(m) {
+  const Mk = field(m.id, state.s, 4), P = field(m.id, state.s, 0);
+  const thr = isValue(m) ? (midLevel(m) - m.vmin) / (m.vmax - m.vmin) * 200 : midLevel(m) * 200;
+  let above = 0, below = 0;
+  for (let i = 0; i < N; i++) if (Mk[i] === 0) { if (P[i] >= thr) above++; else below++; }
+  const lv = fmtLevel(m, midLevel(m));
+  if (!above && !below) return "no cell has enough evidence";
+  if (!hasFirm(m)) return `recorded in ${nf.format(above)} cells; no absences, so no boundary`;
+  if (!below) return `at or above ${lv} in all ${nf.format(above)} cells with evidence: no boundary, only the dotted evidence edge`;
+  if (!above) return `below ${lv} in all ${nf.format(below)} cells with evidence: no boundary`;
+  return `crosses ${lv}: ${nf.format(above)} cells above, ${nf.format(below)} below`;
+}
+function renderReadout() {
+  const L = BY[state.layer], y = YEARS[state.s], el = $("readout");
+  if (!ready || !viewLayers().every((id) => layerData.has(id))) { el.innerHTML = `<h2>${esc(L.name)}, ${yearLabel(y)}</h2>`; return; }
+  if (state.view === "boundaries") {
+    const mem = L.set ? setOf(L) : groupOf(L);
+    if (L.set) {
+      el.innerHTML = `<h2>${esc(L.set)}: most common clade, ${yearLabel(y)}</h2>
+        <p class="note">Each cell shows the clade with the highest smoothed share among sampled individuals; paler where the leader has under 40%. Pick a single clade under Presence to see its share and firmness.</p>`;
+      return;
+    }
+    const rows = mem.map((m) => `<dt><span class="chip" style="background:${colourOf(m)}"></span>${esc(m.name)}</dt><dd>${statusLine(m)}</dd>`).join("");
+    el.innerHTML = `<h2>${esc(L.group)}, ${yearLabel(y)}</h2>
+      <p class="note">Solid and dashed lines are true boundaries at each layer's middle level. Dotted outlines mark where a layer runs to the edge of its evidence: for layers with absences, cells at or above the middle level; for presence-only layers, cells with recorded evidence.</p>
+      <dl class="status">${rows}</dl>`;
+    return;
+  }
+  if (state.view === "speculative") {
+    const C = field(L.id, state.s, 6), n = [0, 0, 0, 0, 0];
+    for (let i = 0; i < N; i++) if (C[i] <= 4) n[C[i]]++;
+    const tot = n.reduce((a, b) => a + b, 0) || 1;
+    el.innerHTML = `<h2>${esc(L.name)}, ${yearLabel(y)}: speculative</h2>
+      <p class="note warn">Not evidence. Masked cells are filled from the gap critic's judgements (data/isostyle/intuitions/), blended toward observed values near them; cells no judgement covers take the nearest observed values. Hover a cell for the judgement behind it.</p>
+      <dl class="stats">${CONFNAME.map((c, k) => `<dt>${c[0].toUpperCase() + c.slice(1)}</dt><dd>${pct(n[k] / tot)}</dd>`).join("")}</dl>
+      <p class="note">Gradients and timings the critics proposed in words are listed in data/isostyle/speculative/rules.md; they are not applied here.</p>`;
+    return;
+  }
+  const st = (L.bySlice || [])[state.s] || {};
+  const cav = meta.caveats[`${L.id}|${y}`];
+  const rows = [];
+  if (L.kind !== "grid") rows.push(`<dt>${esc((L.evidence_word || "units")[0].toUpperCase() + (L.evidence_word || "units").slice(1))} with known status</dt><dd>${nf.format(Math.round(st.occupations || 0))}</dd>`);
+  if (st.label_share) rows.push(`<dt>Weight from culture labels</dt><dd>${pct(st.label_share)}</dd>`);
+  if (L.f0 && L.f0[state.s] !== null && L.f0[state.s] !== undefined) rows.push(`<dt>Slice mean</dt><dd>${isValue(L) ? L.f0[state.s].toFixed(0) + (L.units_label ? " " + esc(L.units_label) : "") : pct(L.f0[state.s])}</dd>`);
+  rows.push(`<dt>Cells shown / land cells</dt><dd>${nf.format(st.cells_unmasked || 0)} / ${nf.format(st.land_cells || 0)}</dd>`);
+  if (L.hasAbsences && st.cells_firm !== undefined) rows.push(`<dt>Cells firm in ≥ 90% of runs</dt><dd>${nf.format(st.cells_firm)}</dd>`);
+  if (L.kind !== "grid") rows.push(`<dt>Kernel width σ</dt><dd>${L.sigma} km${L.sigmaFrom ? "*" : ""}</dd>`);
+  if (L.nAbsent !== null && L.nAbsent !== undefined && L.kind !== "presence_only") rows.push(`<dt>Absences in all slices</dt><dd>${nf.format(L.nAbsent)}</dd>`);
+  el.innerHTML = `<h2>${esc(L.name)}, ${yearLabel(y)}</h2>
+    ${L.note ? `<p class="note">${esc(L.note)}</p>` : ""}
+    ${L.kind === "presence_only" ? `<p class="note">Nothing records where this was absent, so the map shows where it is recorded.</p>` : ""}
+    ${L.acid ? `<p class="note">Cells with topsoil pH below ${meta.phMin} are masked: bone rarely survives there.</p>` : ""}
+    ${cav ? `<p class="note warn">${esc(cav)}</p>` : ""}
+    <dl class="stats">${rows.join("")}</dl>
+    ${L.sigmaFrom ? `<p class="note">* σ ${esc(L.sigmaFrom)}.</p>` : ""}
+    ${L.licence ? `<p class="note">Sources: ${esc(L.licence)}</p>` : ""}`;
+}
+const sw = (v) => `<span class="sw" style="background:${v.startsWith("--") ? `var(${v})` : v}"></span>`;
+const lineSw = (colour, w, dash) => `<svg width="26" height="10" aria-hidden="true"><line x1="1" y1="5" x2="25" y2="5" style="stroke:${colour};stroke-width:${w};stroke-dasharray:${(dash || []).join(" ")};stroke-linecap:round"></line></svg>`;
+const dotSw = (kind) => {
+  const s = kind === "rec" ? `fill:var(--dot-on);stroke:var(--sea)` : kind === "lab" ? `fill:none;stroke:var(--dot-on);stroke-width:1.3`
+    : kind === "abs" ? `fill:none;stroke:var(--dot-off);stroke-width:1.2` : kind === "absrec" ? `fill:var(--dot-off);stroke:var(--sea)` : `fill:var(--dot-off);opacity:.55`;
+  return `<svg width="16" height="12" aria-hidden="true"><circle cx="8" cy="6" r="${kind === "unk" ? 2 : 4}" style="${s}"></circle></svg>`;
+};
+function valueLabels(L) {
+  if (!isValue(L)) return ["0–20%", "20–40%", "40–60%", "60–80%", "80–100%"];
+  const step = (L.vmax - L.vmin) / 5, u = L.units_label ? " " + L.units_label : "";
+  return [0, 1, 2, 3, 4].map((k) => `${L.vmin + k * step}–${L.vmin + (k + 1) * step}${u}`);
+}
+function renderLegend() {
+  const L = BY[state.layer];
+  const items = [], neutral = [];
+  if (state.view === "presence") {
+    valueLabels(L).forEach((l, k) => items.push(`<li>${sw(`--r${k + 1}`)}${esc(l)}</li>`));
+    if (state.iso && hasFirm(L)) items.push(`<li>${lineSw("var(--line-ink)", 2)}${esc(fmtLevel(L, midLevel(L)))} isoline</li>`,
+      `<li>${lineSw("var(--line-ink)", 1)}${esc(L.levels.filter((v) => v !== midLevel(L)).map((v) => fmtLevel(L, v)).join(", "))}</li>`);
+  } else if (state.view === "speculative") {
+    valueLabels(L).forEach((l, k) => items.push(`<li>${sw(`--r${k + 1}`)}${esc(l)}</li>`));
+    [1, 2, 3, 4].forEach((code) => {
+      const c = document.createElement("canvas"); c.width = c.height = 32;
+      const g = c.getContext("2d"); g.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--r4").trim(); g.fillRect(0, 0, 32, 32);
+      g.fillStyle = pattern(code); g.fillRect(0, 0, 32, 32);
+      items.push(`<li class="wide"><span class="sw" style="background:url(${c.toDataURL()}) center/32px"></span>${CONFNAME[code][0].toUpperCase() + CONFNAME[code].slice(1)}</li>`);
+    });
+    items.unshift(`<li class="wide">${sw("--r4")}Observed (no hatching)</li>`);
+  } else if (state.view === "evidence") {
+    [`E ${EMIN}–3`, "E 3–10", "E 10–30", "E 30–100", "E 100+"].forEach((l, k) => items.push(`<li>${sw(`--r${k + 1}`)}${l}</li>`));
+    items.push(`<li class="wide">${sw("--below")}Some evidence, under ${EMIN} (masked)</li>`);
+  } else if (state.view === "firmness") {
+    const lv = fmtLevel(L, midLevel(L));
+    [`Under 10% of runs at or above ${lv}`, "10–35%", "35–65%: undecided", "65–90%", `Over 90% of runs at or above ${lv}`]
+      .forEach((l, k) => items.push(`<li class="${k % 4 === 0 || k === 2 ? "wide" : ""}">${sw(`--d${k + 1}`)}${esc(l)}</li>`));
+  } else if (L.set) {
+    setOf(L).forEach((m) => items.push(`<li>${sw(colourOf(m))}${esc(m.name)}</li>`));
+    items.push(`<li class="wide">${sw(mixToPlain(colourOf(setOf(L)[0]), 0.4))}Paler: leading clade under 40%</li>`);
+  } else {
+    groupOf(L).forEach((m, k) => {
+      if (hasFirm(m)) items.push(`<li class="wide">${lineSw(colourOf(m), 2.4, DASHES[k % DASHES.length])}${esc(m.name)}: ${esc(fmtLevel(m, midLevel(m)))} boundary</li>`);
+      items.push(`<li class="wide">${lineSw(colourOf(m), 1.6, [1.5, 3])}${esc(m.name)}: ${hasFirm(m) ? "≥ " + esc(fmtLevel(m, midLevel(m))) + " up to the edge of its evidence" : "edge of recorded evidence"}</li>`);
+    });
+  }
+  if (state.view === "boundaries" && !L.set) neutral.push(`<li>${sw("--land-plain")}Land</li>`);
+  else neutral.push(`<li class="wide">${sw("--land-none")}${state.view === "evidence" ? "No evidence within reach" : L.kind === "grid" ? "No reconstruction (masked)" : "Too little evidence (masked)"}</li>`);
+  neutral.push(`<li>${sw("--ice")}Ice</li>`, `<li>${sw("--sea")}Sea</li>`);
+  if (L.acid && state.view !== "boundaries") neutral.push(`<li class="wide">${sw("--acid")}Acid soil, pH under ${meta.phMin} (masked)</li>`);
+  let dots = "";
+  if (state.dots && L.unit !== "grid") {
+    const word = UNITWORD[L.unit];
+    dots = state.view === "boundaries"
+      ? `<ul><li class="wide">${dotSw("unk")}${esc(word[0].toUpperCase() + word.slice(1))} in this slice</li></ul>`
+      : L.kind === "share"
+        ? `<ul><li class="wide">${dotSw("rec")}In ${esc(L.name.replace(/^.*: /, ""))}</li><li class="wide">${dotSw("absrec")}Another clade</li><li class="wide">${dotSw("unk")}No call</li></ul>`
+        : `<ul><li class="wide">${dotSw("rec")}Recorded</li><li class="wide">${dotSw("lab")}Implied by a culture label</li>
+           <li class="wide">${dotSw("abs")}Absent, by a culture label</li><li class="wide">${dotSw("absrec")}Absent, recorded</li><li class="wide">${dotSw("unk")}Status unknown (not used)</li></ul>`;
+  }
+  $("legend").innerHTML = `<span class="label">Key</span><ul>${items.join("")}</ul><ul>${neutral.join("")}</ul>${dots}`;
+}
 function setHash() {
-  const slug = state.layer === "boundaries" ? "all" : MATS[state.m].slug;
-  try { history.replaceState(null, "", `#${slug}-${state.layer}-${Math.abs(YEARS[state.s])}`); } catch (e) { /* framed viewers may refuse */ }
+  try { history.replaceState(null, "", `#${BY[state.layer].slug}-${state.view}-${Math.abs(YEARS[state.s])}`); } catch (e) { /* framed viewers may refuse */ }
 }
 function readHash() {
-  const m = /^#([a-z-]+)-(presence|evidence|firmness|boundaries)-(\d+)$/.exec(location.hash);
+  const m = /^#([a-z0-9-]+)-(presence|evidence|firmness|boundaries|speculative)-(\d+)$/.exec(location.hash);
   if (!m) return;
-  const k = MATS.findIndex((x) => x.slug === m[1]);
-  if (k >= 0) state.m = k;
-  state.layer = m[2];
+  const L = LAYERS.find((x) => x.slug === m[1]);
+  if (L) state.layer = L.id;
+  state.view = m[2];
   const s = YEARS.indexOf(-Number(m[3]));
   if (s >= 0) state.s = s;
-  if (state.layer === "firmness" && !MATS[state.m].hasAbsences) state.layer = "presence";
+  fixView();
 }
-function update() {
-  hover = null; hideInspect(); renderControls(); renderReadout(); renderLegend(); setHash(); draw();
+function fixView() {
+  const L = BY[state.layer];
+  if (state.view === "firmness" && !hasFirm(L)) state.view = "presence";
+  if (state.view === "evidence" && L.kind === "grid") state.view = "presence";
+  if (state.view === "speculative" && !meta.speculative) state.view = "presence";
+}
+let pending = 0;
+async function update() {
+  hover = null; hideInspect(); fixView(); renderControls(); setHash();
+  const ticket = ++pending;
+  const need = viewLayers();
+  if (!need.every((id) => layerData.has(id)) || !unitData.has(BY[state.layer].unit)) {
+    $("loading").hidden = false; $("loading").textContent = "Unpacking…";
+    await Promise.all([ensureLayers(need), ensureUnits(BY[state.layer].unit)]);
+    if (ticket !== pending) return;
+    $("loading").hidden = true;
+  }
+  renderReadout(); renderLegend(); draw();
 }
 
 // ---------------------------------------------------------------- inspect
@@ -559,8 +741,7 @@ const insp = $("inspect");
 function hideInspect() { insp.hidden = true; }
 function cellAt(px, py) {
   const x = (px - W / 2) / view.sc + view.cx, y = (py - H / 2) / view.sc + view.cy;
-  const lo = x / K, la = -y;
-  const [c, r] = cellKey(lo, la);
+  const [c, r] = cellKey(x / K, -y);
   let best = null, bd = Infinity;
   for (let dc = -1; dc <= 1; dc++) for (let dr = -2; dr <= 2; dr++) {
     const i = keyIndex.get(keyOf(c + dc, r + dr));
@@ -571,48 +752,62 @@ function cellAt(px, py) {
   return best !== null && Math.sqrt(bd) < HW * K ? best : null;
 }
 function unitAt(px, py) {
-  if (!state.dots) return -1;
+  const U = state.dots ? visibleUnits() : null;
+  if (!U) return [null, -1];
   let best = -1, bd = 64;
-  for (const u of visibleUnits()) {
-    const d = (sx(uX[u]) - px) ** 2 + (sy(uY[u]) - py) ** 2;
+  for (const u of U.list) {
+    const d = (sx(U.ux[u]) - px) ** 2 + (sy(U.uy[u]) - py) ** 2;
     if (d < bd) { bd = d; best = u; }
   }
-  return best;
+  return [U, best];
 }
 const MASKTXT = ["", "too little evidence", "ice", "acid soil", "sea"];
-const STATUS = ["unknown, not used", "recorded", "implied by its label", "absent, by its label", "absent, recorded"];
+const STATUS = ["unknown, not used", "recorded", "implied by a culture label", "absent, by a culture label", "absent, recorded"];
 function showInspect(px, py) {
-  const u = unitAt(px, py), i = cellAt(px, py);
-  hover = i; hoverUnit = u;
-  if (u >= 0) {
-    const [name, src, nd] = (uNames[u] || "").split("\t");
-    const f = uFlag[u], w = uW[state.s * NU + u] / 255;
-    const rows = state.layer === "boundaries"
-      ? MATS.map((mm, k) => `<dt>${mm.name}</dt><dd>${STATUS[uSt[k * NU + u]]}</dd>`).join("")
-      : `<dt>${MATS[state.m].name}</dt><dd>${STATUS[uSt[state.m * NU + u]]}</dd>`;
-    insp.innerHTML = `<h3>${esc(name || "Unnamed site")}</h3><dl>
-      <dt>Dating</dt><dd>${f & 2 ? "published date range" : `${nd} radiocarbon date${nd === "1" ? "" : "s"}`}</dd>
-      <dt>Weight in slice</dt><dd>${pct(w)}</dd>${f & 1 ? "<dt>Context</dt><dd>grave</dd>" : ""}
-      ${rows}<dt>Source</dt><dd>${esc(src || "")}</dd></dl>`;
+  if (!ready || !viewLayers().every((id) => layerData.has(id))) return;
+  const [U, u] = unitAt(px, py), i = cellAt(px, py), L = BY[state.layer];
+  hover = i;
+  if (U && u >= 0) {
+    const [name, src, nd, stype, yh, mt, dating] = (U.names[u] || "").split("\t");
+    const f = U.flags[u], w = U.w[state.s * U.n + u] / 255, li = U.index[L.id];
+    const date = dating === "core" ? "pollen core (age model)" : dating === "aDNA" ? "direct or contextual date (AADR)"
+      : f & 2 ? "published date range" : `${nd} radiocarbon date${nd === "1" ? "" : "s"}`;
+    const st = li === undefined ? "" : L.kind === "share"
+      ? `<dt>${esc(L.name)}</dt><dd>${["no call", "in clade", "", "", "another clade"][U.st[li * U.n + u]] || "no call"}</dd>`
+      : `<dt>${esc(L.name)}</dt><dd>${STATUS[U.st[li * U.n + u]]}</dd>`;
+    insp.innerHTML = `<h3>${esc(name || "Unnamed")}</h3><dl>
+      <dt>Dating</dt><dd>${esc(date)}</dd><dt>Weight in slice</dt><dd>${pct(w)}</dd>
+      ${stype ? `<dt>Site type</dt><dd>${esc(stype)}</dd>` : ""}${f & 1 && L.unit === "occupation" ? "<dt>Context</dt><dd>grave</dd>" : ""}
+      ${yh ? `<dt>Y haplogroup</dt><dd>${esc(yh)}</dd>` : ""}${mt ? `<dt>mt haplogroup</dt><dd>${esc(mt)}</dd>` : ""}
+      ${st}<dt>Source</dt><dd>${esc(src || "")}</dd></dl>`;
     insp.hidden = false;
   } else if (i !== null) {
-    const m = state.layer === "boundaries" ? 0 : state.m;
-    const mk = field(m, state.s, 4)[i];
     const id = meta.ids ? meta.ids[i] : i + 1;
     const ll = `${Math.abs(lat[i]).toFixed(2)}°${lat[i] >= 0 ? "N" : "S"} ${Math.abs(lon[i]).toFixed(2)}°${lon[i] >= 0 ? "E" : "W"}`;
+    const mk = field(L.id, state.s, 4)[i];
     let rows;
     if (mk === 4) rows = `<dt>Surface</dt><dd>sea in this slice</dd>`;
-    else if (state.layer === "boundaries") {
-      rows = MATS.map((mm, k) => {
-        const mk2 = field(k, state.s, 4)[i], p = field(k, state.s, 0)[i];
-        return `<dt>${mm.name}</dt><dd>${mk2 ? MASKTXT[mk2] : pct(p / 200)}</dd>`;
+    else if (state.view === "speculative") {
+      const v = field(L.id, state.s, 5)[i], c = field(L.id, state.s, 6)[i];
+      const reg = meta.regions[regionIx[i]], yr = YEARS[state.s];
+      rows = `<dt>Value</dt><dd>${v === 255 ? "none" : showValue(L, v)}</dd><dt>Basis</dt><dd>${c <= 4 ? CONFNAME[c] : "none"}</dd><dt>Region</dt><dd>${esc(reg)}</dd>`;
+      if (c >= 1 && c <= 3) {
+        const j = (L.judgements || []).find((x) => x.region === reg && x.slices.includes(yr));
+        if (j) rows += `<dt>Expected</dt><dd>${j.expected === "unknown" || j.expected === undefined ? "unknown" : showValue(L, isValue(L) ? (j.expected - L.vmin) / (L.vmax - L.vmin) * 200 : j.expected * 200)}</dd>
+          <dt>Why empty</dt><dd>${esc(j.why.join(", ").replace(/_/g, " "))}</dd>
+          ${j.rule ? `<dt>Rule</dt><dd>${esc(j.rule)}</dd>` : ""}<dt>Reasoning</dt><dd>${esc(j.reasoning)}</dd>`;
+      }
+    } else if (state.view === "boundaries") {
+      rows = viewLayers().map((m) => {
+        const mk2 = field(m, state.s, 4)[i], p = field(m, state.s, 0)[i];
+        return `<dt>${esc(BY[m].name)}</dt><dd>${mk2 ? MASKTXT[mk2] : showValue(BY[m], p)}</dd>`;
       }).join("");
     } else {
-      const p = field(m, state.s, 0)[i], e = EQ[field(m, state.s, 1)[i]], b = field(m, state.s, 2)[i], l = field(m, state.s, 3)[i];
-      rows = `<dt>Presence</dt><dd>${mk ? `masked: ${MASKTXT[mk]}` : pct(p / 200)}</dd>
-        <dt>Evidence E</dt><dd>${e < 0.01 ? "0" : e.toFixed(e < 10 ? 2 : 0)} (threshold ${EMIN})</dd>
-        ${l !== 255 ? `<dt>From labels</dt><dd>${pct(l / 200)} of E</dd>` : ""}
-        ${MATS[m].hasAbsences && b !== 255 && !mk ? `<dt>Bootstrap</dt><dd>≥ 50% in ${pct(b / 200)} of runs</dd>` : ""}`;
+      const p = field(L.id, state.s, 0)[i], e = EQ[field(L.id, state.s, 1)[i]], b = field(L.id, state.s, 2)[i], l = field(L.id, state.s, 3)[i];
+      rows = `<dt>${isValue(L) ? "Value" : L.kind === "share" ? "Share" : "Presence"}</dt><dd>${mk ? `masked: ${MASKTXT[mk]}` : showValue(L, p)}</dd>
+        ${L.kind !== "grid" ? `<dt>Evidence E</dt><dd>${e < 0.01 ? "0" : e.toFixed(e < 10 ? 2 : 0)} (threshold ${EMIN})</dd>` : ""}
+        ${l !== 255 && l > 0 ? `<dt>From labels</dt><dd>${pct(l / 200)} of E</dd>` : ""}
+        ${hasFirm(L) && b !== 255 && !mk ? `<dt>${L.kind === "grid" ? "P(≥ " + esc(fmtLevel(L, midLevel(L))) + ")" : "Bootstrap"}</dt><dd>${L.kind === "grid" ? pct(b / 200) : `≥ ${esc(fmtLevel(L, midLevel(L)))} in ${pct(b / 200)} of runs`}</dd>` : ""}`;
     }
     insp.innerHTML = `<h3>Hex ${id}</h3><dl><dt>Centre</dt><dd>${ll}</dd>${rows}</dl>`;
     insp.hidden = false;
@@ -628,18 +823,14 @@ cv.addEventListener("pointerdown", (e) => {
   pointers.set(e.pointerId, { x: e.offsetX, y: e.offsetY });
   moved = false;
   if (pointers.size === 1) drag = { x: e.offsetX, y: e.offsetY, cx: view.cx, cy: view.cy };
-  else if (pointers.size === 2) {
-    const [a, b] = [...pointers.values()];
-    pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), sc: view.sc }; drag = null;
-  }
+  else if (pointers.size === 2) { const [a, b] = [...pointers.values()]; pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), sc: view.sc }; drag = null; }
 });
 cv.addEventListener("pointermove", (e) => {
   if (!ready) return;
   if (pointers.has(e.pointerId)) pointers.set(e.pointerId, { x: e.offsetX, y: e.offsetY });
   if (pinch && pointers.size === 2) {
     const [a, b] = [...pointers.values()];
-    const f = Math.hypot(a.x - b.x, a.y - b.y) / pinch.d * pinch.sc / view.sc;
-    zoomAt((a.x + b.x) / 2, (a.y + b.y) / 2, f); moved = true; return;
+    zoomAt((a.x + b.x) / 2, (a.y + b.y) / 2, Math.hypot(a.x - b.x, a.y - b.y) / pinch.d * pinch.sc / view.sc); moved = true; return;
   }
   if (drag) {
     const dx = e.offsetX - drag.x, dy = e.offsetY - drag.y;
@@ -666,20 +857,19 @@ $("z-out").onclick = () => zoomAt(W / 2, H / 2, 1 / 1.5);
 $("v-all").onclick = () => { fitAll(); draw(); };
 $("v-eu").onclick = () => { fitEurope(); draw(); };
 
-MATS.forEach((mm, k) => {
+meta.groups.forEach((g) => {
   const b = document.createElement("button");
-  b.type = "button"; b.setAttribute("role", "radio");
-  b.innerHTML = `<span class="chip" style="background:var(--m${k + 1})"></span>${mm.name}`;
+  b.type = "button"; b.setAttribute("role", "radio"); b.dataset.group = g; b.textContent = g;
   b.onclick = () => {
-    state.m = k;
-    if (state.layer === "boundaries") state.layer = "presence";
-    if (state.layer === "firmness" && !mm.hasAbsences) state.layer = "presence";
+    if (BY[state.layer].group === g) return;
+    state.layer = LAYERS.find((x) => x.group === g).id;
+    if (state.view === "boundaries") state.view = "presence";
     update();
   };
-  matBox().appendChild(b);
+  $("group").appendChild(b);
 });
-function matBox() { return $("mat"); }
-document.querySelectorAll("#layer button").forEach((b) => { b.onclick = () => { state.layer = b.dataset.layer; update(); }; });
+$("layer").addEventListener("change", (e) => { state.layer = e.target.value; update(); });
+document.querySelectorAll("#view button").forEach((b) => { b.onclick = () => { state.view = b.dataset.view; update(); }; });
 $("slice").max = String(S - 1);
 $("slice").addEventListener("input", (e) => { state.s = Number(e.target.value); update(); });
 $("ticks").innerHTML = YEARS.map((y) => `<span>${Math.abs(y) / 1000}k</span>`).join("");
@@ -690,29 +880,30 @@ let timer = null;
 $("play").onclick = () => {
   if (timer) { clearInterval(timer); timer = null; $("play").textContent = "Play"; $("play").setAttribute("aria-pressed", "false"); return; }
   $("play").textContent = "Pause"; $("play").setAttribute("aria-pressed", "true");
-  timer = setInterval(() => { state.s = (state.s + 1) % S; update(); }, 1200);
+  timer = setInterval(() => { state.s = (state.s + 1) % S; update(); }, 1300);
 };
 document.addEventListener("keydown", (e) => {
-  if (e.target.tagName === "INPUT") return;
+  if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
   if (e.key === "ArrowRight" && state.s < S - 1) { state.s++; update(); }
   if (e.key === "ArrowLeft" && state.s > 0) { state.s--; update(); }
 });
 window.addEventListener("hashchange", () => { readHash(); update(); });
 $("emin-a").textContent = EMIN; $("nboot").textContent = meta.bootstrap;
 
-const onTheme = () => { readTheme(); renderLegend(); draw(); };
+const onTheme = () => { readTheme(); cache.key = ""; renderReadout(); renderLegend(); draw(); };
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", onTheme);
 new MutationObserver(onTheme).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 new ResizeObserver(resize).observe($("stage"));
 
 readTheme();
 readHash();
-renderControls(); renderReadout(); renderLegend();
-load().then(() => {
-  ready = true; $("loading").hidden = true;
+renderControls();
+loadBase().then(() => {
+  ready = true;
   if (W) { fitAll(); fitEurope(); }
-  update();
+  return update();
 }).catch((err) => {
+  $("loading").hidden = false;
   $("loading").textContent = `Could not unpack the surfaces in this browser (${err.message}). It needs DecompressionStream: a 2023 or later browser.`;
 });
 })();

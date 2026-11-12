@@ -1,0 +1,504 @@
+# Gap critic: cereal_pollen layer. Judgements, not data.
+# Values are the expected share of pollen cores (core-slices with counted levels)
+# that hold at least one Cerealia-type grain, if cores existed in the gap.
+# In SW Asia, Central Asia and the steppe this share measures wild large grasses
+# (wild wheat, barley, rye, Aegilops, Elymus/Leymus) as much as farming.
+
+[meta]
+layer = "cereal_pollen"
+written = "2026-11-12"
+dossier = "build/isostyle/gaps/cereal_pollen/dossier.json"
+summary = """The cereal-pollen gaps follow where lake and bog cores were taken and put into Neotoma/EPD, not where people farmed: coverage is near-total in Europe and 0-13% across Africa, Arabia, Central Asia, Iran and Mesopotamia. Read outside Europe, the layer is mostly a wild-grass signal. Cores in the Zagros, Levant, Anatolia and Central Asia show Cerealia-type grains in 60-100% of core-slices at 10,000 BCE, long before farming. Cores in northern Russia and Finland show it in only 0-5%. African cores show it in none, because the African Pollen Database does not split Cerealia-type from other Poaceae. \
+Two features are method artefacts. (1) Most edge values in Africa and the Horn (0.05-0.15) come from shrinkage, not data. A cell just above the mask threshold with only absent cores gets f = f0/(E+1), about 0.45 times the slice mean. These edges therefore rise from 0.058 to 0.145 between 9,000 and 3,000 BCE only because European farming lifts the global f0. They should not be read as an African trend. (2) The high edge values around Arabia, Libya-Egypt and the central Iranian plateau (0.5-0.75) leak in from Levantine, Nile Delta and Zagros cores, where they reflect wild cereals and steppe grasses. They should not be stretched across deserts that have no lakes."""
+
+# ---------------------------------------------------------------- Africa
+
+[[judgement]]
+region = "Sahara–Sahel"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["cereal_pollen-10000-01", "cereal_pollen-9000-20", "cereal_pollen-8000-40", "cereal_pollen-7000-60", "cereal_pollen-6000-80", "cereal_pollen-5000-99", "cereal_pollen-4000-117", "cereal_pollen-3000-134"]
+why_empty = ["research_intensity", "preservation", "recording_practice", "true_absence"]
+why_note = "Few lakes held water after the African Humid Period, and dry lake beds deflate or oxidise. The handful of Saharan and Sahelian records that exist (Chad, Yoa, Tibesti, Oursi) are counted in an African pollen taxonomy that does not separate Cerealia-type. Neither wheat nor barley was grown here, and pearl millet was domesticated only after c. 2500 BCE."
+expected = 0.02
+expected_range = [0.0, 0.1]
+confidence = "medium"
+basis = ["dossier_statistics", "literature", "environment", "other_layer"]
+reasoning = "Every Saharan core in core_units records 0 Cerealia across all eight slices (1-5 cores per slice). The edges (0.056-0.145) are the shrinkage term, not cores with cereal pollen. Pottery, ground stone and later livestock inside the gap show people were there, but they were wild-grass gatherers and cattle herders. Large wild grasses such as Echinochloa, Panicum and wild Sorghum might occasionally pass a European size threshold. A few percent is the most that could be expected even if analysts applied European keys."
+literature = [
+  { cite = "Manning et al. 2011, '4500-year old domesticated pearl millet (Pennisetum glaucum) from the Tilemsi Valley, Mali', Antiquity 85", checked = false },
+  { cite = "Lézine et al. 2011, 'Sahara and Sahel vulnerability to climate changes, lessons from Holocene hydrological data', QSR 30", checked = false },
+  { cite = "Vincens et al. 2007, African Pollen Database taxonomy (Poaceae not split by size)", checked = false },
+]
+would_settle = "Size-measured Poaceae pollen from a Sahelian lake such as Lake Chad, Bal or Tichitt, which would also tell wild from domestic Pennisetum. Ingesting the African Pollen Database's own taxa list would show whether any core separates large grasses at all."
+speculative_rule = "Fill at 0.02 in every slice and ignore the shrinkage edges. If the game wants a domestication marker, add a separate 'millet' flag in the western Sahel from 2,500 BCE instead of raising this layer."
+
+[[judgement]]
+region = "West Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["cereal_pollen-10000-06", "cereal_pollen-9000-25", "cereal_pollen-8000-45", "cereal_pollen-7000-65", "cereal_pollen-6000-86", "cereal_pollen-5000-104", "cereal_pollen-4000-122", "cereal_pollen-3000-138"]
+why_empty = ["research_intensity", "recording_practice", "true_absence"]
+why_note = "There are few savanna-zone cores (Bosumtwi, Tilla, Sele), and none splits Cerealia-type. No Near Eastern cereals were grown here at all, and pearl millet arrives only after 2500 BCE."
+expected = 0.02
+expected_range = [0.0, 0.08]
+confidence = "medium"
+basis = ["dossier_statistics", "literature", "environment"]
+reasoning = "Between 2 and 11 West African cores per slice record 0 Cerealia. The 0.06-0.15 edge creep is the f0 shrinkage artefact. Yams, oil palm and wild grasses dominate the subsistence picture before c. 2000 BCE."
+literature = [
+  { cite = "Salzmann et al. 2002, 'Climate and human impact on the vegetation of NE Nigeria (Lake Tilla)', Holocene", checked = false },
+  { cite = "Manning et al. 2011, Tilemsi pearl millet, Antiquity 85", checked = false },
+]
+would_settle = "A size-measured grass-pollen series from a Guinea-savanna lake, or simply the APD taxa table."
+speculative_rule = "Fill at 0.02 for all slices."
+
+[[judgement]]
+region = "Nile & Sudan"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["cereal_pollen-10000-09", "cereal_pollen-9000-28", "cereal_pollen-8000-47", "cereal_pollen-7000-67", "cereal_pollen-6000-87", "cereal_pollen-5000-106", "cereal_pollen-4000-124", "cereal_pollen-3000-141"]
+why_empty = ["research_intensity", "preservation", "recording_practice"]
+why_note = "The Kordofan-Darfur gap has almost no permanent lakes; Sudanese palynology is mostly from archaeological sediments, not cores. The Khartoum Neolithic gathered wild sorghum; Near Eastern cereals reach Nubia only in the 5th millennium BCE and stay riverine."
+expected = 0.03
+expected_range = [0.0, 0.15]
+confidence = "low"
+basis = ["environment", "literature", "neighbouring_evidence"]
+reasoning = "The edges (0.058-0.108) are shrinkage on absent cores. Pottery from 9,000 BCE and livestock from 7,000 BCE inside the gap show pastoral occupation, not cereal fields. Emmer and barley in Nubia (e.g. Kadruka, 5th millennium BCE) would only show up in a Nile-valley core."
+literature = [
+  { cite = "Out, Ryan & García-Granero 2016, 'Evidence for sorghum use at Neolithic sites in Sudan', Vegetation History and Archaeobotany", checked = false },
+  { cite = "Madella et al. 2014, 'Plant use at Kadruka / Neolithic Nubia', archaeobotanical review", checked = false },
+]
+would_settle = "Pollen from a Nile palaeochannel or oxbow core near Khartoum or Dongola with Poaceae size classes."
+speculative_rule = "Fill at 0.03 away from the Nile. In a 50 km Nile strip, raise it to 0.2 from 5,000 BCE and 0.3 by 3,000 BCE."
+[[judgement.adjust]]
+kind = "river"
+within_km = 50
+names = ["Nile", "Blue Nile"]
+value = 0.2
+slices = [-5000, -4000]
+[[judgement.adjust]]
+kind = "river"
+within_km = 50
+names = ["Nile", "Blue Nile"]
+value = 0.3
+slices = [-3000]
+
+[[judgement]]
+region = "Horn of Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["cereal_pollen-10000-11", "cereal_pollen-9000-30", "cereal_pollen-8000-50", "cereal_pollen-7000-70", "cereal_pollen-6000-90", "cereal_pollen-5000-109", "cereal_pollen-4000-127", "cereal_pollen-3000-144"]
+why_empty = ["research_intensity", "recording_practice", "true_absence"]
+why_note = "The gap is the Afar and Somali lowlands, which are arid and have few lakes (Abhe, Asal) with a cored record. Highland Ethiopian cores exist but count grasses without a Cerealia class. Wheat and barley reach the highlands only in the 1st millennium BCE."
+expected = 0.03
+expected_range = [0.0, 0.1]
+confidence = "medium"
+basis = ["dossier_statistics", "environment", "literature"]
+reasoning = "Between 4 and 7 Horn cores per slice record 0 Cerealia. The edges (0.055-0.144) are the shrinkage artefact. Teff and finger millet have unknown, probably late, domestication dates. In any case neither is a Cerealia type."
+literature = [
+  { cite = "Lamb et al. 2007 / Marshall et al. 2011, Lake Tana and Ethiopian highland pollen records", checked = false },
+  { cite = "D'Andrea 2008, 'T'ef (Eragrostis tef) in ancient agricultural systems of highland Ethiopia', Economic Botany", checked = false },
+]
+would_settle = "Size-classed grass pollen from Lake Abhe or a highland lake such as Ashenge."
+speculative_rule = "Fill at 0.03 in all slices."
+
+[[judgement]]
+region = "Libya & Egypt"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["cereal_pollen-10000-05", "cereal_pollen-9000-24", "cereal_pollen-8000-44", "cereal_pollen-7000-64", "cereal_pollen-6000-83", "cereal_pollen-5000-103", "cereal_pollen-4000-121", "cereal_pollen-3000-137"]
+why_empty = ["preservation", "research_intensity", "true_absence"]
+why_note = "The Western Desert and Libyan Sahara had playas in the Holocene humid phase but no long lake records, and today they are hyperarid. The only farming was in the Nile valley and Delta from c. 5000 BCE (Fayum, Merimde) and, later, on the Cyrenaican coast."
+expected = 0.05
+expected_range = [0.0, 0.15]
+confidence = "medium"
+basis = ["environment", "literature", "neighbouring_evidence"]
+reasoning = "The edges (0.49-0.74, from only 2-4 cells) belong to a single Nile/Delta-area core that records Cerealia from 8,000 BCE, plus Sinai/Levant leakage. They do not describe the desert. Pottery, ground stone and livestock inside the gap (Nabta Playa, Gilf Kebir) are from herders and foragers. Their plant food was wild sorghum and other grasses, not Near Eastern cereals."
+literature = [
+  { cite = "Wendorf & Schild 2001, Holocene Settlement of the Egyptian Sahara, vol. 1 (Nabta Playa)", checked = false },
+  { cite = "Wengrow et al. 2014, 'Cultural convergence in the Neolithic of the Nile Valley', Antiquity 88", checked = false },
+]
+would_settle = "Ingest Nile Delta borehole pollen (e.g. the Smithsonian Nile Delta Project cores) to pin the valley strip; the desert needs no more work."
+speculative_rule = "Fill the desert at 0.03. Within 30 km of the Nile and in the Delta, use 0.5 for 10,000-6,000 BCE (wild grasses, following the Delta core) and 0.7 from 5,000 BCE."
+[[judgement.adjust]]
+kind = "river"
+within_km = 30
+names = ["Nile", "Nile (Canopic branch)", "Nile (Pelusiac branch)", "Nile (Sebennytic branch)"]
+value = 0.5
+outside = 0.03
+[[judgement.adjust]]
+kind = "polygon"                         # Nile Delta
+points = [[31.2, 30.05], [30.1, 31.0], [30.0, 31.35], [30.5, 31.5], [31.0, 31.6], [31.6, 31.55], [32.3, 31.3], [32.6, 31.1], [31.9, 30.55]]
+value = 0.5
+[[judgement.adjust]]
+kind = "river"
+within_km = 30
+names = ["Nile", "Nile (Canopic branch)", "Nile (Pelusiac branch)", "Nile (Sebennytic branch)"]
+value = 0.7
+slices = [-5000, -4000, -3000]
+[[judgement.adjust]]
+kind = "polygon"                         # Nile Delta
+points = [[31.2, 30.05], [30.1, 31.0], [30.0, 31.35], [30.5, 31.5], [31.0, 31.6], [31.6, 31.55], [32.3, 31.3], [32.6, 31.1], [31.9, 30.55]]
+value = 0.7
+slices = [-5000, -4000, -3000]
+
+[[judgement]]
+region = "Maghreb"
+slices = [-10000, -9000, -8000, -7000, -6000]
+gap_ids = ["cereal_pollen-10000-03", "cereal_pollen-9000-22", "cereal_pollen-8000-42", "cereal_pollen-7000-61", "cereal_pollen-6000-81"]
+why_empty = ["research_intensity", "dataset_edge", "true_absence"]
+why_note = "The gap is mostly the Algerian Sahara south of the Atlas, where there are no lakes. In the Tell, cores are few (Middle Atlas: Tigalmamine, Sidi Ali; Tunisia: Majen Ben M'hammed), and before c. 5500 BCE people there were Capsian and Iberomaurusian foragers."
+expected = 0.08
+expected_range = [0.0, 0.25]
+confidence = "medium"
+basis = ["dossier_statistics", "neighbouring_evidence", "environment"]
+reasoning = "Moroccan cores record Cerealia in 0/3-1/5 core-slices up to 7,000 BCE and Algerian-Tunisian cores in 0/1-0/2. The 0.05-0.2 edge means at 10,000-6,000 BCE agree. The higher edge maxima (0.4-0.5) come from Iberian cores across the strait."
+literature = [
+  { cite = "Lamb et al. 1989 / Cheddadi et al. 1998, Middle Atlas Holocene pollen (Tigalmamine)", checked = false },
+]
+would_settle = "More Tell and Rif cores in Neotoma; the Saharan part will stay empty."
+speculative_rule = "Fill at 0.08 north of 32°N and at 0.02 in the Saharan part south of the Saharan Atlas."
+[[judgement.adjust]]
+kind = "polygon"                         # Sahara south of the Atlas and Saharan Atlas
+points = [[-17.5, 19.0], [-17.5, 27.9], [-9.8, 29.0], [-6.5, 29.6], [-4.0, 31.3], [-1.5, 32.3], [0.5, 33.0], [3.0, 33.8], [5.8, 34.7], [10.2, 33.7], [12.0, 33.0], [12.0, 19.0]]
+value = 0.02
+
+[[judgement]]
+region = "Maghreb"
+slices = [-5000, -4000, -3000]
+gap_ids = ["cereal_pollen-5000-100", "cereal_pollen-4000-118", "cereal_pollen-3000-135"]
+why_empty = ["research_intensity", "dataset_edge"]
+why_note = "Cereal farming starts in northern Morocco c. 5300 BCE (Kaf Taht el-Ghar, Ifri Oudadane), but there are almost no Tell cores to record it. The Saharan bulk of the gap stays empty because there are no lakes there."
+expected = 0.3
+expected_range = [0.15, 0.5]
+confidence = "low"
+basis = ["dossier_statistics", "literature", "other_layer", "neighbouring_evidence"]
+reasoning = "Moroccan cores rise to 0.33-0.44 by 5,000-3,000 BCE and the edges to 0.22-0.32. The cereal-grain and livestock layers show Neolithic occupation in the Tell from 5,000 BCE. By 3,000 BCE Tunisia/Algeria cores still show only 1/7, so the east lags."
+literature = [
+  { cite = "Morales et al. 2013, 'The origins of agriculture in North-West Africa: macro-botanical remains from Epipalaeolithic and Early Neolithic levels of Ifri Oudadane', JAS 40", checked = false },
+  { cite = "Zapata et al. 2013, 'Early Neolithic agriculture in the Iberian Peninsula and North Africa (Kaf Taht el-Ghar)'", checked = false },
+]
+would_settle = "Digitise Tell and Rif pollen series (e.g. Lake Ifrah, Dayet Iffer, Tunisian Kroumirie bogs) into Neotoma."
+speculative_rule = "Fill at 0.35 in Morocco and 0.2 in Algeria-Tunisia north of 34°N from 5,000 BCE, and at 0.02 south of the Saharan Atlas."
+
+# ---------------------------------------------------------------- Arabia, SW and Central Asia
+[[judgement.adjust]]
+kind = "area"
+bbox = [-13.5, 29.0, -1.0, 36.0]
+value = 0.35
+[[judgement.adjust]]
+kind = "area"
+bbox = [-1.0, 34.0, 11.6, 37.5]
+value = 0.2
+[[judgement.adjust]]
+kind = "polygon"                         # Sahara south of the Atlas and Saharan Atlas
+points = [[-17.5, 19.0], [-17.5, 27.9], [-9.8, 29.0], [-6.5, 29.6], [-4.0, 31.3], [-1.5, 32.3], [0.5, 33.0], [3.0, 33.8], [5.8, 34.7], [10.2, 33.7], [12.0, 33.0], [12.0, 19.0]]
+value = 0.02
+
+[[judgement]]
+region = "Arabia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["cereal_pollen-10000-04", "cereal_pollen-9000-23", "cereal_pollen-8000-43", "cereal_pollen-7000-63", "cereal_pollen-6000-82", "cereal_pollen-5000-101", "cereal_pollen-4000-119", "cereal_pollen-3000-136"]
+why_empty = ["research_intensity", "preservation", "true_absence"]
+why_note = "Arabia had palaeolakes in the Early Holocene humid phase (Jubbah, Tayma, Wahalah, Mundafan), but few were cored for pollen and almost none are in Neotoma. Its Neolithic was pastoral, not farming. Wild barley and wheat grow only on the northern margins, and cereals arrive in the Yemeni highlands c. 3500-3000 BCE and in the Omani oases later."
+expected = 0.05
+expected_range = [0.0, 0.2]
+confidence = "medium"
+basis = ["environment", "literature", "dossier_statistics", "other_layer"]
+reasoning = "Each of the 1-3 Arabian core-slices records 0 Cerealia. The 0.47-0.67 edges come from 2-4 cells on the Levant/Jordan rim, where wild cereals grow. The domestic-livestock layer inside the gap from 7,000 BCE fits Neolithic herding. Desert-grass pollen (Panicum turgidum, Stipagrostis) is mostly below Cerealia size."
+literature = [
+  { cite = "Parker et al. 2006, 'A record of Holocene climate change from lake geochemical analyses in southeastern Arabia', QR 66", checked = false },
+  { cite = "Engel et al. 2012, 'Lacustrine evidence for Holocene humid periods at Tayma', QSR", checked = false },
+  { cite = "Drechsler 2009 / Crassard & Drechsler 2013, The Arabian Neolithic: pastoral, aceramic", checked = false },
+]
+would_settle = "Ingest pollen from the Tayma and Jubbah palaeolake sequences and from Yemeni highland dam sediments."
+speculative_rule = "Fill at 0.05 everywhere up to 4,000 BCE. At 3,000 BCE raise the Yemeni and Asir highlands above 1,500 m to 0.3, and set the northern Nafud margin (north of 28°N) to 0.3 in every slice for wild barley."
+[[judgement.adjust]]
+kind = "polygon"                         # Asir and Yemeni highlands
+points = [[39.9, 21.8], [41.2, 21.8], [43.3, 18.5], [44.8, 16.5], [45.8, 15.0], [45.7, 13.6], [44.5, 12.9], [43.5, 13.0], [43.2, 14.5], [42.7, 16.5], [42.0, 18.0], [40.6, 20.5]]
+value = 0.3
+slices = [-3000]
+[[judgement.adjust]]
+kind = "elevation"
+below_m = 1500
+value = 0.05
+slices = [-3000]
+[[judgement.adjust]]
+kind = "area"
+bbox = [34.5, 28.0, 50.0, 32.5]
+value = 0.3
+
+[[judgement]]
+region = "Mesopotamia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["cereal_pollen-10000-12", "cereal_pollen-9000-31", "cereal_pollen-8000-51", "cereal_pollen-7000-71", "cereal_pollen-6000-91", "cereal_pollen-5000-110", "cereal_pollen-4000-128", "cereal_pollen-3000-145"]
+why_empty = ["research_intensity", "preservation", "publication_access"]
+why_note = "The southern alluvium and the western desert have hardly any lakes that suit coring. The alluvium's own sediments are deep and reworked, and decades of conflict stopped fieldwork. Iraqi palaeoenvironmental work is in regional reports."
+expected = 0.65
+expected_range = [0.4, 0.85]
+confidence = "low"
+basis = ["neighbouring_evidence", "dossier_statistics", "environment", "literature"]
+reasoning = "Both cores in the wider Mesopotamian box record Cerealia in every slice, and the edges sit at 0.61-0.69 from 10,000 to 3,000 BCE with no farming step. That is the wild-grass background of an arid SW Asian steppe: wild barley and Aegilops grow in the Jazira. Irrigation farming in the alluvium from the Samarra and Ubaid phases (c. 6000 BCE) should push it higher, toward 0.75. The Iraqi western desert should sit lower."
+literature = [
+  { cite = "van Zeist & Bottema 1991, Late Quaternary Vegetation of the Near East", checked = false },
+  { cite = "Wright 1993, 'Environmental determinism in Near Eastern prehistory', Current Anthropology", checked = false },
+]
+would_settle = "Pollen from Gulf-head and marsh cores (e.g. Aqar et al. on the Hammar marshes, Aqrawi's Tigris-Euphrates delta cores)."
+speculative_rule = "Fill at 0.6 for 10,000-7,000 BCE and 0.75 for 6,000-3,000 BCE in the alluvium. In the western desert, set 0.4 throughout. Flag it as natural grass, not farming, before 7,000 BCE."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000, -7000]
+value = 0.6
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-6000, -5000, -4000, -3000]
+value = 0.75
+[[judgement.adjust]]
+kind = "polygon"                         # Iraqi western desert, southwest of the Euphrates
+points = [[38.8, 33.8], [40.9, 34.3], [42.5, 33.5], [43.4, 33.0], [44.0, 32.3], [44.6, 31.6], [45.5, 31.0], [45.5, 28.6], [38.8, 28.6]]
+value = 0.4
+
+[[judgement]]
+region = "Levant"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["cereal_pollen-10000-17", "cereal_pollen-9000-38", "cereal_pollen-8000-56", "cereal_pollen-7000-75", "cereal_pollen-6000-95", "cereal_pollen-5000-114", "cereal_pollen-4000-132", "cereal_pollen-3000-149"]
+why_empty = ["research_intensity", "preservation"]
+why_note = "The gap is the Syrian Badia between Palmyra and the Euphrates. It is steppe-desert with no permanent lakes, and El Kowm and Palmyra are cored only through archaeological sections."
+expected = 0.5
+expected_range = [0.3, 0.75]
+confidence = "medium"
+basis = ["neighbouring_evidence", "dossier_statistics", "environment"]
+reasoning = "Levantine cores record Cerealia in 0.57-0.86 of core-slices across all slices, and the edges are 0.35-0.52. Both are flat across the start of farming because wild barley, wild einkorn and Aegilops are native. The Badia is drier than the cored Mediterranean belt, so it should sit a little lower."
+literature = [
+  { cite = "Litt et al. 2012, 'Holocene climate variability in the Levant from the Dead Sea pollen record', QSR 49", checked = false },
+]
+would_settle = "Pollen from the El Kowm spring deposits or Jabbul sabkha cores."
+speculative_rule = "Fill at 0.5 in all slices, and mark it as wild-grass background."
+
+[[judgement]]
+region = "Anatolia & Cyprus"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["cereal_pollen-10000-14", "cereal_pollen-9000-33", "cereal_pollen-8000-52", "cereal_pollen-7000-72", "cereal_pollen-6000-92", "cereal_pollen-5000-111", "cereal_pollen-4000-130", "cereal_pollen-3000-147"]
+why_empty = ["research_intensity", "sampling_bias"]
+why_note = "This is the upper Euphrates (Malatya-Elazığ), a core area of wild einkorn and emmer near Karacadağ. Its lakes (Hazar) were cored late, and the Keban and Karakaya dam projects favoured excavation over coring."
+expected = 0.7
+expected_range = [0.5, 0.9]
+confidence = "medium"
+basis = ["neighbouring_evidence", "dossier_statistics", "literature", "other_layer"]
+reasoning = "Anatolian cores record Cerealia in 0.62-0.88 of core-slices, and the edges are 0.45-0.67. The cereal-grain layer has evidence inside the gap from 9,000 BCE (Çayönü, Nevalı Çori lie close), so wild stands before c. 8500 BCE give way to fields with no gap between them."
+literature = [
+  { cite = "Heun et al. 1997, 'Site of einkorn wheat domestication identified by DNA fingerprinting', Science 278", checked = false },
+  { cite = "Wick, Lemcke & Sturm 2003, 'Evidence of Lateglacial and Holocene climatic change and human impact in eastern Anatolia (Lake Van)', Holocene", checked = false },
+]
+would_settle = "Ingest the Lake Hazar pollen series."
+speculative_rule = "Fill at 0.65 for 10,000-9,000 BCE and 0.75 from 8,000 BCE."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000]
+value = 0.65
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-8000, -7000, -6000, -5000, -4000, -3000]
+value = 0.75
+
+[[judgement]]
+region = "Caucasus"
+slices = [-10000, -9000, -8000, -5000]
+gap_ids = ["cereal_pollen-10000-18", "cereal_pollen-9000-36", "cereal_pollen-8000-55", "cereal_pollen-5000-115"]
+why_empty = ["research_intensity", "publication_access"]
+why_note = "The gap is the Kura-Araxes lowland of Azerbaijan, which is semi-desert with few cored lakes. Soviet-era palynology from there is mostly unpublished in English."
+expected = 0.3
+expected_range = [0.1, 0.55]
+confidence = "low"
+basis = ["neighbouring_evidence", "dossier_statistics", "literature"]
+reasoning = "Caucasus cores record 0.0-0.5 (mostly 0.12-0.33), and the edges are 0.33-0.58. Shulaveri-Shomu farming in the Kura valley from c. 6000 BCE should lift the 5,000 BCE slice above the early ones."
+literature = [
+  { cite = "Connor & Kvavadze 2009, 'Modelling late Quaternary changes in plant distribution, vegetation and climate using pollen data from Georgia, Caucasus', J. Biogeography", checked = false },
+]
+would_settle = "Ingest Azerbaijani lowland cores or Kvavadze's Georgian site pollen."
+speculative_rule = "Fill at 0.25 for 10,000-8,000 BCE and 0.45 at 5,000 BCE."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000]
+value = 0.25
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000]
+value = 0.45
+
+[[judgement]]
+region = "Iran & Afghanistan"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["cereal_pollen-10000-10", "cereal_pollen-9000-29", "cereal_pollen-8000-49", "cereal_pollen-7000-68", "cereal_pollen-6000-88", "cereal_pollen-5000-107", "cereal_pollen-4000-125", "cereal_pollen-3000-142"]
+why_empty = ["research_intensity", "preservation", "publication_access"]
+why_note = "The gap is the central plateau (Kavir, Lut), eastern Iran and Afghanistan. These are deserts with salt playas, and nearly all Iranian cores (Zeribar, Mirabad, Urmia, Maharlou) are in the Zagros or on the Caspian rim."
+expected = 0.45
+expected_range = [0.2, 0.7]
+confidence = "low"
+basis = ["neighbouring_evidence", "dossier_statistics", "environment"]
+reasoning = "The four Zagros cores record Cerealia in every slice from 10,000 BCE, which must be wild cereal. Other Iranian cores record 0.2-0.75, and the edges are 0.34-0.64. The interior is drier and has less grass, but oasis farming at Sialk, Cheshmeh Ali and Tepe Hissar from c. 6000 BCE and in the Kopet Dag would add cereal locally."
+literature = [
+  { cite = "Djamali et al. 2010, 'Indian Summer Monsoon variations could have affected the early-Holocene woodland expansion in the Near East' (Maharlou), Holocene", checked = false },
+  { cite = "van Zeist & Bottema 1977, 'Palynological investigations in western Iran' (Zeribar, Mirabad)", checked = false },
+]
+would_settle = "Ingest the newer Iranian lake series (Djamali's group: Maharlou, Parishan, Neor) and any Afghan record (none known)."
+speculative_rule = "Fill at 0.45 in all slices. Raise it to 0.6 within 100 km of known oasis and piedmont settlements from 6,000 BCE, and lower it to 0.2 in the Kavir and Lut basins."
+[[judgement.adjust]]
+kind = "polygon"                         # Dasht-e Kavir
+points = [[51.8, 34.6], [52.8, 35.2], [54.0, 35.4], [55.5, 35.0], [56.3, 34.3], [55.5, 33.6], [54.0, 33.8], [52.5, 34.1]]
+value = 0.2
+[[judgement.adjust]]
+kind = "polygon"                         # Dasht-e Lut
+points = [[57.5, 28.6], [59.3, 28.6], [59.8, 30.0], [59.6, 31.8], [58.8, 32.6], [57.6, 32.0], [57.2, 30.5]]
+value = 0.2
+[[judgement.adjust]]
+kind = "near"
+point = [51.4, 33.97]
+radius_km = 100
+value = 0.6
+slices = [-6000, -5000, -4000, -3000]
+[[judgement.adjust]]
+kind = "near"
+point = [51.45, 35.58]
+radius_km = 100
+value = 0.6
+slices = [-6000, -5000, -4000, -3000]
+[[judgement.adjust]]
+kind = "near"
+point = [54.38, 36.15]
+radius_km = 100
+value = 0.6
+slices = [-6000, -5000, -4000, -3000]
+
+[[judgement]]
+region = "Central Asia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["cereal_pollen-10000-08", "cereal_pollen-9000-26", "cereal_pollen-8000-46", "cereal_pollen-7000-66", "cereal_pollen-6000-85", "cereal_pollen-5000-105", "cereal_pollen-4000-123", "cereal_pollen-3000-139"]
+why_empty = ["research_intensity", "publication_access", "not_in_open_compilations"]
+why_note = "The Aral basin, Kyzylkum and Karakum have cores (Aral Sea, Sarykamysh), but they are published in palaeoclimate papers, not Neotoma. Kelteminar people were foragers. Farming is confined to the Kopet Dag piedmont (Jeitun, from c. 6200 BCE)."
+expected = 0.4
+expected_range = [0.15, 0.7]
+confidence = "low"
+basis = ["neighbouring_evidence", "dossier_statistics", "environment", "literature"]
+reasoning = "The 4-5 cores in the wider Central Asian box (Caspian rim and Kopet Dag) record 0.25-0.8, already 0.75 at 10,000 BCE. That is the wild steppe-grass background (Leymus, Elymus, Aegilops). The edges are 0.13-0.6. The desert interior should sit lower than the piedmont."
+literature = [
+  { cite = "Sorrel et al. 2007, 'Hydrologic and climatic changes in the Aral Sea region over the last 2000 years' and companion Holocene pollen work", checked = false },
+  { cite = "Harris 2010, Origins of Agriculture in Western Central Asia", checked = false },
+]
+would_settle = "Digitise the Aral and Sarykamysh core pollen and any Soviet Kelteminar site pollen."
+speculative_rule = "Fill at 0.35 in the desert interior. On the Kopet Dag piedmont, use 0.6 from 6,000 BCE."
+[[judgement.adjust]]
+kind = "polygon"                         # Karakum, Kyzylkum and Ustyurt
+points = [[53.8, 39.5], [56.0, 38.9], [58.0, 38.1], [60.5, 37.0], [62.5, 37.2], [65.5, 38.5], [66.5, 40.5], [66.5, 44.0], [54.0, 44.0], [53.8, 41.5]]
+value = 0.35
+[[judgement.adjust]]
+kind = "polygon"                         # Kopet Dag northern piedmont
+points = [[55.3, 39.4], [56.5, 39.3], [58.4, 38.3], [60.0, 37.6], [61.2, 37.2], [61.2, 36.5], [59.5, 37.1], [58.3, 37.8], [56.5, 38.7], [55.3, 38.9]]
+value = 0.6
+slices = [-6000, -5000, -4000, -3000]
+
+[[judgement]]
+region = "Other"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["cereal_pollen-10000-15", "cereal_pollen-9000-35", "cereal_pollen-8000-54", "cereal_pollen-7000-74", "cereal_pollen-6000-94", "cereal_pollen-5000-113", "cereal_pollen-4000-131", "cereal_pollen-3000-148"]
+why_empty = ["research_intensity", "dataset_edge"]
+why_note = "The gap is the Kharan-Makran desert of Pakistani Baluchistan, at the grid's eastern edge. No cores have been taken there. Mehrgarh's barley farming (from c. 7000 BCE) lies just east of it on the Kachi plain."
+expected = 0.3
+expected_range = [0.1, 0.6]
+confidence = "low"
+basis = ["environment", "analogy", "literature"]
+reasoning = "The nearest evidence is 731-1438 km away, so the dossier gives nothing. By analogy with arid Iranian and Central Asian cores, wild-grass background would be 0.2-0.4. Mehrgarh would add cereal pollen locally in the east."
+literature = [
+  { cite = "Jarrige et al. 1995, Mehrgarh Field Reports 1974-1985", checked = false },
+]
+would_settle = "None realistic; this is a game-map edge."
+speculative_rule = "Fill at 0.3 in all slices, and at 0.5 within 100 km of Mehrgarh from 7,000 BCE."
+
+# ---------------------------------------------------------------- Steppe and forest
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["cereal_pollen-10000-07", "cereal_pollen-9000-27", "cereal_pollen-8000-48", "cereal_pollen-7000-69", "cereal_pollen-6000-89", "cereal_pollen-5000-108", "cereal_pollen-4000-126", "cereal_pollen-3000-143"]
+why_empty = ["research_intensity", "publication_access", "preservation"]
+why_note = "The lower Volga and Caspian lowland have shallow saline lakes and few cores, and Russian steppe palynology is mostly outside Neotoma. No one farmed here in the period: Samara, Khvalynsk and Yamnaya were foragers and herders."
+expected = 0.15
+expected_range = [0.05, 0.35]
+confidence = "low"
+basis = ["dossier_statistics", "neighbouring_evidence", "environment", "literature"]
+reasoning = "Edge means are 0.08-0.26, and most edge cells sit near 0.06-0.1 (shrinkage on absent cores). The higher edge maxima come from the Ukrainian and Caucasian rims. Pontic steppe cores record 1 in 3 core-slices. Wild steppe grasses (Leymus racemosus, Elymus, Secale sylvestre) give Cerealia-sized grains, so a non-zero background is expected even without farming."
+literature = [
+  { cite = "Beug 2004, Leitfaden der Pollenbestimmung (Cerealia-type includes several wild Triticeae)", checked = false },
+  { cite = "Anthony 2007, The Horse, the Wheel, and Language (no cultivation by Khvalynsk or Yamnaya)", checked = false },
+]
+would_settle = "Ingest lower Volga and Caspian-lowland lake records from the Russian Pollen Database, with Poaceae grain size measured."
+speculative_rule = "Fill at 0.12 for 10,000-6,000 BCE and 0.18 for 5,000-3,000 BCE. Treat it as wild Triticeae, not farming."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000, -7000, -6000]
+value = 0.12
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000, -4000, -3000]
+value = 0.18
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["cereal_pollen-10000-02", "cereal_pollen-9000-21", "cereal_pollen-9000-34", "cereal_pollen-8000-41", "cereal_pollen-8000-57", "cereal_pollen-7000-62", "cereal_pollen-7000-73", "cereal_pollen-6000-84", "cereal_pollen-6000-93", "cereal_pollen-5000-102", "cereal_pollen-5000-112", "cereal_pollen-4000-120", "cereal_pollen-4000-129", "cereal_pollen-3000-140", "cereal_pollen-3000-146"]
+why_empty = ["research_intensity", "publication_access", "true_absence"]
+why_note = "The Pechora, Komi and northern Urals have many Russian-language cores but few in Neotoma/EPD. People here were foragers throughout the period, with Upper Volga and Volosovo pottery but no cereals."
+expected = 0.03
+expected_range = [0.0, 0.1]
+confidence = "medium"
+basis = ["dossier_statistics", "neighbouring_evidence", "literature"]
+reasoning = "Cores in NW Russia (30-50°E) record Cerealia in 0.00-0.03 of core-slices, and Finland-Karelia in 0.00-0.05 until 4,000 BCE, then 0.11 at 3,000 BCE. That is below the 6% per-level European background because boreal lakes lack large wild grasses. The 6,000-5,000 BCE edge maxima (about 0.5) are single cells near the Baltic. The sporadic early cereal grains in Finnish Comb Ware contexts are real but rare."
+literature = [
+  { cite = "Alenius, Mökkönen & Lahelma 2013, 'Early farming in the northern Boreal zone: reassessing the history of land use in southeastern Finland', VHA 22", checked = false },
+  { cite = "Novenko et al. 2009, Holocene vegetation of the Central Forest Reserve, European Russia (forest-zone pollen synthesis)", checked = false },
+]
+would_settle = "Ingest the Russian Pollen Database (RPD) cores for the Komi and Pechora region."
+speculative_rule = "Fill at 0.02 for 10,000-5,000 BCE and 0.04 for 4,000-3,000 BCE. Fade to 0 north of 66°N."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+value = 0.02
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-4000, -3000]
+value = 0.04
+[[judgement.adjust]]
+kind = "gradient"
+axis = "lat"
+from = [66.0, 0.0]
+to = [68.0, -0.04]
+mode = "add"
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-10000, -9000, -8000]
+gap_ids = ["cereal_pollen-10000-13", "cereal_pollen-9000-32", "cereal_pollen-8000-53"]
+why_empty = ["research_intensity", "publication_access"]
+why_note = "The lower Dnieper steppe has few cores in Neotoma for the Early Holocene. Ukrainian work exists but is mostly in Ukrainian or Russian."
+expected = 0.1
+expected_range = [0.03, 0.3]
+confidence = "low"
+basis = ["dossier_statistics", "neighbouring_evidence", "environment"]
+reasoning = "Edge means are 0.09-0.10 with a few cells near 0.5. Before farming, only wild steppe Triticeae would produce Cerealia-type grains, which is the same background as the Russian steppe."
+literature = [
+  { cite = "Kremenetski 1995, 'Holocene vegetation and climate history of southwestern Ukraine', Review of Palaeobotany and Palynology", checked = false },
+]
+would_settle = "Ingest Kremenetski's Ukrainian steppe records."
+speculative_rule = "Fill at 0.1."
+
+[[judgement]]
+region = "Now-drowned shelves and islands"
+slices = [-10000, -9000]
+gap_ids = ["cereal_pollen-10000-16", "cereal_pollen-9000-37"]
+why_empty = ["submerged", "dataset_edge"]
+why_note = "This is the Persian Gulf floor, a dry river valley (the 'Ur-Schatt') until the sea flooded it c. 10,000-6,000 BCE. Only marine cores sample it."
+expected = 0.4
+expected_range = [0.15, 0.7]
+confidence = "low"
+basis = ["analogy", "environment"]
+reasoning = "No edge evidence, and the nearest cores are 782 km away. By analogy with arid Mesopotamian cores, the wild-grass background would be high, but it would be lower on the desert floor than in the Jazira."
+literature = [
+  { cite = "Rose 2010, 'New light on human prehistory in the Arabo-Persian Gulf Oasis', Current Anthropology 51", checked = false },
+]
+would_settle = "Pollen from Gulf marine cores spanning the transgression."
+speculative_rule = "Fill at 0.4 while the floor is dry."

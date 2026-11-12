@@ -20,3 +20,12 @@ lto = "thin"
 # Keep debug builds of the app usable: optimise dependencies.
 [profile.dev.package."*"]
 opt-level = 2
+
+# Web build (trunk uses it via data-cargo-profile in index.html): the wasm is
+# downloaded on every visit, so optimise for size rather than speed.
+[profile.web]
+inherits = "release"
+opt-level = "s"
+lto = "fat"
+codegen-units = 1
+panic = "abort"

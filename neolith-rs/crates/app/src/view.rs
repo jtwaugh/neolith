@@ -4,7 +4,8 @@
 use crate::app::{Gpu, Session, Tool};
 use crate::board::camera::{self, View};
 use crate::board::relief::Relief;
-use crate::board::renderer::{BoardRenderer, Globals};
+use crate::board::lines;
+use crate::board::renderer::{BoardRenderer, Globals, LineMesh};
 use crate::board::scene::{self, BoardStyle, Piece, PieceFrame, ScreenPiece};
 use eframe::{egui_wgpu, wgpu};
 use egui::{Align2, Color32, FontId, PointerButton, Pos2, Sense, Stroke};
@@ -32,6 +33,10 @@ struct Glide {
     start: f64,
 }
 
+/// Most board pixels per egui point on the web (see `board_view`).
+#[cfg(target_arch = "wasm32")]
+const MAX_WEB_BOARD_DENSITY: f32 = 1.5;
+
 /// Pointer-interaction state of the board view.
 #[derive(Default)]
 pub struct BoardInput {
@@ -45,6 +50,48 @@ pub struct BoardInput {
     glide: Option<Glide>,
     /// What the last frame drew, kept so the agent harness can read it.
     pub drawn: Drawn,
+    /// Sea and region names shown last frame (label hysteresis).
+    geo_shown: std::collections::HashSet<String>,
+    /// What the uploaded piece/river/lake triangles were built from.
+    piece_key: Option<PieceKey>,
+    /// Which rivers the uploaded river field was built for ([`lines::flowing`]).
+    flowing: Option<Vec<Option<bool>>>,
+}
+
+/// The inputs of the piece, river and lake triangles. Rivers and lakes are
+/// read-only and the projection is fixed for a session (and `BoardInput`
+/// is created with the session), so neither needs to be in the key.
+struct PieceKey {
+    pieces: Vec<Piece>,
+    year: neolith_core::Year,
+    rivers: bool,
+    /// Compared by identity: the session builds a new `Relief` when heights change.
+    relief: Arc<Relief>,
+    morph: f64,
+    dist: f64,
+}
+
+impl PartialEq for PieceKey {
+    fn eq(&self, o: &Self) -> bool {
+        self.pieces == o.pieces
+            && self.year == o.year
+            && self.rivers == o.rivers
+            && Arc::ptr_eq(&self.relief, &o.relief)
+            && self.morph == o.morph
+            && self.dist == o.dist
+    }
+}
+
+impl BoardInput {
+    /// No drag or stroke in progress.
+    pub fn is_idle(&self) -> bool {
+        self.drag.is_none() && self.stroke.is_none()
+    }
+
+    pub fn glide_to(&mut self, from: LonLat, to: LonLat, now: f64) {
+        self.glide = Some(Glide { from, to, start: now });
+        self.velocity = DVec2::ZERO;
+    }
 }
 
 /// A record of the board as drawn in the last frame (window points).
@@ -72,11 +119,12 @@ impl egui_wgpu::CallbackTrait for BoardPaint {
         device: &wgpu::Device,
         queue: &wgpu::Queue,
         _screen: &egui_wgpu::ScreenDescriptor,
-        encoder: &mut wgpu::CommandEncoder,
+        _encoder: &mut wgpu::CommandEncoder,
         _resources: &mut egui_wgpu::CallbackResources,
     ) -> Vec<wgpu::CommandBuffer> {
-        // Offscreen colour + depth pass, recorded ahead of egui's own pass.
-        self.renderer.lock().unwrap().render(device, queue, encoder, self.size, &self.globals);
+        // Offscreen colour + depth pass, submitted ahead of egui's own pass;
+        // skipped when the board hasn't changed since the last one.
+        self.renderer.lock().unwrap().render_if_changed(device, queue, self.size, &self.globals);
         Vec::new()
     }
 
@@ -125,26 +173,20 @@ fn segment_distance(p: DVec2, a: DVec2, b: DVec2) -> f64 {
 
 /// Screen-space segment (base, top) of a piece, if it faces the camera.
 /// Visible-piece indices from most to least important: the selected
-/// settlement, then population, then settlement id (stable while panning).
+/// settlement, then size tier and population, then settlement id (stable
+/// while panning).
 fn piece_priority(s: &Session, visible: &[(usize, Piece)]) -> Vec<usize> {
     let mut order: Vec<usize> = (0..visible.len()).collect();
     order.sort_by_key(|&k| {
         let (i, p) = &visible[k];
-        (s.settlement != Some(*i), std::cmp::Reverse(p.population), s.world.settlements[*i].id)
+        (s.settlement != Some(*i), std::cmp::Reverse((p.rank(), p.population)), s.world.settlements[*i].id)
     });
     order
 }
 
-/// How close the camera must be before a settlement of this size is named.
-fn label_dist(population: u32) -> f64 {
-    match population {
-        // No population on record: named only close in.
-        0 => 0.15,
-        1..=999 => 1.0,
-        1000..=2999 => 1.6,
-        _ => 2.4,
-    }
-}
+/// Below this hex radius on screen (points) only the hovered or selected
+/// settlement is named: the far view is for the map, not a carpet of names.
+const LABEL_MIN_HEX_PX: f64 = 8.0;
 
 pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &Gpu, now: f64, dt: f64) {
     let rect = ui.available_rect_before_wrap();
@@ -308,7 +350,7 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         .enumerate()
         .filter(|(_, st)| st.exists_at(year))
         .map(|(i, st)| {
-            let piece = Piece { pos: st.pos, population: st.population_at(year).unwrap_or(0), highlighted: false };
+            let piece = Piece::new(st, year);
             (i, piece)
         })
         .collect();
@@ -337,15 +379,24 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         None
     };
     if hover != s.hover {
+        // Move the hover flag texel by texel; a full state upload (when one
+        // is already due this frame) picks up `s.hover` itself.
+        if !s.state_dirty {
+            let mut r = s.renderer.lock().unwrap();
+            for (id, on) in [(s.hover, false), (hover, true)] {
+                if let Some(id) = id {
+                    let (c, row) = grid.col_row(id);
+                    r.set_flag(&gpu.queue, c as u32, row as u32, scene::FLAG_HOVER, on);
+                }
+            }
+        }
         s.hover = hover;
-        s.state_dirty = true;
     }
 
     // ---- clicks ----------------------------------------------------------
     if resp.double_clicked() && matches!(s.tool, Tool::Select) {
         if let Some(hex) = s.hover {
-            s.input.glide = Some(Glide { from: s.camera.target, to: grid.centre(hex), start: now });
-            s.input.velocity = DVec2::ZERO;
+            s.glide_to(grid.centre(hex), now);
         }
     } else if resp.clicked() {
         if let Some(k) = piece_hover {
@@ -394,22 +445,53 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
 
     // ---- upload and paint ------------------------------------------------
     if s.state_dirty {
-        let state = scene::state_texels(&grid, &s.snapshot, &s.hillshade, &s.world.landform, Some(&s.selection), s.input.lasso_preview.as_ref(), s.hover);
+        let state = scene::state_texels(&grid, &s.snapshot, &s.hillshade, &s.world.landform, &s.world.survey, Some(&s.selection), s.input.lasso_preview.as_ref(), s.hover);
         s.renderer.lock().unwrap().upload_state(&gpu.queue, &state);
         s.state_dirty = false;
+    }
+    if s.evidence_dirty {
+        let texels = scene::evidence_texels(&grid, s.evidence_codes());
+        s.renderer.lock().unwrap().upload_evidence(&gpu.queue, &texels);
+        s.evidence_dirty = false;
     }
     let pieces: Vec<Piece> = visible
         .iter()
         .enumerate()
         .map(|(k, (i, p))| Piece { highlighted: piece_hover == Some(k) || s.settlement == Some(*i), ..p.clone() })
         .collect();
-    let mut verts = scene::piece_vertices(&pieces, &s.proj, &relief, s.morph, s.camera.dist);
-    if style.rivers {
-        verts.extend(scene::river_vertices(&s.world.rivers, year, &s.proj, &relief, s.morph, s.camera.dist));
-        verts.extend(scene::lake_vertices(&s.world.lakes, year, &s.proj, &relief, s.morph, s.camera.dist));
+    // Rebuild the piece, river and lake triangles only when their inputs
+    // change. Panning, the clock between epochs and panel repaints keep them.
+    let key = PieceKey { pieces, year, rivers: style.rivers, relief: relief.clone(), morph: s.morph, dist: s.camera.dist };
+    if s.input.piece_key.as_ref() != Some(&key) {
+        let verts = scene::piece_vertices(&key.pieces, &s.proj, &relief, s.morph, s.camera.dist);
+        let mut line_mesh = LineMesh::default();
+        if style.rivers {
+            let board = lines::Board { proj: &s.proj, relief: &relief, t: s.morph, cam_dist: s.camera.dist };
+            lines::rivers(&mut line_mesh, &s.world.rivers, &s.world.lakes, &s.snapshot, &board);
+            lines::lakes(&mut line_mesh, &s.world.lakes, year, &board);
+        }
+        // The river field only changes when a river starts, stops or turns
+        // seasonal, not with every year or camera move.
+        let flowing = if style.rivers { lines::flowing(&s.world.rivers, year) } else { Vec::new() };
+        let field = (s.input.flowing.as_ref() != Some(&flowing)).then(|| lines::river_field(&s.world.rivers, &flowing, &grid));
+        let mut renderer = s.renderer.lock().unwrap();
+        renderer.upload_pieces(&gpu.device, &gpu.queue, &verts);
+        renderer.upload_lines(&gpu.device, &gpu.queue, &line_mesh);
+        if let Some(field) = &field {
+            renderer.upload_river_field(&gpu.queue, field);
+        }
+        drop(renderer);
+        s.input.flowing = Some(flowing);
+        s.input.piece_key = Some(key);
     }
-    s.renderer.lock().unwrap().upload_pieces(&gpu.device, &gpu.queue, &verts);
 
+    // The board's offscreen resolution, in pixels. On the web it is capped
+    // below a high-DPI screen's density (the blit upscales it linearly): the
+    // board shader is per-pixel heavy, browsers' GPU budgets are tighter and
+    // 2× density costs ~1.8× the pixels of 1.5×. Native renders at full density.
+    #[cfg(target_arch = "wasm32")]
+    let ppp = ui.ctx().pixels_per_point().min(MAX_WEB_BOARD_DENSITY);
+    #[cfg(not(target_arch = "wasm32"))]
     let ppp = ui.ctx().pixels_per_point();
     let px = [(rect.width() * ppp).round().max(1.0) as u32, (rect.height() * ppp).round().max(1.0) as u32];
     let globals = scene::globals(&view, style, s.mode, &grid, &s.mesh, px[1] as f32);
@@ -426,12 +508,9 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         pts.push(pts[0]);
         painter.line(pts, Stroke::new(1.5, Color32::from_rgb(120, 200, 255)));
     }
-    // Settlement name labels: bigger places are named from further out, in
-    // priority order, and a label that would overlap one already placed is
-    // skipped. The hovered piece goes first so its name always shows.
+    // Settlement name labels. The hovered piece goes first so its name always shows.
     const MAX_LABELS: usize = 150;
     let label_order = piece_hover.into_iter().chain(order.iter().copied().filter(|&k| Some(k) != piece_hover));
-    let mut placed: Vec<egui::Rect> = Vec::new();
     let mut drawn = Drawn {
         rect: Some(rect),
         pieces: (0..visible.len())
@@ -440,20 +519,44 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
             .collect(),
         labels: Vec::new(),
         piece_hover: piece_hover.map(|k| visible[k].0),
-        geo: crate::labels::draw_geography(&painter, rect, &view, &relief, &s.world, &s.snapshot.terrain, year, s.camera.dist),
+        geo: crate::labels::draw_geography(
+            &painter,
+            rect,
+            &view,
+            &relief,
+            &s.world,
+            &s.snapshot.terrain,
+            year,
+            s.camera.dist,
+            &mut s.input.geo_shown,
+        ),
     };
-    // Settlement names: cleaned of catalogue codes, one label per name; places
-    // with no recorded population only close in (any place is named when
-    // hovered or selected).
+    // Settlement names: cleaned of catalogue codes, one label per name, and
+    // placed by collision alone: in priority order (selected, then
+    // population, so places with no record go last), skipping any label that
+    // would touch one already placed or a geography name. Any place is named
+    // when hovered or selected.
+    let names_on = scene::hex_px(&view, &grid, s.camera.dist) >= LABEL_MIN_HEX_PX;
+    let mut placed: Vec<egui::Rect> = drawn.geo.iter().map(|g| g.bounds).collect();
     let mut named: Vec<String> = Vec::new();
+    // A name also keeps off the stars of other important sites, which sit
+    // at the top of their pieces just where a neighbour's name would go.
+    let stars: Vec<(usize, egui::Rect)> = (0..visible.len())
+        .filter(|&k| visible[k].1.starred())
+        .filter_map(|k| {
+            let p = on_screen[k]?;
+            let r = (p.radius_px * 0.7) as f32;
+            Some((k, egui::Rect::from_center_size(to_screen(p.top) + egui::vec2(0.0, r), egui::vec2(2.0 * r, 2.0 * r))))
+        })
+        .collect();
     for k in label_order {
-        if placed.len() >= MAX_LABELS {
+        if drawn.labels.len() >= MAX_LABELS {
             break;
         }
         let Some(p) = on_screen[k] else { continue };
-        let (i, piece) = &visible[k];
+        let (i, _) = &visible[k];
         let emphasised = piece_hover == Some(k) || s.settlement == Some(*i);
-        if !emphasised && s.camera.dist >= label_dist(piece.population) {
+        if !emphasised && !names_on {
             continue;
         }
         let full = &s.world.settlements[*i].name;
@@ -469,10 +572,16 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         let galley = painter.layout_no_wrap(name.clone(), font.clone(), Color32::WHITE);
         let pos = to_screen(p.top) + egui::vec2(0.0, -4.0);
         let r = Align2::CENTER_BOTTOM.anchor_size(pos, galley.size()).expand(2.0);
-        if !emphasised && (!rect.contains_rect(r) || placed.iter().any(|q| q.intersects(r))) {
+        // A little air around each name so neighbours don't read as one.
+        let padded = r.expand(4.0);
+        if !emphasised
+            && (!rect.contains_rect(r)
+                || placed.iter().any(|q| q.intersects(padded))
+                || stars.iter().any(|(j, q)| *j != k && q.intersects(r)))
+        {
             continue;
         }
-        placed.push(r);
+        placed.push(padded);
         named.push(name.clone());
         drawn.labels.push((*i, r));
         painter.text(pos + egui::vec2(1.0, 1.0), Align2::CENTER_BOTTOM, &name, font.clone(), Color32::from_black_alpha(190));
@@ -509,9 +618,10 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
                 .and_then(|k| on_screen[k])
                 .map(|p| to_screen(p.top))
                 .unwrap_or(rect.center());
+            const WIDTH: f32 = 290.0;
             let pos = Pos2::new(
-                (anchor.x + 14.0).clamp(rect.left() + 4.0, rect.right() - 200.0),
-                (anchor.y - 30.0).clamp(rect.top() + 44.0, rect.bottom() - 110.0),
+                (anchor.x + 14.0).clamp(rect.left() + 4.0, rect.right() - WIDTH - 24.0),
+                (anchor.y - 30.0).clamp(rect.top() + 44.0, (rect.bottom() - 300.0).max(rect.top() + 44.0)),
             );
             let mut open = true;
             egui::Window::new(st.name.as_str())
@@ -520,12 +630,15 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
                 .collapsible(false)
                 .resizable(false)
                 .fixed_pos(pos)
+                .constrain_to(rect)
+                .default_width(WIDTH)
+                .max_width(WIDTH)
+                .max_height((rect.bottom() - pos.y - 12.0).max(160.0))
                 .show(ui.ctx(), |ui| {
-                    ui.label(format!("Founded {}", st.founded));
-                    match st.population_at(year) {
-                        Some(n) => ui.label(format!("Population in {year}: {n}")),
-                        None => ui.weak("No population record yet"),
-                    };
+                    egui::ScrollArea::vertical().id_salt("settlement_record").show(ui, |ui| {
+                        ui.set_width(WIDTH);
+                        crate::site_record::show(ui, &s.world, i, year);
+                    });
                 });
             if !open {
                 s.settlement = None;

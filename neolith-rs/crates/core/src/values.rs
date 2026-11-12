@@ -49,6 +49,8 @@ terrain! {
     // Mountain ground above the treeline. (`Mountains` is a landform, now
     // `Landform`; the variant stays so older files still load.)
     Alpine => "Alpine",
+    // Green river bottomland in dry or open country (pipeline `[rivers.floodplain]`).
+    Floodplain => "Floodplain",
 }
 
 impl Terrain {
@@ -217,23 +219,47 @@ impl Prop {
     }
 }
 
-/// What the board is coloured by: one of the editable properties, or the
-/// static elevation layer (read-only).
+/// What the board is coloured by: one of the editable properties, or a
+/// read-only layer (static elevation, productivity from the climate model,
+/// the biodiversity derived from it, or the population expected from both
+/// and the spread of farming), or the selected speculative evidence layer
+/// ([`crate::evidence`]).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum MapMode {
     Terrain,
     Koeppen,
     Pop,
     Elevation,
+    Npp,
+    Biodiversity,
+    Expected,
+    Evidence,
 }
 
 impl MapMode {
-    pub const ALL: [MapMode; 4] = [MapMode::Terrain, MapMode::Koeppen, MapMode::Pop, MapMode::Elevation];
+    pub const ALL: [MapMode; 8] = [
+        MapMode::Terrain,
+        MapMode::Koeppen,
+        MapMode::Pop,
+        MapMode::Elevation,
+        MapMode::Npp,
+        MapMode::Biodiversity,
+        MapMode::Expected,
+        MapMode::Evidence,
+    ];
 
     /// The modes offered in the top-bar map selector. Population is hidden
     /// for now (not useful yet); it stays in [`MapMode::ALL`] so palette
     /// rows and harness `--mode pop` keep working.
-    pub const MENU: [MapMode; 3] = [MapMode::Terrain, MapMode::Koeppen, MapMode::Elevation];
+    pub const MENU: [MapMode; 7] = [
+        MapMode::Terrain,
+        MapMode::Koeppen,
+        MapMode::Elevation,
+        MapMode::Npp,
+        MapMode::Biodiversity,
+        MapMode::Expected,
+        MapMode::Evidence,
+    ];
 
     /// Also the row of the GPU palette texture.
     pub fn index(self) -> usize {
@@ -246,14 +272,18 @@ impl MapMode {
             MapMode::Terrain => Some(Prop::Terrain),
             MapMode::Koeppen => Some(Prop::Koeppen),
             MapMode::Pop => Some(Prop::Pop),
-            MapMode::Elevation => None,
+            MapMode::Elevation | MapMode::Npp | MapMode::Biodiversity | MapMode::Expected | MapMode::Evidence => None,
         }
     }
 
     pub fn label(self) -> &'static str {
-        match self.prop() {
-            Some(p) => p.label(),
-            None => "Elevation",
+        match self {
+            MapMode::Elevation => "Elevation",
+            MapMode::Npp => "Productivity",
+            MapMode::Biodiversity => "Biodiversity",
+            MapMode::Expected => "Expected population",
+            MapMode::Evidence => "Evidence",
+            _ => self.prop().map_or("", Prop::label),
         }
     }
 
@@ -264,6 +294,10 @@ impl MapMode {
             "koeppen" => Some(MapMode::Koeppen),
             "pop" | "population" => Some(MapMode::Pop),
             "elevation" | "elev" => Some(MapMode::Elevation),
+            "npp" | "productivity" => Some(MapMode::Npp),
+            "biodiversity" => Some(MapMode::Biodiversity),
+            "expected" => Some(MapMode::Expected),
+            "evidence" => Some(MapMode::Evidence),
             _ => None,
         }
     }
@@ -334,7 +368,7 @@ mod tests {
             assert_eq!(Terrain::from_name(t.name()), Some(*t));
             assert_eq!(Terrain::from_u8(i as u8), Some(*t));
         }
-        assert_eq!(Terrain::ALL.len(), 19);
+        assert_eq!(Terrain::ALL.len(), 20);
         assert_eq!(Terrain::from_name("Lava"), None);
     }
 
@@ -384,5 +418,17 @@ mod tests {
         }
         assert_eq!(MapMode::Elevation.prop(), None);
         assert_eq!(MapMode::from_arg("elevation"), Some(MapMode::Elevation));
+        assert_eq!(MapMode::from_arg("npp"), Some(MapMode::Npp));
+        assert_eq!(MapMode::Npp.prop(), None);
+        assert_eq!(MapMode::Npp.label(), "Productivity");
+        assert_eq!(MapMode::from_arg("biodiversity"), Some(MapMode::Biodiversity));
+        assert_eq!(MapMode::Biodiversity.index(), 5);
+        assert_eq!(MapMode::from_arg("expected"), Some(MapMode::Expected));
+        assert_eq!(MapMode::Expected.index(), 6);
+        assert_eq!(MapMode::from_arg("evidence"), Some(MapMode::Evidence));
+        assert_eq!(MapMode::Evidence.index(), 7);
+        assert_eq!(MapMode::Evidence.prop(), None);
+        assert!(MapMode::ALL.contains(&MapMode::Evidence) && MapMode::MENU.contains(&MapMode::Evidence));
+        assert_eq!(MapMode::Pop.label(), Prop::Pop.label());
     }
 }

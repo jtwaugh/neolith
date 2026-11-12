@@ -1,0 +1,1986 @@
+{
+ "slices": [
+  -10000,
+  -9000,
+  -8000,
+  -7000,
+  -6000,
+  -5000,
+  -4000,
+  -3000
+ ],
+ "layers": {
+  "pottery": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 1653,
+    "judged": 12745,
+    "extrapolated": 2997
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 2493,
+    "judged": 12355,
+    "extrapolated": 2668
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 3458,
+    "judged": 11621,
+    "extrapolated": 2265
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 4137,
+    "judged": 11561,
+    "extrapolated": 2012
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 6119,
+    "judged": 9827,
+    "extrapolated": 1633
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 7088,
+    "judged": 8569,
+    "extrapolated": 1712
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 5911,
+    "judged": 9751,
+    "extrapolated": 1724
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 4969,
+    "judged": 10734,
+    "extrapolated": 1667
+   }
+  ],
+  "flaked_stone": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 275,
+    "judged": 17120,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 782,
+    "judged": 16734,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 1361,
+    "judged": 15983,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 1659,
+    "judged": 16051,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 2000,
+    "judged": 15579,
+    "extrapolated": 0
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 2036,
+    "judged": 15333,
+    "extrapolated": 0
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 1409,
+    "judged": 15977,
+    "extrapolated": 0
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 561,
+    "judged": 16809,
+    "extrapolated": 0
+   }
+  ],
+  "ground_stone": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 2793,
+    "judged": 14598,
+    "extrapolated": 4
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 3878,
+    "judged": 13583,
+    "extrapolated": 55
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 5081,
+    "judged": 12253,
+    "extrapolated": 10
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 5558,
+    "judged": 12148,
+    "extrapolated": 4
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 8193,
+    "judged": 9352,
+    "extrapolated": 34
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 7494,
+    "judged": 9849,
+    "extrapolated": 26
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 8003,
+    "judged": 9378,
+    "extrapolated": 5
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 7203,
+    "judged": 10167,
+    "extrapolated": 0
+   }
+  ],
+  "bone_antler": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 26,
+    "judged": 17369,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 528,
+    "judged": 16988,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 305,
+    "judged": 17039,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 334,
+    "judged": 17376,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 765,
+    "judged": 16814,
+    "extrapolated": 0
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 505,
+    "judged": 16864,
+    "extrapolated": 0
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 198,
+    "judged": 17188,
+    "extrapolated": 0
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 126,
+    "judged": 17244,
+    "extrapolated": 0
+   }
+  ],
+  "ornaments": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 11,
+    "judged": 17384,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 122,
+    "judged": 17394,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 121,
+    "judged": 17223,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 989,
+    "judged": 16721,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 1397,
+    "judged": 16182,
+    "extrapolated": 0
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 1536,
+    "judged": 15833,
+    "extrapolated": 0
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 1339,
+    "judged": 16047,
+    "extrapolated": 0
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 1110,
+    "judged": 16260,
+    "extrapolated": 0
+   }
+  ],
+  "cereals": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 95,
+    "judged": 17192,
+    "extrapolated": 108
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 384,
+    "judged": 17053,
+    "extrapolated": 79
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 450,
+    "judged": 16822,
+    "extrapolated": 72
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 431,
+    "judged": 17184,
+    "extrapolated": 95
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 769,
+    "judged": 16744,
+    "extrapolated": 66
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 1661,
+    "judged": 15638,
+    "extrapolated": 70
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 1879,
+    "judged": 15436,
+    "extrapolated": 71
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 1677,
+    "judged": 15629,
+    "extrapolated": 64
+   }
+  ],
+  "domestic_livestock": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 0,
+    "judged": 17395,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 0,
+    "judged": 17516,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 0,
+    "judged": 17249,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 462,
+    "judged": 17137,
+    "extrapolated": 111
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 1001,
+    "judged": 16524,
+    "extrapolated": 54
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 2143,
+    "judged": 15144,
+    "extrapolated": 82
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 2437,
+    "judged": 14864,
+    "extrapolated": 85
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 2556,
+    "judged": 14485,
+    "extrapolated": 329
+   }
+  ],
+  "enclosures": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 0,
+    "judged": 17395,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 0,
+    "judged": 17516,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 0,
+    "judged": 17344,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 0,
+    "judged": 17710,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 45,
+    "judged": 17534,
+    "extrapolated": 0
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 971,
+    "judged": 16398,
+    "extrapolated": 0
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 772,
+    "judged": 16614,
+    "extrapolated": 0
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 964,
+    "judged": 16406,
+    "extrapolated": 0
+   }
+  ],
+  "megalithic_tombs": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 0,
+    "judged": 17395,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 0,
+    "judged": 17516,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 0,
+    "judged": 17344,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 52,
+    "judged": 17658,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 263,
+    "judged": 17316,
+    "extrapolated": 0
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 599,
+    "judged": 16770,
+    "extrapolated": 0
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 1149,
+    "judged": 16237,
+    "extrapolated": 0
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 1485,
+    "judged": 15885,
+    "extrapolated": 0
+   }
+  ],
+  "pile_dwellings": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 0,
+    "judged": 17395,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 0,
+    "judged": 17516,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 0,
+    "judged": 17344,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 0,
+    "judged": 17710,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 0,
+    "judged": 17579,
+    "extrapolated": 0
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 0,
+    "judged": 17369,
+    "extrapolated": 0
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 40,
+    "judged": 17346,
+    "extrapolated": 0
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 52,
+    "judged": 17318,
+    "extrapolated": 0
+   }
+  ],
+  "houses": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 0,
+    "judged": 17395,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 0,
+    "judged": 17516,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 0,
+    "judged": 17344,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 0,
+    "judged": 17710,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 48,
+    "judged": 17531,
+    "extrapolated": 0
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 0,
+    "judged": 17369,
+    "extrapolated": 0
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 165,
+    "judged": 17221,
+    "extrapolated": 0
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 88,
+    "judged": 17282,
+    "extrapolated": 0
+   }
+  ],
+  "mines": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 0,
+    "judged": 17395,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 0,
+    "judged": 17516,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 0,
+    "judged": 17344,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 0,
+    "judged": 17710,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 0,
+    "judged": 17579,
+    "extrapolated": 0
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 54,
+    "judged": 17315,
+    "extrapolated": 0
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 160,
+    "judged": 17226,
+    "extrapolated": 0
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 171,
+    "judged": 17199,
+    "extrapolated": 0
+   }
+  ],
+  "metallurgy": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 0,
+    "judged": 17395,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 0,
+    "judged": 17516,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 0,
+    "judged": 17344,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 0,
+    "judged": 17710,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 0,
+    "judged": 17579,
+    "extrapolated": 0
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 0,
+    "judged": 17369,
+    "extrapolated": 0
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 19,
+    "judged": 17367,
+    "extrapolated": 0
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 12,
+    "judged": 17358,
+    "extrapolated": 0
+   }
+  ],
+  "waterlogged_organics": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 0,
+    "judged": 17395,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 0,
+    "judged": 17516,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 0,
+    "judged": 17344,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 0,
+    "judged": 17710,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 55,
+    "judged": 17524,
+    "extrapolated": 0
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 81,
+    "judged": 17288,
+    "extrapolated": 0
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 137,
+    "judged": 17249,
+    "extrapolated": 0
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 212,
+    "judged": 17158,
+    "extrapolated": 0
+   }
+  ],
+  "cereal_pollen": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 4415,
+    "judged": 12874,
+    "extrapolated": 106
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 4687,
+    "judged": 12731,
+    "extrapolated": 98
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 4989,
+    "judged": 12162,
+    "extrapolated": 193
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 5551,
+    "judged": 11930,
+    "extrapolated": 229
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 5719,
+    "judged": 11703,
+    "extrapolated": 157
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 5743,
+    "judged": 11564,
+    "extrapolated": 62
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 5885,
+    "judged": 11414,
+    "extrapolated": 87
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 6107,
+    "judged": 11186,
+    "extrapolated": 77
+   }
+  ],
+  "dung_spores": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 1583,
+    "judged": 15812,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 1689,
+    "judged": 15827,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 1820,
+    "judged": 15307,
+    "extrapolated": 217
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 1938,
+    "judged": 15646,
+    "extrapolated": 126
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 2062,
+    "judged": 15455,
+    "extrapolated": 62
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 2054,
+    "judged": 15308,
+    "extrapolated": 7
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 2150,
+    "judged": 15191,
+    "extrapolated": 45
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 2227,
+    "judged": 15102,
+    "extrapolated": 41
+   }
+  ],
+  "open_land": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 816,
+    "judged": 16414,
+    "extrapolated": 165
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 950,
+    "judged": 16169,
+    "extrapolated": 397
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 988,
+    "judged": 16232,
+    "extrapolated": 124
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 1152,
+    "judged": 16317,
+    "extrapolated": 241
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 1237,
+    "judged": 16178,
+    "extrapolated": 164
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 1313,
+    "judged": 15959,
+    "extrapolated": 97
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 1389,
+    "judged": 15911,
+    "extrapolated": 86
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 1428,
+    "judged": 15841,
+    "extrapolated": 101
+   }
+  ],
+  "adna_samples": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 51,
+    "judged": 17344,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 302,
+    "judged": 17214,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 530,
+    "judged": 16814,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 469,
+    "judged": 17241,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 1668,
+    "judged": 15874,
+    "extrapolated": 37
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 2049,
+    "judged": 15302,
+    "extrapolated": 18
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 3010,
+    "judged": 14354,
+    "extrapolated": 22
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 3737,
+    "judged": 13616,
+    "extrapolated": 17
+   }
+  ],
+  "y_i2": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 18,
+    "judged": 17377,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 130,
+    "judged": 17386,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 312,
+    "judged": 17032,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 233,
+    "judged": 17477,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 1181,
+    "judged": 16351,
+    "extrapolated": 47
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 1512,
+    "judged": 15818,
+    "extrapolated": 39
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 2150,
+    "judged": 15230,
+    "extrapolated": 6
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 2994,
+    "judged": 14376,
+    "extrapolated": 0
+   }
+  ],
+  "y_g2a": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 18,
+    "judged": 17377,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 130,
+    "judged": 17386,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 312,
+    "judged": 17032,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 233,
+    "judged": 17477,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 1181,
+    "judged": 16351,
+    "extrapolated": 47
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 1512,
+    "judged": 15818,
+    "extrapolated": 39
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 2150,
+    "judged": 15230,
+    "extrapolated": 6
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 2994,
+    "judged": 14376,
+    "extrapolated": 0
+   }
+  ],
+  "y_r1b": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 18,
+    "judged": 17377,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 130,
+    "judged": 17386,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 312,
+    "judged": 17032,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 233,
+    "judged": 17477,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 1181,
+    "judged": 16351,
+    "extrapolated": 47
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 1512,
+    "judged": 15818,
+    "extrapolated": 39
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 2150,
+    "judged": 15230,
+    "extrapolated": 6
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 2994,
+    "judged": 14376,
+    "extrapolated": 0
+   }
+  ],
+  "y_r1a": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 18,
+    "judged": 17377,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 130,
+    "judged": 17386,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 312,
+    "judged": 17032,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 233,
+    "judged": 17477,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 1181,
+    "judged": 16351,
+    "extrapolated": 47
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 1512,
+    "judged": 15818,
+    "extrapolated": 39
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 2150,
+    "judged": 15230,
+    "extrapolated": 6
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 2994,
+    "judged": 14376,
+    "extrapolated": 0
+   }
+  ],
+  "y_c": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 18,
+    "judged": 17377,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 130,
+    "judged": 17386,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 312,
+    "judged": 17032,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 233,
+    "judged": 17477,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 1181,
+    "judged": 16351,
+    "extrapolated": 47
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 1512,
+    "judged": 15818,
+    "extrapolated": 39
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 2150,
+    "judged": 15230,
+    "extrapolated": 6
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 2994,
+    "judged": 14376,
+    "extrapolated": 0
+   }
+  ],
+  "y_j2": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 18,
+    "judged": 17377,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 130,
+    "judged": 17386,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 312,
+    "judged": 17032,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 233,
+    "judged": 17477,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 1181,
+    "judged": 16351,
+    "extrapolated": 47
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 1512,
+    "judged": 15818,
+    "extrapolated": 39
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 2150,
+    "judged": 15230,
+    "extrapolated": 6
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 2994,
+    "judged": 14376,
+    "extrapolated": 0
+   }
+  ],
+  "y_h2": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 18,
+    "judged": 17377,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 130,
+    "judged": 17386,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 312,
+    "judged": 17032,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 233,
+    "judged": 17477,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 1181,
+    "judged": 16351,
+    "extrapolated": 47
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 1512,
+    "judged": 15818,
+    "extrapolated": 39
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 2150,
+    "judged": 15230,
+    "extrapolated": 6
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 2994,
+    "judged": 14376,
+    "extrapolated": 0
+   }
+  ],
+  "y_other": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 18,
+    "judged": 17377,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 130,
+    "judged": 17386,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 312,
+    "judged": 17032,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 233,
+    "judged": 17477,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 1181,
+    "judged": 16351,
+    "extrapolated": 47
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 1512,
+    "judged": 15818,
+    "extrapolated": 39
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 2150,
+    "judged": 15230,
+    "extrapolated": 6
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 2994,
+    "judged": 14376,
+    "extrapolated": 0
+   }
+  ],
+  "mt_u5": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 386,
+    "judged": 17009,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 2094,
+    "judged": 15422,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 3272,
+    "judged": 14052,
+    "extrapolated": 20
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 3937,
+    "judged": 13744,
+    "extrapolated": 29
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 5964,
+    "judged": 11603,
+    "extrapolated": 12
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 5968,
+    "judged": 11392,
+    "extrapolated": 9
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 7327,
+    "judged": 10054,
+    "extrapolated": 5
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 8015,
+    "judged": 9349,
+    "extrapolated": 6
+   }
+  ],
+  "mt_u4": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 386,
+    "judged": 17009,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 2094,
+    "judged": 15422,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 3272,
+    "judged": 14052,
+    "extrapolated": 20
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 3937,
+    "judged": 13744,
+    "extrapolated": 29
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 5964,
+    "judged": 11603,
+    "extrapolated": 12
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 5968,
+    "judged": 11392,
+    "extrapolated": 9
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 7327,
+    "judged": 10054,
+    "extrapolated": 5
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 8015,
+    "judged": 9349,
+    "extrapolated": 6
+   }
+  ],
+  "mt_h": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 386,
+    "judged": 17009,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 2094,
+    "judged": 15422,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 3272,
+    "judged": 14052,
+    "extrapolated": 20
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 3937,
+    "judged": 13744,
+    "extrapolated": 29
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 5964,
+    "judged": 11603,
+    "extrapolated": 12
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 5968,
+    "judged": 11392,
+    "extrapolated": 9
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 7327,
+    "judged": 10054,
+    "extrapolated": 5
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 8015,
+    "judged": 9349,
+    "extrapolated": 6
+   }
+  ],
+  "mt_k": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 386,
+    "judged": 17009,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 2094,
+    "judged": 15422,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 3272,
+    "judged": 14052,
+    "extrapolated": 20
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 3937,
+    "judged": 13744,
+    "extrapolated": 29
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 5964,
+    "judged": 11603,
+    "extrapolated": 12
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 5968,
+    "judged": 11392,
+    "extrapolated": 9
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 7327,
+    "judged": 10054,
+    "extrapolated": 5
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 8015,
+    "judged": 9349,
+    "extrapolated": 6
+   }
+  ],
+  "mt_j": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 386,
+    "judged": 17009,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 2094,
+    "judged": 15422,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 3272,
+    "judged": 14052,
+    "extrapolated": 20
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 3937,
+    "judged": 13744,
+    "extrapolated": 29
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 5964,
+    "judged": 11603,
+    "extrapolated": 12
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 5968,
+    "judged": 11392,
+    "extrapolated": 9
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 7327,
+    "judged": 10054,
+    "extrapolated": 5
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 8015,
+    "judged": 9349,
+    "extrapolated": 6
+   }
+  ],
+  "mt_t2": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 386,
+    "judged": 17009,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 2094,
+    "judged": 15422,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 3272,
+    "judged": 14052,
+    "extrapolated": 20
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 3937,
+    "judged": 13744,
+    "extrapolated": 29
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 5964,
+    "judged": 11603,
+    "extrapolated": 12
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 5968,
+    "judged": 11392,
+    "extrapolated": 9
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 7327,
+    "judged": 10054,
+    "extrapolated": 5
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 8015,
+    "judged": 9349,
+    "extrapolated": 6
+   }
+  ],
+  "mt_n1a": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 386,
+    "judged": 17009,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 2094,
+    "judged": 15422,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 3272,
+    "judged": 14052,
+    "extrapolated": 20
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 3937,
+    "judged": 13744,
+    "extrapolated": 29
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 5964,
+    "judged": 11603,
+    "extrapolated": 12
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 5968,
+    "judged": 11392,
+    "extrapolated": 9
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 7327,
+    "judged": 10054,
+    "extrapolated": 5
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 8015,
+    "judged": 9349,
+    "extrapolated": 6
+   }
+  ],
+  "mt_other": [
+   {
+    "slice": -10000,
+    "land_cells": 17395,
+    "observed": 386,
+    "judged": 17009,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 17516,
+    "observed": 2094,
+    "judged": 15422,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 17344,
+    "observed": 3272,
+    "judged": 14052,
+    "extrapolated": 20
+   },
+   {
+    "slice": -7000,
+    "land_cells": 17710,
+    "observed": 3937,
+    "judged": 13744,
+    "extrapolated": 29
+   },
+   {
+    "slice": -6000,
+    "land_cells": 17579,
+    "observed": 5964,
+    "judged": 11603,
+    "extrapolated": 12
+   },
+   {
+    "slice": -5000,
+    "land_cells": 17369,
+    "observed": 5968,
+    "judged": 11392,
+    "extrapolated": 9
+   },
+   {
+    "slice": -4000,
+    "land_cells": 17386,
+    "observed": 7327,
+    "judged": 10054,
+    "extrapolated": 5
+   },
+   {
+    "slice": -3000,
+    "land_cells": 17370,
+    "observed": 8015,
+    "judged": 9349,
+    "extrapolated": 6
+   }
+  ]
+ }
+}

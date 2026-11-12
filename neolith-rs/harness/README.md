@@ -56,7 +56,7 @@ has had a few frames to respond, so a `state` sent next sees the result.
 | `ui` | `filter?` (label substring) | widgets from the last painted frame (egui's AccessKit tree): role, label, toggled, selected, value, `rect_px`, `centre_px` |
 | `screenshot` | `path` | saves a PNG of the window, replies with its size |
 | `start` | `year?` | leaves the start screen |
-| `set` | `year`, `playing`, `speed`, `mode` (terrain/koeppen/pop/elevation), `editor`, `tool`, `flat`, `relief`, `art` (off/2d/3d), `rivers`, `style_window`, `inspect` (hex id or null), `settlement` (name or null), `user_input` | the top-bar and timeline controls, set directly |
+| `set` | `year`, `playing`, `speed`, `mode` (terrain/koeppen/pop/elevation/npp/biodiversity/expected/evidence), `evidence` (layer id, e.g. `domestic_livestock`), `editor`, `tool`, `flat`, `relief`, `art` (off/2d/3d), `rivers`, `survey` (hatching of thinly surveyed land), `style_window`, `inspect` (hex id or null), `settlement` (name or null), `user_input` | the top-bar and timeline controls, set directly |
 | `camera` | `lon`, `lat`, `yaw`, `pitch` (degrees), `dist` | moves the camera, clamped like user input |
 | `hex` | `id`, or `lon` + `lat` (CLI: `hex LON LAT`, `hex --lon --lat` or `hex --id`) | one hex's values at the current year |
 | `pick` | `x`, `y` | the hex under a screen pixel |
@@ -70,7 +70,7 @@ has had a few frames to respond, so a `state` sent next sees the result.
 | `quit` | | closes the app |
 
 `state` covers: `screen`, `window_px`, `pixels_per_point`, `year`/`year_label`, `clock`,
-`keyframes`, `map_mode`, `editor`/`tool`, `history`, `selection_count`, `camera`,
+`keyframes`, `map_mode`, `evidence_layer` (and `evidence_layers`, every id), `editor`/`tool`, `history`, `selection_count`, `camera`,
 `flat`, `style`, `board_rect_px`, `hover`/`inspected` (terrain, Köppen, population,
 elevation, rivers, lakes), `settlement_popup`, `settlements` (founded so far, on
 screen, the 60 biggest on screen with click positions, and the labels actually

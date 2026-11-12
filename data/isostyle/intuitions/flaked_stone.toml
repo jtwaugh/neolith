@@ -1,0 +1,442 @@
+# Gap critic: flaked stone layer. Judgements, not data.
+# Presence-only layer: masked cells mean 'not recorded'. Values are the expected share of occupations
+# that would have flaked stone if their finds were recorded (0-1).
+
+[meta]
+layer = "flaked_stone"
+written = "2026-11-12"
+dossier = "build/isostyle/gaps/flaked_stone/dossier.json"
+summary = "Flaked stone is presence-only: no source records its absence, so every value the atlas shows is 1.0 and every masked cell means 'not recorded', never 'absent'. The judgements below therefore give the share of occupations that would have flaked stone if their finds were recorded, and for this layer that is nearly all of them (0.95-1.0) in every region and slice: flint, chert, quartz and obsidian knapping is universal from 10,000 to 3,000 BCE, including in the Bronze Age (sickle blades, Canaanean blades, Egyptian flint knives, arrowheads). This caveat applies to every entry and is not repeated in each. The coverage map is a map of four sources, not of the past: BDA (France, Iberia, the Maghreb), DEFC (Greece and Anatolia), DObsiSS sourced obsidian (SW Asia) and MedAfriCarbon (North Africa); the drop to 548 cells at 3,000 BCE is where those sources end. Whole regions with thousands of dated stone-using occupations (Russia, Ukraine, Scandinavia, the British Isles, the Baltic, the Sahara, the Nile) are fully masked. Two places deserve a value below the default: the southern Mesopotamian alluvium from the Ubaid on, where stone was imported and baked-clay sickles replaced some flint, and the West African forest, where quartz industries are sparse and poorly reported. The speculative layer should treat flaked stone as present wherever people were."
+
+# ---------------------------------------------------------------- Eastern Europe
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-7000-87", "flaked_stone-6000-113", "flaked_stone-5000-138", "flaked_stone-4000-163", "flaked_stone-3000-189", "flaked_stone-10000-01", "flaked_stone-9000-30", "flaked_stone-8000-59", "flaked_stone-9000-52", "flaked_stone-7000-109", "flaked_stone-6000-135", "flaked_stone-5000-158", "flaked_stone-4000-186", "flaked_stone-3000-212", "flaked_stone-8000-84"]
+why_empty = ["recording_practice", "not_in_open_compilations", "publication_access"]
+why_note = "Not recorded in any source used; forest-zone sites knapped flint where it exists and quartz and chert in Karelia and the north."
+expected = 0.98
+expected_range = [0.93, 1.0]
+confidence = "high"
+basis = ["literature", "analogy"]
+reasoning = "Coverage 0% in every slice; nearest evidence 2,168-3,720 km. Butovo, Veretye, Kunda, Lyalovo, Pit-Comb and Volosovo assemblages are all flaked-stone industries; the Karelian and Kola quartz industries are flaked too, alongside ground slate."
+literature = [
+  { cite = "Zhilin 2007, Mesolithic of the Upper Volga (Butovo, Veretye)", checked = false },
+]
+would_settle = "Any Russian site catalogue with assemblage type; or a rule that a dated forager or Neolithic occupation implies flaked stone."
+speculative_rule = "Fill every occupied cell with 0.98."
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-9000-35", "flaked_stone-7000-90", "flaked_stone-8000-62", "flaked_stone-6000-116", "flaked_stone-10000-07", "flaked_stone-5000-141", "flaked_stone-4000-167", "flaked_stone-3000-194"]
+why_empty = ["recording_practice", "not_in_open_compilations", "publication_access"]
+why_note = "Not recorded; steppe Mesolithic, Neolithic and Eneolithic industries are all flaked."
+expected = 0.98
+expected_range = [0.93, 1.0]
+confidence = "high"
+basis = ["literature", "analogy"]
+reasoning = "Coverage 0% in every slice; nearest evidence 1,163-1,608 km. Some Yamnaya graves contain no lithics, hence slightly below 1 by 3,000 BCE."
+literature = [
+  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false },
+]
+would_settle = "Open lists of steppe sites with lithic assemblage notes."
+speculative_rule = "Fill every occupied cell with 0.98 (0.95 at 3,000 BCE)."
+
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-3000]
+value = 0.95
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-10000-13", "flaked_stone-9000-42", "flaked_stone-8000-71", "flaked_stone-7000-100", "flaked_stone-6000-126", "flaked_stone-5000-151", "flaked_stone-4000-176", "flaked_stone-3000-202"]
+why_empty = ["recording_practice", "not_in_open_compilations", "publication_access"]
+why_note = "Not recorded; Ukraine and Belarus have abundant flint (Volhynia, Donets) and flint-mining Neolithic."
+expected = 0.99
+expected_range = [0.95, 1.0]
+confidence = "high"
+basis = ["literature", "analogy"]
+reasoning = "Coverage 0% in every slice; nearest evidence 532-1,554 km."
+literature = []
+would_settle = "Ukrainian and Belarusian site catalogues with assemblage data."
+speculative_rule = "Fill every occupied cell with 0.99."
+
+[[judgement]]
+region = "Baltic"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-9000-50", "flaked_stone-10000-24", "flaked_stone-8000-79", "flaked_stone-7000-106", "flaked_stone-6000-132", "flaked_stone-5000-155", "flaked_stone-4000-184", "flaked_stone-3000-210"]
+why_empty = ["recording_practice", "not_in_open_compilations"]
+why_note = "Not recorded; Kunda and Narva knapped local flint and quartz."
+expected = 0.98
+expected_range = [0.93, 1.0]
+confidence = "high"
+basis = ["literature", "analogy"]
+reasoning = "Coverage 0% in every slice; nearest evidence 1,255-1,711 km."
+literature = []
+would_settle = "Estonian and Latvian site registers."
+speculative_rule = "Fill every occupied cell with 0.98."
+
+# ---------------------------------------------------------------- Northern and western Europe
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-4000-172", "flaked_stone-3000-199", "flaked_stone-5000-147", "flaked_stone-6000-123", "flaked_stone-7000-97", "flaked_stone-8000-72", "flaked_stone-9000-44", "flaked_stone-10000-18", "flaked_stone-10000-25"]
+why_empty = ["recording_practice", "not_in_open_compilations", "ice"]
+why_note = "Not recorded (BDA does not cover it); the region is one of the best-documented flint and quartz provinces in Europe. Some 10,000-9,000 BCE cells were still under ice."
+expected = 0.99
+expected_range = [0.95, 1.0]
+confidence = "high"
+basis = ["literature", "analogy"]
+reasoning = "Coverage 0% in every slice; nearest evidence 1,731-2,272 km. Maglemose, Kongemose, Ertebølle, Fosna-Hensbacka, Nøstvet, TRB and Pitted Ware are defined by their flaked industries; the north used quartz and quartzite."
+literature = []
+would_settle = "Norwegian Askeladden, Swedish FMIS and Danish Fund og Fortidsminder site records with find types."
+speculative_rule = "Fill every ice-free occupied cell with 0.99."
+
+[[judgement]]
+region = "British Isles"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-10000-16", "flaked_stone-9000-45", "flaked_stone-3000-205", "flaked_stone-7000-102", "flaked_stone-6000-127", "flaked_stone-4000-180", "flaked_stone-8000-76", "flaked_stone-5000-154", "flaked_stone-8000-83", "flaked_stone-5000-162", "flaked_stone-4000-188"]
+why_empty = ["recording_practice", "not_in_open_compilations"]
+why_note = "Not recorded (BDA stops at the Channel); every British and Irish prehistoric occupation of the period has flint or chert."
+expected = 0.99
+expected_range = [0.95, 1.0]
+confidence = "high"
+basis = ["literature", "analogy"]
+reasoning = "Coverage 0% in every slice; nearest evidence 621-969 km."
+literature = []
+would_settle = "Historic England / Canmore / Irish SMR records with lithic find types."
+speculative_rule = "Fill every occupied cell with 0.99."
+
+[[judgement]]
+region = "France & Low Countries"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-10000-19", "flaked_stone-9000-48", "flaked_stone-7000-103", "flaked_stone-3000-208", "flaked_stone-4000-181", "flaked_stone-8000-77", "flaked_stone-6000-130", "flaked_stone-5000-157"]
+why_empty = ["recording_practice", "sampling_bias"]
+why_note = "BDA covers France, but only the dated occupations it lists; the gaps are inland France and the Low Countries between them."
+expected = 1.0
+expected_range = [0.97, 1.0]
+confidence = "high"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Coverage 38-76%; every edge value is 1.0. The masked holes (115-373 cells) are between recorded sites, not distinct places."
+literature = []
+would_settle = "Nothing new; more BDA sites would only shrink the holes."
+speculative_rule = "Fill every occupied cell with 1.0."
+
+[[judgement]]
+region = "Iberia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-10000-17", "flaked_stone-9000-46", "flaked_stone-3000-206", "flaked_stone-8000-74", "flaked_stone-6000-129", "flaked_stone-4000-179", "flaked_stone-7000-104", "flaked_stone-5000-160"]
+why_empty = ["recording_practice", "sampling_bias"]
+why_note = "BDA covers Iberia patchily; the holes are the interior Meseta and the north-west."
+expected = 1.0
+expected_range = [0.97, 1.0]
+confidence = "high"
+basis = ["neighbouring_evidence"]
+reasoning = "Coverage 8-77%; every edge value is 1.0."
+literature = []
+would_settle = "Spanish and Portuguese regional site inventories (e.g. Endovélico)."
+speculative_rule = "Fill every occupied cell with 1.0."
+
+# ---------------------------------------------------------------- Central and southern Europe
+
+[[judgement]]
+region = "Central Europe"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-10000-11", "flaked_stone-9000-40", "flaked_stone-4000-174", "flaked_stone-3000-200", "flaked_stone-7000-98", "flaked_stone-6000-124", "flaked_stone-8000-69", "flaked_stone-5000-149"]
+why_empty = ["recording_practice", "not_in_open_compilations"]
+why_note = "BDA and DEFC barely reach it; Central Europe's LBK, Rössen, TRB and Corded Ware all have flint and radiolarite industries."
+expected = 1.0
+expected_range = [0.97, 1.0]
+confidence = "high"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Coverage 0-15%; every edge value is 1.0; other layers inside show pottery, cereals and enclosures, i.e. the occupations are there."
+literature = []
+would_settle = "German, Polish and Czech state site registers with find types."
+speculative_rule = "Fill every occupied cell with 1.0."
+
+[[judgement]]
+region = "Italy & islands"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-10000-21", "flaked_stone-3000-214", "flaked_stone-9000-57", "flaked_stone-7000-111"]
+why_empty = ["recording_practice", "sampling_bias"]
+why_note = "Holes between BDA sites; Italian prehistory is rich in flint and obsidian."
+expected = 1.0
+expected_range = [0.97, 1.0]
+confidence = "high"
+basis = ["neighbouring_evidence"]
+reasoning = "Coverage 1-100%; every edge value is 1.0."
+literature = []
+would_settle = "None needed."
+speculative_rule = "Fill every occupied cell with 1.0."
+
+[[judgement]]
+region = "Balkans & Greece"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-9000-43", "flaked_stone-10000-14", "flaked_stone-8000-73", "flaked_stone-3000-204", "flaked_stone-7000-101", "flaked_stone-4000-177", "flaked_stone-5000-152", "flaked_stone-6000-128"]
+why_empty = ["recording_practice", "not_in_open_compilations"]
+why_note = "DEFC covers Greece; Romania, Bulgaria and Serbia are thin. Balkan flint (Balkan flint, Prut) is everywhere in these sites."
+expected = 1.0
+expected_range = [0.97, 1.0]
+confidence = "high"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Coverage 1-47%; every edge value is 1.0; ornaments and pottery inside show the occupations exist."
+literature = []
+would_settle = "Balkan site inventories with lithic data."
+speculative_rule = "Fill every occupied cell with 1.0."
+
+[[judgement]]
+region = "Anatolia & Cyprus"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-3000-203", "flaked_stone-10000-15", "flaked_stone-9000-47", "flaked_stone-4000-178", "flaked_stone-5000-153", "flaked_stone-7000-105", "flaked_stone-8000-78", "flaked_stone-6000-133", "flaked_stone-8000-85"]
+why_empty = ["recording_practice", "sampling_bias"]
+why_note = "DEFC and DObsiSS cover central and western Anatolia; the east and the Black Sea coast are holes. Coverage collapses at 3,000 BCE because DEFC stops."
+expected = 1.0
+expected_range = [0.97, 1.0]
+confidence = "high"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Coverage 1-76%; every edge value is 1.0. Obsidian and flint are universal in Anatolian sites of every period here."
+literature = []
+would_settle = "TAY (Archaeological Settlements of Turkey) inventory, which lists finds per site."
+speculative_rule = "Fill every occupied cell with 1.0."
+
+# ---------------------------------------------------------------- SW Asia
+
+[[judgement]]
+region = "Levant"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-3000-209", "flaked_stone-10000-22", "flaked_stone-4000-183", "flaked_stone-9000-56"]
+why_empty = ["recording_practice", "sampling_bias"]
+why_note = "DObsiSS records obsidian only; flint-only sites and the Chalcolithic/Early Bronze Age after DEFC's coverage are unrecorded."
+expected = 1.0
+expected_range = [0.97, 1.0]
+confidence = "high"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Coverage 0-95%; edge values 1.0. Early Bronze Age Canaanean sickle blades keep the value at 1 in 3,000 BCE."
+literature = []
+would_settle = "Levantine site lists with lithic data (e.g. the PPND database)."
+speculative_rule = "Fill every occupied cell with 1.0."
+
+[[judgement]]
+region = "Mesopotamia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-10000-20", "flaked_stone-9000-49", "flaked_stone-8000-75", "flaked_stone-3000-207", "flaked_stone-4000-182", "flaked_stone-6000-131", "flaked_stone-7000-107", "flaked_stone-5000-156"]
+why_empty = ["recording_practice", "sampling_bias"]
+why_note = "Obsidian records reach the north; the southern alluvium has no local stone, and from the Ubaid on baked-clay sickles and imported stone replace part of the flaked toolkit."
+expected = 0.95
+expected_range = [0.8, 1.0]
+confidence = "medium"
+basis = ["literature", "neighbouring_evidence", "environment"]
+reasoning = "Coverage 2-54% and 0% at 3,000 BCE; edges 1.0. Northern sites (Hassuna, Samarra, Halaf) all have flint and obsidian. Southern Ubaid and Uruk sites still have chert and obsidian blades but in small amounts, and some small excavations report none."
+literature = []
+would_settle = "Mesopotamian survey and excavation reports with lithic counts."
+speculative_rule = "1.0 north of 33°N; 0.85 on the southern alluvium from 6,000 BCE on."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [38.5, 28.5, 49.0, 33.0]
+value = 0.85
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000, -7000]
+value = 0.95
+[[judgement.adjust]]
+kind = "area"
+bbox = [38.5, 33.0, 49.0, 37.5]
+value = 1.0
+
+[[judgement]]
+region = "Iran & Afghanistan"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-9000-38", "flaked_stone-10000-10", "flaked_stone-3000-198", "flaked_stone-8000-68", "flaked_stone-6000-122", "flaked_stone-7000-96", "flaked_stone-4000-173", "flaked_stone-5000-148"]
+why_empty = ["recording_practice", "not_in_open_compilations"]
+why_note = "Only obsidian-sourced Zagros sites are recorded; the plateau and Afghanistan are unrecorded, not stone-free."
+expected = 0.99
+expected_range = [0.95, 1.0]
+confidence = "high"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Coverage 0-15%; edges 1.0."
+literature = []
+would_settle = "Iranian Neolithic and Chalcolithic site reports with chipped-stone data."
+speculative_rule = "Fill every occupied cell with 0.99."
+
+[[judgement]]
+region = "Caucasus"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-8000-80", "flaked_stone-7000-108", "flaked_stone-9000-53", "flaked_stone-6000-134", "flaked_stone-4000-185", "flaked_stone-3000-211", "flaked_stone-10000-26", "flaked_stone-5000-161"]
+why_empty = ["recording_practice", "not_in_open_compilations"]
+why_note = "Only one slice is recorded; Caucasian sites sit beside major obsidian sources (Gutansar, Chikiani)."
+expected = 1.0
+expected_range = [0.97, 1.0]
+confidence = "high"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Coverage 0% except 29% at 5,000 BCE; edges 1.0."
+literature = []
+would_settle = "Obsidian provenance studies from Armenia and Georgia ingested as presences."
+speculative_rule = "Fill every occupied cell with 1.0."
+
+[[judgement]]
+region = "Central Asia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-7000-92", "flaked_stone-8000-66", "flaked_stone-9000-37", "flaked_stone-6000-118", "flaked_stone-5000-143", "flaked_stone-4000-169", "flaked_stone-3000-196", "flaked_stone-10000-08"]
+why_empty = ["recording_practice", "not_in_open_compilations", "dataset_edge"]
+why_note = "Not recorded; Kelteminar, Jeitun and the steppe Eneolithic are flaked-stone industries."
+expected = 0.98
+expected_range = [0.93, 1.0]
+confidence = "high"
+basis = ["literature", "analogy"]
+reasoning = "Coverage 0%; nearest evidence 1,167-1,616 km."
+literature = []
+would_settle = "Central Asian site catalogues with assemblage data."
+speculative_rule = "Fill every occupied cell with 0.98."
+
+[[judgement]]
+region = "Arabia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-10000-04", "flaked_stone-9000-32", "flaked_stone-7000-89", "flaked_stone-8000-61", "flaked_stone-6000-115", "flaked_stone-5000-140", "flaked_stone-4000-165", "flaked_stone-3000-192"]
+why_empty = ["recording_practice", "not_in_open_compilations", "low_population"]
+why_note = "Almost nothing recorded; the Arabian Neolithic is known mainly through its flaked stone (fluted points, trihedral points)."
+expected = 0.99
+expected_range = [0.95, 1.0]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Coverage under 1%; edges 1.0 where any. Arabian Neolithic surface sites are mostly lithic scatters, so the share is near 1; the open question is where people were."
+literature = [
+  { cite = "Magee 2014, The Archaeology of Prehistoric Arabia, Cambridge", checked = false },
+]
+would_settle = "Dated Arabian lithic sites (e.g. the Palaeodeserts project lists)."
+speculative_rule = "Fill occupied cells with 0.99; mark the Rub' al-Khali and Nafud as low occupation."
+
+[[judgement]]
+region = "Other"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-10000-27", "flaked_stone-9000-54", "flaked_stone-8000-82", "flaked_stone-7000-110", "flaked_stone-6000-136", "flaked_stone-5000-159", "flaked_stone-4000-187", "flaked_stone-3000-213"]
+why_empty = ["recording_practice", "not_in_open_compilations", "dataset_edge"]
+why_note = "Balochistan at the grid's edge; Mehrgarh has flint blade industries throughout."
+expected = 0.99
+expected_range = [0.9, 1.0]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Coverage 0%."
+literature = []
+would_settle = "Mehrgarh reports."
+speculative_rule = "Fill every occupied cell with 0.99."
+
+# ---------------------------------------------------------------- Africa
+
+[[judgement]]
+region = "Maghreb"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-10000-03", "flaked_stone-3000-191", "flaked_stone-9000-33", "flaked_stone-8000-64", "flaked_stone-7000-93", "flaked_stone-4000-168", "flaked_stone-6000-119", "flaked_stone-5000-144"]
+why_empty = ["recording_practice", "low_population"]
+why_note = "BDA and MedAfriCarbon cover the coastal Maghreb; the gap is the Algerian and Moroccan Sahara, where surface lithic scatters are the commonest find."
+expected = 1.0
+expected_range = [0.97, 1.0]
+confidence = "high"
+basis = ["neighbouring_evidence", "literature"]
+reasoning = "Coverage 2-27%; every edge value is 1.0. Iberomaurusian, Capsian and Saharan Neolithic occupations all have flaked stone."
+literature = []
+would_settle = "Tixier-typology site lists for the Algerian Sahara."
+speculative_rule = "Fill every occupied cell with 1.0; mark the ergs as low occupation after 4,000 BCE."
+
+[[judgement]]
+region = "Libya & Egypt"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-10000-05", "flaked_stone-9000-34", "flaked_stone-8000-65", "flaked_stone-3000-195", "flaked_stone-4000-170", "flaked_stone-7000-94", "flaked_stone-5000-146", "flaked_stone-6000-121"]
+why_empty = ["recording_practice", "low_population"]
+why_note = "MedAfriCarbon covers parts of Libya and the Egyptian deserts; the rest is unrecorded, and unoccupied before c. 9500 BCE."
+expected = 1.0
+expected_range = [0.95, 1.0]
+confidence = "high"
+basis = ["neighbouring_evidence", "literature", "environment"]
+reasoning = "Coverage 0-22%; edges 1.0. Predynastic and Early Dynastic Egypt keep fine flint knives and sickle blades through 3,000 BCE."
+literature = []
+would_settle = "MedAfriCarbon south of 20°N and Egyptian site gazetteers."
+speculative_rule = "Fill occupied cells with 1.0; the desert before 9,000 BCE as unoccupied."
+
+[[judgement]]
+region = "Nile & Sudan"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-10000-09", "flaked_stone-9000-39", "flaked_stone-8000-67", "flaked_stone-7000-95", "flaked_stone-5000-145", "flaked_stone-6000-120", "flaked_stone-3000-197", "flaked_stone-4000-171"]
+why_empty = ["recording_practice", "not_in_open_compilations"]
+why_note = "Not recorded; Khartoum Mesolithic and Neolithic industries are quartz and rhyolite microliths."
+expected = 0.99
+expected_range = [0.95, 1.0]
+confidence = "high"
+basis = ["literature", "analogy"]
+reasoning = "Coverage 0%; nearest evidence 888-1,996 km."
+literature = []
+would_settle = "Sudanese site reports (Salvatori, Usai) with lithic data."
+speculative_rule = "Fill every occupied cell with 0.99."
+
+[[judgement]]
+region = "Sahara–Sahel"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-10000-02", "flaked_stone-4000-164", "flaked_stone-8000-60", "flaked_stone-3000-190", "flaked_stone-9000-31", "flaked_stone-5000-139", "flaked_stone-6000-114", "flaked_stone-7000-88"]
+why_empty = ["recording_practice", "not_in_open_compilations", "low_population"]
+why_note = "Not recorded; Saharan sites are known chiefly from their lithics."
+expected = 0.99
+expected_range = [0.95, 1.0]
+confidence = "high"
+basis = ["literature", "analogy"]
+reasoning = "Coverage 0%; nearest evidence 1,008-1,985 km; pottery and livestock inside show occupation."
+literature = []
+would_settle = "Saharan site lists (Aïr, Ténéré, Ennedi) with assemblage notes."
+speculative_rule = "Fill occupied cells with 0.99; leave unoccupied desert empty."
+
+[[judgement]]
+region = "West Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-10000-06", "flaked_stone-9000-36", "flaked_stone-7000-91", "flaked_stone-8000-63", "flaked_stone-6000-117", "flaked_stone-4000-166", "flaked_stone-5000-142", "flaked_stone-3000-193"]
+why_empty = ["recording_practice", "not_in_open_compilations", "dataset_edge", "preservation"]
+why_note = "Not recorded and barely researched; savanna sites have quartz microliths, forest sites sparse quartz industries that are often under-reported."
+expected = 0.9
+expected_range = [0.7, 1.0]
+confidence = "low"
+basis = ["literature", "intuition"]
+reasoning = "Coverage 0%; nearest evidence 1,820-2,854 km. Shum Laka, Bosumpra and Kintampo-precursor sites all have flaked quartz, but in small numbers."
+literature = []
+would_settle = "West African site reports with lithic counts."
+speculative_rule = "0.95 in the savanna, 0.85 in the forest belt."
+
+[[judgement.adjust]]
+kind = "area"
+bbox = [-17.0, 6.0, 27.0, 17.0]
+value = 0.95
+[[judgement.adjust]]
+kind = "area"
+bbox = [-17.0, 6.0, 27.0, 8.0]
+value = 0.85
+
+[[judgement]]
+region = "Horn of Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-10000-12", "flaked_stone-9000-41", "flaked_stone-8000-70", "flaked_stone-7000-99", "flaked_stone-5000-150", "flaked_stone-6000-125", "flaked_stone-4000-175", "flaked_stone-3000-201"]
+why_empty = ["recording_practice", "not_in_open_compilations", "research_intensity"]
+why_note = "Not recorded; Ethiopian and Somali LSA sites are rich in obsidian and chert."
+expected = 0.99
+expected_range = [0.95, 1.0]
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Coverage 0%."
+literature = []
+would_settle = "Dated LSA sites from Ethiopia and Somaliland."
+speculative_rule = "Fill every occupied cell with 0.99."
+
+[[judgement]]
+region = "Now-drowned shelves and islands"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["flaked_stone-10000-23", "flaked_stone-9000-51", "flaked_stone-8000-81", "flaked_stone-10000-28", "flaked_stone-9000-55", "flaked_stone-7000-112", "flaked_stone-8000-86", "flaked_stone-10000-29", "flaked_stone-9000-58", "flaked_stone-6000-137"]
+why_empty = ["submerged", "recording_practice"]
+why_note = "Doggerland, the Gulf basin, the Caspian shelf and small islands: drowned or unrecorded; Doggerland's trawled finds are flaked flint."
+expected = 1.0
+expected_range = [0.95, 1.0]
+confidence = "high"
+basis = ["analogy", "environment"]
+reasoning = "Coverage 0-33%. Copy the adjacent coasts, all of which had flaked stone."
+literature = []
+would_settle = "Marine survey only."
+speculative_rule = "Copy the adjacent coast's value (1.0)."

@@ -4,10 +4,14 @@
 
 pub mod edit;
 pub mod elevation;
+pub mod evidence;
+pub mod farming;
+pub mod forager;
 pub mod geom;
 pub mod grid;
 pub mod io;
 pub mod lake;
+pub mod productivity;
 pub mod river;
 pub mod time;
 pub mod timeline;
@@ -21,5 +25,6 @@ pub use river::{River, RiverClass, RiverState};
 pub use time::Year;
 pub use timeline::Timeline;
 pub use elevation::NO_ELEVATION;
+pub use evidence::EvidenceLayer;
 pub use values::{Koeppen, Landform, MapMode, PopDensity, Prop, Terrain, Value};
-pub use world::{Settlement, Snapshot, World, NO_DATA};
+pub use world::{C14Date, CultureInfo, Expected, Settlement, SiteInfo, Snapshot, World, NO_DATA};

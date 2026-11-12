@@ -202,6 +202,31 @@ def overlay(cv, path, years, members, results, oks, land, ice, contrast, group):
     cv.finish(fig, handles, path, ncol=3)
 
 
+def dominant(cv, path, years, members, results, oks, land, ice, setname):
+    """Each cell coloured by the clade with the highest share; paler where the
+    leading clade has under 40%."""
+    fig, axes = cv.panels(len(years), f"{setname}: most common clade",
+                          "Each cell shows the clade with the highest smoothed share among sampled individuals; pale where "
+                          "the leader has under 40%. Grey: too few samples.")
+    from matplotlib.colors import to_rgba
+    for j, year in enumerate(years):
+        col = np.full(land.shape[0], SURFACE, dtype=object)
+        col[land[:, j]] = NO_EVIDENCE
+        col[land[:, j] & ice[:, j]] = ICE
+        F = np.vstack([np.where(oks[L["id"]][:, j], results[L["id"]]["f"][:, j], -1) for L in members])
+        best, top = F.argmax(axis=0), F.max(axis=0)
+        for k, L in enumerate(members):
+            sel = (best == k) & (top >= 0)
+            rgba = np.array(to_rgba(L["colour"]))
+            col[sel & (top >= 0.4)] = L["colour"]
+            from matplotlib.colors import to_hex
+            col[sel & (top < 0.4)] = to_hex(rgba[:3] * 0.45 + 0.55)
+        cv.draw(axes[j], col, f"{-year:,} BCE")
+    handles = [Patch(fc=L["colour"], ec="none", label=L["name"]) for L in members] + [
+        Patch(fc=NO_EVIDENCE, ec="none", label="too few samples")]
+    cv.finish(fig, handles, path, ncol=4)
+
+
 def contours_geojson(path, all_segs):
     feats = []
     for m, by_year in all_segs.items():

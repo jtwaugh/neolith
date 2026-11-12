@@ -1,4 +1,7 @@
-use neolith_convert::{export_lakes, export_map, export_rivers, import_lakes, export_settlements, import_map, import_rivers, import_settlements, stats};
+use neolith_convert::{
+    attach_dates, export_lakes, export_map, export_rivers, export_settlements, import_cultures, import_evidence, import_lakes, import_map, import_rivers,
+    import_settlement_records, stats,
+};
 use neolith_core::{io, World};
 use std::io::BufWriter;
 use std::process::ExitCode;
@@ -7,9 +10,13 @@ const USAGE: &str = "\
 neolith-convert: GeoJSON ⇄ world.bin
 
 USAGE:
-  neolith-convert <combined_map.geojson> [settlements.geojson] [--rivers <rivers.geojson>] [--lakes <lakes.geojson>] -o <world.bin>
+  neolith-convert <combined_map.geojson> [settlements.geojson] [--rivers <rivers.geojson>] [--lakes <lakes.geojson>]
+                   [--dates <dates.csv[.gz]>] [--cultures <cultures.json>] [--evidence <evidence_layers.json>] -o <world.bin>
+  neolith-convert --attach-evidence <evidence_layers.json> <world.bin> -o <world.bin>
+                   (replaces the world's evidence layers; no GeoJSON needed)
   neolith-convert --to-geojson <world.bin> -o <combined_map.geojson> [--settlements-out <file>] [--rivers-out <file>] [--lakes-out <file>]
   neolith-convert --stats <world.bin | combined_map.geojson> [settlements.geojson]
+  neolith-convert <world.bin> --expected <expected.csv> [--years -10000,-9000,...]
 ";
 
 fn read_text(path: &str) -> Result<String, String> {
@@ -17,7 +24,31 @@ fn read_text(path: &str) -> Result<String, String> {
 }
 
 /// Loads a world from either a `world.bin` or the GeoJSON inputs.
-fn load(inputs: &[String], rivers: Option<&str>, lakes: Option<&str>) -> Result<World, String> {
+/// Reads a file, un-gzipping it if its name ends in `.gz`.
+fn read_maybe_gz(path: &str) -> Result<String, String> {
+    if !path.ends_with(".gz") {
+        return read_text(path);
+    }
+    let file = std::fs::File::open(path).map_err(|e| format!("cannot read {path}: {e}"))?;
+    let mut text = String::new();
+    std::io::Read::read_to_string(&mut flate2::read::GzDecoder::new(file), &mut text)
+        .map_err(|e| format!("cannot read {path}: {e}"))?;
+    Ok(text)
+}
+
+/// Optional inputs besides the map and settlements.
+#[derive(Default)]
+struct Extras {
+    rivers: Option<String>,
+    lakes: Option<String>,
+    dates: Option<String>,
+    cultures: Option<String>,
+    /// isostyle's `evidence_layers.json`.
+    evidence: Option<String>,
+}
+
+fn load(inputs: &[String], extras: &Extras) -> Result<World, String> {
+    let (rivers, lakes) = (extras.rivers.as_deref(), extras.lakes.as_deref());
     let first = inputs.first().ok_or("no input file given")?;
     let bytes = std::fs::read(first).map_err(|e| format!("cannot read {first}: {e}"))?;
     if bytes.starts_with(&io::MAGIC) {
@@ -30,11 +61,22 @@ fn load(inputs: &[String], rivers: Option<&str>, lakes: Option<&str>) -> Result<
     }
     let mut world = import.world;
     if let Some(path) = inputs.get(1) {
-        let (settlements, warnings) = import_settlements(&read_text(path)?)?;
+        let (settlements, mut info, warnings) = import_settlement_records(&read_text(path)?)?;
         for w in &warnings {
             eprintln!("warning: {w}");
         }
+        match &extras.dates {
+            Some(dates) => {
+                let (n, orphans) = attach_dates(&settlements, &mut info, &read_maybe_gz(dates)?)?;
+                eprintln!("{n} radiocarbon dates attached");
+                if orphans > 0 {
+                    eprintln!("warning: {orphans} dates name a settlement not in {path}");
+                }
+            }
+            None => eprintln!("note: no --dates file given; site records have no radiocarbon dates"),
+        }
         world.settlements = settlements;
+        world.site_info = info;
     } else {
         eprintln!("note: no settlements file given; the world has no settlements");
     }
@@ -46,26 +88,47 @@ fn load(inputs: &[String], rivers: Option<&str>, lakes: Option<&str>) -> Result<
         Some(path) => world.lakes = import_lakes(&read_text(path)?)?,
         None => eprintln!("note: no --lakes file given; the world has no lake shorelines"),
     }
+    if let Some(path) = &extras.cultures {
+        world.cultures = import_cultures(&read_text(path)?)?;
+    }
     Ok(world)
 }
 
 fn run() -> Result<(), String> {
     let mut inputs = Vec::new();
     let (mut out, mut settlements_out) = (None, None);
-    let (mut rivers, mut rivers_out) = (None, None);
-    let (mut lakes, mut lakes_out) = (None, None);
+    let mut extras = Extras::default();
+    let (mut rivers_out, mut lakes_out) = (None, None);
     let (mut to_geojson, mut want_stats) = (false, false);
+    let mut expected_out = None;
+    let mut attach = false;
+    let mut years: Vec<neolith_core::Year> = (-10..=-3).map(|k| neolith_core::Year(k * 1000)).collect();
     let mut args = std::env::args().skip(1);
     while let Some(a) = args.next() {
         match a.as_str() {
             "-o" | "--output" => out = Some(args.next().ok_or("-o needs a path")?),
             "--settlements-out" => settlements_out = Some(args.next().ok_or("--settlements-out needs a path")?),
-            "--rivers" => rivers = Some(args.next().ok_or("--rivers needs a path")?),
-            "--lakes" => lakes = Some(args.next().ok_or("--lakes needs a path")?),
+            "--rivers" => extras.rivers = Some(args.next().ok_or("--rivers needs a path")?),
+            "--lakes" => extras.lakes = Some(args.next().ok_or("--lakes needs a path")?),
+            "--dates" => extras.dates = Some(args.next().ok_or("--dates needs a path")?),
+            "--cultures" => extras.cultures = Some(args.next().ok_or("--cultures needs a path")?),
+            "--evidence" => extras.evidence = Some(args.next().ok_or("--evidence needs a path")?),
+            "--attach-evidence" => {
+                extras.evidence = Some(args.next().ok_or("--attach-evidence needs a path")?);
+                attach = true;
+            }
             "--lakes-out" => lakes_out = Some(args.next().ok_or("--lakes-out needs a path")?),
             "--rivers-out" => rivers_out = Some(args.next().ok_or("--rivers-out needs a path")?),
             "--to-geojson" => to_geojson = true,
             "--stats" => want_stats = true,
+            "--expected" => expected_out = Some(args.next().ok_or("--expected needs a path")?),
+            "--years" => {
+                let list = args.next().ok_or("--years needs a comma-separated list")?;
+                years = list
+                    .split(',')
+                    .map(|y| y.trim().parse::<i32>().map(neolith_core::Year).map_err(|_| format!("--years: {y:?} is not a year")))
+                    .collect::<Result<_, _>>()?;
+            }
             "-h" | "--help" => {
                 print!("{USAGE}");
                 return Ok(());
@@ -77,10 +140,24 @@ fn run() -> Result<(), String> {
     if inputs.is_empty() {
         return Err(USAGE.to_string());
     }
-    let world = load(&inputs, rivers.as_deref(), lakes.as_deref())?;
+    if attach && !inputs.first().is_some_and(|p| std::fs::read(p).is_ok_and(|b| b.starts_with(&io::MAGIC))) {
+        return Err("--attach-evidence needs a world.bin input (use --evidence when building from GeoJSON)".into());
+    }
+    let mut world = load(&inputs, &extras)?;
+    if let Some(path) = &extras.evidence {
+        world.evidence = import_evidence(&read_text(path)?, world.grid.len()).map_err(|e| format!("{path}: {e}"))?;
+        world.validate().map_err(|e| format!("{path}: {e}"))?;
+        eprintln!("{} evidence layers from {path}", world.evidence.len());
+    }
 
     if want_stats {
         print!("{}", stats(&world));
+    }
+    let wrote_expected = expected_out.is_some();
+    if let Some(path) = expected_out {
+        let text = neolith_convert::expected_csv(&world, &years);
+        std::fs::write(&path, &text).map_err(|e| format!("cannot write {path}: {e}"))?;
+        eprintln!("wrote {path} ({} rows, {} years)", text.lines().count() - 1, years.len());
     }
     if to_geojson {
         let path = out.ok_or("--to-geojson needs -o <combined_map.geojson>")?;
@@ -106,15 +183,16 @@ fn run() -> Result<(), String> {
         let bytes = io::encode(&world);
         std::fs::write(&path, &bytes).map_err(|e| format!("cannot write {path}: {e}"))?;
         eprintln!(
-            "wrote {path}: {} hexes, {} keyframes, {} settlements, {} river stretches, {} lakes, {:.1} KB",
+            "wrote {path}: {} hexes, {} keyframes, {} settlements, {} river stretches, {} lakes, {} evidence layers, {:.1} KB",
             world.grid.len(),
             world.keyframe_years().len(),
             world.settlements.len(),
             world.rivers.len(),
             world.lakes.len(),
+            world.evidence.len(),
             bytes.len() as f64 / 1024.0
         );
-    } else if !want_stats {
+    } else if !want_stats && !wrote_expected {
         return Err(format!("nothing to do: give -o <file> or --stats\n\n{USAGE}"));
     }
     Ok(())

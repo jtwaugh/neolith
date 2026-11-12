@@ -1,0 +1,701 @@
+# Gap critic: megalithic_tombs layer. Judgements, not data.
+# Values: expected share of dated occupations that are megalithic tombs (0-1).
+# Regions that share one reading are written as one judgement per region with the same text.
+
+[meta]
+layer = "megalithic_tombs"
+written = "2026-11-12"
+dossier = "build/isostyle/gaps/megalithic_tombs/dossier.json"
+summary = "Megalithic tombs belong to the Atlantic facade and the north: Iberia and Brittany from c. 4700-4500 BCE, Britain and Ireland from c. 3800, northern Germany, Poland and southern Scandinavia (TRB dolmens and passage graves) 3600-3200, Mediterranean France, Sardinia and Apulia later, plus separate traditions in the Levant (Golan and Jordan dolmen fields, 4th millennium) and the western Caucasus (from c. 3200). Elsewhere absence is real. Method artefacts: the evidenced cells at 7,000 BCE in Iberia (33%) and France (4%) and at 6,000 BCE in Britain (51%) predate any megalith; they are pre-monument, old-wood or Mesolithic dates at monument sites, many arriving via Paulsson's 2019 set joined by lab number. Late reuse dates do the opposite at the end of the range. The Maghreb edge cells (4,000-3,000 BCE) are probably the Iberian kernel crossing the Strait; North African dolmens are mostly later."
+
+[[judgement]]
+region = "Iberia"
+slices = [-10000, -9000, -8000, -7000, -6000]
+gap_ids = ["megalithic_tombs-10000-17", "megalithic_tombs-9000-47", "megalithic_tombs-8000-76", "megalithic_tombs-7000-107", "megalithic_tombs-6000-135"]
+why_empty = ["true_absence", "sampling_bias"]
+why_note = "No megaliths before c. 4700 BCE; evidenced cells in these slices are pre-monument dates at tomb sites."
+expected = 0.0
+confidence = "high"
+basis = ["literature", "dossier_statistics"]
+reasoning = "Iberia 33% and 61% at 7,000 and 6,000 BCE, France 4-6%: impossible dates for megaliths, pointing to Mesolithic and early Neolithic occupations under later tombs. Same reading as: France & Low Countries."
+would_settle = "Filter dates to construction and primary-use contexts."
+speculative_rule = "Fill with 0 and suppress evidenced cells before 5,000 BCE."
+
+[[judgement]]
+region = "France & Low Countries"
+slices = [-10000, -9000, -8000, -7000, -6000]
+gap_ids = ["megalithic_tombs-10000-16", "megalithic_tombs-9000-45", "megalithic_tombs-8000-75", "megalithic_tombs-7000-104", "megalithic_tombs-6000-131"]
+why_empty = ["true_absence", "sampling_bias"]
+why_note = "No megaliths before c. 4700 BCE; evidenced cells in these slices are pre-monument dates at tomb sites."
+expected = 0.0
+confidence = "high"
+basis = ["literature", "dossier_statistics"]
+reasoning = "Iberia 33% and 61% at 7,000 and 6,000 BCE, France 4-6%: impossible dates for megaliths, pointing to Mesolithic and early Neolithic occupations under later tombs. Same reading as: Iberia."
+would_settle = "Filter dates to construction and primary-use contexts."
+speculative_rule = "Fill with 0 and suppress evidenced cells before 5,000 BCE."
+
+[[judgement]]
+region = "British Isles"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+gap_ids = ["megalithic_tombs-10000-18", "megalithic_tombs-9000-48", "megalithic_tombs-7000-105", "megalithic_tombs-8000-78", "megalithic_tombs-5000-162", "megalithic_tombs-6000-139", "megalithic_tombs-8000-85"]
+why_empty = ["true_absence", "sampling_bias"]
+why_note = "British and Irish megaliths start c. 3800 BCE; the 51-53% coverage at 6,000-5,000 BCE is artefact."
+expected = 0.0
+confidence = "high"
+basis = ["literature", "dossier_statistics"]
+reasoning = "No Neolithic in Britain before c. 4000 BCE."
+would_settle = "As above."
+speculative_rule = "Fill with 0 and suppress evidenced cells before 4,000 BCE."
+
+[[judgement]]
+region = "Iberia"
+slices = [-5000]
+gap_ids = ["megalithic_tombs-5000-167"]
+why_empty = ["sampling_bias", "research_intensity"]
+why_note = "The earliest Atlantic tombs (Breton long mounds and passage graves, Alentejo dolmens) start c. 4700-4500, at the end of this slice."
+expected = 0.1
+expected_range = [0.03, 0.2]
+confidence = "medium"
+basis = ["literature", "dossier_statistics"]
+reasoning = "Iberia 86% and France 66% coverage; residual gaps are inland and Mediterranean, where tombs come later. Same reading as: France & Low Countries."
+would_settle = "Paulsson's construction-phase models."
+speculative_rule = "0.15 in Brittany, Galicia and the Alentejo, 0.02 elsewhere in these regions."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000]
+value = 0.02
+[[judgement.adjust]]
+kind = "area"
+bbox = [-9.3, 41.8, -6.7, 43.8]
+value = 0.15
+[[judgement.adjust]]
+kind = "area"
+bbox = [-8.9, 37.3, -7.0, 39.7]
+value = 0.15
+
+[[judgement]]
+region = "France & Low Countries"
+slices = [-5000]
+gap_ids = ["megalithic_tombs-5000-166", "megalithic_tombs-5000-169"]
+why_empty = ["sampling_bias", "research_intensity"]
+why_note = "The earliest Atlantic tombs (Breton long mounds and passage graves, Alentejo dolmens) start c. 4700-4500, at the end of this slice."
+expected = 0.1
+expected_range = [0.03, 0.2]
+confidence = "medium"
+basis = ["literature", "dossier_statistics"]
+reasoning = "Iberia 86% and France 66% coverage; residual gaps are inland and Mediterranean, where tombs come later. Same reading as: Iberia."
+would_settle = "Paulsson's construction-phase models."
+speculative_rule = "0.15 in Brittany, Galicia and the Alentejo, 0.02 elsewhere in these regions."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-5000]
+value = 0.02
+[[judgement.adjust]]
+kind = "area"
+bbox = [-4.9, 47.2, -1.0, 48.9]
+value = 0.15
+
+[[judgement]]
+region = "Iberia"
+slices = [-4000, -3000]
+gap_ids = []
+why_empty = ["recording_practice"]
+why_note = "Near-complete coverage; tombs are a large share of dated occupations in this zone."
+expected = 0.35
+expected_range = [0.2, 0.5]
+confidence = "medium"
+basis = ["dossier_statistics", "literature"]
+reasoning = "Coverage 87-100%. Expected share is high because tombs are among the most dated site types on the Atlantic facade. Same reading as: France & Low Countries, British Isles."
+would_settle = "Nothing urgent."
+speculative_rule = "0.35 along the Atlantic facade, 0.15 in inland France and the Meseta, 0.05 in the Low Countries outside Drenthe."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-4000, -3000]
+value = 0.15
+[[judgement.adjust]]
+kind = "coast"
+within_km = 110
+value = 0.35
+[[judgement.adjust]]
+kind = "area"
+bbox = [-5.4, 35.9, 4.2, 42.5]
+value = 0.15
+
+[[judgement]]
+region = "France & Low Countries"
+slices = [-4000, -3000]
+gap_ids = ["megalithic_tombs-4000-193"]
+why_empty = ["recording_practice"]
+why_note = "Near-complete coverage; tombs are a large share of dated occupations in this zone."
+expected = 0.35
+expected_range = [0.2, 0.5]
+confidence = "medium"
+basis = ["dossier_statistics", "literature"]
+reasoning = "Coverage 87-100%. Expected share is high because tombs are among the most dated site types on the Atlantic facade. Same reading as: Iberia, British Isles."
+would_settle = "Nothing urgent."
+speculative_rule = "0.35 along the Atlantic facade, 0.15 in inland France and the Meseta, 0.05 in the Low Countries outside Drenthe."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-4000, -3000]
+value = 0.15
+[[judgement.adjust]]
+kind = "coast"
+within_km = 110
+value = 0.35
+[[judgement.adjust]]
+kind = "area"
+bbox = [1.5, 41.4, 9.8, 44.5]
+value = 0.15
+[[judgement.adjust]]
+kind = "area"
+bbox = [3.3, 51.25, 7.3, 52.55]
+value = 0.05
+[[judgement.adjust]]
+kind = "area"
+bbox = [4.5, 52.55, 6.1, 53.6]
+value = 0.05
+[[judgement.adjust]]
+kind = "area"
+bbox = [6.1, 53.2, 7.3, 53.6]
+value = 0.05
+[[judgement.adjust]]
+kind = "area"
+bbox = [2.55, 49.45, 6.5, 51.25]
+value = 0.05
+
+[[judgement]]
+region = "British Isles"
+slices = [-4000, -3000]
+gap_ids = []
+why_empty = ["recording_practice"]
+why_note = "Near-complete coverage; tombs are a large share of dated occupations in this zone."
+expected = 0.35
+expected_range = [0.2, 0.5]
+confidence = "medium"
+basis = ["dossier_statistics", "literature"]
+reasoning = "Coverage 87-100%. Expected share is high because tombs are among the most dated site types on the Atlantic facade. Same reading as: Iberia, France & Low Countries."
+would_settle = "Nothing urgent."
+speculative_rule = "0.35 along the Atlantic facade, 0.15 in inland France and the Meseta, 0.05 in the Low Countries outside Drenthe."
+
+[[judgement]]
+region = "Central Europe"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+gap_ids = ["megalithic_tombs-9000-40", "megalithic_tombs-8000-69", "megalithic_tombs-7000-99", "megalithic_tombs-10000-11", "megalithic_tombs-6000-126", "megalithic_tombs-5000-153"]
+why_empty = ["true_absence"]
+why_note = "No megaliths before TRB, c. 3700 BCE."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked except a few edge cells at 5,000 BCE."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Central Europe"
+slices = [-4000, -3000]
+gap_ids = ["megalithic_tombs-4000-183", "megalithic_tombs-3000-209"]
+why_empty = ["research_intensity", "not_in_open_compilations"]
+why_note = "TRB dolmens, passage graves and Kujavian long barrows in the north; gallery graves in Hesse-Westphalia and Walternienburg-Bernburg; none in the south."
+expected = 0.15
+expected_range = [0.05, 0.3]
+confidence = "medium"
+basis = ["dossier_statistics", "literature"]
+reasoning = "Coverage 29-48%; 58 and 36 edge cells. Gaps are Poland, eastern Germany and the southern half, where the south is a true absence."
+would_settle = "Polish Kujavian tomb dates; German Großsteingräber datasets."
+speculative_rule = "0.2 north of 51°N, fading to 0 south of 50°N."
+[[judgement.adjust]]
+kind = "gradient"
+axis = "lat"
+from = [50.0, 0.0]
+to = [51.0, 0.2]
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+gap_ids = ["megalithic_tombs-5000-152", "megalithic_tombs-6000-125", "megalithic_tombs-7000-98", "megalithic_tombs-8000-72", "megalithic_tombs-9000-46", "megalithic_tombs-10000-19", "megalithic_tombs-10000-25", "megalithic_tombs-5000-168"]
+why_empty = ["true_absence"]
+why_note = "No farming and no megaliths before c. 3700 BCE."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked; a few edge cells at 5,000 BCE are pre-monument dates."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Scandinavia"
+slices = [-4000, -3000]
+gap_ids = ["megalithic_tombs-4000-180", "megalithic_tombs-3000-204"]
+why_empty = ["research_intensity", "low_population"]
+why_note = "Dense dolmens and passage graves in Denmark, Scania and Västergötland; none in the boreal north."
+expected = 0.3
+expected_range = [0.15, 0.5]
+confidence = "medium"
+basis = ["dossier_statistics", "literature"]
+reasoning = "Coverage 11-20%; edge 17-24 cells. Denmark once had perhaps 25,000 dolmens and passage graves."
+would_settle = "Danish Fund og Fortidsminder with dates."
+speculative_rule = "0.35 in Denmark and southern Sweden south of 59°N, 0 north of 60°N."
+[[judgement.adjust]]
+kind = "gradient"
+axis = "lat"
+from = [59.0, 0.35]
+to = [60.0, 0.0]
+
+[[judgement]]
+region = "Italy & islands"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+gap_ids = ["megalithic_tombs-9000-50", "megalithic_tombs-10000-21", "megalithic_tombs-8000-79", "megalithic_tombs-7000-109", "megalithic_tombs-5000-160", "megalithic_tombs-6000-134"]
+why_empty = ["true_absence"]
+why_note = "No megaliths before the 4th millennium."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Italy & islands"
+slices = [-4000, -3000]
+gap_ids = ["megalithic_tombs-4000-187", "megalithic_tombs-3000-212"]
+why_empty = ["research_intensity", "recording_practice"]
+why_note = "Sardinian allées couvertes and dolmens, Apulian and Sicilian dolmens, Aosta (Saint-Martin-de-Corléans); many are Copper Age to EBA."
+expected = 0.06
+expected_range = [0.02, 0.15]
+confidence = "low"
+basis = ["dossier_statistics", "literature"]
+reasoning = "Coverage 7-26%; edge cells at 3,000 BCE. Rock-cut domus de janas are not megaliths and the rule does not catch them."
+would_settle = "Italian dolmen inventories with dates."
+speculative_rule = "0.1 in Sardinia, Corsica-facing coasts and Apulia; 0.02 elsewhere."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-4000, -3000]
+value = 0.02
+[[judgement.adjust]]
+kind = "area"
+bbox = [8.1, 38.8, 9.9, 41.3]
+value = 0.1
+[[judgement.adjust]]
+kind = "area"
+bbox = [10.0, 42.3, 11.3, 44.0]
+value = 0.1
+[[judgement.adjust]]
+kind = "area"
+bbox = [15.0, 40.9, 16.8, 42.0]
+value = 0.1
+[[judgement.adjust]]
+kind = "area"
+bbox = [16.8, 39.8, 18.5, 41.4]
+value = 0.1
+
+[[judgement]]
+region = "Levant"
+slices = [-4000, -3000]
+gap_ids = ["megalithic_tombs-4000-188", "megalithic_tombs-3000-211"]
+why_empty = ["not_in_open_compilations", "research_intensity"]
+why_note = "Thousands of dolmens in the Golan, Galilee and Jordan (late Chalcolithic to EB I) are poorly dated."
+expected = 0.08
+expected_range = [0.02, 0.2]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked; dolmen fields such as Shamir and Jordanian Dhiban-area fields date mostly 3500-3000 BCE."
+would_settle = "Recent Golan dolmen excavations and Jordanian surveys with dates."
+speculative_rule = "0.1 along the Rift margins from 3,500 BCE, 0 elsewhere."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-4000, -3000]
+value = 0.0
+[[judgement.adjust]]
+kind = "polygon"
+points = [[35.05, 30.0], [35.3, 31.0], [35.35, 31.8], [35.45, 32.5], [35.5, 33.3], [35.9, 33.3], [35.85, 32.5], [35.85, 31.8], [35.75, 31.0], [35.35, 30.0]]
+value = 0.1
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-4000]
+value = 0.0
+
+[[judgement]]
+region = "Caucasus"
+slices = [-3000]
+gap_ids = ["megalithic_tombs-3000-214"]
+why_empty = ["not_in_open_compilations"]
+why_note = "Western Caucasian dolmens (Abkhazia and Krasnodar coast) start c. 3200 BCE."
+expected = 0.04
+expected_range = [0.01, 0.1]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. The tradition covers only the Black Sea coastal strip. Same reading as: Russia: steppe and forest-steppe."
+would_settle = "Trifonov's dolmen dates."
+speculative_rule = "0.15 in a strip within 50 km of the Black Sea coast between Anapa and Sukhumi, 0 elsewhere."
+[[judgement.adjust]]
+kind = "coast"
+within_km = 55
+value = 0.15
+inland = 0.0
+[[judgement.adjust]]
+kind = "area"
+bbox = [41.2, 38.6, 50.5, 43.4]
+value = 0.0
+[[judgement.adjust]]
+kind = "area"
+bbox = [40.1, 38.6, 41.2, 42.95]
+value = 0.0
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-3000]
+gap_ids = ["megalithic_tombs-3000-200"]
+why_empty = ["not_in_open_compilations"]
+why_note = "Western Caucasian dolmens (Abkhazia and Krasnodar coast) start c. 3200 BCE."
+expected = 0.04
+expected_range = [0.01, 0.1]
+confidence = "low"
+basis = ["literature"]
+reasoning = "Masked. The tradition covers only the Black Sea coastal strip. Same reading as: Caucasus."
+would_settle = "Trifonov's dolmen dates."
+speculative_rule = "0.15 in a strip within 50 km of the Black Sea coast between Anapa and Sukhumi, 0 elsewhere."
+[[judgement.adjust]]
+kind = "coast"
+within_km = 55
+value = 0.15
+inland = 0.0
+[[judgement.adjust]]
+kind = "area"
+bbox = [19.8, 45.0, 65.7, 55.9]
+value = 0.0
+[[judgement.adjust]]
+kind = "area"
+bbox = [40.1, 41.4, 65.7, 45.0]
+value = 0.0
+
+[[judgement]]
+region = "Maghreb"
+slices = [-4000, -3000]
+gap_ids = ["megalithic_tombs-4000-172", "megalithic_tombs-3000-196"]
+why_empty = ["research_intensity", "dataset_edge"]
+why_note = "North African dolmens are mostly 1st millennium BCE; Moroccan coastal monuments are poorly dated."
+expected = 0.01
+expected_range = [0.0, 0.05]
+confidence = "low"
+basis = ["literature", "dossier_statistics"]
+reasoning = "Edge cells (7 and 9) probably reflect Iberian evidence across the Strait."
+would_settle = "Dates on Moroccan monuments."
+speculative_rule = "0.01 along the Moroccan Atlantic coast, 0 inland; do not extend the Iberian values."
+[[judgement.adjust]]
+kind = "coast"
+within_km = 55
+value = 0.01
+inland = 0.0
+[[judgement.adjust]]
+kind = "area"
+bbox = [-5.9, 27.6, 11.5, 37.4]
+value = 0.0
+[[judgement.adjust]]
+kind = "area"
+bbox = [-16.2, 19.1, -5.9, 27.6]
+value = 0.0
+
+[[judgement]]
+region = "Arabia"
+slices = [-3000]
+gap_ids = ["megalithic_tombs-3000-197"]
+why_empty = ["research_intensity"]
+why_note = "Hafit cairn tombs (3100-2700) are stone-built but not usually called megalithic."
+expected = 0.02
+expected_range = [0.0, 0.1]
+confidence = "low"
+basis = ["literature", "analogy"]
+reasoning = "Masked. Whether these count depends on the game's definition."
+would_settle = "None needed for the rule as written."
+speculative_rule = "0.02 in Oman and the UAE; 0 elsewhere."
+[[judgement.adjust]]
+kind = "slice_value"
+slices = [-3000]
+value = 0.0
+[[judgement.adjust]]
+kind = "area"
+bbox = [51.5, 22.6, 56.4, 26.1]
+value = 0.02
+[[judgement.adjust]]
+kind = "area"
+bbox = [55.0, 19.0, 59.9, 26.4]
+value = 0.02
+[[judgement.adjust]]
+kind = "area"
+bbox = [53.1, 16.6, 55.0, 19.0]
+value = 0.02
+
+[[judgement]]
+region = "Caucasus"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000]
+gap_ids = ["megalithic_tombs-8000-82", "megalithic_tombs-7000-111", "megalithic_tombs-9000-55", "megalithic_tombs-6000-137", "megalithic_tombs-5000-163", "megalithic_tombs-4000-190", "megalithic_tombs-10000-26"]
+why_empty = ["true_absence"]
+why_note = "No megaliths before the western Caucasian dolmens."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Russia: steppe and forest-steppe."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Russia: steppe and forest-steppe"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000]
+gap_ids = ["megalithic_tombs-9000-35", "megalithic_tombs-7000-92", "megalithic_tombs-8000-64", "megalithic_tombs-6000-119", "megalithic_tombs-10000-07", "megalithic_tombs-5000-147", "megalithic_tombs-4000-176"]
+why_empty = ["true_absence"]
+why_note = "No megaliths before the western Caucasian dolmens."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked. Same reading as: Caucasus."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Levant"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+gap_ids = ["megalithic_tombs-6000-133", "megalithic_tombs-7000-108", "megalithic_tombs-5000-159", "megalithic_tombs-10000-22", "megalithic_tombs-9000-51", "megalithic_tombs-8000-80"]
+why_empty = ["true_absence"]
+why_note = "Dolmens start in the late Chalcolithic."
+expected = 0.0
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Maghreb"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000]
+gap_ids = ["megalithic_tombs-10000-03", "megalithic_tombs-9000-32", "megalithic_tombs-8000-61", "megalithic_tombs-5000-144", "megalithic_tombs-7000-90", "megalithic_tombs-6000-117"]
+why_empty = ["true_absence"]
+why_note = "No megaliths before the 4th millennium at the earliest."
+expected = 0.0
+confidence = "high"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Arabia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000]
+gap_ids = ["megalithic_tombs-10000-04", "megalithic_tombs-9000-33", "megalithic_tombs-8000-62", "megalithic_tombs-7000-91", "megalithic_tombs-6000-118", "megalithic_tombs-5000-145", "megalithic_tombs-4000-173"]
+why_empty = ["true_absence"]
+why_note = "No tomb monuments of this kind."
+expected = 0.0
+confidence = "medium"
+basis = ["literature"]
+reasoning = "Masked."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Balkans & Greece"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["megalithic_tombs-9000-43", "megalithic_tombs-10000-14", "megalithic_tombs-8000-73", "megalithic_tombs-6000-129", "megalithic_tombs-5000-156", "megalithic_tombs-7000-102", "megalithic_tombs-4000-184", "megalithic_tombs-3000-207"]
+why_empty = ["true_absence"]
+why_note = "Outside the megalithic provinces; Thracian and Ethiopian dolmens and Sahelian tumuli are later or a different class."
+expected = 0.0
+expected_range = [0.0, 0.01]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Fully masked across all slices. Same reading as: Baltic, Ukraine & Belarus, Russia: forest north of 56°N, Anatolia & Cyprus, Mesopotamia, Iran & Afghanistan, Central Asia, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Baltic"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["megalithic_tombs-9000-52", "megalithic_tombs-10000-24", "megalithic_tombs-8000-81", "megalithic_tombs-7000-110", "megalithic_tombs-6000-136", "megalithic_tombs-5000-161", "megalithic_tombs-4000-189", "megalithic_tombs-3000-213"]
+why_empty = ["true_absence"]
+why_note = "Outside the megalithic provinces; Thracian and Ethiopian dolmens and Sahelian tumuli are later or a different class."
+expected = 0.0
+expected_range = [0.0, 0.01]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Fully masked across all slices. Same reading as: Balkans & Greece, Ukraine & Belarus, Russia: forest north of 56°N, Anatolia & Cyprus, Mesopotamia, Iran & Afghanistan, Central Asia, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Ukraine & Belarus"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["megalithic_tombs-10000-13", "megalithic_tombs-9000-42", "megalithic_tombs-8000-71", "megalithic_tombs-7000-101", "megalithic_tombs-6000-128", "megalithic_tombs-5000-155", "megalithic_tombs-4000-182", "megalithic_tombs-3000-206"]
+why_empty = ["true_absence"]
+why_note = "Outside the megalithic provinces; Thracian and Ethiopian dolmens and Sahelian tumuli are later or a different class."
+expected = 0.0
+expected_range = [0.0, 0.01]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Fully masked across all slices. Same reading as: Balkans & Greece, Baltic, Russia: forest north of 56°N, Anatolia & Cyprus, Mesopotamia, Iran & Afghanistan, Central Asia, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Russia: forest north of 56°N"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["megalithic_tombs-7000-88", "megalithic_tombs-6000-115", "megalithic_tombs-5000-142", "megalithic_tombs-4000-170", "megalithic_tombs-3000-194", "megalithic_tombs-10000-01", "megalithic_tombs-9000-30", "megalithic_tombs-8000-59", "megalithic_tombs-9000-54", "megalithic_tombs-7000-112", "megalithic_tombs-6000-138", "megalithic_tombs-5000-164", "megalithic_tombs-4000-191", "megalithic_tombs-3000-215", "megalithic_tombs-8000-86"]
+why_empty = ["true_absence"]
+why_note = "Outside the megalithic provinces; Thracian and Ethiopian dolmens and Sahelian tumuli are later or a different class."
+expected = 0.0
+expected_range = [0.0, 0.01]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Fully masked across all slices. Same reading as: Balkans & Greece, Baltic, Ukraine & Belarus, Anatolia & Cyprus, Mesopotamia, Iran & Afghanistan, Central Asia, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Anatolia & Cyprus"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["megalithic_tombs-10000-15", "megalithic_tombs-9000-44", "megalithic_tombs-8000-74", "megalithic_tombs-7000-103", "megalithic_tombs-6000-130", "megalithic_tombs-4000-185", "megalithic_tombs-3000-208", "megalithic_tombs-5000-157"]
+why_empty = ["true_absence"]
+why_note = "Outside the megalithic provinces; Thracian and Ethiopian dolmens and Sahelian tumuli are later or a different class."
+expected = 0.0
+expected_range = [0.0, 0.01]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Fully masked across all slices. Same reading as: Balkans & Greece, Baltic, Ukraine & Belarus, Russia: forest north of 56°N, Mesopotamia, Iran & Afghanistan, Central Asia, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Mesopotamia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["megalithic_tombs-10000-20", "megalithic_tombs-9000-49", "megalithic_tombs-8000-77", "megalithic_tombs-7000-106", "megalithic_tombs-6000-132", "megalithic_tombs-5000-158", "megalithic_tombs-4000-186", "megalithic_tombs-3000-210"]
+why_empty = ["true_absence"]
+why_note = "Outside the megalithic provinces; Thracian and Ethiopian dolmens and Sahelian tumuli are later or a different class."
+expected = 0.0
+expected_range = [0.0, 0.01]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Fully masked across all slices. Same reading as: Balkans & Greece, Baltic, Ukraine & Belarus, Russia: forest north of 56°N, Anatolia & Cyprus, Iran & Afghanistan, Central Asia, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Iran & Afghanistan"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["megalithic_tombs-8000-67", "megalithic_tombs-9000-38", "megalithic_tombs-10000-10", "megalithic_tombs-7000-96", "megalithic_tombs-6000-124", "megalithic_tombs-5000-151", "megalithic_tombs-4000-179", "megalithic_tombs-3000-203"]
+why_empty = ["true_absence"]
+why_note = "Outside the megalithic provinces; Thracian and Ethiopian dolmens and Sahelian tumuli are later or a different class."
+expected = 0.0
+expected_range = [0.0, 0.01]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Fully masked across all slices. Same reading as: Balkans & Greece, Baltic, Ukraine & Belarus, Russia: forest north of 56°N, Anatolia & Cyprus, Mesopotamia, Central Asia, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Central Asia"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["megalithic_tombs-7000-95", "megalithic_tombs-8000-66", "megalithic_tombs-9000-37", "megalithic_tombs-6000-122", "megalithic_tombs-5000-149", "megalithic_tombs-4000-177", "megalithic_tombs-3000-201", "megalithic_tombs-10000-08"]
+why_empty = ["true_absence"]
+why_note = "Outside the megalithic provinces; Thracian and Ethiopian dolmens and Sahelian tumuli are later or a different class."
+expected = 0.0
+expected_range = [0.0, 0.01]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Fully masked across all slices. Same reading as: Balkans & Greece, Baltic, Ukraine & Belarus, Russia: forest north of 56°N, Anatolia & Cyprus, Mesopotamia, Iran & Afghanistan, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Libya & Egypt"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["megalithic_tombs-10000-05", "megalithic_tombs-9000-34", "megalithic_tombs-8000-63", "megalithic_tombs-7000-93", "megalithic_tombs-6000-120", "megalithic_tombs-5000-146", "megalithic_tombs-3000-198", "megalithic_tombs-4000-174"]
+why_empty = ["true_absence"]
+why_note = "Outside the megalithic provinces; Thracian and Ethiopian dolmens and Sahelian tumuli are later or a different class."
+expected = 0.0
+expected_range = [0.0, 0.01]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Fully masked across all slices. Same reading as: Balkans & Greece, Baltic, Ukraine & Belarus, Russia: forest north of 56°N, Anatolia & Cyprus, Mesopotamia, Iran & Afghanistan, Central Asia, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Nile & Sudan"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["megalithic_tombs-10000-09", "megalithic_tombs-9000-39", "megalithic_tombs-8000-68", "megalithic_tombs-7000-97", "megalithic_tombs-5000-150", "megalithic_tombs-6000-123", "megalithic_tombs-3000-202", "megalithic_tombs-4000-178"]
+why_empty = ["true_absence"]
+why_note = "Outside the megalithic provinces; Thracian and Ethiopian dolmens and Sahelian tumuli are later or a different class."
+expected = 0.0
+expected_range = [0.0, 0.01]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Fully masked across all slices. Same reading as: Balkans & Greece, Baltic, Ukraine & Belarus, Russia: forest north of 56°N, Anatolia & Cyprus, Mesopotamia, Iran & Afghanistan, Central Asia, Libya & Egypt, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Sahara–Sahel"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["megalithic_tombs-10000-02", "megalithic_tombs-4000-171", "megalithic_tombs-8000-60", "megalithic_tombs-3000-195", "megalithic_tombs-9000-31", "megalithic_tombs-5000-143", "megalithic_tombs-6000-116", "megalithic_tombs-7000-89"]
+why_empty = ["true_absence"]
+why_note = "Outside the megalithic provinces; Thracian and Ethiopian dolmens and Sahelian tumuli are later or a different class."
+expected = 0.0
+expected_range = [0.0, 0.01]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Fully masked across all slices. Same reading as: Balkans & Greece, Baltic, Ukraine & Belarus, Russia: forest north of 56°N, Anatolia & Cyprus, Mesopotamia, Iran & Afghanistan, Central Asia, Libya & Egypt, Nile & Sudan, Horn of Africa, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Horn of Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["megalithic_tombs-10000-12", "megalithic_tombs-9000-41", "megalithic_tombs-8000-70", "megalithic_tombs-7000-100", "megalithic_tombs-5000-154", "megalithic_tombs-6000-127", "megalithic_tombs-4000-181", "megalithic_tombs-3000-205"]
+why_empty = ["true_absence"]
+why_note = "Outside the megalithic provinces; Thracian and Ethiopian dolmens and Sahelian tumuli are later or a different class."
+expected = 0.0
+expected_range = [0.0, 0.01]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Fully masked across all slices. Same reading as: Balkans & Greece, Baltic, Ukraine & Belarus, Russia: forest north of 56°N, Anatolia & Cyprus, Mesopotamia, Iran & Afghanistan, Central Asia, Libya & Egypt, Nile & Sudan, Sahara–Sahel, West Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "West Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["megalithic_tombs-10000-06", "megalithic_tombs-9000-36", "megalithic_tombs-7000-94", "megalithic_tombs-8000-65", "megalithic_tombs-6000-121", "megalithic_tombs-4000-175", "megalithic_tombs-5000-148", "megalithic_tombs-3000-199"]
+why_empty = ["true_absence"]
+why_note = "Outside the megalithic provinces; Thracian and Ethiopian dolmens and Sahelian tumuli are later or a different class."
+expected = 0.0
+expected_range = [0.0, 0.01]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Fully masked across all slices. Same reading as: Balkans & Greece, Baltic, Ukraine & Belarus, Russia: forest north of 56°N, Anatolia & Cyprus, Mesopotamia, Iran & Afghanistan, Central Asia, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, Now-drowned shelves and islands, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Now-drowned shelves and islands"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["megalithic_tombs-10000-23", "megalithic_tombs-9000-53", "megalithic_tombs-8000-83", "megalithic_tombs-10000-28", "megalithic_tombs-9000-57", "megalithic_tombs-7000-114", "megalithic_tombs-8000-87", "megalithic_tombs-10000-29", "megalithic_tombs-9000-58", "megalithic_tombs-6000-141"]
+why_empty = ["true_absence"]
+why_note = "Outside the megalithic provinces; Thracian and Ethiopian dolmens and Sahelian tumuli are later or a different class."
+expected = 0.0
+expected_range = [0.0, 0.01]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Fully masked across all slices. Same reading as: Balkans & Greece, Baltic, Ukraine & Belarus, Russia: forest north of 56°N, Anatolia & Cyprus, Mesopotamia, Iran & Afghanistan, Central Asia, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Other."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."
+
+[[judgement]]
+region = "Other"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+gap_ids = ["megalithic_tombs-10000-27", "megalithic_tombs-9000-56", "megalithic_tombs-8000-84", "megalithic_tombs-7000-113", "megalithic_tombs-6000-140", "megalithic_tombs-5000-165", "megalithic_tombs-4000-192", "megalithic_tombs-3000-216"]
+why_empty = ["true_absence"]
+why_note = "Outside the megalithic provinces; Thracian and Ethiopian dolmens and Sahelian tumuli are later or a different class."
+expected = 0.0
+expected_range = [0.0, 0.01]
+confidence = "high"
+basis = ["literature"]
+reasoning = "Fully masked across all slices. Same reading as: Balkans & Greece, Baltic, Ukraine & Belarus, Russia: forest north of 56°N, Anatolia & Cyprus, Mesopotamia, Iran & Afghanistan, Central Asia, Libya & Egypt, Nile & Sudan, Sahara–Sahel, Horn of Africa, West Africa, Now-drowned shelves and islands."
+would_settle = "Nothing needed."
+speculative_rule = "Fill with 0."

@@ -16,9 +16,12 @@ pub struct Clock {
 pub const SPEED_MIN: f64 = 1.0;
 pub const SPEED_MAX: f64 = 500.0;
 
+/// The five fixed speed steps (years per second), on keys 1–5.
+pub const SPEEDS: [f64; 5] = [5.0, 20.0, 60.0, 150.0, 500.0];
+
 impl Clock {
     pub fn new(min: Year, max: Year) -> Self {
-        Self { year: min, playing: false, years_per_sec: 100.0, acc: 0.0, min, max }
+        Self { year: min, playing: false, years_per_sec: SPEEDS[2], acc: 0.0, min, max }
     }
 
     pub fn year(&self) -> Year {
@@ -33,6 +36,16 @@ impl Clock {
     pub fn set_year(&mut self, y: Year) {
         self.year = Year(y.0.clamp(self.min.0, self.max.0));
         self.acc = 0.0;
+    }
+
+    /// The speed step (0..5) nearest the current speed, on a log scale.
+    pub fn speed_step(&self) -> usize {
+        let v = self.years_per_sec.clamp(SPEED_MIN, SPEED_MAX).ln();
+        (0..SPEEDS.len()).min_by(|&a, &b| (SPEEDS[a].ln() - v).abs().total_cmp(&(SPEEDS[b].ln() - v).abs())).unwrap()
+    }
+
+    pub fn set_speed_step(&mut self, i: usize) {
+        self.years_per_sec = SPEEDS[i.min(SPEEDS.len() - 1)];
     }
 
     /// Advances by `dt` seconds of wall time. Returns true if the year changed.
@@ -98,6 +111,19 @@ mod tests {
         assert_eq!(c.year(), Year(-95));
         c.set_year(Year(-5000));
         assert_eq!(c.year(), Year(-100));
+    }
+
+    #[test]
+    fn speed_steps_round_trip() {
+        assert!(SPEEDS.windows(2).all(|w| w[0] < w[1]));
+        assert!(SPEEDS[0] >= SPEED_MIN && SPEEDS[4] <= SPEED_MAX);
+        let mut c = Clock::new(Year(-100), Year(0));
+        for i in 0..SPEEDS.len() {
+            c.set_speed_step(i);
+            assert_eq!(c.speed_step(), i);
+        }
+        c.years_per_sec = 70.0;
+        assert_eq!(c.speed_step(), 2);
     }
 
     #[test]

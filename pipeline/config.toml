@@ -47,6 +47,49 @@ palette = [
   [[51, 51, 51], "Water"],
 ]
 
+# Drawn classes the transcription of the source maps got wrong. The composite
+# key frames were copied from Adams & Faure's QEN maps (raw/maps/europe/,
+# raw/maps/africa/). QEN's pale-yellow steppe over the Pontic-Caspian region,
+# the Caucasus and Anatolia was copied as red Chaparral at -9000 and as
+# yellow Savannah from -8000 on, the colours of Mediterranean scrub and
+# tropical savanna. Tropical savanna doesn't grow north of 30°N, and pollen
+# records there (Shotota, Lake Neor, Nar Gölü) show steppe, meadow and oak
+# parkland; the gap filling ([paleobiome.calibrate]) then spread both classes
+# over the Anatolian, Zagros and Talesh uplands. Each rule turns `from` into
+# `to` on hexes centred in `box` = [lon0, lat0, lon1, lat1] (optionally only
+# for `years` = [first, last]).
+[[terrain.reinterpret]]
+from = "Savannah"
+to = "Grassland"
+box = [-17.0, 30.0, 66.5, 76.5]
+[[terrain.reinterpret]]
+from = "Chaparral"
+to = "Grassland"
+box = [26.0, 39.0, 66.5, 76.5]
+
+# The eastern Sahel and Nubia in the African Humid Period: the drawn maps
+# have grassland from 15 to 22°N where pollen at El Atrun (18°N) and Selima
+# (21.4°N) shows thorn-tree savanna at -7000 and -6000. Fitted on those (the
+# latitude limit is loose: 19.5-24.5°N fit equally; 22°N is just north of
+# Selima, the northernmost savanna among them) and checked on held-out Oyo,
+# Nabta and Sodmein: 5 -> 7 of 10 slices. Arabia's errors run both ways at
+# too few sites for a rule.
+[[terrain.reinterpret]]
+from = "Grassland"
+to = "Savannah"
+box = [20.0, 15.0, 38.0, 22.0]
+years = [-7000, -6000]
+
+# Drawn Water on hexes whose median elevation is above max_elevation, outside
+# every lake box in data/lakes/lakes.toml and the `keep` boxes, is a drawing
+# artefact (a coast a hex off, a one-key-frame flicker): it becomes a gap
+# ("Land") filled from the climate model. A real palaeolake belongs in
+# lakes.toml with a level curve and sources, which also brings it back here.
+[terrain.high_water]
+enabled = true
+max_elevation = 200.0
+keep = []
+
 # Georeferenced keyframes: PNG + world file (.pgw).
 [[terrain.sources]]
 year = -9000
@@ -141,6 +184,61 @@ curve = [
 # modelled biomes from Beyer, Krapp & Manica 2020 (Sci. Data 7:236; HadCM3 +
 # BIOME4, 0.5 degrees, 1000-year slices; CC BY 4.0). `make build/biome.npz`
 # downloads the 1.3 GB NetCDF once and cuts it down with `python -m pipeline biome`.
+# Biome cleanup (pipeline/biome_clean.py), applied to each keyframe after the
+# model fills its gaps and before the years between are filled.
+[biome.edges]
+# Model-filled hexes take the biome at a smoothly displaced position, which
+# breaks up the BIOME4 grid's straight rows and columns. One fixed field for
+# all years, so the edges don't shimmer. apply_to: "model" or "all".
+enabled = true
+apply_to = "model"
+seed = 7
+# Displacement (hexes) and the noise wavelength (hexes).
+amplitude = 1.2
+period = 4.0
+
+[biome.upland]
+# The Irano-Anatolian uplands. The drawn maps leave them as Mountains (a gap),
+# and the gap filling, never shown woodland in this climate, made them
+# Chaparral, Savannah or Grassland. Pollen and charcoal records there (Nar,
+# Hazar, Mirabad, Hashilan, Gölhisar, Zeribar, Van, Urmia, Abant, Yeniçağa)
+# show steppe and forest-steppe until about -7000, then oak woodland where
+# it is wet enough, and steppe where it is dry. A gap-filled hex in `box`
+# at or above min_elevation (not Alpine) with a coldest month (BIO6, lapse-
+# corrected) at or below max_coldest and annual precipitation (BIO12) of at
+# least min_precip becomes Woodlands from woodland_from where precipitation
+# reaches woodland_precip, else Steppe-Forest from forest_steppe_precip,
+# else Grassland. The mild-winter test leaves the Lebanon and Aegean
+# mountains Mediterranean. Thresholds fitted on the anchors that aren't held
+# out (52 of 60 upland keyframe slices right); on the held-out ones the map
+# went from 15 to 37 of 44.
+enabled = true
+box = [26.0, 30.0, 62.0, 43.5]
+min_elevation = 700.0
+max_coldest = -2.0
+min_precip = 200.0
+woodland_from = -7000
+woodland_precip = 350.0
+forest_steppe_precip = 225.0
+
+[biome.adjacency]
+# Pairs that should never share an edge, and the biome put between them
+# (on the model-filled side, else the less established one). Water, Ice and
+# Alpine are never changed. Also run on every year between keyframes.
+enabled = true
+max_passes = 8
+forbid = [
+  ["Extreme Desert", "Boreal Forest", "Steppe-Forest"],
+  ["Extreme Desert", "Temperate Forest", "Grassland"],
+  ["Extreme Desert", "Tropical Forest", "Savannah"],
+  ["Tropical Forest", "Tundra", "Woodlands"],
+  ["Tropical Forest", "Boreal Forest", "Temperate Forest"],
+  ["Ice", "Tropical Forest", "Tundra"],
+  ["Ice", "Savannah", "Tundra"],
+  ["Tundra", "Savannah", "Grassland"],
+  ["Savannah", "Boreal Forest", "Steppe-Forest"],
+]
+
 [paleobiome]
 source = "build/LateQuaternary_Environment.nc"
 url = "https://ndownloader.figshare.com/files/22659026"
@@ -187,6 +285,21 @@ max_distance_quantile = 0.99
 max_distance_factor = 2.5
 # Spatial cross-validation tile size for the report's accuracy figure.
 block_degrees = 10.0
+# Only drawn hexes within max_km vote (0 = off). Tried at 1000-2500 km to
+# stop the Zagros and eastern Anatolia (drawn as Mountains, a gap) borrowing
+# Chaparral from Iberia and the Maghreb. Off: on the held-out literature
+# anchors it made things worse (10 of 31 keyframe slices right -> 7-8), since
+# nearby drawn hexes offer Grassland, not the oak woodland the records show,
+# and the Egyptian and Yemeni deserts lost good examples.
+max_km = 0
+# Add the literature anchors (data/terrain/anchors_literature.csv, those not
+# held out by [anchors] holdout) to the training, each slice on a keyframe
+# year anchor_weight times. It corrects the map at and around those sites
+# (27 -> 46 of 57 keyframe slices) but does not carry to other sites (held
+# out: 10 of 31 either way), so it is a local correction, and only the held-
+# out anchors measure the map.
+use_literature = true
+anchor_weight = 5
 features = [
   ["BIO1", "linear"],   # annual mean temperature
   ["BIO6", "linear"],   # min temperature of coldest month
@@ -225,6 +338,168 @@ features = [
 "26" = "Tundra"            # cushion forbs, lichen and moss
 "27" = "Extreme Desert"    # barren
 "28" = "Ice"               # land ice
+
+# ----------------------------------------------------------------- islands
+# Islands smaller than a hex or two lose the Water majority vote and vanish
+# (pipeline/islands.py). Per frame, a hex's land fraction is the share of its
+# ETOPO1 cells above that frame's sea or modelled-lake level (uplift-
+# corrected). A landmass of hexes with any land, at most max_hexes big and
+# with at least min_area_km2 of land, keeps max(1, round(area / hex area))
+# land hexes: its Water hexes with the most land (at least
+# min_hex_fraction) become land, best first. Lake levels count only inside
+# that year's modelled shoreline.
+[islands]
+enabled = true
+# Drawn Water on a hex at least this much land at the frame's water level,
+# outside every lake, is a coast drawn a hex off: it becomes land.
+restore_majority_land = 0.5
+# 0.1 keeps Bornholm and Menorca apart from Scania and Mallorca.
+min_any_fraction = 0.1
+min_area_km2 = 150.0
+min_hex_fraction = 0.1
+max_hexes = 60
+# Islands the report tracks (land hexes centred in the box per 1000 years).
+watch = [
+  ["Gotland", [18.1, 56.9, 19.4, 58.0]],
+  ["Bornholm", [14.6, 54.95, 15.2, 55.3]],
+  ["Mallorca", [2.3, 39.25, 3.5, 40.0]],
+  ["Menorca", [3.8, 39.8, 4.35, 40.1]],
+  ["Malta", [14.15, 35.8, 14.6, 36.1]],
+  ["Crete", [23.5, 34.9, 26.3, 35.7]],
+  ["Cyprus", [32.2, 34.5, 34.6, 35.7]],
+  ["Orkney", [-3.5, 58.7, -2.3, 59.4]],
+  ["Corsica", [8.5, 41.3, 9.6, 43.1]],
+  ["Sardinia", [8.1, 38.8, 9.9, 41.3]],
+]
+
+# ------------------------------------------------------------ settled land
+# Settlements arrive on land and leave only when the water really reaches
+# them. A settlement's hex stays land (its own pre-water biome, else its land
+# neighbours') in any frame the map has it Water while the site's ground is
+# above the water: the highest ETOPO1 cell within site_radius cells, less
+# glacio-isostatic uplift still to come ([isostasy]), against the level of a
+# modelled lake whose box holds it, else global sea level ([sea] curve). The
+# first frame the ground is below ends the occupation phase (`drowned`).
+# Sites starting on Water with no land neighbour are left alone and listed
+# in the report. `make maps` converts `out`, not data/settlements.
+[settled_land]
+enabled = true
+min_land_neighbours = 1
+site_radius = 1
+# Hand corrections to settlement positions, applied first (pipeline/coords.py),
+# and the coordinate audit written after the map is final.
+corrections = "data/settlements/corrections.toml"
+audit = "data/settlements/coordinate_audit.csv"
+audit_deep_m = 50.0
+audit_far_km = 25.0
+# A shore site is within metres of the water, closer than the sea, lake and
+# uplift models are good: the depth they give at a phase's start (when the
+# site was dry) is their error there. Water must rise this much more than
+# that to end the phase.
+drown_margin = 3.0
+# A site on a hex next to open sea (but not in it) is exposed to the sea
+# only if its ground is within this of sea level; deeper, it is a basin
+# behind higher ground (the Jordan Valley beside a coastal hex).
+coast_cap = 20.0
+# A site that starts on a Water hex with no land neighbour but whose own
+# ground is above the water is on an islet too small for the grid (Youra,
+# Scilly): its hex is kept land like a mis-drawn shore.
+islets = true
+out = "build/settlements.geojson"
+
+# ----------------------------------------------------------------- anchors
+# Natural-history anchor records for checking the biome maps
+# (`python -m pipeline anchors`, pipeline/anchors.py). Method and sources in
+# data/terrain/SOURCES.md; output in out_dir. Needs `python -m isostyle pollen`
+# (the Neotoma level list) and `make maps` (build/combined_map.geojson) first.
+[anchors]
+cache = "build/anchors"
+out_dir = "data/terrain"
+neotoma_levels = "build/isostyle/pollen/levels.csv.gz"
+# Harrison 2017, BIOME 6000 DB classified plotfile v1 (CC BY 4.0).
+biome6000_url = "https://researchdata.reading.ac.uk/99/1/BIOME%206000%20DB%20classified%20plotfile_v1.csv"
+# Harrison, Marinova & Cruz-Silva 2021, EMBSeCBIO pollen database (CC BY 4.0).
+embsecbio_url = "https://researchdata.reading.ac.uk/309/10/EMBSeCBIO_pollen_DB.zip"
+# Cruz-Silva et al. 2022 code and data, pinned to a commit.
+cruzsilva_url = "https://raw.githubusercontent.com/esmeraldacs/Intra_biome_variation_method/28949b77fb0e63035d6b80a5eadea1b3e868e30a"
+# A record qualifies if its levels span this share of [time] start..end,
+# leave no gap longer than max_gap years, and number at least min_levels.
+min_coverage = 0.8
+max_gap = 1000
+min_levels = 15
+# Ranking: coverage x min(1, levels / full_levels) x min(1, good_gap / gap)
+# x basin weight. Basin size (EMBSeCBIO codes) stands in for pollen-source
+# area: big lakes see the region, small bogs their own shore.
+full_levels = 30
+good_gap = 500
+# Two records closer than this (degrees) are the same site or core.
+dedupe_degrees = 0.05
+# Records within this many km whose names share a word (other than "lake",
+# "core"...) are one site: Lake Van's three cores, Lake Urmia's two.
+same_site_km = 50.0
+# Thinning: keep the best per_cell records in each cell_degrees cell.
+cell_degrees = 5.0
+per_cell = 2
+# A cell with this many land hexes and no anchor is a gap.
+min_land_hexes = 20
+# Biome labels every slice_step years over [time], from samples within
+# slice_half_window years of the slice.
+slice_step = 500
+slice_half_window = 250
+# A BIOME 6000 site this close (degrees) to an anchor gives its 6 ka label.
+biome6000_match_degrees = 0.06
+# Cruz-Silva et al. 2022's epsilon in the dissimilarity index.
+epsilon = 0.5
+# Neotoma levels with less of their pollen and spores harmonised to the
+# training taxa than this are dropped.
+min_mapped = 0.7
+# Anchors whose id's crc32 is 0 mod holdout are held out from tuning.
+holdout = 3
+# Inside the EMBSeCBIO box (the game's core region) keep more per cell.
+per_cell_core = 4
+# An anchor with no land hex centre within this (degrees) is off the grid.
+off_grid_degrees = 0.6
+# Biomised labels need modern training samples nearby: the method has no
+# biomes for, e.g., tropical Africa. Farther than this, only published
+# labels count.
+domain_km = 300.0
+# Samples mostly made of the core site's own mire say little about the
+# region (Hawks Tor: 62% Cyperaceae at -3800): left out of the labels.
+local_taxa = ["Cyperaceae"]
+max_local_share = 40.0
+# Hand-entered anchors from the literature, for the gap cells.
+literature = "data/terrain/anchors_literature.csv"
+# Known-bad labels: what = "published", "biomised" or "all".
+[[anchors.exclude]]
+name = "Hawks Tor"
+what = "all"
+reason = "a small upland mire whose pollen is mostly its own sedges (62% Cyperaceae at -3800); BIOME 6000's 6 ka 'tundra' disagrees with the three other SW England sites (temperate deciduous forest)"
+[[anchors.exclude]]
+name = "Tigalmamine"
+what = "biomised"
+reason = "evergreen-oak and grass assemblages (Quercus evergreen 32-42%) are read as xeric shrubland; the published 6 ka label is warm-temperate evergreen forest"
+
+[anchors.basin_weight]
+VELG = 1.0
+LARG = 1.0
+MEDI = 0.8
+SMAL = 0.5
+VESM = 0.5
+NOTA = 0.7
+unknown = 0.7
+
+[anchors.classes]
+# Cruz-Silva et al. 2022 biome -> compatible game classes, best first.
+# Follows [paleobiome.classes] for the nearest BIOME4 biome.
+TUND = ["Tundra", "Alpine"]
+DESE = ["Semi-Desert", "Extreme Desert"]          # pollen "desert": sparse Amaranthaceae/Artemisia
+GRAM = ["Grassland", "Steppe-Forest"]              # graminoids with forbs: steppe
+XSHB = ["Semi-Desert", "Grassland"]                # xeric shrubland (BIOME4 14)
+ENWD = ["Woodlands", "Steppe-Forest"]              # evergreen needleleaf woodland (BIOME4 17)
+WTSFS = ["Chaparral", "Woodlands", "Temperate Forest"]  # Mediterranean evergreen forest (BIOME4 15)
+CENF = ["Boreal Forest"]
+CMIX = ["Temperate Forest", "Boreal Forest"]       # cool mixed (BIOME4 7)
+TEDE = ["Temperate Forest", "Woodlands"]           # temperate deciduous (BIOME4 4)
 
 # ------------------------------------------------------------------ Köppen
 # Köppen-Geiger per key frame (Beck et al. 2018 rules) from the monthly
@@ -275,6 +550,84 @@ enabled = true
 dir = "game/static/game/assets/maps"
 years = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
 
+# ------------------------------------------------------------ productivity
+# Net primary productivity per hex per key frame, by the Miami model (Lieth
+# 1973) from annual mean temperature and annual precipitation: the lower of
+# 3000 / (1 + exp(1.315 - 0.119 T)) and 3000 (1 - exp(-0.000664 P)), in grams
+# of dry matter per m² per year. This is the productivity the forager-density
+# model was fitted on (Tallavaara et al. 2018; data/population/SOURCES.md),
+# so it is what the hexes carry, not the climate model's own `npp`.
+# Temperature is moved to the hex's elevation ([paleobiome.lapse]). After
+# changing the variables, delete build/biome.npz so it is cut again.
+[productivity]
+enabled = true
+temperature = "BIO1"     # annual mean temperature, degC
+precipitation = "BIO12"  # annual precipitation, mm
+years = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+# Stored to the nearest `round` g/m²/yr.
+round = 10
+# Hexes with no model land cell nearby (shelf the lower sea exposed) take
+# their neighbours' mean, this many rings out. The rest are open sea: 0.
+fill_rings = 3
+
+# ---------------------------------------------------------------- farming
+# The year farming reaches each hex (static hex property `farming`): one
+# origin, one speed, shortest path over land (pipeline/farming.py). The
+# model and its three numbers are Pinhasi, Fort & Ammerman 2005
+# (doi:10.1371/journal.pbio.0030410); none is fitted to this project's sites.
+# Whether a hex can then be farmed is decided in the app, per year.
+[farming]
+enabled = true
+# Çayönü: their best-correlated origin for shortest-path distances.
+origin = [39.73, 38.22]
+# Their origin date is 10,000-11,500 cal BP (8050-9550 BCE); the midpoint.
+start = -8800
+# Their calibrated shortest-path speed is 0.7-1.1 km/yr; the midpoint.
+speed_km_per_year = 0.9
+# Land hexes this close are linked across whatever lies between, so the
+# front crosses straits and reaches near islands (Cyprus, Britain, Sicily).
+# They allow "some sea travel" but no long voyages and give no distance;
+# 100 km is this project's choice.
+sea_reach_km = 100.0
+
+# -------------------------------------------------------------- residuals
+# `make residuals`: where the site list falls short of expected population,
+# and why (pipeline/residuals.py; data/population/SOURCES.md). Outputs are
+# residuals only and never feed expected population.
+[residuals]
+# Expected population per hex and year, written by `neolith-convert --expected`.
+expected = "build/population/expected.csv"
+years = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+# A site counts for an epoch if it was occupied within this many years of it.
+half_window = 500
+# Presence near water for foragers: ln factor = a + b ln(km to water + 10),
+# flat beyond max_shore_km. These are the forager model's own numbers
+# (`shore_factor` in neolith-rs/crates/core/src/forager.rs, fitted to
+# ethnographic groups); a test keeps the two copies the same.
+shore_factor = [2.1279, -0.4024]
+max_shore_km = 2000.0
+# Research effort: dated records younger than this many radiocarbon years
+# (about 2800 BCE), smoothed over effort_sigma_km. Later than the period, so
+# they show where archaeologists work without counting the sites being judged.
+background_max_bp = 4200
+effort_sigma_km = 100
+# "Nothing hiding the sites" puts every hex at least at this quantile of effort.
+effort_quantile = 0.9
+# A hex that is land at the epoch and Water at this year counts as drowned.
+today = -3000
+# SoilGrids pH layers (fetched by isostyle); below acid_ph bone does not last.
+soil_dir = "build/isostyle/sources"
+acid_ph = 5.5
+# A hex-epoch is short when at least min_missing sites are missing and the
+# known sites are no more than 1/ratio of those expected; the mirror image
+# is "more sites than expected".
+min_missing = 1.0
+ratio = 2.0
+map_bins = [0.5, 1, 2, 5, 10]
+out = "data/population/residuals.csv.gz"
+summary = "data/population/residuals.json"
+maps = "data/population/maps"
+
 # Grey level -> people/km². From scripts/convert_population_density.py, with
 # 199 and 215 swapped so density rises with grey level (SPEC defect 15).
 [legacy.population_lookup]
@@ -299,6 +652,9 @@ years = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
 out = "data/settlements/settlements.geojson"
 # Hand entries; their properties override the dated site named by `match`,
 # else the nearest within merge_km. A null geometry takes that site's.
+# Besides name/founding/population they may set `features` (a list of notable
+# features, e.g. ["rock art", "megalithic tomb"]) and `wikipedia` (an English
+# article title); the app shows both in the settlement popup.
 curated = "data/settlements/curated.geojson"
 merge_km = 5.0
 raw_dir = "build/settlements"
@@ -309,6 +665,11 @@ min_dates = 1
 # founding/abandoned are this quantile (and 1 minus it) of a site's dates, so
 # stray dates at well-dated sites are ignored. Below 1/trim dates: min/max.
 trim = 0.05
+# Years without a date after which a site is assumed abandoned. Dates further
+# apart than this also split a site into separate occupation phases (e.g. a
+# tell resettled after a hiatus). Each phase runs from its first date to its
+# last date + abandon_after. 0 = sites never end.
+abandon_after = 1000
 # Entries this close whose names differ only by extra words are one site.
 same_km = 1.0
 # Entries with the same name (ignoring case, accents, punctuation) this close
@@ -317,6 +678,37 @@ same_name_km = 10.0
 
 # SOURCES.md lists original references behind at least this many dates.
 min_refs_listed = 200
+
+# Piece size for sites without a population figure (settlements.score_sites).
+# importance = class of the site type + 1 for a long total occupation and
+# + 1 for many dates, each judged against the site's own neighbourhood since
+# both grow with research effort. Never from references or sources.
+[settlements.importance]
+min_span = 1000          # total occupied years must exceed one phase (abandon_after)
+persist_top = 0.75       # and beat this share of neighbours
+local_km = 150           # neighbourhood for both local tests
+local_top = 0.9          # share of neighbours with fewer dates
+local_min_dates = 5      # and at least this many dates of its own
+
+# Keywords matched inside the normalised site type; the highest class wins.
+[settlements.importance.class]
+default = 1
+3 = ["tell", "enclosure", "hillfort", "fortified", "entrenched", "pile-dwelling", "pfahlbau", "henge", "crannog"]
+2 = ["settlement", "habitation", "house", "hut", "structure", "village", "roundhouse", "dwelling"]
+1 = ["site", "open air", "camp", "cave", "rock shelter", "shell midden", "midden", "abri", "terrace"]
+0 = ["pit", "hearth", "kiln", "well", "ditch", "find spot", "boat", "togher", "post-hole", "stake-hole",
+     "burnt mound", "burnt spread", "spread", "oven", "mine", "quarry", "gully", "yoke", "plough", "wood",
+     "lake core", "peat", "sediment", "alluvium", "bog", "inhumation", "cremation", "pyre"]
+
+# Research effort per hex (settlements.survey_intensity): every dated record
+# of any period and site type, smoothed. A detection model only; never an
+# input to expected population density. Levels: below `thin` records per
+# 10,000 km² = 0 (absence uninformative), below `well` = 1, else 2.
+[settlements.survey]
+out = "data/settlements/survey.csv.gz"
+sigma_km = 100
+thin = 5
+well = 25
 
 # Extra date tables, read in this order after XRONOS. A date whose lab number
 # is already in hand is skipped, so these only add what XRONOS lacks.
@@ -351,7 +743,7 @@ columns = { labnr = "LabCode", bp = "C14Age", std = "C14SD", lon = "Longitude", 
 # asks automated clients to give contact details; put a URL or email in
 # `contact` (it is sent in the User-Agent header) and set enabled = true.
 [settlements.wikidata]
-enabled = false
+enabled = true
 contact = ""
 url = "https://query.wikidata.org/sparql"
 tile_degrees = 10.0
@@ -526,6 +918,16 @@ hex_min_length = 0.15
 snap_max = 0.5
 # Half size (degrees) of the ETOPO window searched for shelf extensions.
 shelf_window = 9.0
+
+[rivers.floodplain]
+# Green river bottomland: hexes on a big perennial river (river class 2) in
+# dry or open country, not on mountains, plus flat neighbours of the same
+# biomes at most max_rise m above them (`spread` rings).
+enabled = true
+river_class = 2
+apply_to = ["Extreme Desert", "Semi-Desert", "Savannah", "Grassland", "Chaparral", "Plains", "Steppe-Forest"]
+max_rise = 30.0
+spread = 1
 
 # HydroRIVERS v1.0 (Lehner & Grill 2013), fetched by `make build/hydrorivers`.
 [rivers.hydrorivers]

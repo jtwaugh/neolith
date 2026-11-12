@@ -3,11 +3,11 @@
 
 use crate::app::{NeolithApp, Screen, Session, Tool, DEFAULT_START_YEAR};
 use crate::board::scene::{ArtMode, BoardStyle, Material};
-use crate::clock::{SPEED_MAX, SPEED_MIN};
+use crate::clock::SPEEDS;
 use crate::palette;
 use egui::{vec2, Align2, Color32, FontId, Rect, RichText, Sense, Stroke};
 use neolith_core::{
-    elevation, pencil, Command, Edit, HexId, KeyMode, Koeppen, MapMode, PopDensity, Prop, RiverClass, RiverState, Terrain, Value, World,
+    elevation, evidence, farming, forager, pencil, productivity, Command, Edit, HexId, KeyMode, Koeppen, MapMode, PopDensity, Prop, RiverClass, RiverState, Terrain, Value, World,
     Year, NO_DATA, NO_ELEVATION,
 };
 
@@ -20,6 +20,18 @@ fn swatch_rgb(ui: &mut egui::Ui, [r, g, b]: palette::Rgb) {
     let (rect, _) = ui.allocate_exact_size(vec2(14.0, 14.0), Sense::hover());
     ui.painter().rect_filled(rect, 3.0, Color32::from_rgb(r, g, b));
     ui.painter().rect_stroke(rect, 3.0, Stroke::new(1.0, ui.visuals().weak_text_color()), egui::StrokeKind::Inside);
+}
+
+/// A small hatched square, for the survey-intensity legend row.
+fn hatch_swatch(ui: &mut egui::Ui) {
+    let (rect, _) = ui.allocate_exact_size(vec2(14.0, 14.0), Sense::hover());
+    let p = ui.painter_at(rect);
+    p.rect_filled(rect, 3.0, Color32::from_gray(150));
+    let ink = Stroke::new(1.5, Color32::from_gray(50));
+    for k in -2..=2 {
+        let o = k as f32 * 5.0;
+        p.line_segment([rect.left_bottom() + vec2(o, 0.0), rect.right_top() + vec2(o, 0.0)], ink);
+    }
 }
 
 impl NeolithApp {
@@ -86,7 +98,10 @@ impl NeolithApp {
             .resizable(true)
             .default_size(270.0)
             .min_size(220.0)
-            .show(ui, |ui| inspector(ui, session));
+            .show(ui, |ui| {
+                chronicle(ui, session, now);
+                inspector(ui, session);
+            });
         if self.show_style {
             style_window(&ctx, &mut self.show_style, &mut self.style, session);
         }
@@ -94,7 +109,7 @@ impl NeolithApp {
             crate::view::board_view(ui, session, &self.style, self.gpu.as_ref().unwrap(), now, dt);
         });
         if let Some(rect) = session.input.drawn.rect {
-            legend_card(&ctx, rect, session);
+            legend_card(&ctx, rect, session, self.style.survey);
         }
     }
 
@@ -118,6 +133,13 @@ impl NeolithApp {
         if space && !s.editor {
             s.clock.playing = !s.clock.playing;
         }
+        if !s.editor {
+            const KEYS: [Key; 5] = [Key::Num1, Key::Num2, Key::Num3, Key::Num4, Key::Num5];
+            let pressed = ctx.input_mut(|i| KEYS.iter().position(|k| i.consume_key(Modifiers::NONE, *k)));
+            if let Some(step) = pressed {
+                s.clock.set_speed_step(step);
+            }
+        }
     }
 
     fn top_bar(&mut self, ui: &mut egui::Ui, now: f64) {
@@ -140,9 +162,18 @@ impl NeolithApp {
                 ui.separator();
                 ui.label("Map:");
                 for mode in MapMode::MENU {
+                    if mode == MapMode::Evidence && s.world.evidence.is_empty() {
+                        ui.add_enabled(false, egui::Button::selectable(false, mode.label())).on_disabled_hover_text(
+                            "This world file has no evidence layers (add them with neolith-convert --attach-evidence)",
+                        );
+                        continue;
+                    }
                     if ui.selectable_label(s.mode == mode, mode.label()).clicked() {
                         s.mode = mode;
                     }
+                }
+                if s.mode == MapMode::Evidence {
+                    evidence_picker(ui, s);
                 }
                 ui.separator();
                 ui.label("Terrain art:").on_hover_text(
@@ -201,13 +232,23 @@ impl NeolithApp {
                     }
                     s.clock.playing = !s.clock.playing;
                 }
-                ui.add(
-                    egui::Slider::new(&mut s.clock.years_per_sec, SPEED_MIN..=SPEED_MAX)
-                        .logarithmic(true)
-                        .custom_formatter(|v, _| format!("{v:.0}"))
-                        .suffix(" yr/s"),
-                )
-                .on_hover_text("Speed: years per second");
+                // Five fixed speed steps, as pips (keys 1–5).
+                let step = s.clock.speed_step();
+                ui.spacing_mut().item_spacing.x = 3.0;
+                for (i, v) in SPEEDS.iter().enumerate() {
+                    let on = i <= step;
+                    let (r, resp) = ui.allocate_exact_size(vec2(11.0, 20.0), Sense::click());
+                    let visuals = ui.visuals();
+                    let fill = if on { visuals.selection.bg_fill } else { visuals.widgets.inactive.bg_fill };
+                    let h = 7.0 + 2.5 * i as f32;
+                    let pip = Rect::from_min_max(egui::pos2(r.left() + 1.0, r.bottom() - h), egui::pos2(r.right() - 1.0, r.bottom()));
+                    ui.painter().rect_filled(pip, 2.0, if resp.hovered() { visuals.widgets.hovered.bg_fill } else { fill });
+                    if resp.on_hover_text(format!("Speed {}: {v:.0} years/s · key {}", i + 1, i + 1)).clicked() {
+                        s.clock.set_speed_step(i);
+                    }
+                }
+                ui.spacing_mut().item_spacing.x = 8.0;
+                ui.weak(format!("{:.0} yr/s", SPEEDS[step]));
                 ui.separator();
                 ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                     ui.add_sized(
@@ -332,9 +373,23 @@ fn tools_panel(ui: &mut egui::Ui, s: &mut Session) {
     ui.add_space(8.0);
     ui.strong(format!("Palette — {}", s.mode.label()));
     let Some(mode) = s.mode.prop() else {
-        // Elevation comes from the pipeline (ETOPO1) and is not editable here.
-        ui.weak("Read-only: from ETOPO1 via the pipeline. Switch map mode to paint.");
-        egui::ScrollArea::vertical().auto_shrink([false, false]).show(ui, elevation_legend);
+        // These layers come from the pipeline and are not editable here.
+        if s.mode == MapMode::Npp {
+            ui.weak("Read-only: from the climate model via the pipeline. Switch map mode to paint.");
+            egui::ScrollArea::vertical().auto_shrink([false, false]).show(ui, productivity_legend);
+        } else if s.mode == MapMode::Biodiversity {
+            ui.weak("Read-only: derived from productivity. Switch map mode to paint.");
+            egui::ScrollArea::vertical().auto_shrink([false, false]).show(ui, biodiversity_legend);
+        } else if s.mode == MapMode::Expected {
+            ui.weak("Read-only: derived from productivity, climate, rivers and the spread of farming. Switch map mode to paint.");
+            egui::ScrollArea::vertical().auto_shrink([false, false]).show(ui, expected_legend);
+        } else if s.mode == MapMode::Evidence {
+            ui.weak("Read-only: speculative layers from isostyle. Switch map mode to paint.");
+            egui::ScrollArea::vertical().auto_shrink([false, false]).show(ui, |ui| evidence_legend(ui, s));
+        } else {
+            ui.weak("Read-only: from ETOPO1 via the pipeline. Switch map mode to paint.");
+            egui::ScrollArea::vertical().auto_shrink([false, false]).show(ui, elevation_legend);
+        }
         return;
     };
     egui::ScrollArea::vertical().auto_shrink([false, false]).show(ui, |ui| {
@@ -355,8 +410,8 @@ fn tools_panel(ui: &mut egui::Ui, s: &mut Session) {
 
 /// The legend for the current map mode, floating over the board's lower-left
 /// corner. Terrain and Köppen list the values present this year, most common
-/// first; Population is the whole ramp; Elevation the bands.
-fn legend_card(ctx: &egui::Context, board: Rect, s: &Session) {
+/// first; Population is the whole ramp; the read-only layers their bands.
+fn legend_card(ctx: &egui::Context, board: Rect, s: &Session, survey: bool) {
     const MAX_ROWS: usize = 12;
     let frame = egui::Frame::popup(&ctx.global_style()).fill(Color32::from_black_alpha(190)).corner_radius(6.0);
     egui::Area::new(egui::Id::unique("legend"))
@@ -430,10 +485,184 @@ fn legend_card(ctx: &egui::Context, board: Rect, s: &Session) {
                                 sea_row(ui);
                             }
                             MapMode::Elevation => elevation_legend(ui),
+                            MapMode::Npp => {
+                                if s.world.npp.is_empty() {
+                                    ui.weak("This file has no productivity layer.");
+                                } else {
+                                    productivity_legend(ui);
+                                    sea_row(ui);
+                                }
+                            }
+                            MapMode::Expected => {
+                                if s.world.npp.is_empty() {
+                                    ui.weak("This file has no productivity layer to derive it from.");
+                                } else {
+                                    expected_legend(ui);
+                                    sea_row(ui);
+                                }
+                            }
+                            MapMode::Biodiversity => {
+                                if s.world.npp.is_empty() {
+                                    ui.weak("This file has no productivity layer to derive it from.");
+                                } else {
+                                    biodiversity_legend(ui);
+                                    sea_row(ui);
+                                }
+                            }
+                            MapMode::Evidence => {
+                                evidence_legend(ui, s);
+                                sea_row(ui);
+                            }
+                        }
+                        if survey && !s.world.survey.is_empty() {
+                            ui.separator();
+                            ui.horizontal(|ui| {
+                                hatch_swatch(ui);
+                                ui.label("Few dated sites of any period");
+                            })
+                            .response
+                            .on_hover_text("Hatched land has little fieldwork behind it: an absence of sites there is not evidence of an absence of people.");
                         }
                     });
             });
         });
+}
+
+/// The evidence layers in picker order: by group (in file order), and
+/// within a group the stand-alone layers first, then each set's members
+/// together. Returns (group, [(set, [layer index])]).
+pub fn evidence_menu(layers: &[neolith_core::EvidenceLayer]) -> Vec<(&str, Vec<(&str, Vec<usize>)>)> {
+    let mut out: Vec<(&str, Vec<(&str, Vec<usize>)>)> = Vec::new();
+    for (i, l) in layers.iter().enumerate() {
+        let g = match out.iter().position(|(g, _)| *g == l.group) {
+            Some(g) => g,
+            None => {
+                out.push((&l.group, Vec::new()));
+                out.len() - 1
+            }
+        };
+        let sets = &mut out[g].1;
+        match sets.iter().position(|(set, _)| *set == l.set) {
+            Some(k) => sets[k].1.push(i),
+            None if l.set.is_empty() => sets.insert(0, (&l.set, vec![i])),
+            None => sets.push((&l.set, vec![i])),
+        }
+    }
+    out
+}
+
+/// The layer picker beside the map selector in Evidence mode.
+fn evidence_picker(ui: &mut egui::Ui, s: &mut Session) {
+    let selected = s.evidence().map_or("Pick a layer".to_string(), |l| l.name.clone());
+    let mut pick = s.evidence_layer;
+    egui::ComboBox::from_id_salt("evidence-layer").selected_text(selected).height(520.0).show_ui(ui, |ui| {
+        for (group, sets) in evidence_menu(&s.world.evidence) {
+            ui.label(RichText::new(group).strong());
+            for (set, members) in sets {
+                if !set.is_empty() {
+                    ui.weak(format!("  {set}"));
+                }
+                for i in members {
+                    let l = &s.world.evidence[i];
+                    let indent = if set.is_empty() { "  " } else { "    " };
+                    let r = ui.selectable_value(&mut pick, Some(i), format!("{indent}{}", l.name));
+                    if !l.note.is_empty() {
+                        r.on_hover_text(&l.note);
+                    }
+                }
+            }
+        }
+    });
+    s.evidence_layer = pick;
+}
+
+/// The selected evidence layer: its value ramp, the confidence levels and
+/// the warning that most of it is not evidence.
+fn evidence_legend(ui: &mut egui::Ui, s: &Session) {
+    let Some(l) = s.evidence() else {
+        ui.weak("This file has no evidence layers.");
+        return;
+    };
+    let name = ui.label(RichText::new(&l.name).strong());
+    if !l.note.is_empty() {
+        name.on_hover_text(&l.note);
+    }
+    // One strip of the value ramp (vmin to vmax) per confidence level, so the
+    // fade towards grey is visible at every value, not at one sample colour.
+    const W: f32 = 120.0;
+    let strip = |ui: &mut egui::Ui, c: u8| {
+        let (rect, _) = ui.allocate_exact_size(vec2(W, 14.0), Sense::hover());
+        let step = rect.width() / evidence::BINS as f32;
+        for b in 0..evidence::BINS {
+            let [r, g, bl] = palette::evidence_colour(c, b);
+            let x = rect.left() + b as f32 * step;
+            ui.painter().rect_filled(Rect::from_min_max(egui::pos2(x, rect.top()), egui::pos2(x + step + 0.5, rect.bottom())), 0.0, Color32::from_rgb(r, g, bl));
+        }
+    };
+    ui.weak(format!("{} (left) to {} (right)", l.format_value(l.vmin), l.format_value(l.vmax)));
+    for c in 0..evidence::LEVELS {
+        ui.horizontal(|ui| {
+            strip(ui, c);
+            ui.label(evidence::confidence_label(c));
+        });
+    }
+    ui.horizontal(|ui| {
+        swatch_rgb(ui, palette::NO_DATA_COLOUR);
+        ui.label("No value");
+    });
+    ui.label(RichText::new("Speculative where judged or extrapolated: not evidence.").italics());
+}
+
+/// Expected-population bands, densest first.
+fn expected_legend(ui: &mut egui::Ui) {
+    ui.weak("People per 100 km²").on_hover_text(
+        "What the land would carry, from values on the map and no site data: hunter-gatherers by productivity \
+         (Tallavaara et al. 2018), and farmers once farming has arrived and the climate allows it (Pinhasi et al. \
+         2005; Davison et al. 2006). Compare with where sites are known.",
+    );
+    for b in (0..farming::BAND_COUNT).rev() {
+        ui.horizontal(|ui| {
+            swatch_rgb(ui, palette::expected(b));
+            ui.label(farming::band_label(b).unwrap_or_default());
+        });
+    }
+}
+
+/// A density for reading, not arithmetic: "0.47", "3.6", "21".
+fn fmt_density(v: f64) -> String {
+    match v {
+        v if v < 1.0 => format!("{v:.2}"),
+        v if v < 10.0 => format!("{v:.1}"),
+        v => format!("{v:.0}"),
+    }
+}
+
+/// Biodiversity bands, richest first.
+fn biodiversity_legend(ui: &mut egui::Ui) {
+    ui.weak("Species richness, 0–1").on_hover_text(
+        "Scaled mammal, bird and plant richness expected at the hex's productivity: a line fitted to present-day maps \
+         (Tallavaara et al. 2018). Not an independent reconstruction.",
+    );
+    for b in (0..forager::BIODIVERSITY_BAND_COUNT).rev() {
+        ui.horizontal(|ui| {
+            swatch_rgb(ui, palette::biodiversity(b));
+            ui.label(forager::biodiversity_band_label(b).unwrap_or_default());
+        });
+    }
+}
+
+/// Productivity bands, most productive first.
+fn productivity_legend(ui: &mut egui::Ui) {
+    ui.weak(format!("Plant growth, {}", productivity::UNIT)).on_hover_text(
+        "Net primary productivity by the Miami model, from the climate model's annual temperature and rainfall \
+         (Beyer et al. 2020), at 1000-year steps",
+    );
+    for b in (0..productivity::BAND_COUNT).rev() {
+        ui.horizontal(|ui| {
+            swatch_rgb(ui, palette::productivity(b));
+            ui.label(productivity::band_label(b).unwrap_or_default());
+        });
+    }
 }
 
 /// Elevation bands, highest land first, then water from shallow to deep.
@@ -447,6 +676,57 @@ fn elevation_legend(ui: &mut egui::Ui) {
             ui.label(elevation::band_label(b).unwrap_or_default());
         });
     }
+}
+
+/// The chronicle at the top of the right panel: the latest events up to the
+/// current year, newest first. Clicking one with a place glides there.
+fn chronicle(ui: &mut egui::Ui, s: &mut Session, now: f64) {
+    const ROWS: usize = 12;
+    let year = s.year();
+    let mut go = None;
+    ui.add_space(6.0);
+    egui::CollapsingHeader::new(RichText::new("Chronicle").strong()).id_salt("chronicle").default_open(true).show(ui, |ui| {
+        let recent: Vec<_> = crate::events::recent(&s.events, year, ROWS).collect();
+        if recent.is_empty() {
+            ui.weak("Nothing yet. Press Play (Space); keys 1–5 set the speed.");
+        }
+        // An event the clock just passed glows for about two seconds of play.
+        let window = (s.clock.years_per_sec * 2.0).max(1.0);
+        egui::ScrollArea::vertical().id_salt("chronicle-scroll").max_height(190.0).show(ui, |ui| {
+            for ev in recent {
+                let fresh = (1.0 - (year.0 - ev.year.0) as f64 / window).clamp(0.0, 1.0) as f32;
+                let fresh = if s.clock.playing { fresh } else { 0.0 };
+                ui.horizontal_wrapped(|ui| {
+                    ui.weak(RichText::new(format!("{}", -ev.year.0)).monospace().size(11.0));
+                    let (r, _) = ui.allocate_exact_size(vec2(8.0, 14.0), Sense::hover());
+                    let [cr, cg, cb] = ev.kind.colour();
+                    ui.painter().circle_filled(r.center(), 3.5, Color32::from_rgb(cr, cg, cb));
+                    let base = ui.visuals().text_color();
+                    let glow = Color32::from_rgb(255, 205, 90);
+                    let colour = base.lerp_to_gamma(glow, fresh);
+                    let text = RichText::new(&ev.text).color(colour);
+                    match ev.at {
+                        Some(at) => {
+                            let r = ui.add(egui::Label::new(text).sense(Sense::click())).on_hover_text("Click to go there");
+                            if r.clicked() {
+                                go = Some(at);
+                            }
+                            if r.hovered() {
+                                ui.ctx().set_cursor_icon(egui::CursorIcon::PointingHand);
+                            }
+                        }
+                        None => {
+                            ui.label(text);
+                        }
+                    }
+                });
+            }
+        });
+    });
+    if let Some(at) = go {
+        s.glide_to(at, now);
+    }
+    ui.separator();
 }
 
 /// Right panel: the hovered or selected hex, its current values and each
@@ -474,7 +754,27 @@ fn inspector(ui: &mut egui::Ui, s: &mut Session) {
     let year = s.year();
     let mut edit: Option<Command> = None;
     egui::ScrollArea::vertical().auto_shrink([false, false]).show(ui, |ui| {
+        let water = s.snapshot.terrain[hex.index()] == Terrain::Water as u8;
+        if let Some(l) = s.evidence().filter(|_| s.mode == MapMode::Evidence) {
+            let code = l.code_at(hex, year);
+            ui.horizontal_wrapped(|ui| match (l.value(code), evidence::confidence(code)) {
+                (Some(v), Some(c)) => {
+                    swatch_rgb(ui, palette::evidence(code));
+                    let r = ui.label(format!("{}: {} ({})", l.name, l.format_value(v), evidence::confidence_label(c)));
+                    if c > 0 {
+                        r.on_hover_text("Judged or extrapolated: speculative, not evidence.");
+                    }
+                }
+                _ => {
+                    ui.weak(format!("{}: no value", l.name));
+                }
+            });
+        }
         for prop in Prop::ALL {
+            // Nobody lives on the water: no population row there.
+            if water && prop == Prop::Pop {
+                continue;
+            }
             ui.horizontal(|ui| match s.world.value_at(hex, prop, year) {
                 Some(v) => {
                     swatch(ui, v);
@@ -495,6 +795,59 @@ fn inspector(ui: &mut egui::Ui, s: &mut Session) {
                     .on_hover_text("Median of the ETOPO1 cells in the hex, relative to today's sea level");
             }
         });
+        if let Some(v) = s.world.npp_at(hex, year) {
+            let band = s.snapshot.npp[hex.index()];
+            ui.horizontal(|ui| {
+                if band == NO_DATA {
+                    ui.weak("Productivity: none (water)");
+                } else {
+                    swatch_rgb(ui, palette::productivity(band));
+                    ui.label(format!("Productivity: {v} {}", productivity::UNIT)).on_hover_text(
+                        "Net primary productivity: plant growth (dry matter) per square metre per year, by the Miami \
+                         model from the climate model's annual temperature and rainfall",
+                    );
+                }
+            });
+            if band != NO_DATA {
+                ui.horizontal(|ui| {
+                    swatch_rgb(ui, palette::biodiversity(s.snapshot.biodiversity[hex.index()]));
+                    ui.label(format!("Biodiversity: {:.2}", forager::biodiversity(v)))
+                        .on_hover_text("Scaled species richness (0–1) expected at this productivity; derived, not measured");
+                });
+            }
+            let shore = s.snapshot.shore_km[hex.index()];
+            if let Some(e) = s.world.expected_given(hex, year, shore as f64) {
+                let who = if e.farmed { "farmers" } else { "foragers" };
+                ui.horizontal(|ui| {
+                    swatch_rgb(ui, palette::expected(s.snapshot.expected[hex.index()]));
+                    ui.label(format!("Expected: {} {who} per 100 km²", fmt_density(e.density * 100.0))).on_hover_text(
+                        "What the land would carry, from values on the map and no site data. Foragers: by productivity \
+                         (Tallavaara et al. 2018) and distance to the sea or a lake (this project's fit to Binford's \
+                         data), within a factor of about three. \
+                         Farmers: growing towards a ceiling for the latitude once farming has arrived and the climate \
+                         allows it (Davison et al. 2006).",
+                    );
+                });
+            }
+            if band != NO_DATA && shore != u16::MAX {
+                ui.label(format!("Sea or lake: {shore} km")).on_hover_text(
+                    "From the hex's centre to the edge of the nearest water this year. Foragers are denser near it: \
+                     about three times on the shore, half at 1000 km.",
+                );
+            }
+            match s.world.farming.get(hex.index()).copied().flatten() {
+                Some(y) => {
+                    ui.label(format!("Farming arrives: {} BCE", -y.0)).on_hover_text(
+                        "A front from Çayönü at 8800 BCE moving 0.9 km a year (Pinhasi et al. 2005). Not fitted to \
+                         the sites on this map; often centuries off in either direction.",
+                    );
+                }
+                None if !s.world.farming.is_empty() => {
+                    ui.weak("Farming does not arrive by 3000 BCE");
+                }
+                None => {}
+            }
+        }
         if let Some(l) = s.world.landform[hex.index()] {
             ui.label(format!("Landform: {}", l.label())).on_hover_text(
                 "From the share of the hex's ETOPO1 cells that are mountain (Kapos et al. 2000 bands) \
@@ -696,6 +1049,9 @@ fn style_window(ctx: &egui::Context, open: &mut bool, style: &mut BoardStyle, s:
             ui.label("Rivers");
             ui.checkbox(&mut style.rivers, "Rivers and lake shores");
             ui.end_row();
+            ui.label("Survey");
+            ui.checkbox(&mut style.survey, "Hatch thinly surveyed land");
+            ui.end_row();
         });
         if ui.button("Reset").clicked() {
             *style = BoardStyle::default();
@@ -707,6 +1063,44 @@ fn style_window(ctx: &egui::Context, open: &mut bool, style: &mut BoardStyle, s:
 mod tests {
     use super::*;
     use neolith_core::{GridSpec, Koeppen, PopDensity, Terrain};
+
+    #[test]
+    fn evidence_menu_groups_layers_and_keeps_sets_together() {
+        let layer = |id: &str, group: &str, set: &str| neolith_core::EvidenceLayer {
+            id: id.into(),
+            name: id.into(),
+            group: group.into(),
+            set: set.into(),
+            kind: "share".into(),
+            units: "share".into(),
+            vmin: 0.0,
+            vmax: 1.0,
+            note: String::new(),
+            slices: vec![Year(-5000)],
+            codes: vec![],
+        };
+        let layers = [
+            layer("pottery", "Material", ""),
+            layer("y_i2", "People", "Y"),
+            layer("mt_u5", "People", "mt"),
+            layer("adna", "People", ""),
+            layer("y_g2a", "People", "Y"),
+            layer("cereals", "Subsistence", ""),
+        ];
+        let menu = evidence_menu(&layers);
+        let flat: Vec<(&str, &str, Vec<usize>)> =
+            menu.iter().flat_map(|(g, sets)| sets.iter().map(move |(s, m)| (*g, *s, m.clone()))).collect();
+        assert_eq!(
+            flat,
+            vec![
+                ("Material", "", vec![0]),
+                ("People", "", vec![3]),
+                ("People", "Y", vec![1, 4]),
+                ("People", "mt", vec![2]),
+                ("Subsistence", "", vec![5]),
+            ]
+        );
+    }
 
     #[test]
     fn raw_json_shape() {
