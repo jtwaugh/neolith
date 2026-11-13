@@ -220,7 +220,7 @@
   "observed": {
    "start_p10": -6110,
    "start_median": -4590,
-   "start_p90": -3401,
+   "start_p90": -3391,
    "centre": [
     7.7,
     47.28
@@ -294,20 +294,20 @@
    "wikidata": "Q11761"
   },
   "unverified": [],
-  "sites": 358,
+  "sites": 359,
   "observed": {
-   "start_p10": -3703,
+   "start_p10": -3702,
    "start_median": -1770,
    "start_p90": -1020,
    "centre": [
-    1.58,
-    47.99
+    1.59,
+    47.91
    ],
    "bbox_p5_p95": [
     -7.94,
-    34.9,
+    34.65,
     35.52,
-    55.13
+    55.12
    ]
   }
  },
@@ -1087,23 +1087,23 @@
    "wikidata": "Q1262502"
   },
   "unverified": [],
-  "sites": 2,
+  "sites": 1,
   "observed": {
-   "start_p10": -4962,
-   "start_median": -4810,
-   "start_p90": -4658,
+   "start_p10": -5000,
+   "start_median": -5000,
+   "start_p90": -5000,
    "centre": [
     30.85,
-    30.31
+    30.32
    ],
    "bbox_p5_p95": [
-    30.84,
-    30.3,
+    30.85,
+    30.32,
     30.85,
     30.32
    ]
   },
-  "dates_used": 21,
+  "dates_used": 16,
   "dates_outside_range": 3
  },
  {
@@ -1244,7 +1244,7 @@
    ]
   },
   "dates_used": 166,
-  "dates_outside_range": 14
+  "dates_outside_range": 16
  },
  {
   "id": "maadi_buto",
@@ -1312,24 +1312,24 @@
    "wikidata": "Q187979"
   },
   "unverified": [],
-  "sites": 6,
+  "sites": 7,
   "observed": {
-   "start_p10": -3210,
-   "start_median": -3170,
-   "start_p90": -3055,
+   "start_p10": -3258,
+   "start_median": -3210,
+   "start_p90": -3060,
    "centre": [
-    31.24,
-    28.01
+    31.28,
+    29.83
    ],
    "bbox_p5_p95": [
     31.13,
-    22.93,
-    31.92,
-    29.96
+    23.15,
+    31.99,
+    30.59
    ]
   },
-  "dates_used": 274,
-  "dates_outside_range": 128
+  "dates_used": 282,
+  "dates_outside_range": 132
  },
  {
   "id": "iberomaurusian",

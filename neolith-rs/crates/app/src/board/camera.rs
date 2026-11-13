@@ -47,6 +47,11 @@ pub struct View {
     pub proj: Projection,
     /// Projection scale: 1 / tan(fov_y / 2).
     pub focal: f64,
+    /// Distance from the eye to the point it looks at (the view's centre).
+    pub focus: f64,
+    /// How far the view is tilted off top-down: 0 looking straight down, 1
+    /// along the ground. With no tilt the whole board is at one distance.
+    pub tilt: f64,
 }
 
 impl Camera {
@@ -86,46 +91,87 @@ impl Camera {
             .all(|&(x, y)| view.pick(DVec2::new(x, y)).and_then(|ll| grid.hex_at(ll)).is_some())
     }
 
+    /// The least tilt at which the board covers the view from its centre at
+    /// every heading, for this zoom (at least [`FILL_PITCH_MIN`]).
+    ///
+    /// "Fill screen" tilts the camera up to this when zoomed out. It does not
+    /// depend on the heading, so turning the camera never changes its tilt
+    /// (the board is not round: per heading the least tilt differs, and
+    /// tracking that pushed the tilt up as the player turned). Memoised, as
+    /// it only changes with the zoom, the morph and the window.
+    pub fn fill_pitch_floor(&self, proj: &Projection, grid: &GridSpec, t: f64, size: DVec2, margin: f64) -> f64 {
+        type Key = (u64, u64, u64, u64, u64, u64, u64, u64);
+        thread_local! {
+            static MEMO: std::cell::Cell<Option<(Key, f64)>> = const { std::cell::Cell::new(None) };
+        }
+        let _ = proj; // fixed for a session
+        let c = grid.centre_of_bounds();
+        let key: Key = (
+            self.dist.to_bits(),
+            t.to_bits(),
+            size.x.to_bits(),
+            size.y.to_bits(),
+            margin.to_bits(),
+            self.fov_y.to_bits(),
+            c.lon.to_bits(),
+            c.lat.to_bits(),
+        );
+        if let Some((k, v)) = MEMO.with(|m| m.get()) {
+            if k == key {
+                return v;
+            }
+        }
+        const HEADINGS: usize = 16;
+        let mut floor = FILL_PITCH_MIN;
+        for k in 0..HEADINGS {
+            let cam = Camera { target: c, yaw: k as f64 * std::f64::consts::TAU / HEADINGS as f64, ..*self };
+            let covers = |pitch: f64| Camera { pitch, ..cam }.covers(proj, grid, t, size, margin);
+            if covers(floor) {
+                continue;
+            }
+            if !covers(PITCH_MAX) {
+                floor = PITCH_MAX;
+                break;
+            }
+            let (mut lo, mut hi) = (floor, PITCH_MAX);
+            for _ in 0..18 {
+                let mid = (lo + hi) / 2.0;
+                if covers(mid) {
+                    hi = mid;
+                } else {
+                    lo = mid;
+                }
+            }
+            floor = hi;
+        }
+        MEMO.with(|m| m.set(Some((key, floor))));
+        floor
+    }
+
     /// Keeps the board filling the viewport (the "Fill screen" style), as in
     /// a Paradox map, except for `margin` (a fraction of the view on each
     /// side) where the map's edge and the table may show.
     ///
-    /// Starting from the player's tilt (at least [`FILL_PITCH_MIN`]; lower,
-    /// the top of the view looks past the curved board), in order:
-    /// 1. if the view shows something off the board but would not from the
-    ///    board's centre, the look-at point slides towards the centre just
-    ///    far enough (panning into an edge stops at the edge);
-    /// 2. otherwise the camera tilts towards top-down just far enough, as
-    ///    Paradox cameras do when zoomed out;
-    /// 3. if even straight down from the centre shows the table, it zooms in
-    ///    until it doesn't.
+    /// Starting from the player's tilt, in order:
+    /// 1. the camera tilts towards top-down to [`Camera::fill_pitch_floor`],
+    ///    the same at every heading, as Paradox cameras do when zoomed out;
+    /// 2. if even that does not cover from the centre, it zooms in until it does;
+    /// 3. if the view shows something off the board, the look-at point slides
+    ///    towards the centre just far enough (panning into an edge stops at
+    ///    the edge).
     pub fn clamp_to_fill(&mut self, proj: &Projection, grid: &GridSpec, t: f64, size: DVec2, margin: f64) {
         self.pitch = self.pitch_pref.max(FILL_PITCH_MIN);
-        if size.x < 8.0 || size.y < 8.0 || self.covers(proj, grid, t, size, margin) {
+        if size.x < 8.0 || size.y < 8.0 {
+            return;
+        }
+        self.pitch = self.pitch.max(self.fill_pitch_floor(proj, grid, t, size, margin));
+        if self.covers(proj, grid, t, size, margin) {
             return;
         }
         let from = self.target;
         let centre = grid.centre_of_bounds();
         let at = |f: f64| LonLat::new(from.lon + (centre.lon - from.lon) * f, from.lat + (centre.lat - from.lat) * f);
         let covers_at = |cam: &Camera, f: f64| Camera { target: at(f), ..*cam }.covers(proj, grid, t, size, margin);
-        if !covers_at(self, 1.0) {
-            // Tilt: the least pitch at which the centre is covered.
-            let centred = Camera { target: centre, ..*self };
-            if (Camera { pitch: PITCH_MAX, ..centred }).covers(proj, grid, t, size, margin) {
-                let (mut lo, mut hi) = (self.pitch, PITCH_MAX);
-                for _ in 0..20 {
-                    let mid = (lo + hi) / 2.0;
-                    if (Camera { pitch: mid, ..centred }).covers(proj, grid, t, size, margin) {
-                        hi = mid;
-                    } else {
-                        lo = mid;
-                    }
-                }
-                self.pitch = hi;
-            } else {
-                self.pitch = PITCH_MAX;
-            }
-        }
         if !covers_at(self, 1.0) {
             // Zoomed out too far for any position: the largest distance that
             // covers from the centre.
@@ -157,6 +203,41 @@ impl Camera {
         self.target = at(hi);
     }
 
+    /// Turns and tilts the camera by an orbit drag, keeping the look-at
+    /// point where it is. The heading changes freely and never moves the
+    /// tilt; a tilt drag starts from the tilt on screen. With `fill`, a turn
+    /// or tilt that would need the look-at point to slide (or the camera to
+    /// zoom) to keep the board filling the view is refused, so orbiting near
+    /// an edge stops there instead of pushing the camera along it.
+    pub fn orbit(&mut self, d_yaw: f64, d_pitch: f64, grid: &GridSpec, fill: Option<(&Projection, f64, DVec2, f64)>) {
+        let fits = |cam: &mut Camera| -> bool {
+            cam.clamp(grid);
+            let Some((proj, t, size, margin)) = fill else { return true };
+            let mut probe = *cam;
+            probe.clamp_to_fill(proj, grid, t, size, margin);
+            let moved = (probe.target.lon - cam.target.lon).abs() + (probe.target.lat - cam.target.lat).abs();
+            if moved < 1e-7 && (probe.dist - cam.dist).abs() < 1e-9 {
+                *cam = probe;
+                true
+            } else {
+                false
+            }
+        };
+        if d_yaw != 0.0 {
+            let mut cand = Camera { yaw: self.yaw + d_yaw, ..*self };
+            if fits(&mut cand) {
+                *self = cand;
+            }
+        }
+        if d_pitch != 0.0 {
+            let pitch = self.pitch + d_pitch;
+            let mut cand = Camera { pitch, pitch_pref: pitch, ..*self };
+            if fits(&mut cand) {
+                *self = cand;
+            }
+        }
+    }
+
     pub fn view(&self, proj: &Projection, t: f64, size: DVec2) -> View {
         let p = proj.surface(self.target, t);
         let n = proj.normal(self.target, t);
@@ -173,7 +254,7 @@ impl Camera {
         let aspect = (size.x / size.y.max(1.0)).max(1e-3);
         let projm = DMat4::perspective_rh(self.fov_y, aspect, self.dist * 0.02, self.dist + 8.0);
         let view_proj = projm * view;
-        View { view_proj, inv_view_proj: view_proj.inverse(), eye, size, t, proj: *proj, focal: 1.0 / (self.fov_y / 2.0).tan() }
+        View { view_proj, inv_view_proj: view_proj.inverse(), eye, size, t, proj: *proj, focal: 1.0 / (self.fov_y / 2.0).tan(), focus: self.dist, tilt: self.pitch.cos() }
     }
 }
 
@@ -383,6 +464,57 @@ mod tests {
         cam.dist = 0.15;
         cam.clamp_to_fill(&proj, &g, 0.0, size, 0.0);
         assert!((cam.pitch - cam.pitch_pref).abs() < 1e-9, "{cam:?}");
+    }
+
+    /// Turning the camera at a far zoom leaves its tilt alone, and the
+    /// player's own tilt comes back on zooming in.
+    #[test]
+    fn turning_never_changes_the_tilt() {
+        let g = grid();
+        let proj = Projection::new(g.centre_of_bounds());
+        let size = DVec2::new(1600.0, 950.0);
+        let fill = Some((&proj, 0.0, size, 0.0));
+        let mut cam = Camera::initial(&g);
+        cam.dist = 1.4;
+        cam.pitch_pref = 50f64.to_radians();
+        cam.clamp_to_fill(&proj, &g, 0.0, size, 0.0);
+        let tilt = cam.pitch;
+        assert!(tilt > cam.pitch_pref + 0.05, "far zoom tilts up: {cam:?}");
+        let yaw0 = cam.yaw;
+        for _ in 0..40 {
+            cam.orbit(-0.09, 0.0, &g, fill);
+            cam.clamp_to_fill(&proj, &g, 0.0, size, 0.0);
+            assert!((cam.pitch - tilt).abs() < 1e-9, "{cam:?}");
+        }
+        assert!((cam.yaw - yaw0).abs() > 1.0, "the camera turns about the board's centre: {cam:?}");
+        assert!((cam.pitch_pref - 50f64.to_radians()).abs() < 1e-12, "turning keeps the player's tilt");
+        cam.dist = 0.15;
+        cam.clamp_to_fill(&proj, &g, 0.0, size, 0.0);
+        assert!((cam.pitch - 50f64.to_radians()).abs() < 1e-9);
+    }
+
+    /// Orbiting near an edge stops instead of pushing the look-at point.
+    #[test]
+    fn orbiting_never_moves_the_look_at_point() {
+        let g = grid();
+        let proj = Projection::new(g.centre_of_bounds());
+        let size = DVec2::new(1600.0, 950.0);
+        let fill = Some((&proj, 0.0, size, 0.0));
+        let (w, _, _, _) = g.bounds();
+        for dist in [0.1, 0.35, 1.4] {
+            let mut cam = Camera::initial(&g);
+            cam.dist = dist;
+            cam.target = LonLat::new(w + 2.0, 38.0);
+            cam.clamp_to_fill(&proj, &g, 0.0, size, 0.0);
+            let at = cam.target;
+            for k in 0..30 {
+                let (dy, dp) = if k % 3 == 2 { (0.0, -0.09) } else { (-0.09, 0.0) };
+                cam.orbit(dy, dp, &g, fill);
+                cam.clamp_to_fill(&proj, &g, 0.0, size, 0.0);
+                assert!((cam.target.lon - at.lon).abs() < 1e-6 && (cam.target.lat - at.lat).abs() < 1e-6, "dist {dist}: {cam:?}");
+                assert!(cam.covers(&proj, &g, 0.0, size, 0.0));
+            }
+        }
     }
 
     #[test]

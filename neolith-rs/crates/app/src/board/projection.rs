@@ -33,6 +33,11 @@ impl Projection {
         }
     }
 
+    /// The lon/lat at the top of the globe (the board's centre).
+    pub fn centre(&self) -> LonLat {
+        LonLat::new(self.lon0.to_degrees(), self.lat0.to_degrees())
+    }
+
     /// Position on the (board-rotated) unit sphere.
     pub fn sphere(&self, p: LonLat) -> DVec3 {
         let v = raw(p.lon.to_radians(), p.lat.to_radians());

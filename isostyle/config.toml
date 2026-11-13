@@ -61,6 +61,15 @@ seed = 20261112
 # dissolution at pH 6.0; 5.5 is the "strongly acid" class boundary.
 bone_ph_min = 5.5
 
+[speculative]
+# Fill smoothing, chosen by `python -m isostyle evals --search` (the smoothest
+# grid point that passes every guard; data/isostyle/evals/search.json).
+blend_rings = 12     # hex rings over which judged values lean toward nearby observed ones
+time_smooth = 0.4    # share of the way a speculative cell moves toward its neighbours in time
+smooth_iters = 16    # neighbour-averaging passes over speculative cells (observed cells fixed)
+smooth_rate = 0.5
+bridge = 0.75        # a speculative cell observed in the slices before and after leans toward those two values
+
 [output]
 build_dir = "build/isostyle"
 out_dir = "data/isostyle"

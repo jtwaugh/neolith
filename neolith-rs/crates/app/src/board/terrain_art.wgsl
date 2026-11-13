@@ -1,13 +1,15 @@
-// Terrain art: small illustrations printed on each tile (trees, peaks, dunes,
-// waves), drawn from signed-distance shapes so they stay crisp at any zoom
-// and need no image assets. Called from fs_board; the `T_*` terrain constants
+// Terrain art. Trees, shrubs, peaks and hills stand on the board as
+// low-poly 3D props (vs_prop); the low details are printed on the tiles
+// (tufts, waves, dunes, ice, shores, the ground itself and the props'
+// shadows), drawn from signed-distance shapes so they stay crisp at any
+// zoom and need no image assets. The printing is called from fs_board; the `T_*` terrain constants
 // are generated from `neolith_core::Terrain` (see renderer::shader_source).
 //
 // The art is neighbour-aware: biomes creep into each other in patches along
 // a noise-warped boundary, water gets foam and shallows along shores, land
 // gets a beach, and mountain hexes at the edge of a range get smaller peaks
-// and foothills. The same layout drives the optional 3D props (vs_prop), so
-// the 2D and 3D layers put the same thing in the same place.
+// and foothills. One baked layout drives both the props and the printed
+// details, so a prop's shadow falls where it stands.
 //
 // Glyph space: hex-local coordinates (corners on the unit circle, +x east,
 // +y north) with x scaled by the hex's on-board aspect, so shapes keep their
@@ -22,7 +24,6 @@ struct Art {
     size: f32,         // glyph size factor for squashed hexes
     clip: f32,         // glyph opacity near the rim (keeps grout and outlines clear)
     blend: f32,        // 1 = soften biome edges (patchy transitions, shores)
-    raised: f32,       // 1 = tall glyphs are drawn as 3D props instead (vs_prop)
     detail: f32,       // 0..1: how far the zoomed-in detail slots have filled in
     sun: vec2<f32>,    // where a shadow falls, in glyph space, per unit of height
     lod: f32,          // the props' size factor at this zoom (as in vs_prop)
@@ -91,89 +92,11 @@ fn art_zig(t: f32) -> f32 {
 // Each takes the colour so far, the point relative to the glyph's foot and a
 // size, and returns the colour with the glyph painted on.
 
-const ART_TRUNK: vec3<f32> = vec3<f32>(0.13, 0.07, 0.035);
-
-fn art_conifer(base: vec3<f32>, p: vec2<f32>, s: f32, fill: vec3<f32>, hi: vec3<f32>, a: Art) -> vec3<f32> {
-    let trunk = sd_box(p - vec2<f32>(0.0, 0.04) * s, vec2<f32>(0.018, 0.04) * s);
-    var d = sd_tri(p - vec2<f32>(0.0, 0.07) * s, 0.13 * s, 0.17 * s);
-    d = min(d, sd_tri(p - vec2<f32>(0.0, 0.15) * s, 0.10 * s, 0.15 * s));
-    d = min(d, sd_tri(p - vec2<f32>(0.0, 0.23) * s, 0.07 * s, 0.13 * s));
-    var c = art_ink(base, fill * 0.3, min(d, trunk) - 0.018 * s, a);
-    c = art_ink(c, ART_TRUNK, trunk, a);
-    c = art_ink(c, fill, d, a);
-    // Lit west side.
-    return art_ink(c, hi, max(d + 0.012 * s, p.x + 0.008 * s), a);
-}
-
-fn art_round_tree(base: vec3<f32>, p: vec2<f32>, s: f32, fill: vec3<f32>, hi: vec3<f32>, a: Art) -> vec3<f32> {
-    let trunk = sd_box(p - vec2<f32>(0.0, 0.05) * s, vec2<f32>(0.018, 0.05) * s);
-    var d = sd_circle(p - vec2<f32>(0.0, 0.19) * s, 0.105 * s);
-    d = min(d, sd_circle(p - vec2<f32>(-0.075, 0.135) * s, 0.07 * s));
-    d = min(d, sd_circle(p - vec2<f32>(0.075, 0.135) * s, 0.07 * s));
-    var c = art_ink(base, fill * 0.3, min(d, trunk) - 0.018 * s, a);
-    c = art_ink(c, ART_TRUNK, trunk, a);
-    c = art_ink(c, fill, d, a);
-    return art_ink(c, hi, sd_circle(p - vec2<f32>(-0.035, 0.215) * s, 0.05 * s), a);
-}
-
-fn art_acacia(base: vec3<f32>, p: vec2<f32>, s: f32, fill: vec3<f32>, hi: vec3<f32>, a: Art) -> vec3<f32> {
-    var wood = sd_segment(p, vec2<f32>(0.0, 0.0), vec2<f32>(0.01, 0.18) * s) - 0.012 * s;
-    wood = min(wood, sd_segment(p, vec2<f32>(0.005, 0.09) * s, vec2<f32>(-0.08, 0.18) * s) - 0.009 * s);
-    let e = p - vec2<f32>(0.0, 0.205) * s;
-    var d = (length(e / (vec2<f32>(0.18, 0.06) * s)) - 1.0) * 0.06 * s;
-    d = max(d, -(e.y + 0.022 * s)); // flat underside
-    var c = art_ink(base, fill * 0.3, min(d, wood) - 0.016 * s, a);
-    c = art_ink(c, ART_TRUNK, wood, a);
-    c = art_ink(c, fill, d, a);
-    return art_ink(c, hi, max(d + 0.014 * s, 0.012 * s - e.y), a);
-}
-
-fn art_palm(base: vec3<f32>, p: vec2<f32>, s: f32, fill: vec3<f32>, a: Art) -> vec3<f32> {
-    let top = vec2<f32>(0.03, 0.25) * s;
-    let trunk = sd_segment(p, vec2<f32>(0.0, 0.0), top) - 0.013 * s;
-    var d = sd_segment(p, top, vec2<f32>(-0.15, 0.20) * s);
-    d = min(d, sd_segment(p, top, vec2<f32>(-0.10, 0.33) * s));
-    d = min(d, sd_segment(p, top, vec2<f32>(0.03, 0.37) * s));
-    d = min(d, sd_segment(p, top, vec2<f32>(0.15, 0.32) * s));
-    d = min(d, sd_segment(p, top, vec2<f32>(0.18, 0.19) * s));
-    d -= 0.016 * s;
-    var c = art_ink(base, fill * 0.3, min(d, trunk) - 0.016 * s, a);
-    c = art_ink(c, ART_TRUNK, trunk, a);
-    return art_ink(c, fill, d, a);
-}
-
-fn art_shrub(base: vec3<f32>, p: vec2<f32>, s: f32, fill: vec3<f32>, hi: vec3<f32>, a: Art) -> vec3<f32> {
-    var d = sd_circle(p - vec2<f32>(0.0, 0.05) * s, 0.05 * s);
-    d = min(d, sd_circle(p - vec2<f32>(-0.05, 0.03) * s, 0.035 * s));
-    d = min(d, sd_circle(p - vec2<f32>(0.05, 0.03) * s, 0.035 * s));
-    d = max(d, -p.y);
-    var c = art_ink(base, fill * 0.3, d - 0.014 * s, a);
-    c = art_ink(c, fill, d, a);
-    return art_ink(c, hi, sd_circle(p - vec2<f32>(-0.015, 0.06) * s, 0.024 * s), a);
-}
-
 fn art_tuft(base: vec3<f32>, p: vec2<f32>, s: f32, colour: vec3<f32>, a: Art) -> vec3<f32> {
     var d = sd_segment(p, vec2<f32>(0.0, 0.0), vec2<f32>(0.0, 0.085) * s);
     d = min(d, sd_segment(p, vec2<f32>(0.0, 0.0), vec2<f32>(-0.045, 0.06) * s));
     d = min(d, sd_segment(p, vec2<f32>(0.0, 0.0), vec2<f32>(0.045, 0.06) * s));
     return art_ink(base, colour, d - 0.009 * s, a);
-}
-
-fn art_mountain(base: vec3<f32>, p: vec2<f32>, s: f32, a: Art) -> vec3<f32> {
-    let w = 0.42 * s;
-    let h = 0.62 * s;
-    let rock = art_rgb(0.57, 0.52, 0.46);
-    let snow = art_rgb(0.98, 0.98, 1.0);
-    let d = sd_tri(p, w, h);
-    var c = art_ink(base, rock * 0.25, d - 0.02 * s, a);
-    c = art_ink(c, rock, d, a);
-    // Shaded east flank behind a crooked ridge line.
-    let east = 0.05 * s * art_zig(p.y / (0.17 * s)) - p.x;
-    c = art_ink(c, rock * 0.62, max(d, east), a);
-    // Snow cap with a ragged lower edge.
-    let cap = max(d, h * 0.58 + 0.06 * s * art_zig(p.x / (0.12 * s)) - p.y);
-    c = art_ink(c, snow, cap, a);
-    return art_ink(c, snow * vec3<f32>(0.62, 0.68, 0.80), max(cap, east), a);
 }
 
 fn art_dune(base: vec3<f32>, p: vec2<f32>, s: f32, a: Art) -> vec3<f32> {
@@ -220,14 +143,6 @@ fn art_ice(base: vec3<f32>, q: vec2<f32>, a: Art) -> vec3<f32> {
     var g = sd_segment(q, vec2<f32>(0.18 * x, -0.02), vec2<f32>(0.30 * x, 0.06));
     g = min(g, sd_segment(q, vec2<f32>(-0.36 * x, -0.06), vec2<f32>(-0.26 * x, 0.0)));
     return art_ink(c, ART_WHITE, g - 0.012, a);
-}
-
-fn art_hill(base: vec3<f32>, p: vec2<f32>, s: f32, a: Art) -> vec3<f32> {
-    let fill = art_rgb(0.52, 0.53, 0.38);
-    let d = max((length(p / (vec2<f32>(0.24, 0.13) * s)) - 1.0) * 0.13 * s, -p.y);
-    var c = art_ink(base, fill * 0.3, d - 0.016 * s, a);
-    c = art_ink(c, fill, d, a);
-    return art_ink(c, fill * 0.7, max(d, 0.04 * s + 0.6 * p.y - p.x), a);
 }
 
 // ------------------------------------------------------ neighbourhood ----
@@ -441,6 +356,28 @@ fn art_riparian(kind: u32, terrain: u32, h: u32, wet: f32) -> u32 {
     return K_TUFT; // reeds
 }
 
+// --------------------------------------------------------------- camps ----
+// The settlements in and around each hex (scene::camp_texels), 2 x 2 texels
+// per hex filled from the first. rg: the camp in this hex's local
+// coordinates over CAMP_SPAN (-1..1 as 0..1), b: its clearing's radius over
+// CAMP_RADIUS_MAX, a: 0 for no camp, else the hex's east-west squash (a
+// clearing is round on the board, so wider in hex-local x where hexes are
+// squashed).
+@group(0) @binding(10) var camp_tex: texture_2d<f32>;
+
+// How far `p` (hex-local, in `cell`) is from the nearest camp, in clearing
+// radii: under 1 is in a clearing. 9 when the hex has no camp.
+fn art_camp(p: vec2<f32>, cell: vec2<u32>) -> f32 {
+    var best = 9.0;
+    for (var k = 0u; k < 4u; k++) {
+        let e = textureLoad(camp_tex, vec2<i32>(cell * 2u + vec2<u32>(k & 1u, k >> 1u)), 0);
+        if (e.a <= 0.0) { break; }
+        let to = (p - (e.xy * 2.0 - 1.0) * CAMP_SPAN) * vec2<f32>(e.a, 1.0);
+        best = min(best, length(to) / max(e.z * CAMP_RADIUS_MAX, 1e-3));
+    }
+    return best;
+}
+
 // ------------------------------------------------------------- layout ----
 
 // Glyph kinds. The tall ones (up to K_HILL) become props in 3D mode.
@@ -543,7 +480,7 @@ fn art_fill(terrain: u32) -> vec3<f32> {
 // Glyph feet inside the hex. Slots 0-4 are the base layout; slots 5-11 sit
 // in the gaps and sprout as you zoom in (see art_sprout). Returns the
 // jittered foot (hex-local) in xy and a size factor in z.
-fn art_slot(i: u32, cell: vec2<u32>, mirror: f32) -> vec3<f32> {
+fn art_slot_base(i: u32, cell: vec2<u32>, mirror: f32) -> vec3<f32> {
     var slots = array<vec2<f32>, 12>(
         vec2<f32>(0.06, 0.08),
         vec2<f32>(-0.38, 0.0),
@@ -563,6 +500,31 @@ fn art_slot(i: u32, cell: vec2<u32>, mirror: f32) -> vec3<f32> {
     let jitter = (vec2<f32>(art_unit(h, 0u), art_unit(h, 8u)) - 0.5) * vec2<f32>(0.10, 0.07);
     let p = slots[i] + jitter;
     return vec3<f32>(p.x * mirror, p.y, 0.85 + 0.3 * art_unit(h, 16u));
+}
+
+// The layout is pushed out by this much, so trees stand right up to a
+// hex's edges and a forest runs on across them. Nothing
+// stands closer to an edge than ART_SLOT_MARGIN.
+const ART_SPREAD: f32 = 1.32;
+const ART_SLOT_MARGIN: f32 = 0.085;
+
+// art_slot_base varied so that the board is not one layout repeated: each
+// hex turns it by a multiple of 60 degrees, shakes every slot and spreads
+// out to its edges, and sizes drift across the board (noise on board-wide
+// coordinates, so stands of big and small trees ignore the hex edges).
+fn art_slot(i: u32, cell: vec2<u32>, mirror: f32) -> vec3<f32> {
+    let s = art_slot_base(i, cell, mirror);
+    let turn = f32(art_hash(cell, 200u) % 6u) * SIXTY;
+    let h = art_hash(cell, 210u + i);
+    let shake = (vec2<f32>(art_unit(h, 0u), art_unit(h, 8u)) - 0.5) * 0.14;
+    let cs = vec2<f32>(cos(turn), sin(turn));
+    var p = (vec2<f32>(s.x * cs.x - s.y * cs.y, s.x * cs.y + s.y * cs.x) + shake) * ART_SPREAD;
+    for (var e = 0u; e < 6u; e++) {
+        let n = edge_normal(e);
+        p -= n * max(dot(p, n) - (SQRT3_2 - ART_SLOT_MARGIN), 0.0);
+    }
+    let big = art_noise(art_global(p, cell) * 0.5 + 80.0);
+    return vec3<f32>(p, s.z * (0.8 + 0.4 * big));
 }
 
 // The slot drawn n-th: back (north) to front, so nearer glyphs overlap
@@ -606,31 +568,80 @@ fn art_hidden(p: vec2<f32>, cell: vec2<u32>, terrain: u32, nb: array<u32, 6>, bl
     return art_intrusion(p, cell, terrain, nb, 0.01).y > 0.5;
 }
 
-// Mountain hexes: slots 0-1 are peaks, larger deep inside a range; slots
-// 2-4 are foothills towards lowland neighbours. Returns the centre
-// (hex-local) in xy, a size in z and the kind in w.
-fn art_mountain_slot(i: u32, cell: vec2<u32>, h0: u32, mirror: f32, nb_in: array<u32, 6>, mtn: u32) -> vec4<f32> {
+// How grand a mountain hex's peaks are, 0 to 1: low, worn ranges (the
+// Balkan ranges, the Anatolian plateau rims, Lebanon) towards 0, the Alps
+// towards 1. From the hex's height and how far it rises above its lowest
+// neighbour (the sea counts as 0 m), so a high plateau scores lower than a
+// range of the same height standing over lowland. High mountains (landform
+// 3) never score below 0.85.
+fn art_peak_scale(cell: vec2<u32>, landform: u32) -> f32 {
+    let c = vec2<i32>(cell);
+    let own = f32(textureLoad(height_tex, c, 0).r);
+    var lo = own;
+    for (var e = 0u; e < 6u; e++) {
+        let nc = c + neighbour_offset(cell.x & 1u, e);
+        if (nc.x >= 0 && nc.y >= 0 && nc.x < i32(g.grid.x) && nc.y < i32(g.grid.y)) {
+            lo = min(lo, f32(textureLoad(height_tex, nc, 0).r));
+        }
+    }
+    let score = 0.6 * own + 0.8 * max(own - max(lo, 0.0), 0.0);
+    var s = smoothstep(700.0, 2300.0, score);
+    if (landform == 3u) {
+        s = max(s, 0.85);
+    }
+    return s;
+}
+
+// Mountain hexes: slots 0-1 are peaks, larger deep inside a range and on
+// grander ranges (`ps`, art_peak_scale); slots 2-4 are foothills towards
+// lowland neighbours. Low ranges trade some peaks for rounded hills and
+// keep fewer crags, so they read as rough country, not a field of cones.
+// Returns the centre (hex-local) in xy, a size in z and the kind in w.
+fn art_mountain_slot(i: u32, cell: vec2<u32>, h0: u32, mirror: f32, nb_in: array<u32, 6>, mtn: u32, ps: f32) -> vec4<f32> {
     var nb = nb_in;
+    // Footprint: low ranges narrower (their height drops more, in vs_prop),
+    // so a 400 m desert range is not a field of broad mounds.
+    let foot = mix(0.65, 1.0, ps);
     if (i >= ART_BASE_SLOTS) {
-        // Detail: three small crags around the main peaks.
+        // Detail: three small crags around the main peaks; on low ranges
+        // only some hexes keep each one.
         if (i > 7u) {
+            return vec4<f32>(0.0, 0.0, 0.0, f32(K_NONE));
+        }
+        if (art_unit(art_hash(cell, 40u + i), 0u) > 0.25 + ps) {
             return vec4<f32>(0.0, 0.0, 0.0, f32(K_NONE));
         }
         var extra = array<vec2<f32>, 3>(vec2<f32>(0.42, 0.30), vec2<f32>(-0.08, 0.36), vec2<f32>(-0.46, -0.16));
         let h = art_hash(cell, 30u + i);
         let p = extra[i - 5u] + (vec2<f32>(art_unit(h, 0u), art_unit(h, 8u)) - 0.5) * 0.08;
-        return vec4<f32>(p.x * mirror, p.y, 0.4 + 0.15 * art_unit(h, 16u), f32(K_PEAK));
+        return vec4<f32>(p.x * mirror, p.y, (0.4 + 0.15 * art_unit(h, 16u)) * foot, f32(K_PEAK));
     }
     if (i < 2u) {
         var range = 0.0;
         for (var e = 0u; e < 6u; e++) {
             if ((mtn & (1u << e)) != 0u) { range += 1.0 / 6.0; }
         }
-        let j = (vec2<f32>(art_unit(h0, 8u), art_unit(h0, 16u)) - 0.5) * 0.08;
-        if (i == 0u) {
-            return vec4<f32>((-0.34 + j.x) * mirror, 0.08, mix(0.65, 1.05, range), f32(K_PEAK));
+        // About half the hexes carry one big peak, the rest a pair; the
+        // pair is turned by a multiple of 60 degrees and both are shaken,
+        // so a range is not one stamp repeated in rows.
+        let hv = art_hash(cell, 220u);
+        let j = (vec2<f32>(art_unit(hv, 0u), art_unit(hv, 8u)) - 0.5) * 0.24;
+        if (art_unit(hv, 16u) < 0.5) {
+            if (i == 1u) {
+                return vec4<f32>(0.0, 0.0, 0.0, f32(K_NONE));
+            }
+            return vec4<f32>(j.x * mirror, -0.04 + 0.6 * j.y, mix(1.05, 1.55, range) * foot, f32(K_PEAK));
         }
-        return vec4<f32>((0.10 + j.y) * mirror, -0.12, mix(0.95, 1.5, range), f32(K_PEAK));
+        let turn = f32(hv % 6u) * SIXTY;
+        let cs = vec2<f32>(cos(turn), sin(turn));
+        var p = select(vec2<f32>(0.18, -0.12), vec2<f32>(-0.26, 0.08), i == 0u);
+        p = vec2<f32>(p.x * cs.x - p.y * cs.y, p.x * cs.y + p.y * cs.x) + j * 0.6;
+        let size = select(mix(0.95, 1.45, range), mix(0.65, 1.05, range), i == 0u) * foot;
+        // On low ranges the pair's second is often a rounded hill.
+        if (i == 0u && art_unit(hv, 24u) < 0.6 * (1.0 - ps)) {
+            return vec4<f32>(p.x * mirror, p.y, size * 1.15, f32(K_HILL));
+        }
+        return vec4<f32>(p.x * mirror, p.y, size, f32(K_PEAK));
     }
     let start = (h0 >> 4u) % 6u;
     var found = 2u;
@@ -649,21 +660,11 @@ fn art_mountain_slot(i: u32, cell: vec2<u32>, h0: u32, mirror: f32, nb_in: array
 }
 
 fn art_glyph(base: vec3<f32>, p: vec2<f32>, s: f32, kind: u32, terrain: u32, h: u32, a: Art) -> vec3<f32> {
-    let f = art_fill(terrain);
-    let fill = pow(f, vec3<f32>(2.2));
-    let hi = pow(f * 1.45 + 0.07, vec3<f32>(2.2));
+    // The printed kinds only: the rest are props.
     var c = base;
     switch kind {
-        case K_CONIFER: { c = art_conifer(c, p, 1.7 * s, fill, hi, a); }
-        case K_ROUND: { c = art_round_tree(c, p, 1.75 * s, fill, hi, a); }
-        case K_ACACIA: { c = art_acacia(c, p, 1.9 * s, fill, hi, a); }
-        case K_PALM: { c = art_palm(c, p, 1.8 * s, art_rgb(0.16, 0.50, 0.16), a); }
-        case K_SHRUB: {
-            c = art_shrub(c, p - vec2<f32>(0.0, 0.1), select(1.7, 1.2, terrain == T_SEMI_DESERT) * s, fill, hi, a);
-        }
         case K_TUFT: { c = art_tuft(c, p - vec2<f32>(0.0, 0.14), 1.6 * s, a.albedo * 0.5, a); }
         case K_WAVE: { c = art_wave(c, p - vec2<f32>(0.0, 0.2), 1.25 * s, h, a); }
-        case K_HILL: { c = art_hill(c, p + vec2<f32>(0.0, 0.06), s, a); }
         default: {}
     }
     return c;
@@ -688,6 +689,27 @@ fn art_prop_shadow(p: vec2<f32>, kind: u32, s: f32, a: Art) -> f32 {
     let d = sd_segment(p, start, reach * 0.8 + vec2<f32>(1e-5, 0.0)) - dim.x * 0.8;
     let soft = dim.x * 0.35 + a.px;
     return 1.0 - smoothstep(-soft, soft * 0.5, d);
+}
+
+// The shadows the props of `cell` cast at `q`: glyph space relative to that
+// cell's centre, which may be a neighbour's (trees stand right up to the
+// edges, and their shadows fall across them).
+fn art_shadows_from(cell: vec2<u32>, q: vec2<f32>, a: Art) -> f32 {
+    let mountain = (textureLoad(hex_tex, vec2<i32>(cell), 0).z & 1u) != 0u;
+    var shadow = 0.0;
+    for (var n = 0u; n < ART_SLOTS; n++) {
+        let e = textureLoad(art_tex, art_prop_texel(cell, n), 0);
+        let kind = e.x & 0xffu;
+        if (kind == K_NONE) { break; }
+        if (kind > K_HILL) { continue; }
+        let grow = art_sprout((e.x >> 8u) & 0xffu, cell, a.detail);
+        if (grow <= 0.0) { continue; }
+        // Same foot and size as art_prop_layout gives the prop.
+        let foot = vec2<f32>(bitcast<f32>(e.y), bitcast<f32>(e.z)) + vec2<f32>(0.0, select(0.15, 0.0, mountain));
+        let ps = bitcast<f32>(e.w) * select(1.45, 1.0, mountain) * a.size * a.lod * grow * art_shrink(kind, a.detail);
+        shadow = max(shadow, art_prop_shadow(q - vec2<f32>(foot.x * a.asp, foot.y), kind, ps, a));
+    }
+    return shadow;
 }
 
 fn art_is_forest(t: u32) -> bool {
@@ -732,10 +754,21 @@ fn terrain_art(local: vec2<f32>, cell: vec2<u32>, terrain: u32, a: Art) -> vec3<
             c = mix(c, art_rgb(0.33, 0.56, 0.22), k * select(0.25, 0.6, arid) * ground_k);
         }
     }
+    if (ground_k > 0.0 && art_is_land(terrain)) {
+        // Trodden bare around a camp, with a ragged edge.
+        let camp = art_camp(local, cell) + (art_noise(gp * 5.3 + 13.0) - 0.5) * 0.3;
+        c = mix(c, art_rgb(0.47, 0.38, 0.27), (1.0 - smoothstep(0.55, 1.0, camp)) * 0.7 * ground_k);
+    }
     if (ground_k > 0.0) {
         // No tile is one flat colour: broad patches and a finer grain.
         let mottle = art_noise(gp * 0.9) * 0.6 + art_noise(gp * 3.7 + 31.0) * 0.4;
         c *= 1.0 + (mottle - 0.5) * select(0.24, 0.10, terrain == T_WATER) * ground_k;
+        // And no region is one tile repeated: lighter and darker country
+        // several hexes across, drifting a little warmer and cooler.
+        let broad = art_noise(gp * 0.17 + 70.0) - 0.5;
+        let warm = art_noise(gp * 0.11 + 90.0) - 0.5;
+        c *= (1.0 + broad * select(0.30, 0.10, terrain == T_WATER) * ground_k)
+            * (1.0 + vec3<f32>(0.10, 0.0, -0.12) * warm * select(1.0, 0.3, terrain == T_WATER) * ground_k);
     }
     if (a.blend > 0.5) {
         let coast = art_shore(local, terrain, nb);
@@ -767,7 +800,6 @@ fn terrain_art(local: vec2<f32>, cell: vec2<u32>, terrain: u32, a: Art) -> vec3<
     let mirror = select(1.0, -1.0, (h0 & 1u) == 1u);
     // Glyph space: x squashed with the hex so shapes keep their proportions.
     let q = vec2<f32>(local.x * a.asp, local.y);
-    let flat_only = a.raised > 0.5;
     let mountain = (hx.z & 1u) != 0u;
 
     if (!mountain) {
@@ -775,17 +807,44 @@ fn terrain_art(local: vec2<f32>, cell: vec2<u32>, terrain: u32, a: Art) -> vec3<
             return art_ice(c, vec2<f32>(q.x * mirror, q.y), ag);
         }
         if (terrain == T_EXTREME_DESERT || terrain == T_SEMI_DESERT) {
-            let s0 = art_slot(1u, cell, mirror);
-            c = art_dune(c, q - vec2<f32>((s0.x + 0.12) * a.asp, s0.y + 0.12), 1.3 * s0.z * a.size, ag);
-            if (terrain == T_EXTREME_DESERT) {
-                let s1 = art_slot(3u, cell, mirror);
-                c = art_dune(c, q - vec2<f32>((s1.x - 0.08) * a.asp, s1.y + 0.06), 1.5 * s1.z * a.size, ag);
+            // Up to two dunes (one in semi-desert), each in a place, size
+            // and presence of its own per hex, so the sand is not tiled with
+            // one stamp. The lee side keeps one wind direction.
+            let n_dunes = select(1u, 2u, terrain == T_EXTREME_DESERT);
+            let turn = f32(art_hash(cell, 230u) % 6u) * SIXTY;
+            let cs = vec2<f32>(cos(turn), sin(turn));
+            for (var k = 0u; k < n_dunes; k++) {
+                let hd = art_hash(cell, 231u + k);
+                if (art_unit(hd, 0u) < select(0.35, 0.2, terrain == T_EXTREME_DESERT)) { continue; }
+                var d = select(vec2<f32>(0.24, 0.02), vec2<f32>(-0.20, 0.20), k == 0u);
+                d = vec2<f32>(d.x * cs.x - d.y * cs.y, d.x * cs.y + d.y * cs.x)
+                    + (vec2<f32>(art_unit(hd, 8u), art_unit(hd, 16u)) - 0.5) * 0.26;
+                let sz = mix(1.0, 1.6, art_unit(hd, 24u)) * a.size;
+                c = art_dune(c, q - vec2<f32>(d.x * mirror * a.asp, d.y - 0.1), sz, ag);
             }
         }
     }
     // The hex's glyphs in drawing order, as art_glyph_list lays them out;
     // the list ends at the first empty entry.
     var shadow = 0.0;
+    {
+        // Prop shadows: this hex's, and near an edge the neighbour's across it.
+        shadow = art_shadows_from(cell, q, a);
+        var best = -1.0;
+        var edge = 0u;
+        for (var i = 0u; i < 6u; i++) {
+            let d = dot(local, edge_normal(i));
+            if (d > best) {
+                best = d;
+                edge = i;
+            }
+        }
+        let nc = vec2<i32>(cell) + neighbour_offset(cell.x & 1u, edge);
+        if (best > 0.45 && nc.x >= 0 && nc.y >= 0 && nc.x < i32(g.grid.x) && nc.y < i32(g.grid.y)) {
+            let over = local - edge_normal(edge) * (2.0 * SQRT3_2);
+            shadow = max(shadow, art_shadows_from(vec2<u32>(nc), vec2<f32>(over.x * a.asp, over.y), a));
+        }
+    }
     for (var n = 0u; n < ART_SLOTS; n++) {
         let e = textureLoad(art_tex, art_prop_texel(cell, n), 0);
         let kind = e.x & 0xffu;
@@ -796,23 +855,8 @@ fn terrain_art(local: vec2<f32>, cell: vec2<u32>, terrain: u32, a: Art) -> vec3<
         let foot = vec2<f32>(bitcast<f32>(e.y), bitcast<f32>(e.z));
         let size = bitcast<f32>(e.w);
         let at = q - vec2<f32>(foot.x * a.asp, foot.y);
-        if (flat_only && kind <= K_HILL) {
-            // Drawn as a prop (vs_prop): only its shadow is on the tile.
-            // Same foot and size as art_prop_layout gives the prop.
-            let up = select(0.15, 0.0, mountain);
-            let ps = size * select(1.45, 1.0, mountain) * a.size * a.lod * grow * art_shrink(kind, a.detail);
-            shadow = max(shadow, art_prop_shadow(at - vec2<f32>(0.0, up), kind, ps, a));
-            continue;
-        }
-        if (mountain) {
-            if (kind == K_HILL) {
-                c = art_hill(c, at + vec2<f32>(0.0, 0.06), size * a.size, ag);
-            } else {
-                let sz = size * grow;
-                c = art_mountain(c, at + vec2<f32>(0.0, 0.3 * sz), sz * a.size, ag);
-            }
-            continue;
-        }
+        // A prop (vs_prop): only its shadow is on the tile (above).
+        if (kind <= K_HILL) { continue; }
         let sz = size * a.size * grow * art_shrink(kind, a.detail);
         // Every glyph fits in this circle; skip the work for pixels outside.
         if (length(at - vec2<f32>(0.0, 0.55 * sz)) > 0.7 * sz + 2.0 * a.px) { continue; }
@@ -823,7 +867,7 @@ fn terrain_art(local: vec2<f32>, cell: vec2<u32>, terrain: u32, a: Art) -> vec3<
 }
 
 // ------------------------------------------------------------ art bake ----
-// The 2D layer used to work out, for every pixel, what each of the hex's
+// The printed layer used to work out, for every pixel, what each of the hex's
 // glyph slots holds (kind, foot, size, hidden by a neighbour's ground) and,
 // on mountains, lay the range out in a 3 x 8 loop. None of that depends on
 // the pixel, only on the map and the edge-blend setting, so the bake pass
@@ -869,14 +913,26 @@ fn art_in_river(p: vec2<f32>, cell: vec2<u32>) -> bool {
 }
 
 // art_kind_on for a slot whose foot is at `foot` (hex-local), minding the
-// rivers: nothing in a bed, riverside growth on the banks.
+// camps and rivers: nothing in a clearing or a bed, riverside growth on the
+// banks.
 fn art_kind_by_river(terrain: u32, landform: u32, i: u32, skip: u32, foot: vec2<f32>, cell: vec2<u32>) -> u32 {
     let h = art_hash(cell, 100u + i);
     let kind = art_kind_on(terrain, landform, i, skip, h);
     if (terrain == T_WATER) {
         return kind;
     }
-    let bank = art_bank(art_global(foot, cell));
+    if (art_camp(foot, cell) < 1.0) {
+        return K_NONE;
+    }
+    let gp = art_global(foot, cell);
+    if (kind >= K_CONIFER && kind <= K_SHRUB) {
+        // Glades: woods thin out in patches that ignore the hex edges.
+        let glade = smoothstep(0.5, 0.85, art_noise(gp * 0.33 + 50.0));
+        if (art_unit(h, 16u) < glade * 0.5) {
+            return K_NONE;
+        }
+    }
+    let bank = art_bank(gp);
     if (bank.y <= 0.0 || bank.x >= RIVER_BANK) {
         return kind;
     }
@@ -908,17 +964,20 @@ fn art_glyph_list(cell: vec2<u32>, want: u32, blend: f32) -> vec4<u32> {
     var found = 0u;
     if (art_is_mountain(terrain, landform)) {
         let mtn = art_mountain_neighbours(cell, true);
+        let ps = art_peak_scale(cell, landform);
         // Crags 5 and 6 stand behind the main peaks, crag 7 in front.
         var order = array<u32, 8>(5u, 6u, 0u, 1u, 7u, 2u, 3u, 4u);
         for (var layer = 0u; layer < 3u; layer++) {
             for (var n = 0u; n < 8u; n++) {
                 let i = order[n];
-                let m = art_mountain_slot(i, cell, h0, mirror, nb, mtn);
+                let m = art_mountain_slot(i, cell, h0, mirror, nb, mtn, ps);
                 let kind = u32(m.w);
-                let layer_of = select(select(2u, 0u, m.y > 0.0), 1u, kind == K_PEAK);
+                // Peaks and the hills standing in for them (slots 0-1) in
+                // the middle layer; foothills north or south of them.
+                let layer_of = select(select(2u, 0u, m.y > 0.0), 1u, kind == K_PEAK || i < 2u);
                 if (kind == K_NONE || layer_of != layer) { continue; }
                 if (kind != K_HILL && art_hidden(m.xy, cell, terrain, nb, blend)) { continue; }
-                if (art_in_river(m.xy, cell)) { continue; }
+                if (art_in_river(m.xy, cell) || art_camp(m.xy, cell) < 1.0) { continue; }
                 if (found == want) {
                     return art_glyph_entry(kind, i, m.xy, m.z);
                 }
@@ -927,17 +986,33 @@ fn art_glyph_list(cell: vec2<u32>, want: u32, blend: f32) -> vec4<u32> {
         }
         return none;
     }
+    // Every slot's glyph, then the `want`-th from the back (north): the
+    // layout is turned and shaken per hex, so the order is by where the
+    // slots ended up, not by their number.
     let skip = (h0 >> 1u) % 5u;
-    for (var n = 0u; n < ART_SLOTS; n++) {
-        let i = art_order(n);
+    var kinds: array<u32, ART_SLOTS>;
+    var feet: array<vec3<f32>, ART_SLOTS>;
+    for (var i = 0u; i < ART_SLOTS; i++) {
         let s = art_slot(i, cell, mirror);
-        let kind = art_kind_by_river(terrain, landform, i, skip, s.xy + vec2<f32>(0.0, 0.15), cell);
-        if (kind == K_NONE) { continue; }
-        if (art_hidden(s.xy + vec2<f32>(0.0, 0.15), cell, terrain, nb, blend)) { continue; }
-        if (found == want) {
-            return art_glyph_entry(kind, i, s.xy, s.z);
+        let foot = s.xy + vec2<f32>(0.0, 0.15);
+        var kind = art_kind_by_river(terrain, landform, i, skip, foot, cell);
+        if (kind != K_NONE && art_hidden(foot, cell, terrain, nb, blend)) {
+            kind = K_NONE;
         }
-        found++;
+        kinds[i] = kind;
+        feet[i] = s;
+    }
+    for (var i = 0u; i < ART_SLOTS; i++) {
+        if (kinds[i] == K_NONE) { continue; }
+        var behind = 0u;
+        for (var j = 0u; j < ART_SLOTS; j++) {
+            if (kinds[j] != K_NONE && (feet[j].y > feet[i].y || (feet[j].y == feet[i].y && j < i))) {
+                behind++;
+            }
+        }
+        if (behind == want) {
+            return art_glyph_entry(kinds[i], i, feet[i].xy, feet[i].z);
+        }
     }
     return none;
 }
@@ -985,13 +1060,42 @@ fn art_profile(kind: u32, band: u32) -> vec4<f32> {
     return bands[(kind - 1u) * 3u + band];
 }
 
-fn art_prop_colour(kind: u32, band: u32, top: bool, terrain: u32) -> vec3<f32> {
+// What covers a mountain's or hill's slopes in this biome (linear rgb) and
+// how much of the rock it hides: forest slopes read green, desert ones sand,
+// tundra and alpine ones mostly bare.
+fn art_slope_cover(terrain: u32) -> vec4<f32> {
+    // A shade lighter than the trees, so a wooded slope reads as green in
+    // the sun rather than as dark rock.
+    var c = vec4<f32>(pow(art_fill(terrain) * 1.35 + 0.05, vec3<f32>(2.2)), 0.45);
+    switch terrain {
+        case T_BOREAL_FOREST, T_TEMPERATE_FOREST, T_TROPICAL_FOREST: { c.w = 0.7; }
+        case T_WOODLANDS, T_STEPPE_FOREST, T_FLOODPLAIN: { c.w = 0.6; }
+        case T_EXTREME_DESERT: { c = vec4<f32>(art_rgb(0.80, 0.66, 0.46), 0.55); }
+        case T_SEMI_DESERT: { c = vec4<f32>(art_rgb(0.72, 0.62, 0.44), 0.5); }
+        case T_TUNDRA, T_ALPINE: { c.w = 0.3; }
+        default: {}
+    }
+    return c;
+}
+
+// `snow`: the peak is high (or cold) enough to keep a cap.
+fn art_prop_colour(kind: u32, band: u32, top: bool, terrain: u32, snow: bool) -> vec3<f32> {
     let f = art_fill(terrain);
     var c = pow(mix(f, f * 1.45 + 0.07, f32(band) * 0.5 - 0.25), vec3<f32>(2.2));
     if (kind == K_PEAK) {
-        c = select(art_rgb(0.57, 0.52, 0.46), art_rgb(0.98, 0.98, 1.0), band == 1u);
+        let cover = art_slope_cover(terrain);
+        let rock = art_rgb(0.57, 0.52, 0.46);
+        if (band == 0u) {
+            // Lower slopes: the biome, thinning out towards the shoulder.
+            c = mix(rock, cover.rgb, cover.w * select(1.0, 0.55, top));
+        } else if (snow) {
+            c = art_rgb(0.98, 0.98, 1.0);
+        } else {
+            c = mix(rock * 1.15, cover.rgb, cover.w * 0.3);
+        }
     } else if (kind == K_HILL) {
-        c = art_rgb(0.52, 0.53, 0.38);
+        let cover = art_slope_cover(terrain);
+        c = mix(art_rgb(0.52, 0.53, 0.38), cover.rgb, cover.w);
     } else if (kind == K_PALM && band == 1u) {
         c = art_rgb(0.16, 0.50, 0.16);
     } else if (band == 0u && kind != K_SHRUB) {
@@ -1032,7 +1136,7 @@ fn art_prop_layout(cell: vec2<u32>, slot: u32, blend: f32) -> vec4<u32> {
     var size = 1.0;
     let landform = (st.a >> 3u) & 3u;
     if (art_is_mountain(terrain, landform)) {
-        let m = art_mountain_slot(slot, cell, h0, mirror, nb, art_mountain_neighbours(cell, true));
+        let m = art_mountain_slot(slot, cell, h0, mirror, nb, art_mountain_neighbours(cell, true), art_peak_scale(cell, landform));
         kind = u32(m.w);
         at = m.xy;
         size = m.z;
@@ -1048,7 +1152,7 @@ fn art_prop_layout(cell: vec2<u32>, slot: u32, blend: f32) -> vec4<u32> {
     if (kind != K_HILL && art_hidden(at, cell, terrain, nb, blend)) {
         return none;
     }
-    if (art_in_river(at, cell)) {
+    if (art_in_river(at, cell) || art_camp(at, cell) < 1.0) {
         return none;
     }
     return vec4<u32>(kind, bitcast<u32>(at.x), bitcast<u32>(at.y), bitcast<u32>(size));
@@ -1099,7 +1203,7 @@ fn vs_prop(in: PropIn) -> PropOut {
         return out;
     }
     let slot = in.attrs.x;
-    // Zoomed in, the detail slots sprout (same rule as the 2D layer).
+    // Zoomed in, the detail slots sprout (same rule as the printed details).
     let detail = smoothstep(ART_DETAIL_LO, ART_DETAIL_HI, hex_px);
     let grow = art_sprout(slot, in.cell, detail);
     if (grow <= 0.0) {
@@ -1124,7 +1228,7 @@ fn vs_prop(in: PropIn) -> PropOut {
         return out;
     }
 
-    // Squashed hexes get smaller props, as in the 2D layer.
+    // Squashed hexes get smaller props.
     let asp = mix(min(length(in.east) / unit_c, 1.0), 1.0, t);
     size *= sqrt(asp) * lod * grow * art_shrink(kind, detail);
     let hs = art_hash(in.cell, 40u + slot);
@@ -1138,8 +1242,28 @@ fn vs_prop(in: PropIn) -> PropOut {
         // Craggy: each side of the lathe has its own radius.
         r *= 0.78 + 0.44 * art_unit(art_hash(in.cell, 60u + slot * 8u + in.attrs.w), 0u);
     }
+    var lean = vec2<f32>(0.0);
+    if (kind == K_PEAK) {
+        // No two peaks alike: tall and narrow to low and broad, leaning a
+        // little, the lean growing with height so the foot stays put.
+        let hp = art_hash(in.cell, 70u + slot);
+        let v = art_unit(hp, 0u);
+        h *= mix(0.72, 1.3, v);
+        r *= mix(1.18, 0.86, v);
+        let la = art_unit(hp, 8u) * 6.2831853;
+        lean = vec2<f32>(cos(la), sin(la)) * 0.16 * art_unit(hp, 16u) * size * (select(prof.y, prof.w, top) / 0.64);
+        // Low ranges stand lower than their footprint alone would make them.
+        let st_lf = (st.a >> 3u) & 3u;
+        h *= mix(0.55, 1.0, art_peak_scale(in.cell, st_lf));
+    }
+    if (kind == K_PEAK || kind == K_HILL) {
+        // Board style "Mountain height": all of it in the height, half of
+        // it (geometrically) in the footprint.
+        h *= g.wall_colour.w;
+        r *= sqrt(g.wall_colour.w);
+    }
     let ang = (f32(in.attrs.w) + art_unit(hs, 0u)) * 1.2566371;
-    let ring = vec2<f32>(cos(ang), sin(ang)) * r;
+    let ring = vec2<f32>(cos(ang), sin(ang)) * r + lean;
 
     // Standing on the hex's tile, raised by the relief.
     let lift = hex_lift(vec2<i32>(in.cell));
@@ -1152,7 +1276,12 @@ fn vs_prop(in: PropIn) -> PropOut {
     );
     let world = mix(curved, flat_p, t);
 
-    var colour = art_prop_colour(kind, band, top, terrain);
+    // Snow on peaks standing on high ground (the hex's median height), lower
+    // in cold biomes.
+    let ground = f32(textureLoad(height_tex, vec2<i32>(in.cell), 0).r);
+    let cold = terrain == T_ALPINE || terrain == T_TUNDRA || terrain == T_BOREAL_FOREST;
+    let snow = ground > select(2200.0, 1100.0, cold);
+    var colour = art_prop_colour(kind, band, top, terrain, snow);
     // Variation: stands of lighter and darker trees across the board (noise
     // on board-wide coordinates), and each prop a little off its neighbours.
     let own = art_unit(hs, 8u);
@@ -1185,5 +1314,5 @@ fn fs_prop(in: PropOut) -> @location(0) vec4<f32> {
     if (dot(n, g.cam_pos.xyz - in.world) < 0.0) {
         n = -n;
     }
-    return vec4<f32>(in.colour * lighting(n), 1.0);
+    return vec4<f32>(haze(in.colour * lighting(n), in.world), 1.0);
 }

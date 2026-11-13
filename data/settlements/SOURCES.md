@@ -14,7 +14,7 @@ property, plus the calibration curve.
 - **Licence:** CC BY 4.0
 - **URL:** https://xronos.ch
 - **Retrieved:** 2026-11-11 to 2026-11-12 (103 files, hashes in `provenance.json`)
-- **In the output:** 8118 sites, 50996 dates
+- **In the output:** 8116 sites, 50986 dates
 - **Note:** XRONOS compiles dates from other databases and publications and asks that those are cited too; see the last section.
 
 ### p3k14c, release 2025.07 (`p3k14c`)
@@ -23,7 +23,7 @@ property, plus the calibration curve.
 - **Licence:** The article is CC BY 4.0. The repository states CC BY 4.0 for text and figures and MIT for code, and gives no separate licence for the data file.
 - **URL:** https://github.com/people3k/p3k14c
 - **Retrieved:** 2026-11-12 (1 file, hashes in `provenance.json`)
-- **In the output:** 266 sites, 1334 dates
+- **In the output:** 265 sites, 1316 dates
 - **Note:** Only dates whose lab number XRONOS does not have. The file is the "scrubbed and fuzzed" one.
 
 ### NeoNet (Mediterranean), version 2 (`neonet`)
@@ -48,7 +48,7 @@ property, plus the calibration curve.
 
 - **Cite:** `data/settlements/curated.geojson` in this repository, carried over from the 2023 `settlements.geojson`.
 - **Licence:** Project's own.
-- **In the output:** 6 sites
+- **In the output:** 8 sites
 - **Note:** Names, founding years and populations entered by hand without recorded sources. The populations are placeholders.
 
 ### IntCal20 calibration curve (`intcal20`)
@@ -64,13 +64,13 @@ property, plus the calibration curve.
 XRONOS asks that the original sources listed on each record are cited
 as well as XRONOS itself. Each site's `references` property lists them,
 and `dates.csv.gz` gives them date by date with lab numbers.
-There are 11589 distinct references; those behind at least 200
+There are 11594 distinct references; those behind at least 200
 dates in the output are:
 
 | Reference | Dates |
 |---|---|
-| p3k14c | 32740 |
-| CalPal2022 | 27238 |
+| p3k14c | 32757 |
+| CalPal2022 | 27253 |
 | RADON | 12740 |
 | EUROEVOL | 9451 |
 | NERD | 6349 |
@@ -89,7 +89,7 @@ dates in the output are:
 | Vermeersch 2020 | 945 |
 | ManningTimpson2014 | 914 |
 | EUROEVOL; RADON | 799 |
-| MedAfriCarbon | 760 |
+| MedAfriCarbon | 762 |
 | 14SEA | 714 |
 | Kiel DB 2013 | 637 |
 | CALPAL | 608 |

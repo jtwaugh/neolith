@@ -1,0 +1,76 @@
+[meta]
+place = "socotra"
+written = "2026-11-12"
+verdict = "leave"
+confidence = "low"
+really_empty = "Yes. No site in the box or within 100 km in any epoch; the nearest are about 510 km away on the Arabian mainland (Jebel Qara in Dhofar, Wadi Sana in Hadramawt). The island is one land hex from 6,000 BCE (three at 10,000 BCE), so there is nothing for a box error or a duplicate to hide. No Socotran site exists in the raw compilations under any spelling."
+why_empty = ["true_absence", "research_intensity"]
+summary = """
+Socotra, an island of one hex at the mouth of the Gulf of Aden, far from
+both the Horn and Arabia across water too deep to have closed at any sea
+level in the period. Our data has nothing there and the residuals expect
+almost nothing (peak 'missing' 1.48 sites).
+
+As far as I can establish, the emptiness is real for 10,000-3,000 BCE. The
+one source I opened that reviews the island's archaeology (Jansen van
+Rensburg 2018) says that expeditions have found stone tools 'believed to
+date to the Neolithic and Oldowan period' (citing Naumkin and Sedov 1993
+and Amirkhanov et al. 2009), but nothing in it is dated, and that definite
+evidence of an indigenous population begins only about the 1st century BCE,
+with the Eriosh petroglyphs 'arguably' first millennium BCE. So there is no
+dated or stratified occupation inside our window, and the 'Neolithic'
+lithics are an undated surface attribution. Reaching the island needs
+open-sea boats, which nothing on the neighbouring coasts attests this
+early. I could not get further: the Russian reports are not online, the
+ancient-DNA paper on the island (Nature Ecology and Evolution 2024) is
+behind a login, and of Naumkin and Sedov 1993 only the first page was
+readable. Hence low confidence, and one research entry to settle it.
+
+Leave the settlements alone. But the speculative evidence layers do not
+leave it alone: they carry mainland Arabian values onto the island
+(domestic livestock rising to 0.8, pottery to 0.26, houses 0.2, ground
+stone 0.86, all 'judged'). If the island was unoccupied those should be
+near zero, and the plan proposes that as marked speculation.
+"""
+
+[[research]]
+what = "Read what the 'Neolithic' stone tools of Socotra actually are and whether any are dated or stratified: Naumkin and Sedov 1993 (Monuments of Socotra, Topoi 3:569-623, open on Persee; I could read only its first page) and Amirkhanov et al. 2009 on the Oldowan claim, both as cited by Jansen van Rensburg 2018."
+url = "https://doi.org/10.3406/topoi.1993.1486"
+yields = "A yes or no on Holocene occupation before 3,000 BCE; at most one or two undated surface localities. If yes, the verdict becomes speculate."
+effort = "One open-access article of 55 pages and one Russian paper to find"
+
+[[speculate]]
+target = "isostyle:domestic_livestock"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+rule = "Set the layer to near zero on the island's hexes in every slice, marked as judged absence, instead of the mainland Arabian value it inherits."
+confidence = "low"
+reasoning = "The dossier shows 0 -> 0.44 -> 0.8 on the island, all judged, i.e. the gap critic's value for southern Arabia spread across the water. There is no dated human presence on Socotra before about the 1st century BCE (Jansen van Rensburg 2018), and herds cannot arrive without people and boats. Low only because the absence of early occupation is itself unconfirmed."
+basis = ["literature", "environment"]
+[[speculate.adjust]]
+kind = "area"
+bbox = [52.0, 11.8, 54.9, 13.0]
+value = 0.02
+
+[[speculate]]
+target = "isostyle:pottery"
+slices = [-6000, -5000, -4000, -3000]
+rule = "Set the layer to near zero on the island's hexes, marked as judged absence."
+confidence = "low"
+reasoning = "Same argument as for livestock: the dossier shows 0 -> 0.057 -> 0.259 judged from the mainland, with no dated occupation on the island in the period (Jansen van Rensburg 2018)."
+basis = ["literature", "environment"]
+[[speculate.adjust]]
+kind = "area"
+bbox = [52.0, 11.8, 54.9, 13.0]
+value = 0.02
+
+[[speculate]]
+target = "isostyle:houses"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+rule = "Set the layer to near zero on the island's hexes, marked as judged absence."
+confidence = "low"
+reasoning = "Same argument: 0.05 -> 0.2 -> 0.2 judged from the mainland, on an island with no dated occupation in the period (Jansen van Rensburg 2018). Ground stone (0.5 -> 0.84 -> 0.86) deserves the same treatment if the research entry confirms absence; I leave it because undated stone tools are the one thing reported."
+basis = ["literature", "environment"]
+[[speculate.adjust]]
+kind = "area"
+bbox = [52.0, 11.8, 54.9, 13.0]
+value = 0.02

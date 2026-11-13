@@ -120,3 +120,20 @@ def load_game(path, years):
                     val = v
             terrain[i, j] = val
     return g, terrain
+
+
+def land_between(path, years):
+    """Bool (cells, slices): the cell is neither water nor ice at some time
+    from the slice before to the slice after (open-ended at both ends of the
+    list of slices). The game interpolates evidence between slices while its
+    coasts, lakes and ice move, so every such cell needs a value."""
+    feats = _read_json(path)["features"]
+    out = np.zeros((len(feats), len(years)), bool)
+    for i, f in enumerate(feats):
+        steps = sorted((int(y), v) for y, v in f["properties"]["terrain"].items())
+        for j in range(len(years)):
+            lo = years[j - 1] if j else -10**9
+            hi = years[j + 1] if j + 1 < len(years) else 10**9
+            start = max([k for k, (y, _) in enumerate(steps) if y <= lo], default=0)
+            out[i, j] = any(v not in ("Water", "Ice") for y, v in steps[start:] if y <= hi)
+    return out

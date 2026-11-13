@@ -5,6 +5,7 @@ use crate::time::Year;
 use crate::timeline::Timeline;
 use crate::elevation::{self, NO_ELEVATION};
 use crate::evidence::EvidenceLayer;
+use crate::residuals::Residuals;
 use crate::farming;
 use crate::forager;
 use crate::productivity;
@@ -130,6 +131,18 @@ pub struct SiteInfo {
     pub dates: Vec<C14Date>,
 }
 
+impl SiteInfo {
+    /// The `sources` tag of inferred settlements: guesses placed by the
+    /// pipeline (`pipeline/inferred.py`) where the record is thin for a known
+    /// reason, never a recorded site.
+    pub const INFERRED: &'static str = "inferred";
+
+    /// Whether this is an inferred settlement, not a recorded one.
+    pub fn is_inferred(&self) -> bool {
+        self.sources.iter().any(|s| s == Self::INFERRED)
+    }
+}
+
 /// An archaeological culture or stage that [`SiteInfo`] refers to by id.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct CultureInfo {
@@ -180,7 +193,21 @@ pub struct World {
     /// Speculative evidence layers ([`crate::evidence`]), in picker order.
     /// Empty for files before version 10.
     pub evidence: Vec<EvidenceLayer>,
+    /// Sites the list is missing per hex and epoch ([`crate::residuals`]),
+    /// from the pipeline. `None` for files before version 11 and worlds
+    /// built without it.
+    pub residuals: Option<Residuals>,
+    /// Per hex: km from its centre to the nearest open sea beyond the map's
+    /// edge over time, from the pipeline's wider elevation window
+    /// (`edge_sea.py`); [`NO_EDGE_SEA`] where there is none within reach.
+    /// The map's own Water cannot show a coast that lies off the map (the
+    /// Gulf of Guinea, the Atlantic off Senegal). Empty for files before
+    /// version 12. Use [`World::edge_sea_km`].
+    pub edge_sea: Vec<Timeline<u16>>,
 }
+
+/// An [`World::edge_sea`] value meaning no sea beyond the edge within reach.
+pub const NO_EDGE_SEA: u16 = u16::MAX;
 
 /// What [`World::expected_at`] returns.
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -235,7 +262,7 @@ impl Snapshot {
     /// (see [`crate::EvidenceLayer::codes_at`]).
     pub fn layer(&self, mode: MapMode) -> &[u8] {
         match mode {
-            MapMode::Evidence => &[],
+            MapMode::Evidence | MapMode::Missing => &[],
             MapMode::Elevation => &self.elevation,
             MapMode::Npp => &self.npp,
             MapMode::Biodiversity => &self.biodiversity,
@@ -276,6 +303,8 @@ impl World {
             npp: Vec::new(),
             farming: Vec::new(),
             evidence: Vec::new(),
+            residuals: None,
+            edge_sea: Vec::new(),
         }
     }
 
@@ -301,9 +330,18 @@ impl World {
         }
     }
 
-    /// Per hex: km from its centre to the edge of the nearest Water hex at
-    /// `year` (sea or lake), 0 on Water, infinite if the map has no Water.
-    /// The distance to that hex's centre, less half a hex, in whole km.
+    /// Km from a hex's centre to the nearest open sea beyond the map's edge
+    /// at `year` ([`World::edge_sea`]), if the file has the layer and there
+    /// is such a sea within reach.
+    pub fn edge_sea_km(&self, hex: HexId, year: Year) -> Option<u16> {
+        self.edge_sea.get(hex.index()).and_then(|t| t.at(year)).filter(|km| *km != NO_EDGE_SEA)
+    }
+
+    /// Per hex: km from its centre to the nearest water at `year`, 0 on
+    /// Water, infinite if there is none. The nearer of the edge of the
+    /// nearest Water hex on the map (sea or lake: the distance to that
+    /// hex's centre, less half a hex) and the sea beyond the map's edge
+    /// ([`World::edge_sea_km`]). In whole km.
     ///
     /// Found by spreading outward from every Water hex at once, nearest
     /// first, so it costs one pass over the grid.
@@ -337,7 +375,16 @@ impl World {
         }
         let hex_km = (self.grid.h * 111.2) as f32;
         // Whole km: fine for the model, and a snapshot can hold it in 16 bits.
-        out.iter().map(|d| (d - d.min(hex_km) / 2.0).round()).collect()
+        out.iter()
+            .enumerate()
+            .map(|(i, d)| {
+                let on_map = (d - d.min(hex_km) / 2.0).round();
+                match self.edge_sea_km(HexId(i as u32), year) {
+                    Some(km) if *d > 0.0 => on_map.min(km as f32),
+                    _ => on_map,
+                }
+            })
+            .collect()
     }
 
     /// Survey intensity of a hex (0-2), if the file has the layer.
@@ -348,6 +395,11 @@ impl World {
     /// The record for settlement `i`, if the file has one.
     pub fn site_info(&self, i: usize) -> Option<&SiteInfo> {
         self.site_info.get(i)
+    }
+
+    /// Whether settlement `i` is inferred, not recorded ([`SiteInfo::is_inferred`]).
+    pub fn is_inferred(&self, i: usize) -> bool {
+        self.site_info(i).is_some_and(SiteInfo::is_inferred)
     }
 
     /// The culture or stage with this id.
@@ -617,6 +669,9 @@ impl World {
         if !self.farming.is_empty() && self.farming.len() != n {
             return Err(format!("farming layer has {} values for {n} hexes", self.farming.len()));
         }
+        if !self.edge_sea.is_empty() && (self.edge_sea.len() != n || self.edge_sea.iter().any(|t| !t.is_sorted())) {
+            return Err(format!("edge-sea layer has {} timelines for {n} hexes, or unsorted keys", self.edge_sea.len()));
+        }
         if !self.npp.is_empty() && (self.npp.len() != n || self.npp.iter().any(|t| !t.is_sorted())) {
             return Err(format!("productivity layer has {} timelines for {n} hexes, or unsorted keys", self.npp.len()));
         }
@@ -632,6 +687,9 @@ impl World {
                 self.site_info.len(),
                 self.settlements.len()
             ));
+        }
+        if let Some(r) = &self.residuals {
+            r.validate(n)?;
         }
         for (i, l) in self.evidence.iter().enumerate() {
             l.validate(n)?;
@@ -719,6 +777,7 @@ pub(crate) fn test_world(cols: u16, rows: u16) -> World {
     });
     let n = w.grid.len();
     w.evidence.push(crate::evidence::test_layer("test_layer", n));
+    w.residuals = Some(crate::residuals::test_table(n));
     w
 }
 
@@ -847,6 +906,41 @@ mod tests {
         assert!(dry.snapshot(year).shore_km.iter().all(|d| *d == u16::MAX));
         assert_eq!(dry.expected_given(HexId(0), year, u16::MAX as f64), dry.expected_at(HexId(0), year));
         assert!(dry.expected_at(HexId(0), year).is_some());
+    }
+
+    #[test]
+    fn sea_beyond_the_map_edge_counts_as_shore() {
+        let w = test_world(9, 7);
+        let (early, late) = (Year(-10000), Year(-5000));
+        let base = w.shore_km(early);
+        // The land hex furthest from the map's own water.
+        let far = w.grid.ids().filter(|h| base[h.index()] > 0.0).max_by(|a, b| base[a.index()].total_cmp(&base[b.index()])).unwrap();
+        let water = w.grid.ids().find(|h| base[h.index()] == 0.0).unwrap();
+        let mut e = w.clone();
+        e.edge_sea = vec![Timeline::from_keys([(early, NO_EDGE_SEA)]); w.grid.len()];
+        assert_eq!(e.shore_km(early), base, "no sea in reach changes nothing");
+        assert_eq!(e.edge_sea_km(far, early), None);
+        e.edge_sea[far.index()] = Timeline::from_keys([(early, 7), (late, NO_EDGE_SEA)]);
+        e.edge_sea[water.index()] = Timeline::from_keys([(early, 7)]);
+        let shore = e.shore_km(early);
+        assert_eq!(shore[far.index()], 7.0);
+        assert_eq!(shore[water.index()], 0.0, "Water stays 0");
+        assert!(shore.iter().zip(&base).enumerate().all(|(i, (a, b))| i == far.index() || a == b));
+        assert!(e.expected_at(far, early).unwrap().density > w.expected_at(far, early).unwrap().density);
+        // It follows the year, and a nearer shore on the map still wins.
+        assert_eq!(e.shore_km(late)[far.index()], w.shore_km(late)[far.index()]);
+        e.edge_sea[far.index()] = Timeline::from_keys([(early, 60000)]);
+        assert_eq!(e.shore_km(early)[far.index()], base[far.index()]);
+        // A map with no Water of its own still has a shore.
+        let mut dry = e.clone();
+        for h in w.grid.ids().filter(|h| base[h.index()] == 0.0) {
+            dry.set_key(h, early, Value::Terrain(Terrain::Plains));
+        }
+        dry.edge_sea[far.index()] = Timeline::from_keys([(early, 300)]);
+        assert_eq!(dry.shore_km(early)[far.index()], 300.0);
+        // The layer must match the grid.
+        e.edge_sea.pop();
+        assert!(e.validate().is_err());
     }
 
     #[test]

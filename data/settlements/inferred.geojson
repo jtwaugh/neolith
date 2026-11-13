@@ -1,0 +1,2231 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "id": 3871208953,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     31.2454,
+     30.7207
+    ]
+   },
+   "properties": {
+    "name": "Inferred village 1",
+    "founding": -4000,
+    "abandoned": -2000,
+    "occupation": [
+     [
+      -4000,
+      -2000
+     ]
+    ],
+    "type": "settlement",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Lower Egyptian (Buto-Maadi) and then Naqada-period villages on geziras and levees beside the central and eastern branches, about one per 20 km. Every excavated delta settlement of this date sits on a gezira and was found because the mound stands above the silt (Buto, Sais, Tell el-Farkha, Tell el-Samara); the residuals report an unexplained shortfall in 16 of 25 land hexes at 4,000 BCE and 13 at 3,000 BCE in the best-surveyed part of Egypt. A stopgap until the EES Delta Survey is ingested.",
+     "Rule nile_delta_villages in data/settlements/inferred.toml, from data/places/plans/nile_delta.toml"
+    ],
+    "inferred": {
+     "rule": "nile_delta_villages",
+     "plan": "data/places/plans/nile_delta.toml",
+     "confidence": "medium",
+     "branch": "nile-sebennytic"
+    },
+    "key": "inferred:nile_delta_villages:1"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2142544963,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     31.2054,
+     30.9065
+    ]
+   },
+   "properties": {
+    "name": "Inferred village 2",
+    "founding": -4000,
+    "abandoned": -2000,
+    "occupation": [
+     [
+      -4000,
+      -2000
+     ]
+    ],
+    "type": "settlement",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Lower Egyptian (Buto-Maadi) and then Naqada-period villages on geziras and levees beside the central and eastern branches, about one per 20 km. Every excavated delta settlement of this date sits on a gezira and was found because the mound stands above the silt (Buto, Sais, Tell el-Farkha, Tell el-Samara); the residuals report an unexplained shortfall in 16 of 25 land hexes at 4,000 BCE and 13 at 3,000 BCE in the best-surveyed part of Egypt. A stopgap until the EES Delta Survey is ingested.",
+     "Rule nile_delta_villages in data/settlements/inferred.toml, from data/places/plans/nile_delta.toml"
+    ],
+    "inferred": {
+     "rule": "nile_delta_villages",
+     "plan": "data/places/plans/nile_delta.toml",
+     "confidence": "medium",
+     "branch": "nile-sebennytic"
+    },
+    "key": "inferred:nile_delta_villages:2"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 145986773,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     31.1483,
+     31.2462
+    ]
+   },
+   "properties": {
+    "name": "Inferred village 3",
+    "founding": -4000,
+    "abandoned": -2000,
+    "occupation": [
+     [
+      -4000,
+      -2000
+     ]
+    ],
+    "type": "settlement",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Lower Egyptian (Buto-Maadi) and then Naqada-period villages on geziras and levees beside the central and eastern branches, about one per 20 km. Every excavated delta settlement of this date sits on a gezira and was found because the mound stands above the silt (Buto, Sais, Tell el-Farkha, Tell el-Samara); the residuals report an unexplained shortfall in 16 of 25 land hexes at 4,000 BCE and 13 at 3,000 BCE in the best-surveyed part of Egypt. A stopgap until the EES Delta Survey is ingested.",
+     "Rule nile_delta_villages in data/settlements/inferred.toml, from data/places/plans/nile_delta.toml"
+    ],
+    "inferred": {
+     "rule": "nile_delta_villages",
+     "plan": "data/places/plans/nile_delta.toml",
+     "confidence": "medium",
+     "branch": "nile-sebennytic"
+    },
+    "key": "inferred:nile_delta_villages:3"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2530673014,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     31.1334,
+     31.431
+    ]
+   },
+   "properties": {
+    "name": "Inferred village 4",
+    "founding": -4000,
+    "abandoned": -2000,
+    "occupation": [
+     [
+      -4000,
+      -2000
+     ]
+    ],
+    "type": "settlement",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Lower Egyptian (Buto-Maadi) and then Naqada-period villages on geziras and levees beside the central and eastern branches, about one per 20 km. Every excavated delta settlement of this date sits on a gezira and was found because the mound stands above the silt (Buto, Sais, Tell el-Farkha, Tell el-Samara); the residuals report an unexplained shortfall in 16 of 25 land hexes at 4,000 BCE and 13 at 3,000 BCE in the best-surveyed part of Egypt. A stopgap until the EES Delta Survey is ingested.",
+     "Rule nile_delta_villages in data/settlements/inferred.toml, from data/places/plans/nile_delta.toml"
+    ],
+    "inferred": {
+     "rule": "nile_delta_villages",
+     "plan": "data/places/plans/nile_delta.toml",
+     "confidence": "medium",
+     "branch": "nile-sebennytic"
+    },
+    "key": "inferred:nile_delta_villages:4"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 3788517856,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     31.4451,
+     30.5098
+    ]
+   },
+   "properties": {
+    "name": "Inferred village 5",
+    "founding": -4000,
+    "abandoned": -2000,
+    "occupation": [
+     [
+      -4000,
+      -2000
+     ]
+    ],
+    "type": "settlement",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Lower Egyptian (Buto-Maadi) and then Naqada-period villages on geziras and levees beside the central and eastern branches, about one per 20 km. Every excavated delta settlement of this date sits on a gezira and was found because the mound stands above the silt (Buto, Sais, Tell el-Farkha, Tell el-Samara); the residuals report an unexplained shortfall in 16 of 25 land hexes at 4,000 BCE and 13 at 3,000 BCE in the best-surveyed part of Egypt. A stopgap until the EES Delta Survey is ingested.",
+     "Rule nile_delta_villages in data/settlements/inferred.toml, from data/places/plans/nile_delta.toml"
+    ],
+    "inferred": {
+     "rule": "nile_delta_villages",
+     "plan": "data/places/plans/nile_delta.toml",
+     "confidence": "medium",
+     "branch": "nile-pelusiac"
+    },
+    "key": "inferred:nile_delta_villages:5"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2027511898,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     31.6257,
+     30.6091
+    ]
+   },
+   "properties": {
+    "name": "Inferred village 6",
+    "founding": -4000,
+    "abandoned": -2000,
+    "occupation": [
+     [
+      -4000,
+      -2000
+     ]
+    ],
+    "type": "settlement",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Lower Egyptian (Buto-Maadi) and then Naqada-period villages on geziras and levees beside the central and eastern branches, about one per 20 km. Every excavated delta settlement of this date sits on a gezira and was found because the mound stands above the silt (Buto, Sais, Tell el-Farkha, Tell el-Samara); the residuals report an unexplained shortfall in 16 of 25 land hexes at 4,000 BCE and 13 at 3,000 BCE in the best-surveyed part of Egypt. A stopgap until the EES Delta Survey is ingested.",
+     "Rule nile_delta_villages in data/settlements/inferred.toml, from data/places/plans/nile_delta.toml"
+    ],
+    "inferred": {
+     "rule": "nile_delta_villages",
+     "plan": "data/places/plans/nile_delta.toml",
+     "confidence": "medium",
+     "branch": "nile-pelusiac"
+    },
+    "key": "inferred:nile_delta_villages:6"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 266227916,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     32.3196,
+     30.957
+    ]
+   },
+   "properties": {
+    "name": "Inferred village 7",
+    "founding": -4000,
+    "abandoned": -2000,
+    "occupation": [
+     [
+      -4000,
+      -2000
+     ]
+    ],
+    "type": "settlement",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Lower Egyptian (Buto-Maadi) and then Naqada-period villages on geziras and levees beside the central and eastern branches, about one per 20 km. Every excavated delta settlement of this date sits on a gezira and was found because the mound stands above the silt (Buto, Sais, Tell el-Farkha, Tell el-Samara); the residuals report an unexplained shortfall in 16 of 25 land hexes at 4,000 BCE and 13 at 3,000 BCE in the best-surveyed part of Egypt. A stopgap until the EES Delta Survey is ingested.",
+     "Rule nile_delta_villages in data/settlements/inferred.toml, from data/places/plans/nile_delta.toml"
+    ],
+    "inferred": {
+     "rule": "nile_delta_villages",
+     "plan": "data/places/plans/nile_delta.toml",
+     "confidence": "medium",
+     "branch": "nile-pelusiac"
+    },
+    "key": "inferred:nile_delta_villages:7"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2673954141,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     32.5076,
+     31.0546
+    ]
+   },
+   "properties": {
+    "name": "Inferred village 8",
+    "founding": -4000,
+    "abandoned": -2000,
+    "occupation": [
+     [
+      -4000,
+      -2000
+     ]
+    ],
+    "type": "settlement",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Lower Egyptian (Buto-Maadi) and then Naqada-period villages on geziras and levees beside the central and eastern branches, about one per 20 km. Every excavated delta settlement of this date sits on a gezira and was found because the mound stands above the silt (Buto, Sais, Tell el-Farkha, Tell el-Samara); the residuals report an unexplained shortfall in 16 of 25 land hexes at 4,000 BCE and 13 at 3,000 BCE in the best-surveyed part of Egypt. A stopgap until the EES Delta Survey is ingested.",
+     "Rule nile_delta_villages in data/settlements/inferred.toml, from data/places/plans/nile_delta.toml"
+    ],
+    "inferred": {
+     "rule": "nile_delta_villages",
+     "plan": "data/places/plans/nile_delta.toml",
+     "confidence": "medium",
+     "branch": "nile-pelusiac"
+    },
+    "key": "inferred:nile_delta_villages:8"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 254308141,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     30.6602,
+     30.7772
+    ]
+   },
+   "properties": {
+    "name": "Inferred camp 1",
+    "founding": -6000,
+    "abandoned": -5000,
+    "occupation": [
+     [
+      -6000,
+      -5000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (low confidence): A few fishing and herding camps on gezira margins in the southern and western delta, none in the unstable northern third. Sais has a sequence from the sixth millennium BCE and Merimde starts about 5,100 BCE; the Fayum, just south, has dated camps from 7,000 BCE. Zhao et al. (2025) put herding in the delta before about 7000 cal BP but a delta too unstable to settle much before then. Anything of this date is under metres of silt.",
+     "Rule nile_delta_camps in data/settlements/inferred.toml, from data/places/plans/nile_delta.toml"
+    ],
+    "inferred": {
+     "rule": "nile_delta_camps",
+     "plan": "data/places/plans/nile_delta.toml",
+     "confidence": "low",
+     "branch": "nile-canopic"
+    },
+    "key": "inferred:nile_delta_camps:1"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2518761111,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     31.3248,
+     30.1994
+    ]
+   },
+   "properties": {
+    "name": "Inferred camp 2",
+    "founding": -6000,
+    "abandoned": -5000,
+    "occupation": [
+     [
+      -6000,
+      -5000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (low confidence): A few fishing and herding camps on gezira margins in the southern and western delta, none in the unstable northern third. Sais has a sequence from the sixth millennium BCE and Merimde starts about 5,100 BCE; the Fayum, just south, has dated camps from 7,000 BCE. Zhao et al. (2025) put herding in the delta before about 7000 cal BP but a delta too unstable to settle much before then. Anything of this date is under metres of silt.",
+     "Rule nile_delta_camps in data/settlements/inferred.toml, from data/places/plans/nile_delta.toml"
+    ],
+    "inferred": {
+     "rule": "nile_delta_camps",
+     "plan": "data/places/plans/nile_delta.toml",
+     "confidence": "low",
+     "branch": "nile-pelusiac"
+    },
+    "key": "inferred:nile_delta_camps:2"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 3777367553,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     31.4594,
+     30.5439
+    ]
+   },
+   "properties": {
+    "name": "Inferred camp 3",
+    "founding": -6000,
+    "abandoned": -5000,
+    "occupation": [
+     [
+      -6000,
+      -5000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (low confidence): A few fishing and herding camps on gezira margins in the southern and western delta, none in the unstable northern third. Sais has a sequence from the sixth millennium BCE and Merimde starts about 5,100 BCE; the Fayum, just south, has dated camps from 7,000 BCE. Zhao et al. (2025) put herding in the delta before about 7000 cal BP but a delta too unstable to settle much before then. Anything of this date is under metres of silt.",
+     "Rule nile_delta_camps in data/settlements/inferred.toml, from data/places/plans/nile_delta.toml"
+    ],
+    "inferred": {
+     "rule": "nile_delta_camps",
+     "plan": "data/places/plans/nile_delta.toml",
+     "confidence": "low",
+     "branch": "nile-pelusiac"
+    },
+    "key": "inferred:nile_delta_camps:3"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2135071650,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     30.8095,
+     30.644
+    ]
+   },
+   "properties": {
+    "name": "Inferred camp 4",
+    "founding": -5000,
+    "abandoned": -4000,
+    "occupation": [
+     [
+      -5000,
+      -4000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (low confidence): A few fishing and herding camps on gezira margins in the southern and western delta, none in the unstable northern third. Sais has a sequence from the sixth millennium BCE and Merimde starts about 5,100 BCE; the Fayum, just south, has dated camps from 7,000 BCE. Zhao et al. (2025) put herding in the delta before about 7000 cal BP but a delta too unstable to settle much before then. Anything of this date is under metres of silt.",
+     "Rule nile_delta_camps in data/settlements/inferred.toml, from data/places/plans/nile_delta.toml"
+    ],
+    "inferred": {
+     "rule": "nile_delta_camps",
+     "plan": "data/places/plans/nile_delta.toml",
+     "confidence": "low",
+     "branch": "nile-canopic"
+    },
+    "key": "inferred:nile_delta_camps:4"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 138783540,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     31.3646,
+     30.3838
+    ]
+   },
+   "properties": {
+    "name": "Inferred camp 5",
+    "founding": -5000,
+    "abandoned": -4000,
+    "occupation": [
+     [
+      -5000,
+      -4000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (low confidence): A few fishing and herding camps on gezira margins in the southern and western delta, none in the unstable northern third. Sais has a sequence from the sixth millennium BCE and Merimde starts about 5,100 BCE; the Fayum, just south, has dated camps from 7,000 BCE. Zhao et al. (2025) put herding in the delta before about 7000 cal BP but a delta too unstable to settle much before then. Anything of this date is under metres of silt.",
+     "Rule nile_delta_camps in data/settlements/inferred.toml, from data/places/plans/nile_delta.toml"
+    ],
+    "inferred": {
+     "rule": "nile_delta_camps",
+     "plan": "data/places/plans/nile_delta.toml",
+     "confidence": "low",
+     "branch": "nile-pelusiac"
+    },
+    "key": "inferred:nile_delta_camps:5"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2437741198,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     31.6503,
+     30.6395
+    ]
+   },
+   "properties": {
+    "name": "Inferred camp 6",
+    "founding": -5000,
+    "abandoned": -4000,
+    "occupation": [
+     [
+      -5000,
+      -4000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (low confidence): A few fishing and herding camps on gezira margins in the southern and western delta, none in the unstable northern third. Sais has a sequence from the sixth millennium BCE and Merimde starts about 5,100 BCE; the Fayum, just south, has dated camps from 7,000 BCE. Zhao et al. (2025) put herding in the delta before about 7000 cal BP but a delta too unstable to settle much before then. Anything of this date is under metres of silt.",
+     "Rule nile_delta_camps in data/settlements/inferred.toml, from data/places/plans/nile_delta.toml"
+    ],
+    "inferred": {
+     "rule": "nile_delta_camps",
+     "plan": "data/places/plans/nile_delta.toml",
+     "confidence": "low",
+     "branch": "nile-pelusiac"
+    },
+    "key": "inferred:nile_delta_camps:6"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2913555073,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     44.1333,
+     12.6333
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 1",
+    "founding": -6000,
+    "abandoned": -5000,
+    "occupation": [
+     [
+      -6000,
+      -5000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 1
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:1"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 882901819,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     42.8667,
+     11.8
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 2",
+    "founding": -6000,
+    "abandoned": -5000,
+    "occupation": [
+     [
+      -6000,
+      -5000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:2"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 1135031213,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     42.7667,
+     13.0333
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 3",
+    "founding": -6000,
+    "abandoned": -5000,
+    "occupation": [
+     [
+      -6000,
+      -5000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml",
+     "Its hex is under the sea by 4600 BCE."
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 0,
+     "drowned": -4600
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:3"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 3720586766,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     42.3,
+     13.5667
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 4",
+    "founding": -6000,
+    "abandoned": -5000,
+    "occupation": [
+     [
+      -6000,
+      -5000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:4"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2865010328,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.3333,
+     13.1
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 5",
+    "founding": -6000,
+    "abandoned": -5000,
+    "occupation": [
+     [
+      -6000,
+      -5000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 1
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:5"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 869123874,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.2,
+     12.6
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 6",
+    "founding": -6000,
+    "abandoned": -5000,
+    "occupation": [
+     [
+      -6000,
+      -5000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:6"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 1154152372,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.2333,
+     11.5
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 7",
+    "founding": -6000,
+    "abandoned": -5000,
+    "occupation": [
+     [
+      -6000,
+      -5000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:7"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 3564497445,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     44.1333,
+     12.6333
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 8",
+    "founding": -5000,
+    "abandoned": -4000,
+    "occupation": [
+     [
+      -5000,
+      -4000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml",
+     "Tagged obsidian exchange (low confidence): One camp on each shore takes part in crossing the southern Red Sea by boat. Obsidian tools appear on Yemen's al-Salif peninsula as early as 5000 BC, and Tihama obsidian has been sourced to Nabro volcano in the Danakil, 175 km across the water (Lee 2023, citing Oppenheimer et al. 2019); the strait is the shortest crossing. The 5000 BC date is given without its source, hence low."
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 1,
+     "tag": "obsidian exchange"
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:8"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2742213299,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     42.8667,
+     11.8
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 9",
+    "founding": -5000,
+    "abandoned": -4000,
+    "occupation": [
+     [
+      -5000,
+      -4000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml",
+     "Tagged obsidian exchange (low confidence): One camp on each shore takes part in crossing the southern Red Sea by boat. Obsidian tools appear on Yemen's al-Salif peninsula as early as 5000 BC, and Tihama obsidian has been sourced to Nabro volcano in the Danakil, 175 km across the water (Lee 2023, citing Oppenheimer et al. 2019); the strait is the shortest crossing. The 5000 BC date is given without its source, hence low."
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 0,
+     "tag": "obsidian exchange"
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:9"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 1858717125,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.3,
+     13.6
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 10",
+    "founding": -5000,
+    "abandoned": -4000,
+    "occupation": [
+     [
+      -5000,
+      -4000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 1
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:10"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 432993619,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     42.3,
+     13.5333
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 11",
+    "founding": -5000,
+    "abandoned": -4000,
+    "occupation": [
+     [
+      -5000,
+      -4000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:11"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2160567529,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.3333,
+     13.1
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 12",
+    "founding": -5000,
+    "abandoned": -4000,
+    "occupation": [
+     [
+      -5000,
+      -4000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 1
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:12"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 4156593279,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.2,
+     12.6
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 13",
+    "founding": -5000,
+    "abandoned": -4000,
+    "occupation": [
+     [
+      -5000,
+      -4000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:13"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 1772356060,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.2333,
+     11.5
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 14",
+    "founding": -5000,
+    "abandoned": -4000,
+    "occupation": [
+     [
+      -5000,
+      -4000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:14"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 514011466,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     44.1333,
+     12.6333
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 15",
+    "founding": -4000,
+    "abandoned": -3000,
+    "occupation": [
+     [
+      -4000,
+      -3000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml",
+     "Tagged obsidian exchange (low confidence): One camp on each shore takes part in crossing the southern Red Sea by boat. Obsidian tools appear on Yemen's al-Salif peninsula as early as 5000 BC, and Tihama obsidian has been sourced to Nabro volcano in the Danakil, 175 km across the water (Lee 2023, citing Oppenheimer et al. 2019); the strait is the shortest crossing. The 5000 BC date is given without its source, hence low."
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 1,
+     "tag": "obsidian exchange"
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:15"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2276090096,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     42.8667,
+     11.8
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 16",
+    "founding": -4000,
+    "abandoned": -3000,
+    "occupation": [
+     [
+      -4000,
+      -3000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml",
+     "Tagged obsidian exchange (low confidence): One camp on each shore takes part in crossing the southern Red Sea by boat. Obsidian tools appear on Yemen's al-Salif peninsula as early as 5000 BC, and Tihama obsidian has been sourced to Nabro volcano in the Danakil, 175 km across the water (Lee 2023, citing Oppenheimer et al. 2019); the strait is the shortest crossing. The 5000 BC date is given without its source, hence low."
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 0,
+     "tag": "obsidian exchange"
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:16"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 4037890150,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.3,
+     13.6
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 17",
+    "founding": -4000,
+    "abandoned": -3000,
+    "occupation": [
+     [
+      -4000,
+      -3000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 1
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:17"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 1611812343,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     42.3,
+     13.5333
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 18",
+    "founding": -4000,
+    "abandoned": -3000,
+    "occupation": [
+     [
+      -4000,
+      -3000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:18"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 387284321,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.3333,
+     13.1333
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 19",
+    "founding": -4000,
+    "abandoned": -3000,
+    "occupation": [
+     [
+      -4000,
+      -3000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 1
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:19"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 1172608518,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.1667,
+     12.6
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 20",
+    "founding": -4000,
+    "abandoned": -3000,
+    "occupation": [
+     [
+      -4000,
+      -3000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:20"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 853780112,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.2333,
+     11.4667
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 21",
+    "founding": -4000,
+    "abandoned": -3000,
+    "occupation": [
+     [
+      -4000,
+      -3000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:21"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2884302634,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     44.1333,
+     12.6667
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 22",
+    "founding": -3000,
+    "abandoned": -2000,
+    "occupation": [
+     [
+      -3000,
+      -2000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml",
+     "Tagged obsidian exchange (low confidence): One camp on each shore takes part in crossing the southern Red Sea by boat. Obsidian tools appear on Yemen's al-Salif peninsula as early as 5000 BC, and Tihama obsidian has been sourced to Nabro volcano in the Danakil, 175 km across the water (Lee 2023, citing Oppenheimer et al. 2019); the strait is the shortest crossing. The 5000 BC date is given without its source, hence low."
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 1,
+     "tag": "obsidian exchange"
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:22"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 3706570684,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     42.8667,
+     11.8
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 23",
+    "founding": -3000,
+    "abandoned": -2000,
+    "occupation": [
+     [
+      -3000,
+      -2000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml",
+     "Tagged obsidian exchange (low confidence): One camp on each shore takes part in crossing the southern Red Sea by boat. Obsidian tools appear on Yemen's al-Salif peninsula as early as 5000 BC, and Tihama obsidian has been sourced to Nabro volcano in the Danakil, 175 km across the water (Lee 2023, citing Oppenheimer et al. 2019); the strait is the shortest crossing. The 5000 BC date is given without its source, hence low."
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 0,
+     "tag": "obsidian exchange"
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:23"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 1116295711,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.3,
+     13.6
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 24",
+    "founding": -3000,
+    "abandoned": -2000,
+    "occupation": [
+     [
+      -3000,
+      -2000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 1
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:24"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 898523785,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     42.3,
+     13.5333
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 25",
+    "founding": -3000,
+    "abandoned": -2000,
+    "occupation": [
+     [
+      -3000,
+      -2000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:25"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2894541619,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.3333,
+     13.1333
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 26",
+    "founding": -3000,
+    "abandoned": -2000,
+    "occupation": [
+     [
+      -3000,
+      -2000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 1
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:26"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 3682599845,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     42.8333,
+     12.8333
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 27",
+    "founding": -3000,
+    "abandoned": -2000,
+    "occupation": [
+     [
+      -3000,
+      -2000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:27"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 1262427700,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.2333,
+     12.5333
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 28",
+    "founding": -3000,
+    "abandoned": -2000,
+    "occupation": [
+     [
+      -3000,
+      -2000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:28"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 1010314914,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.2333,
+     11.4667
+    ]
+   },
+   "properties": {
+    "name": "Inferred shore camp 29",
+    "founding": -3000,
+    "abandoned": -2000,
+    "occupation": [
+     [
+      -3000,
+      -2000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (medium confidence): Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess.",
+     "Rule bab_el_mandeb_shore_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_shore_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "medium",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_shore_camps:29"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 1171487631,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.3667,
+     12.5
+    ]
+   },
+   "properties": {
+    "name": "Inferred forager camp 1",
+    "founding": -10000,
+    "abandoned": -9000,
+    "occupation": [
+     [
+      -10000,
+      -9000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (low confidence): A few forager camps on the early Holocene shore at the narrows and on the shelf that was then dry. While sea level was below about -50 m the channels south of the Hanish Sill were under 4-5 km wide, both shores in sight of each other (Lambeck et al. 2011). That shore and its shelf are now under water, which is why no midden in the Red Sea is older than about 8,000 cal BP. Nothing of this date is known on either shore: this rests on the environment alone, and coastal use here was probably episodic (Bailey et al. 2019). Deliberately few.",
+     "Rule bab_el_mandeb_lowstand_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml",
+     "Its hex is under the sea by 8300 BCE."
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_lowstand_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "low",
+     "shore": 0,
+     "drowned": -8300
+    },
+    "key": "inferred:bab_el_mandeb_lowstand_camps:1"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 3705285173,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.8,
+     12.5333
+    ]
+   },
+   "properties": {
+    "name": "Inferred forager camp 2",
+    "founding": -10000,
+    "abandoned": -9000,
+    "occupation": [
+     [
+      -10000,
+      -9000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (low confidence): A few forager camps on the early Holocene shore at the narrows and on the shelf that was then dry. While sea level was below about -50 m the channels south of the Hanish Sill were under 4-5 km wide, both shores in sight of each other (Lambeck et al. 2011). That shore and its shelf are now under water, which is why no midden in the Red Sea is older than about 8,000 cal BP. Nothing of this date is known on either shore: this rests on the environment alone, and coastal use here was probably episodic (Bailey et al. 2019). Deliberately few.",
+     "Rule bab_el_mandeb_lowstand_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml",
+     "Its hex is under the sea by 8300 BCE."
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_lowstand_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "low",
+     "shore": 1,
+     "drowned": -8300
+    },
+    "key": "inferred:bab_el_mandeb_lowstand_camps:2"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2883394211,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     42.9333,
+     13.4667
+    ]
+   },
+   "properties": {
+    "name": "Inferred forager camp 3",
+    "founding": -10000,
+    "abandoned": -9000,
+    "occupation": [
+     [
+      -10000,
+      -9000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (low confidence): A few forager camps on the early Holocene shore at the narrows and on the shelf that was then dry. While sea level was below about -50 m the channels south of the Hanish Sill were under 4-5 km wide, both shores in sight of each other (Lambeck et al. 2011). That shore and its shelf are now under water, which is why no midden in the Red Sea is older than about 8,000 cal BP. Nothing of this date is known on either shore: this rests on the environment alone, and coastal use here was probably episodic (Bailey et al. 2019). Deliberately few.",
+     "Rule bab_el_mandeb_lowstand_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml",
+     "Its hex is under the sea by 7800 BCE."
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_lowstand_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "low",
+     "shore": 1,
+     "drowned": -7800
+    },
+    "key": "inferred:bab_el_mandeb_lowstand_camps:3"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 901353216,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.3,
+     12.5333
+    ]
+   },
+   "properties": {
+    "name": "Inferred forager camp 4",
+    "founding": -9000,
+    "abandoned": -8000,
+    "occupation": [
+     [
+      -9000,
+      -8000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (low confidence): A few forager camps on the early Holocene shore at the narrows and on the shelf that was then dry. While sea level was below about -50 m the channels south of the Hanish Sill were under 4-5 km wide, both shores in sight of each other (Lambeck et al. 2011). That shore and its shelf are now under water, which is why no midden in the Red Sea is older than about 8,000 cal BP. Nothing of this date is known on either shore: this rests on the environment alone, and coastal use here was probably episodic (Bailey et al. 2019). Deliberately few.",
+     "Rule bab_el_mandeb_lowstand_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_lowstand_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "low",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_lowstand_camps:4"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 1119797142,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.0,
+     13.6333
+    ]
+   },
+   "properties": {
+    "name": "Inferred forager camp 5",
+    "founding": -9000,
+    "abandoned": -8000,
+    "occupation": [
+     [
+      -9000,
+      -8000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (low confidence): A few forager camps on the early Holocene shore at the narrows and on the shelf that was then dry. While sea level was below about -50 m the channels south of the Hanish Sill were under 4-5 km wide, both shores in sight of each other (Lambeck et al. 2011). That shore and its shelf are now under water, which is why no midden in the Red Sea is older than about 8,000 cal BP. Nothing of this date is known on either shore: this rests on the environment alone, and coastal use here was probably episodic (Bailey et al. 2019). Deliberately few.",
+     "Rule bab_el_mandeb_lowstand_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml",
+     "Its hex is under the sea by 5800 BCE."
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_lowstand_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "low",
+     "shore": 1,
+     "drowned": -5800
+    },
+    "key": "inferred:bab_el_mandeb_lowstand_camps:5"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 3686264364,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     42.4333,
+     13.5667
+    ]
+   },
+   "properties": {
+    "name": "Inferred forager camp 6",
+    "founding": -9000,
+    "abandoned": -8000,
+    "occupation": [
+     [
+      -9000,
+      -8000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (low confidence): A few forager camps on the early Holocene shore at the narrows and on the shelf that was then dry. While sea level was below about -50 m the channels south of the Hanish Sill were under 4-5 km wide, both shores in sight of each other (Lambeck et al. 2011). That shore and its shelf are now under water, which is why no midden in the Red Sea is older than about 8,000 cal BP. Nothing of this date is known on either shore: this rests on the environment alone, and coastal use here was probably episodic (Bailey et al. 2019). Deliberately few.",
+     "Rule bab_el_mandeb_lowstand_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_lowstand_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "low",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_lowstand_camps:6"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2897272506,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.3333,
+     12.5
+    ]
+   },
+   "properties": {
+    "name": "Inferred forager camp 7",
+    "founding": -8000,
+    "abandoned": -7000,
+    "occupation": [
+     [
+      -8000,
+      -7000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (low confidence): A few forager camps on the early Holocene shore at the narrows and on the shelf that was then dry. While sea level was below about -50 m the channels south of the Hanish Sill were under 4-5 km wide, both shores in sight of each other (Lambeck et al. 2011). That shore and its shelf are now under water, which is why no midden in the Red Sea is older than about 8,000 cal BP. Nothing of this date is known on either shore: this rests on the environment alone, and coastal use here was probably episodic (Bailey et al. 2019). Deliberately few.",
+     "Rule bab_el_mandeb_lowstand_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_lowstand_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "low",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_lowstand_camps:7"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 1007665963,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.1,
+     13.6667
+    ]
+   },
+   "properties": {
+    "name": "Inferred forager camp 8",
+    "founding": -8000,
+    "abandoned": -7000,
+    "occupation": [
+     [
+      -8000,
+      -7000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (low confidence): A few forager camps on the early Holocene shore at the narrows and on the shelf that was then dry. While sea level was below about -50 m the channels south of the Hanish Sill were under 4-5 km wide, both shores in sight of each other (Lambeck et al. 2011). That shore and its shelf are now under water, which is why no midden in the Red Sea is older than about 8,000 cal BP. Nothing of this date is known on either shore: this rests on the environment alone, and coastal use here was probably episodic (Bailey et al. 2019). Deliberately few.",
+     "Rule bab_el_mandeb_lowstand_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml",
+     "Its hex is under the sea by 5800 BCE."
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_lowstand_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "low",
+     "shore": 1,
+     "drowned": -5800
+    },
+    "key": "inferred:bab_el_mandeb_lowstand_camps:8"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 1258877885,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     42.3333,
+     13.6
+    ]
+   },
+   "properties": {
+    "name": "Inferred forager camp 9",
+    "founding": -8000,
+    "abandoned": -7000,
+    "occupation": [
+     [
+      -8000,
+      -7000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (low confidence): A few forager camps on the early Holocene shore at the narrows and on the shelf that was then dry. While sea level was below about -50 m the channels south of the Hanish Sill were under 4-5 km wide, both shores in sight of each other (Lambeck et al. 2011). That shore and its shelf are now under water, which is why no midden in the Red Sea is older than about 8,000 cal BP. Nothing of this date is known on either shore: this rests on the environment alone, and coastal use here was probably episodic (Bailey et al. 2019). Deliberately few.",
+     "Rule bab_el_mandeb_lowstand_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_lowstand_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "low",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_lowstand_camps:9"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2308543211,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.3333,
+     12.4333
+    ]
+   },
+   "properties": {
+    "name": "Inferred forager camp 10",
+    "founding": -7000,
+    "abandoned": -6000,
+    "occupation": [
+     [
+      -7000,
+      -6000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (low confidence): A few forager camps on the early Holocene shore at the narrows and on the shelf that was then dry. While sea level was below about -50 m the channels south of the Hanish Sill were under 4-5 km wide, both shores in sight of each other (Lambeck et al. 2011). That shore and its shelf are now under water, which is why no midden in the Red Sea is older than about 8,000 cal BP. Nothing of this date is known on either shore: this rests on the environment alone, and coastal use here was probably episodic (Bailey et al. 2019). Deliberately few.",
+     "Rule bab_el_mandeb_lowstand_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_lowstand_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "low",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_lowstand_camps:10"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 4271809149,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.2,
+     13.6667
+    ]
+   },
+   "properties": {
+    "name": "Inferred forager camp 11",
+    "founding": -7000,
+    "abandoned": -6000,
+    "occupation": [
+     [
+      -7000,
+      -6000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (low confidence): A few forager camps on the early Holocene shore at the narrows and on the shelf that was then dry. While sea level was below about -50 m the channels south of the Hanish Sill were under 4-5 km wide, both shores in sight of each other (Lambeck et al. 2011). That shore and its shelf are now under water, which is why no midden in the Red Sea is older than about 8,000 cal BP. Nothing of this date is known on either shore: this rests on the environment alone, and coastal use here was probably episodic (Bailey et al. 2019). Deliberately few.",
+     "Rule bab_el_mandeb_lowstand_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml",
+     "Its hex is under the sea by 5800 BCE."
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_lowstand_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "low",
+     "shore": 1,
+     "drowned": -5800
+    },
+    "key": "inferred:bab_el_mandeb_lowstand_camps:11"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 1738011591,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     42.3,
+     13.6
+    ]
+   },
+   "properties": {
+    "name": "Inferred forager camp 12",
+    "founding": -7000,
+    "abandoned": -6000,
+    "occupation": [
+     [
+      -7000,
+      -6000
+     ]
+    ],
+    "type": "open air",
+    "population": {},
+    "importance": 0,
+    "evidence": 0,
+    "sources": [
+     "inferred"
+    ],
+    "references": [
+     "Inferred (low confidence): A few forager camps on the early Holocene shore at the narrows and on the shelf that was then dry. While sea level was below about -50 m the channels south of the Hanish Sill were under 4-5 km wide, both shores in sight of each other (Lambeck et al. 2011). That shore and its shelf are now under water, which is why no midden in the Red Sea is older than about 8,000 cal BP. Nothing of this date is known on either shore: this rests on the environment alone, and coastal use here was probably episodic (Bailey et al. 2019). Deliberately few.",
+     "Rule bab_el_mandeb_lowstand_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
+    ],
+    "inferred": {
+     "rule": "bab_el_mandeb_lowstand_camps",
+     "plan": "data/places/plans/bab_el_mandeb.toml",
+     "confidence": "low",
+     "shore": 0
+    },
+    "key": "inferred:bab_el_mandeb_lowstand_camps:12"
+   }
+  }
+ ]
+}

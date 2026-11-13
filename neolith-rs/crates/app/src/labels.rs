@@ -166,7 +166,43 @@ pub fn settlement_label(name: &str) -> Option<String> {
         Some(i) if clean[i + 6..].chars().all(|c| c.is_ascii_digit() || c.is_whitespace()) => clean[..i].to_string(),
         _ => clean,
     };
-    Some(clean)
+    Some(town_of_address(&clean).unwrap_or(clean))
+}
+
+/// Excavations named by street address, as UK developer-led digs often are:
+/// the town after the street. "Rear of 26 Market Place Bedale" → "Bedale",
+/// "Padholme Road, Peterborough" → "Peterborough", "118 Victoria Dock Road
+/// E16 Canning Town Newham" → "Canning Town Newham". `None` when the name is
+/// not an address, or nothing follows the street ("Hayonim Terrace" stays).
+fn town_of_address(name: &str) -> Option<String> {
+    const STREET: [&str; 11] =
+        ["road", "rd", "street", "lane", "avenue", "place", "terrace", "crescent", "close", "drive", "gardens"];
+    let words: Vec<&str> = name.split_whitespace().collect();
+    let bare = |w: &str| w.trim_matches(|c: char| !c.is_alphanumeric()).to_lowercase();
+    // The last street word with a capitalised word somewhere before it.
+    let last = words.iter().enumerate().skip(1).rev().find(|(_, w)| STREET.contains(&bare(w).as_str()))?.0;
+    let postcode = |w: &str| {
+        let b: Vec<char> = w.chars().collect();
+        let letters = b.iter().take_while(|c| c.is_ascii_uppercase()).count();
+        (1..=2).contains(&letters) && b.len() > letters && b.len() <= letters + 3 && b[letters].is_ascii_digit()
+    };
+    let rest: Vec<&str> = words[last + 1..]
+        .iter()
+        .map(|w| w.trim_matches(|c: char| c == ',' || c == ';'))
+        .filter(|w| !w.is_empty() && !postcode(w))
+        .collect();
+    // A town is capitalised words with no digits ("road 4 site 3", "Road
+    // EKA09" are not), and not one generic word naming the feature on the
+    // street ("Inch Road Station", "Staines Road Farm", "Rezaiyeh Road Tepe").
+    const FEATURE: [&str; 14] =
+        ["station", "house", "farm", "tepe", "site", "cave", "quarry", "pit", "north", "south", "east", "west", "nord", "sud"];
+    if rest.is_empty()
+        || !rest.iter().all(|w| w.chars().next().is_some_and(char::is_uppercase) && !w.chars().any(|c| c.is_ascii_digit()))
+        || (rest.len() == 1 && FEATURE.contains(&bare(rest[0]).as_str()))
+    {
+        return None;
+    }
+    Some(rest.join(" "))
 }
 
 /// Draws one string along a screen polyline, centred, glyph by glyph.
@@ -239,8 +275,96 @@ fn on_screen(view: &View, rect: Rect, p: Pos2, ll: LonLat, grid: &neolith_core::
     rect.contains(p) && view.pick(local).and_then(|q| grid.hex_at(q)) == grid.hex_at(ll)
 }
 
+/// How squarely the board at `p` faces the camera: the cosine between the
+/// surface normal there and the way to the eye. At or below 0 the point is
+/// round the back of the curve; just above 0 it is on the horizon, where the
+/// board is seen edge-on and a name would be squashed into a smear.
+fn facing(view: &View, relief: &Relief, p: LonLat) -> f64 {
+    let pos = view.proj.surface_at(p, view.t, relief.at(p));
+    view.proj.normal(p, view.t).dot((view.eye - pos).normalize_or_zero())
+}
+
+/// Least [`facing`] for every point under a name: about 72° off the
+/// surface normal, so names stop short of the horizon, never past it.
+const MIN_FACING: f64 = 0.3;
+
+/// Fixed points along a river where its name may sit, as fractions of its
+/// length: the middle, then the quarters, eighths and sixteenths.
+fn anchor_fractions() -> impl Iterator<Item = f64> {
+    (1..=4).flat_map(|level| {
+        let n = 1usize << level;
+        (1..n).step_by(2).map(move |k| k as f64 / n as f64)
+    })
+}
+
+/// The screen stretch of `course` (with `cum`, its running length along
+/// the ground) centred on the point `f` of the way along, `width` points
+/// long, or `None` if any of it is off `inside`, behind the camera or turned
+/// away from it.
+#[allow(clippy::too_many_arguments)]
+fn river_stretch(
+    view: &View,
+    relief: &Relief,
+    rect: Rect,
+    inside: Rect,
+    course: &[LonLat],
+    cum: &[f64],
+    f: f64,
+    width: f32,
+) -> Option<Vec<Pos2>> {
+    let total = *cum.last()?;
+    let s = f * total;
+    let i = cum.partition_point(|c| *c < s).clamp(1, course.len() - 1);
+    let u = ((s - cum[i - 1]) / (cum[i] - cum[i - 1]).max(1e-12)).clamp(0.0, 1.0);
+    let (a, b) = (course[i - 1], course[i]);
+    let anchor = LonLat::new(a.lon + (b.lon - a.lon) * u, a.lat + (b.lat - a.lat) * u);
+    let to_screen = |p: LonLat| {
+        if facing(view, relief, p) < MIN_FACING {
+            return None;
+        }
+        let q = view.project_relief(p, relief)?;
+        let q = Pos2::new(rect.left() + q.x as f32, rect.top() + q.y as f32);
+        inside.contains(q).then_some(q)
+    };
+    let centre = to_screen(anchor)?;
+    // Walk out from the anchor each way until half the name fits, ending
+    // exactly at half its width so the anchor is the name's middle.
+    let half = |pts: &mut dyn Iterator<Item = LonLat>| -> Option<Vec<Pos2>> {
+        let (mut out, mut len, mut last) = (Vec::new(), 0.0f32, centre);
+        for p in pts {
+            let q = to_screen(p)?;
+            let d = last.distance(q);
+            if len + d >= width / 2.0 {
+                out.push(last + (q - last) * ((width / 2.0 - len) / d.max(1e-3)));
+                return Some(out);
+            }
+            len += d;
+            out.push(q);
+            last = q;
+        }
+        None
+    };
+    let ahead = half(&mut course[i..].iter().copied())?;
+    let mut back = half(&mut course[..i].iter().rev().copied())?;
+    back.reverse();
+    back.push(centre);
+    back.extend(ahead);
+    Some(back)
+}
+
 /// Smallest font size a sea or region name is set in.
 const MIN_SIZE: f32 = 11.0;
+
+/// Text with a soft dark outline, legible over any map colour (the yellow
+/// population and cereal ramps washed out a plain drop shadow).
+pub fn haloed_text(painter: &Painter, pos: Pos2, align: egui::Align2, text: &str, font: FontId, colour: Color32) {
+    let halo = Color32::from_black_alpha(110);
+    for (dx, dy) in [(-1.5, 0.0), (1.5, 0.0), (0.0, -1.5), (0.0, 1.5), (-1.0, -1.0), (1.0, -1.0), (-1.0, 1.0), (1.0, 1.0)] {
+        painter.text(pos + egui::vec2(dx, dy), align, text, font.clone(), halo);
+    }
+    painter.text(pos + egui::vec2(0.0, 1.5), align, text, font.clone(), Color32::from_black_alpha(90));
+    painter.text(pos, align, text, font, colour);
+}
 
 /// Draws the geography labels for this frame and returns what it drew.
 /// `shown` holds the sea and region names visible last frame (for hysteresis)
@@ -256,6 +380,7 @@ pub fn draw_geography(
     year: Year,
     cam_dist: f64,
     shown: &mut HashSet<String>,
+    avoid: &[Rect],
 ) -> Vec<DrawnLabel> {
     let grid = &world.grid;
     let mut drawn = Vec::new();
@@ -268,7 +393,7 @@ pub fn draw_geography(
         }
         let Some(line) = screen_line(view, relief, rect, (0..=32).map(|i| l.at(i as f64 / 32.0))) else { continue };
         let mid_px = line[line.len() / 2];
-        if !on_screen(view, rect, mid_px, mid, grid) {
+        if !on_screen(view, rect, mid_px, mid, grid) || (0..=8).any(|i| facing(view, relief, l.at(i as f64 / 8.0)) < MIN_FACING) {
             continue;
         }
         let len: f32 = line.windows(2).map(|w| w[0].distance(w[1])).sum();
@@ -311,38 +436,67 @@ pub fn draw_geography(
         }
     }
 
-    // Rivers: large and great ones, named along a stretch around the middle
-    // of their on-screen course, once zoomed in.
+    // Rivers: large and great ones, once zoomed in. A name is pinned to a
+    // fixed point of its river (the middle, else a quarter, an eighth...)
+    // so it stays put as the camera pans and zooms instead of sliding along
+    // the course. The first such point whose stretch is on screen, faces the
+    // camera (never round the curve or squashed on the horizon) and is clear
+    // of the names placed before geography (famous sites) wins; last frame's
+    // point is kept while it still works.
     if cam_dist < 0.55 {
         let mut named: Vec<&str> = Vec::new();
         let font = serif_italic(14.0);
+        let inside = rect.shrink(20.0);
+        let colour = Color32::from_rgba_unmultiplied(18, 62, 128, 225);
+        let halo = Color32::from_rgba_unmultiplied(235, 245, 255, 80);
         for r in world.rivers.iter().filter(|r| r.size >= 2 && r.state_at(year) != RiverState::Absent) {
+            let key_prefix = format!("river\u{1f}{}\u{1f}", r.name);
+            let previous = shown.iter().find(|k| k.starts_with(&key_prefix)).cloned();
+            if let Some(k) = &previous {
+                shown.remove(k);
+            }
             if named.contains(&r.name.as_str()) || r.points.len() < 2 {
                 continue;
             }
-            let Some(line) = screen_line(view, relief, rect, r.points.iter().copied()) else { continue };
-            // The visible part of the course.
-            let visible: Vec<Pos2> = line.iter().copied().filter(|p| rect.shrink(20.0).contains(*p)).collect();
-            if visible.len() < 2 {
-                continue;
+            // The course as drawn (splined), and its length along the ground.
+            let course = crate::board::scene::river_spline(&r.points, 0.03);
+            let mut cum = vec![0.0f64];
+            for w in course.windows(2) {
+                let dx = (w[1].lon - w[0].lon) * ((w[0].lat + w[1].lat) / 2.0).to_radians().cos();
+                cum.push(cum.last().unwrap() + dx.hypot(w[1].lat - w[0].lat));
             }
             let text_w = r.name.chars().count() as f32 * 14.0 * 0.5 + 40.0;
-            // A window of the course around its middle that is long enough.
-            let mid = visible.len() / 2;
-            let (mut a, mut b) = (mid, mid);
-            let len = |a: usize, b: usize| visible[a..=b].windows(2).map(|w| w[0].distance(w[1])).sum::<f32>();
-            while len(a, b) < text_w && (a > 0 || b + 1 < visible.len()) {
-                a = a.saturating_sub(1);
-                b = (b + 1).min(visible.len() - 1);
-            }
-            let colour = Color32::from_rgba_unmultiplied(18, 62, 128, 225);
-            let halo = Color32::from_rgba_unmultiplied(235, 245, 255, 80);
-            let mut seg = visible[a..=b].to_vec();
+            // Clear of earlier names, and not round a hairpin (letters set
+            // round a tight bend overlap and turn upside down): the stretch
+            // runs mostly one way, its ends at least 3/4 of its length apart
+            // and no part of it more than 70° off the line between them.
+            let clear = |seg: &[Pos2]| {
+                let bb = Rect::from_points(seg).expand(9.0);
+                let (first, last) = (seg[0], *seg.last().unwrap());
+                let chord = last - first;
+                let arc: f32 = seg.windows(2).map(|w| w[0].distance(w[1])).sum();
+                let straight = chord.length() >= 0.75 * arc
+                    && seg.windows(2).all(|w| {
+                        let d = w[1] - w[0];
+                        d.length() < 2.0 || d.normalized().dot(chord.normalized()) > 0.34
+                    });
+                straight && !avoid.iter().any(|q| q.intersects(bb))
+            };
+            let kept: Option<f64> = previous.as_ref().and_then(|k| k[key_prefix.len()..].parse().ok());
+            let Some((f, mut seg)) = kept
+                .into_iter()
+                .chain(anchor_fractions())
+                .filter_map(|f| river_stretch(view, relief, rect, inside, &course, &cum, f, text_w).map(|seg| (f, seg)))
+                .find(|(_, seg)| clear(seg))
+            else {
+                continue;
+            };
             if seg.last().unwrap().x < seg[0].x {
                 seg.reverse();
             }
             if let Some(bounds) = draw_along(painter, &seg, &r.name, font.clone(), 0.04, colour, halo) {
                 named.push(&r.name);
+                shown.insert(format!("{key_prefix}{f}"));
                 drawn.push(DrawnLabel { name: r.name.clone(), kind: "river", bounds, size: 14.0 });
             }
         }
@@ -366,9 +520,17 @@ pub fn draw_geography(
         }
         let c = ring.iter().fold((0.0, 0.0), |(x, y), p| (x + p.lon, y + p.lat));
         let centre = LonLat::new(c.0 / ring.len() as f64, c.1 / ring.len() as f64);
+        if facing(view, relief, centre) < MIN_FACING {
+            continue;
+        }
         let Some(q) = view.project_relief(centre, relief) else { continue };
         let p = Pos2::new(rect.left() + q.x as f32, rect.top() + q.y as f32);
         let half = egui::vec2(n * size * 0.3, 0.0);
+        // A lake's name gives way to a famous site's.
+        let est = Rect::from_center_size(p, egui::vec2(half.x * 2.4, size * 1.3));
+        if avoid.iter().any(|q| q.intersects(est)) {
+            continue;
+        }
         if let Some(bounds) = draw_along(
             painter,
             &[p - half * 1.2, p + half * 1.2],
@@ -399,6 +561,19 @@ mod tests {
         assert_eq!(settlement_label("Suberde (Görüklük Tepe)").as_deref(), Some("Suberde"));
         assert_eq!(settlement_label("Canal of Xerxes, Bay of Ierissos").as_deref(), Some("Canal of Xerxes, Bay of Ierissos"));
         assert_eq!(settlement_label("(unnamed)"), None);
+        // Street addresses: the town.
+        assert_eq!(settlement_label("Rear of 26 Market Place Bedale").as_deref(), Some("Bedale"));
+        assert_eq!(settlement_label("241 Blackfriars Road Southwark").as_deref(), Some("Southwark"));
+        assert_eq!(settlement_label("Padholme Road, Peterborough").as_deref(), Some("Peterborough"));
+        assert_eq!(settlement_label("118 Victoria Dock Road E16 Canning Town Newham").as_deref(), Some("Canning Town Newham"));
+        assert_eq!(settlement_label("Uplowman Road Tiverton Devon").as_deref(), Some("Tiverton Devon"));
+        // Not addresses.
+        assert_eq!(settlement_label("Hayonim Terrace").as_deref(), Some("Hayonim Terrace"));
+        assert_eq!(settlement_label("Faraday Road").as_deref(), Some("Faraday Road"));
+        assert_eq!(settlement_label("Tiszaszőlős road 4").as_deref(), Some("Tiszaszőlős road 4"));
+        assert_eq!(settlement_label("Inch Road Station").as_deref(), Some("Inch Road Station"));
+        assert_eq!(settlement_label("East Kent Access Road EKA09").as_deref(), Some("East Kent Access Road EKA09"));
+        assert_eq!(settlement_label("Lausanne - Cathédrale Place Nord").as_deref(), Some("Lausanne - Cathédrale Place Nord"));
     }
 
     #[test]

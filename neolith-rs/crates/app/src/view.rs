@@ -33,6 +33,12 @@ struct Glide {
     start: f64,
 }
 
+/// Pan inertia decays with this time constant: a coast travels the
+/// release speed times this.
+const PAN_COAST_SECS: f64 = 0.16;
+/// A coast goes at most this share of the distance the drag moved.
+const PAN_COAST_SHARE: f64 = 0.5;
+
 /// Most board pixels per egui point on the web (see `board_view`).
 #[cfg(target_arch = "wasm32")]
 const MAX_WEB_BOARD_DENSITY: f32 = 1.5;
@@ -47,6 +53,8 @@ pub struct BoardInput {
     lasso_preview: Option<Selection>,
     /// Pan inertia, degrees per second.
     velocity: DVec2,
+    /// Where the look-at point was when the current pan began.
+    pan_from: Option<LonLat>,
     glide: Option<Glide>,
     /// What the last frame drew, kept so the agent harness can read it.
     pub drawn: Drawn,
@@ -86,6 +94,17 @@ impl BoardInput {
     /// No drag or stroke in progress.
     pub fn is_idle(&self) -> bool {
         self.drag.is_none() && self.stroke.is_none()
+    }
+
+    /// The camera is still gliding or coasting after a pan.
+    pub fn camera_moving(&self) -> bool {
+        self.glide.is_some() || (self.drag.is_none() && self.velocity.length() > 0.02)
+    }
+
+    /// Stops any glide or coast (the camera was set directly).
+    pub fn stop_camera(&mut self) {
+        self.glide = None;
+        self.velocity = DVec2::ZERO;
     }
 
     pub fn glide_to(&mut self, from: LonLat, to: LonLat, now: f64) {
@@ -171,15 +190,25 @@ fn segment_distance(p: DVec2, a: DVec2, b: DVec2) -> f64 {
     (p - (a + ab * t)).length()
 }
 
+/// Camera distance from which only famous sites keep their pieces.
+const FAR_PIECES_DIST: f64 = 0.9;
+
+/// Whether "fill screen" holds the camera in. Only on the flat board: on
+/// the globe, zooming out shows the rest of it, under fog, in its table.
+fn fills(style: &BoardStyle, morph: f64) -> bool {
+    style.fill_screen && morph >= 0.5
+}
+
 /// Screen-space segment (base, top) of a piece, if it faces the camera.
 /// Visible-piece indices from most to least important: the selected
-/// settlement, then size tier and population, then settlement id (stable
-/// while panning).
+/// settlement, then famous sites by renown, then size tier and population,
+/// then settlement id (stable while panning).
 fn piece_priority(s: &Session, visible: &[(usize, Piece)]) -> Vec<usize> {
     let mut order: Vec<usize> = (0..visible.len()).collect();
     order.sort_by_key(|&k| {
         let (i, p) = &visible[k];
-        (s.settlement != Some(*i), std::cmp::Reverse((p.rank(), p.population)), s.world.settlements[*i].id)
+        let renown = s.renown.get(*i).copied().flatten().map_or(0, |f| f.renown);
+        (s.settlement != Some(*i), std::cmp::Reverse((renown, p.rank(), p.population)), s.world.settlements[*i].id)
     });
     order
 }
@@ -216,7 +245,7 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
     } else if s.input.drag.is_none() && s.input.velocity.length() > 0.02 {
         s.camera.target.lon += s.input.velocity.x * dt;
         s.camera.target.lat += s.input.velocity.y * dt;
-        s.input.velocity *= (-dt / 0.16).exp();
+        s.input.velocity *= (-dt / PAN_COAST_SECS).exp();
         repaint = true;
     }
     s.camera.clamp(&grid);
@@ -242,6 +271,7 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         let pan = |view: &View| view.pick_relief(origin, &relief).map(|grabbed| Drag::Pan { grabbed });
         s.input.velocity = DVec2::ZERO;
         s.input.glide = None;
+        s.input.pan_from = Some(s.camera.target);
         s.input.drag = if resp.dragged_by(PointerButton::Secondary) || (resp.dragged_by(PointerButton::Primary) && orbit_mod) {
             Some(Drag::Orbit)
         } else if resp.dragged_by(PointerButton::Middle) {
@@ -275,10 +305,8 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
             }
             Drag::Orbit => {
                 let d = resp.drag_delta();
-                s.camera.yaw -= d.x as f64 * 0.006;
-                s.camera.pitch += d.y as f64 * 0.006;
-                s.camera.pitch_pref = s.camera.pitch;
-                s.camera.clamp(&grid);
+                let fill = fills(style, s.morph).then_some((&s.proj, s.morph, size, style.fill_margin as f64));
+                s.camera.orbit(-d.x as f64 * 0.006, d.y as f64 * 0.006, &grid, fill);
             }
             Drag::Paint => {
                 let view = s.camera.view(&s.proj, s.morph, size);
@@ -330,15 +358,30 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
                 s.input.lasso_preview = None;
                 s.state_dirty = true;
             }
-            // Only a drag that was still moving on release coasts.
-            Some(Drag::Pan { .. }) if s.input.velocity.length() < 1.0 => s.input.velocity = DVec2::ZERO,
+            // Only a drag that was still moving on release coasts, and it
+            // coasts at most half as far again as the drag itself moved the
+            // board (a quick flick no longer flings the camera five times
+            // further than the hand went).
+            Some(Drag::Pan { .. }) => {
+                let v = s.input.velocity.length();
+                let moved = s.input.pan_from.map_or(0.0, |f| {
+                    DVec2::new(s.camera.target.lon - f.lon, s.camera.target.lat - f.lat).length()
+                });
+                let coast = v * PAN_COAST_SECS;
+                if v < 1.0 || moved <= 0.0 {
+                    s.input.velocity = DVec2::ZERO;
+                } else if coast > PAN_COAST_SHARE * moved {
+                    s.input.velocity *= PAN_COAST_SHARE * moved / coast;
+                }
+                s.input.pan_from = None;
+            }
             _ => {}
         }
     }
 
     // ---- the frame's view; pieces; hover --------------------------------
     s.camera.clamp(&grid);
-    if style.fill_screen {
+    if fills(style, s.morph) {
         s.camera.clamp_to_fill(&s.proj, &grid, s.morph, size, style.fill_margin as f64);
     }
     let view = s.camera.view(&s.proj, s.morph, size);
@@ -349,10 +392,10 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         .iter()
         .enumerate()
         .filter(|(_, st)| st.exists_at(year))
-        .map(|(i, st)| {
-            let piece = Piece::new(st, year);
-            (i, piece)
-        })
+        // Far out, only the famous sites (and the selected one) keep a
+        // piece: hundreds of tiny ones read as noise over the map.
+        .filter(|(i, _)| s.camera.dist < FAR_PIECES_DIST || s.settlement == Some(*i) || s.renown.get(*i).is_some_and(|r| r.is_some()))
+        .map(|(i, _)| (i, Piece::for_site(&s.world, i, year, s.renown.get(i).copied().flatten())))
         .collect();
     let frames: Vec<PieceFrame> =
         visible.iter().map(|(_, p)| scene::piece_frame(p, &s.proj, &relief, s.morph, s.camera.dist)).collect();
@@ -402,10 +445,14 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         if let Some(k) = piece_hover {
             // A piece takes priority over the hex underneath.
             s.settlement = Some(visible[k].0);
+            s.side_tab = crate::panels::SideTab::Selected;
         } else {
             match (s.tool, s.hover) {
                 (Tool::Select, Some(hex)) => {
+                    // A hex click replaces a selected settlement.
                     s.inspected = Some(hex);
+                    s.settlement = None;
+                    s.side_tab = crate::panels::SideTab::Selected;
                     if s.editor && modifiers.shift {
                         if s.selection.contains(hex) {
                             s.selection.remove(hex);
@@ -450,7 +497,7 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         s.state_dirty = false;
     }
     if s.evidence_dirty {
-        let texels = scene::evidence_texels(&grid, s.evidence_codes());
+        let texels = scene::evidence_texels(&grid, &s.overlay_codes());
         s.renderer.lock().unwrap().upload_evidence(&gpu.queue, &texels);
         s.evidence_dirty = false;
     }
@@ -468,7 +515,6 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         if style.rivers {
             let board = lines::Board { proj: &s.proj, relief: &relief, t: s.morph, cam_dist: s.camera.dist };
             lines::rivers(&mut line_mesh, &s.world.rivers, &s.world.lakes, &s.snapshot, &board);
-            lines::lakes(&mut line_mesh, &s.world.lakes, year, &board);
         }
         // The river field only changes when a river starts, stops or turns
         // seasonal, not with every year or camera move.
@@ -477,6 +523,7 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         let mut renderer = s.renderer.lock().unwrap();
         renderer.upload_pieces(&gpu.device, &gpu.queue, &verts);
         renderer.upload_lines(&gpu.device, &gpu.queue, &line_mesh);
+        renderer.upload_camps(&gpu.queue, &scene::camp_texels(&grid, &key.pieces));
         if let Some(field) = &field {
             renderer.upload_river_field(&gpu.queue, field);
         }
@@ -494,7 +541,9 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
     #[cfg(not(target_arch = "wasm32"))]
     let ppp = ui.ctx().pixels_per_point();
     let px = [(rect.width() * ppp).round().max(1.0) as u32, (rect.height() * ppp).round().max(1.0) as u32];
-    let globals = scene::globals(&view, style, s.mode, &grid, &s.mesh, px[1] as f32);
+    // Editing wants the whole map sharp and its colours as painted.
+    let board_style = scene::BoardStyle { depth: if s.editor { 0.0 } else { style.depth }, ..*style };
+    let globals = scene::globals(&view, &board_style, s.mode, &grid, &s.mesh, px[1] as f32);
     ui.painter().add(egui_wgpu::Callback::new_paint_callback(
         rect,
         BoardPaint { renderer: s.renderer.clone(), globals, size: px },
@@ -508,9 +557,112 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         pts.push(pts[0]);
         painter.line(pts, Stroke::new(1.5, Color32::from_rgb(120, 200, 255)));
     }
-    // Settlement name labels. The hovered piece goes first so its name always shows.
+    // Settlement name labels, in two passes. First the hovered and selected
+    // pieces and the famous sites ([`crate::renown`]), which are placed
+    // before any geography name so a river can't evict Göbekli Tepe; then
+    // the geography, routed around them; then every other site, around
+    // both. Names are cleaned of catalogue codes, one label per name, and
+    // placed by collision alone, in priority order.
     const MAX_LABELS: usize = 150;
-    let label_order = piece_hover.into_iter().chain(order.iter().copied().filter(|&k| Some(k) != piece_hover));
+    let hex_px = scene::hex_px(&view, &grid, s.camera.dist);
+    let names_on = hex_px >= LABEL_MIN_HEX_PX;
+    let fame: Vec<Option<crate::renown::Renowned>> =
+        visible.iter().map(|(i, _)| s.renown.get(*i).copied().flatten()).collect();
+    // How far out a famous name stays: renown 3 at every zoom, 2 from half
+    // the usual hex size, 1 with everything else.
+    let fame_shown = |r: u8| names_on || r >= 3 || (r >= 2 && hex_px >= LABEL_MIN_HEX_PX * 0.5);
+    // Each piece's body (and its star) on screen. A name keeps off every
+    // piece but its own, so a neighbour's name never sits on Jericho's stone.
+    let bodies: Vec<Option<egui::Rect>> = (0..visible.len())
+        .map(|k| {
+            let p = on_screen[k]?;
+            let r = p.radius_px.max(2.0) as f32;
+            let (b, t) = (to_screen(p.base), to_screen(p.top));
+            let star = if visible[k].1.starred() { 1.4 * r } else { 0.0 };
+            Some(egui::Rect::from_two_pos(b, t).expand2(egui::vec2(r, 0.0)).union(egui::Rect::from_center_size(t, egui::vec2(2.0 * r, 2.0 * (r + star)))))
+        })
+        .collect();
+    // The gap around an ordinary site name: wide at regional zoom, closing
+    // in as the view nears single hexes. The names are placed in a fixed
+    // priority order, so the same ones win wherever the view is panned.
+    let close = ((hex_px - LABEL_MIN_HEX_PX) / (48.0 - LABEL_MIN_HEX_PX)).clamp(0.0, 1.0) as f32;
+    let spacing = egui::vec2(70.0 - 50.0 * close, 40.0 - 28.0 * close);
+    struct Placed {
+        i: usize,
+        pos: Pos2,
+        align: Align2,
+        name: String,
+        font: FontId,
+        rect: egui::Rect,
+    }
+    let place = |k: usize, placed: &[egui::Rect], named: &[String], forced: bool| -> Option<Placed> {
+        let body = bodies[k]?;
+        let (i, piece) = &visible[k];
+        let emphasised = piece_hover == Some(k) || s.settlement == Some(*i);
+        let renown = fame[k].map_or(0, |f| f.renown);
+        let name = match (fame[k], crate::labels::settlement_label(&s.world.settlements[*i].name)) {
+            (Some(f), _) => f.entry().name.clone(),
+            (None, Some(n)) => n,
+            (None, None) if emphasised => s.world.settlements[*i].name.clone(),
+            (None, None) => return None,
+        };
+        if !emphasised && (piece.inferred || named.iter().any(|n| n.eq_ignore_ascii_case(&name))) {
+            return None;
+        }
+        let size = match (emphasised, renown) {
+            (true, _) | (_, 3) => 17.0,
+            (_, 2) => 15.5,
+            _ => 14.0,
+        };
+        let font = crate::labels::serif(size);
+        let g = painter.layout_no_wrap(name.clone(), font.clone(), Color32::WHITE).size();
+        // Under the piece first, like a nameplate; then beside it (level
+        // with the piece's middle, not its star); then above.
+        let mid = on_screen[k].map_or(body.center().y, |p| to_screen((p.base + p.top) * 0.5).y);
+        let anchors = [
+            (Align2::CENTER_TOP, egui::pos2(body.center().x, body.bottom() + 1.0)),
+            (Align2::LEFT_CENTER, egui::pos2(body.right() + 4.0, mid)),
+            (Align2::RIGHT_CENTER, egui::pos2(body.left() - 4.0, mid)),
+            (Align2::CENTER_BOTTOM, egui::pos2(body.center().x, body.top() - 1.0)),
+        ];
+        // Ordinary names keep a wider gap (`spacing`), so a crowded region
+        // shows its leading sites rather than a carpet; famous names only
+        // need air.
+        let gap = if forced { egui::vec2(4.0, 4.0) } else { spacing };
+        let fits = |r: egui::Rect, against_pieces: bool| {
+            let padded = r.expand2(gap);
+            rect.contains_rect(r)
+                && !placed.iter().any(|q| q.intersects(padded))
+                && !(against_pieces && bodies.iter().enumerate().any(|(j, b)| j != k && b.is_some_and(|b| b.intersects(r))))
+        };
+        let at = |(align, pos): (Align2, Pos2)| (align, pos, align.anchor_size(pos, g).expand(2.0));
+        let chosen = if emphasised {
+            Some(at(anchors[0]))
+        } else {
+            anchors.iter().map(|a| at(*a)).find(|(_, _, r)| fits(*r, true)).or_else(|| {
+                // A famous name is shown even over a neighbour's piece.
+                let first = at(anchors[0]);
+                (forced && fits(first.2, false)).then_some(first)
+            })
+        }?;
+        Some(Placed { i: *i, pos: chosen.1, align: chosen.0, name, font, rect: chosen.2 })
+    };
+    let mut labels: Vec<Placed> = Vec::new();
+    let mut placed: Vec<egui::Rect> = Vec::new();
+    let mut named: Vec<String> = Vec::new();
+    let first_pass = piece_hover.into_iter().chain(order.iter().copied().filter(|&k| Some(k) != piece_hover));
+    for k in first_pass {
+        let (i, _) = &visible[k];
+        let emphasised = piece_hover == Some(k) || s.settlement == Some(*i);
+        if !emphasised && !fame[k].is_some_and(|f| fame_shown(f.renown)) {
+            continue;
+        }
+        if let Some(p) = place(k, &placed, &named, true) {
+            placed.push(p.rect.expand(4.0));
+            named.push(p.name.clone());
+            labels.push(p);
+        }
+    }
     let mut drawn = Drawn {
         rect: Some(rect),
         pieces: (0..visible.len())
@@ -529,63 +681,31 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
             year,
             s.camera.dist,
             &mut s.input.geo_shown,
+            &placed,
         ),
     };
-    // Settlement names: cleaned of catalogue codes, one label per name, and
-    // placed by collision alone: in priority order (selected, then
-    // population, so places with no record go last), skipping any label that
-    // would touch one already placed or a geography name. Any place is named
-    // when hovered or selected.
-    let names_on = scene::hex_px(&view, &grid, s.camera.dist) >= LABEL_MIN_HEX_PX;
-    let mut placed: Vec<egui::Rect> = drawn.geo.iter().map(|g| g.bounds).collect();
-    let mut named: Vec<String> = Vec::new();
-    // A name also keeps off the stars of other important sites, which sit
-    // at the top of their pieces just where a neighbour's name would go.
-    let stars: Vec<(usize, egui::Rect)> = (0..visible.len())
-        .filter(|&k| visible[k].1.starred())
-        .filter_map(|k| {
-            let p = on_screen[k]?;
-            let r = (p.radius_px * 0.7) as f32;
-            Some((k, egui::Rect::from_center_size(to_screen(p.top) + egui::vec2(0.0, r), egui::vec2(2.0 * r, 2.0 * r))))
-        })
-        .collect();
-    for k in label_order {
-        if drawn.labels.len() >= MAX_LABELS {
-            break;
+    // Region, sea and mountain names are broad and faint, and a famous name
+    // is drawn over them; the rest of the sites keep off every geography name.
+    placed.extend(drawn.geo.iter().map(|g| g.bounds));
+    if names_on {
+        for &k in &order {
+            if labels.len() >= MAX_LABELS {
+                break;
+            }
+            let (i, _) = &visible[k];
+            if fame[k].is_some() || piece_hover == Some(k) || s.settlement == Some(*i) {
+                continue;
+            }
+            if let Some(p) = place(k, &placed, &named, false) {
+                placed.push(p.rect.expand(4.0));
+                named.push(p.name.clone());
+                labels.push(p);
+            }
         }
-        let Some(p) = on_screen[k] else { continue };
-        let (i, _) = &visible[k];
-        let emphasised = piece_hover == Some(k) || s.settlement == Some(*i);
-        if !emphasised && !names_on {
-            continue;
-        }
-        let full = &s.world.settlements[*i].name;
-        let name = match crate::labels::settlement_label(full) {
-            Some(n) => n,
-            None if emphasised => full.clone(),
-            None => continue,
-        };
-        if !emphasised && named.iter().any(|n| n.eq_ignore_ascii_case(&name)) {
-            continue;
-        }
-        let font = crate::labels::serif(if emphasised { 16.0 } else { 14.0 });
-        let galley = painter.layout_no_wrap(name.clone(), font.clone(), Color32::WHITE);
-        let pos = to_screen(p.top) + egui::vec2(0.0, -4.0);
-        let r = Align2::CENTER_BOTTOM.anchor_size(pos, galley.size()).expand(2.0);
-        // A little air around each name so neighbours don't read as one.
-        let padded = r.expand(4.0);
-        if !emphasised
-            && (!rect.contains_rect(r)
-                || placed.iter().any(|q| q.intersects(padded))
-                || stars.iter().any(|(j, q)| *j != k && q.intersects(r)))
-        {
-            continue;
-        }
-        placed.push(padded);
-        named.push(name.clone());
-        drawn.labels.push((*i, r));
-        painter.text(pos + egui::vec2(1.0, 1.0), Align2::CENTER_BOTTOM, &name, font.clone(), Color32::from_black_alpha(190));
-        painter.text(pos, Align2::CENTER_BOTTOM, &name, font, Color32::WHITE);
+    }
+    for p in labels {
+        drawn.labels.push((p.i, p.rect));
+        crate::labels::haloed_text(&painter, p.pos, p.align, &p.name, p.font, Color32::WHITE);
     }
 
     s.input.drawn = drawn;
@@ -606,44 +726,10 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         Color32::from_white_alpha(120),
     );
 
-    // Settlement popup.
-    if let Some(i) = s.settlement {
-        let st = &s.world.settlements[i];
-        if !st.exists_at(year) {
-            s.settlement = None;
-        } else {
-            let anchor = visible
-                .iter()
-                .position(|(j, _)| *j == i)
-                .and_then(|k| on_screen[k])
-                .map(|p| to_screen(p.top))
-                .unwrap_or(rect.center());
-            const WIDTH: f32 = 290.0;
-            let pos = Pos2::new(
-                (anchor.x + 14.0).clamp(rect.left() + 4.0, rect.right() - WIDTH - 24.0),
-                (anchor.y - 30.0).clamp(rect.top() + 44.0, (rect.bottom() - 300.0).max(rect.top() + 44.0)),
-            );
-            let mut open = true;
-            egui::Window::new(st.name.as_str())
-                .id(egui::Id::unique("settlement_popup"))
-                .open(&mut open)
-                .collapsible(false)
-                .resizable(false)
-                .fixed_pos(pos)
-                .constrain_to(rect)
-                .default_width(WIDTH)
-                .max_width(WIDTH)
-                .max_height((rect.bottom() - pos.y - 12.0).max(160.0))
-                .show(ui.ctx(), |ui| {
-                    egui::ScrollArea::vertical().id_salt("settlement_record").show(ui, |ui| {
-                        ui.set_width(WIDTH);
-                        crate::site_record::show(ui, &s.world, i, year);
-                    });
-                });
-            if !open {
-                s.settlement = None;
-            }
-        }
+    // The selected settlement's record is in the sidebar (panels::selected);
+    // it closes when the clock leaves the settlement's lifetime.
+    if s.settlement.is_some_and(|i| !s.world.settlements[i].exists_at(year)) {
+        s.settlement = None;
     }
 
     if repaint || s.input.drag.is_some() {

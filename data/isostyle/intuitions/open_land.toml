@@ -523,17 +523,20 @@ slices = [-8000, -7000, -6000, -5000, -4000, -3000]
 value = 75
 [[judgement.adjust]]
 kind = "elevation"
-above_m = 500
+above_m = 300
+ramp_m = 900   # smooth-critic 2026-11-12: a ramp over 300-1,200 m, as the rule text asks for the foothills
 value = 89
 slices = [-10000]
 [[judgement.adjust]]
 kind = "elevation"
-above_m = 500
+above_m = 300
+ramp_m = 900   # smooth-critic 2026-11-12: a ramp over 300-1,200 m, as the rule text asks for the foothills
 value = 76
 slices = [-9000]
 [[judgement.adjust]]
 kind = "elevation"
-above_m = 500
+above_m = 300
+ramp_m = 900   # smooth-critic 2026-11-12: a ramp over 300-1,200 m, as the rule text asks for the foothills
 value = 37
 slices = [-8000, -7000, -6000, -5000, -4000, -3000]
 

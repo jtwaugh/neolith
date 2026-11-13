@@ -10,6 +10,7 @@ mod labels;
 mod harness;
 mod palette;
 mod panels;
+mod renown;
 #[cfg(not(target_arch = "wasm32"))]
 mod screenshot;
 mod site_record;
@@ -21,7 +22,7 @@ neolith [world.bin]
 neolith --screenshot <out.png> [--world <world.bin>] [--year <y>] [--mode terrain|koeppen|pop|elevation|evidence]
         [--evidence <layer id>]
         [--flat <0..1>] [--yaw <deg>] [--pitch <deg>] [--dist <d>] [--lon <deg>] [--lat <deg>]
-        [--size <W>x<H>] [--lip] [--art off|2d|3d] [--no-blend] [--material wood|slate|cardboard]
+        [--size <W>x<H>] [--lip] [--art on|off] [--no-blend] [--material wood|slate|cardboard]
         [--hillshade <0..1>] [--relief <exaggeration, 0 = off>]
 neolith --ui-screenshot <out.png> [--editor] [--flat 1] [--mode …] [--year <y>]   (opens the window briefly)
 neolith --harness [<port>] [--world <world.bin>] [--size <W>x<H>]
@@ -151,8 +152,7 @@ fn screenshot_cli(args: &[String]) -> Result<(), String> {
             Some(other) => return Err(format!("unknown --material {other}")),
         },
         art: match get("--art").as_deref() {
-            None | Some("2d") => ArtMode::Flat,
-            Some("3d") => ArtMode::Raised,
+            None | Some("on") | Some("3d") => ArtMode::On,
             Some("off") => ArtMode::Off,
             Some(other) => return Err(format!("unknown --art {other}")),
         },

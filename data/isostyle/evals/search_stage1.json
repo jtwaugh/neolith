@@ -1,0 +1,1908 @@
+{
+ "baseline": {
+  "rough_oo": 0.007860788689056413,
+  "rough_os": 0.07175544574396617,
+  "rough_ss": 0.005599389010688217,
+  "cliffs": 1.7508295652362291,
+  "rule_edge_cliffs": 1.1228506956047049,
+  "time_step": 0.022522217605644126,
+  "flicker": 2.7415975224564115,
+  "holdout": 0.09531784826431156,
+  "drift": 0.0,
+  "coverage": 0.9993352924713126,
+  "observed_moved": 0.0
+ },
+ "best": {
+  "settings": {
+   "blend_rings": 12,
+   "smooth_iters": 16,
+   "smooth_rate": 0.5,
+   "time_smooth": 0.4
+  },
+  "score": 0.343721418254684,
+  "guards": {
+   "observed": true,
+   "coverage": true,
+   "holdout": true,
+   "drift": true,
+   "spread": true,
+   "regressions": true
+  },
+  "passes": true,
+  "overall": {
+   "rough_oo": 0.007860788689056413,
+   "rough_os": 0.031241881955865,
+   "rough_ss": 0.0037263674540301706,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "time_step": 0.022246484109928345,
+   "flicker": 0.7327130523085281,
+   "holdout": 0.02902959648842104,
+   "drift": 0.020900536931482,
+   "coverage": 0.9993352924713126,
+   "observed_moved": 0.0
+  }
+ },
+ "tried": [
+  {
+   "settings": {
+    "blend_rings": 3,
+    "smooth_iters": 0,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 1.0,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.07175544574396617,
+    "rough_ss": 0.005599389010688217,
+    "cliffs": 1.7508295652362291,
+    "rule_edge_cliffs": 1.1228506956047049,
+    "time_step": 0.022522217605644126,
+    "flicker": 2.7415975224564115,
+    "holdout": 0.09531784826431156,
+    "drift": 0.0,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 3,
+    "smooth_iters": 0,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.9205317388226647,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.09127332316781671,
+    "rough_ss": 0.005531687749637423,
+    "cliffs": 1.8451272702528847,
+    "rule_edge_cliffs": 1.1576525788205894,
+    "time_step": 0.020474362974678008,
+    "flicker": 1.0102782430442336,
+    "holdout": 0.09968100346489517,
+    "drift": 0.0032998856002975584,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 3,
+    "smooth_iters": 0,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.8661885771041389,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": false,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": false,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.11198985863138333,
+    "rough_ss": 0.005497554613176107,
+    "cliffs": 1.459661865636887,
+    "rule_edge_cliffs": 0.9589865898524728,
+    "time_step": 0.01862941443534807,
+    "flicker": 0.243855277692968,
+    "holdout": 0.10545285813873123,
+    "drift": 0.006599771200595107,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 3,
+    "smooth_iters": 2,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 0.6706264284151153,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.062476050891208834,
+    "rough_ss": 0.00473561457093084,
+    "cliffs": 0.09841863597897309,
+    "rule_edge_cliffs": 0.08018423249899155,
+    "time_step": 0.022511662522124984,
+    "flicker": 2.486440390781875,
+    "holdout": 0.0854495883420241,
+    "drift": 0.0037670607409670785,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 3,
+    "smooth_iters": 2,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.5677679946726731,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.07340847084494233,
+    "rough_ss": 0.004673019518662799,
+    "cliffs": 0.07057860754346162,
+    "rule_edge_cliffs": 0.05839251895760756,
+    "time_step": 0.020617470846710874,
+    "flicker": 1.014983793561191,
+    "holdout": 0.08807961878729728,
+    "drift": 0.006361287767492,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 3,
+    "smooth_iters": 2,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.5435832244844284,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.0849999158994522,
+    "rough_ss": 0.004649912832214028,
+    "cliffs": 0.05215210182837039,
+    "rule_edge_cliffs": 0.04238704265650575,
+    "time_step": 0.01893843575076505,
+    "flicker": 0.3474430498820935,
+    "holdout": 0.09170856736659212,
+    "drift": 0.009235425400738725,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 3,
+    "smooth_iters": 4,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 0.6228671534571186,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.059672732646344595,
+    "rough_ss": 0.00438822125459409,
+    "cliffs": 0.0005292856256113277,
+    "rule_edge_cliffs": 0.0005292856256113277,
+    "time_step": 0.022561023187050448,
+    "flicker": 2.39003135846592,
+    "holdout": 0.07748729436633968,
+    "drift": 0.005366293166392123,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 3,
+    "smooth_iters": 4,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.5247935143604313,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.06690412866612003,
+    "rough_ss": 0.0043417526427458044,
+    "cliffs": 7.539100413429189e-05,
+    "rule_edge_cliffs": 7.539100413429189e-05,
+    "time_step": 0.020749745913055874,
+    "flicker": 1.0616236074671117,
+    "holdout": 0.07918511527301592,
+    "drift": 0.007729763773664403,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 3,
+    "smooth_iters": 4,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.4918612521205475,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.07455918067372273,
+    "rough_ss": 0.004333986261633063,
+    "cliffs": 7.539100413429189e-05,
+    "rule_edge_cliffs": 7.539100413429189e-05,
+    "time_step": 0.019151444771690847,
+    "flicker": 0.4121142721077245,
+    "holdout": 0.08164256966253401,
+    "drift": 0.010404203359330158,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 3,
+    "smooth_iters": 8,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 0.5965020532888865,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.057795407693306225,
+    "rough_ss": 0.004031773720711536,
+    "cliffs": 7.308814210673646e-05,
+    "rule_edge_cliffs": 7.308814210673646e-05,
+    "time_step": 0.022680426633014176,
+    "flicker": 2.344705384109768,
+    "holdout": 0.06514880510630618,
+    "drift": 0.007223861347253897,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 3,
+    "smooth_iters": 8,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.499355845661576,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.061749661898850304,
+    "rough_ss": 0.004001578916424925,
+    "cliffs": 7.272633125185725e-05,
+    "rule_edge_cliffs": 7.272633125185725e-05,
+    "time_step": 0.020967537775935734,
+    "flicker": 1.1429716430017942,
+    "holdout": 0.06587994613983626,
+    "drift": 0.009342956163615055,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 3,
+    "smooth_iters": 8,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.45994401842185934,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.06594739875434952,
+    "rough_ss": 0.004007639344087577,
+    "cliffs": 7.272633125185725e-05,
+    "rule_edge_cliffs": 7.272633125185725e-05,
+    "time_step": 0.019462401505069216,
+    "flicker": 0.5476672856735209,
+    "holdout": 0.06711055088570606,
+    "drift": 0.011784768197421039,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 3,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 0.5729010579040184,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.054776644928673894,
+    "rough_ss": 0.00368579939867844,
+    "cliffs": 0.00014581447335859372,
+    "rule_edge_cliffs": 0.00014581447335859372,
+    "time_step": 0.02293975188059525,
+    "flicker": 2.367378801062745,
+    "holdout": 0.04972303957022504,
+    "drift": 0.00950654978868415,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 3,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.47954194970781244,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.0564385800606036,
+    "rough_ss": 0.0036666951390459386,
+    "cliffs": 0.00014581447335859372,
+    "rule_edge_cliffs": 0.00014581447335859372,
+    "time_step": 0.021334644841844483,
+    "flicker": 1.2893068236211112,
+    "holdout": 0.04967048414136789,
+    "drift": 0.011379486232637806,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 3,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.43470939141358533,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.05823981939359818,
+    "rough_ss": 0.0036797605240441204,
+    "cliffs": 7.272633125185725e-05,
+    "rule_edge_cliffs": 7.272633125185725e-05,
+    "time_step": 0.019929025706121435,
+    "flicker": 0.7227392795763086,
+    "holdout": 0.0498697284138832,
+    "drift": 0.013573706178982306,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 5,
+    "smooth_iters": 0,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 0.9776826446226086,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.04874926152274483,
+    "rough_ss": 0.00567698829965646,
+    "cliffs": 1.6528024124098353,
+    "rule_edge_cliffs": 1.0462031564950514,
+    "time_step": 0.023900299303826467,
+    "flicker": 3.490832537115827,
+    "holdout": 0.06636955216761085,
+    "drift": 0.002450726939892345,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 5,
+    "smooth_iters": 0,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.8577882610562173,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.07012718381232287,
+    "rough_ss": 0.005586410739989033,
+    "cliffs": 1.732020895738114,
+    "rule_edge_cliffs": 1.0693291407688947,
+    "time_step": 0.021410878493105343,
+    "flicker": 1.2798135827759545,
+    "holdout": 0.0749146140680458,
+    "drift": 0.004944451723087765,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 5,
+    "smooth_iters": 0,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.7895523202252764,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.09275378030245975,
+    "rough_ss": 0.005536771953810714,
+    "cliffs": 1.362023353584774,
+    "rule_edge_cliffs": 0.8816837699568421,
+    "time_step": 0.01920559656121025,
+    "flicker": 0.27139025653584803,
+    "holdout": 0.08498839688213333,
+    "drift": 0.00790633709310278,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 5,
+    "smooth_iters": 2,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 0.6637735493713103,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.042961011905698725,
+    "rough_ss": 0.004800988761623382,
+    "cliffs": 0.08548566045179046,
+    "rule_edge_cliffs": 0.0692129716759718,
+    "time_step": 0.023833004699004172,
+    "flicker": 3.1446998131393933,
+    "holdout": 0.05977671169419917,
+    "drift": 0.005658938373401782,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 5,
+    "smooth_iters": 2,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.5289075839139231,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.055659437316094205,
+    "rough_ss": 0.004719669080896103,
+    "cliffs": 0.058840272527250534,
+    "rule_edge_cliffs": 0.04778659760008215,
+    "time_step": 0.021514831705182685,
+    "flicker": 1.2619769665459313,
+    "holdout": 0.06615804874003259,
+    "drift": 0.0077947794166054775,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 5,
+    "smooth_iters": 2,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.4897646668079878,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.06907811560406912,
+    "rough_ss": 0.004682033689418054,
+    "cliffs": 0.04229657601542911,
+    "rule_edge_cliffs": 0.0332100358807731,
+    "time_step": 0.01948237831325072,
+    "flicker": 0.36471478234247623,
+    "holdout": 0.07361298136150488,
+    "drift": 0.010401993227851108,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 5,
+    "smooth_iters": 4,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 0.6198477141141363,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.04130946111360654,
+    "rough_ss": 0.004452112916968519,
+    "cliffs": 0.0003777293190071017,
+    "rule_edge_cliffs": 0.0003777293190071017,
+    "time_step": 0.023837899696993757,
+    "flicker": 3.027084126866942,
+    "holdout": 0.05460870901863385,
+    "drift": 0.007080056230321519,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 5,
+    "smooth_iters": 4,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.4911270511903931,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.050340176541650544,
+    "rough_ss": 0.004388287508459572,
+    "cliffs": 7.539100413429189e-05,
+    "rule_edge_cliffs": 7.539100413429189e-05,
+    "time_step": 0.021612826654046863,
+    "flicker": 1.30203473155432,
+    "holdout": 0.05964459574199982,
+    "drift": 0.009095331673377074,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 5,
+    "smooth_iters": 4,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.4444687669457607,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.05984368794929275,
+    "rough_ss": 0.004366674234636208,
+    "cliffs": 7.539100413429189e-05,
+    "rule_edge_cliffs": 7.539100413429189e-05,
+    "time_step": 0.019669528309606093,
+    "flicker": 0.43812672591991975,
+    "holdout": 0.06548866243886656,
+    "drift": 0.011542819700778232,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 5,
+    "smooth_iters": 8,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 0.5918200678525762,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.040660399139682474,
+    "rough_ss": 0.004090918364694579,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.02387793689994433,
+    "flicker": 2.9188207677196134,
+    "holdout": 0.046782708414850216,
+    "drift": 0.008774288271252834,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 5,
+    "smooth_iters": 8,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.4670776583965059,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.04643702690684617,
+    "rough_ss": 0.004045756740785791,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.021771080409468402,
+    "flicker": 1.3521105056641705,
+    "holdout": 0.050138871542293885,
+    "drift": 0.010658748668144648,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 5,
+    "smooth_iters": 8,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.41606412061249165,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.05249707317818374,
+    "rough_ss": 0.004039950691865312,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.019937302523457694,
+    "flicker": 0.564223216951008,
+    "holdout": 0.05400803405216718,
+    "drift": 0.012932111171033591,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 5,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 0.5674359048560138,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.040574597482556034,
+    "rough_ss": 0.0037289934104682027,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.024004694112874904,
+    "flicker": 2.8287830042367172,
+    "holdout": 0.03737163723113387,
+    "drift": 0.010896890833302744,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 5,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.4544475881719598,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.04381138511898226,
+    "rough_ss": 0.0036997431098133907,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.022039569326290386,
+    "flicker": 1.4802327234851147,
+    "holdout": 0.03895347679298628,
+    "drift": 0.012636833428842833,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 5,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.398444317018515,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.04720789591062726,
+    "rough_ss": 0.003705261066160211,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.020334311299468322,
+    "flicker": 0.7338058112410356,
+    "holdout": 0.040799710691457894,
+    "drift": 0.014733373015455646,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 0,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 0.9850511771309831,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.03352203687233087,
+    "rough_ss": 0.005703487364921093,
+    "cliffs": 1.5184628178415582,
+    "rule_edge_cliffs": 0.9502029165733956,
+    "time_step": 0.025949557288969,
+    "flicker": 4.350256263595313,
+    "holdout": 0.04726457637997922,
+    "drift": 0.00620323563579921,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 0,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.8201307851795687,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.05527469098102437,
+    "rough_ss": 0.005596671542052532,
+    "cliffs": 1.5942618578924628,
+    "rule_edge_cliffs": 0.9751050277521093,
+    "time_step": 0.0228460804019305,
+    "flicker": 1.644314136637588,
+    "holdout": 0.05803429611755778,
+    "drift": 0.008290104171747685,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 0,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.7260152707006295,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.0783229928440384,
+    "rough_ss": 0.00554036517996321,
+    "cliffs": 1.2425559386314642,
+    "rule_edge_cliffs": 0.7946747256347337,
+    "time_step": 0.02013468488954977,
+    "flicker": 0.3105499396925972,
+    "holdout": 0.07047636801131112,
+    "drift": 0.010868547907163484,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 2,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 0.7031474313386412,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.03005107313595489,
+    "rough_ss": 0.004826293400573536,
+    "cliffs": 0.06836387700413948,
+    "rule_edge_cliffs": 0.05450279563885929,
+    "time_step": 0.025836256826805532,
+    "flicker": 4.083730509040286,
+    "holdout": 0.04269064912335373,
+    "drift": 0.009099068530829882,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 2,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.5165139321487984,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.043295800875431466,
+    "rough_ss": 0.004731150438629858,
+    "cliffs": 0.04348628492236498,
+    "rule_edge_cliffs": 0.03371412664205632,
+    "time_step": 0.022914634632477768,
+    "flicker": 1.6163210157158523,
+    "holdout": 0.05115491281171907,
+    "drift": 0.010895889339261137,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 2,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.44824057083250146,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.057324206191369666,
+    "rough_ss": 0.004684820001384904,
+    "cliffs": 0.029702099218074932,
+    "rule_edge_cliffs": 0.02159564213716471,
+    "time_step": 0.020380188627333005,
+    "flicker": 0.37618855479434427,
+    "holdout": 0.06077398827294128,
+    "drift": 0.013166527662341441,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 4,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 0.6635409805731272,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.029141125456589975,
+    "rough_ss": 0.004479252442521456,
+    "cliffs": 0.00030233831487280977,
+    "rule_edge_cliffs": 0.00030233831487280977,
+    "time_step": 0.025805122810583777,
+    "flicker": 3.9576133808123473,
+    "holdout": 0.03924695454206254,
+    "drift": 0.010371429643353594,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 4,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.48269384278482086,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.03884041504798543,
+    "rough_ss": 0.00440218514795674,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.022983041418107596,
+    "flicker": 1.6417639615391364,
+    "holdout": 0.046181642034906045,
+    "drift": 0.01207603891842643,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 4,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.4086451342246612,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.049074332935198695,
+    "rough_ss": 0.004371846275899881,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.020541541694380754,
+    "flicker": 0.45379918298372074,
+    "holdout": 0.05397048339938601,
+    "drift": 0.014221549865252951,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 8,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 0.6334342618996291,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.028903611829915857,
+    "rough_ss": 0.004120255591176478,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.025783830476077532,
+    "flicker": 3.8096710825436966,
+    "holdout": 0.0341650017651831,
+    "drift": 0.01187009865054369,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 8,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.4600005145620909,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.03550123529746855,
+    "rough_ss": 0.0040627178720628486,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.02309108086461867,
+    "flicker": 1.6836009769345441,
+    "holdout": 0.03904689705258981,
+    "drift": 0.013479725542964645,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 8,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.38231391872885423,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.04243089037949291,
+    "rough_ss": 0.004048445132629898,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.020767365598625003,
+    "flicker": 0.5740882051096979,
+    "holdout": 0.044478560485971534,
+    "drift": 0.015500885207691962,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 0.6035445768296382,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.029176852535878924,
+    "rough_ss": 0.0037593545933243358,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.025802401016156,
+    "flicker": 3.6450633126350183,
+    "holdout": 0.02817227353604916,
+    "drift": 0.013728151923475266,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.4448943639762156,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.03336473042518814,
+    "rough_ss": 0.0037193770083490387,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.023273823263291398,
+    "flicker": 1.7646194237478297,
+    "holdout": 0.03079662979542109,
+    "drift": 0.015239301455130371,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.36662470587586793,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.03774472583486174,
+    "rough_ss": 0.0037177529300111913,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.021097069999184224,
+    "flicker": 0.739911822776303,
+    "holdout": 0.033718188227482064,
+    "drift": 0.017141485548526587,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 0,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 1.0592691230375317,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.02423752066574499,
+    "rough_ss": 0.005697560986422452,
+    "cliffs": 1.3702592347735425,
+    "rule_edge_cliffs": 0.8524231047117885,
+    "time_step": 0.028671902937479336,
+    "flicker": 5.753362309374796,
+    "holdout": 0.03569900148150029,
+    "drift": 0.011338460128797695,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 0,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.8004269223513512,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.04533087250486678,
+    "rough_ss": 0.005581725740246904,
+    "cliffs": 1.4160094919302593,
+    "rule_edge_cliffs": 0.8704460689317085,
+    "time_step": 0.024789014935663743,
+    "flicker": 2.093946352520868,
+    "holdout": 0.04732695822584143,
+    "drift": 0.013037145839656492,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 0,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.6711199194478584,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.06777682643495032,
+    "rough_ss": 0.00552491848067896,
+    "cliffs": 1.1019761337445846,
+    "rule_edge_cliffs": 0.6999331459321433,
+    "time_step": 0.021436044057081726,
+    "flicker": 0.3384788001793797,
+    "holdout": 0.0607513549778119,
+    "drift": 0.01526868789002233,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 2,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 0.7950864260662482,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.022181422392931034,
+    "rough_ss": 0.004830899311940423,
+    "cliffs": 0.05896174806658956,
+    "rule_edge_cliffs": 0.04706470430047918,
+    "time_step": 0.028512672991850528,
+    "flicker": 5.4047851615883244,
+    "holdout": 0.032309247032039246,
+    "drift": 0.013925074220234613,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 2,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.5261696709358982,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.03513058920233214,
+    "rough_ss": 0.004725221668019266,
+    "cliffs": 0.04035826356827024,
+    "rule_edge_cliffs": 0.030586105287961587,
+    "time_step": 0.024821763510628463,
+    "flicker": 2.041513211022533,
+    "holdout": 0.0416391598175076,
+    "drift": 0.015380888865167527,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 2,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.4208516632895812,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.04892853202703312,
+    "rough_ss": 0.004675047258791225,
+    "cliffs": 0.02869367368485567,
+    "rule_edge_cliffs": 0.020509372281380993,
+    "time_step": 0.02165016138386978,
+    "flicker": 0.40244352870321626,
+    "holdout": 0.05220020877083861,
+    "drift": 0.01734067474749412,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 4,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 0.7552570197649897,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.021722408382869676,
+    "rough_ss": 0.004489556624845115,
+    "cliffs": 0.00015155630660422601,
+    "rule_edge_cliffs": 0.00015155630660422601,
+    "time_step": 0.028450575958987694,
+    "flicker": 5.241789815255133,
+    "holdout": 0.02990287264150567,
+    "drift": 0.015057820733468279,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 4,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.4937351672223775,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.03131893279406278,
+    "rough_ss": 0.004401831300505288,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.02486444407908136,
+    "flicker": 2.050009769822347,
+    "holdout": 0.037654626382618565,
+    "drift": 0.016437280447417414,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 4,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.3833736014947395,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.04150824880026285,
+    "rough_ss": 0.004366772652804114,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.0217880559384049,
+    "flicker": 0.46778178021712347,
+    "holdout": 0.04631432940449196,
+    "drift": 0.01829484966447727,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 8,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 0.7234118501680533,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.02172838629804813,
+    "rough_ss": 0.004137358105614199,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.028378912405537297,
+    "flicker": 5.061985243548623,
+    "holdout": 0.026467704837252675,
+    "drift": 0.01638128654241637,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 8,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.4696784633308296,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.02842338481164572,
+    "rough_ss": 0.004069392214393982,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.02493078287093977,
+    "flicker": 2.056586914539338,
+    "holdout": 0.0320266459899467,
+    "drift": 0.017683615383336012,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 8,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.3591834324623021,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.035502347738907473,
+    "rough_ss": 0.004049812928860602,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.021976449408200777,
+    "flicker": 0.5841266915607197,
+    "holdout": 0.03818435710721222,
+    "drift": 0.019443037089128652,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.0
+   },
+   "score": 0.6874557945497648,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.022081743782645297,
+    "rough_ss": 0.00378317830812475,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.028313166097044016,
+    "flicker": 4.824558705430704,
+    "holdout": 0.022474129858335534,
+    "drift": 0.018007336521117294,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.2
+   },
+   "score": 0.4510572314512169,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.026546092514465776,
+    "rough_ss": 0.003733498168230872,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.025044298896464406,
+    "flicker": 2.08558345569941,
+    "holdout": 0.025584004379701947,
+    "drift": 0.019233862578691197,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4
+   },
+   "score": 0.343721418254684,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.031241881955865,
+    "rough_ss": 0.0037263674540301706,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.022246484109928345,
+    "flicker": 0.7327130523085281,
+    "holdout": 0.02902959648842104,
+    "drift": 0.020900536931482,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  }
+ ]
+}

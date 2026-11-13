@@ -96,6 +96,7 @@ The three unsourced factors need a reference before their covariates go into the
 | Biodiversity | Derived in the app from `npp`; not stored | `B = 0.0644 + 0.00018032 × NPP`, a line fitted to Tallavaara et al.'s present-day productivity and biodiversity rasters over the map's box, weighted by cell area (R² 0.82, RMSE 0.045) | `neolith-rs/crates/core/src/forager.rs`. It adds nothing productivity doesn't already say: it is on the map so the model's inputs can be seen. |
 | Farming front | Hex property `farming`: the year farming reaches the hex; absent if not by 3000 BCE | Pinhasi et al. (2005): one origin, one speed, shortest path over land | `pipeline/farming.py`, `[farming]` in `pipeline/config.toml`. Static. Says when farming could first be present, not whether the land can be farmed. |
 | Expected population | Derived in the app from `npp`, climate, rivers and `farming`; the "Expected population" map mode and the hex inspector | Foragers by the equation below; farmers as set out under "The farming side" | `neolith-rs/crates/core/src/forager.rs`, `farming.rs` and `World::expected_at`. Nobody on Ice; nothing on Water. |
+| Missing sites | In the world file (version 11): per hex and epoch, sites known, sites missing and the reading. The "Missing sites" map mode and the hex inspector | `data/population/residuals.csv.gz`, attached by `make residuals` (`neolith-convert --residuals`) | `neolith-rs/crates/core/src/residuals.rs`. Not computed in the app. A residual against the site list's own pattern, not a population estimate; see "Residuals rebuilt around effort and coast". |
 
 ### Choices made in applying the model
 
@@ -394,7 +395,7 @@ about ×3.3 on the shore, ×1.6 at 50 km, ×1 at 190 km, ×0.5 at 1,000 km, flat
 | Fit | Intercept 2.128 ± 0.253, slope −0.402 ± 0.048; R² 0.175 on the misses. The equation's R² on these densities goes from 0.42 to 0.53 |
 | Held-out check | Leaving each of the 27 D-PLACE regions out in turn, the mean squared miss falls from 1.50 to 1.32 |
 | Distance in the fit | To the nearest sea cell of Tallavaara's 1/6° land mask, less half a cell |
-| Distance on the map | From the hex centre to the nearest Water hex that year, less half a hex, in whole km (`World::shore_km`). Sea and lakes both count; rivers do not |
+| Distance on the map | From the hex centre to the nearest Water hex that year, less half a hex, in whole km (`World::shore_km`). Sea and lakes both count; rivers do not. Since the edge-sea fix below, the nearer of that and the sea beyond the map's edge |
 | Where | `neolith-rs/crates/core/src/forager.rs` (`shore_factor`). **This project's own fit, not a published model** |
 
 At that point the prediction's cap bound on productive coasts as well as in the wet tropics:
@@ -434,6 +435,40 @@ parts shows why:
 The second point is about our use of the equation as much as the equation: biodiversity is tied
 to productivity and pathogen stress is a constant, so every term pushes the same way and nothing
 holds productive land back.
+
+## Sea beyond the map's edge (2026-11-12)
+
+The map ends at about 6.4°N and 16.6°W. Distance to water was measured only to the map's own Water
+hexes, so a coast lying just off the map did not exist for the model: southern Ghana, Togo, Benin
+and Nigeria read as 700–1,000 km from any shore, when the Gulf of Guinea is 0–250 km south of the
+bottom edge. Found by checking West Africa at 9000 BCE.
+
+| | |
+|---|---|
+| Fix | Each hex carries `edge_sea_km` per key frame: the great-circle distance from its centre to the nearest open-sea cell outside the grid's box. The app uses the nearer of that and the on-map distance |
+| Sea cells | ETOPO1 (Amante & Eakins 2009) at 6 arc-min, 12° wider than the map on every side. A cell is sea when it is below that year's level on the map's sea curve and joined to water deeper than 1,500 m or to the window's edge, so closed basins do not count |
+| Not covered | Lakes off the map. Uplift is ignored, as for the map's own sea |
+| Where | `pipeline/edge_sea.py`, `[edge_sea]` in `pipeline/config.toml`; `World::shore_km` in `neolith-rs/crates/core/src/world.rs` (`world.bin` version 12) |
+
+Effect at 9000 BCE: 1,148 of 18,336 land hexes have a nearer shore; 498 gain more than 20% in
+forager density and 212 more than 50%; none falls. Of the 498, 475 are in West Africa and the rest
+on the Atlantic side north of 20°N.
+
+| Latitude (12°W–12°E) | Median km to water, before → after | Median people/km², before → after |
+|---|---|---|
+| 6–7°N | 794 → 180 | 0.32 → 0.59 |
+| 7–8°N | 750 → 255 | 0.32 → 0.52 |
+| 8–9°N | 715 → 354 | 0.31 → 0.44 |
+| 9–10°N | 702 → 426 | 0.32 → 0.40 |
+| 10–11°N | 712 → 514 | 0.32 → 0.38 |
+| 12–13°N | 790 → 696 | 0.38 → 0.40 |
+
+The residual model's coast slope fitted to forager sites moves from −0.365 to −0.359.
+
+Still open from the same check: the shore factor is the same on a coast that is drowning at a
+metre a century, or a lake filled a few centuries before, as on a stable one. Thirteen hexes on
+Lake Megachad's southern shore and a few on the Guinea coast exceed 1 person/km² at 9000 BCE,
+where tropical foragers are usually recorded at 0.1–0.4.
 
 ## Pathogen and biodiversity revisited (2026-11-12)
 
@@ -626,6 +661,7 @@ own cross-validation, leaving out everything within 500 km, gives R² 0.46.
 - Bailey, G. & Milner, N., 2002. Coastal hunter-gatherers and social evolution: marginal or central? Before Farming 2002(3–4), article 1. https://eprints.whiterose.ac.uk/926/
 - Binford hunter-gatherer data in D-PLACE (CC BY-NC 4.0; after Binford 2001). https://github.com/D-PLACE/dplace-dataset-binford
 - Jørgensen, E.K., Pesonen, P. & Tallavaara, M., 2022. Climatic changes cause synchronous population dynamics and adaptive strategies among coastal hunter-gatherers in Holocene northern Europe. Quaternary Research 108: 107–122. https://doi.org/10.1017/qua.2019.86
+- Amante, C. & Eakins, B.W., 2009. ETOPO1 1 Arc-Minute Global Relief Model: Procedures, Data Sources and Analysis. NOAA Technical Memorandum NESDIS NGDC-24. https://doi.org/10.7289/V5C8276M
 - Kavanagh, P.H., Vilela, B., Haynie, H.J., Tuff, T., Lima-Ribeiro, M., Gray, R.D., Botero, C.A. & Gavin, M.C., 2018. Hindcasting global population densities reveals forces enabling the origin of agriculture. Nature Human Behaviour 2: 478–484. https://doi.org/10.1038/s41562-018-0358-8
 - Lundström, V., Peters, R. & Riede, F., 2021. Demographic estimates from the Palaeolithic–Mesolithic boundary in Scandinavia: comparative benchmarks and novel insights. Philosophical Transactions of the Royal Society B 376: 20200037. https://doi.org/10.1098/rstb.2020.0037
 - Ordonez, A. & Riede, F., 2022. Changes in limiting factors for forager population dynamics in Europe across the last glacial-interglacial transition. Nature Communications 13: 5140. https://doi.org/10.1038/s41467-022-32750-x

@@ -112,6 +112,15 @@ each year's value came from.
      hexes (`neolith-convert --lakes`; `world.bin` version 3).
    - **Levels** drive spillway rivers (`spill` in `rivers.toml`).
    - Sources: `data/lakes/SOURCES.md`.
+5c. **Edge sea** (`[edge_sea]`, `pipeline/edge_sea.py`): the app measures a
+   hex's distance to water from the map's own Water hexes, so a coast that
+   lies off the map (the Gulf of Guinea, the Atlantic off Senegal) would
+   read as deep inland. For each key frame, each hex gets `edge_sea_km`: the
+   distance from its centre to the nearest open-sea cell outside the grid's
+   box, at that year's `[sea] curve` level, from a wider 6 arc-min ETOPO1
+   window (`make build/etopo_wide.asc`, 4.5 MB). 65535 means none within
+   `max_km`. The app takes the nearer of this and the on-map distance
+   (`world.bin` version 12). Lakes off the map are not counted.
 6a′. **Elevation**: each hex's median ETOPO1 elevation (metres, present-day
    datum) is written as a static scalar `elevation` property, not year-keyed,
    for the app's elevation map mode (`world.bin` version 4). `landform` is
@@ -137,6 +146,71 @@ each year's value came from.
    when a hex's value changes. That means the same under §3.2's
    step-function rule and the backend's "latest key ≤ year" lookup. At a
    100-year step it's 16 MB, against 28 MB for the old 8 dense epochs.
+
+## Checking the terrain
+
+```sh
+.venv/bin/python -m pipeline suspects     # build/critic/terrain/suspects.md
+.venv/bin/python -m pipeline look --name balkans --box 10 36 32 50 --years -9000 -8500 -8000 -7500 -7000
+```
+
+`pipeline/look.py`, settings in `[critic]`. Both read the built map and
+change nothing.
+
+- **`suspects`** screens the whole map for likely artefacts: biome edges
+  that keep to one hex row or column, thin bands, a biome whose share of a
+  5° tile jumps between keyframes or jumps and comes straight back, biomes
+  under a Köppen class `[critic.climate]` doesn't allow them, floodplains
+  that vanish while their river still runs, and lone hexes. Each row is a
+  box and years to look at, with the `look` command for it. The screens are
+  loose: real zonal boundaries (the Sahel) show up too.
+- **`look`** draws one box: `years.png` (each year, in a palette where every
+  class is distinct, with rivers and numbered pollen anchors),
+  `stages_<N>_bce.png` for each keyframe year asked for (drawn map, BIOME4,
+  calibrated model, gaps filled, after cleanup, final), and `look.md` (class
+  shares, changes, which stage set each class, Köppen under each class,
+  terrain on big-river hexes, anchors against the map).
+- The stage maps come from `build/stages.npz`, which `pipeline build` writes
+  with the main output.
+
+The `terrain-critic` agent (`.claude/agents/terrain-critic.md`) works through
+these and writes a report under `build/critic/terrain/`.
+
+## Checking exotic places
+
+```sh
+.venv/bin/python -m pipeline places                       # build/critic/places/index.md
+.venv/bin/python -m pipeline places --name bab_el_mandeb  # one place
+.venv/bin/python -m pipeline places --name tihama --box 42.2 13.5 43.6 17.0
+.venv/bin/python -m pipeline places-check                 # validate data/places/plans/
+```
+
+`pipeline/places.py`, settings in `[places]`. `data/places/places.toml` lists
+straits, river mouths, deltas, islands, oases, passes and drowned plains:
+places where someone looking at the map expects something to be going on.
+Nothing in the build reads the catalogue or anything made from it.
+
+- **`places`** writes a dossier and a sheet of maps per place, and an index
+  ranked by emptiness (the share of epochs with no site in the box, plus the
+  distance to the nearest site). A dossier holds, per epoch, land and water
+  in the box, hexes that drown later, sites in the box and within 100 km and
+  the missing-sites residuals; then the sites, likely duplicates, doubtful
+  coordinates, survey intensity, rivers, lakes and coast changes on record,
+  and what the speculative evidence layers hold there. The ranking says
+  where to look. It counts known sites, so it must never feed the expected
+  density.
+- The **exotic critic** (`.claude/agents/exotic-critic.md`) takes named
+  places or the top of the index and asks of each: is it really empty, why,
+  what does the literature know that we lack, and should we research,
+  speculate or leave it? It writes `data/places/plans/<key>.toml`: sites
+  known to the literature (with citation, link, and whether it opened the
+  source), datasets to ingest, and speculation to add beside the record,
+  as settlements marked inferred or as isostyle adjust rules. It lists its
+  links in `data/places/SOURCES.md`. It only plans; applying a plan is a
+  separate step.
+- **`places-check`** validates the catalogue and the plans (verdict, causes
+  from `isostyle/intuitions.py`, sites within reach of their place, layer
+  ids, links listed in `SOURCES.md`).
 
 ## Adding data
 
@@ -177,6 +251,11 @@ sea-level stage.
   out, and the report's "Land gaps" table tracks both figures. Calibration
   carries over the drawn maps' class names, including "Savannah" for the
   Pontic steppe band, which extends it east of the Volga and into Turan.
+- In Europe the −9000 and −8000 drawings copy Late Glacial maps (Allerød and
+  Younger Dryas; `[[terrain.misdated]]`, `data/terrain/SOURCES.md`). There,
+  those years are filled from the model, calibrated on the −7000 drawing, so
+  −10000 (inside the Younger Dryas) still looks more Holocene than it was:
+  the anchors agree there in only 44% of European slices.
 - −4000 and −3000 apply the −5000 classifier to later model climate. The
   model barely dries Arabia by then, so Arabia stays largely grassland and
   semi-desert, though the humid period ended around 4000–3000 BCE.

@@ -46,6 +46,8 @@ pub struct Harness {
     /// Real mouse and keyboard input reaches the app (off by default, so a
     /// human's cursor over the window can't disturb the agent's session).
     user_input: bool,
+    /// Frames a due reply has waited for the camera to come to rest.
+    settle_wait: u32,
     pub port: u16,
 }
 
@@ -129,6 +131,7 @@ impl Harness {
             shooting: Arc::default(),
             widgets,
             user_input: false,
+            settle_wait: 0,
             port,
         })
     }
@@ -208,7 +211,7 @@ fn brief_state(v: &mut Value) {
     }
     for k in ["hover", "inspected"] {
         if let Some(Value::Object(h)) = m.get_mut(k) {
-            h.retain(|k, _| ["id", "lon", "lat", "values", "elevation_m", "npp", "shore_km", "expected_density_per_km2", "farmed", "farming_arrives", "evidence"].contains(&k.as_str()));
+            h.retain(|k, _| ["id", "lon", "lat", "values", "elevation_m", "npp", "shore_km", "expected_density_per_km2", "farmed", "farming_arrives", "missing_sites", "evidence"].contains(&k.as_str()));
         }
     }
 }
@@ -284,9 +287,10 @@ fn hex_json(app: &NeolithApp, hex: HexId) -> Value {
     let rivers: Vec<_> =
         crate::panels::rivers_in_hex(w, hex, year).into_iter().map(|(n, st)| json!({"name": n, "state": format!("{st:?}")})).collect();
     let shore = w.shore_km(year)[hex.index()];
+    let residual = w.residuals.as_ref().and_then(|t| t.at(hex, year));
     let expected = w.expected_given(hex, year, shore as f64);
     let evidence = s.evidence().map_or(Value::Null, |l| {
-        let code = l.code_at(hex, year);
+        let code = s.evidence_code(hex);
         json!({"layer": l.id, "code": code, "value": l.value(code), "units": l.units,
                "confidence": neolith_core::evidence::confidence(code).map(neolith_core::evidence::confidence_label)})
     });
@@ -299,6 +303,7 @@ fn hex_json(app: &NeolithApp, hex: HexId) -> Value {
         "expected_density_per_km2": expected.map_or(Value::Null, |e| json!(e.density)),
         "farmed": expected.is_some_and(|e| e.farmed),
         "farming_arrives": w.farming.get(hex.index()).copied().flatten().map_or(Value::Null, |y| json!(y.0)),
+        "missing_sites": residual.map_or(Value::Null, |r| json!({"missing": r.missing, "sites_known": r.sites, "reading": r.outcome})),
         "landform": w.landform[hex.index()].map_or(Value::Null, |l| json!(l.label())),
         "evidence": evidence,
         "lakes": lakes, "rivers": rivers,
@@ -374,14 +379,18 @@ impl NeolithApp {
         let drained = h.input.is_empty();
         let mut keep = Vec::new();
         let pending = std::mem::take(&mut h.after_input);
+        // Replies wait for the camera to stop gliding or coasting (up to
+        // about two seconds), so `after` shows where it came to rest.
+        let moving = self.session.as_ref().is_some_and(|s| s.input.camera_moving());
         for (frames, reply, mut v) in pending {
-            if drained && frames == 0 {
+            if drained && frames == 0 && (!moving || h.settle_wait >= 120) {
                 v["after"] = self.harness_brief(ctx);
                 let _ = reply.send(ok(v));
             } else {
-                keep.push((if drained { frames - 1 } else { frames }, reply, v));
+                keep.push((if drained { frames.saturating_sub(1) } else { frames }, reply, v));
             }
         }
+        h.settle_wait = if drained && moving && keep.iter().any(|(f, _, _)| *f == 0) { h.settle_wait + 1 } else { 0 };
         h.after_input.extend(keep);
         h.timers.retain(|(t, reply)| {
             if now >= *t {
@@ -506,6 +515,8 @@ impl NeolithApp {
                 }
                 let grid = s.world.grid.clone();
                 s.camera.clamp(&grid);
+                // A camera set directly is not then carried off by an earlier pan's coast.
+                s.input.stop_camera();
                 s.state_dirty = true;
                 queue(h, vec![vec![]], 2)
             }
@@ -664,9 +675,8 @@ impl NeolithApp {
         if let Some(v) = req.get("art").and_then(Value::as_str) {
             self.style.terrain_art = match v {
                 "off" => ArtMode::Off,
-                "2d" | "flat" => ArtMode::Flat,
-                "3d" | "raised" => ArtMode::Raised,
-                _ => return err(format!("art: off, 2d or 3d, not {v:?}")),
+                "on" | "3d" => ArtMode::On,
+                _ => return err(format!("art: off or on, not {v:?} (the 2D art is gone)")),
             };
         }
         if let Some(v) = req.get("rivers").and_then(Value::as_bool) {
@@ -685,7 +695,9 @@ impl NeolithApp {
             ("art_strength", &mut st.art_strength, 0.0, 1.0),
             ("saturation", &mut st.saturation, 0.0, 1.3),
             ("relief_exaggeration", &mut st.relief_exaggeration, 1.0, 40.0),
+            ("mountain_height", &mut st.mountain_height, 0.3, 1.5),
             ("fill_margin", &mut st.fill_margin, 0.0, 0.45),
+            ("depth", &mut st.depth, 0.0, 1.0),
         ] {
             if let Some(v) = f(req, k) {
                 *slot = (v as f32).clamp(lo, hi);
@@ -696,10 +708,17 @@ impl NeolithApp {
                 *slot = v;
             }
         }
-        if let Some(v) = req.get("style_window").and_then(Value::as_bool) {
-            self.show_style = v;
-        }
         let Some(s) = &mut self.session else { return err("no world loaded yet") };
+        // The board style lives in the sidebar's Map tab.
+        if let Some(v) = req.get("style_window").and_then(Value::as_bool) {
+            s.side_tab = if v { crate::panels::SideTab::Map } else { crate::panels::SideTab::Selected };
+        }
+        if let Some(v) = req.get("tab").and_then(Value::as_str) {
+            match crate::panels::SideTab::ALL.iter().find(|t| t.label().eq_ignore_ascii_case(v)) {
+                Some(t) => s.side_tab = *t,
+                None => return err(format!("unknown tab {v:?}; use Selected, Chronicle or Map")),
+            }
+        }
         if let Some(y) = f(req, "year") {
             s.clock.set_year(Year(y as i32));
         }
@@ -718,10 +737,11 @@ impl NeolithApp {
         if let Some(m) = req.get("mode").and_then(Value::as_str) {
             match MapMode::from_arg(m) {
                 Some(MapMode::Evidence) if s.world.evidence.is_empty() => return err("mode: this world has no evidence layers"),
+                Some(MapMode::Missing) if s.world.residuals.is_none() => return err("mode: this world has no missing-sites table"),
                 Some(m) => s.mode = m,
                 None => {
                     return err(format!(
-                        "mode: terrain, koeppen, pop, elevation, npp, biodiversity, expected or evidence, not {m:?}"
+                        "mode: terrain, koeppen, pop, elevation, npp, biodiversity, expected, evidence or missing, not {m:?}"
                     ))
                 }
             }
@@ -788,9 +808,11 @@ impl NeolithApp {
                 "saturation": self.style.saturation,
                 "flat_lighting": self.style.flat_lighting,
                 "relief_exaggeration": self.style.relief_exaggeration,
+                "mountain_height": self.style.mountain_height,
                 "fill": self.style.fill_screen,
                 "fill_margin": self.style.fill_margin,
-                "style_window_open": self.show_style,
+                "depth": self.style.depth,
+                "style_window_open": self.session.as_ref().is_some_and(|s| s.side_tab == crate::panels::SideTab::Map),
             },
             "start_year": self.start_year,
         });
@@ -839,6 +861,13 @@ impl NeolithApp {
                         .map_or("no data".into(), |l| format!("{l} {}", neolith_core::productivity::UNIT)),
                     None if s.mode == MapMode::Expected => neolith_core::farming::band_label(s.snapshot.expected[hex.index()])
                         .map_or("no data".into(), |l| format!("{l} per 100 km²")),
+                    None if s.mode == MapMode::Missing => s
+                        .world
+                        .residuals
+                        .as_ref()
+                        .and_then(|t| t.at(hex, year))
+                        .and_then(|r| neolith_core::residuals::band_label(neolith_core::residuals::band((r.missing * 10.0).round() as i16)))
+                        .map_or("no data".into(), |l| format!("{l} sites missing")),
                     None if s.mode == MapMode::Evidence => evidence_label(s.evidence(), s.evidence_codes().get(hex.index()).copied()),
                     None if s.mode == MapMode::Biodiversity => {
                         neolith_core::forager::biodiversity_band_label(s.snapshot.biodiversity[hex.index()])

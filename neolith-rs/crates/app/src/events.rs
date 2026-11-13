@@ -104,7 +104,11 @@ type Change = (u32, Year, Option<String>, LonLat);
 fn settlement_events(world: &World) -> Vec<Event> {
     let first = world.keyframe_years().first().copied();
     let (mut founded, mut resettled, mut abandoned) = (Vec::new(), Vec::new(), Vec::new());
-    for st in &world.settlements {
+    for (i, st) in world.settlements.iter().enumerate() {
+        // An inferred settlement is a guess, not an event in the record.
+        if world.is_inferred(i) {
+            continue;
+        }
         let peak = st.population.keys().iter().map(|(_, n)| *n).max().unwrap_or(0);
         let change = |y: Year| (peak, y, settlement_label(&st.name), st.pos);
         // Places already there at the start are the setting, not news.

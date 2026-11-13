@@ -169,6 +169,65 @@ class Speculative(unittest.TestCase):
         self.assertAlmostEqual(v[5], 0.0)        # beyond the blend rings
         self.assertEqual(c[7], "none")
 
+    def test_firm_cells_do_not_blend(self):
+        from isostyle import speculative
+        nb = [[k for k in (i - 1, i + 1) if 0 <= k < 6] for i in range(6)]
+        obs = np.array([1.0] + [np.nan] * 5)
+        judged = np.array([np.nan, 0, 0, 0, 0, 0.0])
+        conf = np.array([""] + ["low"] * 5, dtype=object)
+        firm = np.array([False, False, True, False, False, False])
+        v, basis, *_ = speculative.fill(obs, np.ones(6, bool), judged, conf, np.array([""] * 6, dtype=object), nb,
+                                        firm=firm)
+        self.assertAlmostEqual(v[1], 0.75)
+        self.assertAlmostEqual(v[2], 0.0)        # firm: the judged value, one step further out
+        self.assertAlmostEqual(v[3], 0.25)
+        # judged_values reports which cells an adjust marked firm.
+        j = {"expected": 0.5, "adjust": [{"kind": "area", "bbox": [0, 0, 1, 1], "value": 0.1, "firm": True}]}
+        fm = np.zeros(2, bool)
+        out = speculative.judged_values(j, np.array([0, 1]), np.array([0.5, 5.0]), np.array([0.5, 5.0]), -5000,
+                                        np.array([1e9, 1e9]), firm=fm)
+        self.assertEqual(fm.tolist(), [True, False])
+        self.assertEqual(out.tolist(), [0.1, 0.5])
+
+    def test_smoothing_never_moves_observed_cells(self):
+        from isostyle import speculative
+        nb = [[k for k in (i - 1, i + 1) if 0 <= k < 8] for i in range(8)]
+        v = np.array([1.0, 1.0, 0.0, 0.0, 0.0, 0.0, np.nan, 0.5])
+        fixed = np.array([True, True] + [False] * 6)
+        out = speculative.smooth_space(v, fixed, nb, 4)
+        self.assertEqual(list(out[:2]), [1.0, 1.0])
+        self.assertTrue(np.isnan(out[6]))                      # no value stays no value
+        self.assertEqual(out[7], 0.5)                          # no valued neighbour: unchanged
+        self.assertTrue(np.all(np.diff(out[1:6]) <= 0) and 0 < out[2] < 1)   # the cliff became a ramp
+        # Time: a speculative spike between two slices is pulled toward them; observed is not.
+        V = np.array([[0.0, 0.0], [1.0, 1.0], [0.0, 0.0]])
+        F = np.array([[False, False], [False, True], [False, False]])
+        T = speculative.smooth_time(V, F, 0.5)
+        self.assertAlmostEqual(T[1, 0], 0.5)
+        self.assertEqual(T[1, 1], 1.0)
+
+    def test_ring_distance_spreads_the_nearest_values(self):
+        from isostyle import speculative
+        nb = [[k for k in (i - 1, i + 1) if 0 <= k < 6] for i in range(6)]
+        src = np.array([True, False, False, False, False, True])
+        dist, val = speculative.ring_distance(src, np.array([1.0, 0, 0, 0, 0, 3.0]), nb)
+        self.assertEqual(list(dist), [0, 1, 2, 2, 1, 0])
+        self.assertEqual(list(val), [1.0, 1.0, 1.0, 3.0, 3.0, 3.0])
+
+    def test_land_between_covers_cells_that_emerge_between_slices(self):
+        import json, tempfile
+        from isostyle import grid
+        feats = [{"properties": {"terrain": t}} for t in (
+            {"-12000": "Water", "-8500": "Tundra"},        # emerges after the -9000 slice
+            {"-12000": "Water"},                           # always sea
+            {"-12000": "Ice", "-9500": "Water"},           # ice, then a lake: never land
+            {"-12000": "Plains", "-9500": "Water"})]       # drowned before -9000
+        with tempfile.NamedTemporaryFile("w", suffix=".geojson") as f:
+            json.dump({"features": feats}, f)
+            f.flush()
+            got = grid.land_between(f.name, [-10000, -9000, -8000])
+        self.assertEqual(got.tolist(), [[False, True, True], [False] * 3, [False] * 3, [True, True, False]])
+
     def test_set_other_takes_the_remainder(self):
         from isostyle import speculative
         with tempfile.TemporaryDirectory() as d:

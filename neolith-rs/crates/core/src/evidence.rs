@@ -6,8 +6,10 @@
 //! extrapolated. [`NO_VALUE`] means nothing to show (sea, ice, or nothing to
 //! fill from). Anything above confidence 0 is speculation, not evidence.
 //!
-//! A slice holds from its year until the next slice; years before the first
-//! slice read the first (the same step-function rule as the map's keys).
+//! Between two slices a hex's value is interpolated linearly in time
+//! ([`blend`]); years before the first slice read the first and years after
+//! the last read the last. Codes cover every hex that is land at any time
+//! near a slice, so the caller hides hexes that are sea or ice this year.
 
 use crate::grid::HexId;
 use crate::time::Year;
@@ -72,6 +74,21 @@ pub fn is_speculative(code: u8) -> bool {
     confidence(code).is_some_and(|c| c > 0)
 }
 
+/// The code a fraction `f` (0..1) of the way from code `a` to code `b`: the
+/// value moves linearly and the confidence is the weaker of the two. A hex
+/// with a value at only one end keeps that value.
+pub fn blend(a: u8, b: u8, f: f32) -> u8 {
+    match (bin(a), bin(b)) {
+        (Some(x), Some(y)) => {
+            let v = (x as f32 + (y as f32 - x as f32) * f).round() as u8;
+            (a / BINS).max(b / BINS) * BINS + v.min(BINS - 1)
+        }
+        (Some(_), None) => a,
+        (None, Some(_)) => b,
+        (None, None) => NO_VALUE,
+    }
+}
+
 impl EvidenceLayer {
     /// Hexes per slice.
     pub fn hexes(&self) -> usize {
@@ -87,15 +104,38 @@ impl EvidenceLayer {
         Some(self.slices.partition_point(|s| *s <= year).saturating_sub(1))
     }
 
-    /// Every hex's code at `year` (empty without slices).
-    pub fn codes_at(&self, year: Year) -> &[u8] {
+    /// The slice in effect at `year`, the next one, and how far `year` is
+    /// from the first to the second (0 at or outside the ends).
+    fn bracket(&self, year: Year) -> Option<(usize, usize, f32)> {
+        let k = self.slice_at(year)?;
+        match self.slices.get(k + 1) {
+            Some(next) if year > self.slices[k] => {
+                let f = (year.0 - self.slices[k].0) as f32 / (next.0 - self.slices[k].0) as f32;
+                Some((k, k + 1, f))
+            }
+            _ => Some((k, k, 0.0)),
+        }
+    }
+
+    fn slice(&self, k: usize) -> &[u8] {
         let n = self.hexes();
-        self.slice_at(year).map_or(&[], |k| &self.codes[k * n..(k + 1) * n])
+        &self.codes[k * n..(k + 1) * n]
+    }
+
+    /// Every hex's code at `year`, interpolated between the slices either
+    /// side of it (empty without slices).
+    pub fn codes_at(&self, year: Year) -> Vec<u8> {
+        match self.bracket(year) {
+            None => Vec::new(),
+            Some((a, b, _)) if a == b => self.slice(a).to_vec(),
+            Some((a, b, f)) => self.slice(a).iter().zip(self.slice(b)).map(|(x, y)| blend(*x, *y, f)).collect(),
+        }
     }
 
     /// The code of one hex at `year`; [`NO_VALUE`] for a hex outside the layer.
     pub fn code_at(&self, hex: HexId, year: Year) -> u8 {
-        self.codes_at(year).get(hex.index()).copied().unwrap_or(NO_VALUE)
+        let at = |k: usize| self.slice(k).get(hex.index()).copied().unwrap_or(NO_VALUE);
+        self.bracket(year).map_or(NO_VALUE, |(a, b, f)| if a == b { at(a) } else { blend(at(a), at(b), f) })
     }
 
     /// The value a code stands for: the centre of its bin in `vmin..vmax`.
@@ -161,17 +201,23 @@ mod tests {
     use super::*;
 
     #[test]
-    fn code_at_steps_at_slice_boundaries() {
+    fn code_at_interpolates_between_slices() {
         let mut l = test_layer("a", 10);
         l.codes[2 * 10 + 3] = NO_VALUE;
         let at = |y: i32| l.code_at(HexId(3), Year(y));
         // Before the first slice: the first.
         assert_eq!(at(-12000), 3);
         assert_eq!(at(-9000), 3);
-        assert_eq!(at(-7001), 3, "a slice holds until the next");
+        assert_eq!(at(-8000), 7, "halfway from 3 to 10, rounded");
         assert_eq!(at(-7000), 10);
-        assert_eq!(at(-5001), 10);
+        assert_eq!(at(-5001), 10, "a value at one end only holds");
         assert_eq!(at(-5000), NO_VALUE);
+        assert_eq!(l.codes_at(Year(-8000))[3], 7);
+        // Value moves linearly; confidence is the weaker end's.
+        assert_eq!(blend(10, 3 * BINS + 30, 0.5), 3 * BINS + 20);
+        assert_eq!(blend(4 * BINS + 49, 0, 0.0), 4 * BINS + 49);
+        assert_eq!(blend(NO_VALUE, 60, 0.9), 60);
+        assert_eq!(blend(NO_VALUE, NO_VALUE, 0.5), NO_VALUE);
         assert_eq!(at(2000), NO_VALUE, "the last slice holds on");
         assert_eq!(l.slice_at(Year(-6000)), Some(1));
         assert_eq!(l.codes_at(Year(-6000)).len(), 10);

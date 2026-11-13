@@ -1,4 +1,5 @@
 """Per-year property arrays: keyframes, fill strategies, sea-level overlay."""
+import heapq
 import os
 from collections import Counter, deque
 
@@ -8,13 +9,13 @@ from .elevation import ocean_mask, sea_level
 from .grid import load_geojson
 
 
-def fill(keyframes, years, strategy="hold", neighbours=None):
+def fill(keyframes, years, strategy="hold", neighbours=None, xy=None, slowness=None):
     """Values for every year from sparse keyframes.
 
     keyframes: {year: array}. Returns ({year: array}, {year: provenance}).
     "hold": latest earlier keyframe (else the nearest one).
     "fronts": between two keyframes, changes spread as fronts (switch_fraction);
-    outside the keyframe range, hold.
+    outside the keyframe range, hold. `xy` and `slowness` go to switch_fraction.
     """
     if strategy not in ("hold", "fronts"):
         raise ValueError(f"unknown fill strategy {strategy!r}")
@@ -32,7 +33,7 @@ def fill(keyframes, years, strategy="hold", neighbours=None):
         if strategy == "fronts" and earlier and later:
             t0, t1 = earlier[-1], later[0]
             if (t0, t1) not in frac:
-                frac[t0, t1] = switch_fraction(keyframes[t0], keyframes[t1], neighbours)
+                frac[t0, t1] = switch_fraction(keyframes[t0], keyframes[t1], neighbours, xy, slowness)
             switched = frac[t0, t1] <= (y - t0) / (t1 - t0)
             out[y] = np.where(switched, keyframes[t1], keyframes[t0])
             prov[y] = f"fronts {t0}..{t1}"
@@ -57,28 +58,61 @@ def _bfs(sources, allowed, neighbours):
     return dist
 
 
-def switch_fraction(a, b, neighbours):
+def _nearest(sources, allowed, neighbours, xy):
+    """Straight-line distance from each `allowed` hex to the nearest of
+    `sources`, found by spreading each source's identity through `allowed`
+    (each hex keeps the source closest to it in a straight line among those
+    its neighbours offer); -1 = unreached. Unlike hop counts, this gives
+    round fronts, not the hexagons with straight sides that hops make."""
+    dist = np.full(len(neighbours), -1.0)
+    owner = np.full(len(neighbours), -1)
+    heap = [(0.0, i, i) for i in sources]
+    heapq.heapify(heap)
+    while heap:
+        d, i, o = heapq.heappop(heap)
+        if owner[i] >= 0:
+            continue
+        owner[i], dist[i] = o, d
+        for j in neighbours[i]:
+            if allowed[j] and owner[j] < 0:
+                heapq.heappush(heap, (float(np.hypot(*(xy[j] - xy[o]))), j, o))
+    return dist
+
+
+def switch_fraction(a, b, neighbours, xy=None, slowness=None):
     """When each hex switches from a to b, as a fraction of the interval (0, 1].
 
     Hexes that don't change get 0. For each target value B, the hexes
-    turning into B advance as a front from hexes already B in `a`: a hex d
-    hops from the nearest one switches at (d+1)/(D+1), with D the furthest
-    hop in its connected patch. A patch with no B next to it grows out from
-    its middle instead (hexes deepest inside it switch first).
+    turning into B advance as a front from hexes already B in `a`: a hex at
+    distance d from the nearest one switches at (d+1)/(D+1), with D the
+    furthest in its connected patch. A patch with no B next to it grows out
+    from its middle instead (hexes deepest inside it switch first).
+
+    Distance is hops through the patch, or with `xy` (hex centres in a plane,
+    in hex widths) the straight-line distance to the nearest source reached
+    through the patch, times `slowness` (per hex, about 1) if given, so a
+    front fed from a straight edge doesn't stay straight.
     """
     n = len(a)
     changing = np.asarray(a != b)
     frac = np.zeros(n)
+
+    def distance(src, allowed):
+        if xy is None:
+            return _bfs(src, allowed, neighbours).astype(float)
+        d = _nearest(src, allowed, neighbours, xy)
+        return np.where(d >= 0, d * (1.0 if slowness is None else slowness), -1.0)
+
     for target in set(b[changing]):
         s = changing & (b == target)
         src = [i for i in np.flatnonzero(s) if any(a[j] == target for j in neighbours[i])]
-        dist = _bfs(src, s, neighbours)
+        dist = distance(src, s)
         # Unreached patches: depth from the patch edge, inverted.
         rest = s & (dist < 0)
         if rest.any():
             edge = [i for i in np.flatnonzero(rest)
                     if len(neighbours[i]) < 6 or any(not rest[j] for j in neighbours[i])]
-            depth = _bfs(edge, rest, neighbours)
+            depth = distance(edge, rest)
             for comp in _components(rest, neighbours):
                 dmax = depth[comp].max()
                 dist[comp] = dmax - depth[comp]
@@ -86,6 +120,26 @@ def switch_fraction(a, b, neighbours):
             D = dist[comp].max()
             frac[comp] = (dist[comp] + 1) / (D + 1)
     return frac
+
+
+def front_geometry(grid, cfg):
+    """(xy, slowness) for the fronts fill from [time.fronts]: hex centres in
+    hex widths with longitude shrunk by cos(latitude), and a smooth fixed
+    noise field 1 + noise * value_noise. (None, None) when metric = "hops"."""
+    if cfg.get("metric", "hops") != "distance":
+        return None, None
+    from .biome_clean import value_noise
+    c = grid.centres
+    w = abs(grid.bbox[0, 2] - grid.bbox[0, 0])
+    xy = np.column_stack([c[:, 0] * np.cos(np.radians(c[:, 1])), c[:, 1]]) / w
+    amp = cfg.get("noise", 0.0)
+    slow = None
+    if amp:
+        period = cfg.get("noise_period", 6.0)
+        n = (value_noise(xy, period, cfg.get("seed", 11)) * 0.7
+             + value_noise(xy + 13.7, period / 2.3, cfg.get("seed", 11) + 1) * 0.3)
+        slow = 1.0 + amp * n
+    return xy, slow
 
 
 def _components(mask, neighbours):
@@ -128,9 +182,16 @@ def legacy(grid, cfg):
     return out
 
 
-def fill_from_neighbours(values, todo, neighbours, exclude=("Water",), default="Plains"):
+def fill_from_neighbours(values, todo, neighbours, exclude=("Water",), default=None):
     """Give each hex in `todo` the majority value of its settled neighbours,
-    growing inward until nothing changes; leftovers get `default`."""
+    growing inward until nothing changes; leftovers get `default`.
+
+    Leftovers are hexes with no usable neighbour at all, e.g. an island the
+    low sea exposes amid Water. With `default` None each takes the majority
+    of the nearest ring (in hex steps, across excluded hexes) holding a
+    usable value: the nearest coast's biome, not a made-up class. (This used
+    to be "Plains", a placeholder that is not a biome and showed as one.)
+    Only with no usable value anywhere does a hex still get "Plains"."""
     values = values.copy()
     pending = set(np.flatnonzero(todo))
     while pending:
@@ -145,8 +206,21 @@ def fill_from_neighbours(values, todo, neighbours, exclude=("Water",), default="
         for i, v in settled.items():
             values[i] = v
         pending -= settled.keys()
+    if default is not None:
+        for i in pending:
+            values[i] = default
+        return values
+    found = {}
     for i in pending:
-        values[i] = default
+        seen, ring = {i}, [i]
+        while ring:
+            ring = [j for k in ring for j in neighbours[k] if j not in seen and not seen.add(j)]
+            c = Counter(values[j] for j in ring if j not in pending and values[j] not in exclude)
+            if c:
+                found[i] = max(sorted(c), key=c.__getitem__)
+                break
+    for i in pending:
+        values[i] = found.get(i, "Plains")
     return values
 
 
@@ -409,6 +483,32 @@ def keep_settled_land(terrain, before, settlements, grid, min_land_neighbours=1,
                 t = fill_from_neighbours(t, todo, grid.neighbours, exclude=("Water", "Alpine"))
         out[y], stats[y] = t, len(hits)
     return out, out_feats, {"kept": stats, "drowned": drowned, "cuts": cuts, "wet_starts": wet_starts}
+
+
+def in_boxes(centres, boxes):
+    """Hexes centred in any of `boxes` ([lon0, lat0, lon1, lat1] each)."""
+    m = np.zeros(len(centres), dtype=bool)
+    for b in boxes:
+        m |= ((centres[:, 0] >= b[0]) & (centres[:, 0] <= b[2])
+              & (centres[:, 1] >= b[1]) & (centres[:, 1] <= b[3]))
+    return m
+
+
+def misdated(t, centres, rules, year, gap="Land"):
+    """Drawn keyframes copied from a source map of another time, by region
+    ([[terrain.misdated]]): every class except `keep` (default Water) on
+    hexes centred in the rule's `boxes` becomes a biome gap, filled from the
+    climate model like any other. Returns (terrain, {rule index: hexes})."""
+    out, n = t, {}
+    for k, r in enumerate(rules):
+        if year not in r["years"]:
+            continue
+        m = in_boxes(centres, r["boxes"]) & ~np.isin(t, r.get("keep", ["Water"])) & (t != gap)
+        if m.any():
+            out = out.copy() if out is t else out
+            out[m] = gap
+            n[k] = int(m.sum())
+    return out, n
 
 
 def reinterpret(t, centres, rules, year):

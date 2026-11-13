@@ -34,6 +34,13 @@ class Apply(unittest.TestCase):
         self.assertEqual(unmatched, [])
         self.assertEqual(a["geometry"]["coordinates"], [0.0, 0.0])      # input untouched
 
+    def test_rename_keeps_the_filed_name(self):
+        out, applied, _ = coords.apply([site("Wrong", 0.0, 0.0, 1)],
+                                       [{"name": "Wrong", "was": [0.0, 0.0], "rename": "Unidentified"}], self.g)
+        self.assertEqual(out[0]["properties"]["name"], "Unidentified")
+        self.assertEqual(out[0]["properties"]["filed_as"], "Wrong")
+        self.assertEqual(applied, [("Wrong", "renamed")])
+
     def test_unmatched_reported(self):
         _, _, unmatched = coords.apply([site("A", 0, 0, 1)], [{"name": "A", "was": [3, 3], "drop": True}], self.g)
         self.assertEqual(unmatched, ["A"])

@@ -2,7 +2,9 @@
 python -m pipeline settlements [--config pipeline/config.toml]
 python -m pipeline cultures-check [--config pipeline/config.toml]
 python -m pipeline biome [--config pipeline/config.toml]   # subset the BIOME4 NetCDF
-python -m pipeline anchors [--config pipeline/config.toml]  # pollen anchor records for the biome maps"""
+python -m pipeline anchors [--config pipeline/config.toml]  # pollen anchor records for the biome maps
+python -m pipeline suspects                                  # screens for terrain artefacts -> build/critic/terrain/
+python -m pipeline look --box LON0 LAT0 LON1 LAT1 [--years Y ...] [--name NAME]   # one region over time, stage by stage"""
 import argparse
 import json
 import os
@@ -55,6 +57,18 @@ def build(cfg, step=None, out=None):
         log("reinterpreted drawn classes: " + ", ".join(
             f"{y}: {sum(v.values())}" for y, v in sorted(reinterpreted.items())))
 
+    # Regions of a keyframe drawn from a source map of another time
+    # ([[terrain.misdated]]) become biome gaps, filled from the model.
+    mrules = tcfg.get("misdated", [])
+    misdated_n = {}
+    for y in raw:
+        raw[y], n = compose.misdated(raw[y], g.centres, mrules, y)
+        if n:
+            misdated_n[y] = n
+    if misdated_n:
+        log("mis-dated drawn regions made gaps: " + ", ".join(
+            f"{y}: {sum(v.values())}" for y, v in sorted(misdated_n.items())))
+
     # Drawn Water on high ground outside every modelled lake is a drawing
     # artefact (a coast drawn a hex off, a flicker in one key frame): make it
     # a biome gap, filled like the drawn "Land" ([terrain.high_water]).
@@ -92,6 +106,7 @@ def build(cfg, step=None, out=None):
     pcfg = cfg.get("paleobiome")
     drawn = dict(raw)
     land_stats, biome_bp, model, cal_stats = {}, {}, {}, {}
+    biome4 = {}
     cold, shift = {}, None
     # Per keyframe, the hexes whose biome came from the model, not a drawing.
     model_filled = {}
@@ -106,13 +121,24 @@ def build(cfg, step=None, out=None):
             log(f"lapse: hexes vs model cells, median {np.median(dz[land]):+.0f} m, "
                 f"max {dz[land].max():+.0f} m")
         model, biome_bp = paleobiome.hex_biomes(g, pcfg, kyears)
+        biome4 = model
         cal_stats = {}
         if pcfg.get("calibrate", {}).get("enabled"):
             ccfg = pcfg["calibrate"]
             lit = (paleobiome.literature_labels(cfg.get("anchors", {}).get("literature"),
                                                 cfg.get("anchors", {}).get("holdout", 3), g)
                    if ccfg.get("use_literature") else None)
-            model, cal_stats = paleobiome.calibrated_biomes(g, pcfg, kyears, drawn, model, shift, lit)
+            # A mis-dated region learns from a keyframe that drew it at the right time.
+            borrow, model_ice = {}, {}
+            for r in mrules:
+                if r.get("model_ice"):
+                    for y in r["years"]:
+                        model_ice[y] = model_ice.get(y, False) | compose.in_boxes(g.centres, r["boxes"])
+                if "train_from" in r:
+                    for y in r["years"]:
+                        borrow.setdefault(y, []).append((r["train_from"], compose.in_boxes(g.centres, r["boxes"])))
+            model, cal_stats = paleobiome.calibrated_biomes(g, pcfg, kyears, drawn, model, shift, lit, borrow,
+                                                            model_ice)
             log("paleobiome: calibrated against drawn maps")
         gaps = tuple(pcfg.get("gaps", ["Land"]))
         for y in kyears:
@@ -170,7 +196,16 @@ def build(cfg, step=None, out=None):
             keyframes[y], clean["adjacency"][y] = biome_clean.fix_adjacency(
                 keyframes[y], g.neighbours, forbid, model_filled.get(y), max_passes=acfg.get("max_passes", 8))
 
-    terrain, prov = compose.fill(keyframes, years, tc["fill"], g.neighbours)
+    # What each stage made of every keyframe, for `python -m pipeline look`.
+    resolved = dict(raw)
+    stage_frames = {"drawn": {y: drawn.get(y, drawn[min(drawn, key=lambda k: abs(k - y))]) for y in keyframes},
+                    "biome4": biome4, "calibrated": model if model is not biome4 else {},
+                    "filled": resolved, "keyframe": keyframes}
+
+    # Fronts by straight-line distance with a fixed noise field ([time.fronts]):
+    # hop counts make fronts with straight north-south sides on this grid.
+    fxy, fslow = compose.front_geometry(g, tc.get("fronts", {}))
+    terrain, prov = compose.fill(keyframes, years, tc["fill"], g.neighbours, fxy, fslow)
     if forbid:
         # Fronts between keyframes can bring together pairs neither keyframe has.
         kys = sorted(keyframes)
@@ -196,7 +231,7 @@ def build(cfg, step=None, out=None):
     if kcfg["source"] == "legacy":
         legacy_props[:0] = ["climate", "koeppen"]
     for p in legacy_props:
-        props[p], provenance[p] = compose.fill(leg[p], years, tc["fill"], g.neighbours)
+        props[p], provenance[p] = compose.fill(leg[p], years, tc["fill"], g.neighbours, fxy, fslow)
     log("composed")
 
     lakes = []
@@ -254,7 +289,7 @@ def build(cfg, step=None, out=None):
     if kcfg["source"] == "beyer2020":
         props["koeppen"], provenance["koeppen"], kstats = build_koeppen(
             g, cfg, kcfg, terrain, years, leg, tc["fill"],
-            shift if kcfg.get("lapse") else None)
+            shift if kcfg.get("lapse") else None, (fxy, fslow))
         props["climate"] = {y: koeppen.codes(k) for y, k in props["koeppen"].items()}
         provenance["climate"] = provenance["koeppen"]
         log(f"koeppen: {len(kcfg['years'])} keyframes from monthly climate")
@@ -282,6 +317,14 @@ def build(cfg, step=None, out=None):
         y0, y1 = min(nstats), max(nstats)
         log(f"productivity: {len(nstats)} keyframes; land median {nstats[y0]['median']:.0f} g/m²/yr at {y0}, "
             f"{nstats[y1]['median']:.0f} at {y1}; {nstats[y1]['filled']} shelf hexes filled from neighbours")
+
+    ecfg = cfg.get("edge_sea", {})
+    if ecfg.get("enabled"):
+        from . import edge_sea
+        props["edge_sea_km"], estats = edge_sea.build(g, ecfg, cfg["sea"]["curve"], cfg["sea"]["seed_depth"])
+        y0 = min(estats)
+        log(f"edge sea: {len(estats)} keyframes; at {y0}, {estats[y0]['hexes']} hexes have sea beyond the map edge "
+            f"in reach, {estats[y0]['within_200_km']} within 200 km")
 
     # Nobody lives on the water: clear population on each year's final Water.
     props["population_density"], clean["water_population"] = biome_clean.clear_water_population(
@@ -313,6 +356,9 @@ def build(cfg, step=None, out=None):
     with open(os.path.join(bd, "provenance.json"), "w") as f:
         json.dump({p: {str(y): v for y, v in d.items()} for p, d in provenance.items()}, f, indent=1)
     log(f"wrote {out} ({os.path.getsize(out) / 1e6:.1f} MB)")
+    if out == cfg["output"]["combined"]:
+        from . import look
+        look.write_stages(os.path.join(bd, "stages.npz"), g, stage_frames)
 
     report.write(bd, g, terrain, drawn, leg["terrain"], prov, sea_stats, unmatched,
                  mtn_stats,
@@ -321,12 +367,13 @@ def build(cfg, step=None, out=None):
                  regions=cfg.get("report", {}).get("regions", []),
                  koeppen=(props["koeppen"], kstats),
                  clean={**clean, "high_water": (high_water, elev), "reinterpreted": reinterpreted, "upland": upland,
+                        "misdated": misdated_n, "misdated_rules": mrules,
                         "reinterpret_rules": tcfg.get("reinterpret", [])}, settlements=sfeats,
                  islands_watch=cfg.get("islands", {}).get("watch", []))
     log(f"wrote {bd}/report.md and previews")
 
 
-def build_koeppen(g, cfg, kcfg, terrain, years, leg, strategy, shift=None):
+def build_koeppen(g, cfg, kcfg, terrain, years, leg, strategy, shift=None, front=(None, None)):
     """Köppen per year: classify each key frame's monthly climate (moved to
     each hex's elevation by `shift`, degC per hex, if given), nudge it
     toward that year's terrain, align it with that year's water, fill between
@@ -347,7 +394,7 @@ def build_koeppen(g, cfg, kcfg, terrain, years, leg, strategy, shift=None):
             k, nudged = koeppen.nudge(k, humid, terrain[y], ncfg.get("wanted", {}))
             stats["nudged"][y] = nudged
         frames[y] = koeppen.align(k, terrain[y], g.neighbours, force, g.centres)
-    filled, prov = compose.fill(frames, years, strategy, g.neighbours)
+    filled, prov = compose.fill(frames, years, strategy, g.neighbours, *front)
     out = {y: koeppen.align(filled[y], terrain[y], g.neighbours, force, g.centres)
            for y in years}
     stats["modern"] = koeppen.modern(g, pcfg, paleobiome.hex_codes, shift)
@@ -359,10 +406,14 @@ def build_koeppen(g, cfg, kcfg, terrain, years, leg, strategy, shift=None):
 
 def main():
     ap = argparse.ArgumentParser(prog="python -m pipeline")
-    ap.add_argument("command", choices=["build", "settlements", "biome", "cultures-check", "anchors", "residuals"])
+    ap.add_argument("command", choices=["build", "settlements", "biome", "cultures-check", "anchors", "residuals",
+                                        "look", "suspects", "places", "places-check", "inferred"])
     ap.add_argument("--config", default="pipeline/config.toml")
     ap.add_argument("--step", type=int)
     ap.add_argument("--out")
+    ap.add_argument("--box", nargs=4, type=float, metavar=("LON0", "LAT0", "LON1", "LAT1"))
+    ap.add_argument("--years", nargs="*", type=int)
+    ap.add_argument("--name")
     a = ap.parse_args()
     with open(a.config, "rb") as f:
         cfg = tomllib.load(f)
@@ -396,6 +447,9 @@ def run(a, cfg):
             json.dump(summary, f, indent=1, ensure_ascii=False)
         residuals.maps(rc["maps"], g, rc["years"], extra, rc["map_bins"])
         print(f"wrote {rc['out']} ({len(rows)} rows), {rc['summary']} and maps in {rc['maps']}")
+    elif a.command == "inferred":
+        from . import inferred
+        inferred.run(cfg)
     elif a.command == "cultures-check":
         import os
         from . import cultures
@@ -404,6 +458,21 @@ def run(a, cfg):
     elif a.command == "anchors":
         from . import anchors
         anchors.build(cfg)
+    elif a.command in ("look", "suspects"):
+        from . import look
+        if a.command == "look":
+            if not a.box:
+                raise SystemExit("look needs --box LON0 LAT0 LON1 LAT1")
+            print(look.look(cfg, a.box, a.years, a.name, a.out))
+        else:
+            print(look.suspects(cfg, a.out))
+    elif a.command == "places":
+        from . import places
+        print(places.run(cfg, a.name, a.box, a.out))
+    elif a.command == "places-check":
+        from . import places
+        if places.check(cfg):
+            raise SystemExit(1)
     elif a.command == "settlements":
         from . import settlements
         settlements.build(cfg, gridmod.load(cfg["grid"]["source"]))

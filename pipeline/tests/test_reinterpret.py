@@ -21,3 +21,26 @@ class Reinterpret(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Misdated(unittest.TestCase):
+    def test_box_years_and_keep(self):
+        from pipeline import compose
+        centres = np.array([[0.0, 50.0], [1.0, 50.0], [0.5, 20.0], [0.2, 50.2]])
+        t = np.array(["Boreal Forest", "Water", "Chaparral", "Ice"], dtype=object)
+        rules = [{"name": "x", "years": [-8000], "boxes": [[-1, 40, 2, 60]]}]
+        out, n = compose.misdated(t, centres, rules, -8000)
+        # Ice in the box becomes a gap too (the model's ice replaces it); Water stays.
+        self.assertEqual(out.tolist(), ["Land", "Water", "Chaparral", "Land"])
+        self.assertEqual(n, {0: 2})
+        self.assertEqual(t[0], "Boreal Forest")          # the input is left alone
+        same, n = compose.misdated(t, centres, rules, -7000)
+        self.assertIs(same, t)
+        self.assertEqual(n, {})
+        kept, _ = compose.misdated(t, centres, [{**rules[0], "keep": ["Water", "Ice"]}], -8000)
+        self.assertEqual(kept[3], "Ice")
+
+    def test_in_boxes_unions(self):
+        from pipeline import compose
+        c = np.array([[0.0, 0.0], [5.0, 5.0], [9.0, 9.0]])
+        self.assertEqual(compose.in_boxes(c, [[-1, -1, 1, 1], [8, 8, 10, 10]]).tolist(), [True, False, True])

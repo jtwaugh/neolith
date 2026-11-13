@@ -55,7 +55,7 @@ pub struct Session {
     /// Index into `world.evidence` of the layer the Evidence mode shows.
     pub evidence_layer: Option<usize>,
     /// The (layer, slice) whose codes are on the GPU; see [`Session::tick`].
-    evidence_shown: Option<(usize, usize)>,
+    evidence_shown: Option<(usize, i32)>,
     /// The GPU evidence texture needs re-uploading.
     pub evidence_dirty: bool,
     pub editor: bool,
@@ -67,8 +67,10 @@ pub struct Session {
     pub selection: Selection,
     pub hover: Option<HexId>,
     pub inspected: Option<HexId>,
-    /// Index into `world.settlements` of the open settlement popup.
+    /// Index into `world.settlements` of the selected settlement (shown in
+    /// the sidebar's Selected tab).
     pub settlement: Option<usize>,
+    pub side_tab: crate::panels::SideTab,
 
     pub proj: Projection,
     pub mesh: BoardMesh,
@@ -90,6 +92,9 @@ pub struct Session {
     pub events: Vec<crate::events::Event>,
     /// The world was edited since `events` was built.
     events_stale: bool,
+    /// The famous-site entry of each settlement ([`crate::renown::index`]),
+    /// rebuilt with `events`.
+    pub renown: Vec<Option<crate::renown::Renowned>>,
 }
 
 impl Session {
@@ -135,6 +140,7 @@ impl Session {
             hover: None,
             inspected: None,
             settlement: None,
+            side_tab: crate::panels::SideTab::Selected,
             proj,
             mesh: board,
             morph: 0.0,
@@ -147,6 +153,7 @@ impl Session {
             input: BoardInput::default(),
             events: crate::events::build(&world),
             events_stale: false,
+            renown: crate::renown::index(&world),
             world,
             file_name,
             unsaved: false,
@@ -174,9 +181,36 @@ impl Session {
     }
 
     /// The selected evidence layer's code per hex at the current year (file
-    /// order), or nothing without a layer.
-    pub fn evidence_codes(&self) -> &[u8] {
-        self.evidence().map_or(&[], |l| l.codes_at(self.year()))
+    /// order), or nothing without a layer. Hexes under ice this year have no
+    /// value (the board hides the sea itself).
+    pub fn evidence_codes(&self) -> Vec<u8> {
+        let mut codes = self.evidence().map_or(Vec::new(), |l| l.codes_at(self.year()));
+        for (code, terrain) in codes.iter_mut().zip(&self.snapshot.terrain) {
+            if *terrain == neolith_core::Terrain::Ice as u8 {
+                *code = neolith_core::evidence::NO_VALUE;
+            }
+        }
+        codes
+    }
+
+    /// One hex's evidence code this year, as the board shows it.
+    /// What the overlay texture should hold: the Missing sites bands while
+    /// that mode is shown, else the picked evidence layer's codes. Both use
+    /// 255 for "nothing here".
+    pub fn overlay_codes(&self) -> Vec<u8> {
+        if self.mode == MapMode::Missing {
+            self.world.residuals.as_ref().map_or(Vec::new(), |r| r.bands_at(self.year()))
+        } else {
+            self.evidence_codes()
+        }
+    }
+
+    pub fn evidence_code(&self, hex: neolith_core::HexId) -> u8 {
+        let hidden = self.snapshot.terrain.get(hex.index()).is_some_and(|t| *t == neolith_core::Terrain::Ice as u8 || *t == neolith_core::Terrain::Water as u8);
+        match self.evidence() {
+            Some(l) if !hidden => l.code_at(hex, self.year()),
+            _ => neolith_core::evidence::NO_VALUE,
+        }
     }
 
     /// Picks the evidence layer with this id; false if there is none.
@@ -291,10 +325,17 @@ impl Session {
             self.world_changed = false;
             self.state_dirty = true;
             self.relief_scale = None;
+            // Ice hides evidence, and the ice just moved.
+            self.evidence_shown = None;
         }
-        // The evidence texture follows the picked layer and its slice in
-        // effect, like the snapshot follows keyframes.
-        let shown = self.evidence_layer.and_then(|i| Some((i, self.world.evidence.get(i)?.slice_at(self.year())?)));
+        // The evidence texture follows the picked layer and the year: values
+        // are interpolated between slices.
+        let shown = if self.mode == MapMode::Missing {
+            // The Missing sites mode borrows the texture: keyed by its slice.
+            self.world.residuals.as_ref().and_then(|r| r.slice_at(self.year())).map(|k| (usize::MAX, k as i32))
+        } else {
+            self.evidence_layer.filter(|i| *i < self.world.evidence.len()).map(|i| (i, self.year().0))
+        };
         if shown != self.evidence_shown {
             self.evidence_shown = shown;
             self.evidence_dirty = true;
@@ -302,6 +343,7 @@ impl Session {
         // Rebuilt once a stroke is finished, not per painted hex.
         if self.events_stale && self.input.is_idle() {
             self.events = crate::events::build(&self.world);
+            self.renown = crate::renown::index(&self.world);
             self.events_stale = false;
         }
         animating || self.clock.playing
@@ -320,7 +362,6 @@ pub struct NeolithApp {
     pub start_year: i32,
     pub session: Option<Session>,
     pub style: BoardStyle,
-    pub show_style: bool,
     /// A transient message for the status line, with the time it was set.
     pub status: Option<(String, f64)>,
     /// `--ui-screenshot`: capture the window after a few frames and exit.
@@ -364,7 +405,6 @@ impl NeolithApp {
             start_year: DEFAULT_START_YEAR,
             session: None,
             style: BoardStyle::default(),
-            show_style: false,
             status: None,
             #[cfg(not(target_arch = "wasm32"))]
             auto_shot: None,

@@ -29,13 +29,14 @@ refs = [
 name = "Distance to the sea"
 role = "expected"
 output = "a multiplier on forager density near coasts"
-inputs = "distance from each hex to the nearest sea or large lake at the epoch, from the map's own terrain"
+inputs = "distance from each hex to the nearest sea or large lake at the epoch, from the map's own terrain; sea beyond the map's edge from a wider ETOPO1 window at the epoch's sea level"
 caveat = "In the model with this project's own fit to Binford's data. Kavanagh et al. 2018 use the same predictor but the paper has not been read. Rivers are not counted."
 refs = [
   "https://doi.org/10.1038/s41562-018-0358-8",
   "https://github.com/D-PLACE/dplace-dataset-binford",
   "https://doi.org/10.1038/s41559-021-01548-3",
   "https://doi.org/10.1038/s41467-022-32750-x",
+  "https://doi.org/10.7289/V5C8276M",
 ]
 
 [[method]]

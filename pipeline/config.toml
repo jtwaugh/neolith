@@ -18,6 +18,19 @@ step = 100
 # the new value already is; outside the keyframe range, hold.
 fill = "fronts"
 
+# How far a hex is from where the new value already is, for "fronts".
+# "hops" counts hexes through the patch, which on this grid makes fronts with
+# straight north-south sides (45°E in Russia at -5500, 6°E at -8500).
+# "distance" is the straight-line distance (longitude shrunk by cos lat) to
+# the nearest source reached through the patch, times 1 + noise x a smooth
+# fixed noise field of `noise_period` hex widths, so fronts fed from a
+# straight edge wander. Keyframes are unchanged either way.
+[time.fronts]
+metric = "distance"
+noise = 0.25
+noise_period = 6.0
+seed = 11
+
 [grid]
 # Canonical hex geometry, ids and bboxes come from this file.
 source = "game/static/game/assets/maps/5000_bce.geojson"
@@ -79,6 +92,51 @@ from = "Grassland"
 to = "Savannah"
 box = [20.0, 15.0, 38.0, 22.0]
 years = [-7000, -6000]
+
+# Regions of a drawn keyframe copied from a source map of another time. The
+# QEN Europe originals (raw/maps/europe/) print their own radiocarbon dates:
+# the -9000 composite copies the 12,000-11,000 14C BP map (Allerød, about
+# -11950 to -10950 BCE) and the -8000 composite the 11,000-10,000 14C BP map
+# (Younger Dryas, which ended about -9750: Walker et al. 2009). The -7000
+# composite copies the 8,000 14C BP map (about -6950), so it is dated right.
+# Against the pollen anchors, Europe north of 42°N agreed with the map in
+# 23-25% of slices at -10000…-9000 and 46-52% at -8500…-8000, against 85-91%
+# from -7000 on (the Balkans Chaparral at -8000 is the Younger Dryas steppe).
+# Each rule makes every drawn class but `keep` (default Water) a biome gap on
+# hexes centred in `boxes` in `years`; gaps fill from the climate model as for
+# drawn "Land", with the calibration for those years also trained on the
+# `train_from` keyframe's drawing of the same boxes. -10000 reuses the -9000
+# drawing, so it gets the same treatment.
+# Ice: with `model_ice`, a gap hex where the model has land ice keeps it
+# (else the calibration, which never predicts ice, decides). At -8000 the
+# drawn Younger Dryas ice (800 hexes) gives way to the model's 10 ka ice
+# (419 cells). At -9000 the drawn Allerød ice is kept (`keep`): the model's
+# 11 ka ice covers the Finnmark coast and southern Finland and Norway, where
+# 9 pollen anchors record vegetation, against 3 under the drawn ice, and it
+# would put ice on the North Sea and the British Isles.
+[[terrain.misdated]]
+name = "Europe at -9000: QEN Allerød map (12,000-11,000 14C BP)"
+years = [-9000]
+train_from = -7000
+keep = ["Water", "Ice"]
+boxes = [
+  [-12.0, 37.5, 66.5, 76.5],   # Europe, the Caucasus, northern Anatolia, Turan's north
+  [-10.0, 35.9, -1.8, 37.5],   # southern Iberia (east of -1.8 the Algerian coast reaches 37°N)
+  [11.5, 35.7, 19.0, 37.5],    # Sicily and Malta (Cap Bon, Tunisia, is at 11°E)
+  [19.0, 34.5, 36.0, 37.5],    # Greece, Crete, Cyprus, southern Anatolia
+]
+
+[[terrain.misdated]]
+name = "Europe at -8000: QEN Younger Dryas map (11,000-10,000 14C BP)"
+years = [-8000]
+train_from = -7000
+model_ice = true
+boxes = [
+  [-12.0, 37.5, 66.5, 76.5],   # Europe, the Caucasus, northern Anatolia, Turan's north
+  [-10.0, 35.9, -1.8, 37.5],   # southern Iberia (east of -1.8 the Algerian coast reaches 37°N)
+  [11.5, 35.7, 19.0, 37.5],    # Sicily and Malta (Cap Bon, Tunisia, is at 11°E)
+  [19.0, 34.5, 36.0, 37.5],    # Greece, Crete, Cyprus, southern Anatolia
+]
 
 # Drawn Water on hexes whose median elevation is above max_elevation, outside
 # every lake box in data/lakes/lakes.toml and the `keep` boxes, is a drawing
@@ -407,6 +465,16 @@ coast_cap = 20.0
 islets = true
 out = "build/settlements.geojson"
 
+# ---------------------------------------------------------------- inferred
+# Inferred settlements (`python -m pipeline inferred`, pipeline/inferred.py):
+# the place plans' settlement speculation as points, for the app only
+# (neolith-convert --inferred). Needs `make maps` (the built map and
+# build/settlements.geojson, whose sites clear inferred ones from their hex).
+[inferred]
+rules = "data/settlements/inferred.toml"
+rivers = "data/rivers/rivers.toml"
+out = "data/settlements/inferred.geojson"
+
 # ----------------------------------------------------------------- anchors
 # Natural-history anchor records for checking the biome maps
 # (`python -m pipeline anchors`, pipeline/anchors.py). Method and sources in
@@ -570,6 +638,22 @@ round = 10
 # their neighbours' mean, this many rings out. The rest are open sea: 0.
 fill_rings = 3
 
+# ---------------------------------------------------------------- edge sea
+# Km from each hex to the nearest open sea beyond the map's edge, per key
+# frame (hex property `edge_sea_km`; pipeline/edge_sea.py). The app takes the
+# nearer of this and the map's own Water as a hex's distance to water, so a
+# coast that lies off the map (the Gulf of Guinea, the Atlantic off Senegal)
+# still counts for forager density. Sea level is [sea] curve.
+[edge_sea]
+enabled = true
+# ETOPO1 at 6 arc-min, 12 degrees wider than the map on every side, fetched
+# by `make build/etopo_wide.asc`.
+elevation = "build/etopo_wide.asc"
+years = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
+# Further than this is stored as none (65535): the forager model's shore
+# factor is flat beyond it (MAX_SHORE_KM in neolith-rs/crates/core/src/forager.rs).
+max_km = 2000.0
+
 # ---------------------------------------------------------------- farming
 # The year farming reaches each hex (static hex property `farming`): one
 # origin, one speed, shortest path over land (pipeline/farming.py). The
@@ -657,6 +741,9 @@ out = "data/settlements/settlements.geojson"
 # article title); the app shows both in the settlement popup.
 curated = "data/settlements/curated.geojson"
 merge_km = 5.0
+# Hand fixes to the dated records before they are grouped into sites:
+# positions for records filed with none, and spellings of one site.
+records = "data/settlements/records.toml"
 raw_dir = "build/settlements"
 curve_url = "https://intcal.org/curves/intcal20.14c"
 # Dates with a larger 1-sigma error (14C years) are ignored.
@@ -875,6 +962,73 @@ exclude_types = [
 "central anatolia" = "site"
 "b" = "site"
 "b mou" = "site"
+
+# ---------------------------------------------------------------- places
+# Exotic places (`python -m pipeline places`, pipeline/places.py) for the
+# exotic critic (.claude/agents/exotic-critic.md): straits, river mouths,
+# islands, oases, passes and drowned plains, and how empty each is in our
+# data. Reads the built map, the sites and the residuals; changes nothing,
+# and nothing in the build reads its output.
+[places]
+catalogue = "data/places/places.toml"
+plans = "data/places/plans"
+sources = "data/places/SOURCES.md"
+out = "build/critic/places"
+# Sites within near_km of a place's box count as "within reach". Distance to
+# the nearest site is capped at far_km in the emptiness score.
+near_km = 100.0
+far_km = 300.0
+# Margin (degrees) around the box on the sheet of maps, and its epochs.
+pad_degrees = 2.0
+sheet_years = [-10000, -8000, -6000, -5000, -4000, -3000]
+
+# ---------------------------------------------------------------- critic
+# Screens for terrain artefacts (`python -m pipeline suspects`) and region
+# sheets (`python -m pipeline look`), in pipeline/look.py, for the terrain
+# critic (.claude/agents/terrain-critic.md). They read the built map and
+# never change it. A suspect is somewhere to look, not a verdict.
+[critic]
+out = "build/critic/terrain"
+# Bands and edges are screened every years_step years; surges and climate
+# every 1000.
+years_step = 500
+# A straight edge: the same biome over (or beside) the same other biome for
+# at least edge_min hexes, within one row (or column).
+edge_min = 14
+# A thin band: at most stripe_max_thick hexes thick, at least stripe_min long.
+stripe_max_thick = 2
+stripe_min = 10
+# Surge: a biome's share of the land in a tile_degrees tile (with at least
+# tile_min_hexes land hexes) moves by `surge` between keyframes 1000 years
+# apart; flicker: by `flicker` and straight back.
+tile_degrees = 5.0
+tile_min_hexes = 20
+flicker = 0.25
+surge = 0.5
+# Smallest patch (hexes) reported by the climate screen; lone hexes per
+# 10-degree tile for speckle.
+cluster_min = 6
+# Margin (degrees) around a suspect in its suggested `look` command.
+pad_degrees = 3.0
+# Suspects listed per screen.
+top = 40
+
+# Köppen classes (prefixes) each biome may sit under without being flagged.
+# Deliberately loose: this is a screen for the absurd (Mediterranean scrub in
+# a boreal climate, desert on the Arctic coast), not a biome model.
+[critic.climate]
+"Chaparral" = ["Cs", "Cf", "BS"]
+"Savannah" = ["A", "BSh", "Cw", "Cfa"]
+"Tropical Forest" = ["A", "Cw", "Cfa"]
+"Extreme Desert" = ["BW", "BS"]
+"Semi-Desert" = ["B", "Cs"]
+"Grassland" = ["B", "C", "D"]
+"Steppe-Forest" = ["BS", "C", "D"]
+"Woodlands" = ["A", "BS", "C", "D"]
+"Temperate Forest" = ["C", "D"]
+"Boreal Forest" = ["D", "Cfb", "Cfc", "ET"]
+"Tundra" = ["E", "D"]
+"Ice" = ["E"]
 
 # ---------------------------------------------------------------- report
 # Regions whose Water count the report tracks per year.

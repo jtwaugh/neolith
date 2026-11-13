@@ -15,6 +15,7 @@ make settlements                       # once: caches the radiocarbon dumps in b
 .venv/bin/python -m isostyle gaps      # gap dossiers per layer (build/isostyle/gaps/)
 .venv/bin/python -m isostyle intuitions  # validate the gap critic's notes
 .venv/bin/python -m isostyle speculative # fill the gaps from the critic's notes (for the game), then rerun `viewer`
+.venv/bin/python -m isostyle evals       # smoothness and guard numbers for the fill; --search picks [speculative] settings
 .venv/bin/python -m isostyle export      # speculative layers -> data/isostyle/speculative/evidence_layers.json
 .venv/bin/python -m unittest discover -s isostyle/tests -t .
 ```

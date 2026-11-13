@@ -7524,7 +7524,7 @@
    "properties": {
     "name": "Wustermark 22",
     "founding": -17180,
-    "abandoned": 990,
+    "abandoned": -8370,
     "occupation": [
      [
       -17180,
@@ -7541,23 +7541,19 @@
      [
       -8370,
       -7370
-     ],
-     [
-      990,
-      1990
      ]
     ],
     "type": "site",
     "population": {},
-    "n_dates": 7,
+    "n_dates": 6,
     "periods": [],
     "sources": [
      "xronos"
     ],
     "references": [
      "p3k14c",
-     "Beran J. 2001. Die Kunde N.F. 52 2001:173-188. Grasch B 2013. JAS 40: 2458-2463.",
      "Anzidei P. et al. 2007. L'abitato eneolitico di Osteria del Curato-via Cinquefrondi: nuovi dati sulle facies archeologiche di Laterza e Ortucchio nel territorio di Roma. In: Atti della XL Riunione Scientifica IIPP. Strategie di insediamento fra Lazio meridionale e Campania centro-settentrionale in etÌÊ preistorica e protostorica. Firenze: Istituto Italiano di Preistoria e Protostoria 477-508.",
+     "Beran J. 2001. Die Kunde N.F. 52 2001:173-188. Grasch B 2013. JAS 40: 2458-2463.",
      "Kerman 2013",
      "Kiel DB 2013",
      "Larsson 2019",
@@ -193147,7 +193143,7 @@
      "Qasr El Sagha X/81-5"
     ],
     "hex": 15105,
-    "importance": 1,
+    "importance": 2,
     "evidence": 1,
     "culture": {
      "-5290": "faiyum_a"
@@ -202795,128 +202791,6 @@
     "hex": 11739,
     "importance": 1,
     "evidence": 1
-   }
-  },
-  {
-   "type": "Feature",
-   "id": 297136371,
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     30.67,
-     30.33
-    ]
-   },
-   "properties": {
-    "name": "Merimda",
-    "founding": -5190,
-    "abandoned": -3440,
-    "occupation": [
-     [
-      -5190,
-      -2440
-     ]
-    ],
-    "type": "site",
-    "population": {},
-    "n_dates": 13,
-    "periods": [],
-    "sources": [
-     "xronos"
-    ],
-    "references": [
-     "p3k14c",
-     "Hassan 1985",
-     "Olsson 1959"
-    ],
-    "key": "c14:Merimda@30.67,30.33",
-    "hex": 15104,
-    "importance": 2,
-    "evidence": 2,
-    "culture_inferred": {
-     "-4860": "merimde"
-    },
-    "culture_inferred_support": {
-     "merimde": [
-      2,
-      16.7
-     ]
-    },
-    "stage_inferred": {
-     "-5190": "neolithic"
-    },
-    "stage_inferred_support": {
-     "neolithic": [
-      2,
-      16.7
-     ]
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "id": 3231951457,
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     30.8403,
-     30.3011
-    ]
-   },
-   "properties": {
-    "name": "Merimde Beni Salame",
-    "founding": -5190,
-    "abandoned": -2000,
-    "occupation": [
-     [
-      -5190,
-      -2440
-     ],
-     [
-      -2000,
-      -1000
-     ]
-    ],
-    "type": "settlement",
-    "population": {},
-    "n_dates": 18,
-    "periods": [
-     "Early Neolithic",
-     "Early Neolithic, Jüngeren Merimde",
-     "Neolithic"
-    ],
-    "sources": [
-     "xronos"
-    ],
-    "references": [
-     "MedAfriCarbon",
-     "CalPal, EgyRadDat, PetitMaire.1993URL, RowlandBertini.2016Neolithic, PhillippsHoldaway.2012MidHol, Close.1988CurResRecIII, Hassan.1985NeoPredyn",
-     "CalPal, EgyRadDat, RowlandBertini.2016Neolithic, PhillippsHoldaway.2012MidHol, HawassHassan.1988Merimda, Hassan.1985NeoPredyn, Olsson.1959UppsalaI",
-     "CalPal, EgyRadDat, RowlandBertini.2016Neolithic, PhillippsHoldaway.2012MidHol, HawassHassan.1988Merimda, Hassan.1985NeoPredyn, Derricourt.1971RadChronENA, DeeveyFlint.1967RadMeasCI, Olsson.1959UppsalaI",
-     "p3k14c",
-     "CalPal, EgyRadDat, PetitMaire.1993URL, RowlandBertini.2016Neolithic, PhillippsHoldaway.2012MidHol, HawassHassan.1988Merimda, Close.1988CurResRecIII, Hassan.1985NeoPredyn",
-     "CalPal, EgyRadDat, RowlandBertini.2016Neolithic, Eiwanger.1992Merimde3, Eiwanger.1988MerBeni2",
-     "CalPal, EgyRadDat, RowlandBertini.2016Neolithic, HawassHassan.1988Merimda, Flight.1973SurvRec, Derricourt.1971RadChronENA, DeeveyFlint.1967RadMeasCI, Olsson.1959UppsalaI",
-     "CalPal, EgyRadDat, RowlandBertini.2016Neolithic, PhillippsHoldaway.2012MidHol, HawassHassan.1988Merimda, Derricourt.1971RadChronENA, DeeveyFlint.1967RadMeasCI, Olsson.1959UppsalaI",
-     "CalPal, EgyRadDat, RowlandBertini.2016Neolithic, PhillippsHoldaway.2012MidHol, PetitMaire.1993URL, HawassHassan.1988Merimda, Hassan.1985NeoPredyn, Olsson.1959UppsalaI",
-     "CalPal, PhillippsHoldaway.2012MidHol, RowlandBertini.2016Neolithic, Close.1988CurResRecIII, Hassan.1985NeoPredyn",
-     "EgyRadDat, PetitMaire.1993URL, RowlandBertini.2016Neolithic, Flight.1973SurvRec, Derricourt.1971RadChronENA, DeeveyFlint.1967RadMeasCI",
-     "EgyRadDat, RowlandBertini.2016Neolithic, Flight.1973SurvRec, Derricourt.1971RadChronENA, DeeveyFlint.1967RadMeasCI, Olsson.1959UppsalaI",
-     "Radiocarbon 1965 328"
-    ],
-    "key": "c14:Merimde Beni Salame@30.8403,30.3011",
-    "hex": 15242,
-    "importance": 3,
-    "evidence": 2,
-    "culture": {
-     "-4620": "merimde"
-    },
-    "culture_dates": {
-     "merimde": 6
-    },
-    "stage": {
-     "-5190": "neolithic"
-    }
    }
   },
   {
@@ -216989,7 +216863,7 @@
   },
   {
    "type": "Feature",
-   "id": 1016393468,
+   "id": 2395596527,
    "geometry": {
     "type": "Point",
     "coordinates": [
@@ -216998,7 +216872,7 @@
     ]
    },
    "properties": {
-    "name": "Merimde",
+    "name": "Merimde Beni Salame",
     "founding": -5060,
     "abandoned": -2000,
     "occupation": [
@@ -217013,32 +216887,55 @@
     ],
     "type": "site",
     "population": {},
-    "n_dates": 18,
+    "n_dates": 20,
     "periods": [
      "Neolithic",
      "Urschicht Merimde",
-     "Younger Merimde"
+     "Younger Merimde",
+     "Early Neolithic",
+     "Early Neolithic, Jüngeren Merimde"
     ],
     "sources": [
      "xronos"
     ],
     "references": [
      "CalPal2022",
+     "MedAfriCarbon",
      "EUROEVOL (via CalPal)",
+     "p3k14c",
      "Olsson 1959",
      "Hassan 1985",
+     "CalPal, EgyRadDat, PetitMaire.1993URL, RowlandBertini.2016Neolithic, PhillippsHoldaway.2012MidHol, Close.1988CurResRecIII, Hassan.1985NeoPredyn",
+     "CalPal, EgyRadDat, RowlandBertini.2016Neolithic, PhillippsHoldaway.2012MidHol, HawassHassan.1988Merimda, Hassan.1985NeoPredyn, Olsson.1959UppsalaI",
+     "CalPal, EgyRadDat, RowlandBertini.2016Neolithic, PhillippsHoldaway.2012MidHol, HawassHassan.1988Merimda, Hassan.1985NeoPredyn, Derricourt.1971RadChronENA, DeeveyFlint.1967RadMeasCI, Olsson.1959UppsalaI",
+     "CalPal, EgyRadDat, PetitMaire.1993URL, RowlandBertini.2016Neolithic, PhillippsHoldaway.2012MidHol, HawassHassan.1988Merimda, Close.1988CurResRecIII, Hassan.1985NeoPredyn",
+     "CalPal, EgyRadDat, RowlandBertini.2016Neolithic, Eiwanger.1992Merimde3, Eiwanger.1988MerBeni2",
+     "CalPal, EgyRadDat, RowlandBertini.2016Neolithic, HawassHassan.1988Merimda, Flight.1973SurvRec, Derricourt.1971RadChronENA, DeeveyFlint.1967RadMeasCI, Olsson.1959UppsalaI",
+     "CalPal, EgyRadDat, RowlandBertini.2016Neolithic, PhillippsHoldaway.2012MidHol, HawassHassan.1988Merimda, Derricourt.1971RadChronENA, DeeveyFlint.1967RadMeasCI, Olsson.1959UppsalaI",
+     "CalPal, EgyRadDat, RowlandBertini.2016Neolithic, PhillippsHoldaway.2012MidHol, PetitMaire.1993URL, HawassHassan.1988Merimda, Hassan.1985NeoPredyn, Olsson.1959UppsalaI",
+     "CalPal, PhillippsHoldaway.2012MidHol, RowlandBertini.2016Neolithic, Close.1988CurResRecIII, Hassan.1985NeoPredyn",
+     "EgyRadDat, PetitMaire.1993URL, RowlandBertini.2016Neolithic, Flight.1973SurvRec, Derricourt.1971RadChronENA, DeeveyFlint.1967RadMeasCI",
+     "EgyRadDat, RowlandBertini.2016Neolithic, Flight.1973SurvRec, Derricourt.1971RadChronENA, DeeveyFlint.1967RadMeasCI, Olsson.1959UppsalaI",
+     "Eiwanger 1988, 53",
      "Eiwanger 1992",
-     "p3k14c"
+     "KN-Lab",
+     "Radiocarbon 1965 328"
     ],
-    "key": "c14:Merimde@30.85,30.3166",
+    "key": "c14:Merimde Beni Salame@30.85,30.3166",
+    "aliases": [
+     "Merimda",
+     "Merimde",
+     "Merimde Benisalame",
+     "Merimde-Benisalame"
+    ],
     "hex": 15242,
-    "importance": 2,
+    "importance": 3,
     "evidence": 2,
     "culture": {
      "-5000": "merimde"
     },
     "culture_dates": {
-     "merimde": 15
+     "merimde": 16
     },
     "stage": {
      "-5060": "neolithic"
@@ -254264,7 +254161,7 @@
     ],
     "key": "c14:El Omari@31.3333,29.8833",
     "hex": 15382,
-    "importance": 2,
+    "importance": 3,
     "evidence": 2,
     "culture": {
      "-3550": "el_omari"
@@ -262165,6 +262062,45 @@
     "stage": {
      "-4500": "neolithic"
     }
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 1872248934,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     31.564,
+     30.882
+    ]
+   },
+   "properties": {
+    "type": "settlement",
+    "population": {},
+    "sources": [
+     "curated"
+    ],
+    "references": [
+     "Guyot, F., Abdel Azim, M.A., Hochstrasser-Petit, C., Lesur, J., Midant-Reynes, B. & Muhammad, R. 2022, Investigating the Nile Delta's first settlements: excavations at Tell el-Samara 2016-2019, BIFAO 122:309-400"
+    ],
+    "name": "Tell el-Samara",
+    "founding": -4500,
+    "abandoned": -2900,
+    "occupation": [
+     [
+      -4500,
+      -2900
+     ]
+    ],
+    "features": [
+     "settlement",
+     "silos",
+     "cemetery"
+    ],
+    "note": "Village on a gezira, c. 4500-2900 BCE in four levels (Neolithic silos in Level 1; mudbrick by c. 3300; Early Dynastic cemetery), from Guyot et al. 2022, which publishes no radiocarbon dates. Position approximate (about 5 km): 25 km south-east of al-Mansura, as the paper gives it. From data/places/plans/nile_delta.toml.",
+    "hex": 15380,
+    "importance": 2,
+    "evidence": 1
    }
   },
   {
@@ -275980,63 +275916,6 @@
     "hex": 11046,
     "importance": 1,
     "evidence": 1
-   }
-  },
-  {
-   "type": "Feature",
-   "id": 543134316,
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     30.67,
-     30.33
-    ]
-   },
-   "properties": {
-    "name": "Merimde-Benisalame",
-    "founding": -4360,
-    "abandoned": -4360,
-    "occupation": [
-     [
-      -4360,
-      -3360
-     ]
-    ],
-    "type": "site",
-    "population": {},
-    "n_dates": 1,
-    "periods": [
-     "Neol frühe Keramik"
-    ],
-    "sources": [
-     "xronos"
-    ],
-    "references": [
-     "CalPal2022",
-     "KN-Lab"
-    ],
-    "key": "c14:Merimde-Benisalame@30.67,30.33",
-    "hex": 15104,
-    "importance": 1,
-    "evidence": 0,
-    "culture_inferred": {
-     "-4360": "merimde"
-    },
-    "culture_inferred_support": {
-     "merimde": [
-      2,
-      16.7
-     ]
-    },
-    "stage_inferred": {
-     "-4360": "neolithic"
-    },
-    "stage_inferred_support": {
-     "neolithic": [
-      2,
-      16.7
-     ]
-    }
    }
   },
   {
@@ -305457,25 +305336,39 @@
    "properties": {
     "name": "Minshat Abu Omar",
     "founding": -4070,
-    "abandoned": -1320,
+    "abandoned": -2040,
     "occupation": [
      [
       -4070,
-      -320
+      -1040
      ]
     ],
-    "type": "site",
+    "type": "settlement",
     "population": {},
-    "n_dates": 18,
-    "periods": [],
+    "n_dates": 21,
+    "periods": [
+     "Nagada III (Dyn.\"\"0\"\")",
+     "Early Dynastic",
+     "Predynastic",
+     "Naqada",
+     "Neolithic"
+    ],
     "sources": [
-     "p3k14c"
+     "xronos"
     ],
     "references": [
      "MedAfriCarbon",
+     "p3k14c",
+     "EgyRadDat, Kroeper.2003RadThermoMAO",
+     "CalPal2022",
+     "KN-Lab",
      "EgyRadDat",
+     "Pazdur ea. 1994",
      "Breunig 1987 183",
      "Breunig 1987 186",
+     "CalPal, EgyRadDat, Kroeper.2003RadThermoMAO, PazdurPazdur.1994GliwXII",
+     "CalPal, EgyRadDat, PazdurPazdur.1994GliwXII",
+     "EgyRadDat, PazdurPazdur.1994GliwXII",
      "Furholt 2003 250",
      "McDonald 1990a",
      "Pazdur 1992 Kozàowski 1994a",
@@ -305483,9 +305376,23 @@
      "Street & Terbergen 2000. German Upper Palaeolithic. In: Hunters of the Golden Age: 281-297. Flas D. 2008.Anthropologica et Praehistorica 119: 3-253."
     ],
     "key": "c14:Minshat Abu Omar@32.0194,30.8572",
+    "aliases": [
+     "Minshat Abu Omar, tomb 1590",
+     "Minshat Abu Omar, tomb 1930"
+    ],
     "hex": 15519,
-    "importance": 2,
-    "evidence": 2
+    "importance": 3,
+    "evidence": 2,
+    "culture": {
+     "-3330": "dynastic_egypt"
+    },
+    "culture_dates": {
+     "dynastic_egypt": 8
+    },
+    "stage": {
+     "-3330": "bronze_age",
+     "-2410": "neolithic"
+    }
    }
   },
   {
@@ -352104,6 +352011,46 @@
     ],
     "key": "c14:Taneto@10.455,44.7714",
     "hex": 8541,
+    "importance": 2,
+    "evidence": 1
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2302929802,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     31.6025,
+     30.8706
+    ]
+   },
+   "properties": {
+    "type": "settlement",
+    "population": {},
+    "sources": [
+     "curated"
+    ],
+    "references": [
+     "Wikipedia, 'Tell el-Farkha' (coordinates; phases after the Polish excavation reports)",
+     "Heath, J. 2023, Tell el-Farkha: an exceptional predynastic site in the Nile Delta, Ancient Egypt 137"
+    ],
+    "name": "Tell el-Farkha",
+    "founding": -3700,
+    "abandoned": -2600,
+    "occupation": [
+     [
+      -3700,
+      -2600
+     ]
+    ],
+    "features": [
+     "settlement",
+     "cemetery"
+    ],
+    "wikipedia": "Tell el-Farkha",
+    "note": "Not in the open radiocarbon compilations; dates are archaeological phase dates (Lower Egyptian from c. 3700 BCE, Naqada to c. 2600 BCE). From data/places/plans/nile_delta.toml.",
+    "hex": 15380,
     "importance": 2,
     "evidence": 1
    }

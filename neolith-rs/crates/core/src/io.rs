@@ -18,8 +18,9 @@ pub const MAGIC: [u8; 4] = *b"NEOL";
 /// landform, version 6 site records, cultures and occupation phases, version 7
 /// settlement importance and evidence and the survey layer, version 8
 /// productivity, version 9 the farming front, version 10 the speculative
-/// evidence layers. Older files still load.
-pub const VERSION: u16 = 10;
+/// evidence layers, version 11 the missing-sites residuals, version 12 the sea beyond the
+/// map's edge. Older files still load.
+pub const VERSION: u16 = 12;
 const HEADER_LEN: usize = 6;
 
 #[derive(Debug)]
@@ -84,6 +85,10 @@ pub fn decode(bytes: &[u8]) -> Result<World, IoError> {
         postcard::from_bytes::<WorldV8>(&raw).map_err(corrupt)?.into()
     } else if version == 9 {
         postcard::from_bytes::<WorldV9>(&raw).map_err(corrupt)?.into()
+    } else if version == 10 {
+        postcard::from_bytes::<WorldV10>(&raw).map_err(corrupt)?.into()
+    } else if version == 11 {
+        postcard::from_bytes::<WorldV11>(&raw).map_err(corrupt)?.into()
     } else {
         postcard::from_bytes(&raw).map_err(|e| IoError::Corrupt(e.to_string()))?
     };
@@ -438,6 +443,94 @@ impl From<WorldV9> for World {
         w.survey = v.survey;
         w.npp = v.npp;
         w.farming = v.farming;
+        w
+    }
+}
+
+/// The version 10 layout: evidence layers, no residuals.
+#[derive(Deserialize)]
+struct WorldV10 {
+    grid: GridSpec,
+    terrain: Vec<Timeline<Terrain>>,
+    koeppen: Vec<Timeline<Koeppen>>,
+    pop: Vec<Timeline<PopDensity>>,
+    settlements: Vec<Settlement>,
+    river: Vec<Timeline<u8>>,
+    rivers: Vec<River>,
+    lakes: Vec<Lake>,
+    elevation: Vec<i16>,
+    landform: Vec<Option<Landform>>,
+    site_info: Vec<SiteInfo>,
+    cultures: Vec<CultureInfo>,
+    survey: Vec<u8>,
+    npp: Vec<Timeline<u16>>,
+    farming: Vec<Option<crate::time::Year>>,
+    evidence: Vec<crate::evidence::EvidenceLayer>,
+}
+
+impl From<WorldV10> for World {
+    fn from(v: WorldV10) -> Self {
+        let mut w = World::empty(v.grid);
+        w.terrain = v.terrain;
+        w.koeppen = v.koeppen;
+        w.pop = v.pop;
+        w.settlements = v.settlements;
+        w.river = v.river;
+        w.rivers = v.rivers;
+        w.lakes = v.lakes;
+        w.elevation = v.elevation;
+        w.landform = v.landform;
+        w.site_info = v.site_info;
+        w.cultures = v.cultures;
+        w.survey = v.survey;
+        w.npp = v.npp;
+        w.farming = v.farming;
+        w.evidence = v.evidence;
+        w
+    }
+}
+
+/// The version 11 layout: residuals, no sea beyond the edge.
+#[derive(Deserialize)]
+struct WorldV11 {
+    grid: GridSpec,
+    terrain: Vec<Timeline<Terrain>>,
+    koeppen: Vec<Timeline<Koeppen>>,
+    pop: Vec<Timeline<PopDensity>>,
+    settlements: Vec<Settlement>,
+    river: Vec<Timeline<u8>>,
+    rivers: Vec<River>,
+    lakes: Vec<Lake>,
+    elevation: Vec<i16>,
+    landform: Vec<Option<Landform>>,
+    site_info: Vec<SiteInfo>,
+    cultures: Vec<CultureInfo>,
+    survey: Vec<u8>,
+    npp: Vec<Timeline<u16>>,
+    farming: Vec<Option<crate::time::Year>>,
+    evidence: Vec<crate::evidence::EvidenceLayer>,
+    residuals: Option<crate::residuals::Residuals>,
+}
+
+impl From<WorldV11> for World {
+    fn from(v: WorldV11) -> Self {
+        let mut w = World::empty(v.grid);
+        w.terrain = v.terrain;
+        w.koeppen = v.koeppen;
+        w.pop = v.pop;
+        w.settlements = v.settlements;
+        w.river = v.river;
+        w.rivers = v.rivers;
+        w.lakes = v.lakes;
+        w.elevation = v.elevation;
+        w.landform = v.landform;
+        w.site_info = v.site_info;
+        w.cultures = v.cultures;
+        w.survey = v.survey;
+        w.npp = v.npp;
+        w.farming = v.farming;
+        w.evidence = v.evidence;
+        w.residuals = v.residuals;
         w
     }
 }
@@ -842,7 +935,130 @@ mod tests {
         assert_eq!(old.farming, w.farming);
         assert_eq!(old.npp, w.npp);
         assert!(old.evidence.is_empty());
-        assert_eq!(World { evidence: w.evidence.clone(), ..old }, w);
+        assert!(old.residuals.is_none());
+        assert_eq!(World { evidence: w.evidence.clone(), residuals: w.residuals.clone(), ..old }, w);
+    }
+
+    #[test]
+    fn reads_version_10_files() {
+        #[derive(serde::Serialize)]
+        struct V10<'a> {
+            grid: &'a GridSpec,
+            terrain: &'a Vec<Timeline<Terrain>>,
+            koeppen: &'a Vec<Timeline<Koeppen>>,
+            pop: &'a Vec<Timeline<PopDensity>>,
+            settlements: &'a Vec<Settlement>,
+            river: &'a Vec<Timeline<u8>>,
+            rivers: &'a Vec<River>,
+            lakes: &'a Vec<Lake>,
+            elevation: &'a Vec<i16>,
+            landform: &'a Vec<Option<Landform>>,
+            site_info: &'a Vec<SiteInfo>,
+            cultures: &'a Vec<CultureInfo>,
+            survey: &'a Vec<u8>,
+            npp: &'a Vec<Timeline<u16>>,
+            farming: &'a Vec<Option<crate::Year>>,
+            evidence: &'a Vec<crate::EvidenceLayer>,
+        }
+        let w = test_world(6, 5);
+        assert!(w.residuals.is_some());
+        let raw = postcard::to_stdvec(&V10 {
+            grid: &w.grid,
+            terrain: &w.terrain,
+            koeppen: &w.koeppen,
+            pop: &w.pop,
+            settlements: &w.settlements,
+            river: &w.river,
+            rivers: &w.rivers,
+            lakes: &w.lakes,
+            elevation: &w.elevation,
+            landform: &w.landform,
+            site_info: &w.site_info,
+            cultures: &w.cultures,
+            survey: &w.survey,
+            npp: &w.npp,
+            farming: &w.farming,
+            evidence: &w.evidence,
+        })
+        .unwrap();
+        let mut bytes = MAGIC.to_vec();
+        bytes.extend_from_slice(&10u16.to_le_bytes());
+        bytes.extend_from_slice(&compress_pure(&raw));
+        let old = decode(&bytes).unwrap();
+        assert_eq!(old.evidence, w.evidence);
+        assert!(old.residuals.is_none());
+        assert_eq!(World { residuals: w.residuals.clone(), ..old }, w);
+    }
+
+    #[test]
+    fn reads_version_11_files() {
+        #[derive(serde::Serialize)]
+        struct V11<'a> {
+        grid: &'a GridSpec,
+        terrain: &'a Vec<Timeline<Terrain>>,
+        koeppen: &'a Vec<Timeline<Koeppen>>,
+        pop: &'a Vec<Timeline<PopDensity>>,
+        settlements: &'a Vec<Settlement>,
+        river: &'a Vec<Timeline<u8>>,
+        rivers: &'a Vec<River>,
+        lakes: &'a Vec<Lake>,
+        elevation: &'a Vec<i16>,
+        landform: &'a Vec<Option<Landform>>,
+        site_info: &'a Vec<SiteInfo>,
+        cultures: &'a Vec<CultureInfo>,
+        survey: &'a Vec<u8>,
+        npp: &'a Vec<Timeline<u16>>,
+        farming: &'a Vec<Option<crate::Year>>,
+        evidence: &'a Vec<crate::EvidenceLayer>,
+        residuals: &'a Option<crate::Residuals>,
+        }
+        let mut w = test_world(6, 5);
+        w.edge_sea = vec![Timeline::from_keys([(crate::Year(-10000), 40)]); w.grid.len()];
+        let raw = postcard::to_stdvec(&V11 {
+            grid: &w.grid,
+            terrain: &w.terrain,
+            koeppen: &w.koeppen,
+            pop: &w.pop,
+            settlements: &w.settlements,
+            river: &w.river,
+            rivers: &w.rivers,
+            lakes: &w.lakes,
+            elevation: &w.elevation,
+            landform: &w.landform,
+            site_info: &w.site_info,
+            cultures: &w.cultures,
+            survey: &w.survey,
+            npp: &w.npp,
+            farming: &w.farming,
+            evidence: &w.evidence,
+            residuals: &w.residuals,
+        })
+        .unwrap();
+        let mut bytes = MAGIC.to_vec();
+        bytes.extend_from_slice(&11u16.to_le_bytes());
+        bytes.extend_from_slice(&compress_pure(&raw));
+        let old = decode(&bytes).unwrap();
+        assert_eq!(old.residuals, w.residuals);
+        assert!(old.edge_sea.is_empty());
+        assert_eq!(World { edge_sea: w.edge_sea.clone(), ..old }, w);
+    }
+
+    #[test]
+    fn version_12_round_trips_the_edge_sea_and_rejects_a_bad_one() {
+        let mut w = test_world(7, 5);
+        w.edge_sea = vec![Timeline::from_keys([(crate::Year(-10000), 40), (crate::Year(-6000), crate::NO_EDGE_SEA)]); w.grid.len()];
+        assert_eq!(decode(&encode(&w)).unwrap(), w);
+        w.edge_sea.pop();
+        assert!(matches!(decode(&encode(&w)), Err(IoError::Invalid(_))));
+    }
+
+    #[test]
+    fn version_11_round_trips_residuals_and_rejects_bad_ones() {
+        let w = test_world(7, 5);
+        assert_eq!(decode(&encode(&w)).unwrap().residuals, w.residuals);
+        let mut bad = w.clone();
+        bad.residuals.as_mut().unwrap().missing.pop();
+        assert!(matches!(decode(&encode(&bad)), Err(IoError::Invalid(_))));
     }
 
     #[test]
@@ -851,7 +1067,7 @@ mod tests {
         w.evidence.push(crate::evidence::test_layer("second", w.grid.len()));
         w.evidence[1].codes[3] = crate::evidence::NO_VALUE;
         let bytes = encode(&w);
-        assert_eq!(u16::from_le_bytes([bytes[4], bytes[5]]), 10);
+        assert_eq!(u16::from_le_bytes([bytes[4], bytes[5]]), VERSION);
         let back = decode(&bytes).unwrap();
         assert_eq!(back.evidence, w.evidence);
         assert_eq!(back.evidence_layer("second").unwrap().codes[3], crate::evidence::NO_VALUE);

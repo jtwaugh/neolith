@@ -136,6 +136,69 @@
     },
     "match": "Beidha"
    }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     31.6025,
+     30.8706
+    ]
+   },
+   "properties": {
+    "name": "Tell el-Farkha",
+    "founding": -3700,
+    "abandoned": -2600,
+    "occupation": [
+     [
+      -3700,
+      -2600
+     ]
+    ],
+    "type": "settlement",
+    "features": [
+     "settlement",
+     "cemetery"
+    ],
+    "wikipedia": "Tell el-Farkha",
+    "references": [
+     "Wikipedia, 'Tell el-Farkha' (coordinates; phases after the Polish excavation reports)",
+     "Heath, J. 2023, Tell el-Farkha: an exceptional predynastic site in the Nile Delta, Ancient Egypt 137"
+    ],
+    "note": "Not in the open radiocarbon compilations; dates are archaeological phase dates (Lower Egyptian from c. 3700 BCE, Naqada to c. 2600 BCE). From data/places/plans/nile_delta.toml."
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     31.564,
+     30.882
+    ]
+   },
+   "properties": {
+    "name": "Tell el-Samara",
+    "founding": -4500,
+    "abandoned": -2900,
+    "occupation": [
+     [
+      -4500,
+      -2900
+     ]
+    ],
+    "type": "settlement",
+    "features": [
+     "settlement",
+     "silos",
+     "cemetery"
+    ],
+    "references": [
+     "Guyot, F., Abdel Azim, M.A., Hochstrasser-Petit, C., Lesur, J., Midant-Reynes, B. & Muhammad, R. 2022, Investigating the Nile Delta's first settlements: excavations at Tell el-Samara 2016-2019, BIFAO 122:309-400"
+    ],
+    "note": "Village on a gezira, c. 4500-2900 BCE in four levels (Neolithic silos in Level 1; mudbrick by c. 3300; Early Dynastic cemetery), from Guyot et al. 2022, which publishes no radiocarbon dates. Position approximate (about 5 km): 25 km south-east of al-Mansura, as the paper gives it. From data/places/plans/nile_delta.toml."
+   }
   }
  ]
 }

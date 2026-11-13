@@ -571,6 +571,11 @@ value = 0.5
 kind = "polygon"
 points = [[44.8, 18.0], [45.5, 20.0], [47.5, 21.8], [49.5, 23.0], [51.5, 23.3], [53.5, 23.0], [55.5, 22.6], [55.5, 21.0], [53.5, 19.0], [51.5, 18.3], [48.5, 17.4], [46.0, 17.3]]
 value = 0.1
+[[judgement.adjust]]
+kind = "area"                              # Socotra: no dated occupation before about the 1st century BCE, so not the mainland value. Low confidence; argument and source in data/places/plans/socotra.toml
+bbox = [52.0, 11.8, 54.9, 13.0]
+value = 0.02
+firm = true                                # an island 350 km offshore: mainland evidence must not lean across the water
 
 [[judgement]]
 region = "Arabia"
@@ -614,6 +619,11 @@ kind = "polygon"
 points = [[44.8, 18.0], [45.5, 20.0], [47.5, 21.8], [49.5, 23.0], [51.5, 23.3], [53.5, 23.0], [55.5, 22.6], [55.5, 21.0], [53.5, 19.0], [51.5, 18.3], [48.5, 17.4], [46.0, 17.3]]
 value = "unknown"
 slices = [-3000]
+[[judgement.adjust]]
+kind = "area"                              # Socotra: no dated occupation before about the 1st century BCE, so not the mainland value. Low confidence; argument and source in data/places/plans/socotra.toml
+bbox = [52.0, 11.8, 54.9, 13.0]
+value = 0.02
+firm = true                                # an island 350 km offshore: mainland evidence must not lean across the water
 
 [[judgement]]
 region = "Libya & Egypt"

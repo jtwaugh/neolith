@@ -7,9 +7,59 @@ use crate::clock::SPEEDS;
 use crate::palette;
 use egui::{vec2, Align2, Color32, FontId, Rect, RichText, Sense, Stroke};
 use neolith_core::{
-    elevation, evidence, farming, forager, pencil, productivity, Command, Edit, HexId, KeyMode, Koeppen, MapMode, PopDensity, Prop, RiverClass, RiverState, Terrain, Value, World,
+    elevation, evidence, farming, forager, pencil, productivity, residuals, Command, Edit, HexId, KeyMode, Koeppen, MapMode, PopDensity, Prop, RiverClass, RiverState, Terrain, Value, World,
     Year, NO_DATA, NO_ELEVATION,
 };
+
+/// The right sidebar's tabs.
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Default)]
+pub enum SideTab {
+    /// The selected settlement or hex (or the one under the cursor).
+    #[default]
+    Selected,
+    Chronicle,
+    /// The board's look.
+    Map,
+}
+
+impl SideTab {
+    pub const ALL: [SideTab; 3] = [SideTab::Selected, SideTab::Chronicle, SideTab::Map];
+    pub fn label(self) -> &'static str {
+        match self {
+            SideTab::Selected => "Selected",
+            SideTab::Chronicle => "Chronicle",
+            SideTab::Map => "Map",
+        }
+    }
+}
+
+/// The Selected tab: the open settlement's record, else the hex inspector.
+fn selected(ui: &mut egui::Ui, s: &mut Session, now: f64) {
+    let year = s.year();
+    let Some(i) = s.settlement.filter(|&i| s.world.settlements[i].exists_at(year)) else {
+        s.settlement = None;
+        inspector(ui, s, now);
+        return;
+    };
+    let pos = s.world.settlements[i].pos;
+    let (mut close, mut go) = (false, false);
+    ui.horizontal(|ui| {
+        ui.heading(RichText::new(&s.world.settlements[i].name).size(17.0));
+        ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+            close = ui.small_button("×").on_hover_text("Close (Esc)").clicked();
+            go = ui.small_button("Go to").on_hover_text("Move the map to this settlement").clicked();
+        });
+    });
+    egui::ScrollArea::vertical().id_salt("settlement_record").auto_shrink([false, false]).show(ui, |ui| {
+        crate::site_record::show(ui, &s.world, i, year);
+    });
+    if go {
+        s.glide_to(pos, now);
+    }
+    if close {
+        s.settlement = None;
+    }
+}
 
 /// A small colour swatch.
 fn swatch(ui: &mut egui::Ui, v: Value) {
@@ -94,23 +144,32 @@ impl NeolithApp {
         if session.editor {
             egui::Panel::left("tools").resizable(false).exact_size(210.0).show(ui, |ui| tools_panel(ui, session));
         }
+        // The right sidebar: tabs for what is selected, the chronicle and the
+        // map's look, with the legend docked underneath. Nothing floats over
+        // the board.
+        let style = &mut self.style;
         egui::Panel::right("inspector")
             .resizable(true)
-            .default_size(270.0)
-            .min_size(220.0)
+            .default_size(290.0)
+            .min_size(240.0)
             .show(ui, |ui| {
-                chronicle(ui, session, now);
-                inspector(ui, session);
+                egui::Panel::bottom("legend_dock").resizable(false).show(ui, |ui| legend(ui, session, style.survey));
+                ui.add_space(6.0);
+                ui.horizontal(|ui| {
+                    for tab in SideTab::ALL {
+                        ui.selectable_value(&mut session.side_tab, tab, tab.label());
+                    }
+                });
+                ui.separator();
+                match session.side_tab {
+                    SideTab::Selected => selected(ui, session, now),
+                    SideTab::Chronicle => chronicle(ui, session, now),
+                    SideTab::Map => map_tab(ui, style, session),
+                }
             });
-        if self.show_style {
-            style_window(&ctx, &mut self.show_style, &mut self.style, session);
-        }
         egui::CentralPanel::default().frame(egui::Frame::NONE).show(ui, |ui| {
             crate::view::board_view(ui, session, &self.style, self.gpu.as_ref().unwrap(), now, dt);
         });
-        if let Some(rect) = session.input.drawn.rect {
-            legend_card(&ctx, rect, session, self.style.survey);
-        }
     }
 
     fn shortcuts(&mut self, ctx: &egui::Context) {
@@ -132,6 +191,18 @@ impl NeolithApp {
         }
         if space && !s.editor {
             s.clock.playing = !s.clock.playing;
+        }
+        // Escape closes what is selected: the settlement first, then the hex.
+        if ctx.input_mut(|i| i.consume_key(Modifiers::NONE, Key::Escape)) {
+            if s.settlement.is_some() {
+                s.settlement = None;
+            } else if s.inspected.is_some() {
+                s.inspected = None;
+                if !s.editor {
+                    s.selection.clear();
+                }
+                s.state_dirty = true;
+            }
         }
         if !s.editor {
             const KEYS: [Key; 5] = [Key::Num1, Key::Num2, Key::Num3, Key::Num4, Key::Num5];
@@ -161,17 +232,7 @@ impl NeolithApp {
                 });
                 ui.separator();
                 ui.label("Map:");
-                for mode in MapMode::MENU {
-                    if mode == MapMode::Evidence && s.world.evidence.is_empty() {
-                        ui.add_enabled(false, egui::Button::selectable(false, mode.label())).on_disabled_hover_text(
-                            "This world file has no evidence layers (add them with neolith-convert --attach-evidence)",
-                        );
-                        continue;
-                    }
-                    if ui.selectable_label(s.mode == mode, mode.label()).clicked() {
-                        s.mode = mode;
-                    }
-                }
+                map_mode_picker(ui, s);
                 if s.mode == MapMode::Evidence {
                     evidence_picker(ui, s);
                 }
@@ -195,7 +256,10 @@ impl NeolithApp {
                     s.set_editor(editor);
                 }
                 ui.separator();
-                ui.toggle_value(&mut self.show_style, "Board style");
+                let mut map_tab = s.side_tab == SideTab::Map;
+                if ui.toggle_value(&mut map_tab, "Board style").on_hover_text("The board's look, in the sidebar's Map tab").changed() {
+                    s.side_tab = if map_tab { SideTab::Map } else { SideTab::Selected };
+                }
                 ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                     let name = s.file_name.rsplit(['/', '\\']).next().unwrap_or(&s.file_name);
                     ui.weak(format!("{name}{}", if s.unsaved { " • unsaved edits" } else { "" }));
@@ -383,6 +447,9 @@ fn tools_panel(ui: &mut egui::Ui, s: &mut Session) {
         } else if s.mode == MapMode::Expected {
             ui.weak("Read-only: derived from productivity, climate, rivers and the spread of farming. Switch map mode to paint.");
             egui::ScrollArea::vertical().auto_shrink([false, false]).show(ui, expected_legend);
+        } else if s.mode == MapMode::Missing {
+            ui.weak("Read-only: residuals from the pipeline. Switch map mode to paint.");
+            egui::ScrollArea::vertical().auto_shrink([false, false]).show(ui, missing_legend);
         } else if s.mode == MapMode::Evidence {
             ui.weak("Read-only: speculative layers from isostyle. Switch map mode to paint.");
             egui::ScrollArea::vertical().auto_shrink([false, false]).show(ui, |ui| evidence_legend(ui, s));
@@ -393,7 +460,7 @@ fn tools_panel(ui: &mut egui::Ui, s: &mut Session) {
         return;
     };
     egui::ScrollArea::vertical().auto_shrink([false, false]).show(ui, |ui| {
-        for v in mode.values() {
+        for v in mode.palette() {
             let selected = s.paint[mode.index()] == v;
             ui.horizontal(|ui| {
                 swatch(ui, v);
@@ -408,124 +475,124 @@ fn tools_panel(ui: &mut egui::Ui, s: &mut Session) {
     });
 }
 
-/// The legend for the current map mode, floating over the board's lower-left
-/// corner. Terrain and Köppen list the values present this year, most common
+/// The legend for the current map mode, docked at the foot of the sidebar
+/// (collapsible). Terrain and Köppen list the values present this year, most common
 /// first; Population is the whole ramp; the read-only layers their bands.
-fn legend_card(ctx: &egui::Context, board: Rect, s: &Session, survey: bool) {
-    const MAX_ROWS: usize = 12;
-    let frame = egui::Frame::popup(&ctx.global_style()).fill(Color32::from_black_alpha(190)).corner_radius(6.0);
-    egui::Area::new(egui::Id::unique("legend"))
-        .order(egui::Order::Foreground)
-        .pivot(Align2::LEFT_BOTTOM)
-        .fixed_pos(board.left_bottom() + vec2(10.0, -30.0))
-        .show(ctx, |ui| {
-            frame.show(ui, |ui| {
-                ui.set_max_width(260.0);
-                egui::CollapsingHeader::new(RichText::new(format!("Legend · {}", s.mode.label())).strong())
-                    .id_salt("legend-open")
-                    .default_open(true)
-                    .show(ui, |ui| {
-                        let counts = |layer: &[u8], skip_water: bool| {
-                            let mut n = [0usize; 256];
-                            for (i, v) in layer.iter().enumerate() {
-                                if !(skip_water && s.snapshot.terrain[i] == Terrain::Water as u8) {
-                                    n[*v as usize] += 1;
-                                }
-                            }
-                            let mut present: Vec<(u8, usize)> =
-                                (0..=255u8).filter(|v| *v != NO_DATA && n[*v as usize] > 0).map(|v| (v, n[v as usize])).collect();
-                            present.sort_by(|a, b| b.1.cmp(&a.1));
-                            present
-                        };
-                        let sea_row = |ui: &mut egui::Ui| {
+fn legend(ui: &mut egui::Ui, s: &Session, survey: bool) {
+    const MAX_ROWS: usize = 10;
+    ui.add_space(4.0);
+    egui::CollapsingHeader::new(RichText::new(format!("Legend · {}", s.mode.label())).strong())
+        .id_salt("legend-open")
+        .default_open(true)
+        .show(ui, |ui| {
+            let counts = |layer: &[u8], skip_water: bool| {
+                let mut n = [0usize; 256];
+                for (i, v) in layer.iter().enumerate() {
+                    if !(skip_water && s.snapshot.terrain[i] == Terrain::Water as u8) {
+                        n[*v as usize] += 1;
+                    }
+                }
+                let mut present: Vec<(u8, usize)> =
+                    (0..=255u8).filter(|v| *v != NO_DATA && n[*v as usize] > 0).map(|v| (v, n[v as usize])).collect();
+                present.sort_by(|a, b| b.1.cmp(&a.1));
+                present
+            };
+            let sea_row = |ui: &mut egui::Ui| {
+                ui.horizontal(|ui| {
+                    swatch_rgb(ui, palette::SEA_COLOUR);
+                    ui.label("Sea and lakes");
+                });
+            };
+            let more = |ui: &mut egui::Ui, n: usize| {
+                if n > MAX_ROWS {
+                    ui.weak(format!("… and {} rarer", n - MAX_ROWS));
+                }
+            };
+            match s.mode {
+                MapMode::Terrain => {
+                    let present = counts(&s.snapshot.terrain, false);
+                    for (v, _) in present.iter().take(MAX_ROWS) {
+                        if let Some(val) = Value::from_u8(Prop::Terrain, *v) {
                             ui.horizontal(|ui| {
-                                swatch_rgb(ui, palette::SEA_COLOUR);
-                                ui.label("Sea and lakes");
+                                swatch(ui, val);
+                                ui.label(val.label());
                             });
-                        };
-                        let more = |ui: &mut egui::Ui, n: usize| {
-                            if n > MAX_ROWS {
-                                ui.weak(format!("… and {} rarer", n - MAX_ROWS));
-                            }
-                        };
-                        match s.mode {
-                            MapMode::Terrain => {
-                                let present = counts(&s.snapshot.terrain, false);
-                                for (v, _) in present.iter().take(MAX_ROWS) {
-                                    if let Some(val) = Value::from_u8(Prop::Terrain, *v) {
-                                        ui.horizontal(|ui| {
-                                            swatch(ui, val);
-                                            ui.label(val.label());
-                                        });
-                                    }
-                                }
-                                more(ui, present.len());
-                            }
-                            MapMode::Koeppen => {
-                                let present = counts(&s.snapshot.koeppen, true);
-                                for (v, _) in present.iter().take(MAX_ROWS) {
-                                    if let Some(k) = Koeppen::new(*v) {
-                                        ui.horizontal(|ui| {
-                                            swatch(ui, Value::Koeppen(k));
-                                            ui.label(RichText::new(k.code()).monospace());
-                                            ui.label(k.description());
-                                        });
-                                    }
-                                }
-                                more(ui, present.len());
-                                sea_row(ui);
-                            }
-                            MapMode::Pop => {
-                                for p in PopDensity::ALL.iter().rev() {
-                                    ui.horizontal(|ui| {
-                                        swatch(ui, Value::Pop(*p));
-                                        ui.label(Value::Pop(*p).label());
-                                    });
-                                }
-                                sea_row(ui);
-                            }
-                            MapMode::Elevation => elevation_legend(ui),
-                            MapMode::Npp => {
-                                if s.world.npp.is_empty() {
-                                    ui.weak("This file has no productivity layer.");
-                                } else {
-                                    productivity_legend(ui);
-                                    sea_row(ui);
-                                }
-                            }
-                            MapMode::Expected => {
-                                if s.world.npp.is_empty() {
-                                    ui.weak("This file has no productivity layer to derive it from.");
-                                } else {
-                                    expected_legend(ui);
-                                    sea_row(ui);
-                                }
-                            }
-                            MapMode::Biodiversity => {
-                                if s.world.npp.is_empty() {
-                                    ui.weak("This file has no productivity layer to derive it from.");
-                                } else {
-                                    biodiversity_legend(ui);
-                                    sea_row(ui);
-                                }
-                            }
-                            MapMode::Evidence => {
-                                evidence_legend(ui, s);
-                                sea_row(ui);
-                            }
                         }
-                        if survey && !s.world.survey.is_empty() {
-                            ui.separator();
+                    }
+                    more(ui, present.len());
+                }
+                MapMode::Koeppen => {
+                    let present = counts(&s.snapshot.koeppen, true);
+                    for (v, _) in present.iter().take(MAX_ROWS) {
+                        if let Some(k) = Koeppen::new(*v) {
                             ui.horizontal(|ui| {
-                                hatch_swatch(ui);
-                                ui.label("Few dated sites of any period");
-                            })
-                            .response
-                            .on_hover_text("Hatched land has little fieldwork behind it: an absence of sites there is not evidence of an absence of people.");
+                                swatch(ui, Value::Koeppen(k));
+                                ui.label(RichText::new(k.code()).monospace());
+                                ui.label(k.description());
+                            });
                         }
-                    });
-            });
+                    }
+                    more(ui, present.len());
+                    sea_row(ui);
+                }
+                MapMode::Pop => {
+                    for p in PopDensity::ALL.iter().rev() {
+                        ui.horizontal(|ui| {
+                            swatch(ui, Value::Pop(*p));
+                            ui.label(Value::Pop(*p).label());
+                        });
+                    }
+                    sea_row(ui);
+                }
+                MapMode::Elevation => elevation_legend(ui),
+                MapMode::Npp => {
+                    if s.world.npp.is_empty() {
+                        ui.weak("This file has no productivity layer.");
+                    } else {
+                        productivity_legend(ui);
+                        sea_row(ui);
+                    }
+                }
+                MapMode::Expected => {
+                    if s.world.npp.is_empty() {
+                        ui.weak("This file has no productivity layer to derive it from.");
+                    } else {
+                        expected_legend(ui);
+                        sea_row(ui);
+                    }
+                }
+                MapMode::Biodiversity => {
+                    if s.world.npp.is_empty() {
+                        ui.weak("This file has no productivity layer to derive it from.");
+                    } else {
+                        biodiversity_legend(ui);
+                        sea_row(ui);
+                    }
+                }
+                MapMode::Evidence => {
+                    evidence_legend(ui, s);
+                    sea_row(ui);
+                }
+                MapMode::Missing => {
+                    if s.world.residuals.is_none() {
+                        ui.weak("This file has no missing-sites table.");
+                    } else {
+                        missing_legend(ui);
+                        sea_row(ui);
+                    }
+                }
+            }
+            if survey && !s.world.survey.is_empty() {
+                ui.separator();
+                ui.horizontal(|ui| {
+                    hatch_swatch(ui);
+                    ui.label("Few dated sites of any period");
+                })
+                .response
+                .on_hover_text("Hatched land has little fieldwork behind it: an absence of sites there is not evidence of an absence of people.");
+            }
         });
+    ui.add_space(2.0);
 }
 
 /// The evidence layers in picker order: by group (in file order), and
@@ -552,6 +619,68 @@ pub fn evidence_menu(layers: &[neolith_core::EvidenceLayer]) -> Vec<(&str, Vec<(
 }
 
 /// The layer picker beside the map selector in Evidence mode.
+/// The map modes as the picker lists them: a heading, then each mode with
+/// one line on what it shows. Every [`MapMode::MENU`] entry appears once.
+const MAP_MODE_GROUPS: [(&str, &[(MapMode, &str)]); 4] = [
+    (
+        "Land",
+        &[
+            (MapMode::Terrain, "The biome of each hex: forest, steppe, desert, ice, water"),
+            (MapMode::Koeppen, "Köppen climate class, from the climate model"),
+            (MapMode::Elevation, "Height above today's sea level, and depth of water"),
+        ],
+    ),
+    (
+        "Living things",
+        &[
+            (MapMode::Npp, "How much plants grow in a year"),
+            (MapMode::Biodiversity, "Species richness expected at that productivity"),
+        ],
+    ),
+    (
+        "People",
+        &[
+            (MapMode::Expected, "How many people the land would carry: foragers, then farmers once farming arrives"),
+            (MapMode::Missing, "Sites each hex would have if nothing hid them, less the sites known"),
+        ],
+    ),
+    ("Evidence", &[(MapMode::Evidence, "Speculative layers from the evidence atlas: pick one beside this menu")]),
+];
+
+/// Why a mode can't be shown with this world file, if it can't.
+fn map_mode_unavailable(mode: MapMode, world: &World) -> Option<&'static str> {
+    match mode {
+        MapMode::Evidence if world.evidence.is_empty() => {
+            Some("This world file has no evidence layers (add them with neolith-convert --attach-evidence)")
+        }
+        MapMode::Missing if world.residuals.is_none() => Some("This world file has no missing-sites table (run make residuals)"),
+        _ => None,
+    }
+}
+
+/// One button showing the current map mode; it opens the list of modes
+/// under their headings, each with a line on what it shows.
+fn map_mode_picker(ui: &mut egui::Ui, s: &mut Session) {
+    egui::ComboBox::from_id_salt("map-mode").selected_text(s.mode.label()).width(150.0).height(420.0).show_ui(ui, |ui| {
+        for (heading, modes) in MAP_MODE_GROUPS {
+            ui.label(RichText::new(heading).strong());
+            for (mode, what) in modes {
+                let label = format!("  {}", mode.label());
+                match map_mode_unavailable(*mode, &s.world) {
+                    Some(why) => {
+                        ui.add_enabled(false, egui::Button::selectable(false, label)).on_disabled_hover_text(why);
+                    }
+                    None => {
+                        if ui.selectable_label(s.mode == *mode, label).on_hover_text(*what).clicked() {
+                            s.mode = *mode;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
 fn evidence_picker(ui: &mut egui::Ui, s: &mut Session) {
     let selected = s.evidence().map_or("Pick a layer".to_string(), |l| l.name.clone());
     let mut pick = s.evidence_layer;
@@ -611,6 +740,21 @@ fn evidence_legend(ui: &mut egui::Ui, s: &Session) {
         ui.label("No value");
     });
     ui.label(RichText::new("Speculative where judged or extrapolated: not evidence.").italics());
+}
+
+/// Missing-sites bands, most missing first.
+fn missing_legend(ui: &mut egui::Ui) {
+    ui.weak("Sites missing per hex").on_hover_text(
+        "Sites a hex would have if nothing hid them, less the sites known, for the thousand years around each \
+         millennium. What a hex should have comes from its area, the epoch, whether it is farmed and how near \
+         water it is. A residual against the site list's own pattern, not a population estimate.",
+    );
+    for b in (0..residuals::BAND_COUNT).rev() {
+        ui.horizontal(|ui| {
+            swatch_rgb(ui, palette::missing(b));
+            ui.label(residuals::band_label(b).unwrap_or_default());
+        });
+    }
 }
 
 /// Expected-population bands, densest first.
@@ -678,21 +822,20 @@ fn elevation_legend(ui: &mut egui::Ui) {
     }
 }
 
-/// The chronicle at the top of the right panel: the latest events up to the
+/// The Chronicle tab: the latest events up to the
 /// current year, newest first. Clicking one with a place glides there.
 fn chronicle(ui: &mut egui::Ui, s: &mut Session, now: f64) {
-    const ROWS: usize = 12;
+    const ROWS: usize = 40;
     let year = s.year();
     let mut go = None;
-    ui.add_space(6.0);
-    egui::CollapsingHeader::new(RichText::new("Chronicle").strong()).id_salt("chronicle").default_open(true).show(ui, |ui| {
+    {
         let recent: Vec<_> = crate::events::recent(&s.events, year, ROWS).collect();
         if recent.is_empty() {
             ui.weak("Nothing yet. Press Play (Space); keys 1–5 set the speed.");
         }
         // An event the clock just passed glows for about two seconds of play.
         let window = (s.clock.years_per_sec * 2.0).max(1.0);
-        egui::ScrollArea::vertical().id_salt("chronicle-scroll").max_height(190.0).show(ui, |ui| {
+        egui::ScrollArea::vertical().id_salt("chronicle-scroll").auto_shrink([false, false]).show(ui, |ui| {
             for ev in recent {
                 let fresh = (1.0 - (year.0 - ev.year.0) as f64 / window).clamp(0.0, 1.0) as f32;
                 let fresh = if s.clock.playing { fresh } else { 0.0 };
@@ -722,20 +865,17 @@ fn chronicle(ui: &mut egui::Ui, s: &mut Session, now: f64) {
                 });
             }
         });
-    });
+    }
     if let Some(at) = go {
         s.glide_to(at, now);
     }
-    ui.separator();
 }
 
 /// Right panel: the hovered or selected hex, its current values and each
 /// property's keyframe table (editable in place with typed dropdowns).
-fn inspector(ui: &mut egui::Ui, s: &mut Session) {
-    ui.add_space(6.0);
+fn inspector(ui: &mut egui::Ui, s: &mut Session, now: f64) {
     let Some(hex) = s.inspected.or(s.hover) else {
-        ui.strong("Inspector");
-        ui.weak("Hover or click a hex.");
+        ui.weak("Hover over the map to see a hex; click a hex or a settlement to select it.");
         return;
     };
     let pinned = s.inspected == Some(hex);
@@ -744,8 +884,15 @@ fn inspector(ui: &mut egui::Ui, s: &mut Session) {
     ui.horizontal(|ui| {
         ui.strong(format!("Hex {}", hex.geojson_id()));
         ui.weak(if pinned { "selected" } else { "hover" });
-        if pinned && ui.small_button("x").on_hover_text("Deselect").clicked() {
-            s.inspected = None;
+        if pinned {
+            ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                if ui.small_button("×").on_hover_text("Deselect (Esc)").clicked() {
+                    s.inspected = None;
+                }
+                if ui.small_button("Go to").on_hover_text("Move the map to this hex").clicked() {
+                    s.glide_to(centre, now);
+                }
+            });
         }
     });
     ui.weak(format!("col {col}, row {row} · {:.2}°, {:.2}°", centre.lon, centre.lat));
@@ -755,8 +902,30 @@ fn inspector(ui: &mut egui::Ui, s: &mut Session) {
     let mut edit: Option<Command> = None;
     egui::ScrollArea::vertical().auto_shrink([false, false]).show(ui, |ui| {
         let water = s.snapshot.terrain[hex.index()] == Terrain::Water as u8;
+        if let Some(r) = s.world.residuals.as_ref().filter(|_| s.mode == MapMode::Missing).and_then(|t| t.at(hex, year)) {
+            ui.horizontal_wrapped(|ui| {
+                swatch_rgb(ui, palette::missing(residuals::band((r.missing * 10.0).round() as i16)));
+                let known = match r.sites {
+                    1 => "1 site known".to_string(),
+                    n => format!("{n} sites known"),
+                };
+                let text = if r.missing >= 0.05 {
+                    format!("Missing sites: {:.1} ({known})", r.missing)
+                } else if r.missing <= -0.05 {
+                    format!("{:.1} more sites than expected ({known})", -r.missing)
+                } else {
+                    format!("No sites missing ({known})")
+                };
+                ui.label(text).on_hover_text(
+                    "Sites this hex would have if nothing hid them, less the sites known, for the thousand years \
+                     around this millennium. A residual against the site list's own pattern, not a population estimate.",
+                );
+            });
+            ui.label(format!("Reading: {}", r.outcome));
+            ui.separator();
+        }
         if let Some(l) = s.evidence().filter(|_| s.mode == MapMode::Evidence) {
-            let code = l.code_at(hex, year);
+            let code = s.evidence_code(hex);
             ui.horizontal_wrapped(|ui| match (l.value(code), evidence::confidence(code)) {
                 (Some(v), Some(c)) => {
                     swatch_rgb(ui, palette::evidence(code));
@@ -831,7 +1000,7 @@ fn inspector(ui: &mut egui::Ui, s: &mut Session) {
             }
             if band != NO_DATA && shore != u16::MAX {
                 ui.label(format!("Sea or lake: {shore} km")).on_hover_text(
-                    "From the hex's centre to the edge of the nearest water this year. Foragers are denser near it: \
+                    "From the hex's centre to the edge of the nearest water this year, on the map or beyond its edge. Foragers are denser near it: \
                      about three times on the shore, half at 1000 km.",
                 );
             }
@@ -871,6 +1040,10 @@ fn inspector(ui: &mut egui::Ui, s: &mut Session) {
                 ui.label(format!("River ({}): {}", class.name(), list.join(", ")));
             }
         });
+        // The keyframe tables and the raw record are for editing the map.
+        if !s.editor {
+            return;
+        }
         ui.add_space(6.0);
         ui.separator();
         ui.strong("Keyframes");
@@ -890,7 +1063,7 @@ fn inspector(ui: &mut egui::Ui, s: &mut Session) {
                                     .selected_text(value.label())
                                     .width(150.0)
                                     .show_ui(ui, |ui| {
-                                        for v in prop.values() {
+                                        for v in prop.palette() {
                                             ui.selectable_value(&mut chosen, v, v.label());
                                         }
                                     });
@@ -978,20 +1151,25 @@ pub fn raw_json(world: &World, hex: HexId) -> String {
     )
 }
 
-/// The "board style" panel: everything about the look that is cheap to
-/// compare live rather than decide up front.
-fn style_window(ctx: &egui::Context, open: &mut bool, style: &mut BoardStyle, s: &mut Session) {
-    egui::Window::new("Board style").open(open).resizable(false).default_pos([260.0, 60.0]).show(ctx, |ui| {
-        egui::Grid::new("style").num_columns(2).show(ui, |ui| {
-            ui.label("View");
-            ui.checkbox(&mut style.fill_screen, "Fill the screen").on_hover_text(
+/// The Map tab: the board's look, in groups, the rarely changed ones folded
+/// away under "Advanced".
+fn map_tab(ui: &mut egui::Ui, style: &mut BoardStyle, s: &mut Session) {
+    egui::ScrollArea::vertical().id_salt("map_tab").auto_shrink([false, false]).show(ui, |ui| {
+        let group = |ui: &mut egui::Ui, title: &str, open: bool, body: &mut dyn FnMut(&mut egui::Ui)| {
+            egui::CollapsingHeader::new(RichText::new(title).strong()).id_salt(("map_tab", title)).default_open(open).show(ui, |ui| {
+                egui::Grid::new(("map_grid", title)).num_columns(2).spacing([10.0, 6.0]).show(ui, |ui| body(ui));
+            });
+        };
+        group(ui, "View", true, &mut |ui| {
+            ui.label("Fill the screen");
+            ui.checkbox(&mut style.fill_screen, "").on_hover_text(
                 "Keep the board covering the whole view at every zoom. Off: see the whole board as a tabletop piece",
             );
             ui.end_row();
             ui.label("Edge room");
             ui.add_enabled(style.fill_screen, egui::Slider::new(&mut style.fill_margin, 0.0..=0.45).custom_formatter(|v, _| format!("{:.0}%", v * 100.0)))
                 .on_hover_text("How much of the view, on each side, may show the map's edge when zoomed out");
-            
+            ui.end_row();
             ui.label("Curvature");
             let mut curvature = 1.0 - s.morph;
             if ui.add(egui::Slider::new(&mut curvature, 0.0..=1.0).custom_formatter(|v, _| format!("{:.0}%", v * 100.0))).changed() {
@@ -999,8 +1177,55 @@ fn style_window(ctx: &egui::Context, open: &mut bool, style: &mut BoardStyle, s:
                 s.morph_anim = None;
             }
             ui.end_row();
-            ui.label("Edge material");
+            ui.label("Depth");
+            ui.add(egui::Slider::new(&mut style.depth, 0.0..=1.0))
+                .on_hover_text("Haze over the far ground and soft focus at the top and bottom of a tilted view. Off while editing.");
+            ui.end_row();
+        });
+        group(ui, "Terrain", true, &mut |ui| {
+            ui.label("Terrain art");
             ui.horizontal(|ui| {
+                for art in ArtMode::ALL {
+                    ui.selectable_value(&mut style.terrain_art, art, art.label());
+                }
+            });
+            ui.end_row();
+            ui.label("Ground detail");
+            ui.add_enabled(style.terrain_art != ArtMode::Off, egui::Slider::new(&mut style.art_strength, 0.0..=1.0));
+            ui.end_row();
+            ui.label("Biome edges");
+            ui.add_enabled(style.terrain_art != ArtMode::Off, egui::Checkbox::new(&mut style.art_blend, "Blend, with shores"));
+            ui.end_row();
+            ui.label("Relief");
+            ui.horizontal(|ui| {
+                ui.checkbox(&mut style.relief, "");
+                ui.add_enabled(style.relief, egui::Slider::new(&mut style.relief_exaggeration, 1.0..=40.0).suffix("×"))
+                    .on_hover_text("Vertical exaggeration of the tile heights");
+            });
+            ui.end_row();
+            ui.label("Mountain height");
+            ui.add_enabled(style.terrain_art == ArtMode::On, egui::Slider::new(&mut style.mountain_height, 0.3..=1.5).suffix("×"))
+                .on_hover_text("Height of the peaks and hills standing on mountain country; lower declutters busy ranges");
+            ui.end_row();
+            ui.label("Hillshade");
+            ui.add(egui::Slider::new(&mut style.hillshade, 0.0..=1.0))
+                .on_hover_text("Shade land hexes by their elevation gradient, lit from the north-west");
+            ui.end_row();
+        });
+        group(ui, "Overlays", true, &mut |ui| {
+            ui.label("Rivers");
+            ui.checkbox(&mut style.rivers, "Rivers and lake shores");
+            ui.end_row();
+            ui.label("Survey");
+            ui.checkbox(&mut style.survey, "Hatch thinly surveyed land");
+            ui.end_row();
+            ui.label("Region borders");
+            ui.add(egui::Slider::new(&mut style.borders, 0.0..=1.0));
+            ui.end_row();
+        });
+        group(ui, "Advanced", false, &mut |ui| {
+            ui.label("Edge material");
+            ui.horizontal_wrapped(|ui| {
                 for m in Material::ALL {
                     ui.selectable_value(&mut style.material, m, m.label());
                 }
@@ -1018,23 +1243,6 @@ fn style_window(ctx: &egui::Context, open: &mut bool, style: &mut BoardStyle, s:
             ui.label("Bevel");
             ui.add(egui::Slider::new(&mut style.bevel, 0.0..=1.0));
             ui.end_row();
-            ui.label("Region borders");
-            ui.add(egui::Slider::new(&mut style.borders, 0.0..=1.0));
-            ui.end_row();
-            ui.label("Relief");
-            ui.add_enabled(style.relief, egui::Slider::new(&mut style.relief_exaggeration, 1.0..=40.0).suffix("×"))
-                .on_hover_text("Vertical exaggeration of the tile heights");
-            ui.end_row();
-            ui.label("Hillshade");
-            ui.add(egui::Slider::new(&mut style.hillshade, 0.0..=1.0))
-                .on_hover_text("Shade land hexes by their elevation gradient, lit from the north-west");
-            ui.end_row();
-            ui.label("Terrain art");
-            ui.add_enabled(style.terrain_art != ArtMode::Off, egui::Slider::new(&mut style.art_strength, 0.0..=1.0));
-            ui.end_row();
-            ui.label("Biome edges");
-            ui.add_enabled(style.terrain_art != ArtMode::Off, egui::Checkbox::new(&mut style.art_blend, "Blend, with shores"));
-            ui.end_row();
             ui.label("Saturation");
             ui.add(egui::Slider::new(&mut style.saturation, 0.0..=1.3));
             ui.end_row();
@@ -1046,14 +1254,9 @@ fn style_window(ctx: &egui::Context, open: &mut bool, style: &mut BoardStyle, s:
             ui.label("Lighting");
             ui.checkbox(&mut style.flat_lighting, "Flat (exact colours)");
             ui.end_row();
-            ui.label("Rivers");
-            ui.checkbox(&mut style.rivers, "Rivers and lake shores");
-            ui.end_row();
-            ui.label("Survey");
-            ui.checkbox(&mut style.survey, "Hatch thinly surveyed land");
-            ui.end_row();
         });
-        if ui.button("Reset").clicked() {
+        ui.add_space(6.0);
+        if ui.button("Reset to defaults").clicked() {
             *style = BoardStyle::default();
         }
     });
@@ -1063,6 +1266,21 @@ fn style_window(ctx: &egui::Context, open: &mut bool, style: &mut BoardStyle, s:
 mod tests {
     use super::*;
     use neolith_core::{GridSpec, Koeppen, PopDensity, Terrain};
+
+    #[test]
+    fn map_mode_picker_lists_every_menu_mode_once() {
+        let listed: Vec<MapMode> = MAP_MODE_GROUPS.iter().flat_map(|(_, modes)| modes.iter().map(|(m, _)| *m)).collect();
+        assert_eq!(listed.len(), MapMode::MENU.len());
+        assert!(MapMode::MENU.iter().all(|m| listed.iter().filter(|l| *l == m).count() == 1), "{listed:?}");
+        assert!(MAP_MODE_GROUPS.iter().all(|(heading, modes)| !heading.is_empty() && modes.iter().all(|(_, what)| !what.is_empty())));
+        // Modes that need data the file lacks say why; the rest are always available.
+        let grid = GridSpec { cols: 3, rows: 2, origin_lon: 0.0, origin_lat: 10.0, w: 0.5773502691896262, h: 0.5 };
+        let bare = World::empty(grid);
+        assert!(map_mode_unavailable(MapMode::Evidence, &bare).is_some() && map_mode_unavailable(MapMode::Missing, &bare).is_some());
+        assert!(MapMode::MENU.iter().filter(|m| map_mode_unavailable(**m, &bare).is_none()).count() == MapMode::MENU.len() - 2);
+        let with = World { residuals: Some(neolith_core::Residuals::default()), ..bare };
+        assert!(map_mode_unavailable(MapMode::Missing, &with).is_none());
+    }
 
     #[test]
     fn evidence_menu_groups_layers_and_keeps_sets_together() {
