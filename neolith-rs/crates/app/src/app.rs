@@ -71,6 +71,9 @@ pub struct Session {
     /// the sidebar's Selected tab).
     pub settlement: Option<usize>,
     pub side_tab: crate::panels::SideTab,
+    /// On a narrow (phone) screen the sidebar is a sheet over the bottom
+    /// of the board, and this says whether it is open.
+    pub sheet: bool,
 
     pub proj: Projection,
     pub mesh: BoardMesh,
@@ -141,6 +144,7 @@ impl Session {
             inspected: None,
             settlement: None,
             side_tab: crate::panels::SideTab::Selected,
+            sheet: false,
             proj,
             mesh: board,
             morph: 0.0,

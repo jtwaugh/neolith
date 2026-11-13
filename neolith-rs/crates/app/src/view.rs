@@ -56,6 +56,14 @@ pub struct BoardInput {
     /// Where the look-at point was when the current pan began.
     pan_from: Option<LonLat>,
     glide: Option<Glide>,
+    /// Where the pointer last was over the board. A touch lifts the pointer
+    /// in the same frame as the tap's release, so the click is placed here.
+    last_cursor: Option<DVec2>,
+    /// A two-finger gesture (pinch, twist, tilt) is in progress.
+    gesture: bool,
+    /// The opening view was fitted to a tall board, or the user has moved
+    /// the camera (after which it is theirs).
+    framed: bool,
     /// What the last frame drew, kept so the agent harness can read it.
     pub drawn: Drawn,
     /// Sea and region names shown last frame (label hysteresis).
@@ -225,13 +233,59 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         return;
     }
     let grid = s.world.grid.clone();
+    // The camera's field of view is vertical, so a tall (phone) board shows
+    // the globe's rim and empty table above it: start closer in instead.
+    if !s.input.framed && size.x < size.y {
+        s.input.framed = true;
+        s.camera.dist *= (size.x / size.y).max(0.45).sqrt() * 0.85;
+        s.camera.clamp(&grid);
+    }
     s.update_relief(style);
     let relief = s.relief.clone();
     let local = |p: Pos2| DVec2::new((p.x - rect.left()) as f64, (p.y - rect.top()) as f64);
     let (modifiers, press_origin, scroll, pinch) =
         ui.input(|i| (i.modifiers, i.pointer.press_origin(), i.smooth_scroll_delta.y as f64, i.zoom_delta() as f64));
-    let cursor = resp.interact_pointer_pos().or(resp.hover_pos()).map(local);
+    let live_cursor = resp.interact_pointer_pos().or(resp.hover_pos()).map(local);
+    if live_cursor.is_some() {
+        s.input.last_cursor = live_cursor;
+    }
+    // On a touch screen the release (and so the click) arrives with the
+    // pointer already gone: fall back to where the finger lifted.
+    let cursor = live_cursor.or_else(|| (resp.clicked() || resp.double_clicked()).then_some(s.input.last_cursor).flatten());
+    let multi = ui.input(|i| i.multi_touch()).filter(|_| resp.contains_pointer() || s.input.gesture);
     let mut repaint = false;
+
+    // ---- two-finger gestures: pinch zooms about the fingers, twist turns
+    // the board, moving both fingers up or down tilts it ------------------
+    if let Some(m) = multi {
+        if !s.input.gesture {
+            // The first finger's pan (or stroke) ends where the second lands.
+            if let Some(Drag::Paint) = s.input.drag {
+                if let Some(stroke) = s.input.stroke.take() {
+                    s.finish_stroke(stroke.cmd);
+                }
+            }
+            s.input.drag = None;
+            s.input.lasso.clear();
+            s.input.lasso_preview = None;
+            s.input.gesture = true;
+            s.input.framed = true;
+        }
+        s.input.velocity = DVec2::ZERO;
+        s.input.glide = None;
+        let centre = local(m.center_pos);
+        let anchor = s.camera.view(&s.proj, s.morph, size).pick_relief(centre, &relief);
+        s.camera.dist /= (m.zoom_delta as f64).max(0.01);
+        let fill = fills(style, s.morph).then_some((&s.proj, s.morph, size, style.fill_margin as f64));
+        s.camera.orbit(-m.rotation_delta as f64, m.translation_delta.y as f64 * 0.006, &grid, fill);
+        s.camera.clamp(&grid);
+        if let Some(ll) = anchor.filter(|ll| grid.hex_at(*ll).is_some()) {
+            camera::grab(&mut s.camera, &s.proj, s.morph, size, &grid, &relief, ll, centre);
+        }
+        repaint = true;
+    } else if s.input.gesture && !ui.input(|i| i.any_touches()) {
+        s.input.gesture = false;
+    }
 
     // ---- camera animation: double-click glide and pan inertia ----------
     if let Some(g) = &s.input.glide {
@@ -251,8 +305,9 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
     s.camera.clamp(&grid);
 
     // ---- zoom towards the cursor ---------------------------------------
-    if resp.contains_pointer() && (scroll != 0.0 || pinch != 1.0) {
+    if multi.is_none() && resp.contains_pointer() && (scroll != 0.0 || pinch != 1.0) {
         let anchor = cursor.and_then(|c| s.camera.view(&s.proj, s.morph, size).pick_relief(c, &relief).map(|ll| (c, ll)));
+        s.input.framed = true;
         s.camera.dist *= (-scroll * 0.0025).exp() / pinch.max(0.01);
         s.camera.clamp(&grid);
         if let Some((c, ll)) = anchor {
@@ -265,12 +320,13 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
 
     // ---- drags -----------------------------------------------------------
     let orbit_mod = modifiers.ctrl || modifiers.command;
-    if resp.drag_started() {
+    if resp.drag_started() && !s.input.gesture {
         let origin = press_origin.map(local).or(cursor).unwrap_or(size / 2.0);
         let view = s.camera.view(&s.proj, s.morph, size);
         let pan = |view: &View| view.pick_relief(origin, &relief).map(|grabbed| Drag::Pan { grabbed });
         s.input.velocity = DVec2::ZERO;
         s.input.glide = None;
+        s.input.framed = true;
         s.input.pan_from = Some(s.camera.target);
         s.input.drag = if resp.dragged_by(PointerButton::Secondary) || (resp.dragged_by(PointerButton::Primary) && orbit_mod) {
             Some(Drag::Orbit)
@@ -403,7 +459,7 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
     // Label priority; every piece is drawn, only labels are thinned out.
     let order = piece_priority(s, &visible);
 
-    let hovering = resp.contains_pointer() && s.input.drag.is_none();
+    let hovering = (resp.contains_pointer() || cursor.is_some()) && s.input.drag.is_none() && !s.input.gesture;
     let piece_hover = cursor.filter(|_| hovering).and_then(|c| {
         (0..visible.len())
             .filter_map(|k| {
@@ -446,6 +502,7 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
             // A piece takes priority over the hex underneath.
             s.settlement = Some(visible[k].0);
             s.side_tab = crate::panels::SideTab::Selected;
+            s.sheet = true;
         } else {
             match (s.tool, s.hover) {
                 (Tool::Select, Some(hex)) => {
@@ -453,6 +510,7 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
                     s.inspected = Some(hex);
                     s.settlement = None;
                     s.side_tab = crate::panels::SideTab::Selected;
+                    s.sheet = true;
                     if s.editor && modifiers.shift {
                         if s.selection.contains(hex) {
                             s.selection.remove(hex);
@@ -721,7 +779,11 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
     painter.text(
         rect.left_bottom() + egui::vec2(10.0, -8.0),
         Align2::LEFT_BOTTOM,
-        "Drag: move · Right-drag / Ctrl-drag: orbit · Scroll: zoom · Double-click: go to hex",
+        if ui.input(|i| i.has_touch_screen()) {
+            "Pinch: zoom · Twist: turn · Two fingers up/down: tilt · Tap: inspect"
+        } else {
+            "Drag: move · Right-drag / Ctrl-drag: orbit · Scroll: zoom · Double-click: go to hex"
+        },
         FontId::proportional(11.0),
         Color32::from_white_alpha(120),
     );

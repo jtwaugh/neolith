@@ -74,7 +74,7 @@ fn main() -> std::process::ExitCode {
         viewport: egui::ViewportBuilder::default()
             .with_title("Neolith")
             .with_inner_size(size)
-            .with_min_inner_size([760.0, 480.0]),
+            .with_min_inner_size([360.0, 480.0]),
         renderer: eframe::Renderer::Wgpu,
         // Under the harness the window is usually behind the agent's terminal;
         // waiting on vsync for an occluded window stalls every frame on macOS.
