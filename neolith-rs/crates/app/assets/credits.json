@@ -1,0 +1,261 @@
+[
+ {
+  "name": "ETOPO1 1 arc-minute global relief model (via NOAA CoastWatch ERDDAP)",
+  "licence": "public-domain-us-gov",
+  "url": "https://doi.org/10.7289/V5C8276M",
+  "citation": "Amante, C. & Eakins, B.W. 2009. ETOPO1 1 Arc-Minute Global Relief Model. NOAA Technical Memorandum NESDIS NGDC-24. doi:10.7289/V5C8276M",
+  "used_in": "Elevation, landform, coasts and lakes (Makefile -> build/etopo*.asc)"
+ },
+ {
+  "name": "Beyer, Krapp & Manica 2020, Late Quaternary climate and biomes (LateQuaternary_Environment.nc)",
+  "licence": "CC-BY-4.0",
+  "url": "https://doi.org/10.6084/m9.figshare.12293345",
+  "citation": "Beyer, R.M., Krapp, M. & Manica, A. 2020. High-resolution terrestrial climate, bioclimate and vegetation for the last 120,000 years. Scientific Data 7:236. doi:10.1038/s41597-020-0552-1",
+  "used_in": "Biomes, Köppen classes, productivity (pipeline/config.toml [model])"
+ },
+ {
+  "name": "QEN Global Palaeovegetation Atlas maps (Adams & Faure), Europe and Africa",
+  "licence": "LicenseRef-not-copyrighted",
+  "url": "http://web.archive.org/web/20151220225453/http://www.esd.ornl.gov/projects/qen/nerc.html",
+  "citation": "Adams, J.M. 1997. Global land environments since the last interglacial. Oak Ridge National Laboratory, TN, USA. http://www.esd.ornl.gov/projects/qen/nerc.html; Adams, J.M. & Faure, H. (eds.) 1997. Review and Atlas of Palaeovegetation: Preliminary land ecosystem maps of the world since the Last Glacial Maximum. Quaternary Environments Network, ORNL.",
+  "used_in": "raw/maps/europe, raw/maps/africa; traced into raw/maps/composite, the drawn terrain keyframes (pipeline/config.toml [terrain.drawn])"
+ },
+ {
+  "name": "Neotoma Paleoecology Database (including the European Pollen Database)",
+  "licence": "CC-BY-4.0",
+  "url": "https://www.neotomadb.org",
+  "citation": "Williams, J.W. et al. 2018. The Neotoma Paleoecology Database. Quaternary Research 89:156-177. Plus the dataset PIs listed per record.",
+  "used_in": "Biome anchors; isostyle cereal pollen and dung spore layers"
+ },
+ {
+  "name": "UNEP-WCMC mountain classes (Kapos et al. 2000), method only",
+  "licence": "facts",
+  "url": "https://www.unep-wcmc.org",
+  "citation": "Kapos, V., Rhind, J., Edwards, M., Price, M.F. & Ravilious, C. 2000. Developing a map of the world's mountain forests. In Price & Butt (eds.), Forests in Sustainable Mountain Development. CABI.",
+  "used_in": "Landform bands applied to ETOPO1"
+ },
+ {
+  "name": "Lambeck et al. 2014 global sea-level curve (values read from the paper)",
+  "licence": "facts",
+  "url": "https://doi.org/10.1073/pnas.1411762111",
+  "citation": "Lambeck, K., Rouby, H., Purcell, A., Sun, Y. & Sambridge, M. 2014. Sea level and global ice volumes from the Last Glacial Maximum to the Holocene. PNAS 111:15296-15303.",
+  "used_in": "Coastlines over time (pipeline/config.toml [sea])"
+ },
+ {
+  "name": "GEOGLOWS Hydrological Model v2 stream network",
+  "licence": "CC-BY-4.0",
+  "url": "https://data.geoglows.org",
+  "citation": "GEOGloWS ECMWF Streamflow Service, Hydrological Model Version 2.0 (GEOGloWS v2), stream network and attribute table, https://geoglows-v2.s3.amazonaws.com (licenses.md). Changes: reaches of 1,000 km² or more upstream inside the map box, lines reversed to run downstream, joined to the attribute table on LINKNO, and an endorheic flag derived by the project.",
+  "used_in": "River courses (pipeline/geoglows.py, pipeline/rivers.py; Makefile -> build/geoglows); unnamed reaches in isostyle river rules"
+ },
+ {
+  "name": "TDX-Hydro global stream and basin network (NGA)",
+  "licence": "CC-BY-SA-4.0",
+  "url": "https://earth-info.nga.mil",
+  "citation": "TDX-Hydro, US National Geospatial-Intelligence Agency (NGA) with USACE ERDC and NASA, 2023; derived from the TanDEM-X DEM. Used through GEOGLOWS v2.",
+  "used_in": "Underlies the GEOGLOWS v2 stream lines (river courses)"
+ },
+ {
+  "name": "XRONOS chronological database",
+  "licence": "CC-BY-4.0",
+  "url": "https://xronos.ch",
+  "citation": "Roe, J., Hinz, M., Hafner, A. et al. 2025. XRONOS: an open data infrastructure for archaeological chronology. Journal of Computer Applications in Archaeology 8(1). doi:10.5334/jcaa.191. Original sources of each date are kept in data/settlements/dates.csv.gz.",
+  "used_in": "Settlements, dates, survey intensity, every isostyle layer built on dated site-phases"
+ },
+ {
+  "name": "p3k14c radiocarbon database, release 2025.07",
+  "licence": "CC0-1.0",
+  "url": "https://github.com/people3k/p3k14c",
+  "citation": "Bird, D., Miranda, L., Vander Linden, M. et al. 2022. p3k14c, a synthetic global database of archaeological radiocarbon dates. Scientific Data 9:27. doi:10.1038/s41597-022-01118-7",
+  "used_in": "Settlements and dates"
+ },
+ {
+  "name": "NeoNet Mediterranean radiocarbon dataset, version 2",
+  "licence": "CC-BY-SA-4.0",
+  "url": "https://doi.org/10.13131/archelogicadata-yb11-yb66",
+  "citation": "Mazzucco, N. et al. 2021. NeoNet radiocarbon database version 1. Pisa: MOD. doi:10.13131/archelogicadata-yb11-yb66. Data paper: Huet, T. et al. 2022. Journal of Open Archaeology Data 10:3, doi:10.5334/joad.87.",
+  "used_in": "Settlements and dates"
+ },
+ {
+  "name": "NeoNet Atlantic radiocarbon dataset, version 1",
+  "licence": "CC-BY-SA-4.0",
+  "url": "https://doi.org/10.13131/unipi/z332-ye56",
+  "citation": "Huet, T. et al. 2023. NeoNetAtl radiocarbon database. Pisa: MOD. doi:10.13131/unipi/z332-ye56",
+  "used_in": "Settlements and dates"
+ },
+ {
+  "name": "Allen Ancient DNA Resource (AADR) v66.p1, 1240K annotation",
+  "licence": "CC0-1.0",
+  "url": "https://doi.org/10.7910/DVN/FFIDCW",
+  "citation": "Mallick, S., Micco, A., Mah, M. et al. 2024. The Allen Ancient DNA Resource (AADR): a curated compendium of ancient human genomes. Scientific Data 11:182. Plus the original genetics papers per sample.",
+  "used_in": "Settlements and dates; isostyle aDNA and haplogroup layers"
+ },
+ {
+  "name": "Radiocarbon dates transcribed from published papers (mostly Russian-language)",
+  "licence": "facts",
+  "url": "https://github.com/jtwaugh/neolith/blob/main/data/settlements/SOURCES.md",
+  "citation": "Per row; the papers are listed in pipeline/config.toml [[settlements.tables]] literature and data/settlements/SOURCES.md.",
+  "used_in": "Settlements and dates"
+ },
+ {
+  "name": "English Wikipedia articles on cultures and famous sites (paraphrased; no text copied)",
+  "licence": "CC-BY-SA-4.0",
+  "url": "https://en.wikipedia.org",
+  "citation": "Wikipedia contributors. Revisions are recorded in data/cultures/wikipedia.json and data/renown/SOURCES.md.",
+  "used_in": "data/cultures/cultures.toml; renown one-line summaries (neolith-rs/crates/app/assets/renown.json)"
+ },
+ {
+  "name": "Evershed et al. 2022, lipid residue site-phases",
+  "licence": "MIT",
+  "url": "https://github.com/AdrianTimpson/2020-03-03523A",
+  "citation": "Evershed, R.P., Davey Smith, G., Roffet-Salque, M. et al. 2022. Dairying, diseases and the evolution of lactase persistence in Europe. Nature 608:336-345. doi:10.1038/s41586-022-05010-7. Data (c) 2021 Adrian Timpson, MIT License.",
+  "used_in": "isostyle pottery"
+ },
+ {
+  "name": "Rigaud, Manen & García-Martínez de Lagrán 2018, S1 Dataset",
+  "licence": "CC-BY-4.0",
+  "url": "https://doi.org/10.1371/journal.pone.0196488",
+  "citation": "Rigaud, S., Manen, C. & García-Martínez de Lagrán, I. 2018. Symbols in motion: flexible cultural boundaries and the fast spread of the Neolithic in the western Mediterranean. PLoS ONE 13:e0196488.",
+  "used_in": "isostyle ornaments"
+ },
+ {
+  "name": "Dolbunova et al. 2023, vessel table with site coordinates",
+  "licence": "CC-BY-4.0",
+  "url": "https://doi.org/10.5281/zenodo.6619101",
+  "citation": "Dolbunova, E., Lucquin, A., McLaughlin, T.R. et al. 2023. The transmission of pottery technology among prehistoric European hunter-gatherers. Nature Human Behaviour 7:171-183.",
+  "used_in": "isostyle pottery; data/isostyle/inputs/dolbunova2023_starts.csv"
+ },
+ {
+  "name": "Windler 2019, Spondylus database",
+  "licence": "CC-BY-4.0",
+  "url": "https://doi.org/10.5281/zenodo.2840333",
+  "citation": "Windler, A. 2019. Spondylus database (Zenodo 2840333).",
+  "used_in": "isostyle ornaments"
+ },
+ {
+  "name": "Tsirintoulaki, Matzig & Riede 2023, dated barbed points",
+  "licence": "MIT",
+  "url": "https://doi.org/10.5281/zenodo.7244045",
+  "citation": "Tsirintoulaki, K., Matzig, D.N. & Riede, F. 2022. Research compendium (Zenodo 7244045), (c) 2022 David N. Matzig, MIT License. Paper: Open Archaeology, doi:10.1515/opar-2022-0276.",
+  "used_in": "isostyle bone/antler"
+ },
+ {
+  "name": "Perrin, BDA (Base de données archéologiques) 2021 export",
+  "licence": "CC-BY-4.0",
+  "url": "https://doi.org/10.34847/nkl.dde9fnm8",
+  "citation": "Perrin, T. 2021. BDA export (Nakala, doi:10.34847/nkl.dde9fnm8).",
+  "used_in": "isostyle flaked stone, pottery"
+ },
+ {
+  "name": "SoilGrids 2.0 pH(H2O), 5 km aggregate",
+  "licence": "CC-BY-4.0",
+  "url": "https://www.isric.org/explore/soilgrids",
+  "citation": "Poggio, L., de Sousa, L.M., Batjes, N.H. et al. 2021. SoilGrids 2.0: producing soil information for the globe with quantified spatial uncertainty. SOIL 7:217-240.",
+  "used_in": "isostyle bone mask; residual detection model (acid soil)"
+ },
+ {
+  "name": "MedAfriCarbon v1.0.3",
+  "licence": "CC-BY-4.0",
+  "url": "https://doi.org/10.5281/zenodo.3689716",
+  "citation": "Lucarini, G., Wilkinson, T., Crema, E.R. et al. 2020. The MedAfriCarbon radiocarbon database and web application. Journal of Open Archaeology Data 8:1.",
+  "used_in": "isostyle pottery, livestock"
+ },
+ {
+  "name": "Rotunno & Crema 2025, Saharan pottery dates",
+  "licence": "MIT",
+  "url": "https://github.com/roccorot/OriginPotteryNAfrica",
+  "citation": "Rotunno, R. & Crema, E.R. 2025. Bayesian analyses of radiocarbon dates suggest multiple origins of ceramic technology in Early Holocene Africa. Nature Communications 16:8819. doi:10.1038/s41467-025-63887-0. Code and data (c) 2024 roccorot, MIT License.",
+  "used_in": "isostyle pottery"
+ },
+ {
+  "name": "DEFC, Digitizing Early Farming Cultures (sites, areas, finds)",
+  "licence": "CC-BY-4.0",
+  "url": "https://arche.acdh.oeaw.ac.at/api/220828",
+  "citation": "Aspöck, E., Štuhec, S., Kopetzky, K. & Kucera, M. Digitizing Early Farming Cultures (DEFC). Austrian Academy of Sciences, ARCHE.",
+  "used_in": "isostyle structures, finds"
+ },
+ {
+  "name": "DObsiSS v2.0 (Batist), obsidian sourcing in SW Asia",
+  "licence": "CC-BY-SA-4.0",
+  "url": "https://doi.org/10.5281/zenodo.55848",
+  "citation": "Batist, Z. DObsiSS: Database of Obsidian Sourcing Studies, v2.0 (Zenodo 55848).",
+  "used_in": "isostyle flaked stone"
+ },
+ {
+  "name": "Arranz-Otaegui & Roe 2023, SW Asian Neolithic flora",
+  "licence": "CC0-1.0",
+  "url": "https://github.com/joeroe/SWAsiaNeolithicFounderCrops",
+  "citation": "Arranz-Otaegui, A. & Roe, J. 2023. Revisiting the concept of the 'Neolithic founder crops' in southwest Asia. Vegetation History and Archaeobotany 32:475-499.",
+  "used_in": "isostyle cereals"
+ },
+ {
+  "name": "ADEMNES archaeobotanical/faunal database (Riehl), via Arranz-Otaegui & Roe 2023",
+  "licence": "LicenseRef-ADEMNES-research-use",
+  "url": "https://www.ademnes.de/database.php",
+  "citation": "ADEMNES: The GRF-funded Archaeobotanical Database of Eastern Mediterranean and Near Eastern Sites, last update 2015. www.ademnes.de. Riehl, S. & Kümmel, C. 2005. Redistributed in Arranz-Otaegui & Roe 2023.",
+  "used_in": "isostyle domestic livestock, phases, sites"
+ },
+ {
+  "name": "Open Context integrated Anatolian zooarchaeology (EOL), summary",
+  "licence": "CC-BY-4.0",
+  "url": "https://github.com/ekansa/opencontext-eol-zooarch",
+  "citation": "Arbuckle, B.S., Kansa, S.W., Kansa, E. et al. 2014. Data sharing reveals complexity in the westward spread of domestic animals across Neolithic Turkey. PLoS ONE 9:e99845. Data via Open Context.",
+  "used_in": "isostyle domestic livestock"
+ },
+ {
+  "name": "Phelps et al. 2019, African Holocene fauna (PANGAEA 904942)",
+  "licence": "CC-BY-4.0",
+  "url": "https://doi.org/10.1594/PANGAEA.904942",
+  "citation": "Phelps, L.N., Broennimann, O., Manning, K. et al. 2019. Reconstructing the Holocene spread of livestock in Africa (dataset). PANGAEA. doi:10.1594/PANGAEA.904942",
+  "used_in": "isostyle domestic livestock"
+ },
+ {
+  "name": "Neolithic rondel enclosures in Central Europe v1.1.0",
+  "licence": "CC-BY-4.0",
+  "url": "https://doi.org/10.5281/zenodo.23738404",
+  "citation": "Vondrovský, V., Bartík, J., Furholt, K. et al. 2026. Neolithic (4850-4500 BCE) rondel enclosures in Central Europe: a curated geospatial and structural dataset, v1.1.0. Zenodo. doi:10.5281/zenodo.23738404",
+  "used_in": "isostyle enclosures"
+ },
+ {
+  "name": "LandClimII REVEALS land-cover reconstructions",
+  "licence": "CC-BY-4.0",
+  "url": "https://doi.org/10.1594/PANGAEA.937075",
+  "citation": "Fyfe, R. et al. 2021. LandClimII REVEALS land-cover reconstructions (PANGAEA 937075). Github, M. et al. 2022, Climate of the Past 18:1059.",
+  "used_in": "isostyle open land"
+ },
+ {
+  "name": "EUROEVOL dataset (sites, dates, archaeobotany, fauna)",
+  "licence": "CC0-1.0",
+  "url": "https://discovery.ucl.ac.uk/id/eprint/1469811/",
+  "citation": "Manning, K., Colledge, S., Crema, E. et al. 2016. The Cultural Evolution of Neolithic Europe. EUROEVOL Dataset 1-2. Journal of Open Archaeology Data 5:e2, e3; Colledge, S. 2016. EUROEVOL Dataset 3: Archaeobotanical. JOAD 5:e4.",
+  "used_in": "isostyle cereals, domestic livestock"
+ },
+ {
+  "name": "Tallavaara et al. 2018, forager population model (data and R scripts)",
+  "licence": "CC-BY-4.0",
+  "url": "https://doi.org/10.5281/zenodo.1167852",
+  "citation": "Tallavaara, M., Eronen, J.T. & Luoto, M. 2018. Productivity, biodiversity, and pathogens influence the global hunter-gatherer population density. PNAS 115:1232-1237.",
+  "used_in": "Forager density equation, productivity constants, coast mask (neolith-rs/crates/core/src/forager.rs)"
+ },
+ {
+  "name": "Pinhasi, Fort & Ammerman 2005, farming-front parameters",
+  "licence": "facts",
+  "url": "https://doi.org/10.1371/journal.pbio.0030410",
+  "citation": "Pinhasi, R., Fort, J. & Ammerman, A.J. 2005. Tracing the origin and spread of agriculture in Europe. PLoS Biology 3:e410.",
+  "used_in": "Farming arrival front (neolith-rs/crates/core/src/farming.rs)"
+ },
+ {
+  "name": "EB Garamond typeface (Octavio Pardo / Georg Duffner)",
+  "licence": "OFL-1.1",
+  "url": "https://github.com/octaviopardo/EBGaramond12",
+  "citation": "EB Garamond, Copyright 2017 The EB Garamond Project Authors. SIL Open Font License 1.1 (neolith-rs/crates/app/assets/fonts/OFL.txt).",
+  "used_in": "Map labels (neolith-rs/crates/app/assets/fonts)"
+ },
+ {
+  "name": "egui default fonts (Ubuntu Light, Hack, Noto Emoji, emoji-icon-font)",
+  "licence": "UFL-1.0 AND OFL-1.1 AND (MIT OR Apache-2.0)",
+  "url": "https://github.com/emilk/egui/tree/master/crates/epaint_default_fonts",
+  "citation": "Ubuntu font (Ubuntu Font Licence 1.0), Hack (MIT/Bitstream Vera), Noto Emoji (OFL 1.1), emoji-icon-font (MIT/OFL), bundled by the epaint_default_fonts crate.",
+  "used_in": "UI text in the app (via eframe)"
+ }
+]

@@ -27,6 +27,9 @@ struct Art {
     detail: f32,       // 0..1: how far the zoomed-in detail slots have filled in
     sun: vec2<f32>,    // where a shadow falls, in glyph space, per unit of height
     lod: f32,          // the props' size factor at this zoom (as in vs_prop)
+    field: f32,        // 1 = fs_board's ground field drew the colour and the coast
+    shore: f32,        // with the field: distance (hex-local) to the drawn coast; 9 if none near
+    own: f32,          // with the field: 1 if this point draws the hex's own terrain
 };
 
 const ART_LUMA: vec3<f32> = vec3<f32>(0.2126, 0.7152, 0.0722);
@@ -378,6 +381,45 @@ fn art_camp(p: vec2<f32>, cell: vec2<u32>) -> f32 {
     return best;
 }
 
+// ------------------------------------------------------------- history ----
+// The most of a hex's trees that clearing removes, and the most of its
+// cleared ground under fields.
+const CLEARING_MAX: f32 = 0.6;
+const FIELDS_MAX: f32 = 0.5;
+// What people have done to each hex (scene::history_texels), one texel per
+// hex: r clearing, g fields (0..1).
+@group(0) @binding(11) var history_tex: texture_2d<f32>;
+
+fn art_history_texel(c: vec2<i32>, own: vec2<f32>) -> vec2<f32> {
+    if (c.x < 0 || c.y < 0 || c.x >= i32(g.grid.x) || c.y >= i32(g.grid.y)) {
+        return own;
+    }
+    return textureLoad(history_tex, c, 0).rg;
+}
+
+// Clearing and fields at `p` (hex-local, in `cell`): interpolated over the
+// triangle of hex centres the (noise-warped) point lies in, like the ground
+// field in fs_board, so a clearing is a ragged patch round its sites, not a
+// hex.
+fn art_history_at(p_in: vec2<f32>, cell: vec2<u32>) -> vec2<f32> {
+    let gp = art_global(p_in, cell);
+    let p = p_in + (vec2<f32>(art_noise(gp * 1.4 + 211.0), art_noise(gp * 1.4 + 263.0)) - 0.5) * 0.8;
+    let c = vec2<i32>(cell);
+    let own = textureLoad(history_tex, c, 0).rg;
+    let sector = i32(floor(atan2(p.y, p.x) / SIXTY - 0.5));
+    let k0 = u32((sector % 6 + 6) % 6);
+    let k1 = (k0 + 1u) % 6u;
+    let n1 = edge_normal(k0) * 1.7320508;
+    let n2 = edge_normal(k1) * 1.7320508;
+    let det = n1.x * n2.y - n1.y * n2.x;
+    let a = max((p.x * n2.y - p.y * n2.x) / det, 0.0);
+    let b = max((n1.x * p.y - n1.y * p.x) / det, 0.0);
+    let w0 = max(1.0 - a - b, 0.0);
+    let h1 = art_history_texel(c + neighbour_offset(cell.x & 1u, k0), own);
+    let h2 = art_history_texel(c + neighbour_offset(cell.x & 1u, k1), own);
+    return (own * w0 + h1 * a + h2 * b) / max(w0 + a + b, 1e-4);
+}
+
 // ------------------------------------------------------------- layout ----
 
 // Glyph kinds. The tall ones (up to K_HILL) become props in 3D mode.
@@ -643,8 +685,15 @@ fn art_mountain_slot(i: u32, cell: vec2<u32>, h0: u32, mirror: f32, nb_in: array
         }
         return vec4<f32>(p.x * mirror, p.y, size, f32(K_PEAK));
     }
+    return art_foothill(i, 2u, cell, h0, nb, mtn);
+}
+
+// Slot i as a foothill towards a lowland neighbour: the slots from `first`
+// take the hex's lowland edges in turn (from a per-hex start), none once
+// they run out.
+fn art_foothill(i: u32, first: u32, cell: vec2<u32>, h0: u32, nb: array<u32, 6>, mtn: u32) -> vec4<f32> {
     let start = (h0 >> 4u) % 6u;
-    var found = 2u;
+    var found = first;
     for (var k = 0u; k < 6u; k++) {
         let e = (k + start) % 6u;
         if (art_is_land(nb[e]) && (mtn & (1u << e)) == 0u) {
@@ -657,6 +706,353 @@ fn art_mountain_slot(i: u32, cell: vec2<u32>, h0: u32, mirror: f32, nb_in: array
         }
     }
     return vec4<f32>(0.0, 0.0, 0.0, f32(K_NONE));
+}
+
+// ------------------------------------------------------------ massifs ----
+// A sketch of each hilly or mountain hex's high ground from the elevation
+// raster (scene::massif_texels; neolith_core::massif), 2 x 2 texels per
+// hex. Texel 0 r: kind + 1 (0: no sketch, and the peaks are laid out by
+// hash), g: the strike in 256ths of a half turn anticlockwise from +x
+// (hex-local), b: coherence 0..255, a: the floor in 20 m steps above
+// -1000 m. Texels 1-3: a summit each, highest first; rg: x, y in
+// hundredths of a hex-local unit + 128, b: its height above the floor in
+// 20 m steps, a: 255 if there is one.
+@group(0) @binding(12) var massif_tex: texture_2d<u32>;
+
+const MK_NONE: u32 = 0u;
+const MK_MASSIF: u32 = 1u;
+const MK_RIDGE: u32 = 2u;
+const MK_CONE: u32 = 3u;
+const MK_PLATEAU: u32 = 4u;
+
+// Below this height above its floor a summit is a rounded hill.
+const ART_HILL_BELOW: f32 = 450.0;
+
+struct MassifSketch {
+    kind: u32,
+    dir: vec2<f32>,  // along the strike, hex-local, unit
+    coherence: f32,
+    floor: f32,      // metres
+    count: u32,      // summits
+};
+
+fn art_massif(cell: vec2<u32>) -> MassifSketch {
+    var m: MassifSketch;
+    let t = textureLoad(massif_tex, vec2<i32>(cell * 2u), 0);
+    m.kind = t.r;
+    let a = f32(t.g) / 256.0 * 3.14159265;
+    m.dir = vec2<f32>(cos(a), sin(a));
+    m.coherence = f32(t.b) / 255.0;
+    m.floor = f32(t.a) * 20.0 - 1000.0;
+    m.count = 0u;
+    for (var k = 1u; k < 4u; k++) {
+        if (textureLoad(massif_tex, vec2<i32>(cell * 2u + vec2<u32>(k & 1u, k >> 1u)), 0).a != 0u) {
+            m.count = k;
+        }
+    }
+    return m;
+}
+
+// Summit k (0..2): hex-local position in xy, metres above the floor in z.
+fn art_summit(cell: vec2<u32>, k: u32) -> vec3<f32> {
+    let j = k + 1u;
+    let t = textureLoad(massif_tex, vec2<i32>(cell * 2u + vec2<u32>(j & 1u, j >> 1u)), 0);
+    return vec3<f32>((f32(t.r) - 128.0) / 100.0, (f32(t.g) - 128.0) / 100.0, f32(t.b) * 20.0);
+}
+
+// A summit's prop size from its height above the floor: a 150 m knoll up
+// to the 2600 m and more of the high ranges.
+fn art_summit_size(h: f32) -> f32 {
+    return mix(0.55, 1.6, smoothstep(150.0, 2600.0, h));
+}
+
+// How much a ridge's peaks stretch along the strike (x) and narrow across
+// it (y); 1 for anything else.
+fn art_ridge_stretch(m: MassifSketch) -> vec2<f32> {
+    let k = select(0.0, smoothstep(0.3, 0.65, m.coherence), m.kind == MK_RIDGE);
+    return vec2<f32>(mix(1.0, 1.8, k), mix(1.0, 0.65, k));
+}
+
+// `p` pulled back inside the hex, `margin` from its edges.
+fn art_inside(p: vec2<f32>, margin: f32) -> vec2<f32> {
+    var q = p;
+    for (var e = 0u; e < 6u; e++) {
+        let n = edge_normal(e);
+        q -= n * max(dot(q, n) - (SQRT3_2 - margin), 0.0);
+    }
+    return q;
+}
+
+// The edge a hex-local direction points through.
+fn art_edge_towards(d: vec2<f32>) -> u32 {
+    let t = fract(atan2(d.y, d.x) / 6.2831853 + 1.0) * 6.0;
+    return min(u32(t), 5u);
+}
+
+// Does a ridge carry on across edge e? 2: the neighbour is a ridge on
+// nearly the same strike (or off the board), 1: it is high ground of some
+// other kind, 0: it is not.
+fn art_ridge_continues(cell: vec2<u32>, e: u32, m: MassifSketch, mtn: u32) -> u32 {
+    let nc = vec2<i32>(cell) + neighbour_offset(cell.x & 1u, e);
+    if (nc.x < 0 || nc.y < 0 || nc.x >= i32(g.grid.x) || nc.y >= i32(g.grid.y)) {
+        return 2u;
+    }
+    let t = textureLoad(massif_tex, nc * 2, 0);
+    if (t.r == MK_RIDGE) {
+        let a = f32(t.g) / 256.0 * 3.14159265;
+        if (abs(dot(vec2<f32>(cos(a), sin(a)), m.dir)) > 0.866) {
+            return 2u;
+        }
+    }
+    if ((mtn & (1u << e)) != 0u || t.r != 0u) {
+        return 1u;
+    }
+    return 0u;
+}
+
+struct MassifSlot {
+    foot: vec2<f32>,
+    size: f32,
+    kind: u32,
+    elev: f32,  // the summit's elevation in metres, or -9999 if not known
+};
+
+fn art_no_slot() -> MassifSlot {
+    return MassifSlot(vec2<f32>(0.0), 0.0, K_NONE, -9999.0);
+}
+
+// A summit as a peak, or a hill if it is low.
+fn art_summit_slot(s: vec3<f32>, m: MassifSketch, scale: f32) -> MassifSlot {
+    if (s.z < ART_HILL_BELOW) {
+        return MassifSlot(art_inside(s.xy, 0.12), art_summit_size(s.z) * 1.15 * scale, K_HILL, m.floor + s.z);
+    }
+    return MassifSlot(art_inside(s.xy, 0.12), art_summit_size(s.z) * scale, K_PEAK, m.floor + s.z);
+}
+
+// art_mountain_slot for a hex with a massif sketch: the props stand where
+// the raster's summits are and are as big as those stand high. Ridges run
+// along their strike and reach for the neighbours they continue into, so
+// a range chains across hexes; a cone is one big peak; a plateau is open
+// ground with mesas on the rims that drop to lower neighbours; a knot of
+// peaks has one prop per summit. Slots 3-4 (4 on ridges) are foothills.
+fn art_massif_slot(i: u32, cell: vec2<u32>, h0: u32, nb: array<u32, 6>, mtn: u32, m: MassifSketch) -> MassifSlot {
+    let top = select(vec3<f32>(0.0), art_summit(cell, 0u), m.count > 0u);
+    let ps = smoothstep(300.0, 2300.0, top.z);
+    if (i >= ART_BASE_SLOTS) {
+        // Detail: crags around the main peaks of knots and along ridges.
+        if (i > 7u || m.kind == MK_CONE || m.kind == MK_PLATEAU || top.z < ART_HILL_BELOW) {
+            return art_no_slot();
+        }
+        let h = art_hash(cell, 30u + i);
+        if (art_unit(art_hash(cell, 40u + i), 0u) > 0.25 + ps) {
+            return art_no_slot();
+        }
+        var extra = array<vec2<f32>, 3>(vec2<f32>(0.42, 0.30), vec2<f32>(-0.08, 0.36), vec2<f32>(-0.46, -0.16));
+        var p = top.xy * 0.5 + extra[i - 5u] + (vec2<f32>(art_unit(h, 0u), art_unit(h, 8u)) - 0.5) * 0.08;
+        if (m.kind == MK_RIDGE) {
+            let across = vec2<f32>(-m.dir.y, m.dir.x);
+            p = top.xy + m.dir * ((f32(i) - 6.0) * 0.38 + (art_unit(h, 24u) - 0.5) * 0.1) + across * (art_unit(h, 0u) - 0.5) * 0.3;
+        }
+        return MassifSlot(art_inside(p, 0.12), (0.4 + 0.15 * art_unit(h, 16u)) * mix(0.65, 1.0, ps), K_PEAK, m.floor + top.z * 0.35);
+    }
+    if (m.kind == MK_PLATEAU) {
+        if (i == 0u && top.z >= 250.0) {
+            return MassifSlot(art_inside(top.xy, 0.12), 0.75, K_HILL, m.floor + top.z);
+        }
+        if (i < 2u) {
+            return art_no_slot();
+        }
+        // Mesas on the rims.
+        let own = textureLoad(height_tex, vec2<i32>(cell), 0).r;
+        let start = (h0 >> 4u) % 6u;
+        var found = 2u;
+        for (var k = 0u; k < 6u; k++) {
+            let e = (k + start) % 6u;
+            let nc = vec2<i32>(cell) + neighbour_offset(cell.x & 1u, e);
+            if (nc.x < 0 || nc.y < 0 || nc.x >= i32(g.grid.x) || nc.y >= i32(g.grid.y) || !art_is_land(nb[e])) {
+                continue;
+            }
+            if (f32(own - textureLoad(height_tex, nc, 0).r) > 200.0) {
+                if (found == i) {
+                    let h = art_hash(cell, 20u + i);
+                    let jitter = (vec2<f32>(art_unit(h, 0u), art_unit(h, 8u)) - 0.5) * 0.18;
+                    return MassifSlot(edge_normal(e) * 0.55 + jitter, 0.7 + 0.2 * art_unit(h, 16u), K_HILL, m.floor);
+                }
+                found++;
+            }
+        }
+        return art_no_slot();
+    }
+    if (m.kind == MK_CONE) {
+        if (i == 0u) {
+            return art_summit_slot(top, m, 1.15);
+        }
+        if (i < 3u) {
+            return art_no_slot();
+        }
+    } else if (m.kind == MK_RIDGE) {
+        if (i == 0u) {
+            return art_summit_slot(top, m, 1.0);
+        }
+        // The ridge line through the highest summit, from the point on it
+        // nearest the hex's centre, out towards the edges it crosses.
+        let anchor = top.xy - m.dir * dot(top.xy, m.dir);
+        if (i == 2u || i == 3u) {
+            let d = select(-m.dir, m.dir, i == 2u);
+            let c = art_ridge_continues(cell, art_edge_towards(d), m, mtn);
+            let reach = select(0.38, select(0.55, 0.66, c == 2u), c > 0u);
+            let scale = select(0.55, select(0.7, 0.85, c == 2u), c > 0u);
+            let p = art_inside(anchor + d * reach, 0.1);
+            if (distance(p, top.xy) < 0.3) {
+                return art_no_slot();
+            }
+            let s = art_summit_slot(top, m, scale);
+            return MassifSlot(p, s.size, s.kind, m.floor + top.z * select(0.5, 0.75, c == 2u));
+        }
+        if (i == 1u) {
+            if (m.count < 2u) {
+                return art_no_slot();
+            }
+            let s1 = art_summit(cell, 1u);
+            // Not on top of a shoulder.
+            for (var j = 0u; j < 2u; j++) {
+                let d = select(-m.dir, m.dir, j == 0u);
+                if (distance(s1.xy, anchor + d * 0.55) < 0.3) {
+                    return art_no_slot();
+                }
+            }
+            return art_summit_slot(s1, m, 1.0);
+        }
+        let f = art_foothill(i, 4u, cell, h0, nb, mtn);
+        return MassifSlot(f.xy, f.z, u32(f.w), -9999.0);
+    } else if (i < 3u) {
+        // A knot of peaks: one per summit.
+        if (i >= m.count) {
+            return art_no_slot();
+        }
+        return art_summit_slot(art_summit(cell, i), m, 1.0);
+    }
+    let f = art_foothill(i, 3u, cell, h0, nb, mtn);
+    return MassifSlot(f.xy, f.z, u32(f.w), -9999.0);
+}
+
+// What stands in mountain slot i: from the massif sketch where the hex has
+// one with summits (or is a plateau), else laid out by hash.
+fn art_mountain_any(i: u32, cell: vec2<u32>, h0: u32, mirror: f32, nb: array<u32, 6>, mtn: u32, ps: f32, m: MassifSketch) -> MassifSlot {
+    if (m.kind != MK_NONE && (m.count > 0u || m.kind == MK_PLATEAU)) {
+        return art_massif_slot(i, cell, h0, nb, mtn, m);
+    }
+    let v = art_mountain_slot(i, cell, h0, mirror, nb, mtn, ps);
+    return MassifSlot(v.xy, v.z, u32(v.w), -9999.0);
+}
+
+// ----------------------------------------------- room for rivers and camps ----
+// A peak or hill is broad (a peak's skirt is most of a hex), so testing its
+// foot alone left skirts across river beds and settlement clearings. The
+// bake fits each one in: it slides up to ART_CLEAR_SLIDE away from the
+// nearest bed or clearing, then shrinks down to ART_CLEAR_MIN of its size,
+// and failing that is left out.
+const ART_CLEAR_SLIDE: f32 = 0.28;
+const ART_CLEAR_MIN: f32 = 0.5;
+const ART_CLEAR_MARGIN: f32 = 0.03;
+
+// How many camps stand in or reach into the hex.
+fn art_camp_count(cell: vec2<u32>) -> u32 {
+    var n = 0u;
+    for (var k = 0u; k < 4u; k++) {
+        if (textureLoad(camp_tex, vec2<i32>(cell * 2u + vec2<u32>(k & 1u, k >> 1u)), 0).a <= 0.0) { break; }
+        n++;
+    }
+    return n;
+}
+
+// The nearest thing a peak or hill keeps off at `p` (hex-local): x: the
+// distance to the edge of a river bed or a camp's clearing (negative
+// inside; 9 with nothing within `near`), yz: the unit direction away from it.
+fn art_obstacle(p: vec2<f32>, cell: vec2<u32>, near: f32) -> vec3<f32> {
+    var best = vec3<f32>(9.0, 0.0, 1.0);
+    let gp = art_global(p, cell);
+    let b = art_bank(gp);
+    if (b.y > 0.0 && b.x < near) {
+        let e = 0.02;
+        let gr = vec2<f32>(art_bank(gp + vec2<f32>(e, 0.0)).x - art_bank(gp - vec2<f32>(e, 0.0)).x,
+                           art_bank(gp + vec2<f32>(0.0, e)).x - art_bank(gp - vec2<f32>(0.0, e)).x);
+        let l = length(gr);
+        best = vec3<f32>(b.x, select(vec2<f32>(0.0, 1.0), gr / l, l > 1e-6));
+    }
+    for (var k = 0u; k < 4u; k++) {
+        let c = textureLoad(camp_tex, vec2<i32>(cell * 2u + vec2<u32>(k & 1u, k >> 1u)), 0);
+        if (c.a <= 0.0) { break; }
+        let to = p - (c.xy * 2.0 - 1.0) * CAMP_SPAN;
+        let d = length(to * vec2<f32>(c.a, 1.0)) - c.z * CAMP_RADIUS_MAX;
+        if (d < best.x) {
+            let l = length(to);
+            best = vec3<f32>(d, select(vec2<f32>(0.0, 1.0), to / l, l > 1e-6));
+        }
+    }
+    return best;
+}
+
+// How far a footprint of radius `r`, stretched by `stretch` along `dir`
+// and across it, reaches in direction `n`.
+fn art_reach(r: f32, stretch: vec2<f32>, dir: vec2<f32>, n: vec2<f32>) -> f32 {
+    let a = dot(n, dir) * stretch.x;
+    let c = dot(n, vec2<f32>(-dir.y, dir.x)) * stretch.y;
+    return r * sqrt(a * a + c * c);
+}
+
+// A footprint at `p` fitted around the beds and clearings: xy: the foot,
+// z: the size factor (0: leave it out).
+fn art_clear(p: vec2<f32>, r: f32, stretch: vec2<f32>, dir: vec2<f32>, cell: vec2<u32>) -> vec3<f32> {
+    var q = p;
+    var moved = 0.0;
+    let near = r * max(stretch.x, stretch.y) + ART_CLEAR_MARGIN + ART_CLEAR_SLIDE;
+    for (var it = 0u; it < 4u; it++) {
+        let o = art_obstacle(q, cell, near);
+        let need = art_reach(r, stretch, dir, o.yz) + ART_CLEAR_MARGIN - o.x;
+        if (need <= 0.0) {
+            return vec3<f32>(q, 1.0);
+        }
+        let step = min(need, ART_CLEAR_SLIDE - moved);
+        if (step <= 1e-3) { break; }
+        q = art_inside(q + o.yz * step, 0.1);
+        moved += step;
+    }
+    let o = art_obstacle(q, cell, near);
+    let s = (o.x - ART_CLEAR_MARGIN) / max(art_reach(r, stretch, dir, o.yz), 1e-4);
+    return vec3<f32>(q, select(0.0, min(s, 1.0), s >= ART_CLEAR_MIN));
+}
+
+// A peak or hill settled into its hex. Where camps crowd a hex the peaks
+// become hills and the hills stay small, so the settlements show; then the
+// footprint is fitted around beds and clearings (art_clear). xy: the foot,
+// z: the size (0: nothing stands there), w: the kind.
+fn art_settle(kind: u32, at: vec2<f32>, size: f32, cell: vec2<u32>, m: MassifSketch) -> vec4<f32> {
+    var k = kind;
+    var s = size;
+    let camps = art_camp_count(cell);
+    if (camps >= 2u && k == K_PEAK) {
+        k = K_HILL;
+        s *= 1.1;
+    }
+    if (camps >= 1u && k == K_HILL) {
+        s = min(s, select(1.1, 0.9, camps >= 2u));
+    }
+    let stretch = select(vec2<f32>(1.0), art_ridge_stretch(m), k == K_PEAK);
+    // As vs_prop builds it: crags make sides up to a fifth wider, and the
+    // "Mountain height" style widens by its square root.
+    let r = art_prop_dims(k).x * s * 1.1 * sqrt(max(g.wall_colour.w, 0.0));
+    let c = art_clear(at, r, stretch, m.dir, cell);
+    return vec4<f32>(c.xy, s * c.z, f32(k));
+}
+
+// The summit elevation a prop_tex entry carries in its top 16 bits: 20 m
+// steps above -1000 m, 0 for none.
+fn art_elev_code(elev: f32) -> u32 {
+    if (elev <= -9000.0) {
+        return 0u;
+    }
+    return u32(clamp((elev + 1000.0) / 20.0, 1.0, 65535.0));
 }
 
 fn art_glyph(base: vec3<f32>, p: vec2<f32>, s: f32, kind: u32, terrain: u32, h: u32, a: Art) -> vec3<f32> {
@@ -735,7 +1131,7 @@ fn terrain_art(local: vec2<f32>, cell: vec2<u32>, terrain: u32, a: Art) -> vec3<
         let litter = smoothstep(0.3, 0.7, art_noise(gp * 1.9 + 9.0));
         c = mix(c, pow(art_fill(terrain), vec3<f32>(2.2)) * 1.15, (0.20 + 0.25 * litter) * ground_k);
     }
-    if (blend > 0.5) {
+    if (blend > 0.5 && a.field < 0.5) {
         let hit = art_intrusion(local, cell, terrain, nb, a.px);
         if (hit.y > 0.0) {
             var n = nb;
@@ -759,6 +1155,29 @@ fn terrain_art(local: vec2<f32>, cell: vec2<u32>, terrain: u32, a: Art) -> vec3<
         let camp = art_camp(local, cell) + (art_noise(gp * 5.3 + 13.0) - 0.5) * 0.3;
         c = mix(c, art_rgb(0.47, 0.38, 0.27), (1.0 - smoothstep(0.55, 1.0, camp)) * 0.7 * ground_k);
     }
+    if (ground_k > 0.0 && art_is_land(terrain)) {
+        // Cleared land: rough grazing where the woods were, and where
+        // farming has arrived, fields in strips, each patch ploughed its own
+        // way. The strips fade out from far off, leaving the fields' colour.
+        let hist = art_history_at(local, cell);
+        if (hist.x > 0.01) {
+            let wooded = art_is_forest(terrain) || terrain == T_WOODLANDS;
+            c = mix(c, art_rgb(0.60, 0.64, 0.36), hist.x * select(0.15, 0.35, wooded) * ground_k);
+        }
+        if (hist.y > 0.01) {
+            // Small plots, scattered: a share of the clearing, soft-edged,
+            // tinting the ground rather than replacing it.
+            let plot = art_noise(gp * 2.3 + 101.0) * 0.7 + art_noise(gp * 5.1 + 131.0) * 0.3;
+            let cover = hist.y * FIELDS_MAX;
+            let field = smoothstep(1.0 - cover - 0.08, 1.0 - cover + 0.08, plot);
+            let turn = art_noise(floor(gp * 2.3) + 7.0) * 3.14159;
+            let s = dot(gp, vec2<f32>(cos(turn), sin(turn))) * 9.0;
+            let fine = 1.0 - smoothstep(0.03, 0.08, a.px * 9.0);
+            let stripe = 0.5 + 0.25 * sin(s * 6.2831853) * fine;
+            let crop = mix(c, mix(art_rgb(0.66, 0.64, 0.38), art_rgb(0.80, 0.72, 0.46), stripe), 0.55);
+            c = mix(c, crop, field * ground_k);
+        }
+    }
     if (ground_k > 0.0) {
         // No tile is one flat colour: broad patches and a finer grain.
         let mottle = art_noise(gp * 0.9) * 0.6 + art_noise(gp * 3.7 + 31.0) * 0.4;
@@ -771,14 +1190,14 @@ fn terrain_art(local: vec2<f32>, cell: vec2<u32>, terrain: u32, a: Art) -> vec3<
             * (1.0 + vec3<f32>(0.10, 0.0, -0.12) * warm * select(1.0, 0.3, terrain == T_WATER) * ground_k);
     }
     if (a.blend > 0.5) {
-        let coast = art_shore(local, terrain, nb);
+        let coast = select(art_shore(local, terrain, nb), a.shore, a.field > 0.5);
         if (coast < 1.0) {
             let wobble = (art_noise(gp * 4.0) - 0.5) * 0.10;
             let d = coast + wobble;
             if (terrain == T_WATER) {
                 // Shallows, a surf line on the shore and two broken foam lines.
                 let shallow = (1.0 - smoothstep(0.0, 0.5, d)) * 0.55 * (1.0 - a.mono);
-                c = mix(c, art_rgb(0.62, 0.90, 0.92), shallow * a.k);
+                c = mix(c, art_rgb(0.36, 0.50, 0.53), shallow * a.k);
                 let gaps = (0.42 - art_noise(gp * 3.1 + 5.0)) * 0.12;
                 c = art_ink(c, ART_WHITE, d - 0.035, a);
                 var foam = a;
@@ -802,6 +1221,11 @@ fn terrain_art(local: vec2<f32>, cell: vec2<u32>, terrain: u32, a: Art) -> vec3<
     let q = vec2<f32>(local.x * a.asp, local.y);
     let mountain = (hx.z & 1u) != 0u;
 
+    // A corner of the hex drawn as its neighbour's terrain (the coast cut
+    // across it) gets that ground and shore, not this hex's glyphs.
+    if (a.own < 0.5) {
+        return c;
+    }
     if (!mountain) {
         if (terrain == T_ICE) {
             return art_ice(c, vec2<f32>(q.x * mirror, q.y), ag);
@@ -857,6 +1281,8 @@ fn terrain_art(local: vec2<f32>, cell: vec2<u32>, terrain: u32, a: Art) -> vec3<
         let at = q - vec2<f32>(foot.x * a.asp, foot.y);
         // A prop (vs_prop): only its shadow is on the tile (above).
         if (kind <= K_HILL) { continue; }
+        // Waves only close in: from further out they read as noise on the sea.
+        if (kind == K_WAVE && a.detail < 0.5) { continue; }
         let sz = size * a.size * grow * art_shrink(kind, a.detail);
         // Every glyph fits in this circle; skip the work for pixels outside.
         if (length(at - vec2<f32>(0.0, 0.55 * sz)) > 0.7 * sz + 2.0 * a.px) { continue; }
@@ -898,11 +1324,21 @@ fn fs_hex_bake(@builtin(position) pos: vec4<f32>) -> @location(0) vec4<u32> {
     let st = textureLoad(state_tex, vec2<i32>(cell), 0);
     let nb = art_neighbours(cell, st.r);
     let mountain = st.r < T_COUNT && art_is_mountain(st.r, (st.a >> 3u) & 3u);
+    // w: the hex's ground for fs_board's field, read once per hex there
+    // instead of from four textures: rgb its colour in this mode (square
+    // root of linear, a byte each), then bit 24 wet, bits 25-31 hillshade.
+    let c = vec2<i32>(cell);
+    let col = sqrt(clamp(saturate_colour(ground_colour(st, c, u32(g.grid.z))), vec3<f32>(0.0), vec3<f32>(1.0)));
+    let rgb = vec3<u32>(round(col * 255.0));
+    let shade = min(textureLoad(elevation_tex, c, 0).g >> 1u, 127u);
+    let wet = select(0u, 1u, st.r == TERRAIN_WATER);
     return vec4<u32>(
         nb[0] | (nb[1] << 8u) | (nb[2] << 16u) | (nb[3] << 24u),
         nb[4] | (nb[5] << 8u),
-        select(0u, 1u, mountain),
-        0u,
+        // z: bit 0 mountain; bits 16-31 the surface height in metres + 1000
+        // (fs_board's relief shading reads it with the ground in w).
+        select(0u, 1u, mountain) | (u32(clamp(textureLoad(height_tex, c, 0).r + 1000, 0, 65535)) << 16u),
+        rgb.x | (rgb.y << 8u) | (rgb.z << 16u) | (wet << 24u) | (shade << 25u),
     );
 }
 
@@ -929,6 +1365,11 @@ fn art_kind_by_river(terrain: u32, landform: u32, i: u32, skip: u32, foot: vec2<
         // Glades: woods thin out in patches that ignore the hex edges.
         let glade = smoothstep(0.5, 0.85, art_noise(gp * 0.33 + 50.0));
         if (art_unit(h, 16u) < glade * 0.5) {
+            return K_NONE;
+        }
+        // Cleared by the people living nearby (and grown back after them).
+        // At most CLEARING_MAX of the trees go: woods thin, they don't vanish.
+        if (art_unit(h, 24u) < art_history_at(foot, cell).x * CLEARING_MAX) {
             return K_NONE;
         }
     }
@@ -965,21 +1406,22 @@ fn art_glyph_list(cell: vec2<u32>, want: u32, blend: f32) -> vec4<u32> {
     if (art_is_mountain(terrain, landform)) {
         let mtn = art_mountain_neighbours(cell, true);
         let ps = art_peak_scale(cell, landform);
+        let ms = art_massif(cell);
         // Crags 5 and 6 stand behind the main peaks, crag 7 in front.
         var order = array<u32, 8>(5u, 6u, 0u, 1u, 7u, 2u, 3u, 4u);
         for (var layer = 0u; layer < 3u; layer++) {
             for (var n = 0u; n < 8u; n++) {
                 let i = order[n];
-                let m = art_mountain_slot(i, cell, h0, mirror, nb, mtn, ps);
-                let kind = u32(m.w);
+                let m = art_mountain_any(i, cell, h0, mirror, nb, mtn, ps, ms);
                 // Peaks and the hills standing in for them (slots 0-1) in
                 // the middle layer; foothills north or south of them.
-                let layer_of = select(select(2u, 0u, m.y > 0.0), 1u, kind == K_PEAK || i < 2u);
-                if (kind == K_NONE || layer_of != layer) { continue; }
-                if (kind != K_HILL && art_hidden(m.xy, cell, terrain, nb, blend)) { continue; }
-                if (art_in_river(m.xy, cell) || art_camp(m.xy, cell) < 1.0) { continue; }
+                let layer_of = select(select(2u, 0u, m.foot.y > 0.0), 1u, m.kind == K_PEAK || i < 2u);
+                if (m.kind == K_NONE || layer_of != layer) { continue; }
+                if (m.kind != K_HILL && art_hidden(m.foot, cell, terrain, nb, blend)) { continue; }
+                let st = art_settle(m.kind, m.foot, m.size, cell, ms);
+                if (st.z <= 0.0) { continue; }
                 if (found == want) {
-                    return art_glyph_entry(kind, i, m.xy, m.z);
+                    return art_glyph_entry(u32(st.w), i, st.xy, st.z);
                 }
                 found++;
             }
@@ -999,8 +1441,16 @@ fn art_glyph_list(cell: vec2<u32>, want: u32, blend: f32) -> vec4<u32> {
         if (kind != K_NONE && art_hidden(foot, cell, terrain, nb, blend)) {
             kind = K_NONE;
         }
+        var f = s;
+        if (kind == K_HILL) {
+            // Fitted as art_prop_layout fits the prop (whose foot is 0.15
+            // further north and size 1.45 times the slot's).
+            let st = art_settle(kind, foot, s.z * 1.45, cell, art_massif(cell));
+            kind = select(K_NONE, u32(st.w), st.z > 0.0);
+            f = vec3<f32>(st.xy - vec2<f32>(0.0, 0.15), st.z / 1.45);
+        }
         kinds[i] = kind;
-        feet[i] = s;
+        feet[i] = f;
     }
     for (var i = 0u; i < ART_SLOTS; i++) {
         if (kinds[i] == K_NONE) { continue; }
@@ -1134,12 +1584,15 @@ fn art_prop_layout(cell: vec2<u32>, slot: u32, blend: f32) -> vec4<u32> {
     var kind = K_NONE;
     var at = vec2<f32>(0.0);
     var size = 1.0;
+    var elev = -9999.0;
     let landform = (st.a >> 3u) & 3u;
+    let ms = art_massif(cell);
     if (art_is_mountain(terrain, landform)) {
-        let m = art_mountain_slot(slot, cell, h0, mirror, nb, art_mountain_neighbours(cell, true), art_peak_scale(cell, landform));
-        kind = u32(m.w);
-        at = m.xy;
-        size = m.z;
+        let m = art_mountain_any(slot, cell, h0, mirror, nb, art_mountain_neighbours(cell, true), art_peak_scale(cell, landform), ms);
+        kind = m.kind;
+        at = m.foot;
+        size = m.size;
+        elev = m.elev;
     } else {
         let s = art_slot(slot, cell, mirror);
         at = s.xy + vec2<f32>(0.0, 0.15);
@@ -1151,6 +1604,14 @@ fn art_prop_layout(cell: vec2<u32>, slot: u32, blend: f32) -> vec4<u32> {
     }
     if (kind != K_HILL && art_hidden(at, cell, terrain, nb, blend)) {
         return none;
+    }
+    if (kind == K_PEAK || kind == K_HILL) {
+        let st = art_settle(kind, at, size, cell, ms);
+        if (st.z <= 0.0) {
+            return none;
+        }
+        // x: the kind, and the summit's elevation above it for the snow.
+        return vec4<u32>(u32(st.w) | (art_elev_code(elev) << 16u), bitcast<u32>(st.x), bitcast<u32>(st.y), bitcast<u32>(st.z));
     }
     if (art_in_river(at, cell) || art_camp(at, cell) < 1.0) {
         return none;
@@ -1212,10 +1673,13 @@ fn vs_prop(in: PropIn) -> PropOut {
 
     // What stands in this slot, baked by fs_slot_bake when the map changed.
     let lay = textureLoad(prop_tex, art_prop_texel(in.cell, slot), 0);
-    let kind = lay.x;
+    // Peaks and hills carry their summit's elevation in the top 16 bits.
+    let kind = lay.x & 0xffu;
     if (kind == K_NONE) {
         return out;
     }
+    let elev_code = lay.x >> 16u;
+    let summit = f32(elev_code) * 20.0 - 1000.0;
     let at = vec2<f32>(bitcast<f32>(lay.y), bitcast<f32>(lay.z));
     var size = bitcast<f32>(lay.w);
     let st = textureLoad(state_tex, vec2<i32>(in.cell), 0);
@@ -1246,15 +1710,23 @@ fn vs_prop(in: PropIn) -> PropOut {
     if (kind == K_PEAK) {
         // No two peaks alike: tall and narrow to low and broad, leaning a
         // little, the lean growing with height so the foot stays put.
+        // A peak standing on a raster summit is already sized by it, so it
+        // varies less.
         let hp = art_hash(in.cell, 70u + slot);
         let v = art_unit(hp, 0u);
-        h *= mix(0.72, 1.3, v);
-        r *= mix(1.18, 0.86, v);
+        let dem = elev_code != 0u;
+        h *= select(mix(0.72, 1.3, v), mix(0.9, 1.12, v), dem);
+        r *= select(mix(1.18, 0.86, v), mix(1.06, 0.94, v), dem);
         let la = art_unit(hp, 8u) * 6.2831853;
-        lean = vec2<f32>(cos(la), sin(la)) * 0.16 * art_unit(hp, 16u) * size * (select(prof.y, prof.w, top) / 0.64);
+        lean = vec2<f32>(cos(la), sin(la)) * 0.16 * art_unit(hp, 16u) * size * (select(prof.y, prof.w, top) / 0.64)
+            * select(1.0, 0.4, dem);
         // Low ranges stand lower than their footprint alone would make them.
-        let st_lf = (st.a >> 3u) & 3u;
-        h *= mix(0.55, 1.0, art_peak_scale(in.cell, st_lf));
+        if (dem) {
+            h *= mix(0.6, 1.0, smoothstep(300.0, 2300.0, summit - art_massif(in.cell).floor));
+        } else {
+            let st_lf = (st.a >> 3u) & 3u;
+            h *= mix(0.55, 1.0, art_peak_scale(in.cell, st_lf));
+        }
     }
     if (kind == K_PEAK || kind == K_HILL) {
         // Board style "Mountain height": all of it in the height, half of
@@ -1263,10 +1735,22 @@ fn vs_prop(in: PropIn) -> PropOut {
         r *= sqrt(g.wall_colour.w);
     }
     let ang = (f32(in.attrs.w) + art_unit(hs, 0u)) * 1.2566371;
-    let ring = vec2<f32>(cos(ang), sin(ang)) * r + lean;
+    var ring = vec2<f32>(cos(ang), sin(ang)) * r;
+    if (kind == K_PEAK) {
+        // Ridges run along their strike: long and narrow. The strike is
+        // hex-local, and the board squashes x by `asp`.
+        let ms = art_massif(in.cell);
+        if (ms.kind == MK_RIDGE) {
+            let sk = art_ridge_stretch(ms);
+            let d = normalize(vec2<f32>(ms.dir.x * asp, ms.dir.y));
+            let n = vec2<f32>(-d.y, d.x);
+            ring = d * dot(ring, d) * sk.x + n * dot(ring, n) * sk.y;
+        }
+    }
+    ring += lean;
 
     // Standing on the hex's tile, raised by the relief.
-    let lift = hex_lift(vec2<i32>(in.cell));
+    let lift = surface_lift(vec2<i32>(in.cell), at);
     let curved = in.centre * (1.0 + lift) + in.east * at.x + in.north * (at.y / SQRT3_2)
         + (normalize(in.east) * ring.x + normalize(in.north) * ring.y + normalize(in.centre) * h) * unit_c;
     let flat_p = vec3<f32>(
@@ -1276,11 +1760,13 @@ fn vs_prop(in: PropIn) -> PropOut {
     );
     let world = mix(curved, flat_p, t);
 
-    // Snow on peaks standing on high ground (the hex's median height), lower
-    // in cold biomes.
-    let ground = f32(textureLoad(height_tex, vec2<i32>(in.cell), 0).r);
+    // Snow on peaks standing high: the summit's own elevation where the
+    // massif sketch gives it, else the hex's median height. Lower in cold
+    // biomes.
+    // A summit stands well above its hex's median, so it takes a higher line.
+    let ground = select(f32(textureLoad(height_tex, vec2<i32>(in.cell), 0).r), summit, elev_code != 0u);
     let cold = terrain == T_ALPINE || terrain == T_TUNDRA || terrain == T_BOREAL_FOREST;
-    let snow = ground > select(2200.0, 1100.0, cold);
+    let snow = ground > select(select(2200.0, 1100.0, cold), select(2900.0, 1900.0, cold), elev_code != 0u);
     var colour = art_prop_colour(kind, band, top, terrain, snow);
     // Variation: stands of lighter and darker trees across the board (noise
     // on board-wide coordinates), and each prop a little off its neighbours.

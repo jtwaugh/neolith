@@ -16,3 +16,11 @@ build/
 
 # Python
 __pycache__/
+
+# Renders the pipelines regenerate (python -m isostyle build/audit/speculative/viewer,
+# python -m pipeline residuals); kept out of git so history stops growing.
+data/isostyle/maps/
+data/isostyle/audit/*.png
+data/isostyle/speculative/maps/
+data/population/maps/
+data/isostyle/viewer.html

@@ -1,0 +1,100 @@
+[meta]
+place = "don_mouth"
+written = "2026-11-12"
+verdict = "research"
+confidence = "high"
+really_empty = "No. Three records in the box: Rakushechny Yar (6,840-3,030 BCE, 10 dates), Matveev Kurgan I (6,040 BCE) and Matveev Kurgan II (4,220 BCE). The two Matveev Kurgans are separate sites sharing one point, not a duplicate. Within 100 km: Razdorskoe I, Astahovo and Zolotovka (9,060 BCE). But the record is misplaced and thin. Rakushechny Yar is filed at 39.07 E, 47.45 N, west of Rostov. The site is on Porechny island by Razdorskaya stanitsa (Tsybrij et al. 2017), about 40.65 E, 47.55 N: 120 km east and outside the box, whose east edge is 40.3 E. The other XRONOS spelling of the site ('Rakusecnyj Jar', Le-5344) and Dolbunova's table (40.67, 47.56) both have it there. Razdorskoe I shows only its 4490 BP date (3,180 BCE); its 9470 +/- 310 BP date (IGAN-722, 10,013-7,846 cal BC) is in the raw XRONOS file but not in the built record. 'Unterpullendorf' (41.41, 47.50; Lengyel, 83 km east) is an Austrian site with its longitude about 25 degrees too far east. So the box misses the Lower Don cluster it was drawn for, and the record we hold of that cluster is 3 of roughly 10 dated sites."
+why_empty = ["not_in_open_compilations", "dataset_edge", "publication_access", "submerged"]
+summary = """
+The head of the Sea of Azov and the Lower Don below the Donets confluence.
+The Lower Don is one of the best-dated early Neolithic regions of eastern
+Europe. Tsybrij et al. (2017) list 111 radiocarbon dates from the Lower Don
+and the north-east Azov. Rakushechny Yar is a stratified site on Porechny
+island by Razdorskaya, with 23 cultural layers; its earliest dated pottery
+layers fall at 7,186-6,472 cal BC, and dates run through the 5th millennium.
+Razdorskaya II, 6 km downstream, is an aceramic fishing site, dated
+7,460-5,759 cal BC. The paper also covers Razdorskoe I, Samsonovskoe and the
+two Matveev Kurgans on the Mius, and puts Kremennaya II and III and
+Rassypnaya VI in the steppe valleys to the north-east. The early pottery
+dates are on food crusts and may be several centuries too old, from
+freshwater reservoir effects; Tsybrij et al. discuss this and keep them.
+
+Our data has three of these sites, and the most important one is in the
+wrong place. The causes are (1) not in open compilations: only the XRONOS
+subset reached us, without Razdorskaya II, Samsonovskoe, Kremennaya or
+Rassypnaya; (2) a coordinate error on Rakushechny Yar; and (3) the box,
+which stops at 40.3 E, short of the Razdorskaya cluster. The Azov itself was
+dry land until the Black Sea reconnection (-7,050 on the board) and filled
+over the next millennia, so the early Holocene Don valley across the Azov
+floor is submerged. That hides the lower reach, not the cluster upstream.
+
+Do this: (1) correct Rakushechny Yar's position (see the reply for the
+correction); (2) enter Tsybrij et al.'s Table 1 by site, which is the single
+best source for this place; (3) widen the box east to 41.3 E and north to
+47.9 N so that it holds Razdorskaya, the Donets mouth and Astahovo; (4)
+restore Razdorskoe I's early date, or say in the record why it was dropped.
+A person should also move 'Unterpullendorf' and 'Unterwolbing' back to
+Austria.
+"""
+
+[[known_site]]
+name = "Razdorskaya II"
+lon = 40.6
+lat = 47.52
+coordinates = "approximate"
+start = -7460
+end = -5759
+what = "Aceramic multilayer fishing site on the right bank of the Don, 6 km downstream from Rakushechny Yar: Viviparus shell middens, fish bone, net sinkers, axes, bone spears and small clay figurines, but no pottery. 14 dates (Ki-15177 to Ki-15179, Ua-37000, Le-6873, Le-6950, Le-6952, Le-8811 to Le-8814, SPb-1467) span 7,460-5,759 cal BC. The authors read it as the earliest aceramic phase of the Rakushechny Yar culture. Point placed 6 km downstream of Razdorskaya; good to about 5 km."
+cite = "Tsybrij, A., Tsybrij, V., Dolbunova, E., Mazurkevich, A., Kulkova, M. & Zaitseva, G. 2017, Radiocarbon chronology of Neolithic in the Lower Don and North-eastern Azov Sea, Documenta Praehistorica 44:204-223, Table 1 nos. 69-82"
+url = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/44.13"
+checked = true
+
+[[known_site]]
+name = "Krivyansky-9 (kurgan cemetery)"
+lon = 40.18
+lat = 47.41
+coordinates = "published"
+start = -4359
+end = -2933
+what = "Eneolithic to Early Bronze Age burials on the Lower Don near Krivyanskaya. Seven genomes in AADR (groups Russia_Rostov_Eneolithic), directly dated from 4359-4251 calBCE (5465+/-30 BP, PSUAMS-7866) to 3330-2933 calBCE (4440+/-25 BP, PSUAMS-7867). Inside the box."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024); samples published by Akbari et al. 2026, Nature"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[known_site]]
+name = "Mariupol' (Neolithic cemetery)"
+lon = 37.6
+lat = 47.1
+coordinates = "published"
+start = -5474
+end = -5236
+what = "The Mariupol cemetery on the north Azov coast, the type site of the Mariupol-type Dnieper-Donets burials. One genome in AADR (Ukraine_Donetsk_N), dated 5474-5236 calBCE (6395+/-35 BP, PSUAMS-10373); a fish-eating population, so the date may be a few centuries too old. 68 km west of the box."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024); sample published by Nikitin et al. 2025, Nature"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[research]]
+what = "Enter Tsybrij et al. 2017, Table 1 (111 dates) site by site: Rakushechny Yar (about 60 dates by excavation and layer), Razdorskaya II, Razdorskoe I (IGAN-722), Samsonovskoe (IGAN-726), Matveev Kurgan I and II, Kremennaya II and III, and Rassypnaya VI. Positions come from the text (Porechny island by Razdorskaya; Kremennaya near Zolotovsky in the Milyutinsky district; Rassypnaya valley) and from Fig. 1, so they are approximate. The PDF is open (CC BY-SA)."
+url = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/44.13"
+yields = "About 10 dated sites, 7,460-3,000 cal BC, 5-7 of them new to us, and one corrected site with 60 dates instead of 10"
+effort = "One table of 111 rows; an afternoon. Add a note that the food-crust dates may carry reservoir offsets."
+
+[[research]]
+what = "Enter the AADR-dated burials of the Lower Don and north Azov (Krivyansky-9, Mariupol'), as part of the regional AADR ingest described in the volga_delta plan"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+yields = "2 dated burial sites here, 5,500-2,900 BCE"
+effort = "Minutes once the filter exists"
+
+[[research]]
+what = "Check Courel et al. 2021 and its supplement for new AMS dates on Don-basin pottery further upstream (Cherkasskaya 5, 7135+/-20 BP on a horse tooth, 6055-5985 cal BC). Upstream of this box, but it is the terrestrial anchor for the Don's early pottery chronology."
+url = "https://eprints.whiterose.ac.uk/177764/"
+yields = "About 20 Middle/Upper Don sites with modelled dates (outside this box, 300-500 km north)"
+effort = "Supplementary tables S2-S3"
+
+[[speculate]]
+target = "settlements"
+slices = [-9000, -8000, -7000]
+rule = "Place inferred fisher-hunter camps along the Don's course across the dry Azov floor (board land that is drowned later), within 5 km of the channel, one per 40 km, marked inferred and drowned."
+confidence = "low"
+reasoning = "Razdorskaya II and Rakushechny Yar show specialised river fishers on the Lower Don from c. 7,450 BCE, and Zolotovka (9,060 BCE) and Kamennaya Balka II (just before the window) show earlier hunters on the same reach. The board keeps the Azov dry until the reconnection at -7,050 and the Don runs on across it, so the same river had more valley downstream, now drowned. Only one of the box's hexes drowns at hex scale, so most of this valley lies west of the box, under the Azov. Low confidence because the place and size of that valley are the board's guess."
+basis = ["analogy", "neighbouring_evidence", "environment"]

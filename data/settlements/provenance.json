@@ -854,5 +854,21 @@
   "sha256": "0f6da930fe3e8d6a4e0a0200048f2dadc5a79196105e129df60c272e07f7707f",
   "bytes": 71663761,
   "fetched": "2026-11-11"
+ },
+ {
+  "dataset": "aadr",
+  "url": "https://dataverse.harvard.edu/api/access/datafile/13994515",
+  "path": "data/settlements/aadr_dates.csv",
+  "sha256": "437eb56e1e802367fc0b00178dd1a2669bdb0bdf31e1cbf031c6dfcdaa2c4631",
+  "bytes": 114606,
+  "fetched": "2026-11-13"
+ },
+ {
+  "dataset": "literature",
+  "url": "data/settlements/literature_dates.csv",
+  "path": "data/settlements/literature_dates.csv",
+  "sha256": "0ff98b3bfe70d2a5f7de103b8f2a8b0c729605a55f9f67ac50b42dae919b3971",
+  "bytes": 608329,
+  "fetched": "2026-11-13"
  }
 ]

@@ -1,0 +1,121 @@
+[meta]
+place = "volga_delta"
+written = "2026-11-12"
+verdict = "research"
+confidence = "medium"
+really_empty = "Nearly. One record in the box in any epoch, Kairsak III (47.92, 46.76; GIN-5905, GIN-5927; 5,840-5,630 BCE). Dolbunova et al.'s site table puts Kairshak III 75 km further north at 47.76, 47.42, which is outside the box, so even that one may not belong here. Nothing within 100 km of the box in any epoch, and the nearest site in the 4,000 and 3,000 BCE slices is 290-555 km away. No duplicates. The box is on dry land from 9,000 to 6,000 BCE, all 40 hexes of it, with the Mangyshlak-stage Volga running out to about 44 N. In 10,000 BCE it is 38/40 water (the late Khvalynian sea), and from 5,000 BCE 18/40 water (New Caspian). 18 hexes that are land in 9,000-6,000 BCE are drowned later. Baibek (48.84, 46.45), a dated Kairshak-group pottery site, lies inside the box in Dolbunova's table and is not in our data."
+why_empty = ["not_in_open_compilations", "research_intensity", "submerged", "buried", "publication_access"]
+summary = """
+The Volga delta and the strip of North Caspian lowland on either side of it,
+from Astrakhan to the Kazakh border. The board does model the Caspian (see
+data/lakes/lakes.toml: -10 m at 10,000 BCE, falling to -80 m by 7,050 BCE,
+-50 m by 6,050 BCE and -25 m from 5,000 BCE). So the box goes from late
+Khvalynian sea, to a dry Mangyshlak-stage delta plain reaching 44 N, to a
+New Caspian coast near Astrakhan. That is the right shape. The timing is the
+contested part. Bezrodnykh & Sorokin (2016) date the freshwater Mangyshlak
+deposits of the northern Caspian to 12-9 ka, and they liken the lowstand
+basins to the ilmen lakes of today's delta. A later abstract by the same
+group (Sorokin et al. 2021) puts the regression at 11.9-10.5 ka. If that is
+right, the northern Caspian was flooded again some time between about 8,500
+and 7,000 BCE, not after 6,000 BCE as on the board. The board has no lakes
+on the delta (ilmeni, the Sarpa lakes).
+
+Our data holds one dated site, and it may not be in the box. The regional
+record is the Lower Volga Neolithic of the Kairshak-Tenteksor ('Seroglazovo')
+and Dzhangar groups, and the Orlovka culture of the Uzen steppe to the north
+(see the north_caspian_lowland plan). Vybornov et al. (2018) date it from
+6500-5400 cal BC (Neolithic) to 5300-4700 cal BC (Eneolithic), and put the
+first domestic animals in the Early Eneolithic Cis-Caspian culture. It is
+absent because its dates sit in Russian and Kazakh print and in Documenta
+Praehistorica and Radiocarbon articles that nobody has entered. XRONOS holds
+only Kairsak III and Dzangar here, and the Kazakhstan download has 54 dates
+in all. Two physical causes add to it. Anything on the early Holocene delta
+plain south of about 46 N is now under the North Caspian, and on the modern
+delta the early levels lie under Holocene delta silt. Neither explains the
+empty steppe on either side of the delta from 5,000 BCE, where the cause is
+recording.
+
+Do this: (1) take the Kairshak, Baibek, Kugat and Tenteksor dates and
+coordinates from Vybornov's papers and Dolbunova's table; (2) fix Kairsak
+III's position; (3) take the AADR-dated steppe burials around the delta
+(Volga-Chogray-Channel-53 in Kalmykia is 77 km west of the box); and (4)
+until then, put inferred fisher-hunter camps on the Mangyshlak-stage
+channels the board already draws. Board questions for a person are in the
+reply: the end of the Mangyshlak lowstand, and the missing delta lakes.
+"""
+
+[[known_site]]
+name = "Baibek"
+lon = 48.84
+lat = 46.45
+coordinates = "published"
+start = -6000
+end = -5400
+what = "Neolithic pottery site of the Kairshak-Tenteksor (Seroglazovo) group in the Volga-Ural interfluve, with 53 vessel samples in Dolbunova et al.'s residue table (region 'Northern Caspian'). Coordinates are from that table. The start is the modelled start of pottery at the site, 6000 BC, from the R script of the same deposit (copied into data/isostyle/inputs/dolbunova2023_starts.csv). The end is the end of the Lower Volga Neolithic in Vybornov et al. 2018 (abstract), not a date from the site. It is in the isostyle pottery layer but not in the settlements."
+cite = "Dolbunova, E. et al. 2023, The transmission of pottery technology among prehistoric European hunter-gatherers, Nature Human Behaviour 7:171-183, data deposit Zenodo 6619101 (SI_ORA.xlsx); Vybornov, A. et al. 2018, Radiocarbon 60(5):1597-1610"
+url = "https://zenodo.org/records/6619101"
+checked = true
+
+[[known_site]]
+name = "Kugat IV"
+lon = 47.85
+lat = 47.49
+coordinates = "published"
+start = -6000
+end = -5400
+what = "Neolithic pottery site of the Northern Caspian group, 6 km from Kairshak III in Dolbunova's table (4 vessel samples). The dates are an assumption: the period range of its neighbour Kairshak III (modelled start 5980 BC) and the end of the Lower Volga Neolithic. I have no date from the site itself. It lies 32 km north of the box."
+cite = "Dolbunova, E. et al. 2023, Nature Human Behaviour 7:171-183, Zenodo 6619101 (SI_ORA.xlsx)"
+url = "https://zenodo.org/records/6619101"
+checked = true
+
+[[known_site]]
+name = "Volga-Chogray-Channel-53 (kurgan burial)"
+lon = 45.5
+lat = 46.24
+coordinates = "published"
+start = -3705
+end = -2500
+what = "Steppe burial in Kalmykia, west of the delta. Two genomes in AADR (group Russia_Kalmykia_EBA_Yamnaya, Lazaridis et al. 2025), one dated directly to 3705-3533 calBCE (4855+/-25 BP, PSUAMS-14073); the other is given a 3750-2500 BCE range by context. 77 km west of the box. Human bone from a river-fed population can carry a freshwater reservoir offset of a few centuries."
+cite = "Allen Ancient DNA Resource v66.p1, 1240K annotation (Mallick et al. 2024); sample published by Lazaridis et al. 2025, Nature"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[research]]
+what = "Enter the Lower Volga Neolithic-Eneolithic radiocarbon series: Kairshak III and VI, Baibek, Tenteksor, Kugat IV, Dzhangar, Kumyska I. Vybornov et al. 2017 (Documenta Praehistorica 44:224-239, open access) is the regional radiocarbon chronology of the Povolzhye. Vybornov et al. 2013 (DP 40:13-20) holds the Tenteksor shell/organic pair (Ua-35226, Ua-35227). Vybornov et al. 2018 (Radiocarbon 60:1597) adds the diet and chronology dates. Take coordinates from Dolbunova's SI_ORA.xlsx where it has them, and from the papers' maps otherwise."
+url = "https://dlib.si/stream/URN:NBN:SI:DOC-OO2ZWENB/f7d624c3-476d-4e35-ad9b-6dafdad30f80/PDF"
+yields = "5-8 dated sites in or within 50 km of the box, 6500-4700 cal BC, with several dates each; the box goes from 1 doubtful site to a real Neolithic cluster"
+effort = "Two or three open PDFs, a few dozen rows; the reservoir offsets on shell-tempered pottery and fish-eating humans must be carried as a note"
+
+[[research]]
+what = "Resolve Kairsak III's position. XRONOS (via the Ukraine country file, GIN-5905 and GIN-5927) has 46.7565 N, 47.9164 E. Dolbunova's table has 47.42 N, 47.76 E, next to Kugat IV. Find the excavation report or a Vybornov map and correct one of them in data/settlements/corrections.toml."
+url = "https://zenodo.org/records/6619101"
+yields = "One site in the right place; decides whether the box has any recorded site at all"
+effort = "An hour with the map figures"
+
+[[research]]
+what = "Enter the AADR-dated burials of the Caspian steppe as dated sites. AADR v66 is already downloaded for the isostyle aDNA layer (build/isostyle/sources/aadr_v66.p1_1240K.anno), but its localities never reach the settlements. Across southern Russia (36-56 E, 44-56 N) it holds about 55 localities dated 9,650-2,900 BCE, of which only Lopatino and Kutuluk are in our settlements."
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+yields = "Across the five southern Russian places: about 50 directly dated burial sites, 9,650-2,900 BCE. For this box: Volga-Chogray-Channel-53 only; the yield is to the west (Manych) and north (Samara, Saratov, Volgograd)."
+effort = "A filter on a file already on disk; flag human-bone dates as possibly reservoir-affected"
+
+[[speculate]]
+target = "settlements"
+slices = [-9000, -8000, -7000, -6000]
+rule = "Place inferred fisher-hunter camps on board land that is drowned later (the Mangyshlak-stage North Caspian plain), within 10 km of the Volga or Ural channel the board draws for that slice, about one per 50 km of channel. Mark them inferred and drowned."
+confidence = "low"
+reasoning = "The board itself puts a 300-km river plain here for three millennia. Bezrodnykh & Sorokin (2016) describe the Mangyshlak deposits as freshwater basins in valleys and depressions, comparable to the ilmen lakes of the modern delta: the richest fishing ground in the region. Fisher-hunters with heavy fishing gear were on the Lower Don at Razdorskaya II from c. 7,450 BCE and at Rakushechny Yar from c. 7,000 BCE (Tsybrij et al. 2017). People were at Varfolomeevka on the Maly Uzen by the 7th millennium BC, and at Kairshak and Baibek on the edge of this plain by 6,000 BCE. A people that fished the Don and the Uzen will have fished the Mangyshlak Volga. Confidence is low for two reasons. Nothing has been found on the plain because it is under the sea. And if the regression ended at 10.5 ka (Sorokin et al. 2021), the plain was gone by about 8,000 BCE, so the 7,000 and 6,000 BCE slices depend on the board's lake curve being right."
+basis = ["analogy", "neighbouring_evidence", "environment"]
+
+[[speculate]]
+target = "isostyle:domestic_livestock"
+slices = [-5000]
+rule = "Raise domestic livestock to at least 0.5 within 350 km of a point between the delta and the Uzen rivers (48.0 E, 47.5 N) at 5,000 BCE. The circle takes in the whole box and Algay and Oroshaemoe I at its northern edge. The current mean here is 0.1 at the middle slice."
+confidence = "medium"
+reasoning = "Kulkova et al. 2019 report bones of domestic sheep and goat in the Cis-Caspian culture layer at Oroshaemoe I, dated c. 5000-4700 cal BC. Vybornov et al. 2018 put the first domestic animals of the Lower Volga in the Early Eneolithic Cis-Caspian culture, which their abstract dates to 5300-4700 cal BC. The 5,000 BCE slice covers 5,500-4,500 BCE, so herds are present for most of it. The Cis-Caspian culture is a culture of the Lower Volga and North Caspian steppe as a whole, not just of the Uzen sites. That is why the circle reaches the delta. It is still an extrapolation from two dated sites 300 km to the north."
+basis = ["literature", "neighbouring_evidence"]
+
+[[speculate.adjust]]
+kind = "near"
+point = [48.0, 47.5]
+radius_km = 350
+value = 0.5

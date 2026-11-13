@@ -14,8 +14,8 @@ make maps     # venv + ETOPO and BIOME4 downloads (once) + build + convert -> ne
 ```
 
 Settlements in `world.bin` come from `data/settlements/settlements.geojson`
-(`make settlements`) when it exists, else the original
-`game/static/game/assets/settlements.geojson`.
+(`make settlements`). The hex grid and the 2023 per-epoch properties the
+pipeline still reads are in `data/legacy/` (see its README).
 
 Outputs in `build/`: `report.md`, which has agreement with the committed
 terrain, unmatched colours, mountain changes, sea-level flips, watched regions and class counts.
@@ -131,8 +131,9 @@ each year's value came from.
    `build/rivers.geojson`. Hexes are not turned into water. Each hex gets a
    derived `river` class per year (0 none, 1 minor or seasonal, 2 large
    perennial).
-   - **Courses** are traced downstream along HydroRIVERS (`make maps`
-     downloads about 270 MB to `build/hydrorivers/`), or entered as
+   - **Courses** are traced downstream along the GEOGLOWS v2 / TDX-Hydro
+     stream network (`make maps` downloads about 2.3 GB to `build/geoglows/`),
+     or entered as
      waypoints for buried channels.
    - **Sea mouths** are extended across the shelf along the lowest ETOPO1
      spill path to the sea at the run's lowest level.
@@ -217,7 +218,7 @@ Nothing in the build reads the catalogue or anything made from it.
 - **New terrain keyframe:** georeference it to WGS84 with a `.pgw`, add a
   `[[terrain.sources]]` entry, and add its colours to `palette` if needed.
 - **New river:** add a `[[river]]` to `data/rivers/rivers.toml` (a `from`
-  point on HydroRIVERS, or `points` waypoints) and a row in its SOURCES.md.
+  point on the stream network, or `points` waypoints) and a row in its SOURCES.md.
   Main rivers go before their tributaries: a tributary stops where it meets
   a river already drawn. A river whose course changed is split: the shared
   upper course (with `to` at the fork) and one entry per branch, each with

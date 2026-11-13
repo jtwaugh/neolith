@@ -10,8 +10,8 @@ from .paleobiome import NON_BIOME
 from .raster import Affine, hex_pixels
 
 
-def terrain_colours(settings_path="neolithic_deities/settings.py", scheme="terrain"):
-    """A colour scheme ({value: colour}) from settings.COLOR_SCHEMES, without Django."""
+def terrain_colours(settings_path=os.path.join(os.path.dirname(__file__), "legacy_colours.py"), scheme="terrain"):
+    """A colour scheme ({value: colour}) from legacy_colours.COLOR_SCHEMES."""
     tree = ast.parse(open(settings_path).read())
     for node in tree.body:
         if isinstance(node, ast.Assign) and getattr(node.targets[0], "id", "") == "COLOR_SCHEMES":

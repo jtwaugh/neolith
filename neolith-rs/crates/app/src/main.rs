@@ -3,6 +3,7 @@
 mod app;
 mod board;
 mod clock;
+mod credits;
 mod events;
 mod files;
 mod labels;
@@ -10,6 +11,7 @@ mod labels;
 mod harness;
 mod palette;
 mod panels;
+mod perf;
 mod renown;
 #[cfg(not(target_arch = "wasm32"))]
 mod screenshot;
@@ -32,6 +34,7 @@ neolith --harness [<port>] [--world <world.bin>] [--size <W>x<H>]
 #[cfg(not(target_arch = "wasm32"))]
 fn main() -> std::process::ExitCode {
     use std::process::ExitCode;
+    perf::init();
     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("warn")).init();
     let args: Vec<String> = std::env::args().skip(1).collect();
     if args.iter().any(|a| a == "-h" || a == "--help") {
@@ -170,6 +173,7 @@ fn screenshot_cli(args: &[String]) -> Result<(), String> {
 fn main() {
     use wasm_bindgen::JsCast as _;
     eframe::WebLogger::init(log::LevelFilter::Info).ok();
+    perf::init();
     wasm_bindgen_futures::spawn_local(async {
         let canvas = web_sys::window()
             .and_then(|w| w.document())

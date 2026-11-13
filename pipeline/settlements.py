@@ -150,6 +150,17 @@ def fix_mojibake(name, layers=3):
     return unicodedata.normalize("NFC", re.sub(r"[\x00-\x08\x0b-\x1f\x7f-\x9f]", "", name))
 
 
+_POSSESSIVE = re.compile(r"\b([A-Z][a-z]+) s (?=[A-Z])")
+_ELISION = re.compile(r"(?<![\w'´])([dlDL]) (?=[AEIOUHÀ-ÖØ-Ý])")
+
+
+def restore_apostrophes(name):
+    """Put back apostrophes XRONOS turned into spaces: "Gough s Cave" ->
+    "Gough's Cave", "Pont d Ambon" -> "Pont d'Ambon". Elision only before a
+    vowel or h, so "L1 (L Basin)" and Danish "Hyllested s., ..." are left alone."""
+    return _ELISION.sub(r"\1'", _POSSESSIVE.sub(r"\1's ", name or ""))
+
+
 def _latin(c):
     """Latin letters, general punctuation, €, or a lost character: what a
     real repair of these (European, African, Near Eastern) site names gives.
@@ -268,6 +279,22 @@ def load_rejects(path):
     return {(e["site"], lab_key(e["lab"])) for e in doc.get("reject", [])}
 
 
+def load_keeps(path):
+    """data/settlements/records.toml `[[keep]]` entries -> {(filed site name,
+    lab_key(lab))}: single dates admitted although their 1-sigma error is
+    above `max_std` (old, wide dates that are a site's only record)."""
+    if not path or not os.path.exists(path):
+        return set()
+    with open(path, "rb") as f:
+        doc = tomllib.load(f)
+    return {(e["site"], lab_key(e["lab"])) for e in doc.get("keep", [])}
+
+
+def kept(d, keeps):
+    """Whether date row d is named by a `[[keep]]` (by its filed name)."""
+    return (d.get("filed", d["site"]), lab_key(d["labnr"])) in keeps
+
+
 def apply_rejects(dates, rejects):
     """Drop the date rows named by `load_rejects`, in place. Raises when a
     reject matches no row (the record changed under it). Returns how many
@@ -301,6 +328,69 @@ def apply_same(dates, same):
     return n
 
 
+def load_refiles(path):
+    """data/settlements/records.toml `[[refile]]` entries -> {(filed site
+    name, lab_key(lab)): (site name, lon, lat)}: single dates filed under
+    another site's name (and position), moved to their own."""
+    if not path or not os.path.exists(path):
+        return {}
+    with open(path, "rb") as f:
+        doc = tomllib.load(f)
+    return {(e["site"], lab_key(e["lab"])): (e["name"], *e["at"]) for e in doc.get("refile", [])}
+
+
+def apply_refiles(dates, refiles):
+    """Move the date rows named by `load_refiles`, in place. The filed name is
+    kept as `filed`, but as a wrong name, not an alias (`misfiled`). Raises
+    when an entry matches no row. Returns how many rows were moved."""
+    hit = set()
+    for d in dates:
+        k = (d["site"], lab_key(d["labnr"]))
+        if k in refiles:
+            hit.add(k)
+            d["filed"], d["misfiled"] = d["site"], True
+            d["site"], d["lon"], d["lat"] = refiles[k]
+    missing = sorted(set(refiles) - hit)
+    if missing:
+        raise ValueError(f"records.toml [[refile]] matches no date: {missing}")
+    return len(hit)
+
+
+def drop_shifted(dates, path, spec, km, block=("Source", "Vermeersch2019")):
+    """Drop XRONOS dates taken from a p3k14c block whose names are out of step.
+
+    XRONOS takes in p3k14c's records and files each under the XRONOS site of
+    its name. In p3k14c's Vermeersch2019 rows, names (and some positions) are
+    an alphabetical neighbour's (GIN-4858 from Lake Lacha is 'Peschio Ranaro',
+    LE-1469 'Vergara'), so XRONOS filed those dates at namesakes in Italy and
+    Spain. A XRONOS date that cites p3k14c, whose twin in the block (same lab
+    number and age) is more than `km` from where XRONOS has it, contradicts
+    itself and is dropped: neither its name nor its position can be trusted.
+    Rows already moved by hand (`filed`) are left alone. spec: the p3k14c
+    `[[settlements.tables]]` entry. Returns (dates dropped, sites hit)."""
+    col = spec["columns"]
+    twins = defaultdict(list)
+    with open(path, encoding="utf-8-sig", errors="replace", newline="") as f:
+        for r in csv.DictReader(f, delimiter=spec.get("delimiter", ",")):
+            if block[1] not in (r.get(block[0]) or ""):
+                continue
+            try:
+                twins[lab_key(r[col["labnr"]])].append((float(r[col["bp"]]), float(r[col["lon"]]), float(r[col["lat"]])))
+            except (TypeError, ValueError):
+                continue
+    keep, sites = [], set()
+    for d in dates:
+        twin = [(lo, la) for bp, lo, la in twins.get(lab_key(d["labnr"]), ()) if abs(bp - d["bp"]) < 1]
+        if (twin and d["dataset"] == "xronos" and "p3k14c" in d["refs"] and not d.get("filed")
+                and all(_km(p, (d["lon"], d["lat"])) > km for p in twin)):
+            sites.add((d["site"], d["lon"], d["lat"]))
+            continue
+        keep.append(d)
+    n = len(dates) - len(keep)
+    dates[:] = keep
+    return n, len(sites)
+
+
 def parse_xronos(path, seen=None, type_aliases=None, locate=None):
     """XRONOS API dump -> date rows.
 
@@ -314,7 +404,7 @@ def parse_xronos(path, seen=None, type_aliases=None, locate=None):
         if m["id"] in seen:
             continue
         seen.add(m["id"])
-        name = _clean(fix_mojibake(m.get("site")))  # before _clean: it eats NBSP bytes
+        name = restore_apostrophes(_clean(fix_mojibake(m.get("site"))))  # fix_mojibake before _clean: it eats NBSP bytes
         try:
             bp, std = float(m["bp"]), float(m["std"])
         except (TypeError, ValueError):
@@ -355,7 +445,7 @@ def parse_table(path, spec, seen_labs, type_aliases=None):
                 bp, std = float(r[col["bp"]]), float(r[col["std"]])
             except (TypeError, ValueError):
                 continue
-            name = _clean(fix_mojibake(r.get(col["site"])))
+            name = restore_apostrophes(_clean(fix_mojibake(r.get(col["site"]))))
             if not name or std <= 0:
                 continue
             seen_labs.add(lab)
@@ -374,9 +464,65 @@ def site_id(key):
     return zlib.crc32(key.encode())
 
 
+# Letters NFKD leaves whole, so the ASCII step dropped them ("Nevalı" ->
+# "neval", "Sølager" -> "slager").
+_FOLD = str.maketrans({"ı": "i", "İ": "I", "ø": "o", "Ø": "O", "æ": "ae", "Æ": "AE", "œ": "oe",
+                       "Œ": "OE", "ł": "l", "Ł": "L", "đ": "d", "Đ": "D", "ð": "d", "Ð": "D",
+                       "þ": "th", "Þ": "Th", "ß": "ss", "ħ": "h"})
+# An apostrophe inside a word joins it ("Qala’at", "Dja'de", "Ra's"), whichever
+# of the quote marks and modifier letters the source used.
+_APOS = re.compile(r"(?<=\w)['’‘ʼʻʿʾ`´](?=\w)")
+
+
 def name_tokens(name):
-    plain = unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode().lower()
+    plain = _APOS.sub("", name.translate(_FOLD))
+    plain = unicodedata.normalize("NFKD", plain).encode("ascii", "ignore").decode().lower()
     return frozenset(re.findall(r"[a-z0-9]+", plain))
+
+
+# Words that make a name a different site or locus: numbers, Roman numerals,
+# single letters and compass/level words ("Sabi Abyad II", "Gobero G3",
+# "Çatalhöyük West"); also glued on ("HierakonpolisII").
+_QUAL = re.compile(r"^(?:[ivx]+|\d+[a-z]?|[a-z]\d*|north|south|east|west|upper|lower|nord|sud|est|ouest)$")
+
+
+def qualifiers(name):
+    q = {t for t in name_tokens(name) if _QUAL.match(t)} - set("adelnosy")
+    q |= {m.lower() for m in re.findall(r"(?<=[A-Za-z])([IVX]+)\b", name) if len(m) < len(name) - 3}
+    return q | ({"i"} if re.search(r"\bI\b", name) else set())
+
+
+_VOWELS = frozenset("aeiouy")
+
+
+def _vowel_drop(x, y):
+    """x is y with only vowels left out ("catalhyk" / "catalhoyuk", the
+    source lost the accented letters)."""
+    if len(x) < 4 or len(x) >= len(y):
+        return False
+    i = 0
+    for c in y:
+        if i < len(x) and c == x[i]:
+            i += 1
+        elif c not in _VOWELS:
+            return False
+    return i == len(x)
+
+
+def garbled_same(a, b):
+    """Two names that are one spelling with letters lost: a U+FFFD standing for
+    1-3 letters ("G\ufffdytepe" / "Göytepe"), or words that differ only by left-out
+    vowels ("Demircihyk" / "Demircihöyük"). Qualifiers must agree."""
+    if qualifiers(a) != qualifiers(b):
+        return False
+    for n, m in ((a, b), (b, a)):
+        if LOST in n and re.fullmatch("".join(".{1,3}" if c == LOST else re.escape(c) for c in n), m, re.I):
+            return True
+    ta, tb = name_tokens(a), name_tokens(b)
+    if not ta or len(ta) != len(tb) or ta == tb:
+        return False
+    xa, xb = ta - tb, tb - ta
+    return len(xa) == len(xb) and all(any(_vowel_drop(x, y) or _vowel_drop(y, x) for y in xb) for x in xa)
 
 
 def _km(a, b):
@@ -391,13 +537,21 @@ def _cell_size(km):
     return km / 111.0 / 0.3  # degrees; cos(lat) >= 0.3 up to ~72°N
 
 
-def merge_spellings(groups, same_km, same_name_km=0.0):
+def merge_spellings(groups, same_km, same_name_km=0.0, share_km=0.0, measure=None):
     """Fold together entries for one site filed under several spellings:
     within same_km of each other, and one name's words all appear in the
     other's ("Bricia" / "Cueva de Bricia"); or within same_name_km with the
-    same words, for one site filed at differing coordinates. The shortest
-    name wins (then not all capitals, then most dates); the entry with the
-    most dates gives the point. Returns [(name, lon, lat, rows, aliases)]."""
+    same words, for one site filed at differing coordinates, or a name with
+    lost letters ("Catalhyk East" / "Çatalhöyük East"); or within share_km
+    whatever the names, when they hold the same measurements ("Aswad" / "Tell
+    Aswad", 27 of 31 dates): at least two, and half of the smaller entry's, or
+    the one date of a one-date entry by its lab number. measure(row) gives
+    (lab_key, (bp, std)) for a row of `groups`; without it there is no
+    share_km rule. Names whose qualifiers differ ("Sabi Abyad II" / "Tell
+    Sabi Abyad III") are only folded by the share rule when the shared dates
+    are half of the larger entry too. The shortest name wins (then not all
+    capitals, then most dates); the entry with the most dates gives the
+    point. Returns [(name, lon, lat, rows, aliases)]."""
     keys = sorted(groups)
     parent = list(range(len(keys)))
 
@@ -407,25 +561,43 @@ def merge_spellings(groups, same_km, same_name_km=0.0):
             i = parent[i]
         return i
 
-    reach = max(same_km, same_name_km)
+    if measure is None:
+        share_km = 0.0
+    reach = max(same_km, same_name_km, share_km)
     if reach > 0:
         toks = [name_tokens(k[0]) for k in keys]
+        quals = [qualifiers(k[0]) for k in keys]
+        if share_km > 0:
+            meas = [[measure(r) for r in groups[k]] for k in keys]
+            labs = [{l for l, _ in m if l} for m in meas]
+            ages = [{a for _, a in m} for m in meas]
         cell = _cell_size(reach)
         cells = defaultdict(list)
         for i, (_, lon, lat) in enumerate(keys):
             cells[(math.floor(lon / cell), math.floor(lat / cell))].append(i)
+
+        def shares(i, j):
+            # Lab numbers are written differently between sources ("GrA-20801/Lyon-1787",
+            # "Ly-1787"), so the same age and error counts as the same date too.
+            n = max(len(labs[i] & labs[j]), len(ages[i] & ages[j]))
+            small, big = sorted((len(groups[keys[i]]), len(groups[keys[j]])))
+            if quals[i] != quals[j] and n < big / 2:
+                return False
+            return (n >= 2 and n >= small / 2) or (small == 1 and bool(labs[i] & labs[j]))
+
         for i, (_, lon, lat) in enumerate(keys):
             cx, cy = math.floor(lon / cell), math.floor(lat / cell)
             for j in (j for dx in (-1, 0, 1) for dy in (-1, 0, 1) for j in cells.get((cx + dx, cy + dy), ())):
                 if j <= i or not toks[i] or not toks[j]:
                     continue
-                if toks[i] == toks[j]:
-                    limit = reach
+                d = _km(keys[i][1:], keys[j][1:])
+                if toks[i] == toks[j] or garbled_same(keys[i][0], keys[j][0]):
+                    limit = same_name_km
                 elif toks[i] <= toks[j] or toks[j] <= toks[i]:
                     limit = same_km
                 else:
-                    continue
-                if _km(keys[i][1:], keys[j][1:]) <= limit:
+                    limit = -1.0  # names alone never fold these
+                if d <= limit or (0 < share_km and d <= share_km and shares(i, j)):
                     parent[find(j)] = find(i)
     members = defaultdict(list)
     for i in range(len(keys)):
@@ -488,7 +660,7 @@ def occupation(ys, gap):
 
 
 def derive_sites(dates, years, window, trim=0.0, same_km=0.0, same_name_km=0.0,
-                 max_periods=5, dated=None, gap=0):
+                 max_periods=5, dated=None, gap=0, share_km=0.0):
     """Group dated measurements into site features.
 
     dates: date rows. years: calibrated signed year per row (NaN to skip).
@@ -504,9 +676,11 @@ def derive_sites(dates, years, window, trim=0.0, same_km=0.0, same_name_km=0.0,
         if not np.isnan(y):
             groups[(d["site"], round(d["lon"], 4), round(d["lat"], 4))].append((int(y), d))
     feats, seen = [], {}
-    for name, lon, lat, rows, aliases in merge_spellings(groups, same_km, same_name_km):
-        # Names refiled by `apply_same` are aliases too.
-        aliases = sorted(set(aliases) | {f for _, d in rows if (f := d.get("filed")) and f != name})
+    measure = lambda r: (lab_key(r[1]["labnr"]), (r[1]["bp"], r[1]["std"]))
+    for name, lon, lat, rows, aliases in merge_spellings(groups, same_km, same_name_km, share_km, measure):
+        # Names refiled by `apply_same` are aliases too (not `apply_refiles`' wrong names).
+        aliases = sorted(set(aliases) | {f for _, d in rows
+                                         if (f := d.get("filed")) and f != name and not d.get("misfiled")})
         rows = collapse_duplicates(rows)
         ys = [y for y, _ in rows]
         if not any(window[0] <= y <= window[1] for y in ys):
@@ -914,13 +1088,21 @@ def build(cfg, grid, log=print):
 
     labs = {lab_key(d["labnr"]) for d in dates}
     for spec in sc.get("tables", []):
-        p = fetch(spec["url"], os.path.join(raw, spec["file"]), spec["name"])
+        # `path`: a table tracked in the repository, read in place.
+        p = fetch(spec["url"], spec.get("path") or os.path.join(raw, spec["file"]), spec["name"])
         prov.append(p)
         rows = parse_table(p["path"], spec, labs, aliases)
+        for d in rows:  # `keep_types`: its site types (burials) pass exclude_types
+            d["keep_type"] = bool(spec.get("keep_types"))
         log(f"{spec['name']}: {len(rows)} usable dates not already in hand")
         dates += rows
 
     log(f"records: {apply_rejects(dates, load_rejects(sc.get('records')))} dates rejected")
+    log(f"records: {apply_refiles(dates, load_refiles(sc.get('records')))} dates moved to their own site")
+    p3k = next((t for t in sc.get("tables", []) if t["name"] == "p3k14c"), None)
+    if p3k and sc.get("p3k14c_km"):
+        n, hit = drop_shifted(dates, p3k.get("path") or os.path.join(raw, p3k["file"]), p3k, sc["p3k14c_km"])
+        log(f"p3k14c: {n} XRONOS dates at {hit} sites dropped, filed by a shifted Vermeersch2019 name")
     log(f"records: {apply_same(dates, same)} dates refiled under {len(set(v[0] for v in same.values()))} sites "
         f"({sc.get('records')})")
     fixed, lost = repair_lost(dates, sc["same_name_km"])
@@ -937,15 +1119,19 @@ def build(cfg, grid, log=print):
         log(f"survey: {len(everything)} records of any period; hexes by level "
             f"{np.bincount(level, minlength=3).tolist()} -> {sc['survey']['out']}")
     skip = xc.get("exclude_types", [])
+    keeps = load_keeps(sc.get("records"))
+    hit = {(d.get("filed", d["site"]), lab_key(d["labnr"])) for d in dates if kept(d, keeps)}
+    if keeps - hit:
+        raise ValueError(f"records.toml [[keep]] matches no date: {sorted(keeps - hit)}")
     dates = [d for d in dates
-             if d["std"] <= sc["max_std"] and not any(x in d["type"] for x in skip)
+             if (d["std"] <= sc["max_std"] or kept(d, keeps)) and (d.get("keep_type") or not any(x in d["type"] for x in skip))
              and bounds[0] <= d["lon"] <= bounds[2] and bounds[1] <= d["lat"] <= bounds[3]]
 
     cal = calibrate([d["bp"] for d in dates], [d["std"] for d in dates], curve)
     years = np.array([to_year(c) if not np.isnan(c) else np.nan for c in cal])
     dated = {}
     feats = derive_sites(dates, years, window, sc["trim"], sc["same_km"], sc["same_name_km"], dated=dated,
-                         gap=sc.get("abandon_after", 0))
+                         gap=sc.get("abandon_after", 0), share_km=sc.get("share_km", 0.0))
     feats = [f for f in feats if f["properties"]["n_dates"] >= sc["min_dates"]]
     log(f"{len(feats)} dated sites in {window[0]}..{window[1]}")
 

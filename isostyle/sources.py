@@ -237,16 +237,6 @@ def dobsiss(path):
                  source="DObsiSS v2.0 (Batist)", group=("dob:" + d["Site ID"].astype(str)).values)
 
 
-def jordan2016(path, half=200):
-    """Jordan et al. 2016: earliest pottery-bearing date per site (African
-    rows, hand-extracted; data/isostyle/inputs/README.md). Presence only,
-    dated median calibrated age ± `half` years."""
-    d = pd.read_csv(path)
-    year = 1950 - pd.to_numeric(d["cal_bp"], errors="coerce")
-    return _rows("pottery", d["site"], d["lon"], d["lat"], (year - half).values, (year + half).values,
-                 source="Jordan et al. 2016 (earliest pottery)", group=("jor:" + d["site"].astype(str)).values)
-
-
 # ------------------------------------------------------------- subsistence
 CEREAL_CROPS = {"barley", "emmer wheat", "wheat", "einkorn wheat"}
 # A phase counts as without cereals only if at least this many plant taxa
@@ -362,17 +352,10 @@ def rondels(path, span=(-4850, -4500)):
                  source="Rondel enclosures (Zenodo 23738404)", group=("ron:" + d["ID"].astype(str)).values)
 
 
-def paulsson(path):
-    """Paulsson 2019 (PNAS 116:3460), 2,410 radiocarbon dates from megalithic
-    sites (CC BY-NC-ND; read unmodified from the Europe PMC supplement
-    bundle). No coordinates: the dates are joined to dated sites by lab
-    number. Returns (layer, labnr, present)."""
-    d = pd.read_excel(_zip_member(path, r"sd01\.xlsx$"), sheet_name=0)
-    return pd.DataFrame({"layer": "megalithic_tombs", "labnr": d["Laboratory number"].astype(str),
-                         "present": 1, "source": "Paulsson 2019 (megalith dates)"})
-
-
-LABJOIN = [("paulsson2019_supplement.zip", paulsson)]
+# Lab-number joins: (downloaded file, reader) pairs whose records carry a lab
+# number instead of a place. Empty since Paulsson 2019 (CC BY-NC-ND) was
+# dropped on 2026-11-13; see data/ATTRIBUTIONS.toml.
+LABJOIN = []
 
 
 def load_labjoin(cfg, log=print):

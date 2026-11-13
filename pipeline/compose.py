@@ -257,12 +257,16 @@ def apply_alpine(terrain, mountain, cold, neighbours, keep=("Water", "Ice")):
 
 def apply_sea(terrain, elev, grid, sea):
     """Overlay physical water on terrain per year. Returns (terrain, stats)."""
+    from .elevation import channel_mask
     edge = np.array([len(n) < 6 for n in grid.neighbours])
-    ocean_now = ocean_mask(elev, 0.0, grid.neighbours, edge, sea["seed_depth"])
+    chans = sea.get("channel", [])
+    ocean_now = ocean_mask(elev, 0.0, grid.neighbours, edge, sea["seed_depth"],
+                           channel_mask(grid.centres, chans, year=1950))
     out, stats = {}, {}
     for y, t in terrain.items():
         level = sea_level(y, sea["curve"])
-        ocean = ocean_mask(elev, level, grid.neighbours, edge, sea["seed_depth"])
+        always = channel_mask(grid.centres, chans, year=y)
+        ocean = ocean_mask(elev, level, grid.neighbours, edge, sea["seed_depth"], always)
         t = t.copy()
         flooded = ocean & (t != "Water")
         t[ocean] = "Water"
@@ -329,9 +333,12 @@ def lake_levels_at(lakes, lon, lat, year):
 
 def ocean_masks(elev, grid, sea, years):
     """{year: hexes connected to open ocean below that year's sea level}."""
-    from .elevation import ocean_mask
+    from .elevation import channel_mask, ocean_mask
     edge = np.array([len(n) < 6 for n in grid.neighbours])
-    return {y: ocean_mask(elev, sea_level(y, sea["curve"]), grid.neighbours, edge, sea["seed_depth"]) for y in years}
+    chans = sea.get("channel", [])
+    return {y: ocean_mask(elev, sea_level(y, sea["curve"]), grid.neighbours, edge, sea["seed_depth"],
+                          channel_mask(grid.centres, chans, year=y))
+            for y in years}
 
 
 def site_water_depth(settlements, arr, tf, cfg, lakes, grid, ocean, radius=1, coast_cap=20.0):
@@ -384,7 +391,7 @@ def site_water_depth(settlements, arr, tf, cfg, lakes, grid, ocean, radius=1, co
 
 
 def keep_settled_land(terrain, before, settlements, grid, min_land_neighbours=1, depth=None, margin=0.0,
-                      islets=False):
+                      islets=False, never=None):
     """Settlements arrive on land, and leave only when the water really
     reaches them.
 
@@ -408,6 +415,10 @@ def keep_settled_land(terrain, before, settlements, grid, min_land_neighbours=1,
       kept land as above. Otherwise it is left alone (wrong coordinates) and
       shows in the report. If the map turns it land later, it is treated as
       on land from then.
+
+    `never` ({year: bool mask}) marks hexes never kept land: open sea
+    channels ([[sea.channel]]), where a site on the shore of a strait
+    narrower than a hex mustn't close the strait.
 
     Returns (terrain, settlements, stats). `settlements` are copies with
     `occupation` cut and `drowned` (the first year the water ended a phase)
@@ -458,7 +469,7 @@ def keep_settled_land(terrain, before, settlements, grid, min_land_neighbours=1,
                         d, body = depth(n, k)
                         cuts.append((p.get("name", "?"), k, body, round(d0, 1), round(d, 1)))
                     break
-                if wet and state == "on":
+                if wet and state == "on" and not (never is not None and never[k][i]):
                     keep[k].add(i)
             if end > a:
                 new.append([a, end])
@@ -494,7 +505,32 @@ def in_boxes(centres, boxes):
     return m
 
 
-def misdated(t, centres, rules, year, gap="Land"):
+def rule_mask(centres, rule, elev=None):
+    """Hexes a [[terrain.misdated]] rule covers: centred in its `boxes`, or
+    with `edge_noise = {amplitude, period, seed}` (degrees) inside them by a
+    margin that wanders with a fixed smooth noise field, so the edge against
+    the drawn map isn't a straight line."""
+    if "min_elevation" in rule:
+        if elev is None:
+            raise ValueError(f"rule {rule.get('name')!r} has min_elevation but no elevations were given")
+        high = np.nan_to_num(elev, nan=-1e9) >= rule["min_elevation"]
+        return rule_mask(centres, {k: v for k, v in rule.items() if k != "min_elevation"}) & high
+    en = rule.get("edge_noise")
+    if not en:
+        return in_boxes(centres, rule["boxes"])
+    from .biome_clean import value_noise
+    lon, lat = centres[:, 0], centres[:, 1]
+    k = np.cos(np.radians(lat))
+    n = (value_noise(centres, en["period"], en.get("seed", 11)) * 0.7
+         + value_noise(centres + 5.3, en["period"] / 2.3, en.get("seed", 11) + 1) * 0.3)
+    m = np.zeros(len(centres), dtype=bool)
+    for b in rule["boxes"]:
+        d = np.minimum.reduce([(lon - b[0]) * k, (b[2] - lon) * k, lat - b[1], b[3] - lat])
+        m |= d + en["amplitude"] * n > 0
+    return m
+
+
+def misdated(t, centres, rules, year, gap="Land", elev=None):
     """Drawn keyframes copied from a source map of another time, by region
     ([[terrain.misdated]]): every class except `keep` (default Water) on
     hexes centred in the rule's `boxes` becomes a biome gap, filled from the
@@ -503,7 +539,7 @@ def misdated(t, centres, rules, year, gap="Land"):
     for k, r in enumerate(rules):
         if year not in r["years"]:
             continue
-        m = in_boxes(centres, r["boxes"]) & ~np.isin(t, r.get("keep", ["Water"])) & (t != gap)
+        m = rule_mask(centres, r, elev) & ~np.isin(t, r.get("keep", ["Water"])) & (t != gap)
         if m.any():
             out = out.copy() if out is t else out
             out[m] = gap

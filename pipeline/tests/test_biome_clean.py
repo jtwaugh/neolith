@@ -106,6 +106,31 @@ class Floodplain(unittest.TestCase):
                                          {"apply_to": ["Grassland"]})
         self.assertEqual(k, 0)
 
+    def test_keyframe_eligibility_holds_through_a_biome_swap(self):
+        g = make_grid(6, 1)
+        n = len(g)
+        river = np.zeros(n)
+        river[0] = 2
+        landform = np.full(n, elevation.FLAT)
+        elev = np.zeros(n)
+        cfg = {"apply_to": ["Grassland", "Steppe-Forest"], "spread": 1, "no_spread": ["Steppe-Forest"]}
+        grass = np.full(n, "Grassland", dtype=object)
+        forest = np.full(n, "Temperate Forest", dtype=object)
+        # Open in two of three keyframes: still a floodplain in the forest year.
+        elig = biome_clean.floodplain_eligibility({-7000: grass, -6000: grass, -5000: forest}, cfg)
+        out, _ = biome_clean.floodplains(forest, river, elev, landform, g.neighbours, cfg, elig)
+        self.assertEqual(out[0], "Floodplain")
+        self.assertGreater((out == "Floodplain").sum(), 1)   # Grassland spreads a ring
+        # Commonest open biome Steppe-Forest: the river hex only, no ring.
+        sf = np.full(n, "Steppe-Forest", dtype=object)
+        elig = biome_clean.floodplain_eligibility({-7000: sf, -6000: sf}, cfg)
+        out, _ = biome_clean.floodplains(sf, river, elev, landform, g.neighbours, cfg, elig)
+        self.assertEqual(int((out == "Floodplain").sum()), 1)
+        # Open in only one of three: never.
+        elig = biome_clean.floodplain_eligibility({-7000: grass, -6000: forest, -5000: forest}, cfg)
+        out, _ = biome_clean.floodplains(grass, river, elev, landform, g.neighbours, cfg, elig)
+        self.assertEqual(int((out == "Floodplain").sum()), 0)
+
 
 class WaterPopulation(unittest.TestCase):
     def test_cleared_on_water_only(self):

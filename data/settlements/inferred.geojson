@@ -1741,8 +1741,8 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     43.3667,
-     12.5
+     43.3,
+     12.5333
     ]
    },
    "properties": {
@@ -1764,15 +1764,13 @@
     ],
     "references": [
      "Inferred (low confidence): A few forager camps on the early Holocene shore at the narrows and on the shelf that was then dry. While sea level was below about -50 m the channels south of the Hanish Sill were under 4-5 km wide, both shores in sight of each other (Lambeck et al. 2011). That shore and its shelf are now under water, which is why no midden in the Red Sea is older than about 8,000 cal BP. Nothing of this date is known on either shore: this rests on the environment alone, and coastal use here was probably episodic (Bailey et al. 2019). Deliberately few.",
-     "Rule bab_el_mandeb_lowstand_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml",
-     "Its hex is under the sea by 8300 BCE."
+     "Rule bab_el_mandeb_lowstand_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml"
     ],
     "inferred": {
      "rule": "bab_el_mandeb_lowstand_camps",
      "plan": "data/places/plans/bab_el_mandeb.toml",
      "confidence": "low",
-     "shore": 0,
-     "drowned": -8300
+     "shore": 0
     },
     "key": "inferred:bab_el_mandeb_lowstand_camps:1"
    }
@@ -1783,8 +1781,8 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     43.8,
-     12.5333
+     42.6667,
+     13.3333
     ]
    },
    "properties": {
@@ -1807,14 +1805,14 @@
     "references": [
      "Inferred (low confidence): A few forager camps on the early Holocene shore at the narrows and on the shelf that was then dry. While sea level was below about -50 m the channels south of the Hanish Sill were under 4-5 km wide, both shores in sight of each other (Lambeck et al. 2011). That shore and its shelf are now under water, which is why no midden in the Red Sea is older than about 8,000 cal BP. Nothing of this date is known on either shore: this rests on the environment alone, and coastal use here was probably episodic (Bailey et al. 2019). Deliberately few.",
      "Rule bab_el_mandeb_lowstand_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml",
-     "Its hex is under the sea by 8300 BCE."
+     "Its hex is under the sea by 4600 BCE."
     ],
     "inferred": {
      "rule": "bab_el_mandeb_lowstand_camps",
      "plan": "data/places/plans/bab_el_mandeb.toml",
      "confidence": "low",
-     "shore": 1,
-     "drowned": -8300
+     "shore": 0,
+     "drowned": -4600
     },
     "key": "inferred:bab_el_mandeb_lowstand_camps:2"
    }
@@ -1825,8 +1823,8 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     42.9333,
-     13.4667
+     44.3,
+     12.5
     ]
    },
    "properties": {
@@ -1849,14 +1847,14 @@
     "references": [
      "Inferred (low confidence): A few forager camps on the early Holocene shore at the narrows and on the shelf that was then dry. While sea level was below about -50 m the channels south of the Hanish Sill were under 4-5 km wide, both shores in sight of each other (Lambeck et al. 2011). That shore and its shelf are now under water, which is why no midden in the Red Sea is older than about 8,000 cal BP. Nothing of this date is known on either shore: this rests on the environment alone, and coastal use here was probably episodic (Bailey et al. 2019). Deliberately few.",
      "Rule bab_el_mandeb_lowstand_camps in data/settlements/inferred.toml, from data/places/plans/bab_el_mandeb.toml",
-     "Its hex is under the sea by 7800 BCE."
+     "Its hex is under the sea by 7500 BCE."
     ],
     "inferred": {
      "rule": "bab_el_mandeb_lowstand_camps",
      "plan": "data/places/plans/bab_el_mandeb.toml",
      "confidence": "low",
      "shore": 1,
-     "drowned": -7800
+     "drowned": -7500
     },
     "key": "inferred:bab_el_mandeb_lowstand_camps:3"
    }

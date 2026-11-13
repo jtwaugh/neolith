@@ -71,3 +71,7 @@ Sites marked "no" are not in the settlement records yet (Mehrgarh lies east of t
 ## References
 
 - Wikipedia, the articles linked in the table above (retrieved 2026-11-12), for each site's coordinates and what it is known for.
+
+## Licence
+
+Wikipedia text is CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Only coordinates (facts) and our own one-line paraphrases are used; no article text is copied. Credited in `ATTRIBUTIONS.md` (`wikipedia`).

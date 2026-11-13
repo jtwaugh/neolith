@@ -42,7 +42,9 @@ Board problem, for a person: the sheet shows land right across the strait at
 Lambeck et al. (2011) show it stayed open to the Gulf of Aden through the
 last 400,000 years; at lowstand the channels south of the Hanish Sill were
 under 4 km wide. A 4 km channel cannot show at 55 km hexes, but anything
-that reads land adjacency will treat Africa and Arabia as joined. Also for a
+that reads land adjacency will treat Africa and Arabia as joined. Fixed
+2026-11-13: [[sea.channel]] in pipeline/config.toml keeps a chain of hexes
+from the Gulf of Aden past the Hanish Islands Water in every year. Also for a
 person: Asa Koma sits in our raw data in Somaliland (44.69 E, 9.72 N), not in
 Djibouti's Gobaad plain.
 """

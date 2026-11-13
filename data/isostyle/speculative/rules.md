@@ -18,6 +18,7 @@ flat expected value. Each line names its judgement (file#index).
 - **Central Asia**, 8,000–10,000 BCE (medium, flat value): 0 across the Central Asian part of the grid for 10,000-8,000 BCE. `pottery.toml#20`
 - **Central Asia**, 6,000–7,000 BCE (low, encoded (5 adjust)): 7,000 BCE: 0.05 everywhere. 6,000 BCE: 0.8 along the Kopet Dag piedmont (south of 39°N), 0.4 on the Caspian shore, 0.2 in the Kyzylkum and Ustyurt. `pottery.toml#21`
 - **Central Asia**, 3,000–5,000 BCE (medium, encoded (2 adjust)): Fill with 0.9, lowering to 0.7 in the Ustyurt and central Karakum where occupation was ephemeral. `pottery.toml#22`
+- **Horn of Africa**, 4,000–10,000 BCE (low, encoded (4 adjust)): 0.05 at Lake Tana to 8,000 BCE and at Cape Guardafui to 4,000 BCE; 0.1 in the Abhe basin to 4,000 BCE; the rest of the Horn as before. `pottery.toml#45`
 - **Iran & Afghanistan**, 8,000–10,000 BCE (medium, encoded (2 adjust)): 0 for 10,000-9,000 BCE; at 8,000 BCE 0.05 in the Zagros, 0 on the plateau and in Afghanistan. `pottery.toml#23`
 - **Iran & Afghanistan**, 6,000–7,000 BCE (low, encoded (4 adjust)): 7,000 BCE: 0.35 on the plateau rims, 0.1 in Afghanistan. 6,000 BCE: 0.8 on the rims, 0.4 in Afghanistan; mark the Kavir and Lut deserts as low occupation rather than pottery-free. `pottery.toml#24`
 - **Iran & Afghanistan**, 3,000–5,000 BCE (medium, flat value): Fill with the adjacent 0.95-0.99. `pottery.toml#25`
@@ -32,11 +33,11 @@ flat expected value. Each line names its judgement (file#index).
 - **Nile & Sudan**, 10,000–10,000 BCE (low, encoded (2 adjust)): 0.3 within 300 km of the Nile, 0.15 further west and in South Sudan. `pottery.toml#32`
 - **Nile & Sudan**, 6,000–9,000 BCE (medium, encoded (3 adjust)): 0.7 at 9,000 BCE and 0.85 at 8,000-6,000 BCE across Kordofan and Darfur; 0.5 in South Sudan where the record is unknown. `pottery.toml#33`
 - **Nile & Sudan**, 3,000–5,000 BCE (medium, flat value): Fill with 0.95. `pottery.toml#34`
-- **Now-drowned shelves and islands**, 7,000–10,000 BCE (medium, flat value): Copy the adjacent coast: 0 on the Gulf and Doggerland shelves. `pottery.toml#47`
-- **Now-drowned shelves and islands**, 10,000–10,000 BCE (high, flat value): Treat as part of the Russian forest zone and take its values. `pottery.toml#49`
-- **Now-drowned shelves and islands**, 6,000–9,000 BCE (low, encoded (3 adjust)): Copy the adjacent Lower Volga/North Caspian coast values: 0 to 8,000, 0.2 at 7,000, 0.75 at 6,000 BCE. `pottery.toml#48`
-- **Other**, 6,000–10,000 BCE (low, encoded (2 adjust)): 0 to 7,000 BCE; 0.1 at 6,000 BCE. `pottery.toml#45`
-- **Other**, 3,000–5,000 BCE (medium, encoded (2 adjust)): 0.8 at 5,000 BCE, 0.95 after. `pottery.toml#46`
+- **Now-drowned shelves and islands**, 7,000–10,000 BCE (medium, flat value): Copy the adjacent coast: 0 on the Gulf and Doggerland shelves. `pottery.toml#48`
+- **Now-drowned shelves and islands**, 10,000–10,000 BCE (high, flat value): Treat as part of the Russian forest zone and take its values. `pottery.toml#50`
+- **Now-drowned shelves and islands**, 6,000–9,000 BCE (low, encoded (3 adjust)): Copy the adjacent Lower Volga/North Caspian coast values: 0 to 8,000, 0.2 at 7,000, 0.75 at 6,000 BCE. `pottery.toml#49`
+- **Other**, 6,000–10,000 BCE (low, encoded (2 adjust)): 0 to 7,000 BCE; 0.1 at 6,000 BCE. `pottery.toml#46`
+- **Other**, 3,000–5,000 BCE (medium, encoded (2 adjust)): 0.8 at 5,000 BCE, 0.95 after. `pottery.toml#47`
 - **Russia: forest north of 56°N**, 8,000–10,000 BCE (high, flat value): Set pottery to 0 across the whole Russian forest zone, including the Pechora and Novaya Zemlya fringes, for 10,000-8,000 BCE. `pottery.toml#1`
 - **Russia: forest north of 56°N**, 7,000–7,000 BCE (medium, encoded (2 adjust)): Set 0.05 south of 58°N between 35° and 55°E (Upper Volga, Kama) and 0 elsewhere in the forest zone at 7,000 BCE. `pottery.toml#2`
 - **Russia: forest north of 56°N**, 6,000–6,000 BCE (medium, encoded (2 adjust)): At 6,000 BCE set 0.55 south of 60°N, fading linearly to 0.15 at 64°N and 0.05 on the Arctic coast and Novaya Zemlya. `pottery.toml#3`
@@ -255,8 +256,8 @@ flat expected value. Each line names its judgement (file#index).
 - **Central Europe**, 5,000–6,000 BCE (medium, encoded (3 adjust)): At 6,000 BCE set 0.8 in the Hungarian plain and 0 north of 49°N; at 5,000 BCE fill 0.95. `domestic_livestock.toml#45`
 - **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set livestock to 0 in France and the Low Countries before 6,000 BCE. `domestic_livestock.toml#42`
 - **France & Low Countries**, 6,000–6,000 BCE (medium, encoded (4 adjust)): Set 0.5 on the Provence and Languedoc coast and 0 elsewhere at 6,000 BCE. `domestic_livestock.toml#43`
-- **Horn of Africa**, 5,000–10,000 BCE (high, flat value): Set livestock to 0 in the Horn before 4,500 BCE. `domestic_livestock.toml#30`
-- **Horn of Africa**, 3,000–4,000 BCE (low, encoded (3 adjust)): Set 0.05 at 4,000 BCE; at 3,000 BCE 0.4 in the Eritrean lowlands and Gash delta and 0.05 elsewhere. `domestic_livestock.toml#31`
+- **Horn of Africa**, 5,000–10,000 BCE (high, encoded (1 adjust)): Set livestock to 0 in the Horn before 4,500 BCE. `domestic_livestock.toml#30`
+- **Horn of Africa**, 3,000–4,000 BCE (low, encoded (5 adjust)): Set 0.05 at 4,000 BCE; at 3,000 BCE 0.4 in the Eritrean lowlands and Gash delta and 0.05 elsewhere. `domestic_livestock.toml#31`
 - **Iberia**, 7,000–10,000 BCE (high, flat value): Set livestock to 0 in Iberia before 6,000 BCE. `domestic_livestock.toml#40`
 - **Iberia**, 3,000–6,000 BCE (high, encoded (6 adjust)): At 6,000 BCE set 0.5 on the east coast and 0 inland; from 5,000 BCE fill 0.95, except Cantabria and Galicia at 0.4 at 5,000 BCE. `domestic_livestock.toml#41`
 - **Iran & Afghanistan**, 9,000–10,000 BCE (medium, encoded (3 adjust)): Set 0 on the plateau and 0.1 in the central Zagros at 9,000 BCE; 0 everywhere at 10,000 BCE. `domestic_livestock.toml#9`

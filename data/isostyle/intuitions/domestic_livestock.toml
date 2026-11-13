@@ -986,6 +986,13 @@ literature = [
 would_settle = "Nothing needed."
 speculative_rule = "Set livestock to 0 in the Horn before 4,500 BCE."
 
+[[judgement.adjust]]
+kind = "area"                              # Lake Tana: hunter-gatherer fishers only; the 0.04-0.33 here leaned in from the Sudanese Nile. Medium confidence; argument and sources in data/places/plans/lake_tana.toml
+bbox = [36.7, 11.4, 37.9, 12.5]
+value = 0.0
+slices = [-8000, -7000, -6000, -5000]
+firm = true                                # the judged 0 is otherwise pulled up toward Nile presences 400+ km away
+
 [[judgement]]
 region = "Horn of Africa"
 slices = [-4000, -3000]
@@ -1017,6 +1024,19 @@ value = 0.4
 kind = "slice_value"
 slices = [-4000]
 value = 0.05
+
+[[judgement.adjust]]
+kind = "area"                              # Lake Tana: domestic animals at Kurtiye only very late. Medium confidence; argument and sources in data/places/plans/lake_tana.toml
+bbox = [36.7, 11.4, 37.9, 12.5]
+value = 0.05
+firm = true                                # without it the 0.05 leans up to 0.52-0.61 from the Sudanese Nile
+
+[[judgement.adjust]]
+kind = "near"                              # Dahlak islands and the Massawa-Zula coast: no domestic fauna in the dated middens; inland herder-gatherers possible. Low confidence; argument and sources in data/places/plans/dahlak.toml
+point = [39.95, 15.6]
+radius_km = 90
+value = 0.2
+firm = true                                # without it 0.44-0.58 leans in from the Nile and across the Red Sea
 
 [[judgement]]
 region = "Maghreb"

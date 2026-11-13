@@ -49,7 +49,6 @@ extents, not as boundaries.
 | Rotunno & Crema 2025 (MIT) | pottery present **and absent**, Sahara and Sahel | 278 site × state groups, 855 dates | radiocarbon |
 | DEFC, Aspöck et al. (CC BY 4.0) | all five, presence only; Greece and Anatolia | 759 areas, 1,366 records | period start and end years |
 | DObsiSS v2.0, Batist (CC BY-SA 4.0) | flaked stone (sourced obsidian), SW Asia | 177 site contexts | ASPRO period |
-| Jordan et al. 2016, earliest-pottery table, African rows (no licence stated; hand-extracted to `inputs/`) | pottery present | 83 sites, about 50 on the grid | median cal BP ± 200 years |
 | SoilGrids 2.0 pH(H2O), 5 km (CC BY 4.0) | bone/antler mask | | |
 
 Africa, searched separately: nothing open records ornaments, bone tools or harpoons, or ground stone
@@ -60,7 +59,8 @@ records none of the five classes. West Africa and the Horn have almost no dated 
 compilation. Searched for outside Europe and found nothing open and georeferenced: ornaments, ground stone and bone
 tools for the Levant, Mesopotamia, Iran, the Caucasus, Arabia and Central Asia; pottery outside North
 Africa and Anatolia (TAY, ASPRO and CANeW have no open download). Jordan et al. 2016 lists earliest
-pottery across Afro-Eurasia but only as a PDF. Found in the audit but not used: Jensen et al. 2020 bone points (table layout needs hand
+pottery across Afro-Eurasia but only as an all-rights-reserved PDF supplement; it was used until
+2026-11-13 and dropped (see `inputs/README.md` for the sites that went with it). Found in the audit but not used: Jensen et al. 2020 bone points (table layout needs hand
 parsing), Rigaud et al. 2015 ornaments (sites carry a culture name but no dates), the CLIOARCH
 lithics (almost all before 10,000 BCE), PaMELA and the British implement petrology database (undated).
 
@@ -135,7 +135,7 @@ are three kinds of evidence point:
 | Environment | Cereal pollen in cores | presence and absence | pollen cores | Neotoma / EPD (CC BY 4.0) |
 | Environment | Dung-fungus spores in cores | presence and absence | cores that count non-pollen palynomorphs | Neotoma / EPD |
 | Environment | Open land | gridded value, % | 1° REVEALS cells | LandClimII, Fyfe et al. 2021 (CC BY) |
-| Structures & organics | Enclosures, megalithic tombs, pile dwellings, houses, mines, metallurgy, waterlogged organics | presence only | dated occupations | XRONOS site types and dated materials (CC BY); rondel enclosures (CC BY); Paulsson 2019 megalith dates (CC BY-NC-ND, joined by lab number, read unmodified) |
+| Structures & organics | Enclosures, megalithic tombs, pile dwellings, houses, mines, metallurgy, waterlogged organics | presence only | dated occupations | XRONOS site types and dated materials (CC BY); rondel enclosures (CC BY) |
 | People | Ancient genomes; Y clades I2, G2a, R1b, R1a, C, J2, H2, other; mt clades U5, U4, H, K, J, T2, N1a, other | presence only (genomes); share | samples | AADR v66.p1 (CC0) |
 
 ### Rules
@@ -145,7 +145,7 @@ are three kinds of evidence point:
 - **Domestic livestock.** Present if domestic cattle, sheep, goat or pig is recorded. Absent only if at least 50 identified specimens (or 8 taxa) include no livestock genus of domestic *or uncertain* status. Unspecified sheep/goat, *Bos* or *Sus* count as uncertain.
 - **Pollen cores.** A level counts if it has a pollen sum. A core-slice is absent only if it has counted levels and none holds the type. Dung spores are unknown, not absent, in cores that do not count non-pollen palynomorphs. Ages come from the dataset's default chronology; cores with only uncalibrated ages are left out.
 - **Open land.** Each hex takes the 1° cell containing its centre. A slice averages the REVEALS windows that are at least half inside it. Firmness is the probability from the reconstruction's standard error that open land is 50% or more.
-- **Structures.** These are regex rules on XRONOS's free-text site type and dated material (`layers.toml`). Paulsson's 2,410 megalith dates have no coordinates; 1,919 match a dated site by lab number.
+- **Structures.** These are regex rules on XRONOS's free-text site type and dated material (`layers.toml`). Paulsson's 2019 megalith dates (CC BY-NC-ND) were joined by lab number until 2026-11-13 and are no longer used, because their licence forbids derivatives.
 - **Haplogroups.** Clades are matched by prefix on AADR's manual Y call (else its ISOGG call) and its mt call; mt H excludes HV. Each clade's share is computed among samples with a call of that kind, and Y only among males. The two smallest mt clades (U2, X) are folded into "other" so the set fits the 8-colour palette.
 - **Kernel widths.** These are cross-validated per layer where it has at least 20 presences and absences. Dung spores borrow from cereal pollen, the Y clades from Y I2, the mt clades from mt U5, and the structure layers from pottery.
 

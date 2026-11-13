@@ -46,6 +46,10 @@ pub fn run(world: &World, opt: &Options) -> Result<(), String> {
     let proj = Projection::new(grid.centre_of_bounds());
     let board = mesh::build(grid, &proj);
     let mut renderer = BoardRenderer::new(&device, &queue, COLOUR_FORMAT, &board, grid.cols as u32, grid.rows as u32);
+    renderer.upload_massif(&queue, &scene::massif_texels(grid, &world.massif));
+    if let Some(map) = &world.heightmap {
+        renderer.upload_heightfield(&queue, &crate::board::heightfield::build(grid, map));
+    }
 
     let snapshot = world.snapshot(opt.year);
     let shade = neolith_core::elevation::hillshade(grid, &world.elevation, neolith_core::elevation::HILLSHADE_EXAGGERATION);
@@ -102,8 +106,10 @@ pub fn run(world: &World, opt: &Options) -> Result<(), String> {
         .filter(|(_, s)| s.exists_at(opt.year))
         .map(|(i, st)| Piece::for_site(world, i, opt.year, crate::renown::lookup(st)))
         .collect();
-    let relief = crate::board::relief::Relief::new(grid, &snapshot.height, crate::board::relief::scale(&style));
-    let verts = scene::piece_vertices(&pieces, &proj, &relief, opt.flat, cam.dist);
+    let relief = crate::board::relief::Relief::new(grid, &snapshot.height, crate::board::relief::scale(&style)).smoothed(style.art_blend);
+    let ruins: Vec<Piece> = (0..world.settlements.len()).filter_map(|i| Piece::ruin_of(world, i, opt.year, crate::renown::lookup(&world.settlements[i]))).collect();
+    let verts = scene::piece_vertices(&[&ruins[..], &pieces[..]].concat(), &proj, &relief, opt.flat, cam.dist);
+    renderer.upload_history(&queue, &scene::history_texels(world, scene::history_year(opt.year)));
     renderer.upload_pieces(&device, &queue, &verts);
     renderer.upload_camps(&queue, &scene::camp_texels(grid, &pieces));
     let mut line_mesh = LineMesh::default();

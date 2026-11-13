@@ -1,0 +1,181 @@
+[meta]
+place = "samara_bend"
+written = "2026-11-12"
+verdict = "research"
+confidence = "high"
+really_empty = "Thin, not empty, and missing its best sites. The proposed box (47.8-52.0 E, 51.9-54.0 N, 55 land hexes) holds five dated records: Ivanovka (6,920-6,620 BCE), Lebyanzhinka (5,590 BCE, Beta-392490), Grenovka (4,730-4,650 BCE, tagged 'cucuteni_trypillia', which cannot be right on the Volga), Lopatino (3,100 BCE) and Kutuluk (3,020 BCE). Nothing is in the box at 10,000-8,000 BCE. 'Lebyanzhinka' and 'Lopatino' flagged as a possible duplicate are different sites 2.3 km apart. 'Lebyazhinka 4' (7 dates, 8,140-6,850 BCE, citing Zaitseva et al. 2009) is filed at 5.06 E, 50.51 N in Belgium; it belongs here at about 50.67 E, 53.68 N. The Khvalynsk cemetery has 14 dates in the raw XRONOS Russia file but no coordinates, so the build dropped it. AADR has about 15 directly dated burial localities in or next to the box (Khvalynsk I-II, Ekaterinovskiy Mys, S'yezzheye, Chekalino-4, Maksimovka-1, Labazy, Sidel'kino-2, and others); none are in our settlements except Lopatino and Kutuluk. Dolbunova's table has six dated-pottery Elshanka and Middle Volga sites here (Chekalino IV, Ilyinka, Lebyzhinka 4, Nizhnyaya Orlyanka II, Bolshaya Rakovka 2, Krasny Gorodok). They feed the pottery layer only."
+why_empty = ["not_in_open_compilations", "dataset_edge", "publication_access"]
+summary = """
+The Middle Volga from the Samara Bend to Khvalynsk, with the Samara, Sok and
+Kinel valleys of the Trans-Volga. This is the home ground of the Elshanka
+culture, which made some of the earliest pottery in eastern Europe; of the
+Samara and Khvalynsk Eneolithic, including the Khvalynsk cemetery with its
+copper and its sheep, goat and cattle sacrifices; and of the earliest
+Yamnaya kurgans. It is one of the most intensively dated places in the
+steppe, in Russian work and in the aDNA papers of 2015-2026. Our data holds
+five records, one of them with the wrong culture. The emptiness is all
+recording. The dates exist in AADR, which this project has already
+downloaded, and in Dolbunova et al.'s deposit, which it has already used for
+pottery. Neither has been turned into settlements.
+
+The dating debate matters for what to enter. Mamonov's and Vybornov's
+7th-millennium dates for Elshanka are on shell and on pottery organics.
+Courel et al. (2021) modelled about 250 legacy dates with new AMS dates and
+put most Elshanka pottery at c. 6000-5200 cal BC. In their model, dates
+before 6000 cal BC are 'possible, but unlikely'. Human bone from Khvalynsk
+and Ekaterinovka is also dated too old by the fish in the diet. AADR's
+calibrated ranges for Khvalynsk-2 reach 5311 calBCE, while the corrected
+estimate for the cemetery, as summarised in search results I could not
+open, is c. 4500-4300 BCE (Anthony et al. 2022). Enter the dates with that
+caveat. Do not use them to push pottery or herding earlier.
+
+The board is wrong here as well (details in the reply). Every one of the 55
+hexes is Boreal Forest from 10,000 to 6,000 BCE and Temperate Forest from
+5,000 BCE. There is no grassland or floodplain anywhere between 52 and 54 N,
+and the Samara, Sok and Kinel are not drawn. Courel et al.'s Fig. 1 puts
+this region in the modern forest-steppe and marks open steppe at the start
+of the Atlantic.
+"""
+
+[proposed_place]
+key = "samara_bend"
+name = "Samara Bend and Middle Volga steppe"
+kind = "confluence"
+box = [47.8, 51.9, 52.0, 54.0]
+why = "The Middle Volga where the Samara, Sok and Kinel join it, from the Samara Bend down to Khvalynsk: forest-steppe on the right bank, steppe in the Trans-Volga."
+
+[[known_site]]
+name = "Khvalynsk I and II (cemetery)"
+lon = 48.08
+lat = 52.35
+coordinates = "published"
+start = -5311
+end = -4300
+what = "Eneolithic cemetery on the Volga by Khvalynsk (two excavated areas, I and II), with copper ornaments and animal sacrifices; from memory, about 200 graves in all, unchecked. AADR has 45 genomes from Khvalynsk-1 and -2, dated from 5311-5084 calBCE (6260+/-25 BP, PSUAMS-4151) to 4550-4300 BCE. These are uncalibrated for reservoir effect. The corrected date of the cemetery, per a search summary of Anthony et al. 2022 that I could not open, is c. 4500-4300 BCE, so the early end of this range is probably several centuries too old. XRONOS has 14 dates for it but no coordinates, which is why it never reached our data."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024), samples published by Lazaridis et al. 2025, Nature; Anthony, D.W. et al. 2022, The Eneolithic cemetery at Khvalynsk on the Volga River, Praehistorische Zeitschrift 97(1):22-67"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[known_site]]
+name = "Ekaterinovskiy Mys (cemetery)"
+lon = 49.47
+lat = 53.09
+coordinates = "published"
+start = -5477
+end = -5005
+what = "Early Eneolithic cemetery on the Volga in the Bezenchuk district, Samara oblast, with 47 genomes in AADR (Russia_Samara_Eneolithic_Ekaterinovka), dated from 5477-5331 calBCE (6442+/-34 BP, DeA-8214) to 5209-5005 calBCE (6150+/-30 BP, PSUAMS-9567). Possibly reservoir-affected."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024); samples published by Lazaridis et al. 2025, Nature"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[known_site]]
+name = "S'yezzheye (cemetery)"
+lon = 51.17
+lat = 53.02
+coordinates = "published"
+start = -5557
+end = -4720
+what = "Early Eneolithic (Samara culture) cemetery on the Samara river in the Bogatovsky district, with 9 genomes in AADR, dated 5557-5381 calBCE (6520+/-30 BP, PSUAMS-8843) to 4881-4720 calBCE (5925+/-25 BP, PSUAMS-8842). Possibly reservoir-affected."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024); samples published by Lazaridis et al. 2025, Nature"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[known_site]]
+name = "Chekalino IV (Chekalino-4)"
+lon = 50.92
+lat = 53.88
+coordinates = "published"
+start = -8281
+end = -3528
+what = "Elshanka-culture settlement on the Sok in the Sergiyevsky district, with a human burial dated 8281-7971 calBCE (8970+/-30 BP, PSUAMS-4211; AADR group Russia_Samara_EN_Mesolithic) and later individuals down to 3645-3528 calBCE. Dolbunova's table has 11 pottery samples from it at 50.91, 53.88. Vybornov (2011, as quoted in a search summary) cites site dates of 8990+/-100 and 8680+/-120 BP. Courel et al. 2021 doubt any Elshanka pottery before 6000 cal BC. The Mesolithic burial date stands on its own."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024); Zeng et al. 2025, Nature; Dolbunova et al. 2023, Zenodo 6619101; Courel, B. et al. 2021, Quaternary Science Reviews 269:107143"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[known_site]]
+name = "Nizhnyaya Orlyanka II"
+lon = 50.88
+lat = 53.84
+coordinates = "published"
+start = -6000
+end = -5200
+what = "Elshanka pottery site in the Sok valley (8 vessel samples in Dolbunova's table). One food-crust date, DeA-20752, 7440+/-49 BP. Courel et al. 2021 call it possibly unreliable because of its very low carbon content. The span given here is their phase 1 for Elshanka pottery (c. 6000-5200 cal BC), not a site date."
+cite = "Courel, B., Meadows, J., Gonzalez Carretero, L. et al. 2021, The use of early pottery by hunter-gatherers of the Eastern European forest-steppe, Quaternary Science Reviews 269:107143; Dolbunova et al. 2023, Zenodo 6619101"
+url = "https://eprints.whiterose.ac.uk/177764/"
+checked = true
+
+[[known_site]]
+name = "Sidel'kino-2 (burial)"
+lon = 51.1
+lat = 54.55
+coordinates = "published"
+start = -9649
+end = -9284
+what = "Mesolithic burial in the Chelno-Vershinsky district, north-east Samara oblast, dated 9649-9284 calBCE (combined 9913+/-35 BP; UBA-31465 and another). The earliest dated human presence in the region. AADR group Russia_Sidelkino2_Mesolithic; published by Damgaard et al. 2018, Science. 61 km north of the box."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024); Damgaard et al. 2018, Science"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[known_site]]
+name = "Labazy (burials)"
+lon = 52.17
+lat = 52.6
+coordinates = "published"
+start = -6449
+end = -6234
+what = "Late Mesolithic/Neolithic burials in the Kurmanayevsky district, Orenburg oblast, on the upper Samara. Three genomes in AADR (Russia_Orenburg_N), 6449-6264 calBCE (combined 7525+/-26 BP) to 6387-6234 calBCE (7430+/-30 BP, PSUAMS-4261). 12 km east of the box."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024); samples published by Lazaridis et al. 2025, Nature"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[known_site]]
+name = "Maksimovka-1 (kurgan)"
+lon = 51.11
+lat = 52.98
+coordinates = "published"
+start = -4153
+end = -3633
+what = "Late Eneolithic burials in the Neftegorsky district, with 7 genomes in AADR, dated 4153-3962 calBCE (5205+/-25 BP, PSUAMS-4255) to 3710-3633 calBCE (4885+/-25 BP, PSUAMS-8284). They fill the 4,000 BCE gap between Khvalynsk and Yamnaya in our data."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024); samples published by Lazaridis et al. 2025, Nature"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[research]]
+what = "Turn the AADR localities of the Middle Volga into dated sites: Khvalynsk-1 and -2, Ekaterinovskiy Mys, S'yezzheye, Chekalino-4, Maksimovka-1, Labazy, Sidel'kino-2, Utyovka-5 and -11, Podlesny-1, Grachevka-2 and Nizhnaya-Orlyanka-1. Lebyazhinka is already in as 'Lebyanzhinka'. Use AADR's coordinates and direct dates; carry a reservoir-offset flag on every human-bone date from a riverine population."
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+yields = "About 14 dated burial sites in or next to the box, 9,650-2,900 BCE, which fill the 10,000-8,000 BCE and 4,000 BCE slices that are empty now"
+effort = "A filter on build/isostyle/sources/aadr_v66.p1_1240K.anno, already on disk"
+
+[[research]]
+what = "Make the Dolbunova et al. 2023 site table (SI_ORA.xlsx, already downloaded for the pottery layer) a settlements source as well, with each site dated by its modelled or published span. In this box it adds Ilyinka, Lebyzhinka 4 (correct position), Nizhnyaya Orlyanka II, Bolshaya Rakovka 2 and Krasny Gorodok; across southern Russia also Algay, Baibek, Kugat IV, Kairshak III, Varfolomeevka and Rakushechny Yar (as 'Rakucheshny Yar'), with coordinates."
+url = "https://zenodo.org/records/6619101"
+yields = "About 40 forager-pottery sites in the Don and Volga basins with coordinates. They are only period-dated unless their dates are taken from Courel et al. 2021 and Vybornov's papers."
+effort = "Small: the file is on disk; the work is deciding the date span per site"
+
+[[research]]
+what = "Take the Elshanka and Middle Volga radiocarbon list from Vybornov et al. 2017 (Documenta Praehistorica 44:224-239) and Vybornov 2011 (DP 38), and the modelled ranges of Courel et al. 2021. Enter Staraya Elshanka II, Ilyinka, Chekalino IV, Lebyazhinka IV and Ivanovka with all their dates, marking the shell and TOCC dates that Courel et al. down-weight."
+url = "https://dlib.si/stream/URN:NBN:SI:DOC-OO2ZWENB/f7d624c3-476d-4e35-ad9b-6dafdad30f80/PDF"
+yields = "5-8 settlements with 3-15 dates each, c. 7,000-4,500 cal BC on the authors' own reading, 6,000-4,500 on Courel's"
+effort = "Two open papers; an afternoon"
+
+[[speculate]]
+target = "isostyle:pottery"
+slices = [-7000]
+rule = "In the 7,000 BCE slice, lower the gap critic's judged pottery value within 250 km of the Middle Volga from 0.3 to 0.1. Leave 6,000 BCE as it is."
+confidence = "low"
+reasoning = "The 0.3 in data/isostyle/intuitions/pottery.toml rests on 7th-millennium Elshanka dates. Courel et al. 2021 modelled more than 250 legacy dates with new AMS dates. They found Elshanka pottery mostly c. 6000-5200 cal BC, with earlier dates 'possible, but unlikely' and the shell and food-crust ages likely reservoir-inflated. Vybornov still argues for the 7th millennium, so the value should not go to 0. The 7,000 BCE slice covers 7,500-6,500 BCE, which on Courel's model holds almost no pottery."
+basis = ["literature"]
+
+[[speculate.adjust]]
+kind = "near"
+point = [50.0, 53.3]
+radius_km = 250
+value = 0.1
+
+[[speculate]]
+target = "settlements"
+slices = [-9000, -8000, -7000]
+rule = "Place inferred Mesolithic forager camps on the first terraces of the Volga, Samara, Sok and Kinel, about one per 40 km of valley, marked inferred, until the AADR and Vybornov sites are entered."
+confidence = "medium"
+reasoning = "Dated burials show people here at 9649-9284 calBCE (Sidel'kino-2), 8281-7971 calBCE (Chekalino-4), 8342-8236 calBCE (Ural-River, Orenburg) and 6449-6234 calBCE (Labazy), and Ivanovka in our data dates to 6,920-6,620 BCE. Courel et al. note that the early pottery sites sit on the floodplain and first terrace of the Volga tributaries; the Mesolithic layers under them (Chekalino IV) say the same of the earlier camps. Medium, not high, because the spacing is a guess, and because these become recorded sites once the research above is done."
+basis = ["neighbouring_evidence", "literature"]

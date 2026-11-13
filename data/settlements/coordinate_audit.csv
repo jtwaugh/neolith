@@ -1,13 +1,9 @@
 name,lon,lat,hex,reasons,ground_m,same_name_km,hint,sources
-Bury Hill,-5.76,50.899,3386,at_sea;offshore,-85,,"lon sign: 5.7600, 50.8990 is dry (102 m)",xronos
-el-Khawarij,32.1667,35.75,15649,at_sea;offshore;same_name_far,-2401,503,"lat/lon swapped: 35.7500, 32.1667 is dry (315 m) next to a same-name site",xronos
 Les Hauts de L'Orne,-3.64,49.154,4084,at_sea;same_name_far,-55,238,"lon sign: 3.6400, 49.1540 is dry (217 m)",xronos
 Parmorari,8.4283,42.2357,7990,at_sea,-1246,,"lon sign: -8.4283, 42.2357 is dry (165 m) | lat/lon swapped: 42.2357, 8.4283 is dry (1048 m)",xronos
 Sabha,30.5013,32.3281,15100,at_sea,-1197,,"lat/lon swapped: 32.3281, 30.5013 is dry (7 m)",xronos
-Beurkia,18.07,15.48,11102,offshore,272,,"lat/lon swapped: 15.4800, 18.0700 is dry (384 m)",xronos
 Jettböle,19.9486,60.1522,11708,offshore,33,,,xronos
 Korsnäs,21.1667,62.7667,11981,offshore;same_name_far,28,441,,xronos
-Mandi,14.67,13.42,9994,offshore,285,,"lon sign: -14.6700, 13.4200 is dry (31 m) | lat/lon swapped: 13.4200, 14.6700 is dry (312 m)",xronos
 "'Claidh Dubh', Castleblagh/Ballydague",-8.428,52.1323,2550,same_name_far,342,26,,xronos
 Abingdon,-1.2833,51.0667,4776,same_name_far,120,68,,xronos
 "Abingdon, Oxfordshire",-1.2626,51.681,4775,same_name_far,86,68,,xronos
@@ -21,9 +17,6 @@ Almonda,-8.6157,39.5057,2436,same_name_far,619,31,,xronos
 Almonda (Galeria da Cisterna),-8.3648,39.3013,2576,same_name_far,168,31,,neonetatl
 Arene Candide,8.3283,44.1625,7848,same_name_far,259,40,,neonet;p3k14c;xronos
 Arene Candide,8.5,44.5,7986,same_name_far,808,40,,p3k14c
-Arma dell' Aquila,13.3935,42.365,9519,same_name_far,1136,452,,xronos
-"Arma dell'Aquila, Finale Ligure",13.3667,42.3667,9519,same_name_far,1136,450,,xronos
-Arma dell’Aquila,8.4313,44.2413,7986,same_name_far,237,450;452,,xronos
 BLAGNAT,6.6,43.65,7293,same_name_far,1049,184,,xronos
 Balme Rousse,5.39,45.07,7012,same_name_far,1314,112,,xronos
 Balme-Rousse,5.4,44.0669,7014,same_name_far,1019,112,,xronos
@@ -38,17 +31,14 @@ Burqu 27,37.2,31.95,17185,same_name_far,642,103,,xronos
 Burqu 35,37.2,31.95,17185,same_name_far,642,103,,xronos
 Burqu' 27,37.9666,32.6174,17461,same_name_far,662,103,,xronos
 Burqu' 35,37.9666,32.6174,17461,same_name_far,662,103,,xronos
-Båtsberg,12.36,57.14,9212,same_name_far,53,46;46,,xronos
+Båtsberg,12.36,57.14,9212,same_name_far,53,46,,xronos
 Båtsberg,13.119,57.1333,9490,same_name_far,160,46,,xronos
 Bögebakken,12.528,55.8492,9215,same_name_far,48,173,,xronos
 Bøgebakken,9.9508,56.4372,8379,same_name_far,58,173,,xronos
-Bȯtsberg,13.119,57.1333,9490,same_name_far,160,46,,xronos
 Caldeirão,-8.2454,39.3854,2575,same_name_far,169,42,,neonetatl
 Caldeirão,-8.7057,39.518,2436,same_name_far,464,42,,xronos
 Camere,8.3889,44.2272,7986,same_name_far,464,32,,xronos
 Camere (Camerotto),8.0202,44.1141,7848,same_name_far,970,32,,xronos
-Cernavoda,26.6346,44.0829,13825,same_name_far,115,117,,xronos
-"Cernavoda, Dobrudscha",28.05,44.35,14242,same_name_far,87,117,,xronos
 Chazelles,4.2,44.3333,6596,same_name_far,266,338,,xronos
 "Chazelles, grotte de Queroy",0.32,45.65,5343,same_name_far,166,338,,xronos
 Chełmiczki,21.32,50.02,12145,same_name_far,318,352,,xronos
@@ -56,22 +46,12 @@ Chełmiczki,18.421,52.6129,11167,same_name_far,94,352,,xronos
 Cialdino,10.9262,44.0073,8821,same_name_far,1081,45,,xronos
 Cialdino,11.4517,44.1447,8960,same_name_far,928,45,,neonet
 Claidh Dubh,-8.4711,51.8979,2550,same_name_far,124,26,,xronos
-Clot de l'Hospital,0.33,40.77,5353,same_name_far,1150,913,,xronos
-Clot de l�Hospital,2.1595,48.8762,5892,same_name_far,159,913,,xronos
 "Colmar ""Route de Rouffach""",7.343,48.066,7562,same_name_far,248,459,,xronos
 "Colmar \""""Route de Rouffach\""""",4.753,44.343,6736,same_name_far,212,459,,xronos
 Costamar,0.2,41.14,5352,same_name_far,362,112,,xronos
 Costamar,0.1586,40.1368,5354,same_name_far,156,112,,neonet
-Cova de L´Or,-0.3642,38.8447,5217,same_name_far,690,25,,xronos
-Cova de l'Or,-0.1928,38.663,5217,same_name_far,1019,25,,xronos
-Cova de la Guineu,1.615,41.7724,5767,same_name_far,827,39,,xronos
-Cova de la Guineu,1.6609,41.4211,5768,same_name_far,571,39,,neonet
-Cova d’en Pardo,-0.2972,38.8167,5217,same_name_far,702,36,,xronos
-Cova d�en Pardo,-0.0932,38.5362,5218,same_name_far,144,36,,xronos
 Crno Vrilo,15.2297,44.1344,10072,same_name_far,78,46,,xronos
 Crno Vrilo,15.073,44.5284,10071,same_name_far,971,46,,neonet
-Crvena Stijena,5.3268,46.1026,7010,same_name_far,425,1108,,xronos
-Crvena Stijena,18.4847,42.7556,11187,same_name_far,1077,1108,,neonet
 Denekamp,7.009,52.3797,7414,same_name_far,53,331,,xronos
 "Denekamp, Klokkenberg",2.125,52.375,5885,same_name_far,-29,331,,xronos
 Dereivka,33.7649,48.9142,16039,same_name_far,151,43,,p3k14c
@@ -82,9 +62,6 @@ El Hadjar,4.78,31.53,6761,same_name_far,226,71;88,,xronos
 El Hadjar (site 6701),5.3,30.87,6901,same_name_far,200,88;129,,xronos
 El Hadjar (site 6709),5.25,32.03,7038,same_name_far,221,71;129,,xronos
 El-Badari,31.24,26.59,15389,same_name_far,334,127,,xronos
-El-Khawarij,35.7478,32.3305,16768,same_name_far,1077,503,,xronos
-Falkensteinhöhle,9.0761,48.1,8118,same_name_far,870,396,,xronos
-Falkensteinh�hle,5.0,50.47,6862,same_name_far,190,396,,xronos
 Fatmali Kalecik,38.9342,38.8576,17727,same_name_far,1032,26,"lat/lon swapped: 38.8576, 38.9342 is dry (823 m) next to a same-name site",xronos
 Fatmali-Kalecik,38.75,39.04,17727,same_name_far,1047,26,"lat/lon swapped: 39.0400, 38.7500 is dry (1037 m) next to a same-name site",xronos
 Fimon-Molino Casarotto,11.691,45.7623,8957,same_name_far,920,34;33;33,,xronos
@@ -92,24 +69,21 @@ Fimon-Molino Casarotto,11.691,45.7623,8957,same_name_far,920,34;33;33,,xronos
 "Fimon-Molino Casarotto, Site 3",11.6,45.4666,8957,same_name_far,262,34,,xronos
 "Fimon-Molino Casarotto, site 6",11.5464,45.4805,8957,same_name_far,391,33,,xronos
 "Fimon-Molino Casarotto, site 7",11.5466,45.4805,8957,same_name_far,391,33,,xronos
-Glimmer,4.7352,52.6628,6719,same_name_far,9,137,,xronos
-Glimmer,6.63,53.13,7412,same_name_far,5,137,,xronos
-Hearth,-3.0937,54.9755,4212,same_name_far,26,113,,xronos
-"Hearth, charcoal dumps and flint-knapping floor",-4.4759,54.3493,3796,same_name_far,253,113,,xronos
+Grotta dell Edera,8.47,44.32,7986,same_name_far,431,440,,xronos
+Grotta dell'Edera,8.32,44.196,7986,same_name_far,506,457,,xronos
+Grotta dell'Edera,13.696,45.756,9651,same_name_far,250,457;440,,neonet;xronos
 Horton,-1.9219,51.3685,4636,same_name_far,189,97,,xronos
-"Horton, Berkshire",-0.5389,51.4717,5053,same_name_far,64,97,,xronos
+"Horton, Berkshire",-0.5361,51.4635,5053,same_name_far,64,97,,xronos
 Izriten,-9.79,31.45,2174,same_name_far,70,452;474,,xronos
 Izriten (Tarfaya),-12.2667,28.0,1347,same_name_far,55,452;35,,xronos
 Izriten (Tarfaya) Site 19,-12.6167,27.9667,1208,same_name_far,37,474;35,,xronos
 Jaatcha,9.03,34.58,8145,same_name_far,381,94,,xronos
 Jaatcha (Metlaoui),8.0283,34.4025,7867,same_name_far,693,94,,xronos
-Jäckelberg-Nord,16.742,54.0333,10608,same_name_far,204,345,,xronos
-Jäckelberg-Nord (Poel 16),11.4589,54.0647,8940,same_name_far,-1,345,,xronos
-Kendrick s Cave,-3.5,52.5,4078,same_name_far,364,95,,xronos
+Kendrick's Cave,-3.5,52.5,4078,same_name_far,364,95,,xronos
 Kendrick's Cave,-3.8329,53.3284,4076,same_name_far,85,95,,xronos
 Korsnäs,17.8,59.15,10876,same_name_far,69,441,,xronos
-Kryoneri,23.8,38.1,12864,same_name_far,377,300,,p3k14c
-Kryoneri,23.83,40.8,12859,same_name_far,237,300,,p3k14c
+Kryoneri,23.8268,40.8384,12997,same_name_far,237,305,,p3k14c;xronos
+Kryoneri,23.8,38.1,12864,same_name_far,377,305,,p3k14c
 Krzemionki,21.3852,50.9295,12143,same_name_far,208,38,,p3k14c
 Krzemionki,21.2979,50.5893,12005,same_name_far,247,38,,p3k14c
 LES HAUTS DE L'ORNE,-0.364,49.154,5058,same_name_far,66,238,,xronos
@@ -119,13 +93,11 @@ Lapa da Bugalheira,-8.3657,39.3087,2576,same_name_far,168,30,,neonetatl
 Lapa da Bugalheira,-8.6161,39.5025,2436,same_name_far,619,30,,xronos
 Le Macchie,17.2121,40.9905,10773,same_name_far,172,41,,xronos
 "Le Macchie, Bari Palese",16.7689,41.1474,10634,same_name_far,82,41,,xronos
+Lopatino,50.39,53.38,21451,same_name_far,184,34,,xronos
+Lopatino,50.6643,53.6397,21451,same_name_far,115,34,,aadr
 Löddigsee,11.9289,53.4178,9080,same_name_far,72,34,,xronos
 "Löddigsee, Parchim",11.5041,53.2535,8942,same_name_far,44,34,,xronos
 MIdtown,-2.5237,57.48,4485,same_name_far,192,53,,xronos
-Magoito,-7.5833,37.3,2858,same_name_far,229,208,,xronos
-Magoito,-9.1368,38.7162,2299,same_name_far,80,208,,neonetatl
-Mesvin-Sans-Pareil,4.9119,50.2605,6862,same_name_far,242,70,,xronos
-Mesvin-sans-Pareil,3.9608,50.4279,6584,same_name_far,68,70,,xronos
 Midtown,-2.4903,57.0045,4486,same_name_far,355,53,,xronos
 Mouskorbe,18.71,21.69,11367,same_name_far,1796,26,,xronos
 Mouskorbe (25kmsw),18.53,21.53,11229,same_name_far,1856,26,,xronos
@@ -146,16 +118,12 @@ Pigi Athinas Platamon,21.4234,40.3156,12164,same_name_far,655,110,,xronos
 Pigi Athinas. Platamon,22.64,39.9664,12582,same_name_far,343,110,,xronos
 Platia Magoula Zarkou,22.1,39.6,12305,same_name_far,350,300,,p3k14c
 Platia Magoula Zarkou,22.76,36.95,12588,same_name_far,722,300,,p3k14c
-Pont d Ambon,0.24,45.54,5343,same_name_far,188,37,,xronos
 Pont d'Ambon,0.6,45.3167,5482,same_name_far,182,37,,xronos
-Praia di Mare,17.2336,40.4236,10774,same_name_far,20,137,,xronos
-Praia di Mare (Grotta della Madonna),15.7667,39.9167,10358,same_name_far,430,137,,xronos
-Raddon,-0.7442,50.8212,5055,same_name_far,43,199,,xronos
-"Raddon, Devon",-3.5834,50.8169,4081,same_name_far,199,199,,xronos
+Pont d'Ambon,0.24,45.54,5343,same_name_far,188,37,,xronos
+Pulli,24.5833,58.3167,13102,same_name_far,20,100,,literature
+Pulli,22.9573,58.6066,12545,same_name_far,20,100,,xronos
 "Rimbeck, Weißes Holz",9.05,51.5333,8111,same_name_far,325,413,,xronos
 "Rimbeck, Weißes Holz (enclosure)",12.5637,48.5839,9229,same_name_far,478,413,,xronos
-Roche,6.7333,47.4833,7424,same_name_far,474,71,,xronos
-Roche (Courchapon),6.03,47.06,7147,same_name_far,596,71,,xronos
 Rond du Barry,-0.59,45.56,5065,same_name_far,49,353,,xronos
 Rond du Barry,3.8669,45.0669,6456,same_name_far,802,353,,neonetatl
 Roulet-Saint-Estèphe – Les Arnauds,0.001,45.55,5204,same_name_far,125,78,,xronos
@@ -169,8 +137,8 @@ Samovodene,25.3,43.1569,13410,same_name_far,401,25,,p3k14c
 San Marco,16.1365,41.9088,10493,same_name_far,215,497,,xronos
 "San Marco, Venice",12.3333,45.4333,9235,same_name_far,4,497,,xronos
 Scabba Wood Shelter,-1.2,53.5,4910,same_name_far,98,205,,xronos
-Skottemark,11.8836,58.0809,9071,same_name_far,105,377,,xronos
-"Skottemark, Denmark",11.551,54.696,8939,same_name_far,16,377,,xronos
+Spiginas,22.4357,55.7647,12411,same_name_far,168,46,,p3k14c
+Spiginas,21.85,56.0167,12272,same_name_far,175,46,,literature
 Spong Hill,-2.4108,52.6925,4495,same_name_far,161,225,,xronos
 "Spong Hill, Norfolk",0.934,52.737,5607,same_name_far,56,225,,xronos
 Stenby mölle,17.783,59.05,10876,same_name_far,52,461,,xronos
@@ -180,9 +148,7 @@ São Julião,-9.4186,38.932,2298,same_name_far,124,28,,neonetatl
 Tepecik,39.46,38.66,17867,same_name_far,1179,436,,xronos
 Tepecik (Makaraz Tepe),34.4938,38.1722,16338,same_name_far,1870,436,,p3k14c;xronos
 Trasano,16.55,40.45,10635,same_name_far,320,26,,xronos
-Trasano,16.6361,40.6756,10635,same_name_far,462,26,,neonet
-Turó de Can Bellsolà,2.2,41.5333,5907,same_name_far,247,48,,xronos
-Turó de Can Bellsol�,1.622,41.517,5768,same_name_far,546,48,,xronos
+Trasano,16.6361,40.6756,10635,same_name_far,462,26,,neonet;xronos
 Ujrat el-Mehed 1,33.93,28.57,16219,same_name_far,1955,60,,xronos
 Ujrat-el-Mehed 1,33.325,28.477,15941,same_name_far,265,60,,xronos
 Uvda 9,34.67,29.95,16355,same_name_far,559,29,,p3k14c

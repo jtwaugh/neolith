@@ -44,3 +44,22 @@ class Misdated(unittest.TestCase):
         from pipeline import compose
         c = np.array([[0.0, 0.0], [5.0, 5.0], [9.0, 9.0]])
         self.assertEqual(compose.in_boxes(c, [[-1, -1, 1, 1], [8, 8, 10, 10]]).tolist(), [True, False, True])
+
+
+class RuleMask(unittest.TestCase):
+    def test_edge_noise_wanders_but_keeps_the_core(self):
+        lon, lat = np.meshgrid(np.arange(20.0, 70.0, 0.5), np.arange(40.0, 65.0, 0.5))
+        c = np.column_stack([lon.ravel(), lat.ravel()])
+        rule = {"boxes": [[30.0, 46.0, 60.0, 55.0]], "edge_noise": {"amplitude": 1.5, "period": 5.0, "seed": 11}}
+        m = compose.rule_mask(c, rule)
+        plain = compose.in_boxes(c, rule["boxes"])
+        far_in = (c[:, 0] > 33) & (c[:, 0] < 57) & (c[:, 1] > 48) & (c[:, 1] < 53)
+        far_out = (c[:, 0] < 27) | (c[:, 0] > 63) | (c[:, 1] < 44) | (c[:, 1] > 57)
+        self.assertTrue(m[far_in].all())
+        self.assertFalse(m[far_out].any())
+        self.assertGreater((m != plain).sum(), 0)          # the edge moves
+        # Along 55°N the edge is not one straight row.
+        row = (c[:, 0] > 35) & (c[:, 0] < 55)
+        tops = [c[(c[:, 0] == x) & m, 1].max() for x in np.unique(c[row, 0])]
+        self.assertGreater(len(set(tops)), 2)
+        self.assertTrue(compose.rule_mask(c, {"boxes": rule["boxes"]}).tolist() == plain.tolist())

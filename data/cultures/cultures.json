@@ -13,20 +13,20 @@
    "wikidata": "Q40203"
   },
   "unverified": [],
-  "sites": 22,
+  "sites": 17,
   "observed": {
-   "start_p10": -18985,
-   "start_median": -9075,
-   "start_p90": -6405,
+   "start_p10": -16410,
+   "start_median": -9130,
+   "start_p90": -5908,
    "centre": [
-    5.09,
-    44.3
+    5.68,
+    44.97
    ],
    "bbox_p5_p95": [
-    -5.42,
-    35.87,
-    23.01,
-    51.23
+    -6.07,
+    37.16,
+    23.37,
+    52.1
    ]
   }
  },
@@ -53,20 +53,20 @@
    "wikidata": "Q479505"
   },
   "unverified": [],
-  "sites": 146,
+  "sites": 132,
   "observed": {
-   "start_p10": -20365,
-   "start_median": -13270,
-   "start_p90": -8840,
+   "start_p10": -19818,
+   "start_median": -13320,
+   "start_p90": -8905,
    "centre": [
     4.19,
-    44.65
+    44.28
    ],
    "bbox_p5_p95": [
-    -5.02,
-    38.31,
-    21.42,
-    51.45
+    -4.95,
+    38.06,
+    21.94,
+    51.4
    ]
   }
  },
@@ -94,20 +94,20 @@
    "wikidata": "Q829005"
   },
   "unverified": [],
-  "sites": 351,
+  "sites": 299,
   "observed": {
-   "start_p10": -12610,
-   "start_median": -8320,
-   "start_p90": -5580,
+   "start_p10": -12308,
+   "start_median": -8180,
+   "start_p90": -5488,
    "centre": [
-    5.55,
-    44.02
+    5.93,
+    43.44
    ],
    "bbox_p5_p95": [
-    -8.35,
-    30.0,
-    35.51,
-    55.53
+    -8.33,
+    29.63,
+    35.74,
+    55.51
    ]
   }
  },
@@ -134,20 +134,20 @@
    "wikidata": "Q44155"
   },
   "unverified": [],
-  "sites": 593,
+  "sites": 625,
   "observed": {
-   "start_p10": -8626,
-   "start_median": -6470,
-   "start_p90": -4840,
+   "start_p10": -8710,
+   "start_median": -6580,
+   "start_p90": -4850,
    "centre": [
-    5.39,
-    47.99
+    6.52,
+    50.62
    ],
    "bbox_p5_p95": [
-    -8.39,
-    38.25,
-    14.53,
-    56.02
+    -7.5,
+    38.42,
+    39.02,
+    60.66
    ]
   }
  },
@@ -175,20 +175,20 @@
    "wikidata": "Q1190360"
   },
   "unverified": [],
-  "sites": 98,
+  "sites": 94,
   "observed": {
-   "start_p10": -9515,
-   "start_median": -8075,
-   "start_p90": -7077,
+   "start_p10": -9535,
+   "start_median": -8065,
+   "start_p90": -7073,
    "centre": [
-    35.89,
-    33.46
+    35.86,
+    33.41
    ],
    "bbox_p5_p95": [
-    33.1,
-    30.0,
-    42.81,
-    37.74
+    33.08,
+    29.98,
+    43.47,
+    37.76
    ]
   }
  },
@@ -216,20 +216,20 @@
    "wikidata": "Q36422"
   },
   "unverified": [],
-  "sites": 2833,
+  "sites": 2674,
   "observed": {
-   "start_p10": -6110,
-   "start_median": -4590,
-   "start_p90": -3391,
+   "start_p10": -6080,
+   "start_median": -4565,
+   "start_p90": -3362,
    "centre": [
-    7.7,
-    47.28
+    8.55,
+    47.54
    ],
    "bbox_p5_p95": [
-    -6.41,
+    -6.29,
     29.6,
-    36.52,
-    56.5
+    37.99,
+    56.83
    ]
   }
  },
@@ -260,20 +260,20 @@
    "wikidata": "Q130253"
   },
   "unverified": [],
-  "sites": 407,
+  "sites": 446,
   "observed": {
-   "start_p10": -5048,
-   "start_median": -3710,
-   "start_p90": -2647,
+   "start_p10": -5075,
+   "start_median": -3750,
+   "start_p90": -2675,
    "centre": [
-    23.53,
-    45.27
+    26.77,
+    45.73
    ],
    "bbox_p5_p95": [
-    1.77,
+    1.84,
     25.97,
-    47.19,
-    52.74
+    50.31,
+    53.41
    ]
   }
  },
@@ -294,20 +294,20 @@
    "wikidata": "Q11761"
   },
   "unverified": [],
-  "sites": 359,
+  "sites": 357,
   "observed": {
-   "start_p10": -3702,
-   "start_median": -1770,
+   "start_p10": -3670,
+   "start_median": -1760,
    "start_p90": -1020,
    "centre": [
-    1.59,
-    47.91
+    1.46,
+    48.08
    ],
    "bbox_p5_p95": [
-    -7.94,
-    34.65,
-    35.52,
-    55.12
+    -8.04,
+    34.64,
+    35.51,
+    55.13
    ]
   }
  },
@@ -328,20 +328,20 @@
    "wikidata": "Q11764"
   },
   "unverified": [],
-  "sites": 20,
+  "sites": 21,
   "observed": {
-   "start_p10": -947,
-   "start_median": -555,
-   "start_p90": -248,
+   "start_p10": -870,
+   "start_median": -530,
+   "start_p90": -270,
    "centre": [
-    0.72,
-    48.55
+    0.48,
+    50.47
    ],
    "bbox_p5_p95": [
-    -6.69,
-    41.43,
-    10.39,
-    55.14
+    -6.86,
+    41.57,
+    10.37,
+    55.11
    ]
   }
  },
@@ -495,7 +495,7 @@
    ]
   },
   "dates_used": 283,
-  "dates_outside_range": 243
+  "dates_outside_range": 242
  },
  {
   "id": "ppnb",
@@ -535,24 +535,24 @@
    "wikidata": "Q897323"
   },
   "unverified": [],
-  "sites": 73,
+  "sites": 69,
   "observed": {
-   "start_p10": -8594,
-   "start_median": -7950,
-   "start_p90": -7160,
+   "start_p10": -8576,
+   "start_median": -7930,
+   "start_p90": -7128,
    "centre": [
-    36.41,
-    33.73
+    35.98,
+    33.51
    ],
    "bbox_p5_p95": [
-    33.08,
-    29.97,
-    43.63,
-    37.56
+    33.05,
+    29.95,
+    44.29,
+    37.54
    ]
   },
-  "dates_used": 786,
-  "dates_outside_range": 244
+  "dates_used": 721,
+  "dates_outside_range": 243
  },
  {
   "id": "ppnc",
@@ -564,9 +564,9 @@
    "pottery": "none"
   },
   "range": {
-   "start": -8090,
+   "start": -8083,
    "start_source": "observed",
-   "end": -4411,
+   "end": -4301,
    "end_source": "observed"
   },
   "wikipedia": {
@@ -593,7 +593,7 @@
    ]
   },
   "dates_used": 51,
-  "dates_outside_range": 27
+  "dates_outside_range": 25
  },
  {
   "id": "yarmukian",
@@ -771,9 +771,9 @@
    ],
    "bbox_p5_p95": [
     36.97,
-    35.39,
-    45.25,
-    38.41
+    35.41,
+    45.28,
+    38.42
    ]
   },
   "dates_used": 138,
@@ -813,23 +813,23 @@
    "wikidata": "Q245156"
   },
   "unverified": [],
-  "sites": 18,
+  "sites": 17,
   "observed": {
-   "start_p10": -6000,
-   "start_median": -5020,
-   "start_p90": -4347,
+   "start_p10": -6040,
+   "start_median": -5060,
+   "start_p90": -4326,
    "centre": [
     47.12,
     32.59
    ],
    "bbox_p5_p95": [
-    40.65,
-    25.5,
-    51.6,
+    40.41,
+    25.44,
+    51.65,
     36.9
    ]
   },
-  "dates_used": 58,
+  "dates_used": 56,
   "dates_outside_range": 81
  },
  {
@@ -873,8 +873,8 @@
    ],
    "bbox_p5_p95": [
     37.2,
-    31.65,
-    47.15,
+    31.67,
+    47.18,
     38.13
    ]
   },
@@ -914,14 +914,14 @@
    "start_median": -4510,
    "start_p90": -4510,
    "centre": [
-    35.6,
-    31.8
+    35.64,
+    31.82
    ],
    "bbox_p5_p95": [
-    35.6,
-    31.8,
-    35.6,
-    31.8
+    35.64,
+    31.82,
+    35.64,
+    31.82
    ]
   },
   "dates_used": 23,
@@ -959,7 +959,7 @@
   "observed": {
    "start_p10": -5928,
    "start_median": -5620,
-   "start_p90": -5288,
+   "start_p90": -5180,
    "centre": [
     44.69,
     41.32
@@ -1044,23 +1044,23 @@
    "wikidata": "Q208520"
   },
   "unverified": [],
-  "sites": 16,
+  "sites": 9,
   "observed": {
-   "start_p10": -5390,
-   "start_median": -5245,
-   "start_p90": -4690,
+   "start_p10": -5372,
+   "start_median": -5110,
+   "start_p90": -4670,
    "centre": [
     30.67,
     29.59
    ],
    "bbox_p5_p95": [
-    30.5,
-    29.5,
-    30.82,
+    30.56,
+    29.53,
+    30.85,
     29.59
    ]
   },
-  "dates_used": 35,
+  "dates_used": 28,
   "dates_outside_range": 8
  },
  {
@@ -1177,23 +1177,23 @@
    "wikidata": "Q798844"
   },
   "unverified": [],
-  "sites": 4,
+  "sites": 3,
   "observed": {
-   "start_p10": -4309,
-   "start_median": -4195,
-   "start_p90": -3976,
+   "start_p10": -4316,
+   "start_median": -4260,
+   "start_p90": -4156,
    "centre": [
-    31.6,
-    26.76
+    31.71,
+    26.59
    ],
    "bbox_p5_p95": [
-    31.28,
-    26.23,
-    32.57,
-    27.54
+    31.29,
+    26.21,
+    32.62,
+    27.55
    ]
   },
-  "dates_used": 10,
+  "dates_used": 9,
   "dates_outside_range": 5
  },
  {
@@ -1253,9 +1253,9 @@
   "stage": "chalcolithic",
   "traits": {},
   "range": {
-   "start": -3910,
+   "start": -3990,
    "start_source": "observed",
-   "end": -1146,
+   "end": -1063,
    "end_source": "observed"
   },
   "wikipedia": {
@@ -1265,23 +1265,23 @@
    "wikidata": "Q1882262"
   },
   "unverified": [],
-  "sites": 4,
+  "sites": 3,
   "observed": {
-   "start_p10": -3990,
-   "start_median": -3810,
-   "start_p90": -3714,
+   "start_p10": -4010,
+   "start_median": -3850,
+   "start_p90": -3786,
    "centre": [
     31.25,
     29.97
    ],
    "bbox_p5_p95": [
-    30.82,
+    30.8,
     29.97,
-    31.29,
-    31.01
+    31.3,
+    31.07
    ]
   },
-  "dates_used": 23,
+  "dates_used": 19,
   "dates_outside_range": 4
  },
  {
@@ -1359,24 +1359,24 @@
    "wikidata": "Q1470903"
   },
   "unverified": [],
-  "sites": 18,
+  "sites": 15,
   "observed": {
-   "start_p10": -14298,
-   "start_median": -11150,
-   "start_p90": -9076,
+   "start_p10": -14556,
+   "start_median": -11240,
+   "start_p90": -9022,
    "centre": [
-    -3.25,
-    34.98
+    -3.09,
+    34.82
    ],
    "bbox_p5_p95": [
-    -5.42,
-    34.09,
-    4.09,
-    35.88
+    -5.43,
+    34.11,
+    4.1,
+    35.61
    ]
   },
-  "dates_used": 94,
-  "dates_outside_range": 76
+  "dates_used": 89,
+  "dates_outside_range": 73
  },
  {
   "id": "capsian",
@@ -1406,23 +1406,23 @@
    "wikidata": "Q766150"
   },
   "unverified": [],
-  "sites": 32,
+  "sites": 30,
   "observed": {
-   "start_p10": -8401,
-   "start_median": -6965,
-   "start_p90": -5895,
+   "start_p10": -8411,
+   "start_median": -7060,
+   "start_p90": -5880,
    "centre": [
-    7.37,
-    35.26
+    7.36,
+    35.18
    ],
    "bbox_p5_p95": [
-    1.58,
-    33.13,
-    10.5,
-    36.19
+    1.33,
+    33.09,
+    10.21,
+    36.2
    ]
   },
-  "dates_used": 195,
+  "dates_used": 169,
   "dates_outside_range": 24
  },
  {
@@ -1459,7 +1459,7 @@
    ],
    "bbox_p5_p95": [
     -12.91,
-    27.86,
+    27.89,
     8.96,
     36.21
    ]
@@ -1575,9 +1575,9 @@
    ]
   },
   "range": {
-   "start": -16864,
+   "start": -16994,
    "start_source": "observed",
-   "end": -6867,
+   "end": -6858,
    "end_source": "observed"
   },
   "wikipedia": {
@@ -1587,24 +1587,24 @@
    "wikidata": "Q693549"
   },
   "unverified": [],
-  "sites": 100,
+  "sites": 88,
   "observed": {
-   "start_p10": -16200,
-   "start_median": -13320,
-   "start_p90": -8248,
+   "start_p10": -16224,
+   "start_median": -13380,
+   "start_p90": -8142,
    "centre": [
-    2.26,
-    45.07
+    1.65,
+    44.94
    ],
    "bbox_p5_p95": [
-    -8.55,
-    39.31,
-    10.12,
-    50.44
+    -8.21,
+    39.07,
+    7.74,
+    50.41
    ]
   },
-  "dates_used": 408,
-  "dates_outside_range": 104
+  "dates_used": 379,
+  "dates_outside_range": 97
  },
  {
   "id": "epigravettian",
@@ -1641,10 +1641,10 @@
     41.72
    ],
    "bbox_p5_p95": [
-    7.1,
+    7.11,
     37.73,
     22.42,
-    44.08
+    45.59
    ]
   },
   "dates_used": 104,
@@ -1683,7 +1683,7 @@
    "start_median": -12595,
    "start_p90": -11960,
    "centre": [
-    10.17,
+    10.18,
     53.62
    ],
    "bbox_p5_p95": [
@@ -1694,7 +1694,7 @@
    ]
   },
   "dates_used": 16,
-  "dates_outside_range": 19
+  "dates_outside_range": 18
  },
  {
   "id": "creswellian",
@@ -1737,7 +1737,7 @@
    ]
   },
   "dates_used": 7,
-  "dates_outside_range": 63
+  "dates_outside_range": 56
  },
  {
   "id": "federmesser",
@@ -1780,7 +1780,7 @@
    ]
   },
   "dates_used": 7,
-  "dates_outside_range": 66
+  "dates_outside_range": 60
  },
  {
   "id": "azilian",
@@ -1809,24 +1809,24 @@
    "wikidata": "Q793777"
   },
   "unverified": [],
-  "sites": 18,
+  "sites": 14,
   "observed": {
-   "start_p10": -11454,
-   "start_median": -11110,
-   "start_p90": -10446,
+   "start_p10": -11486,
+   "start_median": -11090,
+   "start_p90": -10134,
    "centre": [
-    1.79,
-    44.56
+    2.17,
+    45.02
    ],
    "bbox_p5_p95": [
-    -2.2,
-    41.38,
-    6.71,
-    47.82
+    -2.65,
+    42.23,
+    6.84,
+    48.3
    ]
   },
-  "dates_used": 44,
-  "dates_outside_range": 237
+  "dates_used": 37,
+  "dates_outside_range": 204
  },
  {
   "id": "ahrensburgian",
@@ -1859,7 +1859,7 @@
   "observed": {
    "start_p10": -10905,
    "start_median": -10345,
-   "start_p90": -9760,
+   "start_p90": -9740,
    "centre": [
     6.17,
     51.69
@@ -1871,7 +1871,7 @@
     53.38
    ]
   },
-  "dates_used": 15,
+  "dates_used": 13,
   "dates_outside_range": 54
  },
  {
@@ -1988,24 +1988,24 @@
    "wikidata": "Q1362485"
   },
   "unverified": [],
-  "sites": 88,
+  "sites": 83,
   "observed": {
-   "start_p10": -5453,
-   "start_median": -4940,
-   "start_p90": -4178,
+   "start_p10": -5458,
+   "start_median": -4920,
+   "start_p90": -4158,
    "centre": [
-    10.65,
-    55.45
+    11.03,
+    55.51
    ],
    "bbox_p5_p95": [
-    9.55,
-    53.93,
-    13.64,
+    9.53,
+    54.0,
+    13.69,
     56.88
    ]
   },
-  "dates_used": 528,
-  "dates_outside_range": 214
+  "dates_used": 508,
+  "dates_outside_range": 207
  },
  {
   "id": "sauveterrian",
@@ -2033,24 +2033,24 @@
    "wikidata": "Q2985529"
   },
   "unverified": [],
-  "sites": 44,
+  "sites": 40,
   "observed": {
-   "start_p10": -6697,
-   "start_median": -6460,
-   "start_p90": -5147,
+   "start_p10": -6700,
+   "start_median": -6495,
+   "start_p90": -5108,
    "centre": [
     4.83,
-    44.94
+    45.02
    ],
    "bbox_p5_p95": [
-    -1.08,
-    42.8,
-    13.56,
-    46.15
+    -1.09,
+    42.55,
+    13.69,
+    46.19
    ]
   },
-  "dates_used": 101,
-  "dates_outside_range": 365
+  "dates_used": 94,
+  "dates_outside_range": 336
  },
  {
   "id": "tardenoisian",
@@ -2088,7 +2088,7 @@
     48.33
    ],
    "bbox_p5_p95": [
-    1.8,
+    1.79,
     44.43,
     6.53,
     49.89
@@ -2126,7 +2126,7 @@
   "unverified": [],
   "sites": 0,
   "dates_used": 0,
-  "dates_outside_range": 19
+  "dates_outside_range": 8
  },
  {
   "id": "starcevo_koros_cris",
@@ -2153,23 +2153,23 @@
    "wikidata": "Q7602903"
   },
   "unverified": [],
-  "sites": 64,
+  "sites": 61,
   "observed": {
-   "start_p10": -6107,
-   "start_median": -5805,
-   "start_p90": -5543,
+   "start_p10": -6110,
+   "start_median": -5800,
+   "start_p90": -5540,
    "centre": [
-    20.75,
-    45.92
+    20.74,
+    46.03
    ],
    "bbox_p5_p95": [
-    18.59,
-    43.01,
-    23.79,
+    18.57,
+    42.98,
+    23.71,
     47.32
    ]
   },
-  "dates_used": 316,
+  "dates_used": 312,
   "dates_outside_range": 33
  },
  {
@@ -2199,24 +2199,24 @@
    "wikidata": "Q1728968"
   },
   "unverified": [],
-  "sites": 7,
+  "sites": 6,
   "observed": {
-   "start_p10": -6074,
-   "start_median": -5380,
-   "start_p90": -4944,
+   "start_p10": -6090,
+   "start_median": -5685,
+   "start_p90": -4930,
    "centre": [
-    25.87,
+    25.75,
     42.47
    ],
    "bbox_p5_p95": [
-    24.72,
-    42.32,
-    26.72,
-    42.77
+    24.67,
+    42.31,
+    26.76,
+    42.79
    ]
   },
-  "dates_used": 73,
-  "dates_outside_range": 56
+  "dates_used": 72,
+  "dates_outside_range": 55
  },
  {
   "id": "vinca",
@@ -2251,24 +2251,24 @@
    "wikidata": "Q831336"
   },
   "unverified": [],
-  "sites": 12,
+  "sites": 11,
   "observed": {
    "start_p10": -5420,
-   "start_median": -5245,
-   "start_p90": -4742,
+   "start_median": -5240,
+   "start_p90": -4720,
    "centre": [
-    20.73,
-    45.13
+    20.83,
+    44.75
    ],
    "bbox_p5_p95": [
-    19.21,
-    41.91,
-    22.34,
-    46.19
+    19.15,
+    41.83,
+    22.38,
+    46.08
    ]
   },
-  "dates_used": 87,
-  "dates_outside_range": 21
+  "dates_used": 83,
+  "dates_outside_range": 20
  },
  {
   "id": "sopot",
@@ -2477,23 +2477,23 @@
    "wikidata": "Q138012976"
   },
   "unverified": [],
-  "sites": 14,
+  "sites": 13,
   "observed": {
    "start_p10": -4880,
-   "start_median": -4565,
-   "start_p90": -4291,
+   "start_median": -4560,
+   "start_p90": -4254,
    "centre": [
-    26.6,
-    43.98
+    26.63,
+    43.88
    ],
    "bbox_p5_p95": [
-    25.38,
-    42.35,
+    25.3,
+    42.34,
     27.94,
-    44.56
+    44.57
    ]
   },
-  "dates_used": 169,
+  "dates_used": 158,
   "dates_outside_range": 141
  },
  {
@@ -2580,24 +2580,24 @@
    "wikidata": "Q687230"
   },
   "unverified": [],
-  "sites": 40,
+  "sites": 39,
   "observed": {
-   "start_p10": -3576,
+   "start_p10": -3582,
    "start_median": -3210,
-   "start_p90": -3060,
+   "start_p90": -3076,
    "centre": [
     17.25,
-    47.92
+    47.91
    ],
    "bbox_p5_p95": [
     15.69,
-    45.52,
+    45.51,
     20.2,
     50.07
    ]
   },
-  "dates_used": 146,
-  "dates_outside_range": 35
+  "dates_used": 144,
+  "dates_outside_range": 53
  },
  {
   "id": "bug_dniester",
@@ -2676,24 +2676,24 @@
    "wikidata": "Q426737"
   },
   "unverified": [],
-  "sites": 6,
+  "sites": 16,
   "observed": {
-   "start_p10": -3265,
-   "start_median": -3160,
-   "start_p90": -3055,
+   "start_p10": -3275,
+   "start_median": -3165,
+   "start_p90": -3045,
    "centre": [
-    34.8,
-    49.16
+    50.48,
+    52.91
    ],
    "bbox_p5_p95": [
-    30.11,
-    45.7,
-    50.96,
-    53.36
+    32.91,
+    45.35,
+    51.03,
+    53.72
    ]
   },
-  "dates_used": 18,
-  "dates_outside_range": 3
+  "dates_used": 30,
+  "dates_outside_range": 4
  },
  {
   "id": "lbk",
@@ -2730,24 +2730,24 @@
    "wikidata": "Q806348"
   },
   "unverified": [],
-  "sites": 170,
+  "sites": 163,
   "observed": {
-   "start_p10": -5510,
+   "start_p10": -5506,
    "start_median": -5210,
    "start_p90": -4880,
    "centre": [
-    11.01,
-    49.82
+    11.05,
+    49.89
    ],
    "bbox_p5_p95": [
-    3.31,
-    47.04,
-    20.59,
+    3.3,
+    46.95,
+    20.66,
     52.64
    ]
   },
-  "dates_used": 887,
-  "dates_outside_range": 233
+  "dates_used": 836,
+  "dates_outside_range": 228
  },
  {
   "id": "stroke_ornamented",
@@ -2862,23 +2862,23 @@
    "wikidata": "Q1886212"
   },
   "unverified": [],
-  "sites": 21,
+  "sites": 20,
   "observed": {
-   "start_p10": -4750,
-   "start_median": -4620,
-   "start_p90": -4270,
+   "start_p10": -4751,
+   "start_median": -4625,
+   "start_p90": -4262,
    "centre": [
-    6.64,
-    50.87
+    6.54,
+    50.86
    ],
    "bbox_p5_p95": [
-    4.29,
-    48.18,
-    11.78,
-    52.1
+    4.27,
+    48.15,
+    11.9,
+    52.15
    ]
   },
-  "dates_used": 48,
+  "dates_used": 47,
   "dates_outside_range": 16
  },
  {
@@ -2909,24 +2909,24 @@
    "wikidata": "Q668742"
   },
   "unverified": [],
-  "sites": 66,
+  "sites": 62,
   "observed": {
-   "start_p10": -4885,
-   "start_median": -4580,
-   "start_p90": -4135,
+   "start_p10": -4870,
+   "start_median": -4560,
+   "start_p90": -4131,
    "centre": [
-    16.71,
+    16.73,
     48.7
    ],
    "bbox_p5_p95": [
-    14.45,
-    46.88,
-    21.75,
-    52.78
+    14.38,
+    46.71,
+    21.72,
+    52.79
    ]
   },
-  "dates_used": 245,
-  "dates_outside_range": 134
+  "dates_used": 231,
+  "dates_outside_range": 133
  },
  {
   "id": "michelsberg",
@@ -2955,24 +2955,24 @@
    "wikidata": "Q570798"
   },
   "unverified": [],
-  "sites": 60,
+  "sites": 54,
   "observed": {
-   "start_p10": -4461,
-   "start_median": -4130,
-   "start_p90": -3658,
+   "start_p10": -4467,
+   "start_median": -4135,
+   "start_p90": -3646,
    "centre": [
-    5.64,
+    5.43,
     50.44
    ],
    "bbox_p5_p95": [
-    3.16,
+    3.13,
     48.46,
-    9.42,
-    51.93
+    9.48,
+    51.96
    ]
   },
-  "dates_used": 212,
-  "dates_outside_range": 98
+  "dates_used": 191,
+  "dates_outside_range": 82
  },
  {
   "id": "funnelbeaker",
@@ -3004,24 +3004,24 @@
    "wikidata": "Q875115"
   },
   "unverified": [],
-  "sites": 233,
+  "sites": 225,
   "observed": {
-   "start_p10": -4006,
-   "start_median": -3580,
-   "start_p90": -3182,
+   "start_p10": -4010,
+   "start_median": -3610,
+   "start_p90": -3184,
    "centre": [
     12.68,
-    54.38
+    54.42
    ],
    "bbox_p5_p95": [
-    8.89,
-    50.72,
-    20.4,
-    59.14
+    8.84,
+    50.64,
+    20.07,
+    59.15
    ]
   },
-  "dates_used": 990,
-  "dates_outside_range": 442
+  "dates_used": 976,
+  "dates_outside_range": 437
  },
  {
   "id": "globular_amphora",
@@ -3053,24 +3053,24 @@
    "wikidata": "Q218257"
   },
   "unverified": [],
-  "sites": 13,
+  "sites": 12,
   "observed": {
-   "start_p10": -3406,
-   "start_median": -3160,
-   "start_p90": -2976,
+   "start_p10": -3413,
+   "start_median": -3130,
+   "start_p90": -2973,
    "centre": [
-    17.23,
+    17.69,
     52.6
    ],
    "bbox_p5_p95": [
-    12.19,
-    49.57,
-    19.94,
-    54.14
+    12.17,
+    50.09,
+    20.11,
+    54.16
    ]
   },
-  "dates_used": 24,
-  "dates_outside_range": 116
+  "dates_used": 23,
+  "dates_outside_range": 108
  },
  {
   "id": "corded_ware",
@@ -3107,24 +3107,24 @@
    "wikidata": "Q933996"
   },
   "unverified": [],
-  "sites": 17,
+  "sites": 16,
   "observed": {
-   "start_p10": -3048,
-   "start_median": -2530,
-   "start_p90": -2190,
+   "start_p10": -2910,
+   "start_median": -2500,
+   "start_p90": -2180,
    "centre": [
-    11.67,
-    52.26
+    11.33,
+    52.5
    ],
    "bbox_p5_p95": [
-    6.42,
+    6.34,
     47.39,
-    19.41,
-    55.54
+    19.61,
+    55.57
    ]
   },
-  "dates_used": 33,
-  "dates_outside_range": 186
+  "dates_used": 31,
+  "dates_outside_range": 162
  },
  {
   "id": "bell_beaker",
@@ -3166,8 +3166,8 @@
    "start_median": -2390,
    "start_p90": -1977,
    "centre": [
-    4.8,
-    49.42
+    4.79,
+    48.85
    ],
    "bbox_p5_p95": [
     -8.98,
@@ -3176,8 +3176,8 @@
     54.47
    ]
   },
-  "dates_used": 205,
-  "dates_outside_range": 321
+  "dates_used": 203,
+  "dates_outside_range": 320
  },
  {
   "id": "swifterbant",
@@ -3203,24 +3203,24 @@
    "wikidata": "Q4410983"
   },
   "unverified": [],
-  "sites": 30,
+  "sites": 28,
   "observed": {
-   "start_p10": -5155,
+   "start_p10": -5070,
    "start_median": -4230,
-   "start_p90": -3887,
+   "start_p90": -3911,
    "centre": [
     5.03,
     51.97
    ],
    "bbox_p5_p95": [
-    4.37,
-    51.52,
-    6.85,
+    4.57,
+    51.79,
+    6.86,
     52.94
    ]
   },
-  "dates_used": 203,
-  "dates_outside_range": 27
+  "dates_used": 190,
+  "dates_outside_range": 24
  },
  {
   "id": "vlaardingen",
@@ -3246,24 +3246,24 @@
    "wikidata": "Q378100"
   },
   "unverified": [],
-  "sites": 8,
+  "sites": 7,
   "observed": {
-   "start_p10": -3227,
+   "start_p10": -3246,
    "start_median": -3060,
-   "start_p90": -2865,
+   "start_p90": -2820,
    "centre": [
-    4.59,
+    4.63,
     51.89
    ],
    "bbox_p5_p95": [
-    3.73,
-    51.68,
-    5.07,
-    52.13
+    3.9,
+    51.71,
+    5.08,
+    52.14
    ]
   },
-  "dates_used": 10,
-  "dates_outside_range": 17
+  "dates_used": 9,
+  "dates_outside_range": 18
  },
  {
   "id": "pitted_ware",
@@ -3339,24 +3339,24 @@
    "wikidata": "Q875479"
   },
   "unverified": [],
-  "sites": 5,
+  "sites": 4,
   "observed": {
-   "start_p10": -3348,
-   "start_median": -3160,
+   "start_p10": -3371,
+   "start_median": -2990,
    "start_p90": -2770,
    "centre": [
     9.4,
     51.4
    ],
    "bbox_p5_p95": [
-    9.12,
-    49.15,
-    11.93,
+    9.1,
+    49.01,
+    12.09,
     51.51
    ]
   },
-  "dates_used": 7,
-  "dates_outside_range": 10
+  "dates_used": 6,
+  "dates_outside_range": 6
  },
  {
   "id": "egolzwil",
@@ -3370,9 +3370,9 @@
    ]
   },
   "range": {
-   "start": -4340,
+   "start": -4333,
    "start_source": "observed",
-   "end": -2990,
+   "end": -3318,
    "end_source": "observed"
   },
   "wikipedia": {
@@ -3382,23 +3382,23 @@
    "wikidata": "Q3049225"
   },
   "unverified": [],
-  "sites": 2,
+  "sites": 1,
   "observed": {
-   "start_p10": -4381,
-   "start_median": -4305,
-   "start_p90": -4229,
+   "start_p10": -4210,
+   "start_median": -4210,
+   "start_p90": -4210,
    "centre": [
-    8.27,
-    47.28
+    8.0,
+    47.18
    ],
    "bbox_p5_p95": [
-    8.03,
-    47.19,
-    8.52,
-    47.36
+    8.0,
+    47.18,
+    8.0,
+    47.18
    ]
   },
-  "dates_used": 6,
+  "dates_used": 2,
   "dates_outside_range": 2
  },
  {
@@ -3424,24 +3424,24 @@
    "wikidata": "Q671984"
   },
   "unverified": [],
-  "sites": 26,
+  "sites": 22,
   "observed": {
-   "start_p10": -4335,
+   "start_p10": -4425,
    "start_median": -3945,
-   "start_p90": -3530,
+   "start_p90": -3522,
    "centre": [
-    7.13,
-    46.93
+    6.96,
+    46.73
    ],
    "bbox_p5_p95": [
-    5.88,
+    5.81,
     46.23,
     8.54,
-    47.39
+    47.4
    ]
   },
-  "dates_used": 100,
-  "dates_outside_range": 109
+  "dates_used": 79,
+  "dates_outside_range": 101
  },
  {
   "id": "pfyn",
@@ -3520,7 +3520,7 @@
   "unverified": [],
   "sites": 21,
   "observed": {
-   "start_p10": -3270,
+   "start_p10": -3240,
    "start_median": -3180,
    "start_p90": -2890,
    "centre": [
@@ -3534,8 +3534,8 @@
     48.1
    ]
   },
-  "dates_used": 143,
-  "dates_outside_range": 51
+  "dates_used": 140,
+  "dates_outside_range": 45
  },
  {
   "id": "altheim",
@@ -3576,7 +3576,7 @@
    ]
   },
   "dates_used": 12,
-  "dates_outside_range": 72
+  "dates_outside_range": 43
  },
  {
   "id": "mondsee",
@@ -3663,7 +3663,7 @@
     -2.18,
     47.33,
     3.43,
-    50.63
+    50.62
    ]
   },
   "dates_used": 13,
@@ -3688,23 +3688,23 @@
    "wikidata": "Q1020361"
   },
   "unverified": [],
-  "sites": 8,
+  "sites": 7,
   "observed": {
-   "start_p10": -5472,
-   "start_median": -5220,
-   "start_p90": -4888,
+   "start_p10": -5496,
+   "start_median": -5120,
+   "start_p90": -4884,
    "centre": [
-    3.02,
-    49.03
+    2.97,
+    49.18
    ],
    "bbox_p5_p95": [
-    1.69,
-    48.35,
-    5.1,
-    50.52
+    1.64,
+    48.36,
+    5.12,
+    50.53
    ]
   },
-  "dates_used": 39,
+  "dates_used": 38,
   "dates_outside_range": 5
  },
  {
@@ -3731,24 +3731,24 @@
    "wikidata": "Q688898"
   },
   "unverified": [],
-  "sites": 107,
+  "sites": 92,
   "observed": {
-   "start_p10": -4568,
-   "start_median": -4180,
-   "start_p90": -3678,
+   "start_p10": -4546,
+   "start_median": -4135,
+   "start_p90": -3663,
    "centre": [
-    3.9,
-    44.1
+    3.94,
+    44.31
    ],
    "bbox_p5_p95": [
-    0.56,
-    43.26,
-    7.78,
-    48.29
+    0.32,
+    43.28,
+    9.0,
+    47.83
    ]
   },
-  "dates_used": 509,
-  "dates_outside_range": 277
+  "dates_used": 450,
+  "dates_outside_range": 260
  },
  {
   "id": "seine_oise_marne",
@@ -3859,23 +3859,23 @@
    "wikidata": "Q3007227"
   },
   "unverified": [],
-  "sites": 16,
+  "sites": 12,
   "observed": {
-   "start_p10": -3340,
-   "start_median": -3100,
-   "start_p90": -2670,
+   "start_p10": -3325,
+   "start_median": -3065,
+   "start_p90": -2630,
    "centre": [
-    2.46,
+    2.45,
     43.36
    ],
    "bbox_p5_p95": [
-    1.66,
-    42.82,
-    3.07,
-    43.56
+    1.57,
+    42.51,
+    3.16,
+    43.58
    ]
   },
-  "dates_used": 33,
+  "dates_used": 26,
   "dates_outside_range": 50
  },
  {
@@ -3885,9 +3885,9 @@
   "stage": "neolithic",
   "traits": {},
   "range": {
-   "start": -5212,
+   "start": -5235,
    "start_source": "observed",
-   "end": -2457,
+   "end": -2380,
    "end_source": "observed"
   },
   "wikipedia": {
@@ -3900,11 +3900,11 @@
   "sites": 10,
   "observed": {
    "start_p10": -4643,
-   "start_median": -4075,
-   "start_p90": -3323,
+   "start_median": -3940,
+   "start_p90": -2735,
    "centre": [
-    2.58,
-    42.69
+    2.53,
+    42.63
    ],
    "bbox_p5_p95": [
     1.69,
@@ -3913,8 +3913,8 @@
     42.83
    ]
   },
-  "dates_used": 30,
-  "dates_outside_range": 9
+  "dates_used": 26,
+  "dates_outside_range": 7
  },
  {
   "id": "impressed_ware",
@@ -3927,7 +3927,7 @@
   "range": {
    "start": -6400,
    "start_source": "cited",
-   "end": -3015,
+   "end": -2998,
    "end_source": "observed",
    "quotes": [
     "6400–6200 bc"
@@ -3940,24 +3940,24 @@
    "wikidata": "Q1035710"
   },
   "unverified": [],
-  "sites": 58,
+  "sites": 56,
   "observed": {
-   "start_p10": -6296,
-   "start_median": -5765,
-   "start_p90": -5208,
+   "start_p10": -6300,
+   "start_median": -5780,
+   "start_p90": -5255,
    "centre": [
-    15.81,
+    15.87,
     41.9
    ],
    "bbox_p5_p95": [
-    6.19,
-    39.55,
-    18.71,
-    44.67
+    5.5,
+    39.47,
+    18.73,
+    44.4
    ]
   },
-  "dates_used": 238,
-  "dates_outside_range": 59
+  "dates_used": 235,
+  "dates_outside_range": 58
  },
  {
   "id": "cardial",
@@ -3969,9 +3969,9 @@
    "pottery": "cardium impressed"
   },
   "range": {
-   "start": -6450,
+   "start": -6380,
    "start_source": "observed",
-   "end": -3371,
+   "end": -3210,
    "end_source": "observed"
   },
   "wikipedia": {
@@ -3981,24 +3981,24 @@
    "wikidata": "Q1035710"
   },
   "unverified": [],
-  "sites": 131,
+  "sites": 116,
   "observed": {
-   "start_p10": -6300,
+   "start_p10": -6135,
    "start_median": -5410,
    "start_p90": -4840,
    "centre": [
-    2.71,
-    42.25
+    2.57,
+    42.22
    ],
    "bbox_p5_p95": [
-    -6.0,
-    35.5,
-    9.21,
-    45.48
+    -6.6,
+    35.43,
+    9.19,
+    45.58
    ]
   },
-  "dates_used": 571,
-  "dates_outside_range": 164
+  "dates_used": 505,
+  "dates_outside_range": 150
  },
  {
   "id": "stentinello",
@@ -4088,7 +4088,7 @@
    ]
   },
   "dates_used": 42,
-  "dates_outside_range": 39
+  "dates_outside_range": 38
  },
  {
   "id": "ozieri",
@@ -4115,23 +4115,23 @@
    "wikidata": "Q1473758"
   },
   "unverified": [],
-  "sites": 3,
+  "sites": 2,
   "observed": {
-   "start_p10": -3834,
-   "start_median": -3690,
-   "start_p90": -3210,
+   "start_p10": -3852,
+   "start_median": -3780,
+   "start_p90": -3708,
    "centre": [
-    8.64,
-    40.41
+    9.08,
+    40.37
    ],
    "bbox_p5_p95": [
-    8.63,
+    8.69,
     40.3,
-    9.42,
+    9.46,
     40.44
    ]
   },
-  "dates_used": 8,
+  "dates_used": 7,
   "dates_outside_range": 9
  },
  {

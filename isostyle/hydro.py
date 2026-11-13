@@ -1,11 +1,11 @@
 """Rivers, lakes and polygons for the speculative `river` and `polygon` rules.
 
 Named rivers come from the map pipeline's traced courses, build/rivers.geojson
-(HydroRIVERS courses and waypoint-traced buried channels; data/rivers/
+(stream-network courses and waypoint-traced buried channels; data/rivers/
 rivers.toml), with each river's flow state per year: a named river counts
 only in slices where it is perennial or seasonal. Unnamed rivers are
-HydroRIVERS reaches (Lehner & Grill 2013) with at least `min_upland_km2` of
-upstream catchment (cache: build/hydrorivers/reaches.pkl, reaches of 1,000 km²
+GEOGLOWS v2 / TDX-Hydro reaches (pipeline/geoglows.py) with at least `min_upland_km2` of
+upstream catchment (cache: build/geoglows/reaches.pkl, reaches of 1,000 km²
 and more). Named lakes come from build/lakes.geojson, whose shorelines change
 by period.
 """
@@ -55,7 +55,7 @@ def _state_at(state, year):
 
 class Hydro:
     def __init__(self, rivers="build/rivers.geojson", lakes="build/lakes.geojson",
-                 reaches="build/hydrorivers/reaches.pkl"):
+                 reaches="build/geoglows/reaches.pkl"):
         self.rivers = json.load(open(rivers))["features"] if os.path.exists(rivers) else []
         self.lakes = json.load(open(lakes))["features"] if os.path.exists(lakes) else []
         self._reaches_path = reaches
@@ -73,7 +73,7 @@ class Hydro:
     def distance_km(self, lon, lat, year, names=(), lakes=(), min_upland_km2=None, bbox=None):
         """km from each point to the nearest selected water: named rivers
         flowing in `year`, named lakes at their `year` shoreline (0 inside),
-        and HydroRIVERS reaches with at least min_upland_km2 (inside bbox)."""
+        and stream-network reaches with at least min_upland_km2 (inside bbox)."""
         key = (year, tuple(names), tuple(lakes), min_upland_km2, tuple(bbox) if bbox else None)
         if key not in self._cache:
             self._cache[key] = self._build(year, names, lakes, min_upland_km2, bbox)

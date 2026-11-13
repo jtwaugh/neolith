@@ -114,7 +114,13 @@ def load(cfg, tables, region):
     counts = {"xronos_records": len(rows) + bad, "xronos_unusable": bad}
     seen = {k for r in rows if (k := lab_key(r["labnr"]))}
     for spec in tables:
-        extra = read_table(os.path.join(dc["raw_dir"], spec["file"]), spec, seen)
+        # Downloaded tables have a `file` in the raw dir; tables kept in the
+        # repository (aadr, literature) have a `path`, read in place.
+        path = spec["path"] if "path" in spec else os.path.join(dc["raw_dir"], spec["file"])
+        if not os.path.exists(path):
+            counts[f"{spec['name']}_missing"] = 1
+            continue
+        extra = read_table(path, spec, seen)
         counts[f"{spec['name']}_added"] = len(extra)
         rows += extra
     rows = [r for r in rows if region["lon_min"] <= r["lon"] <= region["lon_max"]
@@ -127,7 +133,8 @@ def load(cfg, tables, region):
         groups[(r["site"], round(r["lon"], 4), round(r["lat"], 4))].append(i)
     keep, site_rows = [], []
     for sid, (name, lon, lat, idx, _aliases) in enumerate(
-            merge_spellings(groups, dc["same_km"], dc["same_name_km"]), start=1):
+            merge_spellings(groups, dc["same_km"], dc["same_name_km"], dc.get("share_km", 0.0),
+                            lambda i: (lab_key(rows[i]["labnr"]), (rows[i]["bp"], rows[i]["std"]))), start=1):
         # One row per measurement: compiled sources repeat a date per database.
         by_lab, by_age, kept = {}, {}, []
         for i in idx:

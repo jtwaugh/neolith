@@ -22,32 +22,54 @@ Biomised slice labels: 1721; mean share of samples flagged no-analogue: 7%.
 - Biomised labels not used, over 300 km from every training sample (the method has no biomes for them): Mbi Crater, Bambili 1, Garba Guracha Lake, Jikariya, Lake Kharinei, Saksunarvatn, Lake Tilla, Majen Ben H'mida, Cape Shpindler.
 - Samples left out as mostly the core's own mire (Cyperaceae over 40%): 271.
 - Anchors with a slice whose samples are mostly no-analogue (weight these low): Akgöl Adabag_NOAA, Altar Lough, Ampoix, Avrig 1, Ballinloghig Lake, Bibersee, Black Lough, Eski Acigol, Hybkaňa, Iezerul Calimani core, Ioannina I, King's Pool, Kis-Mohos Tó, La Guérivière, Lago del Greppo, Lake Gales, Liten Cap’pesjav’ri, Mohos1, Myrvatnet, Onego Lake, Pay Hassal mire, Peyre peat-bog, Ras El Ma, Saham Mere, Steregoiu, Yenicaga - Bottema Section, Zuratkul'.
-- Literature anchors (data/terrain/anchors_literature.csv): 21.
+- Literature anchors (data/terrain/anchors_literature.csv): 51.
 
 ## Literature anchors against the map
 
 Records in data/terrain/anchors_literature.csv against the map's class on the nearest land hex. The ones not held out also train the gap filling ([paleobiome.calibrate] use_literature), so only the held-out ones are a fair test.
 
-- All: 167 slices from 21 records: the map's class is the first class in 73 (44%) and one of the classes in 123 (74%).
-- Held out: 62 slices from 7 records: the map's class is the first class in 26 (42%) and one of the classes in 42 (68%).
-- Used in training: 105 slices from 14 records: the map's class is the first class in 47 (45%) and one of the classes in 81 (77%).
+- All: 418 slices from 51 records: the map's class is the first class in 153 (37%) and one of the classes in 267 (64%).
+- Held out: 122 slices from 16 records: the map's class is the first class in 49 (40%) and one of the classes in 70 (57%).
+- Used in training: 296 slices from 35 records: the map's class is the first class in 104 (35%) and one of the classes in 197 (67%).
 
 Where they disagree, by record and the map's class:
 
 | record | held out | map has | record says | slices |
 |---|---|---|---|---|
+| Lake Vracov (Bzenecký potok, Lower Morava valley, S Moravia), REVEALS 25 km radius |  | Temperate Forest | Woodlands | 9: -7500…-3500 |
+| Cañada de la Cruz (Segura mountains, Murcia/Albacete) | yes | Chaparral | Woodlands | 7: -6000…-3000 |
+| Sierra de Baza (peat, Granada) |  | Chaparral | Temperate Forest | 7: -6000…-3000 |
+| Bátorliget mire (Nyírség, NE Hungary) |  | Woodlands | Temperate Forest | 6: -9000…-6500 |
+| al-Hawa palaeolake (inland Yemen) | yes | Savannah | Semi-Desert | 5: -7500…-5500 |
+| El Cañizar de Villarquemado (palaeolake, Jiloca valley, Teruel) |  | Temperate Forest | Woodlands | 5: -10000…-6000 |
+| Villaverde (Albacete, edge of the southern Meseta and Sierra de Alcaraz) |  | Chaparral | Temperate Forest | 5: -5500…-3500 |
+| Lake Neor, Talesh Mountains | yes | Extreme Desert | Steppe-Forest | 4: -9000…-7500 |
 | Lake Hazar (Elazığ), eastern Turkey |  | Steppe-Forest | Woodlands | 4: -9500…-8000 |
-| al-Hawa palaeolake (inland Yemen) | yes | Savannah | Semi-Desert | 4: -7500…-6000 |
+| Báb-tava (Bereg Plain, NE Great Hungarian Plain) |  | Woodlands | Temperate Forest | 4: -6000…-4500 |
+| Lake Oltina (southern Dobrogea, lower Danube) | yes | Floodplain | Steppe-Forest | 4: -4500…-3000 |
+| Suchý potok (near Vojnice, lower Ohře plateau, N Bohemia) | yes | Temperate Forest | Steppe-Forest | 4: -6000…-4500 |
+| Lake Vracov (Bzenecký potok, Lower Morava valley, S Moravia), REVEALS 25 km radius |  | Boreal Forest | Woodlands | 4: -9500…-8000 |
+| Svatobořice-Mistřín fen (Kyjovka floodplain, Dolnomoravský úval, S Moravia) |  | Temperate Forest | Woodlands | 4: -6500…-5000 |
+| San Rafael (coastal marsh, Almería) |  | Chaparral | Semi-Desert | 4: -9500…-3000 |
+| El Cañizar de Villarquemado (palaeolake, Jiloca valley, Teruel) |  | Chaparral | Woodlands | 4: -5000…-3500 |
 | Oyo (palaeolake, NW Sudan) | yes | Semi-Desert | Savannah | 3: -8500…-7500 |
-| Lake Neor, Talesh Mountains | yes | Extreme Desert | Steppe-Forest | 3: -8500…-7500 |
 | Awafi palaeolake (Ras al-Khaimah, UAE) |  | Extreme Desert | Grassland | 3: -5500…-4500 |
 | Wadi Sana hyrax middens (Hadramawt, Yemen) |  | Grassland | Woodlands | 3: -4000…-3000 |
+| Sarló-hát oxbow lake (Polgár, Tisza Plain) |  | Temperate Forest | Woodlands | 3: -4000…-3000 |
+| Zahájí (Podbradecký potok valley, lower Ohře, N Bohemia) |  | Temperate Forest | Woodlands | 3: -6500…-5500 |
+| Ascherslebener See (former lake, northern Harz foreland), approximate basin centre |  | Temperate Forest | Steppe-Forest | 3: -7500…-3000 |
+| Hoya del Castillo (playa lake, Central Ebro Desert, Zaragoza) | yes | Chaparral | Temperate Forest | 3: -5000…-4000 |
 | Nabta Playa E-75-6 (SW Desert, Egypt) | yes | Grassland | Semi-Desert | 2: -7000…-6500 |
 | Sodmein Cave (Red Sea Mountains, Egypt) | yes | Grassland | Semi-Desert | 2: -7000…-6500 |
 | Lake Neor, Talesh Mountains | yes | Steppe-Forest | Grassland | 2: -4000…-3500 |
 | Lake Mirabad (western Zagros, Lorestan) |  | Steppe-Forest | Woodlands | 2: -3500…-3000 |
-| Awafi palaeolake (Ras al-Khaimah, UAE) |  | Extreme Desert | Savannah | 2: -6500…-6000 |
 | Kongor Lake (eastern Gorgan Plain, NE Iran) |  | Woodlands | Semi-Desert | 2: -3500…-3000 |
+| Kokad Mire (Érmellék, eastern Great Hungarian Plain) | yes | Boreal Forest | Steppe-Forest | 2: -10000…-9500 |
+| Zahájí (Podbradecký potok valley, lower Ohře, N Bohemia) |  | Temperate Forest | Steppe-Forest | 2: -7000…-3000 |
+| Vedrovice (Neolithic site on loess, Znojmo district, S Moravia) |  | Temperate Forest | Steppe-Forest | 2: -5000…-4500 |
+| Geiseltal (western Geisel valley, Mücheln, near Halle) |  | Temperate Forest | Steppe-Forest | 2: -3500…-3000 |
+| Fuentillejo maar (Campo de Calatrava, Ciudad Real, southern Meseta) | yes | Temperate Forest | Woodlands | 2: -7000…-5500 |
+| Sierra de Gádor (small lake, Almería) | yes | Chaparral | Temperate Forest | 2: -4500…-4000 |
 | Oyo (palaeolake, NW Sudan) | yes | Grassland | Semi-Desert | 1: -3500…-3500 |
 | Selima Oasis (palaeolake, NW Sudan) |  | Extreme Desert | Semi-Desert | 1: -7500…-7500 |
 | El Atrun (palaeolake, N Sudan) |  | Extreme Desert | Grassland | 1: -9000…-9000 |
@@ -57,11 +79,27 @@ Where they disagree, by record and the map's class:
 | Nar Gölü, Cappadocia | yes | Steppe-Forest | Semi-Desert | 1: -10000…-10000 |
 | Lake Hazar (Elazığ), eastern Turkey |  | Steppe-Forest | Grassland | 1: -10000…-10000 |
 | Tayma palaeolake (NW Saudi Arabia) |  | Grassland | Semi-Desert | 1: -5500…-5500 |
-| al-Hawa palaeolake (inland Yemen) | yes | Grassland | Semi-Desert | 1: -5500…-5500 |
+| Awafi palaeolake (Ras al-Khaimah, UAE) |  | Extreme Desert | Savannah | 1: -6000…-6000 |
 | Gomishan lagoon core TM (SE Caspian coast, Iran) |  | Extreme Desert | Semi-Desert | 1: -8500…-8500 |
 | Kongor Lake (eastern Gorgan Plain, NE Iran) |  | Woodlands | Grassland | 1: -4000…-4000 |
+| Kokad Mire (Érmellék, eastern Great Hungarian Plain) | yes | Temperate Forest | Woodlands | 1: -3000…-3000 |
+| Bátorliget mire (Nyírség, NE Hungary) |  | Boreal Forest | Temperate Forest | 1: -9500…-9500 |
+| Halas-fenék palaeochannel (Zám-puszta, Hortobágy) |  | Temperate Forest | Grassland | 1: -3000…-3000 |
+| Suchý potok (near Vojnice, lower Ohře plateau, N Bohemia) | yes | Temperate Forest | Grassland | 1: -4000…-4000 |
+| Ascherslebener See (former lake, northern Harz foreland), approximate basin centre |  | Boreal Forest | Steppe-Forest | 1: -9500…-9500 |
+| Geiseltal (western Geisel valley, Mücheln, near Halle) |  | Woodlands | Steppe-Forest | 1: -9500…-9500 |
+| Kieritzsch KIE-16 pond (Leipzig lowland, NW Saxony) |  | Temperate Forest | Boreal Forest | 1: -5000…-5000 |
+| Zelienka mire (interdune depression, Záhorie, NE Vienna Basin, Slovakia) |  | Temperate Forest | Steppe-Forest | 1: -9500…-9500 |
+| Zelienka mire (interdune depression, Záhorie, NE Vienna Basin, Slovakia) |  | Temperate Forest | Boreal Forest | 1: -4000…-4000 |
+| Cañada de la Cruz (Segura mountains, Murcia/Albacete) | yes | Chaparral | Grassland | 1: -6500…-6500 |
+| Fuentillejo maar (Campo de Calatrava, Ciudad Real, southern Meseta) | yes | Chaparral | Woodlands | 1: -3500…-3500 |
+| Hoya del Castillo (playa lake, Central Ebro Desert, Zaragoza) | yes | Temperate Forest | Steppe-Forest | 1: -8500…-8500 |
+| Hoya del Castillo (playa lake, Central Ebro Desert, Zaragoza) | yes | Temperate Forest | Woodlands | 1: -8000…-8000 |
+| Hoya del Castillo (playa lake, Central Ebro Desert, Zaragoza) | yes | Chaparral | Woodlands | 1: -3500…-3500 |
+| El Cañizar de Villarquemado (palaeolake, Jiloca valley, Teruel) |  | Chaparral | Temperate Forest | 1: -3000…-3000 |
+| Villaverde (Albacete, edge of the southern Meseta and Sierra de Alcaraz) |  | Chaparral | Woodlands | 1: -3000…-3000 |
 
-Map classes most often contradicted: Extreme Desert 12, Grassland 10, Steppe-Forest 10, Semi-Desert 5, Savannah 4, Woodlands 3.
+Map classes most often contradicted: Temperate Forest 47, Chaparral 37, Woodlands 14, Extreme Desert 12, Steppe-Forest 10, Grassland 9.
 
 ## Slices labelled per anchor
 
@@ -84,7 +122,7 @@ Map classes most often contradicted: Extreme Desert 12, Grassland 10, Steppe-For
 | -3000 | 117 |
 ## Anchors on Water hexes
 
-21 anchors sit on a hex the map has as Water in at least one labelled slice. Lake and marine cores do by nature (`nearest_land_terrain` in anchor_biomes.csv is what to compare); a land site here means the coast or lake is drawn wrong for that slice.
+22 anchors sit on a hex the map has as Water in at least one labelled slice. Lake and marine cores do by nature (`nearest_land_terrain` in anchor_biomes.csv is what to compare); a land site here means the coast or lake is drawn wrong for that slice.
 
 | anchor | slices on Water |
 |---|---|
@@ -94,17 +132,18 @@ Map classes most often contradicted: Extreme Desert 12, Grassland 10, Steppe-For
 | Dubh-Lochan (`neotoma:74655`) | 12: -8500…-3000 |
 | Domsvatnet (`neotoma:720`) | 12: -9000…-3500 |
 | Caspian core GS05 (`emb:1830`) | 11: -10000…-4000 |
+| Onego Lake (`neotoma:4321`) | 9: -9000…-3000 |
 | Majen Ben H'mida (`neotoma:24323`) | 9: -8000…-3000 |
 | Färskesjön (`neotoma:4037`) | 8: -10000…-3500 |
 | Saksunarvatn (`neotoma:4401`) | 8: -10000…-3000 |
-| Altar Lough (`neotoma:42563`) | 6: -5500…-3000 |
-| Hirvilampi (`neotoma:4092`) | 6: -9500…-7000 |
-| Aholammi (`neotoma:3866`) | 6: -9500…-6500 |
+| Aholammi (`neotoma:3866`) | 7: -9500…-6500 |
 | Lago Trifoglietti (`neotoma:49530`) | 5: -7000…-5000 |
+| Hirvilampi (`neotoma:4092`) | 4: -9500…-7000 |
+| Gilltjärnen (`neotoma:53991`) | 4: -8500…-7000 |
 | Pannel Bridge (`neotoma:41421`) | 3: -5000…-4000 |
 | Liten Cap’pesjav’ri (`neotoma:20279`) | 3: -5000…-3000 |
+| Altar Lough (`neotoma:42563`) | 2: -3500…-3000 |
 | Avrig 1 (`emb:1686`) | 1: -10000…-10000 |
-| Gilltjärnen (`neotoma:53991`) | 1: -7000…-7000 |
 | Dallican Water (`neotoma:4012`) | 1: -4000…-4000 |
 | Khor (`biome6000:Khor`) | 1: -4000…-4000 |
 | Tjeri (`biome6000:Tjeri`) | 1: -4000…-4000 |
@@ -124,7 +163,6 @@ Map classes most often contradicted: Extreme Desert 12, Grassland 10, Steppe-For
 | 50…55°E, 55…60°N | 120 |  |
 | 60…65°E, 55…60°N | 120 | Aiatskoe |
 | 40…45°E, 50…55°N | 120 |  |
-| 50…55°E, 50…55°N | 120 |  |
 | 60…65°E, 50…55°N | 120 |  |
 | 40…45°E, 45…50°N | 120 |  |
 | 50…55°E, 45…50°N | 120 |  |
@@ -157,17 +195,16 @@ Map classes most often contradicted: Extreme Desert 12, Grassland 10, Steppe-For
 | 20…25°E, 10…15°N | 120 |  |
 | 30…35°E, 10…15°N | 120 |  |
 | 60…65°E, 25…30°N | 118 |  |
-| 50…55°E, 65…70°N | 115 | Markhida |
-| 30…35°E, 45…50°N | 114 | E097 |
-| 30…35°E, 65…70°N | 112 | Kepskoe |
+| 50…55°E, 65…70°N | 116 | Markhida |
+| 30…35°E, 45…50°N | 116 | E097 |
 | 60…65°E, 40…45°N | 112 |  |
+| 30…35°E, 65…70°N | 111 | Kepskoe |
 | 55…60°E, 65…70°N | 110 |  |
 | 45…50°E, 60…65°N | 110 |  |
 | 55…60°E, 60…65°N | 110 |  |
 | 45…50°E, 55…60°N | 110 | Ulanovo |
 | 55…60°E, 55…60°N | 110 | Mulianka |
 | 35…40°E, 50…55°N | 110 | Balkashkinskii |
-| 45…50°E, 50…55°N | 110 |  |
 | 35…40°E, 45…50°N | 110 | Liman |
 | 0…5°E, 30…35°N | 110 |  |
 | 55…60°E, 30…35°N | 110 |  |
@@ -186,22 +223,22 @@ Map classes most often contradicted: Extreme Desert 12, Grassland 10, Steppe-For
 | 0…5°E, 10…15°N | 110 | Oursi |
 | 25…30°E, 10…15°N | 110 |  |
 | 35…40°E, 10…15°N | 110 |  |
-| 60…65°E, 45…50°N | 108 | 6993 |
+| 60…65°E, 45…50°N | 109 | 6993 |
 | 25…30°E, 25…30°N | 108 | Abu Minqar (c) |
 | 55…60°E, 45…50°N | 105 |  |
 | 40…45°E, 15…20°N | 105 |  |
-| 40…45°E, 10…15°N | 103 |  |
-| 15…20°E, 10…15°N | 97 | Tjeri |
+| 40…45°E, 10…15°N | 99 |  |
+| 15…20°E, 10…15°N | 98 | Tjeri |
 | 50…55°E, 15…20°N | 95 |  |
 | 55…60°E, 40…45°N | 94 |  |
-| 40…45°E, 65…70°N | 93 |  |
+| 50…55°E, 40…45°N | 90 |  |
 | -5…0°E, 5…10°N | 90 | Bosumtwi |
 | 5…10°E, 5…10°N | 90 |  |
 | 15…20°E, 5…10°N | 90 |  |
 | 20…25°E, 5…10°N | 90 |  |
 | 30…35°E, 5…10°N | 90 |  |
 | 40…45°E, 5…10°N | 90 |  |
-| 50…55°E, 40…45°N | 87 |  |
+| 40…45°E, 65…70°N | 89 |  |
 | 10…15°E, 30…35°N | 83 |  |
 | -10…-5°E, 5…10°N | 83 |  |
 | 15…20°E, 15…20°N | 82 |  |
@@ -219,12 +256,12 @@ Map classes most often contradicted: Extreme Desert 12, Grassland 10, Steppe-For
 | 50…55°E, 70…75°N | 44 |  |
 | 35…40°E, 40…45°N | 37 |  |
 | 15…20°E, 30…35°N | 33 |  |
+| 10…15°E, 35…40°N | 30 |  |
 | 25…30°E, 30…35°N | 30 |  |
 | -20…-15°E, 20…25°N | 30 | Morzouba |
 | -20…-15°E, 15…20°N | 30 | Diogo |
+| 55…60°E, 15…20°N | 30 |  |
 | -20…-15°E, 10…15°N | 30 | Tanma |
-| 10…15°E, 35…40°N | 29 |  |
-| 55…60°E, 15…20°N | 27 |  |
 | 65…70°E, 65…70°N | 20 | Baidara |
 | 65…70°E, 60…65°N | 20 | Chesnok Village |
 | 65…70°E, 55…60°N | 20 |  |

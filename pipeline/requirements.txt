@@ -2,3 +2,12 @@ numpy
 pillow
 netCDF4
 pyshp
+scipy
+# GEOGLOWS streams (pipeline/geoglows.py)
+pyarrow
+pyogrio
+matplotlib
+# residuals.soil_ph (optional SoilGrids reprojection)
+rasterio
+# pipeline/places.py imports isostyle
+-r ../isostyle/requirements.txt

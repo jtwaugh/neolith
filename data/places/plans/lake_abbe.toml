@@ -1,0 +1,138 @@
+[meta]
+place = "lake_abbe"
+written = "2026-11-13"
+verdict = "research"
+confidence = "high"
+really_empty = "Yes in our data, no in the literature. No site in the box or within 100 km in any epoch. The nearest record (259 km) is Lake Ashenge on the Ethiopian escarpment, which is a lake-sediment core, not a settlement. No duplicates. One misfiled record: Asa Koma, the best-known site in the box, is in XRONOS (Gif-7404, 3440+/-90 BP, via p3k14c) under Somalia at 44.69 E, 9.72 N, about 300 km east of its real position near As Eyla. It is also after 3,000 BCE, so it would not show anyway. The XRONOS country file for Djibouti is empty. Board: no lake and no river on record here. Palaeolake Abhe (about 6,000 km² in the early Holocene, today about 350 km²) and the lower Awash are both missing, so the box is 17 dry grassland or savannah hexes in every epoch."
+why_empty = ["not_in_open_compilations", "research_intensity", "publication_access"]
+summary = """
+Lake Abbe (Abhe) is the terminal lake of the Awash, on the Ethiopia-Djibouti
+border in the central Afar. It sits with lakes Gamarri and Afambo in a
+basin that held a palaeolake of about 6,000 km² in the early Holocene,
+against about 350 km² today. Our data has nothing in the box or within 100
+km in any epoch. The residuals read "little dated archaeology nearby" from
+5,000 BCE, with 18-24 missing sites. That reading is right, and the cause is
+mostly us. The basin has two long-running French field projects with
+radiocarbon chronologies, and none of their dates reached the open
+compilations. The one date that did (Asa Koma) is filed in Somaliland.
+
+On the Djibouti side, the Gobaad basin mission has worked since 1984
+(Joussaume, then Gutherz, since 2013 Cauliez) and reports over 100 sites
+around the lake. Hara Idé 3 has human remains of 16,000-11,500 BCE and a
+second phase of 9500-8700 BCE with obsidian, fish and ostrich eggshell.
+There are sites of the last hunter-gatherers (Ali Dabba); a collective
+burial of the third millennium BCE (Antakari 3); about 30 excavated tombs
+from the fourth millennium BCE onward; and the fisher-herder sites Asa Koma
+(2500-1800 BCE) and Wakrita (directly dated caprines and cattle,
+2013-1778 cal BC). Two-thirds of the Asa Koma fauna is tilapia and catfish.
+On the Ethiopian side, Khalidi et al. (2020) dated seven new sites in the
+lower Awash and northern Abhe basin with 37 radiocarbon dates. They form
+three occupation phases between about 11,000 and 3,300 cal BP, separated by
+the dry events at about 8.2 and 4.2 ka. The sequence runs from Later Stone
+Age fisher-foragers to the first potter-herders, between 4.8 and 3.3 ka cal
+BP. One of the sites is Raso-02, at about 10,000 BP. Khalidi et al. call
+this the first Holocene occupation sequence in the Ethiopian Afar, which
+measures how little had been done before 2020.
+
+What to do: ingest Khalidi et al. 2020 (37 dates, 7 sites, all in the box)
+and the Gobaad dates (the Asa Koma monograph, Gutherz 2017; Wakrita;
+Cauliez et al. 2008; the Hara Idé 3 papers), and correct the Asa Koma
+position. Speculate lakeshore fisher-forager camps on the palaeolake shore
+in the humid phases, which is well founded here. For a person: the board
+needs palaeolake Abhe in data/lakes/lakes.toml and the lower Awash in
+data/rivers/rivers.toml. Without them, lakeshore sites land on dry
+grassland and the lake's 5,000 km² swings, which drive the whole
+archaeological sequence, are invisible.
+"""
+
+[[known_site]]
+name = "Hara Idé 3"
+lon = 42.0
+lat = 11.1
+coordinates = "approximate"
+start = -9500
+end = -8700
+what = "Gobaad basin, As Eyla subprefecture, Djibouti; found 2003. Two phases: human remains of at least seven individuals in breccia, end of the Late Pleistocene (16,000-11,500 BCE, before our window); and an early tenth-millennium BCE phase (9500-8700 BCE) with a small ditch holding obsidian tools and flakes, fish and mammal bone, and ostrich eggshell. Only the second phase is entered. The point is my guess on the Gobaad plain between the lake and As Eyla. The source gives no position beyond the subprefecture."
+cite = "Ministère de la Culture (France), Archéologie: 'Extremely rare human bone remains in East Africa' (Hara Idé 3, Mission archéologique franco-djiboutienne)"
+url = "https://archeologie.culture.gouv.fr/en/extremely-rare-human-bone-remains-east-africa"
+checked = true
+
+[[known_site]]
+name = "Raso-02"
+lon = 41.6
+lat = 11.5
+coordinates = "approximate"
+start = -8050
+end = -8050
+what = "One of seven Holocene sites found by the VAPOR-Afar project in the lower Awash valley, northern Abhe basin (Ethiopian side), around the Gamarri and Afambo lakes. The news item says it is dated to about 10,000 BP; I entered that as 8050 BCE without knowing if it is calibrated. Belongs to the earliest of the three phases, early Holocene fisher-foragers. The point is the Gamarri-Afambo area, not the site; take the real coordinates and dates from the paper."
+cite = "Khalidi, L. et al. 2020, 9000 years of human lakeside adaptation in the Ethiopian Afar: fisher-foragers and the first pastoralists in the Lake Abhe basin during the African Humid Period, Quaternary Science Reviews 243:106459; site named in the CEPAM news item on the paper"
+url = "https://www.cepam.cnrs.fr/actualite/article-levolution-des-paleorivages-du-lac-abhe-en-afar-ethiopien-revele-9000-ans-de-resilience-humaine-face-aux-changements-climatiques"
+checked = true
+
+[[known_site]]
+name = "Asa Koma"
+lon = 42.07
+lat = 11.06
+coordinates = "approximate"
+start = -2500
+end = -1800
+what = "Seasonal fisher-herder site on a 40 m extinct volcanic hill ('colline Rouge') about 20 km east of Lake Abhe, Gobaad plain, Djibouti; excavated since 1984. 9,104 sherds of incised and impressed pottery, 21,247 lithics (almost all obsidian, mostly segments), basalt grinders. Of 30,559 vertebrate remains, two-thirds are fish (tilapia, catfish). There are taurine cattle and ovicaprine dung spherulites, three cairn pit burials, and Gulf of Aden shell ornaments. Six charcoal dates put it at the end of the 3rd to the mid-2nd millennium BC; the ministry page gives 2500-1800 BCE. It only touches the 3,000 BCE slice. In XRONOS (Gif-7404) it sits at 44.69 E, 9.72 N in Somaliland; that needs correcting. My point is from a gazetteer seen only in a search result (11.061 N, 42.074 E), which fits 'near As Eyla, 20 km east of the lake'. Unverified."
+cite = "Dupuy, C. 2019, review of Gutherz (dir.) 2017, Asa Koma. Site néolithique dans le bassin du Gobaad (République de Djibouti), Journal des Africanistes 89-1:187-191; Ministère de la Culture, 'On the banks of Lake Abbe'"
+url = "https://journals.openedition.org/africanistes/7945"
+checked = true
+
+[[research]]
+what = "Extract the 37 radiocarbon dates and seven site positions of Khalidi et al. 2020 (lower Awash / northern Abhe basin, Ethiopia), and the lake-level dates in Mologni et al. 2021. The accepted manuscript is marked open access on ScienceDirect and on HAL (hal-02911601), but both refused automated access; a person can download it."
+url = "https://doi.org/10.1016/j.quascirev.2020.106459"
+yields = "7 dated sites inside the box, about 9000-1350 BCE, in three phases; perhaps 25 dates in our window"
+effort = "One paper with a date table; a few hours"
+
+[[research]]
+what = "Enter the Gobaad basin (Djibouti) chronology: the Asa Koma monograph (Gutherz dir. 2017) and Wakrita (Gutherz et al. 2015, JFA 40:55-68; UBA-20229 3561+/-27 BP on cattle bone) for the after-3,000 BCE sites, and above all the Hara Idé 3, Hara Idé 2 and Ali Dabba dates and the 4th-millennium BCE tombs. The tombs are mentioned in the review but not listed. Cauliez et al. 2008 (L'Anthropologie 112:691-715) on Hara Idé 2 is the place to start."
+url = "https://doi.org/10.1016/j.anthro.2008.06.003"
+yields = "3-6 dated sites in the box before 3,000 BCE (Hara Idé 3, Hara Idé 2, Ali Dabba, tombs) and 2-3 just after (Asa Koma, Wakrita, Antakari 3)"
+effort = "French monograph and papers, mostly paywalled; the mission (Cauliez, CNRS TRACES) may share a site list"
+
+[[research]]
+what = "Correct the Asa Koma record (XRONOS Gif-7404, raw file xronos_country_SO.json): move it from 44.69 E, 9.72 N (Somaliland) to the Gobaad plain, about 42.07 E, 11.06 N, country Djibouti. This goes in data/settlements/corrections.toml, with the Journal des Africanistes review and the ministry page as sources."
+url = "https://archeologie.culture.gouv.fr/en/banks-lake-abbe"
+yields = "One record put back in the right place; outside the window, so no change to our map before 3,000 BCE"
+effort = "One line"
+
+[[speculate]]
+target = "settlements"
+slices = [-10000, -9000, -8000]
+rule = "Place three to five inferred fisher-forager camps per slice on the shore of palaeolake Abhe: on the lower Awash delta near Gamarri and Afambo, and on the Gobaad side. Mark them inferred."
+confidence = "medium"
+reasoning = "Two dated sites already fall in these slices, Hara Idé 3 (9500-8700 BCE, with fish) and Raso-02 (about 10,000 BP), and Khalidi et al. (2020) put the first of their three occupation phases on the early Holocene high lake. The Djibouti mission reports over 100 sites in the basin, with hunter-gatherers and fishers from the end of the Pleistocene. The lake was about 6,000 km² at the time (ministry page; Mologni et al. 2021 put the highstand at about 10 ka cal BP, not opened). The number per slice is a guess; presence is not."
+basis = ["neighbouring_evidence", "literature", "environment"]
+
+[[speculate]]
+target = "settlements"
+slices = [-7000, -6000]
+rule = "Place at most one or two inferred camps per slice, on the lower Awash channel or the shrunken lake, marked inferred."
+confidence = "low"
+reasoning = "Khalidi et al. (2020) say their three occupation phases are separated by intervals with no archaeology, and tie them to the 8.2 ka dry event; Mologni et al. (2021, not opened) put a lake fall at about 8 ka cal BP. That is 6050 BCE, inside the 6,000 BCE slice. The basin was not necessarily empty, since the Awash still flowed in, but the record has a real gap, so keep this sparse."
+basis = ["literature", "environment"]
+
+[[speculate]]
+target = "settlements"
+slices = [-5000, -4000, -3000]
+rule = "Place three to five inferred lakeshore fisher-forager camps per slice around the lake and the Gobaad plain. At 3,000 BCE, tag one or two as the first potter-herders, marked inferred."
+confidence = "medium"
+reasoning = "The second humid phase, about 7.7-4.6 ka cal BP (Mologni et al. 2021 via a search summary; not opened), carries Khalidi et al.'s second occupation phase. The Gobaad survey has tombs from the 4th millennium BCE on (Dupuy 2019). Herding and pottery arrive between 4.8 and 3.3 ka cal BP (Khalidi et al. 2020 abstract), and Asa Koma and Wakrita are fisher-herders by 2500-1800 BCE. So the 3,000 BCE slice is at the very start of herding, and fish still made up two-thirds of the fauna afterwards."
+basis = ["literature", "neighbouring_evidence"]
+
+[[speculate]]
+target = "isostyle:pottery"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000]
+rule = "Lower pottery in the Abhe basin to about 0.1 before 3,000 BCE. It now stands at an extrapolated 0.40; leave 3,000 BCE as it is."
+confidence = "low"
+reasoning = "The abstract of Khalidi et al. (2020) ties the pottery traditions of the Abhe basin to the onset of herding, between 4.8 and 3.3 ka cal BP (2850-1350 BCE). The earlier fisher-forager phases are described only as LSA lithic techno-complexes. The current 0.40 is extrapolated, not observed. Low confidence: I have read only the abstract, and lakeshore fishers elsewhere in East Africa made pottery in the early Holocene (Turkana; my knowledge, not checked for this plan), so an early ceramic phase here cannot be ruled out until the full paper is read."
+basis = ["literature", "other_layer"]
+
+[[speculate.adjust]]
+kind = "near"
+point = [41.75, 11.25]
+radius_km = 90
+value = 0.1

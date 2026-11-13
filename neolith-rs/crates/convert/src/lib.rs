@@ -1,8 +1,8 @@
 //! GeoJSON ⇄ `world.bin` conversion and dataset statistics.
 
 use neolith_core::{
-    C14Date, CultureInfo, EvidenceLayer, GridSpec, HexId, Koeppen, Lake, LakeShape, Landform, LonLat, PopDensity, Prop, River, RiverClass, RiverState,
-    Settlement, SiteInfo, Terrain, Timeline, Value, World, Year, NO_ELEVATION,
+    C14Date, CultureInfo, EvidenceLayer, GridSpec, HexId, Koeppen, Lake, LakeShape, Landform, LonLat, Massif, MassifKind, PopDensity, Prop, River, RiverClass, RiverState,
+    Settlement, SiteInfo, Summit, Terrain, Timeline, Value, World, Year, NO_ELEVATION,
 };
 use serde::Deserialize;
 use serde_json::{json, Map, Value as Json};
@@ -61,6 +61,33 @@ struct HexProps {
     /// and in older files.
     #[serde(default)]
     farming: Option<f64>,
+    /// Sketch of the hex's high ground (static; see `neolith_core::massif`):
+    /// absent on flat hexes and in older files.
+    #[serde(default)]
+    massif: Option<MassifProp>,
+}
+
+/// The pipeline's `massif` property (`elevation.massif`).
+#[derive(Deserialize)]
+struct MassifProp {
+    kind: String,
+    /// Degrees anticlockwise from east.
+    strike: f64,
+    coherence: f64,
+    /// Metres, present-day datum.
+    floor: f64,
+    /// [x, y, metres above the floor], highest first; hex-local position.
+    summits: Vec<[f64; 3]>,
+}
+
+impl MassifProp {
+    fn to_massif(&self) -> Result<Massif, String> {
+        let kind = MassifKind::from_name(&self.kind).ok_or_else(|| format!("massif kind {:?}", self.kind))?;
+        let summits = self.summits.iter().map(|[x, y, h]| Summit::new(*x, *y, *h)).collect();
+        let m = Massif::new(kind, self.strike, self.coherence, self.floor, summits);
+        m.validate()?;
+        Ok(m)
+    }
 }
 
 fn parse_year(key: &str, what: &str) -> Result<Year, String> {
@@ -157,6 +184,7 @@ pub fn import_map(geojson: &str) -> Result<Import, String> {
     let mut edge_sea = vec![Timeline::new(); feats.len()];
     let mut with_edge_sea = 0usize;
     let mut farming = vec![None; feats.len()];
+    let mut massif = vec![None; feats.len()];
     for f in feats {
         let p = &f.properties;
         let hex = HexId::from_geojson_id(p.id).unwrap();
@@ -171,6 +199,12 @@ pub fn import_map(geojson: &str) -> Result<Import, String> {
             Some(Some(l)) => world.landform[hex.index()] = Some(l),
             Some(None) => bad.add(format!("landform {}", p.landform.unwrap())),
             None => no_landform += 1,
+        }
+        if let Some(m) = &p.massif {
+            match m.to_massif() {
+                Ok(m) => massif[hex.index()] = Some(m),
+                Err(e) => bad.add(e),
+            }
         }
         match p.survey {
             Some(v) if (0.0..=2.0).contains(&v) && v.fract() == 0.0 => survey[hex.index()] = Some(v as u8),
@@ -267,6 +301,9 @@ pub fn import_map(geojson: &str) -> Result<Import, String> {
     }
     if farming.iter().any(Option::is_some) {
         world.farming = farming;
+    }
+    if massif.iter().any(Option::is_some) {
+        world.massif = massif;
     }
     let surveyed = survey.iter().filter(|v| v.is_some()).count();
     if surveyed > 0 {
@@ -508,6 +545,67 @@ pub fn attach_dates(settlements: &[Settlement], info: &mut [SiteInfo], text: &st
     Ok((attached, orphans))
 }
 
+/// Cell size (degrees) of the heightmap built by [`import_heightmap`]: a few
+/// samples per hex, enough to light ridges and valleys.
+pub const HEIGHTMAP_CELL: f64 = 0.1;
+
+/// An ESRI ASCII grid of elevations (the pipeline's ETOPO1 subset,
+/// `build/etopo.asc`) averaged into [`HEIGHTMAP_CELL`] cells over `grid`'s
+/// bounds. Source cells with no data, and target cells no source cell
+/// reaches, count as sea level.
+pub fn import_heightmap(text: &str, grid: &GridSpec) -> Result<neolith_core::Heightmap, String> {
+    let mut lines = text.lines();
+    let mut header = BTreeMap::new();
+    for _ in 0..6 {
+        let line = lines.next().ok_or("heightmap: the header is cut short")?;
+        let mut kv = line.split_whitespace();
+        let (k, v) = (kv.next().unwrap_or("").to_lowercase(), kv.next().unwrap_or(""));
+        header.insert(k, v.parse::<f64>().map_err(|_| format!("heightmap: bad header line {line:?}"))?);
+    }
+    let get = |k: &str| header.get(k).copied().ok_or(format!("heightmap: no {k} in the header"));
+    let (ncols, nrows, cell) = (get("ncols")? as usize, get("nrows")? as usize, get("cellsize")?);
+    let nodata = header.get("nodata_value").copied();
+    // Lower-left corner of the lower-left cell (centre or corner given).
+    let x0 = match header.get("xllcorner") { Some(v) => *v, None => get("xllcenter")? - cell / 2.0 };
+    let y0 = match header.get("yllcorner") { Some(v) => *v, None => get("yllcenter")? - cell / 2.0 };
+    let (west, south, east, north) = grid.bounds();
+    let snap = |v: f64, up: bool| if up { (v / HEIGHTMAP_CELL).ceil() } else { (v / HEIGHTMAP_CELL).floor() } * HEIGHTMAP_CELL;
+    let (hw, hn) = (snap(west, false), snap(north, true));
+    let cols = ((snap(east, true) - hw) / HEIGHTMAP_CELL).round() as usize;
+    let rows = ((hn - snap(south, false)) / HEIGHTMAP_CELL).round() as usize;
+    let mut sum = vec![0f64; cols * rows];
+    let mut count = vec![0u32; cols * rows];
+    let mut values = lines.flat_map(str::split_whitespace);
+    // Source rows run from the north.
+    for r in 0..nrows {
+        let lat = y0 + (nrows - 1 - r) as f64 * cell + cell / 2.0;
+        let tr = ((hn - lat) / HEIGHTMAP_CELL).floor();
+        for c in 0..ncols {
+            let v: f64 = values
+                .next()
+                .ok_or("heightmap: fewer values than ncols x nrows")?
+                .parse()
+                .map_err(|_| "heightmap: a value is not a number")?;
+            let lon = x0 + c as f64 * cell + cell / 2.0;
+            let tc = ((lon - hw) / HEIGHTMAP_CELL).floor();
+            if tr < 0.0 || tc < 0.0 || tr >= rows as f64 || tc >= cols as f64 || nodata == Some(v) {
+                continue;
+            }
+            let i = tr as usize * cols + tc as usize;
+            sum[i] += v;
+            count[i] += 1;
+        }
+    }
+    let z = sum
+        .iter()
+        .zip(&count)
+        .map(|(s, n)| if *n == 0 { 0 } else { (s / *n as f64).round().clamp(i16::MIN as f64, i16::MAX as f64) as i16 })
+        .collect();
+    let h = neolith_core::Heightmap { west: hw, north: hn, cell: HEIGHTMAP_CELL, cols: cols as u32, rows: rows as u32, z };
+    h.validate()?;
+    Ok(h)
+}
+
 /// Parses `data/cultures/cultures.json` into the culture table.
 pub fn import_cultures(text: &str) -> Result<Vec<CultureInfo>, String> {
     let root: Json = serde_json::from_str(text).map_err(|e| format!("cannot parse cultures: {e}"))?;
@@ -719,6 +817,12 @@ pub fn hex_feature(world: &World, hex: HexId) -> Json {
     if let Some(t) = world.edge_sea.get(hex.index()).filter(|t| !t.keys().is_empty()) {
         let keys: Map<String, Json> = t.keys().iter().map(|(y, v)| (y.0.to_string(), json!(v))).collect();
         feature["properties"]["edge_sea_km"] = Json::Object(keys);
+    }
+    if let Some(m) = world.massif.get(hex.index()).and_then(Option::as_ref) {
+        let summits: Vec<Json> = m.summits.iter().map(|s| { let (x, y) = s.pos(); json!([x, y, s.height_m()]) }).collect();
+        feature["properties"]["massif"] = json!({
+            "kind": m.kind.name(), "strike": m.strike_deg(), "coherence": m.coherence(), "floor": m.floor, "summits": summits,
+        });
     }
     feature
 }
@@ -1040,6 +1144,24 @@ mod lake_tests {
     use super::*;
 
     #[test]
+    fn massif_round_trips_through_geojson_and_bad_kinds_are_rejected() {
+        let feature = |massif: &str| format!(
+            r#"{{"type":"FeatureCollection","features":[{{"type":"Feature","geometry":{{"type":"Polygon","coordinates":[[[0,0],[1,0],[1,1],[0,0]]]}},
+              "properties":{{"id":1,"left":0.0,"top":0.5,"right":0.5773502691896262,"bottom":0.0,"terrain":{{"-10000":"Steppe"}},
+              "koeppen":{{}},"population_density":{{}},"landform":2,"massif":{massif}}}}}]}}"#);
+        let good = r#"{"kind":"cone","strike":170,"coherence":0.07,"floor":1072,"summits":[[0.28,0.61,2244],[0.62,-0.43,747]]}"#;
+        let w = import_map(&feature(good)).unwrap().world;
+        let m = w.massif[0].as_ref().unwrap();
+        assert_eq!((m.kind, m.floor, m.summits.len()), (MassifKind::Cone, 1072, 2));
+        assert_eq!(m.summits[0].pos(), (0.28, 0.61));
+        let back = hex_feature(&w, HexId::from_geojson_id(1).unwrap());
+        let again = import_map(&feature(&back["properties"]["massif"].to_string())).unwrap().world;
+        assert_eq!(again.massif, w.massif);
+        let bad = import_map(&feature(&good.replace("cone", "mesa"))).err().unwrap();
+        assert!(bad.contains("massif kind"), "{bad}");
+    }
+
+    #[test]
     fn lakes_round_trip_through_geojson() {
         let text = r#"{"type":"FeatureCollection","features":[
           {"type":"Feature","geometry":{"type":"MultiLineString","coordinates":[[[0,0],[1,0],[1,1],[0,0]]]},
@@ -1181,5 +1303,31 @@ mod lake_tests {
         let c = import_cultures(t).unwrap();
         assert_eq!(c[0], CultureInfo { id: "lbk".into(), kind: "culture".into(), name: "Linear Pottery".into(), wikipedia: Some("Linear Pottery culture".into()) });
         assert_eq!(c[1].wikipedia, None);
+    }
+}
+
+#[cfg(test)]
+mod heightmap_tests {
+    use super::*;
+
+    #[test]
+    fn averages_into_tenth_degree_cells_over_the_grid() {
+        let grid = GridSpec { cols: 2, rows: 2, origin_lon: 10.0, origin_lat: 50.0, w: 0.2, h: 0.2 };
+        // 0.05° source cells: each 0.1° target cell averages four.
+        let (w, s, e, n) = grid.bounds();
+        let (nc, nr) = (((e - w) / 0.05).ceil() as usize + 4, ((n - s) / 0.05).ceil() as usize + 4);
+        let mut text = format!("ncols {nc}\nnrows {nr}\nxllcorner {}\nyllcorner {}\ncellsize 0.05\nNODATA_value -9999\n", w - 0.1, s - 0.1);
+        for r in 0..nr {
+            let row: Vec<String> = (0..nc).map(|c| if r == 0 && c == 0 { "-9999".into() } else { ((c % 2) * 100).to_string() }).collect();
+            text.push_str(&row.join(" "));
+            text.push('\n');
+        }
+        let h = import_heightmap(&text, &grid).unwrap();
+        assert_eq!(h.cell, HEIGHTMAP_CELL);
+        assert!(h.west <= w && h.north >= n);
+        assert_eq!(h.z.len(), (h.cols * h.rows) as usize);
+        // Alternating 0 / 100 columns average to 50 across a target cell.
+        assert!(h.z.iter().all(|z| *z == 50), "{:?}", h.z);
+        assert!(import_heightmap("ncols 2\n", &grid).is_err());
     }
 }

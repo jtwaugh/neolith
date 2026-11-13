@@ -3,7 +3,7 @@
 Each [[rule]] carries out one place plan's `[[speculate]] target =
 "settlements"`: points spaced along river branches and set off the channel
 (`branches`), or spaced along the shore of the slice's own sea level inside
-a box (`coast`); kept on land, and dropped where a recorded site already
+a box (`coast`), or at named places (`points`); kept on land, and dropped where a recorded site already
 stands in the hex (so ingesting real sites retires the guesses). The output,
 data/settlements/inferred.geojson, is for the app only (neolith-convert
 --inferred): it never joins the recorded settlements, so no residual,
@@ -30,6 +30,12 @@ SLICE = 1000
 def load(path):
     with open(path, "rb") as f:
         return tomllib.load(f).get("rule", [])
+
+
+def shown(rule):
+    """A rule with `show = false` is kept, checked and documented but writes
+    no points, so the app does not show it."""
+    return rule.get("show", True) is not False
 
 
 def load_rivers(path):
@@ -167,6 +173,13 @@ def coast_candidates(rule, cells, ok):
     return [(round(lo, 4), round(la, 4), sh) for lo, la, sh in out]
 
 
+def point_candidates(rule):
+    """Points for a `points` rule: the places it names, in order, as
+    [(lon, lat, 0)]. For shores the sea-level coast does not see (lakes
+    on a plateau or in a closed basin) and for single named places."""
+    return [(round(float(lo), 4), round(float(la), 4), 0) for lo, la in rule["points"]["at"]]
+
+
 def tag_for(rule, start):
     """The rule's [rule.tag] if it applies in the slice starting at `start`.
     It goes to the first point placed on each of the box's `shores` largest
@@ -206,6 +219,8 @@ def build(rules, rivers, grid, feats, sites, years, log=print, shore=None):
             if "coast" in rule:
                 pts = coast_candidates(rule, shore.cells(start, rule["coast"]["box"]),
                                        lambda lo, la: land(_hex_of(grid, lo, la)))
+            elif "points" in rule:
+                pts = point_candidates(rule)
             else:
                 # A persistent site needs its branch flowing from the start.
                 pts = candidates(rule, rivers, start, shift)
@@ -225,7 +240,8 @@ def build(rules, rivers, grid, feats, sites, years, log=print, shore=None):
                 name = f"Inferred {rule['label']} {n}"
                 key_ = f"inferred:{rule['key']}:{n}"
                 info = {"rule": rule["key"], "plan": rule["plan"], "confidence": rule["confidence"]}
-                info["shore" if "coast" in rule else "branch"] = key
+                if "points" not in rule:
+                    info["shore" if "coast" in rule else "branch"] = key
                 refs = [f"Inferred ({rule['confidence']} confidence): {rule['reasoning']}",
                         f"Rule {rule['key']} in data/settlements/inferred.toml, from {rule['plan']}"]
                 flooded = next((y for y in later if terrain[index[h], years.index(y)] == "Water"), None)
@@ -261,6 +277,10 @@ def run(cfg, log=print):
     for r in rules:
         if not os.path.exists(r["plan"]):
             raise ValueError(f"{ic['rules']}: rule {r['key']}: no plan {r['plan']}")
+    hidden = [r["key"] for r in rules if not shown(r)]
+    if hidden:
+        log(f"not shown (show = false): {', '.join(hidden)}")
+    rules = [r for r in rules if shown(r)]
     shore = None
     if any("coast" in r for r in rules):
         z, tf = elevation.load_asc(cfg["sea"]["elevation"])

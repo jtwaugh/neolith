@@ -1,0 +1,128 @@
+[meta]
+place = "ladoga"
+written = "2026-11-12"
+verdict = "research"
+confidence = "high"
+really_empty = "Yes inside the box: no site in any epoch. Twelve sites lie within 100 km, all on the Finnish side (Savonlinna, Kerimäki, Taipalsaari, Kitee, Rääkkylä, Vironlahti and others, 5.6-97 km from the box), from 5,840 BCE at the earliest and mostly single dates of about 3,800-3,500 BCE. These are Finnish municipality names with one coordinate each, not sites, so even the near cluster is coarse. The raw XRONOS Finland file holds one Isthmus record ('Karelian Isthmus', 890 BP) and p3k14c four late Finnish-database dates (14CARHU) on the Isthmus, none in the window. The famous Antrea net is in neither. No duplicates in the box. The board itself is sound here: Lake Ladoga, the Baltic-Ladoga strait over the Isthmus until -8250 and the Heinjoki outflow are all modelled (data/lakes/SOURCES.md)."
+why_empty = ["not_in_open_compilations", "publication_access", "buried"]
+summary = """
+Lake Ladoga and the Karelian Isthmus between it and the Gulf of Finland:
+ceded by Finland in 1940-44, so its Stone Age was dug by Finns before the
+war and by Russian and joint Finnish-Russian teams since the 1990s. In our
+data the box is empty in every epoch; the nearest sites are Finnish
+municipality records across the border. The residuals read "as expected"
+because the site list's own pattern expects nothing here.
+
+The record exists and is well dated. Seitsonen et al. 2012 compiled every
+Stone Age and Early Metal Period radiocarbon date from the Isthmus (from
+about 8,600 cal BC, 81 of them judged usable): the Antrea Korpilahti net
+(8560-8240 cal BC), Antrea Suuri Kelpojärvi (8640-8320), the Heinjoki
+(Veshchevo) sites (Early Mesolithic, 7960-7600, and Early Neolithic),
+Kaukola Rupunkangas 1A with the oldest known dwelling in the area
+(8170-7610), and Late Mesolithic to Late Neolithic sites through to 1,800
+cal BC. Dolukhanov et al. 2007 tie the settlement of the area to the Ladoga-
+Baltic waterway over the northern Isthmus, in use from about 11,500 cal BP.
+At the Neva mouth, Okhta 1 in St Petersburg has more than 150
+determinations for occupation from 4,200 cal BC on (not opened). Tarasov et
+al. 2017 add the northern Ladoga shore (Kurkijoki). None of these is in
+XRONOS, p3k14c or NeoNet: the Finnish radiocarbon records that reach
+p3k14c carry only four late dates from the Isthmus, and the Russian lists
+were never entered.
+
+Two things hide part of the record even from the literature. Ladoga stood
+low in the early Holocene (submerged bars down to 41 m below today's level,
+data/lakes/SOURCES.md), so the earliest south-shore sites are under the
+lake. The Ladoga transgression from about 5,000 cal BP then buried the
+south-shore lowland under silt and sand before the Neva breakthrough
+(Dolukhanov et al. 2007). The Isthmus record is therefore biased to the
+north and to sites above the old shorelines. What to do: ingest Seitsonen
+et al. 2012 Table 2 (about 100 dates; locations from the site names and
+maps), then Okhta 1, then the Karelian Ladoga dates in Tarasov et al. 2017.
+"""
+
+[proposed_place]
+key = "ladoga"
+name = "Lake Ladoga and the Karelian Isthmus"
+kind = "isthmus"
+box = [28.6, 59.7, 33.0, 61.8]
+why = "Europe's largest lake and the isthmus between it and the Gulf of Finland, crossed by the Baltic-Ladoga strait and later the Heinjoki and Vuoksi outflows, the route by which the north-eastern Baltic was settled."
+
+[[known_site]]
+name = "Antrea Korpilahti (Ozernoe), net find"
+lon = 29.45
+lat = 60.883
+coordinates = "published"
+start = -8560
+end = -8240
+what = "Early Mesolithic fishing net of willow bast with pine-bark floats, stone, antler and bone artefacts, sunk in an Ancylus-age channel of the Baltic-Ladoga waterway. Net cord 9140±135 BP (Hela-404), 8560-8240 cal BC (68%); the floats 9310±140 and 9230±210 BP are probably old wood. Coordinates 60°53' N 29°27' E from Zaitseva et al. 2000, no. 46."
+cite = "Seitsonen et al. 2012, Geochronometria 39(2):101-121, table 2 nos. 1-3; Miettinen et al. 2008, Iskos 16; Zaitseva et al. 2000, no. 46"
+url = "https://geochronometria.com/-The-good-the-bad-the-weird-Stone-Age-and-Early-Metal-Period-radiocarbon-dates-and,184394,0,2.html"
+checked = true
+
+[[known_site]]
+name = "Antrea Suuri Kelpojärvi"
+lon = 29.45
+lat = 60.9
+coordinates = "approximate"
+start = -8640
+end = -8320
+what = "Early Mesolithic cultural layer with burnt bone, 9275±120 BP (Hela-931), 8640-8320 cal BC (68%). 'A few kilometres away' from the Korpilahti net find; coordinates are the net find's, moved slightly north, and are a guess to within about 10 km."
+cite = "Seitsonen et al. 2012, table 2 no. 4"
+url = "https://geochronometria.com/-The-good-the-bad-the-weird-Stone-Age-and-Early-Metal-Period-radiocarbon-dates-and,184394,0,2.html"
+checked = true
+
+[[known_site]]
+name = "Heinjoki (Veshchevo): Valklampi 1-2, Latukangas 1, Tarhojenranta"
+lon = 29.05
+lat = 60.73
+coordinates = "approximate"
+start = -7960
+end = -4460
+what = "Sites on the Baltic-Ladoga watershed by the Vetokallio sill. Valklampi 1 and 2, Early Mesolithic burnt bone, 8765±65 and 8720±70 BP (7960-7600 cal BC); Tarhojenranta and Latukangas 1, Early Neolithic (Comb Ware 1) charcoal, 5815±50 and 5770±130 BP (4780-4460 cal BC). Coordinates are those of Veshchevo village, from memory, not from the paper."
+cite = "Seitsonen et al. 2012, table 2 nos. 5-10; Dolukhanov et al. 2007, Radiocarbon 49(2):527-542"
+url = "https://geochronometria.com/-The-good-the-bad-the-weird-Stone-Age-and-Early-Metal-Period-radiocarbon-dates-and,184394,0,2.html"
+checked = true
+
+[[known_site]]
+name = "Okhta 1"
+lon = 30.41
+lat = 59.94
+coordinates = "approximate"
+start = -4200
+end = -2500
+what = "Settlement and wooden fishing structures on the cape at the mouth of the Okhta into the Neva, St Petersburg; occupation from about 4,200-3,600 cal BC into the 3rd millennium BC, with more than 150 determinations reported. Coordinates are the river mouth, from memory. The end date is a guess from 'IVth-IIIrd millennia BC'."
+cite = "Kulkova et al. 2012, Radiocarbon; Gusentsova and Sorokin 2011, Rossiiskii arkheologicheskii ezhegodnik 1"
+url = "https://repository.arizona.edu/handle/10150/654758"
+checked = false
+
+[[research]]
+what = "Enter Table 2 of Seitsonen et al. 2012: every Stone Age and Early Metal Period date from the Karelian Isthmus, with site, context, material, lab number, BP and their usability score. Locations come from the site maps (figs. 3, 5, 6) and the former Finnish parish names; mark them approximate. Keep only dates they score as usable, or carry the score."
+url = "https://geochronometria.com/-The-good-the-bad-the-weird-Stone-Age-and-Early-Metal-Period-radiocarbon-dates-and,184394,0,2.html"
+yields = "About 90 or more dates (81 judged usable) from 30-odd numbered sites, 8,600-1,800 cal BC in the window: 12 Early Mesolithic, 18 Late Mesolithic, 7 Early, 14 Middle and 16 Late Neolithic."
+effort = "A four-page table; locations from the maps."
+
+[[research]]
+what = "Find and enter the Okhta 1 date list (Kulkova et al. 2012, Radiocarbon; the full list is said to run past 150 determinations) and the Neva-mouth sites around it."
+url = "https://repository.arizona.edu/handle/10150/654758"
+yields = "One large multi-phase site at the Neva mouth, 4,200-2,500 cal BC, perhaps a few neighbours."
+effort = "One paper; the repository refused automated access."
+
+[[research]]
+what = "Enter the Ladoga dates in Tarasov et al. 2017 (Kurkijoki, Map 1 no. 27) and the Antrea row of Zaitseva et al. 2000, if the two main lists do not already give them."
+url = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/44.7"
+yields = "A few north-Ladoga sites, 6,600-4,000 cal BC."
+effort = "A handful of rows."
+
+[[research]]
+what = "For speculation rather than ingest: the Iskos 16 survey reports (Kaukola, Räisälä, Kurkijoki, Johannes, Koivisto, Kuolemajärvi, 1998-2003) list many undated Stone Age dwelling sites with their elevations, which would date them by shoreline."
+url = "https://journal.fi/iskos/issue/view/7830"
+yields = "Many undated sites; a shoreline-dated settlement pattern for the northern Isthmus."
+effort = "Several papers; not opened."
+
+[[speculate]]
+target = "settlements"
+slices = [-7000, -6000, -5000, -4000]
+rule = "Place inferred forager settlements along the southern Ladoga shore (the Svir, Pasha, Oyat, Syas and Volkhov mouths), about one per 40 km of shore, marked as inferred and as buried under the Ladoga transgression deposits."
+confidence = "low"
+reasoning = "The south shore is the only Ladoga shore without a dated Stone Age record in the compilations I read. That fits burial, not absence. Dolukhanov et al. 2007 found gyttja buried under stratified transgression silt and sand on the Oyat and other southern rivers. The transgression ran from about 5,000 cal BP to its peak around 3,000 cal BP, when the Neva broke through. Before that the lake stood lower (bars to 41 m below today's level, data/lakes/SOURCES.md), so the earlier shore is now under water or silt. Neighbouring evidence: the north and west shores and the Isthmus have continuous dated settlement from 8,600 cal BC (Seitsonen et al. 2012), and the Svir is the outflow of Onega, whose shores are dated from about 7,400 BCE."
+basis = ["neighbouring_evidence", "environment", "literature"]

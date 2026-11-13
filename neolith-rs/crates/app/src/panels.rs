@@ -149,8 +149,13 @@ impl NeolithApp {
                 if self.start_year != DEFAULT_START_YEAR && ui.small_button("Reset to 7500 BCE").clicked() {
                     self.start_year = DEFAULT_START_YEAR;
                 }
+                ui.add_space(18.0);
+                if ui.link(RichText::new("Credits & data sources").small()).clicked() {
+                    crate::credits::open(ui.ctx());
+                }
             });
         });
+        crate::credits::show(ui.ctx());
         if start {
             session.clock.set_year(Year(self.start_year));
             self.screen = Screen::Main;
@@ -164,6 +169,7 @@ impl NeolithApp {
         let compact = is_compact(&ctx);
         self.top_bar(ui, now, compact);
         self.timeline(ui, compact);
+        crate::credits::show(&ctx);
         let Some(session) = &mut self.session else { return };
         if compact {
             // A phone: no editor (its tool palette needs the width), and the
@@ -320,6 +326,11 @@ impl NeolithApp {
                             s.sheet = true;
                             ui.close();
                         }
+                        ui.separator();
+                        if ui.button("Credits & data").clicked() {
+                            crate::credits::open(ui.ctx());
+                            ui.close();
+                        }
                     });
                     map_mode_picker(ui, s);
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
@@ -345,6 +356,11 @@ impl NeolithApp {
                     let label = if cfg!(target_arch = "wasm32") { "Download world.bin" } else { "Save world as…" };
                     if ui.button(label).clicked() {
                         save = true;
+                        ui.close();
+                    }
+                    ui.separator();
+                    if ui.button("Credits & data…").clicked() {
+                        crate::credits::open(ui.ctx());
                         ui.close();
                     }
                 });

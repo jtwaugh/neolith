@@ -124,22 +124,52 @@ def _side(t, neighbours, i, j, prefer, fixed):
     return i if own[0] < own[1] else j if own[1] < own[0] else max(i, j)
 
 
-def floodplains(terrain, river, elev, landform, neighbours, cfg):
+def floodplain_eligibility(keyframes, cfg):
+    """Per-hex eligibility decided once over the keyframes ({year: terrain}),
+    so a biome swap in one keyframe doesn't switch a floodplain off and on.
+    A hex is open if it is under an `apply_to` biome in more than half of the
+    keyframes where it is land; it spreads unless its commonest open biome is
+    in `no_spread`. Returns (open, spreads) boolean arrays."""
+    apply_to = cfg.get("apply_to", [])
+    stack = np.array([keyframes[y] for y in sorted(keyframes)])
+    land = ~np.isin(stack, ["Water", "Ice"])
+    hit = np.isin(stack, apply_to) & land
+    n_land = land.sum(axis=0)
+    open_ = hit.sum(axis=0) > 0.5 * np.maximum(n_land, 1)
+    spreads = np.ones(stack.shape[1], dtype=bool)
+    no_spread = cfg.get("no_spread", [])
+    if no_spread:
+        for i in np.flatnonzero(open_):
+            vals, counts = np.unique(stack[hit[:, i], i], return_counts=True)
+            spreads[i] = vals[np.argmax(counts)] not in no_spread
+    return open_, spreads
+
+
+def floodplains(terrain, river, elev, landform, neighbours, cfg, eligible=None):
     """Floodplain hexes for one year: hexes on a big perennial river (class
     2) in one of the `apply_to` biomes and not on mountains, then their flat
-    neighbours (same biomes) no more than `max_rise` m above them. Returns
+    neighbours (same biomes) no more than `max_rise` m above them. With
+    `eligible` = (open, spreads) from floodplain_eligibility, a hex's openness
+    is decided over the keyframes instead (and must be land this year), and
+    hexes that don't spread are neither seeds nor members of a ring. Returns
     (terrain, number changed)."""
     apply_to = cfg.get("apply_to", [])
-    open_ = np.isin(terrain, apply_to) & (landform < elevation.MOUNTAINS)
+    if eligible is None:
+        open_ = np.isin(terrain, apply_to)
+        spreads = np.ones(len(terrain), dtype=bool)
+    else:
+        open_, spreads = eligible
+        open_ = open_ & ~np.isin(terrain, ["Water", "Ice", "Alpine"])
+    open_ = open_ & (landform < elevation.MOUNTAINS)
     core = open_ & (river >= cfg.get("river_class", 2))
     out = terrain.copy()
     out[core] = "Floodplain"
     rise = cfg.get("max_rise", 30.0)
     for _ in range(cfg.get("spread", 1)):
         grow = []
-        for i in np.flatnonzero(out == "Floodplain"):
+        for i in np.flatnonzero((out == "Floodplain") & spreads):
             for j in neighbours[i]:
-                if (open_[j] and out[j] != "Floodplain" and landform[j] == elevation.FLAT
+                if (open_[j] and spreads[j] and out[j] != "Floodplain" and landform[j] == elevation.FLAT
                         and np.isfinite(elev[j]) and np.isfinite(elev[i])
                         and elev[j] - elev[i] <= rise):
                     grow.append(j)

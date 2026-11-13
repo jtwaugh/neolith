@@ -72,6 +72,12 @@ The published curves disagree on both depth and timing.
   (https://core.ac.uk/download/29139334.pdf).
 - With −80 m, the northern Caspian is dry around −7000, and the Volga, Ural
   and Uzboy run out across it.
+- **Minimum moved to 10.5 ka (−8550).** Sorokin et al. 2021 date the
+  Mangyshlak regression to 11.9–10.5 ka BP, and Bezrodnykh & Sorokin 2016
+  date the freshwater Mangyshlak deposits of the northern Caspian to 12–9 ka.
+  With the minimum at 9 ka the North Caspian floor (about −35 m) stayed dry
+  until about −5500; now the curve is −45 m at −7050, −30 m at −6050, and the
+  northern Caspian refloods about −6600 (data/places/plans/volga_delta.toml).
 
 ## Aral Sea (low confidence)
 
@@ -178,6 +184,26 @@ within 25 m.
   28.2–33.6°E, 59.7–62.0°N becomes land (modern sea floor excepted). Ladoga's
   outflow then runs through the Heinjoki Strait (rivers.toml).
 
+**Baltic outflow (`outflow`).** In its lake stages the Baltic is held at its
+lowest outlet, so it overflowed somewhere; the board draws that river. Each
+year the flood that finds the spill level also records its way out, and the
+saddle is the highest cell on it (pipeline/lakes.py, `minimax` with
+`route`). From the saddle the river takes the least-cost way down to that
+year's sea, over ground no higher than the spill and not along the lake's
+own shore, preferring low ground (`outflow_path`). One river per saddle,
+flowing in the years the lake drained over it; it shortens where the sea
+covers its lower course, like the other rivers.
+
+| Stage | Model outlet | Literature |
+|---|---|---|
+| Baltic Ice Lake (to −9700) | Darss sill, Mecklenburg Bay, Fehmarn Belt, Great Belt, Kattegat | Mostly through Öresund before the Billingen drainage (Björck 1995, 2008). The model has no forebulge, so it can't tell the two routes apart |
+| Early Ancylus Lake (−9100 to −8000) | West of Vänern: briefly to the Glomma (−9100 to −8800), then to the Göta älv (−8700 to −8000) | Initial Ancylus outlet in south-central Sweden through the Vänern basin and Göta älv (Björck 2008) |
+| Late Ancylus Lake (−7900 to −6600) | Darss sill, Fehmarn Belt, Great Belt (the "Dana River") | Outlet moves to the Danish straits after about 10.3–10.2 cal ka, with a 200–300 year fluvial stage in the Great Belt (Björck 2008). Lemke and colleagues find a valley cut into the Darss sill to −23/−24 m about 10.3 ka but no Dana River there; Feldens & Schwarzer 2012 put the threshold west of the Fehmarn Belt. The Great Belt was marine by about 8.9 cal ka, before Öresund (Bennike et al.) |
+
+The late switch to the Danish straits comes about 300 years after the
+literature's 10.2 ka; the Glomma episode isn't in the literature and comes
+from the uplift model letting the lake reach Värmland. Low confidence.
+
 ## Lake Ladoga (low confidence)
 
 The board had no Ladoga. The drawn maps leave its basin as land, ETOPO1
@@ -202,6 +228,62 @@ Baltic's water around it.
 The Ancylus-stage maximum is given as 17–18 m (about 8.1 ka) or about 20 m
 in the southern shallows (Subetto's excursion guide). The sources disagree,
 and some are field-trip guides or abstracts.
+
+## Lake Onega (medium confidence)
+
+The board had no Onega: all 49 hexes of its basin were forest. It is now a
+lake through the whole window at about today's outline. The basin was free
+of ice by about 13–12 ka, and the large proglacial Onega stages (southern
+basin at about 80–85 m) are older, about 14.5–13.3 ka (Rybalko et al. 2022).
+Levels were a few metres above today's around −5000 (Lobanova 2019, citing
+Devyatova 1986): 35 m from −6000 to −4000 tapering back, 33 m otherwise.
+ETOPO1 has partial bathymetry (23–34 m); 33 m floods about 10,800 km² from
+the seed, against a real area of 9,891 km². The computed outlet is 77 m. The
+Svir (data/rivers/) drains it to Ladoga.
+
+## Mologa-Sheksna lake (low confidence)
+
+A proglacial and early Holocene lake in the lowland now under the Rybinsk
+Reservoir. Sadokov et al. 2024 found Allerød peat (13.4–12.1 cal ka BP) at
+96.5–102.5 m over 100 km² of the central lowland, which bounds the Allerød
+level, and say the basins held lakes "for several millennia until their
+ultimate drainage in the early Holocene". The final drainage date, about
+10.9–10.7 cal ka BP (−8950 to −8750), is from search summaries of the same
+group, not a paper read. Held at 100 m until −8950, then drained by −8750.
+ETOPO1 has the reservoir's surface (97–102 m), not the old valley floor, so
+the extent (about 3,900 km²) is roughly the reservoir's.
+
+## White Sea (low confidence)
+
+The sea step lowers today's White Sea by the global curve and ignores
+uplift, so its shallow bays dried out and the Karelian coast was all land at
+−8000, when it should have been higher than today's. The coast was
+depressed by the ice: at Chupa the marine limit is 104–142 m at 13–11.5 ka
+and the shore 33–40 m at about 6.35 ka (Kolka et al. 2015); a lake at 34 m
+was isolated about 5.8 ka (Tolstobrov et al. 2024); at Belomorsk the
+settlement Yerpin Pudas I (21.5–23.7 m) is dated 5570–5360 cal BC (Lobanova
+2019). It is now a `sea-or-outlet` basin flooded on the uplift-corrected
+surface (pipeline/isostasy.py), open to the Barents Sea through the Gorlo
+in every year.
+
+Uplift. The Fennoscandian dome, fitted on the Baltic, already fits the
+Chupa isolation-basin curve (Kolka et al. 2015, table 2: basins at 81.5,
+61, 53 and 33-40 m isolated at 11.23, 10.22, 9.06 and 6.36 cal ka BP)
+within about 12 m; these are now calibration checks in `[isostasy]`. It
+gives no uplift east of about 36°E, so Onega Bay stayed too dry early and
+the box's water grew through the period instead of shrinking. A second,
+small dome (`[[isostasy.dome]]`, centre 38.5°E 64.5°N, 200 km, 1.75 mm/yr
+today, same scale and tau) is grid-fitted to three eastern points: on the
+Onega Peninsula a Late Glacial shore about 15 m above today's at 13-11.5 ka
+and a fall of 1.7-1.8 mm/yr over the last 4 ka (Kublitskiy et al. 2023;
+Onega Peninsula lake studies), and in southern Onega Bay relative sea level
+above 4-5 m until 10.1-9.5 cal ka BP (Kolka et al. 2025, Lake Pertozero).
+Misfits are within 7 m.
+
+Limits. The eastern points are from abstracts, and their positions are to
+the region, not the basin. The Middle Holocene (Tapes) transgression on the
+Onega Peninsula and in the Gulf of Dvina, where relative sea level rose in
+the Boreal and early Atlantic, can't be shown by a smooth exponential.
 
 ## Black Sea lake (low confidence)
 
@@ -229,6 +311,11 @@ reconnection year the sea step's terrain stands.
 - The Bosporus is narrower than ETOPO1's 2′ cells, so the computed outlet
   (+5 m, at the window edge) doesn't bind. Outflow through the Bosporus
   (Aksu, Hiscott and colleagues) isn't drawn as a river.
+- The Bosporus opens with the lake's end: a `[[sea.channel]]` in
+  pipeline/config.toml from −7050, so the hexes on the strait are Water from
+  the reconnection and land (a bridge between Thrace and Anatolia) before.
+  Soulet et al. 2011 (QSR) put the lake below the old Bosporus sill at
+  reconnection, which is why no outflow is drawn before it.
 
 ## Saharan lakes, by area (low confidence)
 
@@ -274,9 +361,59 @@ AHP; the others held smaller lakes.
 
 ## References
 
+- Björck, S. 2008. The late Quaternary development of the Baltic Sea basin.
+  In *Assessment of Climate Change for the Baltic Sea Basin*; and Björck et
+  al. 2008, An attempt to resolve the partly conflicting data and ideas on
+  the Ancylus–Littorina transition, *Polish Geological Institute Special
+  Papers* 23:21–26 (Ancylus outlet history; Dana River as a 200–300 year
+  fluvial stage after about 10 ka).
+  https://yadda.icm.edu.pl/baztech/element/bwmeta1.element.baztech-article-BUS6-0020-0020/c/Bjorck_S_An_attempt_PGISP_23_2008.pdf
+- Lemke, W. et al. (Darss sill valley at −23/−24 m about 10.3 ka; no Dana
+  River at the Darss sill). https://www.io-warnemuende.de/files/forschung/meereswissenschaftliche-berichte/mebe67_2006-roessler.pdf
+- Bennike, O. et al. (Great Belt marine before Öresund; oldest marine shells
+  about 8.9 cal ka in the northern Great Belt). https://oceanrep.geomar.de/id/eprint/19565
+- Soulet, G., Ménot, G., Lericolais, G. & Bard, E. 2011. A revised calendar
+  age for the last reconnection of the Black Sea to the global ocean.
+  *Quaternary Science Reviews* 30:1019–1026 (about 9000 cal BP; lake below
+  the Bosporus sill at reconnection). https://archimer.ifremer.fr/doc/00038/14909
+
 Everything cited above, with links where one exists. Add to this list
 whenever a source is used.
 
+- Kolka, V.V. et al. 2025. Relative sea-level changes in the southern part
+  of the Onega Bay of the White Sea in the Late Glacial and the Holocene.
+  *Doklady Earth Sciences* (abstract read via a search summary).
+  https://link.springer.com/article/10.1134/S1028334X25605814
+- Kublitskiy, Yu. et al. 2023. Reconstruction of relative sea-level changes
+  based on a multiproxy study of isolated basins on the Onega Peninsula (the
+  White Sea, northwestern Russia). *Quaternary International* (abstract
+  read). https://www.sciencedirect.com/science/article/abs/pii/S1040618222001574
+- Bottom sediments of the eastern part of the Onega Peninsula lakes in the
+  context of the White Sea relative level changes. *Limnology and
+  Freshwater Biology* (abstract read via a search summary).
+  https://journals.rcsi.science/2658-3518/article/view/289394
+- Bezrodnykh, Y.P. & Sorokin, V.M. 2016. On the age of the Mangyshlakian
+  deposits of the northern Caspian Sea. *Quaternary Research* 85(2):245–254.
+  https://doi.org/10.1016/j.yqres.2016.01.004
+- Sorokin, V. et al. 2021. Late Quaternary regressions in the Caspian Sea.
+  GSA Connects 2021, paper 17-4.
+  https://gsa.confex.com/gsa/2021AM/webprogram/Paper364725.html
+- Rybalko, A.E., Subetto, D.A. et al. 2022. Limnogenesis of large lakes in
+  the North-West of the Russian Plain. *Limnology and Freshwater Biology*
+  2022(4):1559–1561. https://journals.rcsi.science/2658-3518/article/view/289231
+- Lobanova, N.V. 2019. On the chronology of rock art in Karelia (Russia).
+  *Fennoscandia archaeologica* XXXVI.
+- Lake Onega (area, surface). https://en.wikipedia.org/wiki/Lake_Onega
+- Sadokov, D. et al. 2024. Allerød interstadial vegetation and lacustrine
+  palaeoenvironment of the central Mologa-Sheksna Lowland. EGU24-12877.
+  https://meetingorganizer.copernicus.org/EGU24/EGU24-12877.html
+- Kolka, V.V., Korsakova, O.P., Shelekhova, T.S. & Tolstobrova, A.N. 2015.
+  Reconstruction of the relative level of the White Sea ... in the area of
+  the Chupa settlement (North Karelia). *Vestnik MGTU* 18(2):255–268.
+  https://vestnik.mauniver.ru/v18_2_n61/12_kolka_255-268.pdf
+- Tolstobrov, D.S. et al. 2024. New data on changes in the White Sea level on
+  the Karelian coast in the Holocene. *Limnology and Freshwater Biology*
+  2024(4). https://limnolfwbiol.com/index.php/LFWB/article/view/1118
 - Armitage, S.J., Bristow, C.S. & Drake, N.A., 2015. West African monsoon
   dynamics inferred from abrupt fluctuations of Lake Mega-Chad. *PNAS*
   112:8543. https://pmc.ncbi.nlm.nih.gov/articles/PMC4507243

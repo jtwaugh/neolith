@@ -1,0 +1,152 @@
+[meta]
+place = "dahlak"
+written = "2026-11-13"
+verdict = "research"
+confidence = "medium"
+really_empty = "Yes in our data, no in the literature. No site in the box or within 100 km in any epoch; the nearest are the Saudi Tihama shell-midden sites (Site 217-174/175, Sihi) 274-357 km east across the Red Sea. No duplicates or misfiled sites. The source is blank, not the build: the XRONOS country file for Eritrea is empty (and Djibouti's), and p3k14c has no Eritrean record. Board problem: the Dahlak islands themselves are not on the board from 5,000 BCE. The hex holding Dahlak Kebir (centre 40.12 E, 15.61 N) is land to 6,000 BCE and Water from 5,000 BCE on, so the box's 5 land hexes after 5,000 BCE are all mainland coast (Massawa, the Buri peninsula, Gulf of Zula); see the person notes in the summary."
+why_empty = ["not_in_open_compilations", "research_intensity", "submerged", "recovery_methods"]
+summary = """
+The Dahlak archipelago is a low, salt-domed coral platform of several hundred
+islands off Massawa, sitting on the same kind of shallow bank as the Farasan
+islands opposite. With the sea 50-60 m lower it was part of the mainland:
+the dossier counts 10 of the box's 15 hexes as land at 10,000 BCE that drown
+later. Our data has nothing in the box or within 100 km in any epoch, and
+from 5,000 BCE the residuals read "little dated archaeology nearby". That
+reading is right. The emptiness comes from our compilations, on top of a
+thin field record. Eritrea has no record at all in XRONOS or p3k14c, so the
+whole African shore of the southern Red Sea is blank for us. The prehistory
+of the coast is known from one survey project, plus a remote-sensing study
+that has never been checked on the ground.
+
+The literature has more. The 2005-06 survey of the Buri peninsula and Gulf
+of Zula (about 400 km², at the south edge of the box) found more than a dozen
+MSA and LSA sites. Three Holocene shell-midden sites there have seven
+radiocarbon dates on shell: Gelalo NW (7000-8500 cal BP), Misse East
+(7323-8039 cal BP) and Asfet Unit F (5475-5672 cal BP). They are the earliest
+dated shell middens in the Red Sea. They have obsidian microlithic industries,
+ostrich-eggshell and marine-shell beads, and Terebralia (mangrove) and
+Atactodea (sandy beach) shell. On the islands themselves, Meredith-Williams
+et al. (2014) mapped about 1,200 probable shell mounds from satellite images
+centred on the Dahlak islands, some casting shadows like the 6 m Farasan
+mounds, plus 19 doubtful candidates at Massawa. None has been visited or
+dated. An Italian engineer collected obsidian microliths on Dahlak Kebir in
+the 1930s (Blanc 1952, "Wiltonian"), and there are undated shell middens
+there. North of Massawa at Gurgussum, Roubet found obsidian and
+comb-decorated pottery, called Neolithic (both after Zazzaro 2013).
+
+The things to do, in order of yield: (1) enter the three dated Zula/Buri
+middens from Beyin and Bar-Yosef Mayer's date table, after checking the
+marine reservoir correction; (2) obtain the coordinates of the 1,200
+remote-sensed Dahlak mounds from the York team and enter them as surveyed,
+undated and unverified, never as dated sites; (3) speculate a
+Farasan-style shell-mound fisher-forager presence on the islands and coast
+from about 6,000 BCE, which is well argued because the Farasan mounds
+opposite are dated in their thousands. The early Holocene shore on the bank
+is drowned and can only be speculated.
+
+For a person, the board: (a) the Dahlak islands vanish from 5,000 BCE. The
+archipelago (Dahlak Kebir alone is several hundred km²) is bigger than
+islands.min_area_km2. Probably the hexes holding it touch mainland coastal
+hexes, so islands.py groups it with the mainland, whose landmass is too big
+to restore. Adding a Dahlak box to [islands].watch would show it. Until it is
+fixed, any island site we enter lands in a Water hex. (b) The sheet draws
+the whole Dahlak bank and the strip east of it as semi-desert land at
+10,000 BCE. That is right for the bank. The hexes at 40.98 E stay land only
+at 10,000 BCE; I did not check them against the axial trough.
+"""
+
+[[known_site]]
+name = "Misse East"
+lon = 39.84
+lat = 15.28
+coordinates = "approximate"
+start = -6090
+end = -5370
+what = "Shell midden on a limestone ridge above the Misse River, about 4 km inland on the Gulf of Zula side of the Buri peninsula. One 1x1 m unit, 739 obsidian lithics (prismatic cores, backed microliths), shell 94% Atactodea striata by MNI, ostrich-eggshell beads. Two shell dates: A0796 7145+/-20 BP (7452-7564 cal BP) and GX-32911 7330+/-190 BP (7323-8039 cal BP); the range entered spans both. The chapter does not say which marine reservoir correction was used, so check it before entry (Beyin 2011 is said to give one). Point placed from the text's description, not a published coordinate: the published map (Fig. 2) is an image I could not read."
+cite = "Beyin, A. & Bar-Yosef Mayer, D.E. 2018, Prehistoric settlements on the Red Sea coast of Eritrea, in Sarathi (ed.) Early Maritime Cultures in East Africa and the Western Indian Ocean, Archaeopress Access Archaeology, pp. 1-32, Fig. 4"
+url = "https://www.archaeopress.com/Archaeopress/DMS/EF8E85A7FCEC4ED5B414B15060004654/9781784917128-sample.pdf"
+checked = true
+
+[[known_site]]
+name = "Gelalo NW"
+lon = 39.95
+lat = 15.18
+coordinates = "approximate"
+start = -6550
+end = -5050
+what = "LSA site with shell on a basalt inselberg about 15 km from the coast on the Buri peninsula. Three 1x1 m units, 4,883 excavated obsidian lithics plus over 1,000 from the surface (prismatic cores, crescent backed microliths), ostrich-eggshell and Engina shell beads, a small Terebralia-dominated shell sample. Three conventional shell dates: GX-32910 7890+/-130, GX-32911 6970+/-170 and GX-32913 7900+/-190 BP, together 7000-8500 cal BP. The chapter lists lab number GX-32911 for both a Gelalo and a Misse date; one is a misprint, so check the lab numbers against Beyin 2011 before entry. Position: only 'Buri peninsula, about 15 km from the coastline'; my point is a guess on the peninsula and must be replaced from the published map."
+cite = "Beyin, A. & Bar-Yosef Mayer, D.E. 2018, Prehistoric settlements on the Red Sea coast of Eritrea, Archaeopress Access Archaeology, pp. 1-32, Fig. 4"
+url = "https://www.archaeopress.com/Archaeopress/DMS/EF8E85A7FCEC4ED5B414B15060004654/9781784917128-sample.pdf"
+checked = true
+
+[[known_site]]
+name = "Asfet (Unit F)"
+lon = 39.66
+lat = 15.17
+coordinates = "approximate"
+start = -3720
+end = -3525
+what = "Mid-Holocene shell midden on the northern summit of a basalt ridge on the south-western edge of the Gulf of Zula, about 1 km from the present shore. Terebralia palustris (mangrove) makes up 97% of 3,124 shells; 411 lithics, mostly obsidian, with a few backed pieces; one perforated Chicoreus shell bead. Two AMS shell dates, A0794 5385+/-15 BP (5571-5662 cal BP) and GX-32978 5350+/-40 BP (5475-5672 cal BP). The site also has an undated surface MSA assemblage, which is out of our window. Point placed at the south-west corner of the Gulf of Zula from the description; it may fall just south of the box edge (15.2 N)."
+cite = "Beyin, A. & Bar-Yosef Mayer, D.E. 2018, Prehistoric settlements on the Red Sea coast of Eritrea, Archaeopress Access Archaeology, pp. 1-32, Fig. 4"
+url = "https://www.archaeopress.com/Archaeopress/DMS/EF8E85A7FCEC4ED5B414B15060004654/9781784917128-sample.pdf"
+checked = true
+
+[[known_site]]
+name = "Dahlak shell mounds (remote-sensed group, Dahlak Kebir area)"
+lon = 40.1159
+lat = 15.7667
+coordinates = "published"
+start = -6050
+end = -2550
+what = "UNDATED and not ground-checked. One of about 1,200 probable shell mounds mapped from satellite images on the Dahlak islands. The coordinate is the one the paper gives for its Fig. 7 image of mound shadows on Dahlak, so it marks a group, not one mound. The authors say most Dahlak features 'clearly represent shell mounds' like the Farasan ones, sit on +2 m palaeoshorelines, and in places are tall enough to cast shadows. The date range is NOT a date of this site: it is the paper's span for southern Red Sea shell middens, 8000-4500 cal BP. Enter only as a surveyed, undated, unverified site, if at all."
+cite = "Meredith-Williams, M.G., Hausmann, N., Inglis, R.H. & Bailey, G.N. 2014, 4200 new shell mound sites in the southern Red Sea, Internet Archaeology 37"
+url = "https://intarch.ac.uk/journal/issue37/2/ia.37.2.pdf"
+checked = true
+
+[[research]]
+what = "Enter the three dated Buri/Zula middens (Misse East, Gelalo NW, Asfet Unit F) with their seven shell dates from Beyin & Bar-Yosef Mayer 2018 Fig. 4. Take coordinates from the site map in Beyin 2011 (Azania 46:123-140) or Beyin & Shea 2007 (JFA 32:1-16), resolve the duplicated lab number GX-32911, and apply a Red Sea marine reservoir correction. Also list the other LSA and MSA sites the survey recorded around Buri Lake and the southern Gulf of Zula, which have no dates. NOT YET ENTERED (2026-11-13): all seven are marine-shell dates, and pipeline/settlements.py calibrates every date on IntCal20 with no reservoir correction, so they would come out several centuries too old. They need marine calibration (Marine20 plus a Red Sea Delta-R) in the pipeline first."
+url = "https://doi.org/10.1080/0067270X.2011.580139"
+yields = "3 dated sites (7 dates, 6550-3525 BCE) at the south edge of the box: the first dated prehistory of the Eritrean coast in our data, plus about 10 undated survey sites"
+effort = "Small: one table of seven rows is already transcribed above. Coordinates need the Azania paper (paywalled) or the authors."
+
+[[research]]
+what = "Ask the York / DISPERSE team (Bailey, Meredith-Williams, Hausmann) for the point file behind Meredith-Williams et al. 2014 Fig. 3: about 1,200 remote-sensed shell mounds centred on the Dahlak islands and 19 possible sites at Massawa. Enter them as surveyed, undated and unverified, in a separate class that never counts as a dated site, or use them only to place speculative sites."
+url = "https://intarch.ac.uk/journal/issue37/2/ia.37.2.pdf"
+yields = "About 1,200 candidate shell-mound locations in the box. Undated; probably mid-Holocene by analogy with the dated Farasan mounds"
+effort = "One request for a shapefile; the paper shows only a small-scale map. Without the file, reading points off Fig. 3 is not worth doing."
+
+[[research]]
+what = "Look for any ground-truthing or dating on Dahlak since 2014: Eritrean National Museum work, the obsidian sourcing of Dahlak and coastal sources (an Irafailo source is mentioned in search summaries of Khalidi's work), and Oppenheimer et al. 2019 on Nabro obsidian, which ties the Danakil coast to the Tihama."
+url = "https://doi.org/10.1016/j.quascirev.2019.105995"
+yields = "Unknown. Probably nothing dated on the islands, but it would settle whether the mounds are real"
+effort = "A literature search; mostly paywalled"
+
+[[speculate]]
+target = "settlements"
+slices = [-6000, -5000, -4000, -3000]
+rule = "Place inferred shell-midden fisher-forager camps on the shore of that epoch: on the Dahlak islands where the board shows them, otherwise on the mainland coast from Massawa to the Buri peninsula and around the Gulf of Zula. Prefer shallow bays, mangrove inlets and headlands. Use about one per 30 km of shore, marked as inferred. Put one or two more on hilltops up to 15 km inland on the Buri peninsula, the Gelalo NW pattern."
+confidence = "medium"
+reasoning = "Presence is well argued, but the density is a guess. The Farasan islands, the twin salt-dome archipelago 200 km east, carry about 3,000 ground-checked and dated shell middens of mainly 8000-4500 cal BP. The Dahlak islands have about 1,200 remote-sensed mounds with the same spectral signature, on the same +2 m palaeoshorelines, some tall enough to cast shadows (Meredith-Williams et al. 2014). The islands are easier to reach: at most 10 km of open water to a midway island, with each step visible. The mainland coast at the box's south edge has dated middens of 8500-5500 cal BP (Beyin & Bar-Yosef Mayer 2018), and Dahlak Kebir has LSA obsidian microliths and undated middens (Blanc 1952, after Zazzaro 2013). The spacing is set denser than on the Yemeni mainland shore (bab_el_mandeb plan, one per 50 km) because this is the most midden-dense kind of coast in the Red Sea; low confidence in the number."
+basis = ["analogy", "neighbouring_evidence", "literature"]
+
+[[speculate]]
+target = "settlements"
+slices = [-9000, -8000, -7000]
+rule = "Place two or three inferred forager camps per slice on the coast of that epoch along the outer edge of the exposed Dahlak bank. Mark them inferred, and drowned where the hex later floods."
+confidence = "low"
+reasoning = "Before about 6,000 BCE the Dahlak bank was dry land joined to the mainland (dossier: 10, 7 and 5 hexes drown later at 10,000, 8,000 and 7,000 BCE). The oldest dated middens on the present coast, Gelalo NW and Misse East at about 8000 cal BP, are already there when the sea is still rising. That suggests people were using the shore before it reached its present line, and that their earlier shore sites are under water. Beyin & Bar-Yosef Mayer (2018) argue the same from the coastal-oasis model. No site of this age is known on either shore of the southern Red Sea, so this rests on environment and the timing of the earliest middens; keep it sparse."
+basis = ["environment", "neighbouring_evidence", "literature"]
+
+[[speculate]]
+target = "isostyle:domestic_livestock"
+slices = [-4000, -3000]
+rule = "Lower domestic livestock on the Dahlak islands and the Massawa-Zula coast to about 0.2 at 4,000 and 3,000 BCE. The gap critic's judged surface reaches 0.65 here by the last slice."
+confidence = "low"
+reasoning = "Nothing dated on this coast before 3,000 BCE has domestic animals. The Eritrean middens yield shell, ostrich eggshell and obsidian, and no faunal remains at all (Beyin & Bar-Yosef Mayer 2018). The earliest secure domestic stock nearby is at Asa Koma and Wakrita in the Gobaad basin, 2500-1800 BCE (see the lake_abbe plan). The gap critic's own Horn of Africa judgement puts 0.05 at 4,000 BCE and 0.4 only in the Eritrean western lowlands at 3,000 BCE. Bar-Yosef Mayer & Beyin (2009, as summarised by Meredith-Williams et al. 2014) do suggest the inland Eritrean sites were left by herder-gatherers, which is why this is not set lower. Low confidence: the 0.65 probably leaks from the Arabian side of the Red Sea, and I have not traced it."
+basis = ["neighbouring_evidence", "literature", "other_layer"]
+
+[[speculate.adjust]]
+kind = "near"
+point = [39.95, 15.6]
+radius_km = 90
+value = 0.2

@@ -1,0 +1,114 @@
+[meta]
+place = "white_sea_karelia"
+written = "2026-11-12"
+verdict = "research"
+confidence = "medium"
+really_empty = "Yes: no site in the box and none within 100 km in any epoch; the nearest is Oleni Ostrov, 270-311 km south. The raw XRONOS Russia file has nothing between 63.5 and 66 N east of 33 E; p3k14c has one date (36.77 E 66.3 N, 1000 BP) north of the box. No duplicates. Board problem, which comes first: the board drains the White Sea when it should be bigger. At 8,000 BCE all 50 hexes of the box are land (Onega Bay, the Vyg mouth and the Dvina Bay included); at 10,000 BCE the western half is Ice and the rest land; water appears only at 7,000 BCE (8 hexes) and reaches today's outline about 5,000 BCE (18-19 water hexes). The dossier's 15-19 'drowned later' hexes are this artefact. In fact the White Sea basin was sea throughout the window, with its shores far above today's because of glacio-isostatic depression: at Chupa, on the Karelian coast 70 km north of the box, the marine limit is between 104 and 142 m and the shore fell at about 1 cm a year from 10,800 to 6,300 cal BP, standing at 33-40 m about 6,350 cal BP (Kolka et al. 2015)."
+why_empty = ["not_in_open_compilations", "publication_access", "research_intensity"]
+summary = """
+The Karelian (south-west) coast of the White Sea from Onega Bay to the Vyg
+mouth at Belomorsk, where the White Sea petroglyphs (Zalavruga, Besovy
+Sledki, Yerpin Pudas; more than 3,400 figures in 12 locations over about
+1.5 km², Lobanova 2019) sit on islands in the lower Vyg, with more than 80
+sites around them. In our data the box is empty in every epoch, with nothing
+within 100 km.
+
+Two things are wrong, and they are separate. First, the board. The sea step
+lowers the modern White Sea by the global sea-level curve and ignores uplift
+(data/lakes/SOURCES.md, Baltic, "Limits"), so the shallow Onega Bay and
+Dvina Bay dry out. The real White Sea coast was depressed by the ice and lay
+far above today's: tens of metres in the early Holocene, still about 20 m
+at Belomorsk in the 6th millennium BCE (Yerpin Pudas I, a settlement at
+21.5-23.7 m, is dated 5570-5360 cal BC). Lobanova 2019 says the lower Vyg
+became available to people no earlier than the mid-Atlantic, because it was
+sea floor before then. So the early coast of this box is not drowned; it is
+inland and uplifted, and much of today's coastal strip was under water. The
+board shows the opposite.
+
+Second, the record. It is dated and published, mostly in Russian. Tarasov
+et al. 2017 list dates for Zalavruga I and IV, Zolotets, Yerpin Pudas I and
+Besovy Sledki (locality 11), Keret' to the north and others; Zalavruga Ware
+has AMS dates of 3,500-2,900 cal BC. Lobanova 2019 tabulates the Vyg sites
+with elevations and dates, from Yerpin Pudas I (5570-5360 cal BC) to the
+Eneolithic layers that bury the carvings. The Mesolithic of the White Sea
+coast is known from older Russian monographs (Devyatova 1976; others in
+Tarasov's references) that I could not reach. What to do: fix the White Sea
+on the board first, or every shore site entered will plot in the sea or
+inland of a false coast. Then ingest the Vyg dates from Tarasov et al. 2017
+and Lobanova 2019. Speculation covers the Mesolithic coast before 5,500 BCE,
+which nothing I read dates.
+"""
+
+[proposed_place]
+key = "white_sea_karelia"
+name = "White Sea Karelia (Vyg mouth and Onega Bay)"
+kind = "river_mouth"
+box = [33.5, 63.6, 37.5, 65.6]
+why = "The Karelian White Sea coast at the Vyg mouth (Belomorsk) and Onega Bay: the Zalavruga and Besovy Sledki petroglyphs, on a coast that has risen tens of metres since the ice left."
+
+[[known_site]]
+name = "Yerpin Pudas I"
+lon = 34.67
+lat = 64.49
+coordinates = "approximate"
+start = -5570
+end = -4490
+what = "Settlement by the Yerpin Pudas petroglyphs in the lower Vyg, 21.5-23.7 m a.s.l., with Pit-Comb Ware. 6510±120 BP (TA-344), 5570-5360 cal BC, and 5825±80 BP (TA-413), 4896-4490 cal BC. Coordinates are the centre of the Vyg petroglyph cluster near Belomorsk (all 12 locations lie within about 1.5 km²), not a published point."
+cite = "Lobanova 2019, Fennoscandia archaeologica XXXVI, table 4; Tarasov et al. 2017, Documenta Praehistorica 44, table 1"
+url = "https://journal.fi/fennoscandiaarchaeologica/article/download/126571/76389/265733"
+checked = true
+
+[[known_site]]
+name = "Besovy Sledki (settlement under the petroglyphs)"
+lon = 34.66
+lat = 64.5
+coordinates = "approximate"
+start = -4460
+end = -4250
+what = "Finds in the riverbed directly under the Besovy Sledki rock-art panels, -0.5 to 1.2 m a.s.l. today. Food crust on Pit-Comb Ware 5550±40 BP (GrA-63549), 4458-4338 cal BC; 5430±50 BP (GIN-129), 4332-4248 cal BC. Lobanova takes this as the early stage of the White Sea rock art. Coordinates are the Vyg petroglyph cluster, approximate."
+cite = "Lobanova 2019, table 4; Tarasov et al. 2017, table 1"
+url = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/44.7"
+checked = true
+
+[[known_site]]
+name = "Zalavruga I and IV"
+lon = 34.67
+lat = 64.48
+coordinates = "approximate"
+start = -3500
+end = -2900
+what = "Settlements on and around the Zalavruga petroglyphs (Old and New Zalavruga, 14-16.4 m a.s.l., more than 2,000 figures). Zalavruga Ware AMS dates fall in 3,500-2,900 cal BC; a hearth date of 4775±70 BP (TA-393) dates the alluvium that buried the carvings to about 3,000-2,800 BC; Zalavruga IV has 3810±50 BP (2460-2064 cal BC), after the window. Coordinates approximate, as above."
+cite = "Tarasov et al. 2017, pp. 107-108 and table 1; Lobanova 2019"
+url = "https://journal.fi/fennoscandiaarchaeologica/article/download/126571/76389/265733"
+checked = true
+
+[[research]]
+what = "Board, for a person, before anything is ingested here: stop the sea step from draining the White Sea. Either apply the [isostasy] uplift to the sea step in the White Sea (the dome in pipeline/config.toml is centred on the Gulf of Bothnia and was fitted only to Baltic points) or add a White Sea entry whose level follows a regional relative sea-level curve. Calibration points: Chupa, 33.0 E 66.27 N, marine limit 104-142 m at about 13-11.5 ka, shore 33-40 m at about 6.35 ka (Kolka et al. 2015); a lake at 34 m isolated about 5.8 ka (Tolstobrov et al. 2024); Belomorsk, Younger Dryas shoreline (Lunkka et al. 2012, not opened); Yerpin Pudas I at about 22 m in 5,500 cal BC as an upper bound on the shore (Lobanova 2019)."
+url = "https://vestnik.mauniver.ru/v18_2_n61/12_kolka_255-268.pdf"
+yields = "A White Sea that is sea at all slices and wider than today's before about 4,000 BCE, instead of land at 8,000 BCE. Without this every shore site plots wrongly."
+effort = "A config and model change, plus three or four calibration points; for whoever owns data/lakes and pipeline/isostasy.py."
+
+[[research]]
+what = "Enter the White Sea rows of Tarasov et al. 2017 Table 1 (Map 1 locality 11: Yerpin Pudas I, Zalavruga I and IV, Zolotets VI, X, XI and XX, Besovy Sledki and Besovy Sledki II; locality 23: Keret' XXII), placed at the map localities and marked approximate."
+url = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/44.7"
+yields = "About 10 sites with 20-odd dates, 5,600-2,000 cal BC."
+effort = "Part of the Karelian table proposed in the Onega plan; do them together."
+
+[[research]]
+what = "Enter the dated rows of Lobanova 2019 Table 4 (the lower-Vyg sites around the petroglyphs, with elevations a.s.l., lab numbers and calibrated ranges) that the Tarasov list lacks."
+url = "https://journal.fi/fennoscandiaarchaeologica/article/download/126571/76389/265733"
+yields = "A few more dated sites, and elevations for the 80-odd undated ones, which with a shoreline curve date them roughly."
+effort = "One table."
+
+[[research]]
+what = "Find the White Sea Mesolithic: the Russian monographs on the south-western White Sea coast (Devyatova 1976 on Holocene geology and the chronology of the sites of the south-west White Sea coast; the papers on the early Mesolithic of the north-western White Sea cited in Tarasov et al. 2017's references). Nothing I opened gives a Mesolithic date inside the box."
+yields = "Unknown; possibly a dozen Mesolithic sites on raised terraces, dated by shoreline more than by radiocarbon."
+effort = "Library work in Russian; Petrozavodsk (Karelian Research Centre) publications."
+
+[[speculate]]
+target = "settlements"
+slices = [-8000, -7000, -6000]
+rule = "Once the board's White Sea is fixed: place inferred forager camps on the coast of each slice, one per about 50 km, at river mouths (Vyg, Shuya, Kem', Onega) and on islands of the then-shore, on terraces now about 30-80 m above sea level, so 10-40 km inland of today's coast in the low Pomor'e. Mark as inferred and 'shoreline-placed'."
+confidence = "low"
+reasoning = "The coast was ice-free from the start of the Holocene (Lunkka et al. 2012 put a Younger Dryas shoreline at Belomorsk; title only, not opened) and was a sea coast throughout. People were at Onega's north shore by about 6,600 cal BC (Orovnavolok 9) and probably earlier. By 5,570 cal BC Pit-Comb Ware groups were at the Vyg mouth (Yerpin Pudas I), and the White Sea carvings show beluga and boats (Lobanova 2019), which points to an economy that used the sea. Why no earlier dates: the Mesolithic shore is on raised terraces that are forested, little surveyed, and poor in organic preservation, and Lobanova notes that the lower Vyg itself was sea floor until the mid-Atlantic. The density follows the Onega plan's analogy, halved for the poorer survey."
+basis = ["neighbouring_evidence", "environment", "analogy"]

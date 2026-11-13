@@ -111,13 +111,16 @@ def window(arr, tf, box):
             slice(max(c0, 0), min(c1 + 1, arr.shape[1])))
 
 
-def minimax(z, seed, order=None, outlet=None):
+def minimax(z, seed, order=None, outlet=None, route=None):
     """For each cell, the lowest water level at which a lake started at
     `seed` (row, col) covers it, and the spill level: the level at which the
     lake first reaches the window edge (inf if never). If `order` is a list,
     the cells' flat indices are appended to it in flood order (ties spread
     outward first-in, first-out). `outlet`, a boolean mask, limits where the
-    lake can spill (default: anywhere on the window edge)."""
+    lake can spill (default: anywhere on the window edge). If `route` is a
+    dict, route["saddle"] is set to the spill point: the highest cell on the
+    flood's way from the seed to the outlet it first reaches (None if it
+    never spills)."""
     h, w = z.shape
     need = np.full(z.shape, np.inf)
     sr, sc = seed
@@ -126,6 +129,9 @@ def minimax(z, seed, order=None, outlet=None):
     seq = 0
     done = np.zeros(z.shape, dtype=bool)
     spill = np.inf
+    prev = np.full(z.shape, -1, dtype=np.int64) if route is not None else None
+    if route is not None:
+        route["saddle"] = None
     while heap:
         lv, _, r, c = heapq.heappop(heap)
         if done[r, c]:
@@ -135,15 +141,83 @@ def minimax(z, seed, order=None, outlet=None):
             order.append(r * w + c)
         if spill == np.inf and (outlet[r, c] if outlet is not None else (r in (0, h - 1) or c in (0, w - 1))):
             spill = lv
+            if route is not None:
+                # Back along the way the flood came; the saddle is the
+                # cell nearest the seed at the spill level.
+                k, sad = r * w + c, (r, c)
+                while k >= 0:
+                    rr, cc = divmod(int(k), w)
+                    if z[rr, cc] >= spill:
+                        sad = (rr, cc)
+                    k = prev[rr, cc]
+                route["saddle"] = sad
         for dr, dc in NB8:
             a, b = r + dr, c + dc
             if 0 <= a < h and 0 <= b < w and not done[a, b]:
                 v = max(lv, z[a, b])
                 if v < need[a, b]:
                     need[a, b] = v
+                    if prev is not None:
+                        prev[a, b] = r * w + c
                     seq += 1
                     heapq.heappush(heap, (v, seq, a, b))
     return need, spill
+
+
+def outflow_path(z, need, spill, sea, outlet, saddle, relief=5.0):
+    """The river out of a lake held at its outlet: (row, col) cells from the
+    spill point (the saddle: the cell at the spill level the lake's flood
+    crosses to reach an outlet) down to the sea, or None.
+
+    The way down is a least-cost path over the cells outside the lake's
+    basin (need >= spill) and no higher than the spill (water runs
+    downhill from it) to a cell below `sea` connected to an `outlet`
+    cell (open sea at the window edge) through other cells below `sea`.
+    Each step costs its length times 1 + (height above the sea) / `relief`,
+    so the path keeps to valley floors and the shortest way to the coast."""
+    from scipy import ndimage
+    h, w = z.shape
+    if saddle is None or not np.isfinite(spill):
+        return None
+    lab, _ = ndimage.label(z < sea, structure=np.ones((3, 3)))
+    ids = np.unique(lab[outlet & (lab > 0)])
+    target = np.isin(lab, ids[ids > 0])
+    if not target.any():
+        target = outlet
+    # Not along the lake's rim: cells next to the lake (other than near the
+    # saddle) are its shore, and a path along them never leaves the basin.
+    lake = need < spill
+    rim = ndimage.binary_dilation(lake, structure=np.ones((3, 3))) & ~lake
+    rows, cols = np.mgrid[0:h, 0:w]
+    near = np.maximum(abs(rows - saddle[0]), abs(cols - saddle[1])) <= 2
+    ok = (need >= spill) & (z <= spill) & ~(rim & ~near)
+    start = tuple(saddle)
+    dist = np.full(z.shape, np.inf)
+    prev = np.full(z.shape, -1, dtype=np.int64)
+    dist[start] = 0.0
+    heap = [(0.0, start[0], start[1])]
+    end = None
+    while heap:
+        d, r, c = heapq.heappop(heap)
+        if d > dist[r, c]:
+            continue
+        if target[r, c]:
+            end = (r, c)
+            break
+        for dr, dc in NB8:
+            a, b = r + dr, c + dc
+            if 0 <= a < h and 0 <= b < w and (ok[a, b] or target[a, b]):
+                nd = d + np.hypot(dr, dc) * (1.0 + max(z[a, b] - sea, 0.0) / relief)
+                if nd < dist[a, b]:
+                    dist[a, b], prev[a, b] = nd, r * w + c
+                    heapq.heappush(heap, (nd, a, b))
+    if end is None:
+        return None
+    path, k = [], end[0] * w + end[1]
+    while k >= 0:
+        path.append(divmod(int(k), w))
+        k = prev[path[-1]]
+    return path[::-1]
 
 
 def contours(mask):
@@ -398,6 +472,7 @@ def _sea_or_outlet(lk, cfg, grid, out, arr, tf, years, log):
 
     start, until = lk.get("from"), lk.get("until")
     eff, shapes, last, last_year, last_kind, stats = {}, [], None, None, None, []
+    out_paths, outflow = {}, {}
     for y in years:
         if (start is not None and y < start) or (until is not None and y >= until):
             eff[y] = -np.inf
@@ -416,7 +491,8 @@ def _sea_or_outlet(lk, cfg, grid, out, arr, tf, years, log):
             for i in np.flatnonzero(out[y] == "Ice"):
                 if i in cells:
                     zy[cells[i]] = 1e4
-        need, spill = minimax(zy, seed, outlet=outlet)
+        route = {}
+        need, spill = minimax(zy, seed, outlet=outlet, route=route)
         g = sea_level(y, cfg["sea"]["curve"])
         lake = g < spill
         lv = spill - 0.5 if lake else g
@@ -432,6 +508,17 @@ def _sea_or_outlet(lk, cfg, grid, out, arr, tf, years, log):
             out[y] = t = fill_from_neighbours(t, drop, grid.neighbours,
                                               exclude=("Water", "Alpine"))
         stats.append((y, "lake" if lake else "sea", round(lv, 1), int(wet.sum())))
+        # The river out of the lake (`outflow`): one path per spill point,
+        # traced in the first year that point is the outlet.
+        if lake and lk.get("outflow"):
+            if route["saddle"] is not None:
+                key = tuple(int(v) for v in route["saddle"])
+                if key not in out_paths:
+                    cells_ = outflow_path(zy, need, spill, g, outlet, key)
+                    out_paths[key] = None if cells_ is None else np.column_stack(
+                        [tfk.x0 + np.array([c for _, c in cells_]) * tfk.a,
+                         tfk.y0 + np.array([r for r, _ in cells_]) * tfk.e])
+                outflow[y] = key
         # A shoreline in lake stages only; a new shape when the level moves
         # or every `shore_years` (the uplift reshapes it).
         if (last is None or lake != last_kind or abs(lv - last) >= lcfg["shore_step"]
@@ -462,5 +549,15 @@ def _sea_or_outlet(lk, cfg, grid, out, arr, tf, years, log):
             phases.append(f"{kind} from {y} ({lv:.0f} m, {n} hexes)")
             prev = kind
     log(f"lakes: {lk['name']}: " + "; ".join(phases))
-    return {"key": lk["key"], "name": lk["name"], "spill": np.inf,
-            "level": eff, "raw": eff, "shapes": shapes}
+    res = {"key": lk["key"], "name": lk["name"], "spill": np.inf,
+           "level": eff, "raw": eff, "shapes": shapes}
+    if lk.get("outflow"):
+        # [(points, years)] per spill point the lake drained over.
+        res["outflow"] = [(pts, sorted(y for y, k in outflow.items() if k == key))
+                          for key, pts in out_paths.items() if pts is not None]
+        res["outflow_cfg"] = lk["outflow"]
+        for key, pts in out_paths.items():
+            ys = sorted(y for y, k in outflow.items() if k == key)
+            where = "no way down" if pts is None else f"{pts[0][0]:.2f}E {pts[0][1]:.2f}N to {pts[-1][0]:.2f}E {pts[-1][1]:.2f}N"
+            log(f"lakes: {lk['name']} outflow {ys[0]}..{ys[-1]}: {where}")
+    return res

@@ -10,7 +10,7 @@ use super::renderer::{Globals, PieceVertex};
 use crate::palette::Rgb;
 use glam::{DVec3, Vec3};
 use std::f64::consts::{FRAC_PI_2, TAU};
-use neolith_core::{GridSpec, Landform, LonLat, MapMode, Selection, Snapshot, Year};
+use neolith_core::{GridSpec, HexId, Landform, LonLat, MapMode, Selection, Snapshot, Year};
 
 pub const FLAG_SELECTED: u8 = 1;
 pub const FLAG_HOVER: u8 = 2;
@@ -241,6 +241,8 @@ pub fn globals(
                 * (1.0 - smoothstep(BLUR_DIST[0], BLUR_DIST[1], view.focus as f32)),
             (view.size.x / view.size.y.max(1.0)) as f32,
         ],
+        // Filled in by the renderer from the last relief upload.
+        relief: [0.0; 4],
     }
 }
 
@@ -337,6 +339,45 @@ pub struct Piece {
     /// A famous site's renown (0 for the rest, 1-3; [`crate::renown`]):
     /// renown 2 and 3 carry a star.
     pub renown: u8,
+    /// The mound the site has built up, 0..1 ([`mound_of`]): a tell under a
+    /// long-lived village, next to nothing under a camp.
+    pub mound: f32,
+    /// 0 for a living site; above 0 an abandoned one ([`Piece::ruin_of`]),
+    /// drawn as its mound alone, greyed (a monument keeps its stones), and
+    /// never labelled or picked. 1 freshly abandoned, falling towards 0 as
+    /// the mound erodes (it is already scaled into `mound`).
+    pub ruin: f32,
+}
+
+/// Years of occupation for a mound to reach full height.
+const MOUND_YEARS: f64 = 1500.0;
+/// A ruin lasts this many times as long as the site was lived in, within
+/// these bounds (years); a monument's stones stay.
+const RUIN_LIFE_FACTOR: f64 = 3.0;
+const RUIN_LIFE: [f64; 2] = [300.0, 4000.0];
+
+/// A ruin shows only where the mound left behind is at least this big.
+const RUIN_MIN_MOUND: f32 = 0.12;
+
+/// How far a site's mound has grown by `year`, 0..1, before
+/// [`mound_scale`].
+/// Worked out at [`history_year`] steps, so the piece mesh is not rebuilt
+/// every frame while the clock plays.
+fn mound_of(s: &neolith_core::Settlement, year: Year) -> f32 {
+    (s.occupied_years_by(history_year(year)) as f64 / MOUND_YEARS).min(1.0).powf(0.7) as f32
+}
+
+/// How much of a mound a site builds: tells rise under villages of
+/// mud-brick houses rebuilt in place, not under camps, caves or monuments.
+/// A town builds the whole mound, an important site some of it, the rest
+/// next to none.
+fn mound_scale(shape: Shape, importance: u8) -> f32 {
+    match shape {
+        Shape::Town => 1.0,
+        Shape::Cave | Shape::Monument => 0.0,
+        Shape::Camp if importance >= 2 => 0.55,
+        Shape::Camp => 0.2,
+    }
 }
 
 /// The silhouette of a piece.
@@ -395,6 +436,8 @@ impl Piece {
             highlighted: false,
             shape: Shape::Camp,
             renown: 0,
+            mound: mound_of(s, year),
+            ruin: 0.0,
         }
     }
 
@@ -409,7 +452,43 @@ impl Piece {
             Some("cave") => Shape::Cave,
             _ => Shape::of(kind, p.population),
         };
-        Piece { inferred: world.is_inferred(i), shape, renown: fame.filter(|f| f.primary).map_or(0, |f| f.renown), ..p }
+        let mound = p.mound * mound_scale(shape, p.importance);
+        Piece { inferred: world.is_inferred(i), shape, mound, renown: fame.filter(|f| f.primary).map_or(0, |f| f.renown), ..p }
+    }
+
+    /// The ruin of settlement `i` at `year`, if it has been abandoned and
+    /// not yet worn away: [`RUIN_LIFE_FACTOR`] times its years of
+    /// occupation, within [`RUIN_LIFE`]; a monument's stones stay. Shaped as
+    /// the site was at its largest (a town leaves a tell). Inferred sites
+    /// leave no ruin (there is no record of them to leave one).
+    pub fn ruin_of(world: &neolith_core::World, i: usize, year: Year, fame: Option<crate::renown::Renowned>) -> Option<Self> {
+        let s = &world.settlements[i];
+        let end = s.abandoned_by()?;
+        if s.exists_at(year) || end > year || world.is_inferred(i) {
+            return None;
+        }
+        let peak = s.population.keys().iter().map(|(_, n)| *n).max().unwrap_or(0);
+        let kind = world.site_info(i).map_or("", |info| info.kind.as_str());
+        let shape = match fame.and_then(|f| f.entry().piece.as_deref()) {
+            Some("monument") => Shape::Monument,
+            Some("town") => Shape::Town,
+            Some("cave") => Shape::Cave,
+            _ => Shape::of(kind, peak),
+        };
+        let base = Piece::new(s, end);
+        let p = Piece { shape, mound: base.mound * mound_scale(shape, base.importance), ..base };
+        let lived = s.occupied_years_by(year) as f64;
+        let life = if p.shape == Shape::Monument {
+            f64::INFINITY
+        } else {
+            (lived * RUIN_LIFE_FACTOR).clamp(RUIN_LIFE[0], RUIN_LIFE[1])
+        };
+        // At history_year steps (see mound_of).
+        let left = 1.0 - (history_year(year).0 - end.0).max(0) as f64 / life;
+        let shows = p.shape == Shape::Monument || p.mound >= RUIN_MIN_MOUND;
+        // Worn down as it ages; drawn solid (opacity would show as stipple).
+        let worn = left.max(0.0).sqrt() as f32;
+        (left > 0.0 && shows).then(|| Piece { ruin: worn.max(0.05), mound: p.mound * worn, population: 0, renown: 0, ..p })
     }
 
     /// Label priority 0-3: from the population figure when there is one,
@@ -438,6 +517,26 @@ impl Piece {
     pub fn starred(&self) -> bool {
         self.renown >= 2
     }
+}
+
+/// The massif sketches ([`neolith_core::massif`]) as the terrain art reads
+/// them: 2 x 2 RGBA8 texels per hex, texel k of [`neolith_core::Massif::texels`]
+/// at (col * 2 + k % 2, row * 2 + k / 2). Zero for hexes without one, or all
+/// of them when the file has no sketches (the art then lays peaks out by hash).
+pub fn massif_texels(grid: &GridSpec, massif: &[Option<neolith_core::Massif>]) -> Vec<u8> {
+    let (cols, rows) = (grid.cols as usize, grid.rows as usize);
+    let mut out = vec![0u8; cols * 2 * rows * 2 * 4];
+    for (i, m) in massif.iter().enumerate() {
+        let Some(m) = m else { continue };
+        let (col, row) = grid.col_row(HexId(i as u32));
+        let t = m.texels();
+        for k in 0..4 {
+            let (x, y) = (col as usize * 2 + k % 2, row as usize * 2 + k / 2);
+            let at = (y * cols * 2 + x) * 4;
+            out[at..at + 4].copy_from_slice(&t[k * 4..k * 4 + 4]);
+        }
+    }
+    out
 }
 
 /// Camps the terrain art clears the ground for, per hex ([`camp_texels`]).
@@ -493,6 +592,74 @@ pub fn camp_texels(grid: &GridSpec, pieces: &[Piece]) -> Vec<u8> {
     out
 }
 
+/// The history layer is worked out at this step of years, so playing the
+/// clock re-bakes the terrain art a few times a millennium, not every frame.
+pub const HISTORY_STEP: i32 = 50;
+/// Years of occupation for a site's clearing to reach full size.
+const CLEARING_GROW: f64 = 400.0;
+/// Years after abandonment for the woods to grow back over it.
+const CLEARING_REGROW: f64 = 600.0;
+/// How much of a site's clearing reaches each neighbouring hex.
+const CLEARING_SPILL: f64 = 0.35;
+
+/// The year the history layer is worked out for at `year` ([`HISTORY_STEP`]).
+pub fn history_year(year: Year) -> Year {
+    Year(year.0.div_euclid(HISTORY_STEP) * HISTORY_STEP)
+}
+
+/// What people have done to each hex by `year`, for the terrain art: one
+/// RGBA8 texel per hex at (col, row). r: clearing, 0..1, the woods thinned
+/// around sites (each site's footprint grows over [`CLEARING_GROW`] years of
+/// occupation, spills a little into the neighbours, and grows back over
+/// [`CLEARING_REGROW`] years once abandoned; forager camps clear half as
+/// much as farming villages, inferred sites half again; overlapping
+/// clearings combine as a union, never past 1). g: the same clearing where
+/// farming has arrived, which the art turns partly to fields. b, a: unused.
+pub fn history_texels(world: &neolith_core::World, year: Year) -> Vec<u8> {
+    let grid = &world.grid;
+    let farmed = |id: HexId| world.farming.get(id.index()).copied().flatten().is_some_and(|y| y <= year);
+    let mut clearing = vec![0f64; grid.len()];
+    for (i, s) in world.settlements.iter().enumerate() {
+        let lived = s.occupied_years_by(year);
+        if lived <= 0 {
+            continue;
+        }
+        let Some(home) = grid.hex_at(s.pos) else { continue };
+        let mut f = (lived as f64 / CLEARING_GROW).min(1.0) * (0.3 + 0.12 * s.importance.min(3) as f64);
+        if !s.exists_at(year) {
+            let since = s.abandoned_by().map_or(0, |end| year.0 - end.0) as f64;
+            f *= (1.0 - since / CLEARING_REGROW).max(0.0);
+        }
+        if !farmed(home) {
+            f *= 0.5;
+        }
+        if world.is_inferred(i) {
+            f *= 0.5;
+        }
+        if f <= 0.0 {
+            continue;
+        }
+        // Overlapping clearings combine as a union (1 - Π(1 - f)), so a
+        // dense cluster of sites thins the woods without wiping them out.
+        let mut clear = |id: HexId, f: f64| clearing[id.index()] = 1.0 - (1.0 - clearing[id.index()]) * (1.0 - f);
+        clear(home, f);
+        for n in grid.neighbours(home) {
+            clear(n, f * CLEARING_SPILL);
+        }
+    }
+    let (cols, rows) = (grid.cols as usize, grid.rows as usize);
+    let mut out = vec![0u8; cols * rows * 4];
+    let byte = |v: f64| (v.clamp(0.0, 1.0) * 255.0).round() as u8;
+    for id in grid.ids() {
+        let c = clearing[id.index()].min(1.0);
+        let (col, row) = grid.col_row(id);
+        let t = (row as usize * cols + col as usize) * 4;
+        out[t] = byte(c);
+        out[t + 1] = if farmed(id) { byte(c) } else { 0 };
+    }
+    out
+}
+
 /// World-space geometry of a piece, for drawing, labels and click tests.
 #[derive(Clone, Copy, Debug)]
 pub struct PieceFrame {
@@ -527,6 +694,8 @@ const TOWN_H: f64 = 1.25;
 const CAVE_H: f64 = 1.3;
 const CAMPFIRE_H: f64 = 1.7;
 const STAR_H: f64 = 1.45;
+/// A full-grown mound's height, in piece radii; the piece stands on top.
+const MOUND_H: f64 = 0.6;
 
 /// The star over a famous site: larger for the most famous.
 fn star_scale(renown: u8) -> f64 {
@@ -546,13 +715,15 @@ pub fn piece_frame(piece: &Piece, proj: &Projection, relief: &Relief, t: f64, ca
     let rel = cam_dist / DIST_REF;
     let zoom = if rel >= 1.0 { rel.powf(ZOOM_EXP) } else { rel.max(1e-3).powf(NEAR_EXP) };
     let radius = PIECE_R0 * zoom * tier_scale(piece.size_tier());
-    let body = radius * piece.shape.height();
+    let body = if piece.ruin > 0.0 { 0.0 } else { radius * piece.shape.height() };
+    let up = proj.normal(piece.pos, t);
     PieceFrame {
-        base: proj.surface_at(piece.pos, t, relief.at(piece.pos)),
-        up: proj.normal(piece.pos, t),
+        // On top of its mound.
+        base: proj.surface_at(piece.pos, t, relief.at(piece.pos)) + up * radius * MOUND_H * piece.mound as f64,
+        up,
         radius,
         body,
-        height: body + if piece.starred() { radius * STAR_H * star_scale(piece.renown) } else { 0.0 },
+        height: body + if piece.starred() && piece.ruin == 0.0 { radius * STAR_H * star_scale(piece.renown) } else { 0.0 },
     }
 }
 
@@ -637,6 +808,29 @@ pub fn piece_vertices(pieces: &[Piece], proj: &Projection, relief: &Relief, t: f
         let r = f.radius;
         let h = f.body;
         let turn = rnd(0.0) * TAU;
+        let ruin = piece.ruin > 0.0;
+        // The mound: a low, ragged dome of earth (a tell, under a long-lived
+        // village), bleached grey once the site is abandoned.
+        let mound_h = r * MOUND_H * piece.mound as f64;
+        if piece.mound > 0.06 {
+            let earth = if ruin { [0x7c, 0x72, 0x5e] } else { [0x86, 0x6e, 0x4f] };
+            let ground = f.base - up * mound_h;
+            let spread = r * (0.95 + 0.5 * piece.mound as f64);
+            const N: usize = 10;
+            let ring = |k: usize, frac: f64, lift: f64, salt: f64| {
+                let k = k % N;
+                let a = turn + k as f64 * TAU / N as f64;
+                ground + dir(a) * spread * frac * (0.88 + 0.24 * rnd(salt + k as f64)) + up * mound_h * lift
+            };
+            let hub = ground + up * mound_h;
+            for k in 0..N {
+                let (a0, a1) = (ring(k, 1.0, 0.0, 40.0), ring(k + 1, 1.0, 0.0, 40.0));
+                let (b0, b1) = (ring(k, 0.62, 0.75, 60.0), ring(k + 1, 0.62, 0.75, 60.0));
+                tri(a0, a1, b1, earth, 0.0, SOLID);
+                tri(a0, b1, b0, earth, 0.0, SOLID);
+                tri(b0, b1, hub, earth, 0.0, SOLID);
+            }
+        }
         // Upright prism faces: `foot` and `head` are matching rings of
         // corners; the head is closed with a cap.
         fn prism(foot: &[DVec3], head: &[DVec3]) -> (Vec<[DVec3; 3]>, Vec<[DVec3; 3]>) {
@@ -651,7 +845,7 @@ pub fn piece_vertices(pieces: &[Piece], proj: &Projection, relief: &Relief, t: f
             (sides, cap)
         }
         // Bare, trodden ground under a town or a monument.
-        if matches!(piece.shape, Shape::Town | Shape::Monument) {
+        if !ruin && matches!(piece.shape, Shape::Town | Shape::Monument) {
             let ground = if piece.shape == Shape::Town { [0x7a, 0x60, 0x44] } else { [0x6b, 0x63, 0x52] };
             const N: usize = 12;
             let rim = |k: usize| {
@@ -663,7 +857,9 @@ pub fn piece_vertices(pieces: &[Piece], proj: &Projection, relief: &Relief, t: f
                 tri(rim(k), rim(k + 1), hub, ground, 0.0, SOLID);
             }
         }
-        if piece.shape == Shape::Town {
+        if ruin && piece.shape != Shape::Monument {
+            // A ruin is its mound alone.
+        } else if piece.shape == Shape::Town {
             // Mud-brick houses packed together, flat-roofed, a ladder hole's
             // worth of shade on each roof: Çatalhöyük, not a campfire.
             let (wall, roof) = ([0xb5, 0x86, 0x58], [0xd8, 0xb7, 0x86]);
@@ -786,7 +982,7 @@ pub fn piece_vertices(pieces: &[Piece], proj: &Projection, relief: &Relief, t: f
                 }
             }
         }
-        if piece.starred() {
+        if piece.starred() && !ruin {
             // A five-pointed star floating over a famous site, as two crossed
             // upright cut-outs so it reads from any side.
             let gold = [0xff, 0xd0, 0x3a];
@@ -955,7 +1151,7 @@ mod tests {
 
     #[test]
     fn kind_and_population_pick_the_piece_and_renown_the_star() {
-        let p = |population, importance| Piece { pos: LonLat::new(0.0, 0.0), population, importance, evidence: 2, inferred: false, highlighted: false, shape: Shape::Camp, renown: 0 };
+        let p = |population, importance| Piece { pos: LonLat::new(0.0, 0.0), population, importance, evidence: 2, inferred: false, highlighted: false, shape: Shape::Camp, renown: 0, mound: 0.0, ruin: 0.0 };
         // A recorded population of 1000 or more builds a town; a monument
         // or a cave keeps its shape whatever its population.
         assert_eq!((Shape::of("site", 5000), Shape::of("settlement", 1000), Shape::of("site", 999)), (Shape::Town, Shape::Town, Shape::Camp));
@@ -988,7 +1184,7 @@ mod tests {
             (0, Shape::Camp, 3, 76),
             (5000, Shape::Town, 2, 102),
         ] {
-            let p = Piece { pos: LonLat::new(30.0, 35.0), population: pop, importance: 1, evidence: 2, inferred: false, highlighted: false, shape, renown };
+            let p = Piece { pos: LonLat::new(30.0, 35.0), population: pop, importance: 1, evidence: 2, inferred: false, highlighted: false, shape, renown, mound: 0.0, ruin: 0.0 };
             let verts = piece_vertices(std::slice::from_ref(&p), &proj, &relief, 0.0, 1.0);
             assert_eq!(verts.len(), tris * 3);
             // Only a campfire's smoke is see-through.
@@ -1032,7 +1228,7 @@ mod tests {
         let proj = Projection::new(LonLat::new(25.0, 41.0));
         let grid = GridSpec { cols: 4, rows: 4, origin_lon: 29.0, origin_lat: 36.0, w: 0.5773502691896262, h: 0.5 };
         let relief = Relief::flat(&grid);
-        let p = Piece { pos: LonLat::new(30.0, 35.0), population: 0, importance: 1, evidence: 2, inferred: false, highlighted: false, shape: Shape::Camp, renown: 0 };
+        let p = Piece { pos: LonLat::new(30.0, 35.0), population: 0, importance: 1, evidence: 2, inferred: false, highlighted: false, shape: Shape::Camp, renown: 0, mound: 0.0, ruin: 0.0 };
         let r = |dist: f64| piece_frame(&p, &proj, &relief, 0.0, dist).radius;
         // Smaller in the world, but still larger on screen (radius / distance).
         assert!(r(0.06) < r(0.12) && r(0.12) < r(0.48));
@@ -1041,9 +1237,29 @@ mod tests {
     }
 
     #[test]
+    fn massif_texels_put_each_sketch_in_its_hexs_2x2_block() {
+        use neolith_core::{Massif, MassifKind, Summit};
+        let grid = GridSpec { cols: 4, rows: 3, origin_lon: 0.0, origin_lat: 10.0, w: 0.5773502691896262, h: 0.5 };
+        let id = grid.id_at(2, 1);
+        let mut massif = vec![None; grid.len()];
+        let m = Massif::new(MassifKind::Ridge, 45.0, 0.6, 500.0, vec![Summit::new(0.1, -0.2, 1000.0)]);
+        massif[id.index()] = Some(m.clone());
+        let tex = massif_texels(&grid, &massif);
+        assert_eq!(tex.len(), 4 * 2 * 3 * 2 * 4);
+        let texel = |x: usize, y: usize| -> [u8; 4] { let t = (y * 8 + x) * 4; tex[t..t + 4].try_into().unwrap() };
+        let want = m.texels();
+        assert_eq!(texel(4, 2), want[0..4]);
+        assert_eq!(texel(5, 2), want[4..8]);
+        assert_eq!(texel(4, 3), want[8..12]);
+        assert_eq!(texel(5, 3), [0; 4]);
+        assert_eq!(tex.iter().filter(|b| **b != 0).count(), want.iter().filter(|b| **b != 0).count());
+        assert!(massif_texels(&grid, &[]).iter().all(|b| *b == 0));
+    }
+
+    #[test]
     fn camps_are_listed_in_the_hexes_their_clearings_reach() {
         let grid = GridSpec { cols: 4, rows: 3, origin_lon: 0.0, origin_lat: 10.0, w: 0.5773502691896262, h: 0.5 };
-        let piece = |pos| Piece { pos, population: 0, importance: 1, evidence: 2, inferred: false, highlighted: false, shape: Shape::Camp, renown: 0 };
+        let piece = |pos| Piece { pos, population: 0, importance: 1, evidence: 2, inferred: false, highlighted: false, shape: Shape::Camp, renown: 0, mound: 0.0, ruin: 0.0 };
         let entry = |tex: &[u8], id: neolith_core::HexId, k: usize| -> [u8; 4] {
             let (c, r) = grid.col_row(id);
             let t = (r as usize * 2 + k / 2) * grid.cols as usize * 2 + c as usize * 2 + k % 2;
@@ -1084,11 +1300,57 @@ mod tests {
         cam.target = LonLat::new(35.4, 31.8);
         cam.dist = 0.107;
         let view = cam.view(&proj, 0.0, glam::DVec2::new(1200.0, 800.0));
-        let piece = |lon, lat| Piece { pos: LonLat::new(lon, lat), population: 0, importance: 1, evidence: 2, inferred: false, highlighted: false, shape: Shape::Camp, renown: 0 };
+        let piece = |lon, lat| Piece { pos: LonLat::new(lon, lat), population: 0, importance: 1, evidence: 2, inferred: false, highlighted: false, shape: Shape::Camp, renown: 0, mound: 0.0, ruin: 0.0 };
         let near = piece_frame(&piece(35.4, 31.8), &proj, &relief, 0.0, cam.dist);
         let far = piece_frame(&piece(30.75, 22.75), &proj, &relief, 0.0, cam.dist);
         let on = piece_on_screen(&view, &near).expect("the piece at the target is on screen");
         assert!(on.radius_px <= 200.0);
         assert!(piece_on_screen(&view, &far).is_none());
+    }
+
+    fn history_world(occupation: Vec<(Year, Year)>, peak: u32) -> neolith_core::World {
+        use neolith_core::{Settlement, Timeline};
+        let grid = GridSpec { cols: 6, rows: 6, origin_lon: 30.0, origin_lat: 40.0, w: 0.5773502691896262, h: 0.5 };
+        let mut w = neolith_core::World::empty(grid);
+        let mut population = Timeline::new();
+        population.set_key(Year(-7000), peak);
+        let pos = w.grid.centre(w.grid.id_at(2, 2));
+        w.settlements.push(Settlement {
+            id: 1, name: "Tell".into(), pos, founded: occupation[0].0, population, occupation,
+            importance: 1, evidence: 2,
+        });
+        w
+    }
+
+    #[test]
+    fn clearings_grow_spill_and_grow_back() {
+        let w = history_world(vec![(Year(-7000), Year(-6000))], 0);
+        let home = w.grid.id_at(2, 2);
+        let next = w.grid.neighbour(home, 0).unwrap();
+        let r = |y: i32, id: HexId| {
+            let (c, row) = w.grid.col_row(id);
+            history_texels(&w, Year(y))[(row as usize * 6 + c as usize) * 4]
+        };
+        assert_eq!(r(-7100, home), 0, "nothing before the founding");
+        assert!(r(-6900, home) < r(-6600, home), "the clearing grows with occupation");
+        assert!(r(-6600, next) > 0 && r(-6600, next) < r(-6600, home), "and spills into the neighbours, less");
+        assert!(r(-5700, home) < r(-6001, home), "abandoned, the woods grow back");
+        assert_eq!(r(-5300, home), 0, "and close over it");
+        assert_eq!(history_texels(&w, Year(-6600))[(2 * 6 + 2) * 4 + 1], 0, "no fields without farming");
+        assert_eq!(history_year(Year(-6649)), Year(-6650));
+    }
+
+    #[test]
+    fn a_town_leaves_a_tell_and_a_camp_next_to_nothing() {
+        let town = history_world(vec![(Year(-7400), Year(-5900))], 3000);
+        assert!(Piece::ruin_of(&town, 0, Year(-6000), None).is_none(), "still lived in");
+        let ruin = Piece::ruin_of(&town, 0, Year(-5000), None).expect("a tell outlasts its town");
+        assert_eq!(ruin.shape, Shape::Town);
+        assert!(ruin.mound > 0.5, "{}", ruin.mound);
+        let older = Piece::ruin_of(&town, 0, Year(-3000), None).unwrap();
+        assert!(older.mound < ruin.mound, "it wears down");
+        // A short-lived camp builds next to no mound and leaves no ruin.
+        let camp = history_world(vec![(Year(-7000), Year(-6900))], 0);
+        assert!(Piece::ruin_of(&camp, 0, Year(-6800), None).is_none());
     }
 }

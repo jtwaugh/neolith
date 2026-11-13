@@ -20,6 +20,7 @@ struct Globals {
     art: vec4<f32>,          // printed detail strength (0 = art off), props (0/1), pixels per (size / distance), edge blending (0/1)
     hex: vec4<f32>,          // flat-board hex half width and half height (radians), relief (board units per metre; 0 = off), unused
     depth: vec4<f32>,        // focus distance (eye to the view's centre), haze strength (0 = off), unused (the blit's blur), unused
+    relief: vec4<f32>,       // relief texture: art_global x0, y0, texels per unit, 1 when present (heightfield.rs)
 };
 
 @group(0) @binding(0) var<uniform> g: Globals;
@@ -42,6 +43,26 @@ struct Globals {
 // (col, row) -> r: the selected evidence layer's code at the current year
 // (neolith_core::evidence: confidence * 50 + bin, 255 = no value).
 @group(0) @binding(8) var evidence_tex: texture_2d<u32>;
+
+// The relief (board::heightfield): today's topography in metres, laid out
+// in art_global coordinates, filtered. Only when g.relief.w is 1.
+@group(0) @binding(13) var relief_tex: texture_2d<f32>;
+@group(0) @binding(14) var relief_smp: sampler;
+
+fn relief_at(gp: vec2<f32>) -> f32 {
+    let uv = vec2<f32>(gp.x - g.relief.x, g.relief.y - gp.y) * g.relief.z / vec2<f32>(textureDimensions(relief_tex));
+    return textureSampleLevel(relief_tex, relief_smp, uv, 0.0).r;
+}
+
+// Height and its slope (metres per hex-local unit) at `gp`, by central
+// differences `step` apart (at least a texel; wider when a pixel is, so far
+// views don't shimmer).
+fn relief_sample(gp: vec2<f32>, step: f32) -> vec3<f32> {
+    let e = max(step, 1.0 / g.relief.z);
+    let dx = relief_at(gp + vec2<f32>(e, 0.0)) - relief_at(gp - vec2<f32>(e, 0.0));
+    let dy = relief_at(gp + vec2<f32>(0.0, e)) - relief_at(gp - vec2<f32>(0.0, e));
+    return vec3<f32>(relief_at(gp), vec2<f32>(dx, dy) / (2.0 * e));
+}
 
 const MODE_ELEVATION: u32 = 3u;
 const MODE_NPP: u32 = 4u;
@@ -74,6 +95,37 @@ fn hex_lift(cell: vec2<i32>) -> f32 {
     return f32(textureLoad(height_tex, cell, 0).r) * g.hex.z;
 }
 
+// With edge blending on (g.art.w), the tiles make one continuous surface:
+// each corner at the mean of the three hexes meeting there, the top a fan of
+// triangles from the centre, and no cliffs. Must match board::relief::at.
+fn lift_at(c: vec2<i32>, own: f32) -> f32 {
+    if (c.x < 0 || c.y < 0 || c.x >= i32(g.grid.x) || c.y >= i32(g.grid.y)) {
+        return own;
+    }
+    return hex_lift(c);
+}
+
+fn corner_lift(cell: vec2<i32>, k: u32) -> f32 {
+    let own = hex_lift(cell);
+    let par = u32(cell.x) & 1u;
+    return (own + lift_at(cell + neighbour_offset(par, (k + 5u) % 6u), own)
+        + lift_at(cell + neighbour_offset(par, k), own)) / 3.0;
+}
+
+fn surface_lift(cell: vec2<i32>, local: vec2<f32>) -> f32 {
+    if (g.art.w < 0.5) {
+        return hex_lift(cell);
+    }
+    let k = u32((i32(floor(atan2(local.y, local.x) / SIXTY)) % 6 + 6) % 6);
+    let k1 = (k + 1u) % 6u;
+    let c0 = vec2<f32>(cos(f32(k) * SIXTY), sin(f32(k) * SIXTY));
+    let c1 = vec2<f32>(cos(f32(k1) * SIXTY), sin(f32(k1) * SIXTY));
+    let det = c0.x * c1.y - c0.y * c1.x;
+    let a = (local.x * c1.y - local.y * c1.x) / det;
+    let b = (c0.x * local.y - c0.y * local.x) / det;
+    return (1.0 - a - b) * hex_lift(cell) + a * corner_lift(cell, k) + b * corner_lift(cell, k1);
+}
+
 // The byte the current map mode colours a hex by: a state channel, or the
 // elevation band (the state texture's alpha holds flags, not a layer).
 // Köppen and Population show the sea in one fixed colour (palette entry
@@ -100,6 +152,39 @@ fn layer_value(st: vec4<u32>, cell: vec2<i32>, mode: u32) -> u32 {
         return select(band, NO_DATA, band == 15u);
     }
     return st[mode];
+}
+
+// Data map modes are a wash over the terrain, not a fill: the land's own
+// colour shows through (MAP_STYLE.md). The sea is left as sea. Elevation is
+// itself a picture of the ground and stays opaque.
+const OVERLAY_ALPHA: f32 = 0.68;
+// Evidence: how much of the wash each confidence level keeps (observed,
+// judged high, medium, low, extrapolated). A guess is the same hue, fainter;
+// hatching stays reserved for thinly surveyed land.
+const EVIDENCE_ALPHA: array<f32, 5> = array<f32, 5>(1.0, 0.72, 0.52, 0.36, 0.22);
+const EVIDENCE_BINS: u32 = 50u;
+
+// A hex's colour in the current map mode (linear, before saturation).
+fn ground_colour(s: vec4<u32>, c: vec2<i32>, mode: u32) -> vec3<f32> {
+    let terrain = textureLoad(palette_tex, vec2<i32>(i32(s.r), 0), 0).rgb;
+    if (mode == 0u) {
+        return terrain;
+    }
+    let v = layer_value(s, c, mode);
+    if (mode == MODE_ELEVATION) {
+        return textureLoad(palette_tex, vec2<i32>(i32(v), i32(mode)), 0).rgb;
+    }
+    if (s.r == TERRAIN_WATER) {
+        return terrain;
+    }
+    var idx = v;
+    var a = OVERLAY_ALPHA;
+    if (mode == MODE_EVIDENCE && v != NO_DATA) {
+        var levels = EVIDENCE_ALPHA;
+        a *= levels[min(v / EVIDENCE_BINS, 4u)];
+        idx = v % EVIDENCE_BINS; // the observed level's colour: full hue
+    }
+    return mix(terrain, textureLoad(palette_tex, vec2<i32>(i32(idx), i32(mode)), 0).rgb, a);
 }
 
 const KIND_TOP: u32 = 0u;
@@ -149,12 +234,17 @@ fn vs_board(in: BoardIn) -> BoardOut {
         let own = hex_lift(cell);
         let other = hex_lift(nc);
         lift = select(other, own, in.attrs.w == 0u);
+        if (g.art.w > 0.5) {
+            lift = own; // one continuous surface: no cliff (a zero-height quad)
+        }
         // The cliff belongs to the higher tile (all four vertices agree).
         if (other > own) {
             out_cell = vec2<u32>(nc);
         }
         sink = 0.0;
         depth = 0.0;
+    } else if (kind == KIND_TOP && in.attrs.y > 0u && g.art.w > 0.5) {
+        lift = corner_lift(cell, in.attrs.x);
     } else if (kind != KIND_UNDERSIDE && in.attrs.w == 0u) {
         lift = hex_lift(cell);
     }
@@ -285,7 +375,28 @@ fn edge_fog(cell: vec2<u32>, local: vec2<f32>, dir: vec3<f32>) -> f32 {
 // neighbours' (and the coast rounds off) between these radii, so the map
 // reads as painted country, not a mosaic.
 const BLEND_PX_LO: f32 = 6.0;
-const BLEND_PX_HI: f32 = 18.0;
+// The ground field (fs_board): how far, in hex-local units, boundaries are
+// pushed about by noise up close.
+const FIELD_WARP: f32 = 0.40;
+// The ground field's kernel radius (hex-local; neighbouring centres are √3
+// apart). With the warp it must stay within 2: see fs_board.
+const FIELD_RADIUS: f32 = 2.0;
+// Below this hex radius on screen (pixels) the kernel is the 19-hex one, of
+// this radius less the warp (the third ring is over 4.5 from the centre,
+// so radius + warp up to 3.5 is exact for points of this hex).
+const FIELD_WIDE_PX: f32 = 40.0;
+const FIELD_RADIUS_FAR: f32 = 3.0;
+// Hex radius on screen (pixels) by which the warp is fully in.
+const FIELD_WARP_PX: f32 = 30.0;
+// Vertical exaggeration of the relief shading (fs_board) at full hillshade.
+const RELIEF_SHADE: f32 = 40.0;
+// The same from the heightmap, whose slopes are real (and steeper).
+const RELIEF_SHADE_DEM: f32 = 30.0;
+// Metres above which snow lies (give or take 150 m of noise), on the
+// heightmap's 0.1° averages, which sit well below the peaks.
+const SNOWLINE: f32 = 2500.0;
+// Snow lies only where the heightmap's slope (m/m) is past this.
+const SNOW_SLOPE: f32 = 0.06;
 
 // The table: a polished walnut ring with a pale inlaid horizon band,
 // engraved in degrees, and a brass bead round the hole.
@@ -404,8 +515,7 @@ fn fs_board(in: BoardOut) -> @location(0) vec4<f32> {
             let cell = vec2<i32>(in.cell);
             let mode = u32(g.grid.z);
             let st = textureLoad(state_tex, cell, 0);
-            let albedo = saturate_colour(
-                textureLoad(palette_tex, vec2<i32>(i32(layer_value(st, cell, mode)), i32(mode)), 0).rgb);
+            let albedo = saturate_colour(ground_colour(st, cell, mode));
             let fogged = mix(albedo, fog_colour(in.dir), edge_fog(in.cell, vec2<f32>(0.0), in.dir));
             return vec4<f32>(haze(fogged * 0.62 * lighting(ng), in.world), 1.0);
         }
@@ -437,8 +547,7 @@ fn fs_board(in: BoardOut) -> @location(0) vec4<f32> {
     let cell = vec2<i32>(in.cell);
     let st = textureLoad(state_tex, cell, 0);
     let value = layer_value(st, cell, mode);
-    var albedo = textureLoad(palette_tex, vec2<i32>(i32(value), i32(mode)), 0).rgb;
-    albedo = saturate_colour(albedo);
+    var albedo = saturate_colour(ground_colour(st, cell, mode));
 
     // The neighbour across the nearest edge.
     let nc = cell + neighbour_offset(in.cell.x & 1u, edge);
@@ -455,40 +564,188 @@ fn fs_board(in: BoardOut) -> @location(0) vec4<f32> {
     let grout_k = smoothstep(GROUT_PX_LO, GROUT_PX_HI, hex_px);
     let border_k = smoothstep(BORDER_PX_LO, BORDER_PX_HI, hex_px);
 
-    // Far out: blend into the neighbours, land with land and sea with sea,
-    // and draw the coast where the blended wetness crosses a half, so it
-    // rounds off instead of stepping round each hex. Each neighbour weighs
-    // in towards their shared edge (equal shares on the edge, thirds at a
-    // corner), so the colour is continuous across hexes.
-    let far = 1.0 - smoothstep(BLEND_PX_LO, BLEND_PX_HI, hex_px);
+    // The ground field (edge blending on): colour, coast and hillshade are
+    // interpolated over the triangle of hex centres the point lies in (this
+    // hex and the two neighbours either side of the nearest corner). That
+    // triangle is the same seen from all three hexes, so everything is
+    // continuous across tiles, and the coast is where the interpolated
+    // wetness crosses a half: it cuts across hexes instead of tracing their
+    // edges. The point is warped by board-wide noise first, so boundaries
+    // meander. Far out the colours blend linearly (a painted map); closer
+    // in each hex keeps a solid core and only the boundary zone mixes.
     var far_shade = f32(textureLoad(elevation_tex, cell, 0).g) / 128.0;
-    if (far > 0.001) {
-        let own_wet = f32(st.r == TERRAIN_WATER);
-        var land = albedo * (1.0 - own_wet);
-        var land_w = 1.0 - own_wet;
-        var sea = albedo * own_wet;
-        var sea_w = own_wet;
-        var shade_sum = far_shade * (1.0 - own_wet);
-        for (var i = 0u; i < 6u; i++) {
-            let w = smoothstep(0.15, 1.0, dot(in.local, edge_normal(i)) / SQRT3_2);
-            let c = cell + neighbour_offset(in.cell.x & 1u, i);
-            if (w <= 0.0 || c.x < 0 || c.y < 0 || c.x >= i32(g.grid.x) || c.y >= i32(g.grid.y)) {
-                continue;
+    var drawn_terrain = st.r;
+    var shore = 9.0;
+    var relief_grad = vec2<f32>(0.0);
+    let field_on = g.art.w > 0.5;
+    if (field_on) {
+        let gp = art_global(in.local, in.cell);
+        // The warp comes in as the hexes grow on screen (from far out it is
+        // finer than a pixel), and the kernel narrows to keep room for it.
+        let near = smoothstep(BLEND_PX_LO, FIELD_WARP_PX, hex_px);
+        let warp = (vec2<f32>(art_noise(gp * 1.1 + 3.0), art_noise(gp * 1.1 + 41.0)) * 0.7
+            + vec2<f32>(art_noise(gp * 3.3 + 19.0), art_noise(gp * 3.3 + 67.0)) * 0.3 - 0.5) * 2.0 * FIELD_WARP * near;
+        let p = in.local + warp;
+        // Far out, where hexes are small on screen, the kernel takes in the
+        // second ring too (19 hexes, radius FIELD_RADIUS_FAR), which irons
+        // out the hex-sized zigzags of a coast or a biome border; closer in,
+        // the seven nearest (and the warp breaks the edges up instead).
+        let wide = hex_px < FIELD_WIDE_PX;
+        let radius = select(FIELD_RADIUS, FIELD_RADIUS_FAR, wide) - FIELD_WARP * 1.4143 * near;
+        // A smooth kernel over this hex and its six neighbours: weight
+        // (1 - d²/R²)³ out to `radius` (hex-local units). The second ring of
+        // centres is at least 3 from this hex's centre, and the warped point
+        // at most 1 + |warp| from it, so with radius + |warp| <= 2 the seven
+        // are all that count: the field is continuous across hexes, with
+        // curved contours, not the facets of a triangle mesh.
+        // Crisp, not blurred. Two ground classes compete at each point: A,
+        // the class of the nearest hex centre, and B, the class of the
+        // nearest centre of another colour. Each sums its hexes' kernel
+        // weights; the point takes the stronger one's colour outright,
+        // antialiased over about a pixel. A point on either side of a
+        // border sees the same pair, so both agree where it runs: borders
+        // follow the smooth field (curving instead of tracing hexes) and stay
+        // sharp edges at any distance, like a printed plate.
+        let n_cells = select(7u, 19u, wide);
+        // A and B, from the inner seven (the warp is under half a hex, so
+        // the nearest centre is one of them).
+        var d_a = 1e9;
+        var c_a = cell;
+        for (var i = 0u; i < 7u; i++) {
+            var c = cell;
+            var centre = vec2<f32>(0.0);
+            if (i > 0u) {
+                c = cell + neighbour_offset(in.cell.x & 1u, i - 1u);
+                centre = edge_normal(i - 1u) * 1.7320508;
             }
-            let s = textureLoad(state_tex, c, 0);
-            let col = saturate_colour(textureLoad(palette_tex, vec2<i32>(i32(layer_value(s, c, mode)), i32(mode)), 0).rgb);
-            let wet = f32(s.r == TERRAIN_WATER);
-            land += col * w * (1.0 - wet);
-            land_w += w * (1.0 - wet);
-            sea += col * w * wet;
-            sea_w += w * wet;
-            shade_sum += f32(textureLoad(elevation_tex, c, 0).g) / 128.0 * w * (1.0 - wet);
+            let off = p - centre;
+            if (dot(off, off) < d_a && c.x >= 0 && c.y >= 0 && c.x < i32(g.grid.x) && c.y < i32(g.grid.y)) {
+                d_a = dot(off, off);
+                c_a = c;
+            }
         }
-        let wet = sea_w / max(land_w + sea_w, 1e-4);
-        let blended = mix(land / max(land_w, 1e-4), sea / max(sea_w, 1e-4), smoothstep(0.42, 0.58, wet));
-        albedo = mix(albedo, blended, far);
-        far_shade = mix(far_shade, shade_sum / max(land_w, 1e-4), far);
+        let key_a = textureLoad(hex_tex, c_a, 0).w & 0x1ffffffu;
+        var d_b = 1e9;
+        var c_b = c_a;
+        var key_b = key_a;
+        for (var i = 1u; i < 7u; i++) {
+            let c = cell + neighbour_offset(in.cell.x & 1u, i - 1u);
+            if (c.x < 0 || c.y < 0 || c.x >= i32(g.grid.x) || c.y >= i32(g.grid.y)) { continue; }
+            let off = p - edge_normal(i - 1u) * 1.7320508;
+            let k = textureLoad(hex_tex, c, 0).w & 0x1ffffffu;
+            if (k != key_a && dot(off, off) < d_b) { d_b = dot(off, off); c_b = c; key_b = k; }
+        }
+        // The own hex counts too when A is a neighbour.
+        if ((textureLoad(hex_tex, cell, 0).w & 0x1ffffffu) != key_a && dot(p, p) < d_b) {
+            d_b = dot(p, p);
+            c_b = cell;
+            key_b = textureLoad(hex_tex, cell, 0).w & 0x1ffffffu;
+        }
+        var w_sum = 0.0;
+        var wet_sum = 0.0;
+        var a_sum = 0.0;
+        var b_sum = 0.0;
+        var dw = vec2<f32>(0.0);    // d(Σ w)/dp
+        var dwet = vec2<f32>(0.0);  // d(Σ w·wet)/dp
+        var da = vec2<f32>(0.0);    // d(Σ w·[A])/dp
+        var db = vec2<f32>(0.0);    // d(Σ w·[B])/dp
+        var shade_sum = 0.0;
+        var shade_w = 0.0;
+        var h_sum = 0.0;
+        var h_w = 0.0;
+        var h_g = vec2<f32>(0.0);
+        var h_gw = vec2<f32>(0.0);
+        for (var i = 0u; i < n_cells; i++) {
+            var c = cell;
+            var centre = vec2<f32>(0.0);
+            if (i > 0u && i < 7u) {
+                c = cell + neighbour_offset(in.cell.x & 1u, i - 1u);
+                centre = edge_normal(i - 1u) * 1.7320508;
+            } else if (i >= 7u) {
+                // The second ring: from neighbour e, one more step out along
+                // e (straight) or e + 1 (between).
+                let e = (i - 7u) / 2u;
+                let turn = (i - 7u) % 2u;
+                centre = (edge_normal(e) + edge_normal((e + turn) % 6u)) * 1.7320508;
+                let n1 = cell + neighbour_offset(in.cell.x & 1u, e);
+                c = n1 + neighbour_offset(u32(n1.x) & 1u, (e + turn) % 6u);
+            }
+            let off = p - centre;
+            let q = max(1.0 - dot(off, off) / (radius * radius), 0.0);
+            if (q <= 0.0) { continue; }
+            if (c.x < 0 || c.y < 0 || c.x >= i32(g.grid.x) || c.y >= i32(g.grid.y)) {
+                c = cell;
+            }
+            // The hex's ground, baked (fs_hex_bake): w colour and wet bit,
+            // z height.
+            let hx = textureLoad(hex_tex, c, 0);
+            let packed = hx.w;
+            let key = packed & 0x1ffffffu;
+            let w = q * q * q;
+            let gw = -6.0 * q * q * off / (radius * radius);
+            // Relief: a height field from a much tighter weighting (w^4),
+            // so a range two hexes wide keeps its shape; its slope lights
+            // the ground below.
+            let h = f32(hx.z >> 16u) - 1000.0;
+            let w4h = w * w * w * w;
+            let g4h = 4.0 * w * w * w * gw;
+            h_sum += w4h * h;
+            h_w += w4h;
+            h_g += g4h * h;
+            h_gw += g4h;
+            let wet = f32((packed >> 24u) & 1u);
+            w_sum += w;
+            wet_sum += w * wet;
+            dw += gw;
+            dwet += gw * wet;
+            if (wet < 0.5) {
+                // Hillshade, sharpened towards the nearest hexes so a range
+                // keeps its shape from far off.
+                let w4 = w * w * w * w;
+                shade_sum += f32(packed >> 25u) / 64.0 * w4;
+                shade_w += w4;
+            }
+            if (key == key_a) {
+                a_sum += w;
+                da += gw;
+            } else if (key == key_b) {
+                b_sum += w;
+                db += gw;
+            }
+        }
+        let col_a = pow(vec3<f32>(f32(key_a & 255u), f32((key_a >> 8u) & 255u), f32((key_a >> 16u) & 255u)) / 255.0, vec3<f32>(2.0));
+        let col_b = pow(vec3<f32>(f32(key_b & 255u), f32((key_b >> 8u) & 255u), f32((key_b >> 16u) & 255u)) / 255.0, vec3<f32>(2.0));
+        let px = max(max(length(vec2<f32>(dlx.x, dly.x)), length(vec2<f32>(dlx.y, dly.y))), 1e-5);
+        // Signed distance (hex-local) to where A and B weigh the same.
+        var a_k = 1.0;
+        if (key_b != key_a) {
+            let gd = length(da - db);
+            a_k = clamp(0.5 + (a_sum - b_sum) / max(gd, 1e-4) / (px * 1.2), 0.0, 1.0);
+        }
+        albedo = mix(col_b, col_a, a_k);
+        // The height field's slope, metres per hex-local unit.
+        if (h_w > 1e-8) {
+            relief_grad = (h_g * h_w - h_gw * h_sum) / (h_w * h_w);
+        }
+        let ter_a = select(textureLoad(state_tex, c_a, 0).r, TERRAIN_WATER, ((key_a >> 24u) & 1u) == 1u);
+        let ter_b = select(textureLoad(state_tex, c_b, 0).r, TERRAIN_WATER, ((key_b >> 24u) & 1u) == 1u);
+        // The art draws the terrain that wins here, so a land hex's drowned
+        // corner gets waves, not grass, and vice versa.
+        drawn_terrain = select(ter_b, ter_a, a_k > 0.5);
+        let wet_f = wet_sum / max(w_sum, 1e-6);
+        // Gradient of the wetness ratio, for the distance to the coast (the
+        // art's foam and beach).
+        let grad = (dwet * w_sum - dw * wet_sum) / max(w_sum * w_sum, 1e-8);
+        let glen = length(grad);
+        if (glen > 1e-4) {
+            shore = abs(wet_f - 0.5) / glen;
+        }
+        if (shade_w > 1e-6) {
+            far_shade = shade_sum / shade_w;
+        }
     }
+    // How far out the view is (1 = hexes a few pixels across), for the survey wash.
+    let far = 1.0 - smoothstep(BLEND_PX_LO, 18.0, hex_px);
 
     var normal = n_top;
     let lip = g.frame_colour.a > 0.5 && !inside && rim > 0.45;
@@ -507,8 +764,6 @@ fn fs_board(in: BoardOut) -> @location(0) vec4<f32> {
         let local_px = max(length(vec2<f32>(dlx.x, dly.x)), length(vec2<f32>(dlx.y, dly.y)));
         let art_fade = 1.0 - smoothstep(0.06, 0.14, max(aa, local_px));
         let art_on = g.art.x * art_fade;
-        // Where biomes blend into each other the hard region border goes.
-        var soften = 0.0;
         if (art_on > 0.004) {
             var art: Art;
             art.albedo = albedo;
@@ -526,14 +781,16 @@ fn fs_board(in: BoardOut) -> @location(0) vec4<f32> {
             art.sun = -vec2<f32>(dot(key, normalize(tangent)), dot(key, normalize(bitangent)))
                 / max(dot(key, n_top), 0.35);
             art.lod = smoothstep(5.0, 11.0, hex_px);
-            albedo = terrain_art(in.local, in.cell, st.r, art);
-            if (g.art.w > 0.5 && mode == 0u && art_blends(st.r, nst.r)) {
-                soften = art_on;
-            }
+            art.field = f32(field_on);
+            art.shore = shore;
+            art.own = f32(drawn_terrain == st.r);
+            albedo = terrain_art(in.local, in.cell, drawn_terrain, art);
         }
         // Hillshade on land: the elevation gradient, as a multiplier (it is
         // static, so the shore follows the year's Water, not today's coast).
-        if (g.lines.y > 0.0 && st.r != T_WATER && st.r < T_COUNT) {
+        // (With the ground field on, the relief lights the ground instead:
+        // see below.)
+        if (g.lines.y > 0.0 && drawn_terrain != T_WATER && drawn_terrain < T_COUNT && !field_on) {
             albedo *= mix(1.0, far_shade, g.lines.y);
         }
         // Bevel: tip the normal outwards near the rim so tiles catch light.
@@ -542,17 +799,52 @@ fn fs_board(in: BoardOut) -> @location(0) vec4<f32> {
         let recede = max(smoothstep(RECEDE_PX_LO, RECEDE_PX_HI, hex_px), RECEDE_ALWAYS)
             * f32(mode == 0u) * clamp(g.art.x, 0.0, 1.0);
         let is_water = st.r == T_WATER;
-        let bevel = smoothstep(0.70, 0.94, rim) * g.tile.y * detail * grout_k
+        // With the ground field on, the hex grid is scaffolding: no grout,
+        // bevel or value borders (hover and selection still outline a hex).
+        let grid_k = select(1.0, 0.0, field_on);
+        let bevel = smoothstep(0.70, 0.94, rim) * g.tile.y * detail * grout_k * grid_k
             * mix(1.0, select(RECEDE_LAND, 0.0, is_water), recede);
         normal = normalize(n_top + outward * bevel * 0.8);
+        // Relief shading: tip the normal down the ground's slope,
+        // exaggerated so ranges read from far off; strength follows the
+        // board style's hillshade. With a heightmap, the real terrain's
+        // ridges and valleys (RELIEF_SHADE_DEM); without, the hex heights'
+        // field (RELIEF_SHADE).
+        let land = drawn_terrain != T_WATER && drawn_terrain < T_COUNT;
+        if (field_on && land) {
+            let unit_m = g.hex.y / SQRT3_2 * 6371000.0;
+            var grad = relief_grad * RELIEF_SHADE;
+            if (g.relief.w > 0.5) {
+                let px_local = max(length(vec2<f32>(dlx.x, dly.x)), length(vec2<f32>(dlx.y, dly.y)));
+                let r = relief_sample(art_global(in.local, in.cell), px_local * 1.5);
+                grad = r.yz * RELIEF_SHADE_DEM;
+                // Snow above the snowline, crisp-edged (about a pixel), and only
+                // on steep ground: a high plateau (Javakheti, Anatolia) is
+                // grassland, not a snowfield.
+                if (mode == 0u) {
+                    let line = SNOWLINE + (art_noise(art_global(in.local, in.cell) * 2.0 + 500.0) - 0.5) * 300.0;
+                    let edge = (r.x - line) / max(length(r.yz), 1.0) / max(px_local, 1e-4);
+                    let steep = smoothstep(SNOW_SLOPE * 0.6, SNOW_SLOPE, length(r.yz) / unit_m);
+                    albedo = mix(albedo, vec3<f32>(0.86, 0.89, 0.93), clamp(0.5 + edge, 0.0, 1.0) * 0.9 * steep);
+                }
+            }
+            let slope = grad / unit_m * g.lines.y;
+            let t_hat = normalize(tangent);
+            let b_hat = normalize(bitangent);
+            let flat_n = normal;
+            normal = normalize(normal - (t_hat * slope.x + b_hat * slope.y));
+            // The ambient light flattens the shading, so apply it once more
+            // to the colour: a printed hillshade, not just a lit surface.
+            albedo *= clamp(lighting(normal) / max(lighting(flat_n), 1e-3), 0.8, 1.25);
+        }
         // Grout line between tiles.
-        let grout = smoothstep(0.94 - aa, 0.94 + aa, rim) * g.tile.x * detail * grout_k
+        let grout = smoothstep(0.94 - aa, 0.94 + aa, rim) * g.tile.x * detail * grout_k * grid_k
             * mix(1.0, select(RECEDE_LAND, RECEDE_WATER_GROUT, is_water), recede);
         albedo = mix(albedo, albedo * 0.42, grout);
         // Region border: the neighbour's value differs (in elevation mode,
         // these are the contour lines between bands).
-        if (inside && nvalue != value) {
-            let band = smoothstep(0.80 - aa, 0.80 + aa, rim) * g.lines.x * (1.0 - soften) * border_k;
+        if (inside && nvalue != value && !field_on) {
+            let band = smoothstep(0.80 - aa, 0.80 + aa, rim) * g.lines.x * border_k;
             albedo = mix(albedo, albedo * 0.25, band);
         }
     }
@@ -590,6 +882,24 @@ fn fs_board(in: BoardOut) -> @location(0) vec4<f32> {
     }
 
     var colour = albedo * lighting(normal);
+
+    // Materials (terrain map, lit): most ground is matte, but ice shines
+    // with a broad sheen and a tight highlight, and open water catches the
+    // sun in a glitter of small facets.
+    if (mode == 0u && g.lines.w < 0.5 && !lip) {
+        let half_v = normalize(g.key_light.xyz + view_dir);
+        if (drawn_terrain == T_ICE) {
+            let nh = max(dot(normal, half_v), 0.0);
+            let fres = pow(1.0 - max(dot(normal, view_dir), 0.0), 4.0);
+            colour += vec3<f32>(0.95, 0.97, 1.0) * (pow(nh, 18.0) * 0.22 + pow(nh, 220.0) * 0.6 + fres * 0.18) * g.key_light.w;
+        } else if (drawn_terrain == T_WATER) {
+            let gpw = art_global(in.local, in.cell);
+            let ripple = vec2<f32>(art_noise(gpw * 6.0 + 300.0), art_noise(gpw * 6.0 + 340.0)) - 0.5;
+            let nw = normalize(normal + (tangent * ripple.x + bitangent * ripple.y) * inv * 0.35);
+            let nh = max(dot(nw, half_v), 0.0);
+            colour += vec3<f32>(1.0, 0.97, 0.9) * pow(nh, 160.0) * 0.45 * g.key_light.w * detail;
+        }
+    }
 
     // Outlines (unlit): selection boundary, then hover.
     if (selected && (!inside || (nst.a & 1u) == 0u)) {
@@ -804,7 +1114,16 @@ struct BlitParams {
     // widest blur radius, as a fraction of the view's height (0 = off);
     // z: the view's aspect (width / height).
     flags: vec4<f32>,
+    // The part of the target the board was drawn into (smaller while the
+    // camera moves, see BoardRenderer::render_if_changed): xy its share of
+    // the target, zw the largest uv to sample (half a texel in, so the
+    // linear filter never reads outside it).
+    region: vec4<f32>,
 };
+
+fn blit_uv(uv: vec2<f32>) -> vec2<f32> {
+    return min(uv * blit.region.xy, blit.region.zw);
+}
 
 @group(0) @binding(0) var blit_tex: texture_2d<f32>;
 @group(0) @binding(1) var blit_sampler: sampler;
@@ -823,7 +1142,7 @@ fn fs_blit(in: ScreenOut) -> @location(0) vec4<f32> {
     // (near). A disc of taps, wider the further from the band in focus.
     let off = in.uv.y - 0.5;
     let radius = blit.flags.y * smoothstep(0.17, 0.5, abs(off)) * select(1.0, 0.6, off > 0.0);
-    var c = textureSampleLevel(blit_tex, blit_sampler, in.uv, 0.0).rgb;
+    var c = textureSampleLevel(blit_tex, blit_sampler, blit_uv(in.uv), 0.0).rgb;
     if (radius > 0.0003) {
         var taps = array<vec2<f32>, 12>(
             vec2<f32>(1.0, 0.0), vec2<f32>(0.5, 0.866), vec2<f32>(-0.5, 0.866),
@@ -833,7 +1152,7 @@ fn fs_blit(in: ScreenOut) -> @location(0) vec4<f32> {
         );
         let scale = vec2<f32>(radius / max(blit.flags.z, 0.1), radius);
         for (var i = 0; i < 12; i++) {
-            c += textureSampleLevel(blit_tex, blit_sampler, in.uv + taps[i] * scale, 0.0).rgb;
+            c += textureSampleLevel(blit_tex, blit_sampler, blit_uv(in.uv + taps[i] * scale), 0.0).rgb;
         }
         c /= 13.0;
     }

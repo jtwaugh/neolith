@@ -121,7 +121,7 @@ why = "Mouth of the Volga on the Caspian, between the steppe and the Caspian low
 key = "don_mouth"
 name = "Don mouth"
 kind = "river_mouth"
-box = [38.5, 46.7, 40.3, 47.7]
+box = [38.5, 46.7, 41.3, 47.9]
 why = "Head of the Sea of Azov, where the steppe river route reaches salt water."
 
 [[place]]
@@ -186,6 +186,20 @@ name = "Khartoum confluence"
 kind = "confluence"
 box = [32.0, 15.0, 33.4, 16.3]
 why = "Meeting of the Blue and White Nile."
+
+[[place]]
+key = "white_sea_karelia"
+name = "White Sea Karelia (Vyg mouth and Onega Bay)"
+kind = "river_mouth"
+box = [33.5, 63.6, 37.5, 65.6]
+why = "The Karelian White Sea coast at the Vyg mouth (Belomorsk) and Onega Bay: the Zalavruga and Besovy Sledki petroglyphs, on a coast that has risen tens of metres since the ice left."
+
+[[place]]
+key = "samara_bend"
+name = "Samara Bend and Middle Volga steppe"
+kind = "confluence"
+box = [47.8, 51.9, 52.0, 54.0]
+why = "The Middle Volga where the Samara, Sok and Kinel join it, from the Samara Bend down to Khvalynsk: forest-steppe on the right bank, steppe in the Trans-Volga."
 
 # ------------------------------------------------------------------ islands
 [[place]]
@@ -371,6 +385,41 @@ kind = "lake_shore"
 box = [42.2, 38.1, 43.9, 39.2]
 why = "Large highland lake beside the Nemrut Dağ obsidian sources."
 
+[[place]]
+key = "megachad"
+name = "Lake Megachad"
+kind = "lake_shore"
+box = [12.0, 10.0, 19.5, 18.5]
+why = "Lake Chad and its basin floor: the Komadugu-Yobe and Chari inflows, Kanem, the Bahr el Ghazal channel and the Bodélé depression, all under one lake in the African Humid Period."
+
+[[place]]
+key = "onega"
+name = "Lake Onega"
+kind = "lake_shore"
+box = [33.8, 60.7, 36.8, 63.0]
+why = "Europe's second-largest lake: Oleni Ostrov, one of the largest early Holocene cemeteries of northern Eurasia, the Pegrema and Zaonezhye shore sites, and the east-shore petroglyphs, with the Svir draining to Ladoga."
+
+[[place]]
+key = "upper_volga_lakes"
+name = "Upper Volga - Oka interfluve lakes and bogs"
+kind = "lake_shore"
+box = [36.0, 55.0, 42.5, 58.2]
+why = "Lake and peat-bog lowlands between the upper Volga and the Oka, from Tver to Murom and from the Meshchera to Yaroslavl: the Dubna and Nerl valleys, the Rostov basin with Lake Nero, Lake Pleshcheyevo and the Meshchera lakes."
+
+[[place]]
+key = "kama_middle_urals"
+name = "Kama basin and Middle Urals peat bogs"
+kind = "lake_shore"
+box = [53.5, 56.0, 61.5, 60.5]
+why = "The upper and middle Kama around Perm with the Vishera, Chusovaya and Sylva, and the eastern slope of the Middle Urals between Nizhny Tagil and Yekaterinburg, where the Shigir and Gorbunovo peat bogs fill former lake basins."
+
+[[place]]
+key = "kargopol_lacha"
+name = "Kargopol lakes (Lacha and Kubenskoye)"
+kind = "lake_shore"
+box = [37.5, 59.3, 40.6, 62.0]
+why = "The Lacha, Vozhe and Kubenskoye lake basins on the Onega-Sukhona watershed, home of the Mesolithic Veretye culture and the Popovo cemetery."
+
 # ---------------------------------------------- passes, gates and isthmuses
 [[place]]
 key = "darial"
@@ -442,6 +491,20 @@ kind = "isthmus"
 box = [33.1, 45.7, 34.3, 46.6]
 why = "The neck joining Crimea to the steppe."
 
+[[place]]
+key = "ladoga"
+name = "Lake Ladoga and the Karelian Isthmus"
+kind = "isthmus"
+box = [28.6, 59.7, 33.0, 61.8]
+why = "Europe's largest lake and the isthmus between it and the Gulf of Finland, crossed by the Baltic-Ladoga strait and later the Heinjoki and Vuoksi outflows, the route by which the north-eastern Baltic was settled."
+
+[[place]]
+key = "manych"
+name = "Kuma-Manych depression"
+kind = "isthmus"
+box = [41.0, 45.3, 46.0, 47.0]
+why = "The low trough between the Lower Don and the Caspian lowland, now a chain of salt lakes, which separates the Russian Plain from Ciscaucasia and in the Late Pleistocene carried Caspian overflow to the Black Sea."
+
 # ---------------------------------------------- drowned plains and headlands
 [[place]]
 key = "gulf_floor"
@@ -484,3 +547,57 @@ name = "Cape Guardafui"
 kind = "headland"
 box = [50.1, 10.9, 51.5, 12.3]
 why = "The tip of the Horn of Africa, where the Gulf of Aden meets the Indian Ocean."
+
+[[place]]
+key = "north_caspian_lowland"
+name = "North Caspian lowland"
+kind = "drowned_plain"
+box = [45.0, 45.0, 54.0, 50.6]
+why = "The Caspian lowland north of the sea, from the Uzen rivers and the Volga-Ural interfluve down to the Kalmyk steppe: late Khvalynian sea floor that was dry during the Mangyshlak lowstand, and in part flooded again by the New Caspian."
+
+# -------------------------------------------- Horn of Africa (2026-11-13)
+# Proposed by the exotic critic in the plans for dahlak, lake_abbe,
+# lake_tana and guardafui. Lake Turkana, the Omo and the Juba-Shabelle are
+# south of the board (6.1 N) and have no entry.
+
+[[place]]
+key = "gulf_of_zula"
+name = "Gulf of Zula"
+kind = "ad_hoc"
+box = [39.4, 14.9, 40.4, 15.5]
+why = "Sheltered gulf south of Massawa with the Buri peninsula: the earliest dated shell middens of the Red Sea's African shore, and later the port of Adulis."
+
+[[place]]
+key = "danakil_nabro"
+name = "Danakil coast and Nabro"
+kind = "ad_hoc"
+box = [40.5, 13.0, 41.8, 14.6]
+why = "The Danakil coast and Lake Afrera below the Nabro volcano, an obsidian source whose glass crossed the Red Sea to the Tihama."
+
+[[place]]
+key = "middle_awash"
+name = "Middle Awash"
+kind = "ad_hoc"
+box = [39.8, 9.8, 40.8, 11.0]
+why = "The Awash valley in the southern Afar, the river that ends in Lake Abbe; famous for older prehistory, with little published from the Holocene."
+
+[[place]]
+key = "mer_lakes"
+name = "Main Ethiopian Rift lakes"
+kind = "lake_shore"
+box = [38.2, 7.0, 39.2, 8.3]
+why = "Ziway, Abijata, Shala and Langano in the rift floor, joined as one larger lake in the early Holocene."
+
+[[place]]
+key = "dire_dawa_caves"
+name = "Dire Dawa and Harar caves"
+kind = "pass"
+box = [41.4, 9.0, 42.5, 9.9]
+why = "The escarpment where the Harar plateau drops to the Afar and Somali lowlands, with limestone caves above Dire Dawa."
+
+[[place]]
+key = "hargeisa_laas_geel"
+name = "Hargeisa and Laas Geel"
+kind = "ad_hoc"
+box = [43.6, 9.2, 45.4, 10.6]
+why = "The northern Somali plateau around Hargeisa, with the painted rock shelters of Laas Geel above a river confluence."

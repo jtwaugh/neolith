@@ -1,6 +1,7 @@
 """Rivers as time-varying polylines (data/rivers/rivers.toml).
 
-Each catalogued river is either traced downstream along HydroRIVERS from a
+Each catalogued river is either traced downstream along the GEOGLOWS v2
+(TDX-Hydro) stream network from a
 headwater point (`from`, optionally stopping near `to`) or given as
 hand-entered waypoints (`points`). Rivers that reach the sea are extended
 across the shelf exposed at the lowest sea level of the run, following the
@@ -15,56 +16,22 @@ function) for build/rivers.geojson, and a per-hex `river` class per year
 """
 import heapq
 import json
-import os
-import pickle
 import tomllib
 from collections import deque
 
 import numpy as np
 
 STATES = ("absent", "seasonal", "perennial")
-FIELDS = ("HYRIV_ID", "NEXT_DOWN", "UPLAND_SKM", "ENDORHEIC")
 
 
-# ------------------------------------------------------------ HydroRIVERS
+# ------------------------------------------------------------ GEOGLOWS v2
 
-def load_reaches(cfg, box):
+def load_reaches(cfg, box, sea_hex=None):
     """Reaches with at least `min_upland` km² upstream inside `box`
-    (lon0, lat0, lon1, lat1), from the HydroRIVERS shapefiles. Cached."""
-    cache = cfg["cache"]
-    srcs = cfg["shapefiles"]
-    newest = max(os.path.getmtime(p) for p in srcs)
-    if os.path.exists(cache) and os.path.getmtime(cache) >= newest:
-        with open(cache, "rb") as f:
-            r = pickle.load(f)
-        if r["min_upland"] == cfg["min_upland"] and r["box"] == list(box):
-            return r
-    import shapefile
-    ids, nxt, up, endo, coords = [], [], [], [], []
-    lon0, lat0, lon1, lat1 = box
-    for path in srcs:
-        rd = shapefile.Reader(path)
-        names = [f[0] for f in rd.fields[1:]]
-        col = [names.index(k) for k in FIELDS]
-        for i, rec in enumerate(rd.iterRecords()):
-            if rec[col[2]] < cfg["min_upland"]:
-                continue
-            pts = rd.shape(i).points
-            xs = [p[0] for p in pts]
-            ys = [p[1] for p in pts]
-            if max(xs) < lon0 or min(xs) > lon1 or max(ys) < lat0 or min(ys) > lat1:
-                continue
-            ids.append(rec[col[0]])
-            nxt.append(rec[col[1]])
-            up.append(rec[col[2]])
-            endo.append(rec[col[3]])
-            coords.append(np.asarray(pts, dtype=np.float64))
-    r = {"min_upland": cfg["min_upland"], "box": list(box),
-         "id": np.array(ids), "next": np.array(nxt), "upland": np.array(up),
-         "endorheic": np.array(endo), "coords": coords}
-    with open(cache, "wb") as f:
-        pickle.dump(r, f)
-    return r
+    (lon0, lat0, lon1, lat1), from the GEOGLOWS v2 / TDX-Hydro streams
+    (pipeline/geoglows.py). Cached."""
+    from . import geoglows
+    return geoglows.load(cfg, box, sea_hex)
 
 
 def nearest_reach(r, point, min_upland=0.0):
@@ -294,13 +261,17 @@ def build(cfg, grid, terrain, arr, tf, years, log=print, lakes=()):
         cat = tomllib.load(f)["river"]
     b = grid.bbox
     box = [b[:, 0].min(), b[:, 3].min(), b[:, 2].max(), b[:, 1].max()]
-    hcfg = dict(rcfg["hydrorivers"])
     reaches = None
-    if any("from" in rv for rv in cat):
-        reaches = load_reaches(hcfg, box)
-        log(f"rivers: {len(reaches['id'])} HydroRIVERS reaches")
-    lowest = min(_sea(y, cfg["sea"]["curve"]) for y in years)
     loc = HexLocator(grid)
+    if any("from" in rv for rv in cat):
+        hcfg = dict(rcfg["geoglows"])
+        from .geoglows import sea_hex_fn
+        with open(cfg["lakes"]["catalogue"], "rb") as f:
+            lake_cat = tomllib.load(f).get("lake", [])
+        reaches = load_reaches(hcfg, box, sea_hex_fn(grid, arr, tf, cfg["sea"], loc.locate,
+                                                     lake_cat, hcfg.get("marine_lakes", ())))
+        log(f"rivers: {len(reaches['id'])} GEOGLOWS reaches ({int(reaches['endorheic'].sum())} endorheic)")
+    lowest = min(_sea(y, cfg["sea"]["curve"]) for y in years)
     water = {y: terrain[y] == "Water" for y in years}
     step = rcfg["sample"]
 
@@ -309,46 +280,16 @@ def build(cfg, grid, terrain, arr, tf, years, log=print, lakes=()):
     # Reaches and shelf cells already drawn: a later river (a tributary)
     # stops where it meets them, so confluences aren't drawn twice.
     used_reaches, used_cells = set(), set()
-    for rv in cat:
-        state = _state_fn(rv["state"])
-        if "spill" in rv:
-            state = _spill_fn(rv["spill"], by_key, rv["name"])
-        if "points" in rv:
-            pts = np.asarray(rv["points"], dtype=float)
-            sea = rv.get("shelf", False)
-        else:
-            start, d = nearest_reach(reaches, rv["from"], rv.get("min_upland", 0.0))
-            if d > rcfg["snap_max"]:
-                log(f"rivers: ⚠ {rv['name']}: `from` is {d:.2f}° from the nearest reach")
-            pts, sea, used = trace(reaches, start, rv.get("to"), used_reaches)
-            used_reaches.update(used)
-            if "before" in rv:
-                # Waypoints from the parent river to the start of the trace
-                # (a dry distributary HydroRIVERS has as its own channel).
-                pts = np.concatenate([np.asarray(rv["before"], dtype=float), pts])
-            if "then" in rv:
-                pts = np.concatenate([pts, np.asarray(rv["then"], dtype=float)])
-            sea = rv.get("shelf", sea)
-        level = lowest
-        if "lake" in rv:
-            level = min(v for v in by_key[rv["lake"]]["level"].values() if np.isfinite(v))
-            sea = True
-        if sea:
-            ext = shelf_path(pts[-1], arr, tf, level, rcfg["shelf_window"])
-            cells = [(int(round(tf.row(y))), int(round(tf.col(x)))) for x, y in ext]
-            for k, c in enumerate(cells):
-                if c in used_cells:
-                    ext = ext[:k + 1]
-                    break
-            used_cells.update(cells[:len(ext)])
-            if len(ext) > 1:
-                pts = np.concatenate([pts, ext[1:]])
+
+    def add(rv, pts, state):
+        """Segments of one river course: each year it ends where the run of
+        Water hexes at its mouth begins."""
         pts = resample(pts, step)
         hexes = loc.locate(pts)
         inside = hexes >= 0
         if not inside.any():
             log(f"rivers: ⚠ {rv['name']} lies outside the grid")
-            continue
+            return
         # Keep the stretch inside the grid (first to last inside sample).
         idx = np.flatnonzero(inside)
         pts, hexes = pts[idx[0]:idx[-1] + 1], hexes[idx[0]:idx[-1] + 1]
@@ -372,7 +313,55 @@ def build(cfg, grid, terrain, arr, tf, years, log=print, lakes=()):
                     "state": _changes(seq), "state_fn": dict(seq),
                 })
             prev = c
-    log(f"rivers: {len(cat)} rivers -> {len(segments)} segments")
+
+    for rv in cat:
+        state = _state_fn(rv["state"])
+        if "spill" in rv:
+            state = _spill_fn(rv["spill"], by_key, rv["name"])
+        if "points" in rv:
+            pts = np.asarray(rv["points"], dtype=float)
+            sea = rv.get("shelf", False)
+        else:
+            start, d = nearest_reach(reaches, rv["from"], rv.get("min_upland", 0.0))
+            if d > rcfg["snap_max"]:
+                log(f"rivers: ⚠ {rv['name']}: `from` is {d:.2f}° from the nearest reach")
+            pts, sea, used = trace(reaches, start, rv.get("to"), used_reaches)
+            used_reaches.update(used)
+            if "before" in rv:
+                # Waypoints from the parent river to the start of the trace
+                # (a dry distributary the stream network has as its own channel).
+                pts = np.concatenate([np.asarray(rv["before"], dtype=float), pts])
+            if "then" in rv:
+                pts = np.concatenate([pts, np.asarray(rv["then"], dtype=float)])
+            sea = rv.get("shelf", sea)
+        level = lowest
+        if "lake" in rv:
+            level = min(v for v in by_key[rv["lake"]]["level"].values() if np.isfinite(v))
+            sea = True
+        if sea:
+            ext = shelf_path(pts[-1], arr, tf, level, rcfg["shelf_window"])
+            cells = [(int(round(tf.row(y))), int(round(tf.col(x)))) for x, y in ext]
+            for k, c in enumerate(cells):
+                if c in used_cells:
+                    ext = ext[:k + 1]
+                    break
+            used_cells.update(cells[:len(ext)])
+            if len(ext) > 1:
+                pts = np.concatenate([pts, ext[1:]])
+        add(rv, pts, state)
+    # Rivers out of lakes held at their outlet (lakes.toml `outflow`), one
+    # per spill point, flowing in the years the lake drained over it.
+    n_out = 0
+    for lk in lakes:
+        oc = lk.get("outflow_cfg")
+        for k, (pts, ys) in enumerate(lk.get("outflow", [])):
+            if len(pts) < 2:
+                continue
+            on = set(ys)
+            rv = {"key": f"{lk['key']}-outflow-{k + 1}", "name": oc["name"], "size": oc.get("size", 2)}
+            add(rv, np.asarray(pts, dtype=float), lambda y, on=on: "perennial" if y in on else "absent")
+            n_out += 1
+    log(f"rivers: {len(cat)} rivers, {n_out} lake outflows -> {len(segments)} segments")
 
     # Per-hex class: the largest class of any active river with enough length in it.
     min_n = max(1, int(round(rcfg["hex_min_length"] / step)))

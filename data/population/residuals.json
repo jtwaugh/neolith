@@ -1,184 +1,184 @@
 {
- "rows": 139885,
- "sites_counted": 19996,
+ "rows": 139586,
+ "sites_counted": 18514,
  "later_dates": 102718,
  "all_dates": 206875,
  "soil_ph": true,
  "coefficients": {
   "epoch -10000": {
-   "estimate": -13.0907,
-   "se": 0.0506
+   "estimate": -13.1654,
+   "se": 0.0525
   },
   "epoch -9000": {
-   "estimate": -12.5741,
-   "se": 0.0404
+   "estimate": -12.6684,
+   "se": 0.0422
   },
   "epoch -8000": {
-   "estimate": -12.2002,
-   "se": 0.0334
+   "estimate": -12.2926,
+   "se": 0.035
   },
   "epoch -7000": {
-   "estimate": -11.9394,
-   "se": 0.0296
+   "estimate": -12.0311,
+   "se": 0.0309
   },
   "epoch -6000": {
-   "estimate": -11.5844,
-   "se": 0.0256
+   "estimate": -11.6629,
+   "se": 0.0266
   },
   "epoch -5000": {
-   "estimate": -11.2746,
-   "se": 0.0238
+   "estimate": -11.346,
+   "se": 0.0247
   },
   "epoch -4000": {
-   "estimate": -11.0181,
-   "se": 0.0246
+   "estimate": -11.0708,
+   "se": 0.0254
   },
   "epoch -3000": {
-   "estimate": -11.1025,
-   "se": 0.0252
+   "estimate": -11.1451,
+   "se": 0.0259
   },
   "farmed": {
-   "estimate": 0.7235,
-   "se": 0.0181
+   "estimate": 0.6972,
+   "se": 0.0188
   },
   "ln(1 + later dates per 10,000 km²)": {
-   "estimate": 0.6937,
-   "se": 0.0036
+   "estimate": 0.6933,
+   "se": 0.0038
   },
   "drowned": {
-   "estimate": -0.4677,
-   "se": 0.0535
+   "estimate": -0.5007,
+   "se": 0.0564
   },
   "acid soil": {
-   "estimate": -0.4354,
-   "se": 0.0225
+   "estimate": -0.3942,
+   "se": 0.023
   }
  },
  "deviance": {
-  "no_coast": 67949.7,
-  "coast_fixed_from_ethnography": 67228.8,
-  "coast_fitted_to_sites": 66314.8,
-  "plus_expected_population": 67162.3
+  "no_coast": 62698.6,
+  "coast_fixed_from_ethnography": 62139.4,
+  "coast_fitted_to_sites": 61293.2,
+  "plus_expected_population": 62032.8
  },
  "coast_slope": {
   "model": -0.4024,
   "sites_foragers": {
-   "estimate": -0.3578,
-   "se": 0.0116
+   "estimate": -0.3367,
+   "se": 0.012
   },
   "sites_farmed": {
-   "estimate": -0.2979,
-   "se": 0.0102
+   "estimate": -0.2938,
+   "se": 0.0106
   }
  },
  "population_exponent_on_top": {
-  "estimate": -0.0593,
-  "se": 0.0072
+  "estimate": -0.0777,
+  "se": 0.0075
  },
- "effort_reference": 61.57,
+ "effort_reference": 61.75,
  "by_year": {
   "-10000": {
-   "hexes": 17284,
-   "sites": 435,
-   "sites_if_nothing_hid_them": 1360.6,
+   "hexes": 17251,
+   "sites": 404,
+   "sites_if_nothing_hid_them": 1274.8,
    "outcomes": {
     "drowned": 0,
     "little dated archaeology nearby": 0,
     "acid soil": 0,
-    "unexplained shortfall": 5,
-    "more sites than expected": 91,
-    "as expected": 17188
+    "unexplained shortfall": 4,
+    "more sites than expected": 76,
+    "as expected": 17171
    }
   },
   "-9000": {
-   "hexes": 17494,
-   "sites": 729,
-   "sites_if_nothing_hid_them": 2285.7,
+   "hexes": 17476,
+   "sites": 664,
+   "sites_if_nothing_hid_them": 2098.8,
    "outcomes": {
     "drowned": 0,
     "little dated archaeology nearby": 0,
     "acid soil": 0,
-    "unexplained shortfall": 65,
-    "more sites than expected": 158,
-    "as expected": 17271
+    "unexplained shortfall": 53,
+    "more sites than expected": 129,
+    "as expected": 17294
    }
   },
   "-8000": {
-   "hexes": 17622,
-   "sites": 1150,
-   "sites_if_nothing_hid_them": 3497.1,
+   "hexes": 17571,
+   "sites": 1048,
+   "sites_if_nothing_hid_them": 3197.1,
    "outcomes": {
     "drowned": 0,
     "little dated archaeology nearby": 0,
     "acid soil": 0,
-    "unexplained shortfall": 102,
-    "more sites than expected": 248,
-    "as expected": 17272
+    "unexplained shortfall": 83,
+    "more sites than expected": 217,
+    "as expected": 17271
    }
   },
   "-7000": {
-   "hexes": 17715,
-   "sites": 1571,
-   "sites_if_nothing_hid_them": 4917.8,
+   "hexes": 17655,
+   "sites": 1430,
+   "sites_if_nothing_hid_them": 4468.8,
    "outcomes": {
     "drowned": 0,
     "little dated archaeology nearby": 0,
     "acid soil": 0,
-    "unexplained shortfall": 139,
-    "more sites than expected": 298,
-    "as expected": 17278
+    "unexplained shortfall": 129,
+    "more sites than expected": 258,
+    "as expected": 17268
    }
   },
   "-6000": {
-   "hexes": 17584,
-   "sites": 2420,
-   "sites_if_nothing_hid_them": 7876.8,
+   "hexes": 17513,
+   "sites": 2225,
+   "sites_if_nothing_hid_them": 7216.3,
    "outcomes": {
     "drowned": 0,
     "little dated archaeology nearby": 0,
     "acid soil": 0,
-    "unexplained shortfall": 256,
-    "more sites than expected": 424,
-    "as expected": 16904
+    "unexplained shortfall": 204,
+    "more sites than expected": 386,
+    "as expected": 16923
    }
   },
   "-5000": {
-   "hexes": 17383,
-   "sites": 3687,
-   "sites_if_nothing_hid_them": 11491.9,
+   "hexes": 17356,
+   "sites": 3389,
+   "sites_if_nothing_hid_them": 10573.1,
    "outcomes": {
-    "drowned": 1,
-    "little dated archaeology nearby": 1180,
+    "drowned": 0,
+    "little dated archaeology nearby": 822,
     "acid soil": 0,
-    "unexplained shortfall": 634,
-    "more sites than expected": 562,
-    "as expected": 15006
+    "unexplained shortfall": 520,
+    "more sites than expected": 550,
+    "as expected": 15464
    }
   },
   "-4000": {
-   "hexes": 17409,
-   "sites": 5131,
-   "sites_if_nothing_hid_them": 15501.5,
+   "hexes": 17389,
+   "sites": 4777,
+   "sites_if_nothing_hid_them": 14487.3,
    "outcomes": {
-    "drowned": 2,
-    "little dated archaeology nearby": 3247,
-    "acid soil": 8,
-    "unexplained shortfall": 1219,
-    "more sites than expected": 490,
-    "as expected": 12443
+    "drowned": 3,
+    "little dated archaeology nearby": 2610,
+    "acid soil": 3,
+    "unexplained shortfall": 1102,
+    "more sites than expected": 491,
+    "as expected": 13180
    }
   },
   "-3000": {
-   "hexes": 17394,
-   "sites": 4873,
-   "sites_if_nothing_hid_them": 14473.6,
+   "hexes": 17375,
+   "sites": 4577,
+   "sites_if_nothing_hid_them": 13654.1,
    "outcomes": {
     "drowned": 0,
-    "little dated archaeology nearby": 2803,
-    "acid soil": 5,
-    "unexplained shortfall": 1103,
-    "more sites than expected": 462,
-    "as expected": 13021
+    "little dated archaeology nearby": 2365,
+    "acid soil": 1,
+    "unexplained shortfall": 1009,
+    "more sites than expected": 481,
+    "as expected": 13519
    }
   }
  }

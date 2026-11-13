@@ -48,6 +48,9 @@ pub struct Session {
     pub clock: Clock,
     pub snapshot: Snapshot,
     snapshot_epoch: Option<usize>,
+    /// Counts snapshot rebuilds, so caches can tell a new snapshot (a new
+    /// epoch or an edit) from the old.
+    pub snapshot_gen: u64,
     /// The world changed under the snapshot (an edit, undo or redo).
     world_changed: bool,
 
@@ -89,7 +92,7 @@ pub struct Session {
     /// Tile heights for picking and overlays; see [`Session::update_relief`].
     pub relief: Arc<Relief>,
     /// The scale `relief` was built with, or `None` when the snapshot changed since.
-    relief_scale: Option<f64>,
+    relief_scale: Option<(f64, bool)>,
     pub input: BoardInput,
     /// The chronicle ([`crate::events`]), in year order.
     pub events: Vec<crate::events::Event>,
@@ -105,8 +108,12 @@ impl Session {
         let grid = &world.grid;
         let proj = Projection::new(grid.centre_of_bounds());
         let mut board = mesh::build(grid, &proj);
-        let renderer =
+        let mut renderer =
             BoardRenderer::new(&gpu.device, &gpu.queue, gpu.target_format, &board, grid.cols as u32, grid.rows as u32);
+        renderer.upload_massif(&gpu.queue, &crate::board::scene::massif_texels(grid, &world.massif));
+        if let Some(map) = &world.heightmap {
+            renderer.upload_heightfield(&gpu.queue, &crate::board::heightfield::build(grid, map));
+        }
         // The vertex data now lives on the GPU; keep only the extents.
         board.vertices = Vec::new();
         board.indices = Vec::new();
@@ -126,6 +133,7 @@ impl Session {
             clock,
             snapshot,
             snapshot_epoch,
+            snapshot_gen: 0,
             world_changed: false,
             mode: MapMode::Terrain,
             evidence_layer: (!world.evidence.is_empty()).then_some(0),
@@ -173,9 +181,10 @@ impl Session {
     /// texture and the scale uniform.
     pub fn update_relief(&mut self, style: &BoardStyle) {
         let scale = relief::scale(style);
-        if self.relief_scale != Some(scale) {
-            self.relief = Arc::new(Relief::new(&self.world.grid, &self.snapshot.height, scale));
-            self.relief_scale = Some(scale);
+        let key = (scale, style.art_blend);
+        if self.relief_scale != Some(key) {
+            self.relief = Arc::new(Relief::new(&self.world.grid, &self.snapshot.height, scale).smoothed(style.art_blend));
+            self.relief_scale = Some(key);
         }
     }
 
@@ -326,6 +335,7 @@ impl Session {
         if epoch != self.snapshot_epoch || self.world_changed {
             self.snapshot = self.world.snapshot(self.year());
             self.snapshot_epoch = epoch;
+            self.snapshot_gen += 1;
             self.world_changed = false;
             self.state_dirty = true;
             self.relief_scale = None;
@@ -337,8 +347,12 @@ impl Session {
         let shown = if self.mode == MapMode::Missing {
             // The Missing sites mode borrows the texture: keyed by its slice.
             self.world.residuals.as_ref().and_then(|r| r.slice_at(self.year())).map(|k| (usize::MAX, k as i32))
-        } else {
+        } else if self.mode == MapMode::Evidence {
             self.evidence_layer.filter(|i| *i < self.world.evidence.len()).map(|i| (i, self.year().0))
+        } else {
+            // No other mode reads the texture: don't re-send it (and so
+            // redraw the board) every year the clock plays.
+            None
         };
         if shown != self.evidence_shown {
             self.evidence_shown = shown;
@@ -460,8 +474,12 @@ impl NeolithApp {
     fn handle_file_events(&mut self, now: f64) {
         while let Some(ev) = self.files.poll() {
             match ev {
-                FileEvent::Loaded { name, bytes } => match io::decode(&bytes) {
+                FileEvent::Loaded { name, bytes } => match {
+                    let _span = crate::perf::span("load: decode");
+                    io::decode(&bytes)
+                } {
                     Ok(world) => {
+                        let _span = crate::perf::span("load: session");
                         let gpu = self.gpu.as_ref().expect("a world is only loaded with a GPU");
                         let was_running = matches!(self.screen, Screen::Main);
                         let year = self.session.as_ref().map_or(self.start_year, |s| s.year().0);
@@ -514,6 +532,8 @@ impl eframe::App for NeolithApp {
     }
 
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+        crate::perf::frame();
+        let _frame_span = crate::perf::span("ui total");
         let ctx = ui.ctx().clone();
         let (now, dt) = ctx.input(|i| (i.time, i.stable_dt as f64));
         // The clock follows wall time; `stable_dt` (a smoothed estimate, good for

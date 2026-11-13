@@ -52,6 +52,7 @@ has had a few frames to respond, so a `state` sent next sees the result.
 | cmd | fields | does |
 |---|---|---|
 | `ping` | | |
+| `perf` | `on?`, `reset?`, `bench?` (n) | the frame profiler (`crates/app/src/perf.rs`): CPU ms per section, frame interval, board passes and size; `bench` draws the board pass n times back to back and gives the GPU ms per pass |
 | `state` | `brief?` (keyframe count, 10 pieces, label names), `fields?` (top-level keys to keep) | the whole readout (see below) |
 | `ui` | `filter?` (label substring) | widgets from the last painted frame (egui's AccessKit tree): role, label, toggled, selected, value, `rect_px`, `centre_px` |
 | `screenshot` | `path` | saves a PNG of the window, replies with its size |
@@ -89,3 +90,26 @@ camera (`dist` up to 3.6). `set` also takes the Board-style layers (`hillshade`,
 
 Code: `crates/app/src/harness.rs` (server and commands), plus `Drawn` in
 `crates/app/src/view.rs`, which records what the board drew each frame.
+
+## Phone performance
+
+There is no faithful iPhone emulator for GPU work: Chrome's device mode only
+throttles the CPU, and the iOS Simulator draws with the Mac's GPU. Two proxies:
+
+- **On the phone**: open the deployed site with `?perf` (e.g. `/?perf`) for a
+  readout of fps, frame interval and CPU ms per section, plus `gpu board`, the
+  time until the GPU reports the board pass done (an upper bound).
+  `?still=1.5&moving=1.0` set the board's density in pixels per point while
+  still and while the camera moves (those are the defaults). For a full trace,
+  use Safari's Web Inspector over USB (Develop menu, then Timelines).
+- **On a Mac**: run the native app at a phone's board size. It has the same
+  Apple GPU architecture, with about 2 to 3 times an iPhone's GPU cores:
+
+  ```sh
+  NEOLITH_PERF=1 NEOLITH_BOARD_DENSITY=1.5 NEOLITH_MOVING_DENSITY=1.0 \
+      harness/neolith.py --port 7911 launch --size 390x844
+  harness/neolith.py --port 7911 raw '{"cmd":"perf","bench":30}'
+  ```
+
+  `NEOLITH_PERF=gpu` instead waits on every board pass, so `gpu board` is exact
+  (but stalls the frame).

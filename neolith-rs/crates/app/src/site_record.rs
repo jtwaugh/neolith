@@ -249,7 +249,10 @@ pub fn show(ui: &mut egui::Ui, world: &World, i: usize, year: Year) {
             for r in &info.references {
                 ui.label(RichText::new(format!("• {r}")).small().weak());
             }
-            ui.label(RichText::new("Full citations: data/settlements/SOURCES.md").small().weak());
+            ui.hyperlink_to(
+                RichText::new("Full citations (data/settlements/SOURCES.md)").small(),
+                format!("{}/blob/main/data/settlements/SOURCES.md", crate::credits::REPO),
+            );
         });
     }
 }

@@ -1,0 +1,176 @@
+[meta]
+place = "manych"
+written = "2026-11-12"
+verdict = "research"
+confidence = "medium"
+really_empty = "Yes in our data: no site in the proposed box (41.0-46.0 E, 45.3-47.0 N, 54-59 land hexes) in any epoch. Within 100 km are Zolotovka (9,060 BCE, 70 km), Razdorskoe I (91 km) and 'Unterpullendorf' (56 km). The last is an Austrian Lengyel site misfiled about 25 degrees east, so it should be discounted. The nearest real Neolithic sites are on the Lower Don and in Kalmykia (Dzangar, 105 km). But AADR holds ten directly dated burial localities inside the box, all kurgan burials of 4,350-2,900 BCE (Eneolithic, Steppe Maykop, early Yamnaya), and none of them is in our settlements. For 10,000-4,500 BCE I found no named, dated site in the box."
+why_empty = ["not_in_open_compilations", "research_intensity", "sampling_bias", "low_population"]
+summary = """
+The Kuma-Manych depression: the low trough between the Lower Don and the
+Caspian lowland that separates the Russian Plain from Ciscaucasia. It is now
+a chain of salt lakes and reservoirs (Manych-Gudilo, Proletarsk). It
+carried Caspian overflow to the Black Sea in the Late Pleistocene, but that
+'Manych strait' is older than our period. Lavrentyev (2022) dates the
+early Khvalynian strait by OSL to 17.7-14.9 ka and says that after the
+flooding it 'ceased to exist'. The board agrees: the Caspian's computed
+outlet here is +18 m, and its level never comes near that after 10,000 BCE.
+So in our window this is a dry steppe isthmus with saline lakes. The board
+draws it as uniform grassland, with no lakes and no Manych, Kalaus or
+Yegorlyk rivers.
+
+It is empty in our data for two reasons. The later prehistory is known
+almost only from kurgans, which are dated through aDNA projects; AADR has ten
+such localities here (4,350-2,900 BCE), but AADR is used only as an isostyle
+layer, not as a settlement source. The earlier prehistory is thin in the
+literature as well: Lavrentyev (2022) says only 'few Mesolithic sites were
+known' in the Manych valley before the end of the twentieth century, and
+names none. The nearest dated Neolithic is on the Lower Don (Tsybrij et al.
+2017) and at Dzhangar in Kalmykia. The steppe-valley sites of Rostov oblast
+(Kremennaya, Rassypnaya), which Tsybrij et al. group with the Caspian and
+Ciscaucasian region, are dated 7th-5th millennium BC and lie, as far as I can place them (Kremennaya in the Milyutinsky district), some 150-200 km to
+the north. A dry, saline isthmus probably did hold fewer people than
+the river valleys on either side, so low population is a real but minor part
+of the answer. Research intensity and the kurgan bias are the major part.
+
+Do this: (1) ingest the AADR burial localities (ten in the box); (2) find
+the Mesolithic and Neolithic survey of the Manych valley, which is the work
+of the Rostov and Kalmyk institutes; (3) until then, put a thin scatter of
+inferred camps on the lake shores. Also on the board: there are no Manych
+lakes. They are small at hex scale, but the Manych-Gudilo chain is about
+100 km long.
+"""
+
+[proposed_place]
+key = "manych"
+name = "Kuma-Manych depression"
+kind = "isthmus"
+box = [41.0, 45.3, 46.0, 47.0]
+why = "The low trough between the Lower Don and the Caspian lowland, now a chain of salt lakes, which separates the Russian Plain from Ciscaucasia and in the Late Pleistocene carried Caspian overflow to the Black Sea."
+
+[[known_site]]
+name = "Sengeleevskiy-7 (kurgan burial)"
+lon = 41.72
+lat = 45.99
+coordinates = "published"
+start = -4332
+end = -4059
+what = "Eneolithic burial, Gorodovikovsky district, western Kalmykia. AADR group Russia_Kalmykia_Eneolithic; 4332-4059 calBCE (5375+/-30 BP, Poz-63971)."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024); sample published by Ghalichi et al. 2024, Nature"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[known_site]]
+name = "Sharakhalsun-3 (kurgan burial)"
+lon = 43.98
+lat = 45.72
+coordinates = "published"
+start = -4326
+end = -4058
+what = "Eneolithic burial, Apanasenkovsky district, Stavropol krai, on the south side of the Manych. 4326-4058 calBCE (5365+/-20 BP, MAMS-42355)."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024); sample published by Ghalichi et al. 2024, Nature"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[known_site]]
+name = "Aygurskiy-2 (kurgan burials)"
+lon = 43.26
+lat = 45.69
+coordinates = "published"
+start = -4350
+end = -3360
+what = "Eneolithic burials, Ipatovsky district, Stavropol krai: 4 genomes, from 4350-4050 BCE to 3514-3360 calBCE (combined 4636+/-27 BP, including GIN-11811)."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024); samples published by Ghalichi et al. 2024, Nature"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[known_site]]
+name = "Ulan-4 (kurgan burial)"
+lon = 43.37
+lat = 46.62
+coordinates = "published"
+start = -4152
+end = -3804
+what = "Eneolithic steppe burial, Remontnensky district, Rostov oblast, north of the Manych. 4152-3804 calBCE (5160+/-40 BP, Gr49047)."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024); sample published by Lazaridis et al. 2025, Nature"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[known_site]]
+name = "Sukhaya-Termista-1 (kurgan burial)"
+lon = 43.63
+lat = 46.58
+coordinates = "published"
+start = -3766
+end = -3637
+what = "Eneolithic steppe burial, Remontnensky district, Rostov oblast. 3766-3637 calBCE (4903+/-30 BP, OxA-29798)."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024); sample published by Lazaridis et al. 2025, Nature"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[known_site]]
+name = "Zolotaryovka-1 (kurgan burials)"
+lon = 42.6
+lat = 45.66
+coordinates = "published"
+start = -3953
+end = -3713
+what = "Late Eneolithic burials, Ipatovsky district, Stavropol krai. 3953-3792 calBCE (5063+/-27 BP, MAMS-45974) and 3947-3713 calBCE (5029+/-22 BP, MAMS-42369)."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024); samples published by Ghalichi et al. 2024, Nature"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[known_site]]
+name = "Ipatovo-3 (kurgan)"
+lon = 42.92
+lat = 45.69
+coordinates = "published"
+start = -3626
+end = -3103
+what = "Kurgan with Eneolithic and Steppe Maykop burials, Ipatovsky district: 3626-3377 calBCE (4721+/-23 BP, MAMS-45948) to 3371-3103 calBCE (4552+/-25 BP, MAMS-45951)."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024); samples published by Ghalichi et al. 2024, Nature"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[known_site]]
+name = "Sharakhalsun-6 (kurgan burials)"
+lon = 43.7
+lat = 45.43
+coordinates = "published"
+start = -3520
+end = -3034
+what = "Steppe Maykop burials, Turkmensky district, Stavropol krai. 3520-3371 calBCE (4673+/-28 BP, MAMS-31143) to 3359-3034 calBCE (4500+/-40 BP, GIN-12401)."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024); samples published by Wang et al. 2019, Nature Communications"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[known_site]]
+name = "Rasshevatskiy-1 (kurgan burial)"
+lon = 41.12
+lat = 45.54
+coordinates = "published"
+start = -3331
+end = -3013
+what = "Early Yamnaya burial, Novoalexandrovsky district, Stavropol krai. 3331-3013 calBCE (4447+/-22 BP, MAMS-29818)."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024); sample published by Wang et al. 2019, Nature Communications"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[research]]
+what = "Ingest the ten AADR burial localities of the Manych box (above, plus Volga-Chogray-Channel-53 at the east end) as dated sites of type burial or kurgan. This is part of the regional AADR ingest in the volga_delta plan."
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+yields = "10 dated sites, 4,350-2,900 BCE; the box goes from 0 to 10 in the 4,000 and 3,000 BCE slices"
+effort = "Minutes once the filter exists"
+
+[[research]]
+what = "Find the Mesolithic-Neolithic survey literature of the Manych valley and its tributaries (Kalaus, Yegorlyk, Sal). I did not find it. Lavrentyev 2022 is a way in, and so are the Rostov and Kalmyk institutes' publications (the Yulovskaya Palaeolithic team; Kremennaya and Rassypnaya in Tsybrij et al. 2017). Look for dated sites on the Manych-Gudilo and Chograi lake shores."
+url = "https://journals.rcsi.science/2658-3518/article/view/289402"
+yields = "Unknown. My guess is a handful of surface sites with few dates. If none exist, that is worth recording as a finding."
+effort = "Bibliographic search in Russian; days"
+
+[[speculate]]
+target = "settlements"
+slices = [-7000, -6000, -5000]
+rule = "Place a thin scatter of inferred forager camps on the Manych lake shores and the lower Kalaus and Yegorlyk, about one per 80 km of shore or valley, marked inferred."
+confidence = "low"
+reasoning = "Mesolithic and Neolithic people used both ends of the depression. On the Lower Don there are fisher-hunters from c. 7,450 BCE (Razdorskaya II, Rakushechny Yar), and in the steppe valleys of Rostov oblast the Caspian-Ciscaucasian group (Kremennaya II, Rassypnaya VI, 7th-5th millennium BC; Tsybrij et al. 2017). To the east are Dzhangar in Kalmykia and the Kairshak sites. Lavrentyev (2022) confirms that Mesolithic sites exist in the valley, though few were known. Lakes in a steppe draw game and people, and the lakes here are brackish to saline, poorer than the Don. Hence a density half that of the valleys and low confidence."
+basis = ["analogy", "neighbouring_evidence", "literature"]

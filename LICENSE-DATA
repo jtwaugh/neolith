@@ -1,0 +1,30 @@
+Data licence: Creative Commons Attribution-ShareAlike 4.0 International
+(CC BY-SA 4.0), https://creativecommons.org/licenses/by-sa/4.0/legalcode
+
+Copyright (c) 2023-2026 jtwaugh and contributors
+
+This licence covers the data this project makes and publishes:
+
+  - everything under data/ that the project wrote or derived (catalogues,
+    settlements, dates, surfaces, speculative layers, residuals, write-ups);
+  - neolith-rs/assets/world.bin and the JSON assets compiled into the app;
+  - the maps and reports the pipelines generate from them.
+
+It is share-alike because some inputs are (NeoNet, NeoNet Atlantic, DObsiSS,
+Wikipedia). It is built on many upstream datasets, each under its own licence
+and each owed its own credit. When you reuse the data, credit this project
+AND the upstream sources listed in ATTRIBUTIONS.md (generated from
+data/ATTRIBUTIONS.toml). Facts read from papers (dates, coordinates, curve
+values) are cited there too.
+
+Rows taken unchanged from an upstream dataset stay under that dataset's
+licence (for example AADR is CC0, XRONOS is CC BY 4.0); this licence covers
+what we added to them.
+
+Suggested credit:
+  Neolith evidence atlas (https://github.com/jtwaugh/neolith), CC BY-SA 4.0,
+  built on the sources in ATTRIBUTIONS.md.
+
+Speculative and inferred layers are clearly marked as such in the data and
+the app. They are judgements, not records; please keep that distinction when
+you reuse them.

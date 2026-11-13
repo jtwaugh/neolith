@@ -2,5 +2,5 @@
 [build]
 target = "index.html"
 dist = "dist"
-# Relative URLs, so dist/ can be served from any path (S3, GitHub Pages, Django /static/).
+# Relative URLs, so dist/ can be served from any path (Vercel, S3, GitHub Pages).
 public_url = "./"

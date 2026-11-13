@@ -27,6 +27,31 @@ class Minimax(unittest.TestCase):
         # A cell on the slope is covered once the lake reaches its height.
         self.assertAlmostEqual(need[15, 10], 40.0)
 
+    def test_outflow_leaves_by_the_saddle_and_runs_downhill(self):
+        # A basin (rows 0-6) walled at 10 m, with a notch at 4 m in its
+        # south wall (row 7, col 2); beyond it a valley falls to the sea
+        # (row 11, at -5 m) through col 8, with a decoy rise in the middle.
+        z = np.full((12, 12), 10.0)
+        z[1:7, 1:11] = 0.0
+        z[7, 2] = 4.0
+        z[8, 2:9] = 3.0
+        z[8, 5] = 20.0                      # a hill the river must go around
+        z[9, 4:7] = 3.5
+        z[9:11, 8] = 2.0
+        z[11, :] = -5.0
+        outlet = np.zeros(z.shape, dtype=bool)
+        outlet[11, :] = True
+        route = {}
+        need, spill = lakes.minimax(z, (3, 5), outlet=outlet, route=route)
+        self.assertEqual(spill, 4.0)
+        self.assertEqual(route["saddle"], (7, 2))
+        path = lakes.outflow_path(z, need, spill, 0.0, outlet, route["saddle"])
+        self.assertEqual(path[0], (7, 2))
+        self.assertEqual(path[-1][0], 11)
+        # Never above the spill, never back into the lake.
+        self.assertTrue(all(z[r, c] <= spill for r, c in path))
+        self.assertTrue(all(need[r, c] >= spill for r, c in path))
+
     def test_level_fn(self):
         f = lakes.level_fn([[-9000, 300.0], [-8000, 320.0]])
         self.assertEqual((f(-10000), f(-8500), f(-7000)), (300.0, 310.0, 320.0))

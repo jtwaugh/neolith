@@ -1,3 +1,5 @@
+> **Historical.** This describes the 2023 Django/Leaflet prototype, which was removed on 2026-11-13 (`game/`, `neolithic_deities/`, `manage.py`, `scripts/*.py`). It is kept because the pipeline and `neolith-rs` still cite its formats (§3, §5) and defect numbers. The current project is described in `README.md`; the grid and the per-epoch properties the pipeline still reads now live in `data/legacy/`.
+
 # Neolith (Neolithic Deities): Reverse-Engineered Spec
 
 *Reconstructed from the code, data and git history as of `1e36e62` on `develop` plus the uncommitted working-tree changes (2026-11-11). Development ran from 2023-05-01 to 2023-05-21, 34 commits.*

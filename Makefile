@@ -15,11 +15,12 @@ WORLD := neolith-rs/assets/world.bin
 # `make maps`, then `make maps` again to put them in the world file.
 .PHONY: inferred maps maps-unlocked test settlements cultures-check anchors residuals residuals-unlocked
 BIOME_URL := https://ndownloader.figshare.com/files/22659026
-HYDRORIVERS := $(foreach r,af eu as,build/hydrorivers/HydroRIVERS_v10_$(r)_shp/HydroRIVERS_v10_$(r).shp)
+GEOGLOWS_URL := https://geoglows-v2.s3.amazonaws.com
+GEOGLOWS := build/geoglows/v2-model-table.parquet build/geoglows/global_streams_simplified.gpkg
 
 # The whole recipe runs under build/.lock (pipeline/lock.py), so no other
 # pipeline run can rewrite build/ between the two steps.
-maps: .venv build/etopo.asc build/etopo_wide.asc build/biome.npz $(HYDRORIVERS)
+maps: .venv build/etopo.asc build/etopo_wide.asc build/biome.npz $(GEOGLOWS)
 	$(PY) -m pipeline.lock build -- $(MAKE) --no-print-directory maps-unlocked
 
 maps-unlocked:
@@ -30,6 +31,7 @@ maps-unlocked:
 		$(if $(wildcard data/isostyle/speculative/evidence_layers.json),--evidence ../data/isostyle/speculative/evidence_layers.json) \
 		$(if $(wildcard data/population/residuals.csv.gz),--residuals ../data/population/residuals.csv.gz) \
 		$(if $(wildcard data/settlements/inferred.geojson),--inferred ../data/settlements/inferred.geojson) \
+		--heightmap ../build/etopo.asc \
 		--cultures ../data/cultures/cultures.json -o ../$(WORLD)
 
 # Where the site list falls short of what its own pattern predicts, and why
@@ -64,8 +66,9 @@ anchors: .venv build/combined_map.geojson
 
 test: .venv
 	$(PY) -m unittest discover -s pipeline/tests -t .
+	$(PY) -m unittest discover -s isostyle/tests -t .
 
-.venv: pipeline/requirements.txt
+.venv: pipeline/requirements.txt isostyle/requirements.txt
 	/opt/homebrew/bin/python3.13 -m venv .venv
 	.venv/bin/pip install -q -r pipeline/requirements.txt
 	touch .venv
@@ -79,12 +82,15 @@ build/LateQuaternary_Environment.nc:
 	mkdir -p build
 	curl -fSL -o $@.part '$(BIOME_URL)' && mv $@.part $@
 
-# HydroRIVERS v1.0 (Lehner & Grill 2013), Africa/Europe/Asia, about 270 MB zipped.
-build/hydrorivers/HydroRIVERS_v10_%_shp/HydroRIVERS_v10_%.shp:
-	mkdir -p build/hydrorivers
-	curl -fSL -o build/hydrorivers/$*.zip.part https://data.hydrosheds.org/file/HydroRIVERS/HydroRIVERS_v10_$*_shp.zip
-	cd build/hydrorivers && unzip -oq $*.zip.part && rm $*.zip.part
-	touch $@
+# GEOGLOWS v2 stream network (CC BY 4.0; TDX-Hydro, CC BY-SA 4.0): the global
+# attribute table (245 MB) and simplified stream lines (2.1 GB), joined on
+# LINKNO by pipeline/geoglows.py. curl -C - resumes an interrupted download.
+build/geoglows/v2-model-table.parquet:
+	mkdir -p build/geoglows
+	curl -fSL -C - -o $@.part $(GEOGLOWS_URL)/tables/v2-model-table.parquet && mv $@.part $@
+build/geoglows/global_streams_simplified.gpkg:
+	mkdir -p build/geoglows
+	curl -fSL -C - -o $@.part $(GEOGLOWS_URL)/hydrography-global/global_streams_simplified.gpkg && mv $@.part $@
 
 build/etopo.asc:
 	mkdir -p build

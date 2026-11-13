@@ -18,6 +18,9 @@
 #                  spacing down the branch; per slice when a list
 # offset_km        distances from the channel, cycled; sides alternate
 # max_lat, min_lat, max_lon, min_lon (optional) keep points inside these
+# [rule.points]    at = [[lon, lat], ...]: points at these named places, in
+#                  order (for lake shores the sea-level coast does not see,
+#                  and single places); a point on a Water hex is dropped
 # [rule.coast]     box = [west, south, east, north]: the shore of each slice's
 #                  own sea level ([sea] curve on ETOPO1) inside the box, at
 #                  2 arc-min (a point stands on a land cell beside open sea,
@@ -36,6 +39,8 @@
 # clear            "hex": drop a point whose hex holds a recorded site occupied
 #                  while it would be, so ingested sites replace the guesses
 # confidence, reasoning, sources (links, listed in INFERRED.md)
+# show             (optional) false: keep, check and document the rule but
+#                  write no points, so the app does not show it
 
 [[rule]]
 key = "nile_delta_villages"
@@ -120,3 +125,201 @@ max_points = 3
 prefer_km = 25.0
 # The two sides of the narrows, then the exposed shelf west of Aden.
 prefer = [[43.3, 12.45], [43.5, 12.65], [44.0, 12.55]]
+
+# ------------------------------------------------- Dahlak and the Gulf of Zula
+# From data/places/plans/dahlak.toml. Box: the dahlak and gulf_of_zula boxes
+# of data/places/places.toml together. Until pipeline/islands.py keeps the
+# archipelago on the board (its hexes are Water from 5,000 BCE), island points
+# drop as Water and the mainland coast carries the rule.
+
+[[rule]]
+key = "dahlak_shell_middens"
+show = false                       # kept, not displayed for now (2026-11-13)
+plan = "data/places/plans/dahlak.toml"
+label = "shell-midden camp"
+kind = "open air"
+slices = [-6000, -5000, -4000, -3000]
+persist = false
+clear = "hex"
+confidence = "medium"
+reasoning = "Shell-midden fisher-forager camps on the Dahlak islands and the mainland coast from Massawa to the Buri peninsula and the Gulf of Zula, about one per 30 km of the shore of the time, at bays, mangrove inlets and headlands. The Farasan islands opposite carry about 3,000 dated shell middens of 8000-4500 cal BP; the Dahlak islands have about 1,200 remote-sensed mounds of the same kind on the same palaeoshorelines, not yet visited (Meredith-Williams et al. 2014). Dated middens of 8500-5500 cal BP stand on the Buri peninsula and the Gulf of Zula (Misse East, Gelalo NW, Asfet; Beyin and Bar-Yosef Mayer 2018), not yet in our data. Presence is well argued; the spacing is a guess."
+sources = ["https://intarch.ac.uk/journal/issue37/2/ia.37.2.pdf", "https://www.archaeopress.com/Archaeopress/DMS/EF8E85A7FCEC4ED5B414B15060004654/9781784917128-sample.pdf"]
+
+[rule.coast]
+box = [39.4, 14.9, 40.7, 16.3]
+spacing_km = 30.0
+# Massawa; Misse East and Asfet on the Gulf of Zula; Dahlak Kebir.
+prefer = [[39.45, 15.61], [39.84, 15.28], [39.66, 15.17], [40.12, 15.72]]
+
+[[rule]]
+key = "dahlak_buri_hilltop_camps"
+show = false                       # kept, not displayed for now (2026-11-13)
+plan = "data/places/plans/dahlak.toml"
+label = "hilltop camp"
+kind = "open air"
+slices = [-6000, -5000, -4000, -3000]
+persist = false
+clear = "hex"
+confidence = "medium"
+reasoning = "One or two camps on basalt hills up to 15 km inland on the Buri peninsula, the pattern of Gelalo NW (7000-8500 cal BP, thousands of obsidian microliths, shell beads and Terebralia shell; Beyin and Bar-Yosef Mayer 2018)."
+sources = ["https://www.archaeopress.com/Archaeopress/DMS/EF8E85A7FCEC4ED5B414B15060004654/9781784917128-sample.pdf"]
+
+[rule.points]
+# Gelalo NW (position approximate), then a second inselberg further south.
+at = [[39.95, 15.18], [40.1, 15.0]]
+
+[[rule]]
+key = "dahlak_bank_lowstand_camps"
+show = false                       # kept, not displayed for now (2026-11-13)
+plan = "data/places/plans/dahlak.toml"
+label = "forager camp"
+kind = "open air"
+slices = [-9000, -8000, -7000]
+persist = false
+clear = "hex"
+confidence = "low"
+reasoning = "Two or three forager camps per slice on the outer edge of the Dahlak bank while it was dry land joined to the mainland. The oldest dated middens on the present coast, about 8000 cal BP, are already there while the sea is still rising, which suggests earlier shore sites now under water (Beyin and Bar-Yosef Mayer 2018). No site of this age is known on either shore of the southern Red Sea: this rests on environment and the timing of the earliest middens, so it is kept sparse."
+sources = ["https://www.archaeopress.com/Archaeopress/DMS/EF8E85A7FCEC4ED5B414B15060004654/9781784917128-sample.pdf"]
+
+[rule.coast]
+box = [39.6, 15.3, 41.0, 16.6]
+spacing_km = 35.0
+max_points = 3
+prefer_km = 25.0
+# The outer, north-eastern edge of the bank.
+prefer = [[40.6, 15.95], [40.35, 16.3], [40.8, 15.6]]
+
+# ------------------------------------------------- Lake Abhe
+# From data/places/plans/lake_abbe.toml. The board has no palaeolake Abhe, so
+# the camps are named places around today's lakes and the Gobaad plain.
+
+[[rule]]
+key = "lake_abbe_early_holocene_camps"
+show = false                       # kept, not displayed for now (2026-11-13)
+plan = "data/places/plans/lake_abbe.toml"
+label = "lakeshore camp"
+kind = "open air"
+slices = [-10000, -9000, -8000]
+persist = false
+clear = "hex"
+confidence = "medium"
+reasoning = "Fisher-forager camps on the shore of the early Holocene high lake, then about 6,000 km2: on the lower Awash delta near Gamarri and Afambo and on the Gobaad side. Hara Idé 3 (9500-8700 BCE, with fish) and Raso-02 (about 10,000 BP) fall in these slices, and Khalidi et al. (2020) put the first of three occupation phases on the high lake; the Djibouti mission reports over 100 sites in the basin. Presence is not in doubt; the number is a guess."
+sources = ["https://doi.org/10.1016/j.quascirev.2020.106459", "https://archeologie.culture.gouv.fr/en/banks-lake-abbe"]
+
+[rule.points]
+# Raso / Lake Gamarri; Afambo on the lower Awash; the north shore of Abhe;
+# Hara Idé on the Gobaad plain.
+at = [[41.62, 11.52], [41.68, 11.4], [41.85, 11.3], [42.0, 11.1]]
+
+[[rule]]
+key = "lake_abbe_dry_interval_camp"
+show = false                       # kept, not displayed for now (2026-11-13)
+plan = "data/places/plans/lake_abbe.toml"
+label = "lakeshore camp"
+kind = "open air"
+slices = [-7000, -6000]
+persist = false
+clear = "hex"
+confidence = "low"
+reasoning = "One camp per slice on the lower Awash channel. Khalidi et al. (2020) separate their occupation phases by intervals with no archaeology and tie one to the 8.2 ka dry event, when the lake fell; the Awash still flowed in, so the basin was not necessarily empty, but the record has a real gap."
+sources = ["https://doi.org/10.1016/j.quascirev.2020.106459"]
+
+[rule.points]
+at = [[41.6, 11.6]]
+
+[[rule]]
+key = "lake_abbe_mid_holocene_camps"
+show = false                       # kept, not displayed for now (2026-11-13)
+plan = "data/places/plans/lake_abbe.toml"
+label = "lakeshore camp"
+kind = "open air"
+slices = [-5000, -4000, -3000]
+persist = false
+clear = "hex"
+confidence = "medium"
+reasoning = "Lakeshore fisher-forager camps around the lake and the Gobaad plain in the second humid phase, about 7.7-4.6 ka cal BP, which carries Khalidi et al.'s second occupation phase. The Gobaad survey has tombs from the 4th millennium BCE on (Dupuy 2019); Asa Koma and Wakrita are fisher-herders by 2500-1800 BCE."
+sources = ["https://doi.org/10.1016/j.quascirev.2020.106459", "https://journals.openedition.org/africanistes/7945"]
+
+[rule.points]
+# Gobaad plain (Asa Koma); Afambo; Lake Gamarri; the north shore of Abhe.
+at = [[42.07, 11.06], [41.68, 11.4], [41.62, 11.52], [41.85, 11.3]]
+
+[rule.tag]
+name = "first potter-herders"
+slices = [-3000]
+shores = 1
+confidence = "low"
+reasoning = "Herding and pottery reach the basin between 4.8 and 3.3 ka cal BP (Khalidi et al. 2020), so at 3,000 BCE the first potter-herders are at the very start; one camp on the Gobaad side carries it. Fish still made up two-thirds of the fauna afterwards."
+
+# ------------------------------------------------- Lake Tana
+# From data/places/plans/lake_tana.toml. The board has no Lake Tana, so the
+# camps are named places on its shore.
+
+[[rule]]
+key = "lake_tana_early_camp"
+show = false                       # kept, not displayed for now (2026-11-13)
+plan = "data/places/plans/lake_tana.toml"
+label = "aquatic forager camp"
+kind = "open air"
+slices = [-6000]
+persist = false
+clear = "hex"
+confidence = "low"
+reasoning = "One fisher-forager camp on the north shore, near Gorgora, a millennium before Kurtiye's first dates, on the strength of the African Humid Period and a lake that held water through the Holocene. Gorgora rock shelter has undated Later Stone Age and ceramic levels (Sahle et al. 2024)."
+sources = ["https://doi.org/10.1038/s41598-024-67743-x", "https://hdl.handle.net/1956/8931"]
+
+[rule.points]
+at = [[37.3, 12.22]]
+
+[[rule]]
+key = "lake_tana_camps"
+show = false                       # kept, not displayed for now (2026-11-13)
+plan = "data/places/plans/lake_tana.toml"
+label = "aquatic forager camp"
+kind = "open air"
+slices = [-5000, -4000, -3000]
+persist = false
+clear = "hex"
+confidence = "low"
+reasoning = "Three fisher-forager camps on the shore: the north shore near Gorgora, the Blue Nile outlet near Bahir Dar and the east shore at the edge of the Fogera plain. Kurtiye rock shelter shows fish-based foragers with pottery on the shore from the sixth millennium BP (Firew 2014), and Gorgora has undated LSA and ceramic levels (Sahle et al. 2024). Three camps for about 385 km of shore is a guess at the least that marks the lake as used."
+sources = ["https://hdl.handle.net/1956/8931", "https://doi.org/10.1038/s41598-024-67743-x"]
+
+[rule.points]
+at = [[37.3, 12.22], [37.4, 11.6], [37.57, 11.93]]
+
+# ------------------------------------------------- Cape Guardafui
+# From data/places/plans/guardafui.toml.
+
+[[rule]]
+key = "guardafui_damo_camp"
+show = false                       # kept, not displayed for now (2026-11-13)
+plan = "data/places/plans/guardafui.toml"
+label = "coastal forager camp"
+kind = "open air"
+slices = [-6000, -5000, -4000, -3000]
+persist = false
+clear = "hex"
+confidence = "low"
+reasoning = "One forager camp at Damo, the one sheltered beach near the cape (Chittick 1976), where a coastal camp on a cliff coast would sit. Somaliland has many undated prehistoric artefact sites and LSA rock-shelter floors, and the board gives the cape grassland and savannah through the period. No dated site in the window within 700 km on the African side: the start date is set by the African Humid Period, not by evidence."
+sources = ["https://www.ancientportsantiques.com/wp-content/uploads/Documents/PLACES/IndOc-Gulf/Somalia-Chittick1976.pdf"]
+
+[rule.points]
+at = [[51.2, 11.83]]
+
+[[rule]]
+key = "guardafui_hafun_camp"
+show = false                       # kept, not displayed for now (2026-11-13)
+plan = "data/places/plans/guardafui.toml"
+label = "coastal forager camp"
+kind = "open air"
+slices = [-4000, -3000]
+persist = false
+clear = "hex"
+confidence = "low"
+reasoning = "A second camp at the Hafun peninsula, the main haven on this coast (Chittick 1976), outside the place's box."
+sources = ["https://www.ancientportsantiques.com/wp-content/uploads/Documents/PLACES/IndOc-Gulf/Somalia-Chittick1976.pdf"]
+
+[rule.points]
+# The board draws the Hafun peninsula itself as Water (its hexes at 51.2-51.4 E),
+# so the camp stands on the mainland side of its neck.
+at = [[51.1, 10.4]]

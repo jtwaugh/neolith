@@ -39,9 +39,36 @@ const PAN_COAST_SECS: f64 = 0.16;
 /// A coast goes at most this share of the distance the drag moved.
 const PAN_COAST_SHARE: f64 = 0.5;
 
-/// Most board pixels per egui point on the web (see `board_view`).
+/// Most board pixels per egui point on the web while the camera is still,
+/// and while it moves (see `board_view`). `?still=` and `?moving=` in the
+/// page's URL override them, to tune on a phone.
 #[cfg(target_arch = "wasm32")]
-const MAX_WEB_BOARD_DENSITY: f32 = 1.5;
+const WEB_BOARD_DENSITY: [f32; 2] = [1.5, 1.0];
+/// The board stays at its moving density this long after the camera last
+/// moved, so a scroll wheel's separate ticks don't flicker between the two.
+const MOVING_HOLD_SECS: f64 = 0.2;
+/// While the camera moves, the river lines are rebuilt for a zoom only once
+/// the distance has changed by this factor (otherwise every 3%).
+const MOVING_LINE_STEP: f64 = 1.15;
+
+/// The board's density cap [still, moving], in pixels per point.
+fn board_density() -> [f32; 2] {
+    static D: std::sync::OnceLock<[f32; 2]> = std::sync::OnceLock::new();
+    *D.get_or_init(|| {
+        #[cfg(target_arch = "wasm32")]
+        let ([still, moving], get) = (WEB_BOARD_DENSITY, crate::perf::query_param);
+        // Natively the board is drawn at full density unless
+        // NEOLITH_BOARD_DENSITY / NEOLITH_MOVING_DENSITY cap it, e.g. to
+        // measure a phone's board on a desktop (see perf.rs).
+        #[cfg(not(target_arch = "wasm32"))]
+        let ([still, moving], get) = ([f32::INFINITY, f32::INFINITY], |k: &str| {
+            std::env::var(if k == "still" { "NEOLITH_BOARD_DENSITY" } else { "NEOLITH_MOVING_DENSITY" }).ok()
+        });
+        let num = |k: &str, d: f32| get(k).and_then(|v| v.parse::<f32>().ok()).filter(|v| *v > 0.1).unwrap_or(d);
+        let still = num("still", still);
+        [still, num("moving", moving).min(still)]
+    })
+}
 
 /// Pointer-interaction state of the board view.
 #[derive(Default)]
@@ -66,12 +93,19 @@ pub struct BoardInput {
     framed: bool,
     /// What the last frame drew, kept so the agent harness can read it.
     pub drawn: Drawn,
+    /// When the camera last moved (the board is drawn smaller just after).
+    moved_at: Option<f64>,
     /// Sea and region names shown last frame (label hysteresis).
     geo_shown: std::collections::HashSet<String>,
     /// What the uploaded piece/river/lake triangles were built from.
     piece_key: Option<PieceKey>,
+    line_key: Option<LineKey>,
+    /// The year the uploaded history layer was worked out for ([`scene::history_year`]).
+    history_year: Option<neolith_core::Year>,
     /// Which rivers the uploaded river field was built for ([`lines::flowing`]).
     flowing: Option<Vec<Option<bool>>>,
+    /// The year (and rivers switch) `flowing` was last checked for.
+    flowing_year: Option<(neolith_core::Year, bool)>,
 }
 
 /// The inputs of the piece, river and lake triangles. Rivers and lakes are
@@ -79,8 +113,8 @@ pub struct BoardInput {
 /// is created with the session), so neither needs to be in the key.
 struct PieceKey {
     pieces: Vec<Piece>,
-    year: neolith_core::Year,
-    rivers: bool,
+    /// Abandoned sites, drawn but never labelled or picked ([`Piece::ruin_of`]).
+    ruins: Vec<Piece>,
     /// Compared by identity: the session builds a new `Relief` when heights change.
     relief: Arc<Relief>,
     morph: f64,
@@ -89,9 +123,25 @@ struct PieceKey {
 
 impl PartialEq for PieceKey {
     fn eq(&self, o: &Self) -> bool {
-        self.pieces == o.pieces
-            && self.year == o.year
-            && self.rivers == o.rivers
+        self.pieces == o.pieces && self.ruins == o.ruins && Arc::ptr_eq(&self.relief, &o.relief) && self.morph == o.morph && self.dist == o.dist
+    }
+}
+
+/// The inputs of the river and lake lines: the snapshot (they are drawn
+/// for its year) and the camera distance rounded as [`lines::build_dist`]
+/// does.
+struct LineKey {
+    rivers: bool,
+    snapshot_gen: u64,
+    relief: Arc<Relief>,
+    morph: f64,
+    dist: f64,
+}
+
+impl PartialEq for LineKey {
+    fn eq(&self, o: &Self) -> bool {
+        self.rivers == o.rivers
+            && self.snapshot_gen == o.snapshot_gen
             && Arc::ptr_eq(&self.relief, &o.relief)
             && self.morph == o.morph
             && self.dist == o.dist
@@ -137,7 +187,9 @@ pub struct Drawn {
 struct BoardPaint {
     renderer: Arc<Mutex<BoardRenderer>>,
     globals: Globals,
+    /// The offscreen target's size, and the part of it drawn this frame.
     size: [u32; 2],
+    drawn: [u32; 2],
 }
 
 impl egui_wgpu::CallbackTrait for BoardPaint {
@@ -151,7 +203,7 @@ impl egui_wgpu::CallbackTrait for BoardPaint {
     ) -> Vec<wgpu::CommandBuffer> {
         // Offscreen colour + depth pass, submitted ahead of egui's own pass;
         // skipped when the board hasn't changed since the last one.
-        self.renderer.lock().unwrap().render_if_changed(device, queue, self.size, &self.globals);
+        self.renderer.lock().unwrap().render_if_changed(device, queue, self.size, self.drawn, &self.globals);
         Vec::new()
     }
 
@@ -226,6 +278,7 @@ fn piece_priority(s: &Session, visible: &[(usize, Piece)]) -> Vec<usize> {
 const LABEL_MIN_HEX_PX: f64 = 8.0;
 
 pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &Gpu, now: f64, dt: f64) {
+    let _span = crate::perf::span("board view");
     let rect = ui.available_rect_before_wrap();
     let resp = ui.allocate_rect(rect, Sense::click_and_drag());
     let size = DVec2::new(rect.width() as f64, rect.height() as f64);
@@ -240,7 +293,8 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         s.camera.dist *= (size.x / size.y).max(0.45).sqrt() * 0.85;
         s.camera.clamp(&grid);
     }
-    s.update_relief(style);
+    // As drawn: the editor shows flat tiles (see board_style below).
+    s.update_relief(&scene::BoardStyle { art_blend: style.art_blend && !s.editor, ..*style });
     let relief = s.relief.clone();
     let local = |p: Pos2| DVec2::new((p.x - rect.left()) as f64, (p.y - rect.top()) as f64);
     let (modifiers, press_origin, scroll, pinch) =
@@ -442,6 +496,7 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
     }
     let view = s.camera.view(&s.proj, s.morph, size);
     let year = s.year();
+    let pieces_span = crate::perf::span("pieces");
     let visible: Vec<(usize, Piece)> = s
         .world
         .settlements
@@ -453,11 +508,17 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         .filter(|(i, _)| s.camera.dist < FAR_PIECES_DIST || s.settlement == Some(*i) || s.renown.get(*i).is_some_and(|r| r.is_some()))
         .map(|(i, _)| (i, Piece::for_site(&s.world, i, year, s.renown.get(i).copied().flatten())))
         .collect();
+    // Ruins of abandoned sites: as many as the living, by the same rule.
+    let ruins: Vec<Piece> = (0..s.world.settlements.len())
+        .filter(|&i| s.camera.dist < FAR_PIECES_DIST || s.renown.get(i).is_some_and(|r| r.is_some()))
+        .filter_map(|i| Piece::ruin_of(&s.world, i, year, s.renown.get(i).copied().flatten()))
+        .collect();
     let frames: Vec<PieceFrame> =
         visible.iter().map(|(_, p)| scene::piece_frame(p, &s.proj, &relief, s.morph, s.camera.dist)).collect();
     let on_screen: Vec<Option<ScreenPiece>> = frames.iter().map(|f| scene::piece_on_screen(&view, f)).collect();
     // Label priority; every piece is drawn, only labels are thinned out.
     let order = piece_priority(s, &visible);
+    drop(pieces_span);
 
     let hovering = (resp.contains_pointer() || cursor.is_some()) && s.input.drag.is_none() && !s.input.gesture;
     let piece_hover = cursor.filter(|_| hovering).and_then(|c| {
@@ -549,6 +610,20 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
     }
 
     // ---- upload and paint ------------------------------------------------
+    // ---- is the camera moving? While it is, the board is drawn smaller
+    // and the river lines rebuilt less often (see below).
+    let in_motion = matches!(s.input.drag, Some(Drag::Pan { .. } | Drag::Orbit))
+        || s.input.gesture
+        || s.input.camera_moving()
+        || (resp.contains_pointer() && (scroll != 0.0 || pinch != 1.0))
+        || s.morph_anim.is_some();
+    if in_motion {
+        s.input.moved_at = Some(now);
+    }
+    let since_moved = s.input.moved_at.map_or(f64::INFINITY, |t| now - t);
+    let moving = since_moved < MOVING_HOLD_SECS;
+
+    let upload_span = crate::perf::span("uploads");
     if s.state_dirty {
         let state = scene::state_texels(&grid, &s.snapshot, &s.hillshade, &s.world.landform, &s.world.survey, Some(&s.selection), s.input.lasso_preview.as_ref(), s.hover);
         s.renderer.lock().unwrap().upload_state(&gpu.queue, &state);
@@ -559,52 +634,105 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         s.renderer.lock().unwrap().upload_evidence(&gpu.queue, &texels);
         s.evidence_dirty = false;
     }
+    // What people have done to the land by now (clearings, fields).
+    let history_year = scene::history_year(year);
+    if s.input.history_year != Some(history_year) {
+        let _span = crate::perf::span("history");
+        let texels = scene::history_texels(&s.world, history_year);
+        s.renderer.lock().unwrap().upload_history(&gpu.queue, &texels);
+        s.input.history_year = Some(history_year);
+    }
     let pieces: Vec<Piece> = visible
         .iter()
         .enumerate()
         .map(|(k, (i, p))| Piece { highlighted: piece_hover == Some(k) || s.settlement == Some(*i), ..p.clone() })
         .collect();
-    // Rebuild the piece, river and lake triangles only when their inputs
-    // change. Panning, the clock between epochs and panel repaints keep them.
-    let key = PieceKey { pieces, year, rivers: style.rivers, relief: relief.clone(), morph: s.morph, dist: s.camera.dist };
+    // Rebuild the piece triangles, and separately the river and lake ones,
+    // only when their inputs change. Panning, the clock between river fades
+    // and epochs, and panel repaints keep them.
+    let key = PieceKey { pieces, ruins, relief: relief.clone(), morph: s.morph, dist: s.camera.dist };
     if s.input.piece_key.as_ref() != Some(&key) {
-        let verts = scene::piece_vertices(&key.pieces, &s.proj, &relief, s.morph, s.camera.dist);
-        let mut line_mesh = LineMesh::default();
-        if style.rivers {
-            let board = lines::Board { proj: &s.proj, relief: &relief, t: s.morph, cam_dist: s.camera.dist };
-            lines::rivers(&mut line_mesh, &s.world.rivers, &s.world.lakes, &s.snapshot, &board);
-        }
-        // The river field only changes when a river starts, stops or turns
-        // seasonal, not with every year or camera move.
-        let flowing = if style.rivers { lines::flowing(&s.world.rivers, year) } else { Vec::new() };
-        let field = (s.input.flowing.as_ref() != Some(&flowing)).then(|| lines::river_field(&s.world.rivers, &flowing, &grid));
+        let _span = crate::perf::span("piece mesh");
+        let verts = scene::piece_vertices(&[&key.ruins[..], &key.pieces[..]].concat(), &s.proj, &relief, s.morph, s.camera.dist);
         let mut renderer = s.renderer.lock().unwrap();
         renderer.upload_pieces(&gpu.device, &gpu.queue, &verts);
-        renderer.upload_lines(&gpu.device, &gpu.queue, &line_mesh);
         renderer.upload_camps(&gpu.queue, &scene::camp_texels(&grid, &key.pieces));
-        if let Some(field) = &field {
-            renderer.upload_river_field(&gpu.queue, field);
-        }
         drop(renderer);
-        s.input.flowing = Some(flowing);
         s.input.piece_key = Some(key);
     }
+    let line_key = LineKey {
+        rivers: style.rivers,
+        snapshot_gen: s.snapshot_gen,
+        relief: relief.clone(),
+        morph: s.morph,
+        // While the camera moves, a zoom has to change the lines' width by
+        // more before they are rebuilt (each build costs several ms, more
+        // on a phone); they catch up when it stops.
+        dist: match &s.input.line_key {
+            Some(k) if moving && (lines::build_dist(s.camera.dist) / k.dist).ln().abs() < MOVING_LINE_STEP.ln() => k.dist,
+            _ => lines::build_dist(s.camera.dist),
+        },
+    };
+    if s.input.line_key.as_ref() != Some(&line_key) {
+        let _span = crate::perf::span("line mesh");
+        let mut line_mesh = LineMesh::default();
+        if style.rivers {
+            let board = lines::Board { proj: &s.proj, relief: &relief, t: s.morph, cam_dist: line_key.dist };
+            lines::rivers(&mut line_mesh, &s.world.rivers, &s.world.lakes, &s.snapshot, &board);
+        }
+        s.renderer.lock().unwrap().upload_lines(&gpu.device, &gpu.queue, &line_mesh);
+        s.input.line_key = Some(line_key);
+    }
+    // The river field only changes when a river starts, stops or turns
+    // seasonal, not with every year or camera move.
+    if s.input.flowing_year != Some((year, style.rivers)) {
+        let flowing = if style.rivers { lines::flowing(&s.world.rivers, year) } else { Vec::new() };
+        if s.input.flowing.as_ref() != Some(&flowing) {
+            let field = lines::river_field(&s.world.rivers, &flowing, &grid);
+            s.renderer.lock().unwrap().upload_river_field(&gpu.queue, &field);
+            s.input.flowing = Some(flowing);
+        }
+        s.input.flowing_year = Some((year, style.rivers));
+    }
+
+    drop(upload_span);
 
     // The board's offscreen resolution, in pixels. On the web it is capped
     // below a high-DPI screen's density (the blit upscales it linearly): the
     // board shader is per-pixel heavy, browsers' GPU budgets are tighter and
-    // 2× density costs ~1.8× the pixels of 1.5×. Native renders at full density.
-    #[cfg(target_arch = "wasm32")]
-    let ppp = ui.ctx().pixels_per_point().min(MAX_WEB_BOARD_DENSITY);
-    #[cfg(not(target_arch = "wasm32"))]
+    // 2× density costs ~1.8× the pixels of 1.5×. While the camera moves it
+    // is drawn smaller still, which motion hides: a phone's GPU then keeps
+    // up with a pan or pinch, and the board sharpens the moment it stops.
+    // Native renders at full density.
+    let [still_density, moving_density] = board_density();
     let ppp = ui.ctx().pixels_per_point();
-    let px = [(rect.width() * ppp).round().max(1.0) as u32, (rect.height() * ppp).round().max(1.0) as u32];
+    let pixels = |density: f32| {
+        let d = ppp.min(density);
+        [(rect.width() * d).round().max(1.0) as u32, (rect.height() * d).round().max(1.0) as u32]
+    };
+    let px = pixels(still_density);
+    let drawn = if moving {
+        if !in_motion {
+            // Come back for the sharp frame once the hold is over.
+            ui.ctx().request_repaint_after(std::time::Duration::from_secs_f64(MOVING_HOLD_SECS - since_moved));
+        }
+        pixels(moving_density)
+    } else {
+        px
+    };
     // Editing wants the whole map sharp and its colours as painted.
-    let board_style = scene::BoardStyle { depth: if s.editor { 0.0 } else { style.depth }, ..*style };
+    // The editor paints hexes, so it shows the crisp hex board: no ground field or smooth relief.
+    let board_style = scene::BoardStyle {
+        depth: if s.editor { 0.0 } else { style.depth },
+        art_blend: style.art_blend && !s.editor,
+        ..*style
+    };
+    // Level of detail follows the full-density size, so the terrain art
+    // doesn't thin out while the camera moves and pop back when it stops.
     let globals = scene::globals(&view, &board_style, s.mode, &grid, &s.mesh, px[1] as f32);
     ui.painter().add(egui_wgpu::Callback::new_paint_callback(
         rect,
-        BoardPaint { renderer: s.renderer.clone(), globals, size: px },
+        BoardPaint { renderer: s.renderer.clone(), globals, size: px, drawn },
     ));
 
     // ---- overlays ---------------------------------------------------------
@@ -621,6 +749,7 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
     // the geography, routed around them; then every other site, around
     // both. Names are cleaned of catalogue codes, one label per name, and
     // placed by collision alone, in priority order.
+    let labels_span = crate::perf::span("labels");
     const MAX_LABELS: usize = 150;
     let hex_px = scene::hex_px(&view, &grid, s.camera.dist);
     let names_on = hex_px >= LABEL_MIN_HEX_PX;
@@ -767,6 +896,8 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
     }
 
     s.input.drawn = drawn;
+    drop(labels_span);
+    crate::perf::overlay(&painter, rect);
 
     // Curved ↔ Flat toggle in the corner.
     let flat = s.morph_target() > 0.5;

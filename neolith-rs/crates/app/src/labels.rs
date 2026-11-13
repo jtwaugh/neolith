@@ -382,6 +382,7 @@ pub fn draw_geography(
     shown: &mut HashSet<String>,
     avoid: &[Rect],
 ) -> Vec<DrawnLabel> {
+    let _span = crate::perf::span("geo labels");
     let grid = &world.grid;
     let mut drawn = Vec::new();
     let water_at = |ll: LonLat| grid.hex_at(ll).map(|h| terrain[h.index()] == Terrain::Water as u8);

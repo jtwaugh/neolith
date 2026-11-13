@@ -44,8 +44,8 @@ const BELT_MIN_DEG: f64 = 1.2;
 /// Fill and bank colours. The banks are a wider, darker line under the
 /// fill, drawn for every river before any fill, so where rivers meet the
 /// water runs together and only the outer banks show.
-const PERENNIAL: [[u8; 3]; 2] = [[0x4c, 0x9a, 0xe8], [0x1e, 0x4f, 0x94]];
-const SEASONAL: [[u8; 3]; 2] = [[0x9a, 0xcb, 0xee], [0x4d, 0x7d, 0xb3]];
+const PERENNIAL: [[u8; 3]; 2] = [[0x4a, 0x74, 0x8a], [0x2c, 0x4c, 0x5e]];
+const SEASONAL: [[u8; 3]; 2] = [[0x7e, 0x9e, 0xae], [0x50, 0x6e, 0x80]];
 /// The fill's share of the line's width, close up and from far out. Close
 /// up the dark line is only a waterline: the bed (below) does the banks.
 const FILL: [f64; 2] = [0.78, 0.37];
@@ -62,9 +62,25 @@ const BELT: [u8; 3] = [0xd6, 0xea, 0xc0];
 /// How far a line is drawn from the map: the world width grows a little with
 /// camera distance (like pieces) so lines stay visible zoomed out.
 fn line_zoom(cam_dist: f64) -> f64 {
-    const DIST_REF: f64 = 0.48;
     const ZOOM_EXP: f64 = 0.6;
-    (cam_dist / DIST_REF).max(1.0).powf(ZOOM_EXP)
+    (cam_dist / ZOOM_FREE_DIST).max(1.0).powf(ZOOM_EXP)
+}
+
+/// Closer than this the river lines no longer change with camera distance
+/// (neither [`line_zoom`] nor the far-out look in [`rivers`]).
+pub const ZOOM_FREE_DIST: f64 = 0.48;
+
+/// The camera distance to build the river lines for: `cam_dist` rounded to
+/// a 3% step, or [`ZOOM_FREE_DIST`] closer in, where the lines are the same
+/// at every distance. A pinch then rebuilds them a few times rather than
+/// every frame (each build is several milliseconds), and the widths step
+/// by under 2%, too little to see.
+pub fn build_dist(cam_dist: f64) -> f64 {
+    const STEP: f64 = 1.03;
+    if cam_dist <= ZOOM_FREE_DIST {
+        return ZOOM_FREE_DIST;
+    }
+    ZOOM_FREE_DIST * STEP.powf(((cam_dist / ZOOM_FREE_DIST).ln() / STEP.ln()).round())
 }
 
 /// What the builders need to place a line on the board.
@@ -601,6 +617,22 @@ mod tests {
     use super::*;
     use glam::Vec3;
     use neolith_core::{GridSpec, Timeline};
+
+    #[test]
+    fn build_dist_rounds_far_out_and_is_fixed_close_in() {
+        // Close in every distance builds the same lines, and they are the
+        // lines that distance would draw.
+        for d in [0.05, 0.2, ZOOM_FREE_DIST] {
+            assert_eq!(build_dist(d), ZOOM_FREE_DIST);
+            assert_eq!(line_zoom(d), line_zoom(ZOOM_FREE_DIST));
+        }
+        // Further out, within 1.5% of the real distance, and nearby
+        // distances share a build.
+        for d in [0.5, 0.9, 1.3, 2.0] {
+            assert!((build_dist(d) / d - 1.0).abs() <= 0.0151, "{d}");
+        }
+        assert_eq!(build_dist(1.0), build_dist(1.004));
+    }
 
     fn grid() -> GridSpec {
         GridSpec { cols: 12, rows: 12, origin_lon: 28.0, origin_lat: 34.0, w: 0.5773502691896262, h: 0.5 }

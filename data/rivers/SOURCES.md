@@ -7,12 +7,22 @@ Years are BCE as negative numbers. Calibrated ka BP converts as BCE = BP − 195
 
 ## How courses are made
 
-- **HydroRIVERS v1.0** (Lehner & Grill 2013, *Hydrological Processes* 27:2171;
-  https://www.hydrosheds.org/products/hydrorivers) supplies most courses. It is
-  derived from the SRTM DEM, so it includes dry Saharan channels wherever the
-  topography still shows them. A river is traced downstream from its `from`
-  point. A tributary stops where it meets a river already drawn.
-- **Waypoints** cover channels HydroRIVERS can't follow (buried under sand
+- **The GEOGLOWS v2 stream network** (CC BY 4.0; a subset of NGA's TDX-Hydro,
+  CC BY-SA 4.0; https://data.geoglows.org) supplies most courses. It is
+  derived from the TanDEM-X DEM, so it includes dry Saharan channels wherever
+  the topography still shows them. A river is traced downstream from its
+  `from` point. A tributary stops where it meets a river already drawn.
+  Until 2026-11-13 the courses were traced on HydroRIVERS v1.0 (Lehner &
+  Grill 2013), whose licence can't be passed on under CC BY-SA. Remaining
+  mentions of HydroRIVERS in the table below describe that earlier tracing. On the swap,
+  every traced course was compared with its HydroRIVERS version: most lie
+  within a hex. Four needed new `from`, `to` or waypoints: the Danube (start
+  moved to Sigmaringen), the Uzen (stopped at Kamysh-Samar), Wadi Howar (the
+  upper wadi turns into a dune sink at 25.4°E) and the Kura (the lower course
+  runs south through the Mughan lowland). The Syr Darya southern course,
+  Akchadarya and Irharhar, all low confidence, reach the Aral or the chotts
+  by slightly different lines (up to 1.6°).
+- **Waypoints** cover channels the stream network can't follow (buried under sand
   seas, ending in DEM sinks, or flowing the "wrong" way for today's
   topography). They are read by eye off published figures, are approximate to
   a few tenths of a degree, and are meant to be redrawn in QGIS from the
@@ -96,61 +106,66 @@ timing is a reasonable reading of sparse evidence.
 
 | River | Course | State | Confidence | Basis |
 |---|---|---|---|---|
-| Nile, Blue Nile | HydroRIVERS (the Nile stopped at the delta head near Cairo) | perennial | high | Modern river. Nile flow was higher in the African Humid Period (AHP) but never stopped. |
-| Atbara | HydroRIVERS | perennial, seasonal from −3500 | medium | Seasonal today. Assumed perennial during the AHP, which ended about 5.5 ka (deMenocal et al. 2000, *QSR* 19:347). |
-| Wadi Howar | HydroRIVERS to 27.4°E, then waypoints to the Nile | seasonal; perennial −8500; seasonal −3300 | medium | Kröpelin & Pachur 1987, *Science* 237:298; Kuper & Kröpelin 2006, *Science* 313:803 (monsoon arrives in the eastern Sahara about 8500 BCE, retreats from Egypt about 5300 BCE). HydroRIVERS loses the channel in a DEM sink. Ennedi headwaters west of 24.4°E not yet drawn. |
-| Niger, Benue, Senegal | HydroRIVERS | perennial | high | Modern rivers. |
-| Tilemsi, Azawagh | HydroRIVERS | seasonal until −3500 | low | Fossil valleys draining the Adrar des Ifoghas and Aïr to the Niger. Dated to the AHP generally (Drake et al. 2011). |
-| Chari, Logone | HydroRIVERS | perennial | high | Modern rivers feeding Lake Chad. |
-| Mayo Kébbi (the Megachad spillway) | HydroRIVERS | flows while Megachad is at its outlet (lakes.toml) | medium | Megachad overflow from about 11 ka to the end of the highstand about 5 ka (Armitage et al. 2015). The modern Logone still spills into it in big floods. |
+| Nile, Blue Nile | Stream network (the Nile stopped at the delta head near Cairo) | perennial | high | Modern river. Nile flow was higher in the African Humid Period (AHP) but never stopped. |
+| Atbara | Stream network | perennial, seasonal from −3500 | medium | Seasonal today. Assumed perennial during the AHP, which ended about 5.5 ka (deMenocal et al. 2000, *QSR* 19:347). |
+| Wadi Howar | Stream network to 27.4°E, then waypoints to the Nile | seasonal; perennial −8500; seasonal −3300 | medium | Kröpelin & Pachur 1987, *Science* 237:298; Kuper & Kröpelin 2006, *Science* 313:803 (monsoon arrives in the eastern Sahara about 8500 BCE, retreats from Egypt about 5300 BCE). HydroRIVERS loses the channel in a DEM sink. Ennedi headwaters west of 24.4°E not yet drawn. |
+| Niger, Benue, Senegal | Stream network | perennial | high | Modern rivers. |
+| Tilemsi, Azawagh | Stream network | seasonal until −3500 | low | Fossil valleys draining the Adrar des Ifoghas and Aïr to the Niger. Dated to the AHP generally (Drake et al. 2011). |
+| Chari, Logone | Stream network | perennial | high | Modern rivers feeding Lake Chad. |
+| Mayo Kébbi (the Megachad spillway) | Stream network | flows while Megachad is at its outlet (lakes.toml) | medium | Megachad overflow from about 11 ka to the end of the highstand about 5 ka (Armitage et al. 2015). The modern Logone still spills into it in big floods. |
 | Bahr el Ghazal (Chad) | waypoints | flows while Megachad is above the 287 m sill; under the lake above about 300 m | medium | See above. Submerged on the board while Megachad is drawn. Intermittent late-Holocene flow (last in the 1870s). |
-| Tibesti wadis | HydroRIVERS | seasonal | low | Angamma delta; flow ended about 4.3 ka, after the map's end. |
+| Tibesti wadis | Stream network | seasonal | low | Angamma delta; flow ended about 4.3 ka, after the map's end. |
 | Kufrah River, and its Uweinat branch from the Gilf Kebir–Uweinat side | waypoints | seasonal −8500 to −5300 | low | Paillou et al. 2009, 2012 for the course and the eastern branch (read by eye off their radar maps). Timing follows the eastern-Sahara humid window (Kuper & Kröpelin 2006). Not shown to have reached the sea in the Holocene. |
-| Irharhar | HydroRIVERS to 27.4°N, then waypoints to Chott Melrhir | seasonal until −3500 | low | Drake et al. 2011; Coulthard et al. 2013, *PLoS ONE* 8:e74834 (mainly a last-interglacial river; Holocene flow weaker). |
-| Saoura | HydroRIVERS, then waypoints along the Oued Messaoud | seasonal | medium | It still floods today. |
+| Irharhar | Stream network to 27.4°N, then waypoints to Chott Melrhir | seasonal until −3500 | low | Drake et al. 2011; Coulthard et al. 2013, *PLoS ONE* 8:e74834 (mainly a last-interglacial river; Holocene flow weaker). |
+| Saoura | Stream network, then waypoints along the Oued Messaoud | seasonal | medium | It still floods today. |
 | Tamanrasett (lower course) | waypoints | seasonal until −3500 | low | Skonieczny, C. et al. 2015. African humid periods triggered the reactivation of a large river system in Western Sahara. *Nature Communications* 6:8751. Only the radar-mapped Mauritanian stretch is drawn. The upper course from the Hoggar is conjectural. |
-| Tigris | HydroRIVERS + shelf (from Diyarbakır) | perennial | medium | Present course past Baghdad, Kut and Amarah. Before this change the `from` point snapped to a Euphrates headwater, so the "Tigris" line followed the Euphrates. Uruk-period joint channel belts (Morozova 2005, *Geoarchaeology* 20:401) and a Gharraf course past Girsu and Lagash are argued but not placeable. The Ur-Schatt across the dry Gulf comes from the shelf rule. Caveat: the mid-Holocene transgression. Bogemans et al. (2016, 2017) date it from about 7.8 ka, estuarine but confined to the channels, with progradation from about 4.9 ka. Its inland limit is put at Kut, Samawah, or Nasiriyah and Amarah by different authors (summarised by Jotheri et al. 2017). ETOPO's modern, sediment-filled plain can't show it. |
-| Euphrates (upper) | HydroRIVERS, stopped near Sippar | perennial | high | |
+| Tigris | Stream network + shelf (from Diyarbakır) | perennial | medium | Present course past Baghdad, Kut and Amarah. Before this change the `from` point snapped to a Euphrates headwater, so the "Tigris" line followed the Euphrates. Uruk-period joint channel belts (Morozova 2005, *Geoarchaeology* 20:401) and a Gharraf course past Girsu and Lagash are argued but not placeable. The Ur-Schatt across the dry Gulf comes from the shelf rule. Caveat: the mid-Holocene transgression. Bogemans et al. (2016, 2017) date it from about 7.8 ka, estuarine but confined to the channels, with progradation from about 4.9 ka. Its inland limit is put at Kut, Samawah, or Nasiriyah and Amarah by different authors (summarised by Jotheri et al. 2017). ETOPO's modern, sediment-filled plain can't show it. |
+| Euphrates (upper) | Stream network, stopped near Sippar | perennial | high | |
 | Euphrates (old course) | waypoints: Sippar, Kish, Nippur, Shuruppak, Uruk, Larsa, Ur, then the marshes to the Tigris | perennial | low | The 4th-millennium cities sit on this levee (Adams 1981, *Heartland of Cities*). Uruk had a freshwater channel from the 8th millennium BCE, and its first avulsion cycle ran from the Neolithic to the Uruk period (Jotheri et al. 2017, *Quaternary International*, doi:10.1016/j.quaint.2017.11.037). The present western course (Hilla–Samawah–Nasiriyah) is later and not drawn. |
 | Nile delta: Canopic, Pelusiac | waypoints via the branch towns + shelf | perennial | medium | The modern delta began forming 8–7 ka (Stanley & Warne 1993, 1994). The Canopic was active for "thousands of years" before 1000 BC (Stanley, Warne & Schnepp 2004, *J. Coastal Research* 20:920; Wilson 2012, *Water History*). Before about −6000 the branches crossed a wider exposed delta plain, and the shelf rule extends them. |
 | Nile delta: Sebennytic | waypoints + shelf | perennial from −5050 | low | Channel deposits from about 7 ka cal BP (Stanley 2021, *Quaternary* 4:39). |
 | Nile delta: Rosetta, Damietta | — | not drawn | medium | The Bolbitine–Rosetta branch began about 1000 BC (Wilson 2012); the Damietta (Phatnitic) is later. |
-| Jordan | HydroRIVERS | perennial | high | |
-| Amu Darya, Syr Darya (upper courses) | HydroRIVERS, stopped at the delta heads | perennial | high | Courses enter the grid at 66°E. The deltas are below. |
-| Amu Darya (Daudan) | HydroRIVERS (dry channel past Khiva and Dashoguz into the Sarykamysh depression) | perennial | low | Kes' (1979) has the Amu feeding Sarykamysh and the Uzboy for most of the Holocene. Krivonogov et al. 2014 (*Gondwana Research* 26:284): Sarykamysh full about 5–4 ka cal BP (Kelteminar settlement on the upper Uzboy). |
-| Akchadarya | HydroRIVERS, linked to the Amu by two waypoints | perennial from −5000 | low | Krivonogov et al. 2014: channel fill 6490–6940 cal BP at 42.06°N 61.46°E; sites 5–3 ka cal BP. "Functioned at least since the middle Holocene"; earlier activity unknown, so absent before −5000. |
+| Jordan | Stream network | perennial | high | |
+| Amu Darya, Syr Darya (upper courses) | Stream network, stopped at the delta heads | perennial | high | Courses enter the grid at 66°E. The deltas are below. |
+| Amu Darya (Daudan) | Stream network (dry channel past Khiva and Dashoguz into the Sarykamysh depression) | perennial | low | Kes' (1979) has the Amu feeding Sarykamysh and the Uzboy for most of the Holocene. Krivonogov et al. 2014 (*Gondwana Research* 26:284): Sarykamysh full about 5–4 ka cal BP (Kelteminar settlement on the upper Uzboy). |
+| Akchadarya | Stream network, linked to the Amu by two waypoints | perennial from −5000 | low | Krivonogov et al. 2014: channel fill 6490–6940 cal BP at 42.06°N 61.46°E; sites 5–3 ka cal BP. "Functioned at least since the middle Holocene"; earlier activity unknown, so absent before −5000. |
 | Amu Darya modern lower course (Aral sub-delta) | — | not drawn | low | Dated from antiquity on (Krivonogov et al. 2014; Tolstov 1962), after the map's end. |
-| Syr Darya (southern course) | HydroRIVERS, linked by one waypoint | perennial | low | Krivonogov et al.'s Daryalyk: shells 10,770–11,190 cal BP at 44.61°N 65.21°E. "Courses south of the Kuvandarya functioned in the middle–early Holocene"; the delta shifted north over time. |
-| Karadarya | HydroRIVERS | seasonal | low | Potamogeton fruit in the bed, 6170–6290 cal BP at 44.29°N 65.10°E. Assumed a secondary branch for the whole period. |
+| Syr Darya (southern course) | Stream network, linked by one waypoint | perennial | low | Krivonogov et al.'s Daryalyk: shells 10,770–11,190 cal BP at 44.61°N 65.21°E. "Courses south of the Kuvandarya functioned in the middle–early Holocene"; the delta shifted north over time. |
+| Karadarya | Stream network | seasonal | low | Potamogeton fruit in the bed, 6170–6290 cal BP at 44.29°N 65.10°E. Assumed a secondary branch for the whole period. |
 | Syr Darya northern courses | — | not drawn | medium | Inkardarya 4–3 ka; Janadarya and Kuvandarya from 2.7–2.5 ka; the modern Kerderi/Small Aral course late medieval (Krivonogov et al. 2014). All after −3000. |
 | Uzboy | waypoints, from the Sarykamysh outlet to the Caspian (extended to its lowest level) | seasonal while Sarykamysh overflows | low | Flow phases are disputed. Kes' (1979) has the Amu flowing via Sarykamysh and the Uzboy to the Caspian for most of the Holocene; Létolle et al. 2007 (*Quaternary International* 173:125) report repeated reactivations. HydroRIVERS drains into the Sarykamysh sink, so waypoints. |
-| Volga, Ural | HydroRIVERS, extended to the Caspian at its lowest level | perennial | high | Lower courses drown as the Caspian rises (lakes.toml). |
-| Don, Dnieper, Danube (upper) | HydroRIVERS + shelf; the Danube stopped at the Chilia fork above Tulcea | perennial | high | The Don, Dnieper and Danube (St George branch) run out to the Black Sea lake at its lowest level (−40 m) until the reconnection at −7050, and shorten as it rises (`data/lakes/`). |
+| Volga, Ural | Stream network, extended to the Caspian at its lowest level | perennial | high | Lower courses drown as the Caspian rises (lakes.toml). |
+| Don, Dnieper, Danube (upper) | Stream network + shelf; the Danube stopped at the Chilia fork above Tulcea | perennial | high | The Don, Dnieper and Danube (St George branch) run out to the Black Sea lake at its lowest level (−40 m) until the reconnection at −7050, and shorten as it rises (`data/lakes/`). |
 | Danube (St George branch) | waypoints past Mahmudia to Sfântu Gheorghe + shelf | perennial to −5250 | low | The St George I lobe, 8900–7200 BP (Vespremeanu-Stroe et al. 2017, *Marine Geology*, AMS ¹⁴C and OSL). Earlier, the same outlet crossed the exposed shelf. Giosan et al. 2006 (*Geology* 34:757) instead date St George I to about 5.5–3.6 ka; the newer chronology is used. The channel probably kept some flow after the switch; drawn as absent. |
 | Danube (Sulina branch) | waypoints past Crişan to Sulina + shelf | perennial from −5250 | low | The Sulina lobe, 7200–2000 BP (Vespremeanu-Stroe et al. 2017; Giosan et al. 2006 give 3.6–2.0 ka). |
 | Danube Chilia and St George II lobes | — | not drawn | medium | After 2000 BP; the Chilia lobes from about 1.5–0.9 ka (Filip & Giosan 2014, *Anthropocene*; Vespremeanu-Stroe et al. 2017). |
-| Rhine (upper), Thames, Elbe, Seine | HydroRIVERS + shelf; the Rhine stopped at Wijk bij Duurstede | perennial | high | Doggerland and Channel River drainage from the shelf rule. |
+| Rhine (upper), Thames, Elbe, Seine | Stream network + shelf; the Rhine stopped at Wijk bij Duurstede | perennial | high | Doggerland and Channel River drainage from the shelf rule. |
 | Rhine (valley course) | waypoints along the Late Weichselian valley to its mouth near Rotterdam + shelf | perennial to −5450 | medium | Berendsen & Stouthamer 2002: early Holocene flow in a few large incised channels in the valley (infills dated 9800–8000 ¹⁴C BP). The Benschop system (from 7600 ¹⁴C BP) stayed in the valley until it avulsed near Gouda about 6500 ¹⁴C BP (≈7.4 cal ka, −5450). |
 | Rhine (Benschop course) | waypoints: IJsselstein, Benschop, Gouda, to the tidal area between Den Haag and Leiden + shelf | perennial −5450 to −4350 | medium | Same source (their Fig. 7). Abandoned at the Wijk bij Duurstede avulsion about 5500 ¹⁴C BP (≈6.3 cal ka, −4350). |
 | Rhine (Oude Rijn) | waypoints: Utrecht, Woerden, Leiden, Katwijk + shelf | perennial from −4350 | medium | The Utrecht river system: the main Rhine course from about 5500 ¹⁴C BP until it was dammed in AD 1122 (Berendsen & Stouthamer 2002, Fig. 8). The avulsion node sits on the Peel Boundary Fault zone. Smaller SW-flowing distributaries existed throughout but aren't drawn. From −4200 the board turns the strip west of Woerden to Water, so the line stops there. ETOPO has the drained polders below sea level; that roughly matches the real tidal and peat back-barrier area, which the Oude Rijn crossed to the sea at Katwijk. |
-| Meuse | HydroRIVERS + shelf | perennial | medium | Followed the southern edge of the Late Weichselian valley to the Rotterdam estuary. Channel belts older than 6000 ¹⁴C BP survive only in fragments, so the modern course stands in down to the Biesbosch, then waypoints to the Rotterdam estuary. |
-| Rhône (upper) | HydroRIVERS, stopped at Arles | perennial | high | |
+| Meuse | Stream network + shelf | perennial | medium | Followed the southern edge of the Late Weichselian valley to the Rotterdam estuary. Channel belts older than 6000 ¹⁴C BP survive only in fragments, so the modern course stands in down to the Biesbosch, then waypoints to the Rotterdam estuary. |
+| Rhône (upper) | Stream network, stopped at Arles | perennial | high | |
 | Rhône (Saint-Ferréol branch) | waypoints south from Arles to the Beauduc–Faraman coast + shelf | perennial | low | Vella et al. 2005 (*Marine Geology* 222–223:235): the delta plain builds from about 7000 ¹⁴C BP; the first fluvial input followed a palaeothalweg south of Arles to the centre of the plain; the Saint-Ferréol lobe grew 6500–6000 BP (after L'Homer) and stayed active to about 2000 BP. Before 7000 BP the shelf rule carries the river across the exposed shelf. |
 | Rhône (Ulmet branch) | waypoints towards Saintes-Maries + shelf | perennial from −4650 | low | Oldest dated Ulmet channel 5780 ± 40 ¹⁴C BP (≈6.6 cal ka); contemporaneous with Saint-Ferréol to about 2000 BP (Vella et al. 2005). |
 | Rhône (Peccaïs branch) | waypoints towards Aigues-Mortes + shelf | perennial from −4900 | low | Distributaries multiplied west of the Peccaïs Rhône from about 6000 ¹⁴C BP (≈6.85 cal ka); the Peccaïs lobe built 5400–4350 BP (Vella et al. 2005, after L'Homer 1975). |
 | Grand Rhône, Petit Rhône | — | not drawn | medium | Later courses (Vella et al. 2005). The whole Rhône delta is about one hex across, so its branches are sub-hex detail with approximate waypoints. |
-| Po | HydroRIVERS, stopped short of the modern delta at about 12.25°E, + shelf | perennial | medium | The modern course below Ficarolo dates from the AD 1152 avulsion; no main course downstream of it is attested before the Po di Adria (about 4.0–2.5 ka) and the Po di Spina (1st millennium BCE), so the modern line stands in. Bruno et al. 2017 (*Sedimentology* 64:1792): an estuary migrated landward 11.5–7.0 kyr BP; the Po split into three branches around 10 ka (within a few km); the shoreline reached its furthest inland position about 7.7 cal kyr BP, roughly 30 km inland of today. The board's coast (ETOPO1 and the sea curve) can't show that transgression. |
-| Vistula | HydroRIVERS (`shelf = false`) | perennial | high | The Baltic stages (Baltic Ice Lake, Yoldia, Ancylus, Littorina) are modelled in `data/lakes/` on an uplift-corrected surface; an extension across today's sea floor wouldn't follow them, so the Vistula ends at its modern mouth. |
-| Kura, Terek, Sulak | HydroRIVERS, extended to the Caspian at its lowest level | perennial | high | Modern rivers. Their lower courses drown as the Caspian rises (lakes.toml), as for the Volga and Ural. Holocene Kura and Terek delta branches aren't dated well enough to time (Kura delta Caspian-level work: INTAS project 2005-1000008-8078; Terek avulsions are historical, Magritsky et al. 2018). |
-| Aras | HydroRIVERS from the Bingöl highlands, stopped at the Kura near Sabirabad | perennial | high | Historical accounts of a separate Caspian mouth aren't dated, so it is drawn as a Kura tributary throughout. |
-| Kuban | HydroRIVERS to its modern mouth at Temryuk + the Black Sea lake extension (joins the Don's path across the dry Azov) | perennial | medium | Giaime et al. 2016: the Taman peninsula was an archipelago about 6 ka and the delta prograded after that; the 2019 *Geomorfologiya* paper dates the Bugaz stage of the transgression 9.5–7.9 ka. The ancient Hypanis branch to the Kiziltash liman (Black Sea) isn't dated, so the modern Azov course stands in. |
-| Rioni | HydroRIVERS + Black Sea lake extension | perennial | medium | Laermanns et al. 2018 (*Quaternary International* 465:85): a barrier–lagoon coast until about 5000 BC, delta progradation mostly 3500–1500 BC. ETOPO's modern Colchis plain can't show the inland coast. |
-| Inguri, Çoruh | HydroRIVERS + Black Sea lake extension | perennial | high | Modern rivers on a steep, narrow shelf. |
-| Douro | HydroRIVERS + shelf | perennial | high | Naughton et al. 2007 (*J. Coastal Research*): estuarine infill as the sea rose 11.5–6 cal ka; the main channel had moved north to about its present line by 6530 cal BP. |
-| Guadalquivir | HydroRIVERS to Sanlúcar + shelf | perennial | medium | Dabrio et al. 2000 (*Marine Geology* 162:381): marine influence in the Gulf of Cádiz estuaries from about 10 ka; maximum flooding about 6500 BP, then infilling by lateral progradation. At its maximum the estuary (later the Roman Lacus Ligustinus) reached towards Seville (2007 Seville cores, *El registro holoceno del estuario del Guadalquivir*); the board's coast can't show it. |
+| Po | Stream network, stopped short of the modern delta at about 12.25°E, + shelf | perennial | medium | The modern course below Ficarolo dates from the AD 1152 avulsion; no main course downstream of it is attested before the Po di Adria (about 4.0–2.5 ka) and the Po di Spina (1st millennium BCE), so the modern line stands in. Bruno et al. 2017 (*Sedimentology* 64:1792): an estuary migrated landward 11.5–7.0 kyr BP; the Po split into three branches around 10 ka (within a few km); the shoreline reached its furthest inland position about 7.7 cal kyr BP, roughly 30 km inland of today. The board's coast (ETOPO1 and the sea curve) can't show that transgression. |
+| Vistula | Stream network (`shelf = false`) | perennial | high | The Baltic stages (Baltic Ice Lake, Yoldia, Ancylus, Littorina) are modelled in `data/lakes/` on an uplift-corrected surface; an extension across today's sea floor wouldn't follow them, so the Vistula ends at its modern mouth. |
+| Kura, Terek, Sulak | Stream network, extended to the Caspian at its lowest level | perennial | high | Modern rivers. Their lower courses drown as the Caspian rises (lakes.toml), as for the Volga and Ural. Holocene Kura and Terek delta branches aren't dated well enough to time (Kura delta Caspian-level work: INTAS project 2005-1000008-8078; Terek avulsions are historical, Magritsky et al. 2018). |
+| Aras | Stream network from the Bingöl highlands, stopped at the Kura near Sabirabad | perennial | high | Historical accounts of a separate Caspian mouth aren't dated, so it is drawn as a Kura tributary throughout. |
+| Kuban | Stream network to its modern mouth at Temryuk + the Black Sea lake extension (joins the Don's path across the dry Azov) | perennial | medium | Giaime et al. 2016: the Taman peninsula was an archipelago about 6 ka and the delta prograded after that; the 2019 *Geomorfologiya* paper dates the Bugaz stage of the transgression 9.5–7.9 ka. The ancient Hypanis branch to the Kiziltash liman (Black Sea) isn't dated, so the modern Azov course stands in. |
+| Rioni | Stream network + Black Sea lake extension | perennial | medium | Laermanns et al. 2018 (*Quaternary International* 465:85): a barrier–lagoon coast until about 5000 BC, delta progradation mostly 3500–1500 BC. ETOPO's modern Colchis plain can't show the inland coast. |
+| Inguri, Çoruh | Stream network + Black Sea lake extension | perennial | high | Modern rivers on a steep, narrow shelf. |
+| Douro | Stream network + shelf | perennial | high | Naughton et al. 2007 (*J. Coastal Research*): estuarine infill as the sea rose 11.5–6 cal ka; the main channel had moved north to about its present line by 6530 cal BP. |
+| Guadalquivir | Stream network to Sanlúcar + shelf | perennial | medium | Dabrio et al. 2000 (*Marine Geology* 162:381): marine influence in the Gulf of Cádiz estuaries from about 10 ka; maximum flooding about 6500 BP, then infilling by lateral progradation. At its maximum the estuary (later the Roman Lacus Ligustinus) reached towards Seville (2007 Seville cores, *El registro holoceno del estuario del Guadalquivir*); the board's coast can't show it. |
 | Neva | — | not drawn | medium | Formed about 3500–3200 cal BP (≈ −1400), when the Ladoga transgression broke through the Neva threshold (Ludikova et al. 2024, *Quaternary* 7:31; Dolukhanov et al., *Radiocarbon*). After the map's end. |
 | Heinjoki Strait (Ladoga outlet) | waypoints from the modelled Ladoga shore (today's, near Taipale Bay) through the Vuoksi lowland past the Vetokallio threshold at Heinjoki (Veshchevo) to Vyborg Bay | perennial from −8250 | low | Ladoga's outlet to the Baltic before the Neva: from about 10.2 cal ka (MDPI review in Ludikova et al. 2024; Dolukhanov et al. date the waterway from about 11.5 cal ka), flow falling from about 4.1 cal ka and ending 3.5–3.2 cal ka. Waypoints are approximate. Drawn from −8250, when the Baltic entry stops keeping the drawn strait over the isthmus (data/lakes/SOURCES.md); its western end drowns in Vyborg Bay when the Baltic model floods it. |
-| Vuoksi | HydroRIVERS from Imatra down the lake corridor to the Heinjoki Strait | perennial from −3750 | low | Saimaa broke through the Salpausselkä at Imatra about 5.7 cal ka (Saarnisto 1970). Whether its water then went east to Ladoga or west through Heinjoki is unclear; it is drawn into the strait. |
+| Vuoksi | Stream network from Imatra down the lake corridor to the Heinjoki Strait | perennial from −3750 | low | Saimaa broke through the Salpausselkä at Imatra about 5.7 cal ka (Saarnisto 1970). Whether its water then went east to Ladoga or west through Heinjoki is unclear; it is drawn into the strait. |
+| Svir | Stream network from Lake Onega, stopped at the Ladoga shore | perennial | high | Onega's outlet to Ladoga through the window (both lakes in `data/lakes/`). HydroRIVERS carries it on down the Neva, which formed only about −1400, so it is stopped at the Svir mouth. |
+| Oka, Kama | Stream network to the Volga | perennial | high | Modern courses. Added for the Upper Volga–Oka bog sites and the Kama Neolithic (data/places/plans/upper_volga_lakes.toml, kama_middle_urals.toml). |
+| Samara | Stream network to the Volga | perennial | high | Modern course; the Samara Bend sites (data/places/plans/samara_bend.toml). |
+| Uzen | Stream network to the Kamysh-Samar sink | seasonal | medium | HydroRIVERS joins the Bolshoi and Maly Uzen into one channel. Snow-fed steppe rivers that shrink to pools in summer; Varfolomeevka (Orlovka culture) is on the Maly Uzen (data/places/plans/north_caspian_lowland.toml). |
+| Manych | Stream network from the Manych-Gudilo chain to the Don | seasonal | medium | The Caspian–Black Sea spillway through the trough is early Khvalynian, 17.7–14.9 ka by OSL, and "ceased to exist" afterwards; the board's Caspian outlet there (+18 m) is above its level all period (data/places/plans/manych.toml). Drawn as a minor intermittent river. |
 
 ## Known gaps
 
@@ -191,9 +206,22 @@ whenever a source is used. A river or lake isn't finished until its row
 above and its references here are in place.
 
 ### Data
+- GEOGloWS ECMWF Streamflow Service, Hydrological Model Version 2.0: stream
+  network (`global_streams_simplified.gpkg`) and attribute table
+  (`v2-model-table.parquet`), CC BY 4.0. https://data.geoglows.org ,
+  https://geoglows-v2.s3.amazonaws.com . Its streams are a subset of NGA's
+  TDX-Hydro (2023, from the TanDEM-X DEM; CC BY-SA 4.0). Courses have been
+  traced along it since 2026-11-13 (`pipeline/geoglows.py`); the files are
+  downloaded at build time, not committed. Upstream area is `DSContArea`, so
+  the `min_upland` values in `rivers.toml` mean what they did. GEOGLOWS has
+  no endorheic flag: a network counts as reaching the sea when ETOPO cells
+  below 0 m within 0.25° of its mouth are today's sea (open ocean on the hex
+  grid, or the Baltic, Black Sea or White Sea boxes in `data/lakes/lakes.toml`).
 - Lehner, B. & Grill, G., 2013. Global river hydrography and network
   routing: HydroSHEDS/HydroRIVERS. *Hydrological Processes* 27:2171.
-  https://www.hydrosheds.org/products/hydrorivers
+  https://www.hydrosheds.org/products/hydrorivers . Used until 2026-11-13,
+  then replaced by GEOGLOWS v2, because its WWF licence can't be passed on
+  under the project's CC BY-SA data licence.
 - Cohen, K.M., Stouthamer, E., Pierik, H.J. & Geurts, A.H., 2012.
   Rhine-Meuse Delta Studies' Digital Basemap for Delta Evolution and
   Palaeogeography. Utrecht University / DANS (restricted access).

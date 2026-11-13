@@ -12,7 +12,8 @@ neolith-convert: GeoJSON ⇄ world.bin
 USAGE:
   neolith-convert <combined_map.geojson> [settlements.geojson] [--rivers <rivers.geojson>] [--lakes <lakes.geojson>]
                    [--dates <dates.csv[.gz]>] [--cultures <cultures.json>] [--evidence <evidence_layers.json>]
-                   [--inferred <inferred.geojson>] -o <world.bin>
+                   [--inferred <inferred.geojson>] [--heightmap <etopo.asc>] -o <world.bin>
+  neolith-convert <world.bin> --heightmap <etopo.asc> -o <world.bin>
   neolith-convert --attach-evidence <evidence_layers.json> <world.bin> -o <world.bin>
   neolith-convert <world.bin> --residuals <residuals.csv[.gz]> -o <world.bin>
                    (sets the world's missing-sites table; also accepted when building from GeoJSON)
@@ -53,6 +54,9 @@ struct Extras {
     /// The pipeline's `inferred.geojson`: inferred settlements, appended
     /// after the recorded ones.
     inferred: Option<String>,
+    /// An ESRI ASCII elevation grid (`build/etopo.asc`): the heightmap the
+    /// board lights relief from.
+    heightmap: Option<String>,
 }
 
 fn load(inputs: &[String], extras: &Extras) -> Result<World, String> {
@@ -60,7 +64,11 @@ fn load(inputs: &[String], extras: &Extras) -> Result<World, String> {
     let first = inputs.first().ok_or("no input file given")?;
     let bytes = std::fs::read(first).map_err(|e| format!("cannot read {first}: {e}"))?;
     if bytes.starts_with(&io::MAGIC) {
-        return io::decode(&bytes).map_err(|e| format!("{first}: {e}"));
+        let mut world = io::decode(&bytes).map_err(|e| format!("{first}: {e}"))?;
+        if extras.heightmap.is_some() {
+            attach_heightmap(&mut world, extras)?;
+        }
+        return Ok(world);
     }
     let text = String::from_utf8(bytes).map_err(|_| format!("{first}: neither a world.bin nor UTF-8 GeoJSON"))?;
     let import = import_map(&text)?;
@@ -103,7 +111,20 @@ fn load(inputs: &[String], extras: &Extras) -> Result<World, String> {
     if let Some(path) = &extras.cultures {
         world.cultures = import_cultures(&read_text(path)?)?;
     }
+    attach_heightmap(&mut world, extras)?;
     Ok(world)
+}
+
+fn attach_heightmap(world: &mut World, extras: &Extras) -> Result<(), String> {
+    match &extras.heightmap {
+        Some(path) => {
+            let h = neolith_convert::import_heightmap(&read_text(path)?, &world.grid)?;
+            eprintln!("heightmap: {} x {} cells of {}° from {path}", h.cols, h.rows, h.cell);
+            world.heightmap = Some(h);
+        }
+        None => eprintln!("note: no --heightmap file given; the board lights relief from the hex heights"),
+    }
+    Ok(())
 }
 
 fn run() -> Result<(), String> {
@@ -129,6 +150,7 @@ fn run() -> Result<(), String> {
                 extras.evidence = Some(args.next().ok_or("--attach-evidence needs a path")?);
                 attach = true;
             }
+            "--heightmap" => extras.heightmap = Some(args.next().ok_or("--heightmap needs a path")?),
             "--inferred" => extras.inferred = Some(args.next().ok_or("--inferred needs a path")?),
             "--residuals" => extras.residuals = Some(args.next().ok_or("--residuals needs a path")?),
             "--lakes-out" => lakes_out = Some(args.next().ok_or("--lakes-out needs a path")?),

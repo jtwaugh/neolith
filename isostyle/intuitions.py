@@ -74,7 +74,7 @@ Schema:
   names = ["Nile", "Nile (Canopic branch)"]  # traced rivers (build/rivers.geojson); only
                                            # in slices where they flow
   lakes = ["Lake Megachad"]                # optional: lakes at that slice's shoreline
-  min_upland_km2 = 20000                   # optional: any HydroRIVERS reach this big
+  min_upland_km2 = 20000                   # optional: any stream-network reach this big
   bbox = [60.0, 36.0, 64.0, 39.0]          # optional: limits the unnamed reaches
   value = 0.7
   outside = 0.05                           # optional: value for the rest of the region

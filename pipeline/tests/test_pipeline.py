@@ -1,6 +1,7 @@
 import json
 import os
 import tempfile
+import tomllib
 import unittest
 
 import numpy as np
@@ -81,6 +82,63 @@ class Sea(unittest.TestCase):
         self.assertEqual(m.tolist(), [True, True, False, False, False])
         m = elevation.ocean_mask(elev, -25.0, nb, edge, seed_depth=-1500)
         self.assertEqual(m.tolist(), [True, False, False, False, False])
+
+    def test_channel_stays_open_at_lowstand(self):
+        # [edge ocean][sill][deep basin]: at -50 m the sill is dry and the
+        # basin is cut off; a channel across the sill keeps it connected.
+        elev = np.array([-100.0, -20.0, -80.0])
+        nb = [[1], [0, 2], [1]]
+        edge = np.array([True, False, False])
+        self.assertEqual(elevation.ocean_mask(elev, -50.0, nb, edge, -1500).tolist(), [True, False, False])
+        always = elevation.channel_mask([[0.0, 0.0], [1.0, 0.0], [2.0, 0.0]], [{"line": [[0.9, 0.0], [1.1, 0.0]]}])
+        self.assertEqual(always.tolist(), [False, True, False])
+        self.assertEqual(elevation.ocean_mask(elev, -50.0, nb, edge, -1500, always).tolist(), [True, True, True])
+
+    def test_bab_el_mandeb_is_open_in_every_year(self):
+        # The configured channel is a connected chain of hexes on the real grid.
+        cfg = tomllib.load(open(os.path.join(os.path.dirname(__file__), "..", "config.toml"), "rb"))
+        ch = [c for c in cfg["sea"]["channel"] if c["name"] == "Bab-el-Mandeb"]
+        self.assertEqual(len(ch), 1)
+        g = make_grid(14, 14, w=0.5, h=0.25 * np.sqrt(3))   # 0.5 degree hexes, about the board's size
+        centres = np.asarray(g.centres) + [41.5, 15.0]      # over the southern Red Sea
+        hexes = np.flatnonzero(elevation.channel_mask(centres, ch))
+        self.assertGreater(len(hexes), 3)
+        seen, todo = {hexes[0]}, [hexes[0]]
+        while todo:
+            for j in g.neighbours[todo.pop()]:
+                if j in hexes and j not in seen:
+                    seen.add(j)
+                    todo.append(j)
+        self.assertEqual(seen, set(hexes.tolist()))
+
+    def test_channel_opens_in_its_year(self):
+        c = [[0.0, 0.0], [1.0, 0.0], [2.0, 0.0]]
+        ch = [{"line": [[0.9, 0.0], [1.1, 0.0]], "from": -7050}]
+        self.assertEqual(elevation.channel_mask(c, ch, year=-7100).tolist(), [False, False, False])
+        self.assertEqual(elevation.channel_mask(c, ch, year=-7000).tolist(), [False, True, False])
+        self.assertEqual(elevation.channel_mask(c, ch).tolist(), [False, True, False])
+
+    def test_straits_join_their_seas_on_the_board(self):
+        # Gibraltar and the Dardanelles in every year, the Bosporus from the
+        # Black Sea's reconnection: each channel is a connected hex chain on
+        # the real grid whose ends are deep water.
+        cfg = tomllib.load(open(os.path.join(os.path.dirname(__file__), "..", "config.toml"), "rb"))
+        from pipeline import grid as gridmod
+        root = os.path.join(os.path.dirname(__file__), "..", "..")
+        g = gridmod.load(os.path.join(root, cfg["grid"]["source"]))
+        chans = {c["name"]: c for c in cfg["sea"]["channel"]}
+        for name, opens in (("Gibraltar", None), ("Dardanelles", None), ("Bosporus", -7050)):
+            ch = chans[name]
+            self.assertEqual(ch.get("from"), opens, name)
+            hexes = set(np.flatnonzero(elevation.channel_mask(g.centres, [ch])).tolist())
+            start = next(iter(hexes))
+            seen, todo = {start}, [start]
+            while todo:
+                for j in g.neighbours[todo.pop()]:
+                    if j in hexes and j not in seen:
+                        seen.add(j)
+                        todo.append(j)
+            self.assertEqual(seen, hexes, f"{name} is not a connected chain")
 
     def test_exposed_shelf_takes_neighbour_land(self):
         g = make_grid(3, 1)  # three hexes in a row-ish chain
@@ -295,3 +353,56 @@ class Emit(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Massif(unittest.TestCase):
+    """elevation.massif on synthetic rasters over one real-sized hex on the
+    equator (so hex-local and ground directions agree)."""
+    with open(os.path.join(os.path.dirname(__file__), "..", "config.toml"), "rb") as f:
+        CFG = tomllib.load(f)["mountains"]["massif"]
+    W, H = 0.5773502691896262, 0.5
+    CS = 1 / 30
+
+    def sketch(self, f):
+        g = make_grid(1, 1, self.W, self.H)
+        n = 25
+        tf = Affine(self.CS, -self.CS, -n // 2 * self.CS, n // 2 * self.CS)
+        lon = tf.x0 + np.arange(n) * tf.a
+        lat = tf.y0 + np.arange(n) * tf.e
+        X, Y = np.meshgrid(lon, lat)
+        return elevation.massif(g, f(X, Y).astype(np.float32), tf, np.array([elevation.MOUNTAINS]), self.CFG)[0]
+
+    def test_a_straight_ridge_is_a_ridge_along_its_strike(self):
+        a = np.radians(30)
+        m = self.sketch(lambda x, y: 2000 - 8000 * np.abs(-np.sin(a) * x + np.cos(a) * y))
+        self.assertEqual(m["kind"], "ridge")
+        self.assertAlmostEqual(m["strike"], 30, delta=3)
+        self.assertGreater(m["coherence"], 0.8)
+        for x, y, h in m["summits"]:  # on the crest
+            self.assertLess(abs(-np.sin(a) * x + np.cos(a) * y), 0.15)
+
+    def test_a_lone_bump_is_a_cone_with_its_summit_on_top(self):
+        m = self.sketch(lambda x, y: 600 + 2500 * np.exp(-((x - 0.05) ** 2 + (y + 0.03) ** 2) / (2 * 0.05 ** 2)))
+        self.assertEqual(m["kind"], "cone")
+        x, y, h = m["summits"][0]
+        self.assertAlmostEqual(x, 0.05 / (self.W / 2), delta=0.15)
+        self.assertAlmostEqual(y, -0.03 / (self.W / 2), delta=0.15)
+        self.assertGreater(h, 2000)
+
+    def test_high_flat_ground_is_a_plateau(self):
+        rng = np.random.default_rng(1)
+        m = self.sketch(lambda x, y: 1200 + 60 * rng.random(x.shape))
+        self.assertEqual(m["kind"], "plateau")
+        self.assertEqual(m["summits"], [])
+
+    def test_no_summit_stands_in_a_valley(self):
+        m = self.sketch(lambda x, y: 300 + 6000 * np.abs(y))
+        self.assertTrue(m["summits"])
+        for x, y, h in m["summits"]:
+            self.assertGreater(abs(y), 0.4)
+
+    def test_flat_hexes_get_no_sketch(self):
+        g = make_grid(1, 1, self.W, self.H)
+        tf = Affine(self.CS, -self.CS, -0.4, 0.4)
+        z = np.full((25, 25), 2000.0, dtype=np.float32)
+        self.assertIsNone(elevation.massif(g, z, tf, np.array([elevation.FLAT]), self.CFG)[0])

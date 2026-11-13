@@ -22,6 +22,10 @@ points; `python -m pipeline inferred` (`pipeline/inferred.py`) writes
   `[sea]` curve on ETOPO1 at 2 arc-min) inside a box, taking named places
   (lagoons, wadi mouths) first. That shore is finer than the board: a point
   whose board hex is sea while it lives is not placed.
+- Point rules (`[rule.points]`) put camps at named places, for lake shores
+  the sea-level coast does not see (Lake Tana and Lake Abhe, neither on the
+  board as a lake) and for single places such as a sheltered bay. A point
+  on a board Water hex is not placed.
 
 ## Nile delta (`data/places/plans/nile_delta.toml`)
 
@@ -79,12 +83,77 @@ undated. Before 6,000 BCE the shore itself is under water.
   under 4–5 km wide but never closed. Bailey et al. 2019: coastal use was
   episodic and absence of evidence is weak either way.
 
-The plan's other points are for a person: the board draws the strait as
-land at 10,000 and 8,000 BCE, and Asa Koma sits in the raw data in
-Somaliland. Of its research items, Hardt et al. 2026 (Tadjoura) has been
+The plan's other points were for a person. The board drew the strait as
+land at 10,000 and 8,000 BCE; since 2026-11-13 `[[sea.channel]]` in
+`pipeline/config.toml` keeps it Water in every year (Lambeck et al. 2011).
+Asa Koma, filed in Somaliland, is moved to the Gobaad plain by
+`records.toml` (2026-11-13); its one date is after 3,000 BCE. Of its research items, Hardt et al. 2026 (Tadjoura) has been
 read: all its radiocarbon ages are 51 BCE or later, so it adds nothing to
 the period. The Gihayu reports and the Tihama survey lists are still to do;
 they need a person to fetch them.
+
+## Dahlak and the Gulf of Zula (`data/places/plans/dahlak.toml`)
+
+Nothing in our data in the box or within 100 km in any epoch: the open
+compilations have no Eritrean record at all. The coast has three dated shell
+middens (Beyin and Bar-Yosef Mayer 2018) and the islands about 1,200
+remote-sensed, undated shell mounds (Meredith-Williams et al. 2014).
+
+- **`dahlak_shell_middens`** (medium confidence). Shell-midden camps at least
+  30 km apart on the shore of each millennium from 6,000 BCE, inside the
+  dahlak and gulf_of_zula boxes together, taking Massawa, Misse East, Asfet
+  and Dahlak Kebir first. Five to seven a slice. None stands on the islands
+  yet: the board has the Dahlak Kebir hex Water through the 6,000 BCE slice
+  and after (an `islands.py` problem, being fixed), so the island cells are
+  not usable and the mainland coast carries the rule. Once the islands are
+  land the same rule places camps on them.
+- **`dahlak_buri_hilltop_camps`** (medium confidence). Two camps on basalt
+  hills inland on the Buri peninsula, Gelalo NW's pattern, each millennium
+  from 6,000 BCE.
+- **`dahlak_bank_lowstand_camps`** (low confidence). Two or three forager
+  camps a slice from 9,000 to 7,000 BCE on the outer edge of the then-dry
+  Dahlak bank, all marked drowned (their hexes flood between 7,900 and
+  5,400 BCE).
+
+## Lake Abhe (`data/places/plans/lake_abbe.toml`)
+
+Empty in our data because the compilations hold nothing from Djibouti or the
+Ethiopian Afar: Khalidi et al. (2020) dated seven sites with 37 dates, and
+the Gobaad mission reports over 100. The board has no palaeolake, so the
+camps are point rules at Lake Gamarri (Raso), Afambo on the lower Awash, the
+north shore of Abhe and the Gobaad plain (Hara Idé, Asa Koma).
+
+- **`lake_abbe_early_holocene_camps`** (medium). Four a slice, 10,000 to
+  8,000 BCE, on the high early Holocene lake.
+- **`lake_abbe_dry_interval_camp`** (low). One a slice at 7,000 and 6,000
+  BCE on the lower Awash: the record's gap around the 8.2 ka dry event.
+- **`lake_abbe_mid_holocene_camps`** (medium). Four a slice, 5,000 to 3,000
+  BCE, in the second humid phase; at 3,000 BCE the Gobaad camp is tagged
+  `first potter-herders` (low), on Khalidi et al.'s 4.8-3.3 ka cal BP for
+  herding and pottery.
+
+## Lake Tana (`data/places/plans/lake_tana.toml`)
+
+Empty because the one dated lakeshore site, Kurtiye rock shelter (Firew
+2014), and the undated Gorgora rock shelter (Sahle et al. 2024) are in no
+open compilation. The board has no Lake Tana.
+
+- **`lake_tana_early_camp`** (low). One aquatic forager camp at Gorgora at
+  6,000 BCE, a millennium before Kurtiye's dates.
+- **`lake_tana_camps`** (low). Three a slice, 5,000 to 3,000 BCE: Gorgora,
+  the Blue Nile outlet at Bahir Dar and the Fogera shore. When Kurtiye is
+  entered as a recorded site it clears the camp in its hex.
+
+## Cape Guardafui (`data/places/plans/guardafui.toml`)
+
+Empty because nobody has looked: the only fieldwork is Chittick's 1975
+reconnaissance, which found Graeco-Roman landing places at Damo and Hafun.
+
+- **`guardafui_damo_camp`** (low). One coastal forager camp a slice from
+  6,000 BCE at Damo, the one sheltered beach by the cape.
+- **`guardafui_hafun_camp`** (low). A second at 4,000 and 3,000 BCE by Hafun.
+  The board draws the Hafun peninsula as Water, so it stands on the
+  mainland side of the neck (51.1 E, 10.4 N).
 
 ## References
 
@@ -123,3 +192,24 @@ they need a person to fetch them.
   archaeology of Pleistocene coastal environments and human dispersals in the
   Red Sea: insights from the Farasan Islands.
   https://disperse-project.org/sites/disperse-project.org/files/uploads/2019_Chap26_Bailey_etal.pdf
+- Meredith-Williams, M.G., Hausmann, N., Inglis, R.H. & Bailey, G.N. 2014.
+  4200 new shell mound sites in the southern Red Sea (PDF). *Internet
+  Archaeology* 37. https://intarch.ac.uk/journal/issue37/2/ia.37.2.pdf
+- Beyin, A. & Bar-Yosef Mayer, D.E. 2018. Prehistoric settlements on the Red
+  Sea coast of Eritrea. In *Early Maritime Cultures in East Africa and the
+  Western Indian Ocean*, Archaeopress, pp. 1-32 (Fig. 4, the shell dates).
+  https://www.archaeopress.com/Archaeopress/DMS/EF8E85A7FCEC4ED5B414B15060004654/9781784917128-sample.pdf
+- Khalidi, L., Mologni, C., Ménard, C. et al. 2020. 9000 years of human
+  lakeside adaptation in the Ethiopian Afar. *Quaternary Science Reviews*
+  243:106459 (abstract only). https://doi.org/10.1016/j.quascirev.2020.106459
+- INRAP / Ministère de la Culture, On the banks of Lake Abbe (Gobaad
+  mission, Djibouti). https://archeologie.culture.gouv.fr/en/banks-lake-abbe
+- Dupuy, C. 2019. Review of Gutherz (dir.) 2017, *Asa Koma*. *Journal des
+  africanistes*. https://journals.openedition.org/africanistes/7945
+- Firew, G.A. 2014. *Archaeological fieldwork around Lake Tana area of
+  Ethiopia* (PhD, Bergen; abstract only). https://hdl.handle.net/1956/8931
+- Sahle, Y. et al. 2024. Gorgora rock shelter, Lake Tana. *Scientific
+  Reports* 14:17038. https://doi.org/10.1038/s41598-024-67743-x
+- Chittick, N. 1976. An archaeological reconnaissance in the Horn: the
+  British-Somali expedition, 1975. *Azania* 11:117-133.
+  https://www.ancientportsantiques.com/wp-content/uploads/Documents/PLACES/IndOc-Gulf/Somalia-Chittick1976.pdf

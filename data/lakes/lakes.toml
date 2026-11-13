@@ -83,6 +83,15 @@ ice_until = -9700
 # the Baltic, about 10.2 cal ka (Ludikova et al. 2024): from then the model
 # decides, and the Ladoga lake below fills its basin.
 clear = { box = [28.2, 59.7, 33.6, 62.0], from = -8250 }
+# In its lake stages the Baltic is drawn draining to the sea: a river from
+# the spill point the model finds each year (the saddle on the flood's way
+# out) down the lowest ground to that year's sea (pipeline/lakes.py,
+# outflow_path). It finds the Darss sill, Mecklenburg Bay, Fehmarn Belt and
+# Great Belt (the "Dana River") for the Baltic Ice Lake before -9700 and the
+# late Ancylus Lake (-7900 to -6600), and for the early Ancylus Lake
+# (-9100 to -8000) short outlets west of Vänern to the Göta älv and the
+# Glomma. See SOURCES.md (Baltic outflow).
+outflow = { name = "Baltic outflow", size = 2 }
 confidence = "low"
 
 [[lake]]
@@ -101,6 +110,57 @@ box = [29.0, 59.6, 33.8, 62.2]
 level = [[-10000, 1.5]]
 # Clear only its own basin, not the Baltic's water on the isthmus.
 basin_margin = 0.0
+confidence = "low"
+
+[[lake]]
+key = "onega"
+name = "Lake Onega"
+seed = [35.3, 61.7]
+box = [33.6, 60.6, 37.2, 63.2]
+# A lake through the whole window, at about its present outline: the basin
+# was free of ice by about 13-12 ka and the large proglacial stages are
+# older (Rybalko et al. 2022). Levels a few metres above today's about
+# -5000 (Lobanova 2019, citing Devyatova 1986). ETOPO1 has the surface at
+# about 23-34 m with partial bathymetry; 33 m (today's surface) floods about
+# 10,800 km² (the real lake is 9,891 km²). The computed outlet is 77 m, so
+# it doesn't bind; the Svir (rivers.toml) drains it to Ladoga.
+level = [[-10000, 33.0], [-6000, 33.0], [-5000, 35.0], [-4000, 33.0]]
+confidence = "medium"
+
+[[lake]]
+key = "mologa-sheksna"
+name = "Mologa-Sheksna lake"
+seed = [38.3, 58.5]
+box = [36.5, 57.6, 40.0, 59.8]
+# Proglacial and early Holocene lake in the Mologa-Sheksna lowland, under
+# today's Rybinsk Reservoir. Allerød peat at 96.5-102.5 m (Sadokov et al.
+# 2024) bounds the Allerød level; the basins held lakes "for several
+# millennia until their ultimate drainage in the early Holocene". The final
+# drainage, about 10.9-10.7 cal ka (-8950 to -8750), comes from search
+# summaries of the same group, not a paper read. 100 m used until then.
+# ETOPO1 has the reservoir's surface (97-102 m), not the old valley floor,
+# so the extent (about 3,900 km²) is roughly the reservoir's.
+level = [[-10000, 100.0], [-8950, 100.0], [-8750, 0.0]]
+confidence = "low"
+
+[[lake]]
+key = "white-sea"
+name = "White Sea"
+seed = [36.5, 65.6]
+box = [31.5, 63.3, 45.5, 69.5]
+# The sea step lowers today's White Sea by the global curve and ignores
+# uplift, so the shallow bays dried out (all of the Karelian coast was land
+# at -8000). The coast was depressed by the ice and lay far above today's:
+# at Chupa the marine limit is 104-142 m at 13-11.5 ka and the shore 33-40 m
+# at about 6.35 ka (Kolka et al. 2015); at Belomorsk the settlement Yerpin
+# Pudas I, at 21.5-23.7 m, is dated 5570-5360 cal BC (Lobanova 2019). As a
+# sea-or-outlet basin it is flooded on the uplift-corrected surface
+# ([isostasy]); the Gorlo keeps it open to the Barents Sea, so it is sea in
+# every year. The Fennoscandian dome fits the Chupa isolation basins; a
+# second dome ([[isostasy.dome]]) covers Onega Bay and the Onega Peninsula,
+# which it doesn't reach.
+level = "sea-or-outlet"
+downsample = 3
 confidence = "low"
 
 [[lake]]
@@ -126,11 +186,16 @@ name = "Caspian Sea"
 seed = [51.0, 39.5]
 box = [42.0, 36.0, 56.5, 52.0]
 # Contested. Late Khvalynian near 0 m ending about 12 ka, fast fall into the
-# Mangyshlak regression (minimum about 9 ka; -50 to -113 m by author; -80 m
-# used), New Caspian rise from about 8 ka to about -25 m (peaks near -20 m).
+# Mangyshlak regression (-50 to -113 m by author; -80 m used), New Caspian
+# rise to about -25 m (peaks near -20 m). The minimum is put at 10.5 ka
+# (-8550): Sorokin et al. 2021 date the regression to 11.9-10.5 ka, and
+# Bezrodnykh & Sorokin 2016 date the freshwater Mangyshlak deposits of the
+# northern Caspian to 12-9 ka, so the lowstand was over by about 9 ka
+# (-7050). The minimum used to be at 9 ka, which kept the North Caspian
+# floor (about -35 m) dry until about -5500; it now refloods about -6600.
 level = [
-  [-10000, -10.0], [-9550, -40.0], [-7050, -80.0], [-6050, -50.0],
-  [-5000, -25.0],
+  [-10000, -10.0], [-9550, -40.0], [-8550, -80.0], [-7050, -45.0],
+  [-6050, -30.0], [-5000, -25.0],
 ]
 confidence = "low"
 

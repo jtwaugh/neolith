@@ -181,3 +181,33 @@ lit:wadi-sana-hyrax-middens,"Wadi Sana hyrax middens (Hadramawt, Yemen)",literat
 lit:shotota-swamp,"Shotota swamp (Khunzakh plateau, Dagestan)",literature,literature,lit:shotota-swamp,46.9830,42.9830,,,,,,0,0,,https://doi.org/10.1088/1755-1315/438/1/012024
 lit:gomishan-lagoon-core-tm,"Gomishan lagoon core TM (SE Caspian coast, Iran)",literature,literature,lit:gomishan-lagoon-core-tm,54.0565,37.1657,,,,,,0,0,,https://doi.org/10.1016/j.margeo.2014.12.007
 lit:kongor-lake,"Kongor Lake (eastern Gorgan Plain, NE Iran)",literature,literature,lit:kongor-lake,55.3908,37.3558,,,,,,0,0,,https://doi.org/10.1177/0959683616646841
+lit:chekalino-iv,"Chekalino IV (Sok valley, Samara oblast)",literature,literature,lit:chekalino-iv,50.9200,53.8800,,,,,,0,0,,https://doi.org/10.4312/dp.38.21
+lit:ivanovka,"Ivanovskaya / Ivanovka (Samara valley, Orenburg oblast)",literature,literature,lit:ivanovka,51.8555,51.9443,,,,,,1,0,,https://doi.org/10.4312/dp.38.21
+lit:middle-volga-synthesis,"Middle Volga, Samara and Ulyanovsk oblasts (regional synthesis; point nominal, central Volga Upland, off the Volga floodplain)",literature,literature,lit:middle-volga-synthesis,47.8000,54.0000,,,,,,0,0,,http://ssc.smr.ru/media/journals/samluka/2017/26_2_04.pdf
+lit:kokad-mire,"Kokad Mire (Érmellék, eastern Great Hungarian Plain)",literature,literature,lit:kokad-mire,21.9286,47.4028,,,,,,1,0,,https://doi.org/10.1016/j.qeh.2025.100077
+lit:sarlo-hat,"Sarló-hát oxbow lake (Polgár, Tisza Plain)",literature,literature,lit:sarlo-hat,21.1705,47.9647,,,,,,0,0,,https://doi.org/10.1111/j.1365-2699.2009.02261.x
+lit:bab-tava,"Báb-tava (Bereg Plain, NE Great Hungarian Plain)",literature,literature,lit:bab-tava,22.4801,48.1860,,,,,,0,0,,https://doi.org/10.1016/j.qeh.2025.100077
+lit:batorliget,"Bátorliget mire (Nyírség, NE Hungary)",literature,literature,lit:batorliget,22.2684,47.7702,,,,,,0,0,,https://doi.org/10.56617/tl.4618
+lit:kolon-to,"Kolon-tó (Izsák, Kiskunság, Danube-Tisza interfluve)",literature,literature,lit:kolon-to,19.3455,46.7723,,,,,,0,0,,https://doi.org/10.1017/S0033822200034378
+lit:hortobagy-halasfenek,"Halas-fenék palaeochannel (Zám-puszta, Hortobágy)",literature,literature,lit:hortobagy-halasfenek,21.0507,47.5081,,,,,,0,0,,http://acta.bibl.u-szeged.hu/62435/
+lit:lake-oltina,"Lake Oltina (southern Dobrogea, lower Danube)",literature,literature,lit:lake-oltina,27.6369,44.1544,,,,,,1,0,,https://meetingorganizer.copernicus.org/EGU2018/EGU2018-680.pdf
+lit:zahaji,"Zahájí (Podbradecký potok valley, lower Ohře, N Bohemia)",literature,literature,lit:zahaji,14.1178,50.3789,,,,,,0,0,,https://www.sci.muni.cz/botany/chytry/Pokorny_etal2015_Zpr-Ces-Bot-Spolecn.pdf
+lit:suchy-potok,"Suchý potok (near Vojnice, lower Ohře plateau, N Bohemia)",literature,literature,lit:suchy-potok,13.9375,50.4142,,,,,,1,0,,https://www.sci.muni.cz/botany/chytry/Pokorny_etal2015_Zpr-Ces-Bot-Spolecn.pdf
+lit:vracov-reveals,"Lake Vracov (Bzenecký potok, Lower Morava valley, S Moravia), REVEALS 25 km radius",literature,literature,lit:vracov-reveals,17.2028,48.9778,,,,,,0,0,,https://doi.org/10.1016/j.quascirev.2015.03.014
+lit:svatoborice-mistrin,"Svatobořice-Mistřín fen (Kyjovka floodplain, Dolnomoravský úval, S Moravia)",literature,literature,lit:svatoborice-mistrin,17.0750,48.9500,,,,,,0,0,,https://www.zobodat.at/pdf/VZBG_134_0317-0356.pdf
+lit:vedrovice,"Vedrovice (Neolithic site on loess, Znojmo district, S Moravia)",literature,literature,lit:vedrovice,16.3771,49.0203,,,,,,0,0,,https://www.zobodat.at/pdf/VZBG_134_0317-0356.pdf
+lit:tisice,"Tišice (Labe/Elbe floodplain oxbow, central Bohemia)",literature,literature,lit:tisice,14.5333,50.2667,,,,,,0,0,,https://preslia.cz/article/pdf?id=347
+lit:rynholec,"Rynholec (valley-bottom fen, Křivoklát margin W of Prague, 407 m)",literature,literature,lit:rynholec,13.9667,50.1333,,,,,,0,0,,https://preslia.cz/article/pdf?id=347
+lit:aschersleben-see,"Ascherslebener See (former lake, northern Harz foreland), approximate basin centre",literature,literature,lit:aschersleben-see,11.4000,51.8000,,,,,,0,0,,https://www.zobodat.at/pdf/Hercynia_32_0001-0097.pdf
+lit:geiseltal,"Geiseltal (western Geisel valley, Mücheln, near Halle)",literature,literature,lit:geiseltal,11.8039,51.3016,,,,,,0,0,,https://www.zobodat.at/pdf/Hercynia_32_0001-0097.pdf
+lit:kieritzsch,"Kieritzsch KIE-16 pond (Leipzig lowland, NW Saxony)",literature,literature,lit:kieritzsch,12.3803,51.1611,,,,,,0,0,,https://doi.org/10.5194/egqsj-74-79-2025
+lit:zelienka,"Zelienka mire (interdune depression, Záhorie, NE Vienna Basin, Slovakia)",literature,literature,lit:zelienka,17.1679,48.6024,,,,,,0,0,,https://doi.org/10.31577/geogrcas.2024.76.2.06
+lit:canada-de-la-cruz,"Cañada de la Cruz (Segura mountains, Murcia/Albacete)",literature,literature,lit:canada-de-la-cruz,-2.6875,38.0675,,,,,,1,0,,https://doi.org/10.1046/j.0022-0477.2001.00601.x
+lit:el-carrizal,"El Carrizal (dune-field lake, Tierra de Pinares, northern Meseta)",literature,literature,lit:el-carrizal,-4.1450,41.3185,,,,,,1,0,,https://doi.org/10.1016/j.yqres.2004.08.004
+lit:fuentillejo,"Fuentillejo maar (Campo de Calatrava, Ciudad Real, southern Meseta)",literature,literature,lit:fuentillejo,-4.0267,38.9279,,,,,,1,0,,https://doi.org/10.1002/jqs.1262
+lit:hoya-del-castillo,"Hoya del Castillo (playa lake, Central Ebro Desert, Zaragoza)",literature,literature,lit:hoya-del-castillo,-0.5000,41.2500,,,,,,1,0,,https://doi.org/10.1016/j.quascirev.2007.04.007
+lit:san-rafael,"San Rafael (coastal marsh, Almería)",literature,literature,lit:san-rafael,-2.6014,36.7736,,,,,,0,0,,https://doi.org/10.1191/0959683603hl598rp
+lit:sierra-de-baza,"Sierra de Baza (peat, Granada)",literature,literature,lit:sierra-de-baza,-2.7000,37.2333,,,,,,0,0,,https://doi.org/10.1016/j.quascirev.2007.03.013
+lit:sierra-de-gador,"Sierra de Gádor (small lake, Almería)",literature,literature,lit:sierra-de-gador,-2.9167,36.9000,,,,,,1,0,,https://doi.org/10.1191/0959683603hl662rp
+lit:villarquemado,"El Cañizar de Villarquemado (palaeolake, Jiloca valley, Teruel)",literature,literature,lit:villarquemado,-1.3000,40.5000,,,,,,0,0,,https://doi.org/10.1016/j.gloplacha.2014.01.003
+lit:villaverde,"Villaverde (Albacete, edge of the southern Meseta and Sierra de Alcaraz)",literature,literature,lit:villaverde,-2.3603,38.7990,,,,,,0,0,,https://doi.org/10.1191/09596830195672

@@ -1,0 +1,197 @@
+[meta]
+place = "megachad"
+written = "2026-11-13"
+verdict = "research"
+confidence = "medium"
+really_empty = "No, but it is lopsided and thin. Ten dated sites are in the box in the window, all from XRONOS (via EUROEVOL/CalPal and p3k14c), mostly with one or two dates and with no material or site type recorded. Seven sit on the northern and north-western margin: Angamma, Borkou, Largeau and Fayalargeau on the Borkou side, and Dibella, Agadem and Zoo Baba in the Agadem-Kawar lowland. Three are scattered elsewhere: Mandi near Bol, Beurkia in the Bahr el Ghazal corridor, and Blabli in the far south. Within 100 km are Bilma, Kafra, Dogonboulo, Termit ouest, Dogoule and Gara Tchia Bo on the Kawar-Termit side, and Dufuna (the canoe) in the south-west. Four more in-window records are in our raw XRONOS download but are dropped by the build's max_std = 200 cut: Konduga on the Bama Ridge (6340 +/- 250 BP), Nedeley (10,900 +/- 300 and 10,100 +/- 230 BP), an early date at Koro Toro (9470 +/- 220 BP) and a placeholder 'Bassin du Tchad' (4260 +/- 360 BP). The whole southern and eastern shore is blank before 3,000 BCE apart from Blabli: Kanem, the Chari-Logone, Nigerian Borno and the Cameroon plain. The dense Nigerian-Cameroonian record of Gajiganna, Zilum, Daima, Mdaga, Houlouf and Sou all falls after about 2,000 BCE. The coordinate audit flags Mandi and Beurkia as 'offshore'. Neither is plausibly a lat/lon swap: Mandi's coordinates fall by Bol on today's eastern lake shore. Both sit under the board's 320-329 m lake at their dated time, so they are more likely lake-sediment or shell samples than settlements; this is inference, unchecked. No duplicates. Not a board problem: the box is fair and the lake is drawn as the literature describes."
+why_empty = ["research_intensity", "not_in_open_compilations", "publication_access", "recording_practice", "submerged"]
+summary = """
+Lake Megachad was the largest lake in Holocene Africa. On the board it fills
+the box from about 9,500 to 3,000 BCE at the 329 m shoreline. The lake
+reached its highstand by 11.5 ka and held it to about 5.0 ka, then fell
+fast; the Bodélé floor finally dried only about 1 ka (Armitage et al.
+2015). The box therefore has two things to show. One is a lakeshore some
+thousands of kilometres long, which should carry fisher-hunter-gatherers of
+the Kiffian and Ténéréen kind known 300 km west at Gobero (Sereno et al.
+2008). The other is the lake floor opening after 3,000 BCE to the herders
+and, later, the farmers of the Gajiganna culture. In our data the
+shore is lit only on the north-west (Kawar, Agadem, Dibella, Termit) and the
+north (Angamma delta, Borkou), by a dozen single- or double-date XRONOS
+records with no material or site type. Several of those may be lake
+samples, not settlements: Mandi by Bol and Beurkia in the Bahr el Ghazal
+both sit under the board's lake at their own dates. The south and east
+shores (Borno, Cameroon, Kanem, the Chari) are empty before 3,000 BCE
+except Blabli. That matches MacEachern (2012): the southern basin is all
+but empty in the terminal Pleistocene and early Holocene. The rich Nigerian
+and Cameroonian record (Gajiganna, Zilum, Kursakata, Daima, Mdaga, the Sao
+mounds) starts after about 2,000 BCE, when people walked onto the exposed
+lake floor. That is the end of this story, not part of it.
+
+Why it is empty: on the Chad side, research stopped. Courtin (Borkou
+Neolithic and bone harpoons, 1965-66), Huard and Massip (harpoons and
+wavy-line pottery, 1964), Coppens's 1960-66 missions ('several hundred'
+archaeological sites in northern Chad, per Universalis), Servant's
+lake-sediment dating, and Treinen-Claustre's Iron Age Koro Toro (1982) are
+all 1960s-80s French publications, mostly surface collections, rarely
+dated, and never entered into an open table except as the Gif, Hv and T
+dates we already hold. War closed northern Chad from the late 1970s. The
+Franco-Chadian palaeontological mission walks the Djourab every year but
+records Miocene and Pliocene fossils. The new ArRéLaT project (Toulouse and
+N'Djamena, from 2015) inventoried 66 sites at Ounianga, north of the box,
+and worked in the Guéra in 2017 (Abanga 2018). In Nigeria the Frankfurt
+SFB 268 surveyed the Bama Ridge beach ridge and the Komadugu-Yobe, but
+dated mostly late sites; only Konduga (pottery, about 5300 BCE) and the
+Dufuna canoe (7264 BP, about 6200 BCE) fall in our window. Konduga's date
+is in our raw download but its error (+/- 250) is over the build's cut.
+The lake floor itself (Bodélé, the Chad basin floor) was under water for
+most of the window, and the Bodélé is deflating, so the floor's absence is
+real and not a gap.
+
+What to do: research first, for the cheap wins: Konduga and Nedeley as
+curated entries, then the Chad and Nigeria literature in order of yield.
+At the same time, add the speculation the research cannot reach. That is a
+marked, inferred lakeshore belt of fisher-hunter-gatherer camps on the
+board's shoreline from 9,000 to 4,000 BCE, densest at the river mouths and
+deltas: Komadugu-Yobe, Chari-Logone, Angamma, Bahr el Ghazal. Add herder
+camps on the northern margin from 5,000 BCE, and a receding-shore herder
+belt at 3,000 BCE. Do not infer anything on the deep lake floor or the
+Bodélé before 3,000 BCE.
+"""
+
+# ------------------------------------------------------------------ known sites
+# Only sites not in the build. In the build already: Angamma, Mandi, Dibella,
+# Borkou, Agadem, Largeau, Beurkia, Blabli, Zoo Baba, Fayalargeau (box);
+# Bilma, Dogonboulo, Kafra, Gara Tchia Bo, Dogoule, Termit ouest, Dufuna (near).
+
+[[known_site]]
+name = "Konduga (Bama Ridge)"
+lon = 13.42
+lat = 11.80
+coordinates = "approximate"
+start = -5700
+end = -4800
+what = "Pottery site on the Bama Ridge, the beach ridge of a Megachad highstand south of Maiduguri: one charcoal date, Kn-4300, 6340 +/- 250 BP, roughly 5700-4800 cal BCE. Search summaries of the paper say the pottery is in the Saharan decorated tradition, from before food production, with no clear local successor. In our raw XRONOS download (p3k14c, after Linseele 2007) with these coordinates, and dropped by the build's max_std = 200. The XRONOS record page I opened shows the date and lab number but no coordinates; the point is the raw download's and lies about 15 km north of Konduga town. The paper itself (Breunig, Neumann & Van Neer 1996) was not opened: Springer refused, and a Frankfurt copy of Hambolu 1996 was behind a bot wall."
+cite = "Breunig, P., Neumann, K. & Van Neer, W. 1996, New research on the Holocene settlement and environment of the Chad Basin in Nigeria, African Archaeological Review 13:111-145; date record XRONOS c14s 275610"
+url = "https://xronos.ch/c14s/275610"
+checked = false
+
+[[known_site]]
+name = "Nedeley"
+lon = 18.17
+lat = 15.58
+coordinates = "approximate"
+start = -10500
+end = -9200
+what = "Two Gif dates from the 1960s Chad missions: Gif-1094, 10,100 +/- 230 BP, and Gif-1097, 10,900 +/- 300 BP. The first falls at about 9,750 BCE and is in the window; the second is just before it. The XRONOS record (opened) gives no material, site type or coordinates; the point is from our raw download, in the Bahr el Ghazal corridor south-west of Koro Toro. Dropped by the build's max_std cut. Whether this is a settlement or a lake-sediment sample from Servant's work is unknown. The Gif-109x run is shared with Koro Toro's early date, which suggests one sampling campaign. Enter only if a person confirms it is archaeological. Desk check 2026-11-13: ETOPO1 ground here is about 267 m, 33 m below the board's lake (300 m) at 9,750 BCE, so it is probably a lake-sediment sample. Not kept."
+cite = "XRONOS c14s 64813 (from EUROEVOL via CalPal; Manning & Timpson 2014)"
+url = "https://xronos.ch/c14s/64813"
+checked = true
+
+[[known_site]]
+name = "Koro Toro (early date)"
+lon = 18.48
+lat = 16.08
+coordinates = "approximate"
+start = -9300
+end = -8300
+what = "One early date at Koro Toro in the Bahr el Ghazal: Gif-1095, 9470 +/- 220 BP, about 8,800 BCE, cited through Guadelli 2005 (BAR S1364). The rest of Koro Toro's 18 records are the Iron Age 'Haddadian' of Treinen-Claustre, 1st millennium CE, outside the window. Dropped by max_std. Same caution as Nedeley: no material or context is recorded. Koro Toro also names Mio-Pliocene fossil beds, so do not confuse the two. I did not open the record page. Desk check 2026-11-13: ETOPO1 ground here is about 271 m, about 58 m below the board's 329 m lake at 8,800 BCE, so it is probably a lake-level sample. Not kept."
+cite = "XRONOS c14s 64794 (Gif-1095; Guadelli 2005, BAR International Series 1364:87-103)"
+url = "https://xronos.ch/c14s/64794"
+checked = false
+
+# ------------------------------------------------------------------ research
+
+[[research]]
+what = "DONE for Konduga (2026-11-13): admitted by a [[keep]] entry for Kn-4300 in data/settlements/records.toml (a per-date exception to max_std; max_std itself is unchanged). Still to do: have a person look up Nedeley (Gif-1094, -1097), Koro Toro Gif-1095, Mandi ('44Gif', 9835 BP) and Beurkia (T-642, 6990 BP) in the Gif and Trondheim date lists (Delibrias et al.; Radiocarbon date lists of the late 1960s) and in Servant's thesis. Decide whether each is archaeological or a lake sample. If any is a lake sample, propose its removal in data/settlements/corrections.toml with that citation. Desk check by elevation (ETOPO1 against the board lake at each date): Mandi 284 m (45 m under), Beurkia 266 m (54 m under), Nedeley 267 m (33 m under), Koro Toro 271 m (58 m under). All four probably date lake deposits. Mandi (44Gif) and Beurkia (T-642) were dropped on 2026-11-13 by [[reject]] entries in data/settlements/records.toml; Nedeley and Koro Toro were never admitted. If the lab lists show any of them is archaeological, delete the reject."
+url = "https://xronos.ch/c14s/64809"
+yields = "One certain early Holocene site on the southern shore (Konduga); a decision on four or five doubtful single-date records in the box that currently shape the map"
+effort = "An hour for Konduga; half a day in the 1960s-70s Radiocarbon date lists for the others"
+
+[[research]]
+what = "Get Breunig, Neumann & Van Neer 1996 and the Frankfurt SFB 268 reports (Thiemeyer on the Bama Ridge shorelines; Hambolu 1996; Gumnior & Thiemeyer 2003 on Komadugu fluvial dynamics) for every dated site on the Bama Ridge and the Komadugu-Yobe older than 4,000 BP, with positions. Expect Konduga and Dufuna and perhaps a few undated ridge-top surface sites; most of the project's dated sites are Gajiganna (after 1,800 BCE) and are already in our raw data."
+url = "https://doi.org/10.1007/BF01956304"
+yields = "Two to five early or mid Holocene sites on the south-west shore, plus the ridge's age, which dates the shoreline itself"
+effort = "One journal paper (paywalled) and some open Frankfurt reports that block scripts; a person has to fetch them"
+
+[[research]]
+what = "The Borkou and Djourab Neolithic. Read Courtin 1966 ('Le néolithique du Borkou, Nord-Tchad', L'Anthropologie 70:269-282), Courtin 1965 (bone harpoons from Borkou, BSPF), Huard & Massip 1964 ('Harpons en os et céramique à décor en vague du Sahara tchadien', BSPF 61:105-123), Coppens 1968 (Bull. IFAN A 30:790-801) and Coppens 1969 ('De l'archéologie à la paléogéographie', Bull. IFAN A 31:263-269). These are cited, with these details, in Gabriel 1977's bibliography, which I opened. List every site with a position, its material (harpoons, wavy-line pottery, fish), and any date. BSPF is digitised on Persée; L'Anthropologie and Bull. IFAN are not open."
+url = "https://e-docs.geo-leo.de/server/api/core/bitstreams/eeb31ca5-7f20-42f2-9ce7-c24b6f125cc8/content"
+yields = "My estimate: 10-40 Neolithic lakeshore and wadi sites on the northern and north-eastern shore (Angamma delta, Borkou, Bahr el Ghazal), most undated, entered as period-dated. This is the zone that would most change the map."
+effort = "Four or five French papers of 10-20 pages, mostly with maps rather than coordinates; Persée for BSPF, a library for the rest"
+
+[[research]]
+what = "Find out what survives of Coppens's 1960-66 northern Chad inventory. Universalis says his missions found 'plusieurs centaines de gisements archéologiques' besides the fossil beds. Find out whether a site register exists (MNHN Paris, Institut de Paléontologie Humaine, CNRD N'Djamena), and ask the ArRéLaT project (V. Mourre, INRAP/TRACES Toulouse) whether it has digitised it or has new dates. ArRéLaT inventoried 66 sites at Ounianga in 2015-16, 58 of them new, and worked in the Guéra in 2017, which is inside the box's south-east corner."
+url = "https://www.universalis.fr/encyclopedie/yves-coppens/2-du-tchad-a-l-ethiopie/"
+yields = "Potentially hundreds of positioned surface sites in Borkou, Djourab and Bahr el Ghazal, of all periods; unknown how many are Holocene or dated"
+effort = "Correspondence, not reading; may produce nothing"
+
+[[research]]
+what = "Resolve the north-west margin we already hold: Agadem, Dibella, Zoo Baba (Hv-14024/14025/14026/14080/14482, 1980s Hannover dates) and Bilma. These look like the Würzburg geomorphology programme of Baumhauer, Felix-Henningsen and Brauneck in the Grand Erg de Bilma. Brauneck 2010 (Würzburger Geographische Arbeiten 103) has a Zoo Baba section with radiocarbon dates. Search summaries of a Baumhauer abstract say the Neolithic settlement there came when the lakes had already shrunk. Check which of the dates are archaeological. The PDF is open but blocked scripts and is over 10 MB."
+url = "https://opus.bibliothek.uni-wuerzburg.de/files/23514/WGA_103.pdf"
+yields = "No new sites probably, but tells us whether 3-5 of our ten in-box 'sites' are settlements or lake sediments"
+effort = "One thesis, German, searchable for the site names"
+
+[[research]]
+what = "Termit, just west of the box: Quéchon & Roset 1974, the 1972 ORSTOM survey of the Termit massif (15°30'-17°N, 11°10'-11°40'E) with a provisional archaeological map of surface sites from the Palaeolithic to the early centuries CE. Add Paris, Person, Quéchon & Saliège 1992 on the late Neolithic and early metallurgy at Termit. We hold Termit ouest, Dogoule and Gara Tchia Bo; the map should give the rest of the Neolithic sites with positions. The IRD document server was in maintenance when I tried it."
+url = "https://horizon.documentation.ird.fr/exl-doc/pleins_textes/pleins_textes_5/b_fdi_12-13/14238.pdf"
+yields = "Perhaps 10-30 Neolithic surface sites on the west shore of the Termit-Agadem embayment, a few dated"
+effort = "One open French paper with a map, when the IRD server is back"
+
+[[research]]
+what = "For the end of the story and the south shore after 3,000 BCE, which is outside this plan's window: Lebeuf 1969 and 1981, 'Carte archéologique des abords du Lac Tchad (Cameroun, Nigeria, Tchad)'. It is a gazetteer of mound sites around the lake, overwhelmingly Sao and later, which will show where the lake floor was settled. Do not enter its sites as in-window. The citation is from the bibliography of Abanga 2018 (linked), which I read; the book itself is not online."
+url = "https://dante.univ-tlse2.fr/files/original/3e3a16e5e04e332ebe9364b6927775a384386489.pdf"
+yields = "Hundreds of late (mostly after 500 BCE) mound sites; useful for the after-window map and for checking that our Gajiganna-Sao sites are complete"
+effort = "A CNRS monograph, not online; a person with library access"
+
+[[research]]
+what = "Checked and negative, so nobody repeats it: aDRAC (Central African radiocarbon archive, 2315 dates) has nothing older than about 2,800 BP in or near the box. Only Sou, Sou Blame Radjil, Goray, Salak and Aissa Dugjé in Cameroon fall there, all late. It adds nothing in-window here."
+url = "https://github.com/dirkseidensticker/aDRAC"
+yields = "None in window"
+effort = "None"
+
+# ------------------------------------------------------------------ speculation
+
+[[speculate]]
+target = "settlements"
+slices = [-9000, -8000, -7000, -6000, -5000, -4000]
+rule = "Place inferred lakeshore fisher-hunter-gatherer camps on land hexes within 10 km of the board's Megachad shoreline of that slice, about one per 75 km of shore. Put two to four extra at each river mouth or delta: the Komadugu-Yobe mouth near the Bama Ridge west end, the Chari-Logone mouth, the Angamma delta, and the Bahr el Ghazal sill. Mark them as inferred. Leave out the Kawar-Agadem stretch, where we already hold dated sites. At -7000 halve the density on the southern and western shores. On the northern shore at -7000 and -6000, prefer the Angamma and Borkou stretch, where our dated sites continue."
+confidence = "medium"
+reasoning = "Presence (medium): lakeshore and wetland fisher-hunter-gatherers are documented on every well-studied early and mid Holocene Saharan lake. The nearest is Gobero, on a palaeolake only about 3 km across: sedentary hunter-fisher-gatherers 7700-6200 BCE, a hiatus 6200-5200 BCE, then 5200-2500 BCE people living on clams, fish, savanna game and some cattle (Sereno et al. 2008). Megachad was vastly larger and stood at its highstand from 11.5 to 5.0 ka (Armitage et al. 2015). Our own dated sites ring its north-western and northern shores from 9,860 BCE (Angamma) and 8,480 BCE (Agadem). The south-west shore has a dugout canoe of about 6,200 BCE at Dufuna on the Komadugu-Yobe and pottery of about 5,300 BCE on the Bama Ridge beach ridge at Konduga. Bone harpoons and wavy-line pottery are reported from Borkou (Courtin 1965-66; Huard & Massip 1964). Spacing (low): taken from the Kawar-Termit margin, where we hold about eight dated sites over some 400 km of shore, roughly one per 50 km. I thin it to one per 75 km for shores nobody has surveyed. The -7000 thinning follows Gobero's 6200-5200 BCE arid hiatus and the 8.1-6.6 ka lake lowering in Armitage et al. (2015). Inferred camps are a statement about the past, never an input to expected density."
+basis = ["analogy", "neighbouring_evidence", "environment", "literature"]
+
+[[speculate]]
+target = "settlements"
+slices = [-10000]
+rule = "Place at most three inferred forager camps for this slice, all on the northern margin (Angamma delta and Borkou foot of the Tibesti) and the Kawar-Agadem lowland. None south of 13°N."
+confidence = "low"
+reasoning = "Armitage et al. (2015) put humid conditions first at about 15 ka and the highstand by 11.5 ka, and the lake file treats 12.9-11.5 ka as arid. MacEachern (2012, seen only through search summaries) finds almost no terminal Pleistocene or early Holocene evidence anywhere in the southern basin. Our only 10,000 BCE record in the box is Angamma (9,860 BCE). Nedeley's 10,100 BP date may be a second if it proves archaeological. Re-entry was from the Saharan highlands to the north, so the north margin is where to put the few."
+basis = ["literature", "neighbouring_evidence", "environment"]
+
+[[speculate]]
+target = "settlements"
+slices = [-5000, -4000]
+rule = "Within the northern lakeshore camps of the first rule (north of 15°N: Borkou, Angamma, Bahr el Ghazal, Kawar), mark about half as herder-fisher camps with cattle. Add a few inferred herder camps (two or three per slice) on the Borkou and Bahr el Ghazal margins up to 30 km from the shore."
+confidence = "low"
+reasoning = "Gobero's Ténéréen people of 5200-2500 BCE kept some cattle beside fishing and clam gathering (Sereno et al. 2008). Our Borkou records continue through the 5th and 4th millennia: Largeau 5,880 BCE and later, Fayalargeau 3,850 BCE, Angamma to 1,500 BCE. Gabriel (1977) maps Neolithic Steinplätze (stone-hearth camp sites, which he reads as repeatedly visited camps of larger groups) across the Serir Tibesti just north of the box. He says their presence in Borkou and the Djourab still needed checking, so this is extrapolation. None of the Chad-side dates carries a recorded material, so the cattle are an analogy, not an observation."
+basis = ["analogy", "neighbouring_evidence", "literature"]
+
+[[speculate]]
+target = "settlements"
+slices = [-3000]
+rule = "Move the lakeshore camps with the shoreline: place inferred herder-fisher camps within 10 km of the board's 3,000 BCE shore and on newly exposed floor near the old Bama Ridge and the Komadugu-Yobe, about one per 100 km of shore, marked as inferred. Add none on the Bodélé floor."
+confidence = "low"
+reasoning = "The lake fell rapidly at about 5 ka (Armitage et al. 2015). The Angamma delta records a regression to 285-290 m at 4.8-4.3 ka cal BP, a short rise and a final fall (Bristow et al. 2018). Settlers of the Gajiganna culture are on the Borno lake floor by about 1,800 BCE (in our raw data; dates from 3,360 BP), and MacEachern (2012) has the southern basin's settlement history begin in the mid-Holocene. The gap between the lake falling about 3,000 BCE and the first dated Gajiganna sites cannot have been empty of people using the receding shore. Their sites would lie on the very surfaces later buried by firki clays. The Bodélé floor dried only about 1 ka and is deflating, so nothing goes there."
+basis = ["literature", "environment", "neighbouring_evidence"]
+
+[[speculate]]
+target = "isostyle:bone_antler"
+slices = [-9000, -8000, -7000, -6000, -5000, -4000]
+rule = "In the box, land below 345 m (the lake margin within about 15 m above the 329 m shoreline) gets 0.6 bone and antler; leave the rest at the Sahara-Sahel judgement."
+confidence = "low"
+reasoning = "The Sahara-Sahel judgement (0.5) already notes that early Holocene lakeside sites carry bone harpoons, and that deflated surface sites lose bone. Here the lake margin is where the harpoon finds are: Borkou (Courtin 1965; Huard & Massip 1964) and Gobero by analogy. Lake-margin carbonate and diatomite sediments preserve bone better than dune surfaces. The elevation band is a crude stand-in for 'shore of that epoch'. It also catches some lake floor in lowstand slices, which is acceptable because the floor carries no sites."
+basis = ["literature", "analogy", "environment"]
+
+[[speculate.adjust]]
+kind = "elevation"
+below_m = 345
+value = 0.6

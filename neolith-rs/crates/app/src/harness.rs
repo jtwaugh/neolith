@@ -419,6 +419,21 @@ impl NeolithApp {
         };
         match cmd {
             "ping" => Some(ok(json!({"pong": true}))),
+            // The frame profiler (perf.rs): `on` turns it on or off, `reset`
+            // starts its counters again after reading them.
+            "perf" => {
+                if let Some(on) = req.get("on").and_then(Value::as_bool) {
+                    crate::perf::set_enabled(on);
+                }
+                let reset = req.get("reset").and_then(Value::as_bool) == Some(true);
+                // `bench`: n board passes back to back (BoardRenderer::bench).
+                if let Some(n) = req.get("bench").and_then(Value::as_u64) {
+                    let (Some(s), Some(gpu)) = (&self.session, &self.gpu) else { return Some(err("no world loaded yet")) };
+                    let ms = s.renderer.lock().unwrap().bench(&gpu.device, &gpu.queue, n as u32);
+                    return Some(ok(json!({"bench_ms": ms})));
+                }
+                Some(ok(json!({"enabled": crate::perf::enabled(), "pixels_per_point": ppp, "report": crate::perf::report(reset)})))
+            }
             "state" => {
                 let mut v = self.harness_state(ctx);
                 v["harness_port"] = json!(h.port);

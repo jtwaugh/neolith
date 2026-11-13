@@ -45,6 +45,19 @@ class SettledLand(unittest.TestCase):
         self.assertEqual(t[-6000][self.i], "Water")        # input untouched
         self.assertNotIn("drowned", feats[0]["properties"])
 
+    def test_site_on_a_strait_does_not_close_it(self):
+        # The hex is a sea channel from -5800: kept land before, Water after,
+        # and the site stays (its ground is above the water).
+        t = self.frames(*YEARS)
+        never = {y: np.zeros(self.n, dtype=bool) for y in YEARS}
+        for y in (-5800, -5700):
+            never[y][self.i] = True
+        out, feats, stats = compose.keep_settled_land(
+            t, t, [site(13, (-6000, -5000))], self.g,
+            depth=lambda n, y: (-10.0, "sea"), never=never)
+        self.assertEqual([out[y][self.i] for y in YEARS], ["Grassland", "Grassland", "Water", "Water"])
+        self.assertNotIn("drowned", feats[0]["properties"])
+
     def test_appears_mid_frame(self):
         out, _, stats = self.keep(self.frames(-5900), [site(13, (-5850, -5700))])
         self.assertEqual(out[-5900][self.i], "Grassland")   # -5850 shows the -5900 frame

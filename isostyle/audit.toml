@@ -28,6 +28,7 @@ pipeline_config = "pipeline/config.toml"
 curve = "build/settlements/intcal20.14c"
 same_km = 1.0
 same_name_km = 10.0
+share_km = 10.0
 # A site-phase or site counts as present in a slice when it has at least
 # this many expected dates there.
 present_min_dates = 0.5

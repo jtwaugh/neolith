@@ -45,3 +45,494 @@ site = "Wustermark 22"
 lab = "Bln-5645"
 source = "https://xronos.ch/c14s/232067"
 note = "Wood, 1050 +/- 80 BP (8th-12th c. AD), filed under a site whose other six dates run 15,825-9135 BP; with no other date for a thousand years it made a last occupation phase of 990-1990 CE."
+
+# ------------------------------------------------- Lake Chad basin
+# From data/places/plans/megachad.toml. [[keep]] site: the name exactly as
+# filed; lab: the lab number. Admits that one date although its 1-sigma error
+# is above [settlements] max_std. A keep that matches no date stops the build.
+
+[[keep]]
+site = "Konduga"
+lab = "Kn-4300"
+source = "https://doi.org/10.1007/BF01956304"
+note = "Konduga, a pottery site on the Bama Ridge (the Megachad beach ridge) south-east of Maiduguri: charcoal, 6340 +/- 250 BP, its only date (Breunig, Neumann & Van Neer 1996, African Archaeological Review 13:111-145; also in Open Context, https://opencontext.org/subjects/17fd55b0-7d22-4b3b-afb7-5af9ef11505b). Saharan-tradition decorated pottery, before food production. Wide but not wrong for a 1980s Koeln date; max_std = 200 dropped the site entirely. Not kept, for comparison: Koro Toro Gif-1095, Nedeley Gif-1094/1097, which lie 33-58 m under the board's lake at their own dates and are probably lake-level samples."
+
+# ------------------------------------------------- p3k14c names out of step
+# p3k14c's Vermeersch2019 rows often carry an alphabetical neighbour's name,
+# and XRONOS filed them under its own site of that name, wherever it is
+# (Lake Lacha's GIN-4858 in Italy as 'Peschio Ranaro'). The build drops such
+# dates ([settlements] p3k14c_km, settlements.drop_shifted); these entries
+# put back the ones the literature places. From data/places/plans/
+# upper_volga_lakes.toml and onega.toml.
+# [[refile]]  site: the name exactly as filed; lab: the lab number; name, at:
+#             the site the date belongs to. Moves that one date. The filed
+#             name is not made an alias. A refile that matches no date stops
+#             the build.
+
+[[refile]]
+site = "Peschio Ranaro"
+lab = "GIN-4858"
+name = "Peschanitsa"
+at = [38.9093, 61.2312]
+source = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+note = "Bone, 9890 +/- 120 BP: the Peschanitsa cemetery at Lake Lacha (Kargopol district, Arkhangelsk oblast), the earliest Veretye date (onega plan, after Oshibkina). p3k14c files it as 'Peschio Ranaro' (the next name in its alphabetical list) at 32.95, 60.36, Russia; XRONOS put it at the Epigravettian Peschio Ranaro in Lazio (13.32, 41.8). The position is AADR's for Peschanitsa (PES001, Allentoft et al. 2024)."
+
+[[refile]]
+site = "Vergara"
+lab = "LE-1469"
+name = "Veretye 1"
+at = [38.9093, 61.2312]
+source = "https://journal.fi/fennoscandiaarchaeologica/article/view/126513"
+note = "Charcoal, 9600 +/- 80 BP, citing Dolukhanov 2002: the earliest date of (Lower) Veretye 1, Oshibkina's peat-bog site at Lake Lacha (onega plan; Zhilin 2015, Fig. 1, site 9). p3k14c files it as 'Vergara' (the next name after 'Veretye I'); XRONOS put it at Vergara in Spain (-2.02, 41.45). No published coordinates: placed at Peschanitsa on the same lake (AADR), good to about 15 km."
+
+[[refile]]
+site = "Stanovoje"
+lab = "KIA-35153"
+name = "Stanovoe 4"
+at = [40.4, 57.3]
+source = "http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf"
+note = "One of three KIA AMS dates for Stanovoe-4 (Hartz, Terberger & Zhilin 2010) that XRONOS filed under a British 'Stanovoje' (-2.65, 51.28, the position of BM-1625, a 36,000 BP date p3k14c also calls Stanovoje); p3k14c has them at 40.66, 57.46, Russia. Stanovoe-4 is 'halfway between Yaroslavl' and Ivanovo, at the outlet of the Lakhost' river from Podozerskiy peat bog' (Zaretskaya et al. 2005); point to about 20 km."
+
+[[refile]]
+site = "Stanovoje"
+lab = "KIA-39316"
+name = "Stanovoe 4"
+at = [40.4, 57.3]
+source = "http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf"
+note = "As KIA-35153 (cites Hartz 2010)."
+
+[[refile]]
+site = "Stanovoje"
+lab = "KIA-39317"
+name = "Stanovoe 4"
+at = [40.4, 57.3]
+source = "http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf"
+note = "As KIA-35153."
+
+[[refile]]
+site = "Starnska Skala"
+lab = "KIA-35152"
+name = "Stanovoe 4"
+at = [40.4, 57.3]
+source = "http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf"
+note = "9879 +/- 50 BP, citing Hartz et al. 2010: a Stanovoe-4 date under the name after 'Stanovoje' in p3k14c's list ('Starnska Skala' is a Czech cave), at the same point as the other KIA dates."
+
+[[refile]]
+site = "Stanovoe 4"
+lab = "GIN-8378"
+name = "Stanovoe 4"
+at = [40.4, 57.3]
+source = "http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf"
+note = "Small plank, 7030 +/- 100 BP, the Upper Volga Early Neolithic layer (Zaretskaya et al. 2005, Table 7). Filed at 37.88, 55.95 in Moscow's north-eastern suburbs, probably geocoded by name; moved with the KIA dates so the site is one record."
+
+[[refile]]
+site = "Ivanovskoye"
+lab = "GIN-9516"
+name = "Ivanovskoe 7"
+at = [39.19, 56.93]
+source = "http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf"
+note = "Wood, 9640 +/- 60 BP: Ivanovskoe-7, Early Butovo (Zaretskaya et al. 2005, Table 3). Filed at 37.82, 55.77, the Ivanovskoye district of Moscow. The site is '30 km northeastward from Pereslavl'-Zalesskiy', on a cape of a fen bog in the Nerl'-Kliazma valley; point to about 10 km."
+
+[[refile]]
+site = "Jagerhaushohle"
+lab = "GIN-9520"
+name = "Ivanovskoe 7"
+at = [39.19, 56.93]
+source = "http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf"
+note = "Bone, 9650 +/- 110 BP: Ivanovskoe-7, Early Butovo (Zaretskaya et al. 2005, Table 3). p3k14c has it at Ivanovskoye's point under the name after 'Ivory Boy' and 'Iwiny', 'Jagerhaushohle'; XRONOS added it to the Jägerhaushöhle in Baden-Württemberg (8.75, 48.96)."
+
+[[refile]]
+site = "Zolotovka"
+lab = "LE-6644"
+name = "Zolotoruce"
+at = [38.4, 57.59]
+source = "https://github.com/people3k/p3k14c"
+note = "9680 +/- 160 BP. p3k14c has it at 38.4, 57.59 (the Zolotoruchye Mesolithic sites near Uglich, where its 'Zolotoruce' KIA dates are) under the next name in its list, 'Zolotovka'; XRONOS added it to the Palaeolithic Zolotovka on the Lower Don (40.98, 47.63), where it made a false 9,060 BCE site. Position as p3k14c's."
+
+[[keep]]
+site = "Razdorskoe I"
+lab = "IGAN-722"
+source = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/44.13"
+note = "9470 +/- 310 BP, Razdorskoe I on the Lower Don (Tsybrij et al. 2017, Table 1). Its 1-sigma error is above max_std = 200, so the build dropped it and the site showed only its 3,180 BCE date. It is the site's only early date and the authors list it with the Rakushechny Yar culture's early sequence; kept, wide."
+
+# ------------------------------------------------- Lake Chad basin: lake samples
+# From data/places/plans/megachad.toml. Single-date "sites" that lie far
+# below the board's Lake Megachad at their own date: dates of lake deposits
+# from the 1960s lake-level work, not settlements.
+
+[[reject]]
+site = "Mandi"
+lab = "44Gif"
+source = "https://xronos.ch/c14s/64809"
+note = "9835 +/- 135 BP (about 9,330 BCE), the site's only date, no material or site type recorded. At 14.67, 13.42 by Bol, where ETOPO1 ground is about 284 m, 45 m below the board's 329 m Megachad highstand at that date (data/lakes/lakes.toml, after Armitage et al. 2015): under open lake water, so it dates a lake deposit, not a camp. Filed twice (XRONOS 64809 as '44Gif-', 170509 as '44Gif'); both dropped."
+
+[[reject]]
+site = "Beurkia"
+lab = "T-642"
+source = "https://xronos.ch/c14s/64718"
+note = "6990 +/- 140 BP (about 5,870 BCE), the site's only date, no material or site type recorded. At 18.07, 15.48 in the Bahr el Ghazal, where ETOPO1 ground is about 266 m, 54 m below the board's 320 m lake at that date: a lake-deposit date, not a settlement. Filed twice (XRONOS 64718 and 324440); both dropped."
+
+# ------------------------------------------------- Austrian Lengyel
+# From data/places/plans/manych.toml and don_mouth.toml.
+
+[[same]]
+name = "Unterwölbling"
+members = ["Unterwölbling", "Unterwölbing"]
+at = [15.607, 48.3246]
+source = "https://de.wikipedia.org/wiki/Unterw%C3%B6lbling"
+note = "Unterwölbling (Lower Austria, Lengyel). XRONOS also files KN-2529 under 'Unterwölbing' at 41.44, 48.33 (about 25 degrees east, in the Rostov steppe); p3k14c has that date at 15.583, 48.317, 2 km from the other entry. One site, at the XRONOS position of 'Unterwölbling'."
+
+# ------------------------------------------------- Lower Don
+[[same]]
+name = "Rakushechny Yar"
+members = ["Rakushechny Yar"]
+at = [40.67, 47.56]
+source = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/44.13"
+note = "XRONOS files it west of Rostov (39.0667, 47.4459); the site is on Porechny island by Razdorskaya stanitsa on the Lower Don (Tsybrij et al. 2017), 120 km east, where Dolbunova et al. 2023 ('Rakucheshny Yar') put it (40.67, 47.56). Moving the XRONOS records here, before grouping, joins them with the Tsybrij dates (data/settlements/literature_dates.csv) as one site. Replaces a corrections.toml fix, which moved the finished XRONOS site after grouping and so left two sites at one point."
+
+# ------------------------------------------------- Horn of Africa
+# From data/places/plans/lake_abbe.toml (2026-11-13).
+
+[[same]]
+name = "Asa Koma"
+members = ["Asa Koma"]
+at = [42.07, 11.06]
+source = "https://en.wikipedia.org/wiki/Asa_Koma"
+note = "XRONOS files Gif-7404 (3440 +/- 90 BP) under Somalia at 44.69 E, 9.72 N, near Hargeisa. Asa Koma is a fisher-herder site on the Gobaad plain in south-western Djibouti, by the former shore of Lake Abhe; position to about 5 km. Its date is after 3,000 BCE, so it drops out of the map by age either way; fixed so it is right if the window widens."
+
+# ------------------------------------------------- XRONOS vs p3k14c positions
+# Namesakes: American, Canadian, Colombian, Patagonian, Siberian and Urals
+# dates that XRONOS took from p3k14c and filed under a European site of the
+# same name (p3k14c has them at the right place). Also sites whose XRONOS
+# and NeoNet records must join.
+
+[[same]]
+name = "Crvena Stijena"
+members = ["Crvena Stijena"]
+at = [18.4847, 42.7556]
+source = "https://doi.org/10.1017/eaa.2019.14"
+note = "XRONOS files the five Oxford dates (Silva & Vander Linden 2017) at 5.33, 46.10 in the Ain, France; NeoNet has the cave at 18.4847, 42.7556 by Petrovići, Nikšić, Montenegro (Borić et al. 2019), where p3k14c also puts them. One site, at NeoNet's position."
+
+[[same]]
+name = "Cabeço da Arruda"
+members = ["Cabeço da Arruda"]
+at = [-8.6695, 39.1111]
+source = "https://doi.org/10.1017/RDC.2020.100"
+note = "XRONOS files 15 dates of the Muge shell midden at -9.34, 39.04, by the coast north of Lisbon, beside a second site at the right place (-8.6695, 39.1111, with the NeoNet dates of Peyroteo-Stjerna 2021). Cabeço da Arruda is on the Muge, Salvaterra de Magos; p3k14c has -8.66, 39.11. One site."
+
+[[same]]
+name = "Glimmer"
+members = ["Glimmer", "Glimmer Es"]
+at = [6.63, 53.13]
+source = "https://en.wikipedia.org/wiki/Glimmen"
+note = "XRONOS has 'Glimmer' (GrN-11997) and 'Glimmer Es' (GrN-6156) at 4.7352, 52.6628 in North Holland, and GrN-11997 again at 6.63, 53.13. Glimmen is a village in Haren, Groningen (Lanting & van der Plicht; p3k14c 6.63, 53.13). One site at Glimmen."
+
+[[reject]]
+site = "El Mirador"
+lab = "AA-102509"
+source = "https://xronos.ch/c14s/171534"
+note = "9663 BP, Herrera, Moreno & Peña 2011: a Colombian date (p3k14c: El Mirador, -75.86, 5.86, Goldberg et al. 2016) filed under the Atapuerca cave; it made the site start in 9050 BCE instead of about 5300."
+
+[[reject]]
+site = "Cueva de la Ventana"
+lab = "Beta-135965"
+source = "https://xronos.ch/c14s/190167"
+note = "7970 BP, Prates et al. 2013: Cueva de la Ventana in Patagonia (p3k14c -68.82, -48.44), filed under the Spanish cave of that name."
+
+[[reject]]
+site = "Cueva de la Ventana"
+lab = "AA-35237"
+source = "https://xronos.ch/c14s/173144"
+note = "7665 BP, as Beta-135965."
+
+[[reject]]
+site = "El Perro"
+lab = "Beta-317784"
+source = "https://xronos.ch/c14s/216120"
+note = "6990 BP, Goldberg et al. 2016: a Colombian El Perro (p3k14c -75.86, 5.83) filed under the Cantabrian shell midden."
+
+[[reject]]
+site = "Bob's Cave"
+lab = "AA-92075"
+source = "https://xronos.ch/c14s/176071"
+note = "University of Arizona date from Bob's Cave, Nevada (Smith et al.; p3k14c UWyo2021, -117.63, 37.79), filed under Bob's Cave, Kitley, Devon."
+
+[[reject]]
+site = "Bob's Cave"
+lab = "AA-92076"
+source = "https://xronos.ch/c14s/176072"
+note = "University of Arizona date from Bob's Cave, Nevada (Smith et al.; p3k14c UWyo2021, -117.63, 37.79), filed under Bob's Cave, Kitley, Devon."
+
+[[reject]]
+site = "Bob's Cave"
+lab = "AA-92077"
+source = "https://xronos.ch/c14s/176073"
+note = "University of Arizona date from Bob's Cave, Nevada (Smith et al.; p3k14c UWyo2021, -117.63, 37.79), filed under Bob's Cave, Kitley, Devon."
+
+[[reject]]
+site = "Bob's Cave"
+lab = "AA-92078"
+source = "https://xronos.ch/c14s/176074"
+note = "University of Arizona date from Bob's Cave, Nevada (Smith et al.; p3k14c UWyo2021, -117.63, 37.79), filed under Bob's Cave, Kitley, Devon."
+
+[[reject]]
+site = "Bob's Cave"
+lab = "AA-92079"
+source = "https://xronos.ch/c14s/176075"
+note = "University of Arizona date from Bob's Cave, Nevada (Smith et al.; p3k14c UWyo2021, -117.63, 37.79), filed under Bob's Cave, Kitley, Devon."
+
+[[reject]]
+site = "Bob's Cave"
+lab = "AA-92080"
+source = "https://xronos.ch/c14s/176076"
+note = "University of Arizona date from Bob's Cave, Nevada (Smith et al.; p3k14c UWyo2021, -117.63, 37.79), filed under Bob's Cave, Kitley, Devon."
+
+[[reject]]
+site = "Bob's Cave"
+lab = "AA-92081"
+source = "https://xronos.ch/c14s/176077"
+note = "University of Arizona date from Bob's Cave, Nevada (Smith et al.; p3k14c UWyo2021, -117.63, 37.79), filed under Bob's Cave, Kitley, Devon."
+
+[[reject]]
+site = "Park Farm"
+lab = "GSC-6207"
+source = "https://xronos.ch/c14s/241604"
+note = "Park Farm, British Columbia (CARD; p3k14c -122.60, 49.99), filed under Park Farm, Barford, Warwickshire."
+
+[[reject]]
+site = "Park Farm"
+lab = "GSC-6209"
+source = "https://xronos.ch/c14s/241605"
+note = "Park Farm, British Columbia (CARD; p3k14c -122.60, 49.99), filed under Park Farm, Barford, Warwickshire."
+
+[[reject]]
+site = "Park Farm"
+lab = "Beta-80773"
+source = "https://xronos.ch/c14s/226816"
+note = "Park Farm, British Columbia (CARD; p3k14c -122.60, 49.99), filed under Park Farm, Barford, Warwickshire."
+
+[[reject]]
+site = "Park Farm"
+lab = "WSU-2470"
+source = "https://xronos.ch/c14s/344501"
+note = "Park Farm, British Columbia (CARD; p3k14c -122.60, 49.99), filed under Park Farm, Barford, Warwickshire."
+
+[[reject]]
+site = "Morton"
+lab = "ISGS-1390"
+source = "https://xronos.ch/c14s/266935"
+note = "Morton village, Illinois (Green & Nolan 2000; Hart et al. 2002; p3k14c UWyo2021 -90.21, 40.47), filed under Morton, Fife."
+
+[[reject]]
+site = "Morton"
+lab = "ISGS-1391"
+source = "https://xronos.ch/c14s/266936"
+note = "Morton village, Illinois (Green & Nolan 2000; Hart et al. 2002; p3k14c UWyo2021 -90.21, 40.47), filed under Morton, Fife."
+
+[[reject]]
+site = "Morton"
+lab = "ISGS-1416"
+source = "https://xronos.ch/c14s/266953"
+note = "Morton village, Illinois (Green & Nolan 2000; Hart et al. 2002; p3k14c UWyo2021 -90.21, 40.47), filed under Morton, Fife."
+
+[[reject]]
+site = "Morton"
+lab = "AA-38473"
+source = "https://xronos.ch/c14s/173452"
+note = "Morton village, Illinois (Green & Nolan 2000; Hart et al. 2002; p3k14c UWyo2021 -90.21, 40.47), filed under Morton, Fife."
+
+[[reject]]
+site = "Morton"
+lab = "AA-38474"
+source = "https://xronos.ch/c14s/173453"
+note = "Morton village, Illinois (Green & Nolan 2000; Hart et al. 2002; p3k14c UWyo2021 -90.21, 40.47), filed under Morton, Fife."
+
+[[reject]]
+site = "Badger Hole"
+lab = "UCIAMS-111184/PSU-1544"
+source = "https://xronos.ch/c14s/333204"
+note = "Badger Hole bison kill, Oklahoma (Carlson et al. 2016; p3k14c -99.67, 36.79), filed under Badger Hole, Wookey; 10,300-10,395 BP, inside the map window."
+
+[[reject]]
+site = "Badger Hole"
+lab = "UCIAMS-122579/PSU-5457"
+source = "https://xronos.ch/c14s/333349"
+note = "Badger Hole bison kill, Oklahoma (Carlson et al. 2016; p3k14c -99.67, 36.79), filed under Badger Hole, Wookey; 10,300-10,395 BP, inside the map window."
+
+[[reject]]
+site = "Badger Hole"
+lab = "UCIAMS-98369"
+source = "https://xronos.ch/c14s/334523"
+note = "Badger Hole bison kill, Oklahoma (Carlson et al. 2016; p3k14c -99.67, 36.79), filed under Badger Hole, Wookey; 10,300-10,395 BP, inside the map window."
+
+[[reject]]
+site = "Horton"
+lab = "Beta-225579"
+source = "https://xronos.ch/c14s/205999"
+note = "An American Horton (Wyoming, Wyoming Archaeological Survey; or Oklahoma, Valastro; ISGS from Hart et al. 2012), p3k14c UWyo2021, filed under Horton, Wiltshire, whose only own date is BM-2816."
+
+[[reject]]
+site = "Horton"
+lab = "Beta-225580"
+source = "https://xronos.ch/c14s/206000"
+note = "An American Horton (Wyoming, Wyoming Archaeological Survey; or Oklahoma, Valastro; ISGS from Hart et al. 2012), p3k14c UWyo2021, filed under Horton, Wiltshire, whose only own date is BM-2816."
+
+[[reject]]
+site = "Horton"
+lab = "Beta-225581"
+source = "https://xronos.ch/c14s/206001"
+note = "An American Horton (Wyoming, Wyoming Archaeological Survey; or Oklahoma, Valastro; ISGS from Hart et al. 2012), p3k14c UWyo2021, filed under Horton, Wiltshire, whose only own date is BM-2816."
+
+[[reject]]
+site = "Horton"
+lab = "Beta-225582"
+source = "https://xronos.ch/c14s/206002"
+note = "An American Horton (Wyoming, Wyoming Archaeological Survey; or Oklahoma, Valastro; ISGS from Hart et al. 2012), p3k14c UWyo2021, filed under Horton, Wiltshire, whose only own date is BM-2816."
+
+[[reject]]
+site = "Horton"
+lab = "Beta-225583"
+source = "https://xronos.ch/c14s/206003"
+note = "An American Horton (Wyoming, Wyoming Archaeological Survey; or Oklahoma, Valastro; ISGS from Hart et al. 2012), p3k14c UWyo2021, filed under Horton, Wiltshire, whose only own date is BM-2816."
+
+[[reject]]
+site = "Horton"
+lab = "Beta-225584"
+source = "https://xronos.ch/c14s/206004"
+note = "An American Horton (Wyoming, Wyoming Archaeological Survey; or Oklahoma, Valastro; ISGS from Hart et al. 2012), p3k14c UWyo2021, filed under Horton, Wiltshire, whose only own date is BM-2816."
+
+[[reject]]
+site = "Horton"
+lab = "Beta-225585"
+source = "https://xronos.ch/c14s/206005"
+note = "An American Horton (Wyoming, Wyoming Archaeological Survey; or Oklahoma, Valastro; ISGS from Hart et al. 2012), p3k14c UWyo2021, filed under Horton, Wiltshire, whose only own date is BM-2816."
+
+[[reject]]
+site = "Horton"
+lab = "Beta-225586"
+source = "https://xronos.ch/c14s/206006"
+note = "An American Horton (Wyoming, Wyoming Archaeological Survey; or Oklahoma, Valastro; ISGS from Hart et al. 2012), p3k14c UWyo2021, filed under Horton, Wiltshire, whose only own date is BM-2816."
+
+[[reject]]
+site = "Horton"
+lab = "Beta-225587"
+source = "https://xronos.ch/c14s/206007"
+note = "An American Horton (Wyoming, Wyoming Archaeological Survey; or Oklahoma, Valastro; ISGS from Hart et al. 2012), p3k14c UWyo2021, filed under Horton, Wiltshire, whose only own date is BM-2816."
+
+[[reject]]
+site = "Horton"
+lab = "Beta-225588"
+source = "https://xronos.ch/c14s/206008"
+note = "An American Horton (Wyoming, Wyoming Archaeological Survey; or Oklahoma, Valastro; ISGS from Hart et al. 2012), p3k14c UWyo2021, filed under Horton, Wiltshire, whose only own date is BM-2816."
+
+[[reject]]
+site = "Horton"
+lab = "Beta-225589"
+source = "https://xronos.ch/c14s/206009"
+note = "An American Horton (Wyoming, Wyoming Archaeological Survey; or Oklahoma, Valastro; ISGS from Hart et al. 2012), p3k14c UWyo2021, filed under Horton, Wiltshire, whose only own date is BM-2816."
+
+[[reject]]
+site = "Horton"
+lab = "Beta-196834"
+source = "https://xronos.ch/c14s/200768"
+note = "An American Horton (Wyoming, Wyoming Archaeological Survey; or Oklahoma, Valastro; ISGS from Hart et al. 2012), p3k14c UWyo2021, filed under Horton, Wiltshire, whose only own date is BM-2816."
+
+[[reject]]
+site = "Horton"
+lab = "Beta-196835"
+source = "https://xronos.ch/c14s/200769"
+note = "An American Horton (Wyoming, Wyoming Archaeological Survey; or Oklahoma, Valastro; ISGS from Hart et al. 2012), p3k14c UWyo2021, filed under Horton, Wiltshire, whose only own date is BM-2816."
+
+[[reject]]
+site = "Horton"
+lab = "Tx-618"
+source = "https://xronos.ch/c14s/327346"
+note = "An American Horton (Wyoming, Wyoming Archaeological Survey; or Oklahoma, Valastro; ISGS from Hart et al. 2012), p3k14c UWyo2021, filed under Horton, Wiltshire, whose only own date is BM-2816."
+
+[[reject]]
+site = "Horton"
+lab = "Tx-627"
+source = "https://xronos.ch/c14s/327359"
+note = "An American Horton (Wyoming, Wyoming Archaeological Survey; or Oklahoma, Valastro; ISGS from Hart et al. 2012), p3k14c UWyo2021, filed under Horton, Wiltshire, whose only own date is BM-2816."
+
+[[reject]]
+site = "Horton"
+lab = "Tx-819"
+source = "https://xronos.ch/c14s/327662"
+note = "An American Horton (Wyoming, Wyoming Archaeological Survey; or Oklahoma, Valastro; ISGS from Hart et al. 2012), p3k14c UWyo2021, filed under Horton, Wiltshire, whose only own date is BM-2816."
+
+[[reject]]
+site = "Horton"
+lab = "ISGS-A1102"
+source = "https://xronos.ch/c14s/268321"
+note = "An American Horton (Wyoming, Wyoming Archaeological Survey; or Oklahoma, Valastro; ISGS from Hart et al. 2012), p3k14c UWyo2021, filed under Horton, Wiltshire, whose only own date is BM-2816."
+
+[[reject]]
+site = "Hermitage"
+lab = "AA-10371"
+source = "https://xronos.ch/c14s/171574"
+note = "Hermitage, Glen Canyon, Utah (Geib 1994, 1996; p3k14c -111.89, 37.29), filed under the Mesolithic Hermitage, Castleconnell, Co. Limerick."
+
+[[reject]]
+site = "Hermitage"
+lab = "AA-10372"
+source = "https://xronos.ch/c14s/171575"
+note = "Hermitage, Glen Canyon, Utah (Geib 1994, 1996; p3k14c -111.89, 37.29), filed under the Mesolithic Hermitage, Castleconnell, Co. Limerick."
+
+[[reject]]
+site = "Garden"
+lab = "Beta-150344"
+source = "https://xronos.ch/c14s/192538"
+note = "An American or Canadian 'Garden' (Emerson et al. 2009, Illinois; S-1275 Canada; p3k14c UWyo2021/CARD), filed under Garden, Stirlingshire (Ellis 2002)."
+
+[[reject]]
+site = "Garden"
+lab = "Beta-150345"
+source = "https://xronos.ch/c14s/192539"
+note = "An American or Canadian 'Garden' (Emerson et al. 2009, Illinois; S-1275 Canada; p3k14c UWyo2021/CARD), filed under Garden, Stirlingshire (Ellis 2002)."
+
+[[reject]]
+site = "Garden"
+lab = "Beta-147212"
+source = "https://xronos.ch/c14s/192011"
+note = "An American or Canadian 'Garden' (Emerson et al. 2009, Illinois; S-1275 Canada; p3k14c UWyo2021/CARD), filed under Garden, Stirlingshire (Ellis 2002)."
+
+[[reject]]
+site = "Garden"
+lab = "Beta-152119"
+source = "https://xronos.ch/c14s/192848"
+note = "An American or Canadian 'Garden' (Emerson et al. 2009, Illinois; S-1275 Canada; p3k14c UWyo2021/CARD), filed under Garden, Stirlingshire (Ellis 2002)."
+
+[[reject]]
+site = "Garden"
+lab = "S-1275"
+source = "https://xronos.ch/c14s/310523"
+note = "An American or Canadian 'Garden' (Emerson et al. 2009, Illinois; S-1275 Canada; p3k14c UWyo2021/CARD), filed under Garden, Stirlingshire (Ellis 2002)."
+
+[[reject]]
+site = "Meer I Meirberg"
+lab = "GIN-8399"
+source = "https://xronos.ch/c14s/241165"
+note = "18,700 BP, Guslitzer & Kanivets, 'Caves of the Pechora Urals': a Urals cave date filed under the Belgian Meer 'Meirberg' and giving the site its position in the Urals (fixed in corrections.toml)."
+
+[[reject]]
+site = "Sewell's Cave"
+lab = "GIN-6209"
+source = "https://xronos.ch/c14s/241052"
+note = "13,680 BP, Kuzmin & Orlova 1998 (Siberian Palaeolithic): filed under Sewell's Cave, Yorkshire, and giving it a position in Ukraine (fixed in corrections.toml)."
+
+[[refile]]
+site = "Bury Hill"
+lab = "OxA-17282"
+name = "Bury Hill, Hampshire"
+at = [-1.507, 51.19]
+source = "https://xronos.ch/c14s/292548"
+note = "2135 BP (Bevan 2017; p3k14c -1.507, 51.19): the Iron Age hillfort of Bury Hill by Andover, not the Sussex causewayed enclosure the other dates belong to."
+
+[[refile]]
+site = "Bury Hill"
+lab = "OxA-17283"
+name = "Bury Hill, Hampshire"
+at = [-1.507, 51.19]
+source = "https://xronos.ch/c14s/292549"
+note = "2175 BP, as OxA-17282."

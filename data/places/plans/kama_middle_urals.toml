@@ -1,0 +1,138 @@
+[meta]
+place = "kama_middle_urals"
+written = "2026-11-12"
+verdict = "research"
+confidence = "high"
+really_empty = "Almost. The box (53.5-61.5 E, 56-60.5 N, 200 land hexes, no water in any epoch) holds one dated Holocene record, Beregovaya 2 (59.99, 57.93; six dates 10,200-9610 BP, so 9,920-8,990 BCE). There is no site in the box or within 100 km from 7,000 BCE on; the nearest is 423-723 km away. Beregovaya 2 really is in the Gorbunovo bog by Nizhny Tagil, but our record stops at 8,990 BCE. The site has dated Middle and Late Mesolithic, Early Neolithic (about 6200 cal BC) and Chalcolithic layers. Everything else in the raw p3k14c and XRONOS files for this area is Palaeolithic, and much of it carries West European names shifted onto Russian coordinates (Igue des Rameaux, Tapado do Motinho, Klappholz, Stranska Skala, Garzweiler). Our data has no record at all for the Shigir bog, the Kama Neolithic or the Kama Mesolithic. The only Kama-area point anywhere in our inputs is Kochurovskoe I (52.45, 56.8) in Dolbunova et al.'s lipid table, just west of the box, and it feeds the pottery layer, not the settlements."
+why_empty = ["not_in_open_compilations", "publication_access", "research_intensity", "dataset_edge"]
+summary = """
+The Kama basin around Perm and the eastern slope of the Middle Urals
+between Nizhny Tagil and Yekaterinburg. The eastern-slope peat bogs, Shigir
+(68 archaeological sites) and Gorbunovo (38 sites), formed over palaeolakes
+and preserve wood. They give the Shigir idol, which recent AMS dating puts at
+about 11,600 years ago, and the larch trackways and stakes of Beregovaya-2.
+The Kama Neolithic of the Cis-Urals is a pottery-using forager culture of
+the second quarter of the 6th to the early 4th millennium cal BC. On our board
+the box is 200 forest hexes with no river or lake on record, and there is one
+dated site, cut off at 8,990 BCE.
+
+The cause is compilation. The open compilations take this region only
+through the Vermeersch Palaeolithic list (hence the caves and the shifted
+names) and a handful of RADON rows. The Holocene literature is substantial
+and partly open. Zaretskaya et al. 2012 publish 61 dates from Varga-2 at
+Shigir and Beregovaya-2 at Gorbunovo, with Early Mesolithic from about
+9300 cal BC and Early Neolithic about 6200-5700 cal BC. Lychagina &
+Vybornov 2017 list more than 50 dates for about 30 Kama Neolithic sites
+(Khutorskaya, Lake Chashkinskoye I/IIIa/VI, Lyovshino, Ziarat, Mokino,
+Tarhan I and others). Those sites have no coordinates, only a numbered map.
+Chairkina, Kuzmin & Hodgins 2017 publish 153 Trans-Urals dates from the
+Mesolithic to the Bronze Age (abstract only). The grid's eastern edge at
+66 E is not the problem here (the box ends at 61.5 E). The Trans-Urals
+lowland beyond, which holds most of Chairkina's sites, is at the edge.
+
+The user asked whether the board shows the lakes. It does not:
+no water hex, and nothing for the box in lakes.toml or rivers.toml. The Shigir
+and Gorbunovo palaeolakes were small, sub-hex basins (my inference from the
+bog maps in Zaretskaya et al. 2012; I found no area stated), so no water
+hex is right. The real board gap is the rivers. The Kama, Volga's largest
+tributary, is absent, and so are the Vishera, Chusovaya, Belaya and Vyatka.
+The Kama Neolithic sites sit on the first terraces and oxbow lakes of
+exactly those rivers (Lychagina & Vybornov 2017). On the eastern slope the
+Tagil, Neiva and Iset are absent too.
+
+Do this: enter the Shigir/Gorbunovo dates; geolocate and enter the Kama
+Neolithic table; get the Chairkina 2017 date list; add the Kama system to
+rivers.toml. Until then, inferred Kama Neolithic camps along the Kama and
+inferred Mesolithic camps at the eastern-slope palaeolakes can go beside
+the record.
+"""
+
+[proposed_place]
+key = "kama_middle_urals"
+name = "Kama basin and Middle Urals peat bogs"
+kind = "lake_shore"
+box = [53.5, 56.0, 61.5, 60.5]
+why = "The upper and middle Kama around Perm with the Vishera, Chusovaya and Sylva, and the eastern slope of the Middle Urals between Nizhny Tagil and Yekaterinburg, where the Shigir and Gorbunovo peat bogs fill former lake basins."
+
+[[known_site]]
+name = "Shigir peat bog, Varga-2"
+lon = 60.14
+lat = 57.38
+coordinates = "approximate"
+start = -6020
+end = -5670
+what = "Early Neolithic layer in the western Shigir bog, with a hearth, sherds of several pottery types, stone, bone and wood. Five dates on artefacts: 7106-6850 BP, 6020-5670 cal BC (1 sigma). Lake gyttja under it goes back to 8750 BP. The bog holds 68 sites on the shores and 'islands' of the Shigir palaeolake, and much of it was destroyed by gold mining in the 19th century. The point is Wikipedia's coordinate for the Shigir idol's find spot in the same bog; Varga-2 lies in its western part. Not in our data."
+cite = "Zaretskaya, N.E., Hartz, S., Terberger, T., Savchenko, S.N. & Zhilin, M.G. 2012, Radiocarbon chronology of the Shigir and Gorbunovo archaeological bog sites, Middle Urals, Russia, Radiocarbon 54(3-4):783-794, table 1"
+url = "https://resolve.cambridge.org/core/services/aop-cambridge-core/content/view/F3D2E5D73C3850C8E41225E739698432/S0033822200047433a.pdf/radiocarbon-chronology-of-the-shigir-and-gorbunovo-archaeological-bog-sites-middle-urals-russia.pdf"
+checked = true
+
+[[known_site]]
+name = "Shigir idol find spot (Shigir peat bog)"
+lon = 60.1407
+lat = 57.3809
+coordinates = "published"
+start = -9650
+end = -7700
+what = "Carved larch post, about 4 m down in the Shigir bog, found by gold miners in 1890. Recent AMS dating has it carved about 11,600 years ago (about 9650 BCE; Zhilin et al. 2018, as reported). Earlier conventional dates were 8750 +/- 60, 8680 +/- 140 and 8620 +/- 70 BP, about 7900-7700 cal BC (Savchenko 1999, as cited by Zaretskaya et al. 2012). The span covers both readings, and Wikipedia also gives a 2021 reanalysis. It is evidence of a lakeside presence, not a settlement; the coordinates are Wikipedia's for the find spot."
+cite = "Zhilin, M., Savchenko, S., Hansen, S., Heussner, K.-U. & Terberger, T. 2018, Early art in the Urals: new research on the wooden sculpture from Shigir, Antiquity 92(362):334-350 (not opened; date as reported by Archaeology magazine); coordinates from Wikipedia, Shigir Idol"
+url = "https://archaeology.org/news/2018/04/25/180425-russia-shigir-idol/"
+checked = true
+
+[[research]]
+what = "Enter Zaretskaya et al. 2012 table 1 (61 dates, open PDF). The paper gives Beregovaya-2 as '5 km south-west of Nizhniy Tagil'. Extend our Beregovaya 2 record with its later layers: IV Middle Mesolithic (9010-8405 BP), III Late Mesolithic with a larch trackway (8350-7960 BP), II Early Neolithic with Koshkino pottery (7325-7278 BP, about 6230-6080 cal BC) and I Chalcolithic Ayat (undated). Add Varga-2 at Shigir as a new site."
+url = "https://resolve.cambridge.org/core/services/aop-cambridge-core/content/view/F3D2E5D73C3850C8E41225E739698432/S0033822200047433a.pdf/radiocarbon-chronology-of-the-shigir-and-gorbunovo-archaeological-bog-sites-middle-urals-russia.pdf"
+yields = "One existing site carried from 9,000 down to about 6,100 BCE, plus one new Early Neolithic site; fills the box's 8,000-6,000 BCE slices"
+effort = "A table of 61 rows with clear contexts; an hour"
+
+[[research]]
+what = "Kama Neolithic: enter table 1 of Lychagina & Vybornov 2017 (about 50 dates, 30 sites in three stages: Early, second quarter of the 6th to the beginning of the 5th millennium cal BC; Khutorskaya, first half of the 5th; Lyovshino, second half of the 5th to the beginning of the 4th) after geolocating the sites. The paper has only a numbered map (fig. 1). Most dates are on pottery food crusts, so allow for a freshwater reservoir effect."
+url = "https://revije.ff.uni-lj.si/DocumentaPraehistorica/article/download/44.9/7343"
+yields = "About 30 Kama Neolithic sites, 5500-3900 cal BC, on the Kama, Vishera, Vyatka, Belaya and Chusovaya; roughly two-thirds inside this box"
+effort = "Typing the table is an hour; geolocating 30 sites from fig. 1 and Russian gazetteers (Perm and Udmurt site registers) is a day. Coordinates approximate, 5-15 km"
+
+[[research]]
+what = "Chairkina, Kuzmin & Hodgins 2017, Radiocarbon 59(2), 153 dates for the Trans-Urals Mesolithic to Bronze Age, and Piezonka et al. 2020, J. Archaeol. Sci. 116:105100, on early pottery in the Urals and West Siberia (new dates). I saw only abstracts and citations."
+yields = "My estimate: 30-60 dated sites on the eastern slope and Trans-Urals lowland, 9000-3000 BCE, many of them just east of the box"
+effort = "Two papers, probably behind paywalls; the University of Arizona repository may hold the Radiocarbon one"
+
+[[research]]
+what = "Board (for whoever owns rivers.toml): add the Kama with the Vishera, Chusovaya, Belaya and Vyatka. On the eastern slope add the Tagil, Neiva and Iset (Ob basin). Without them the 'river' rules in isostyle and any river-based speculation have nothing to work with here. Do not add the Shigir and Gorbunovo palaeolakes as water: they are sub-hex."
+url = "https://revije.ff.uni-lj.si/DocumentaPraehistorica/article/download/44.9/7343"
+yields = "The river skeleton of the whole Cis-Urals; no new sites"
+effort = "A few rivers.toml entries with HydroRIVERS headwater points"
+
+[[speculate]]
+target = "settlements"
+slices = [-5000, -4000]
+rule = "Place inferred Kama Neolithic camps, marked as inferred, on the lower terraces within 5 km of the Kama and its main tributaries (Vishera, Chusovaya, Sylva, Belaya, Vyatka) inside the box. Space them about one per 50 km of channel and prefer oxbow-lake reaches. Trace the channels from HydroRIVERS, because rivers.toml has none of them yet."
+confidence = "medium"
+reasoning = "Lychagina & Vybornov 2017 date the Kama Neolithic from the second quarter of the 6th to the beginning of the 4th millennium cal BC, with more than 50 dates on about 30 sites. They say the sites lie 'on the lower first terrace or high floodplain on the banks of large rivers (Kama, Vishera, Vyatka, Belaya) and oxbow lakes'. They also report rectangular sunken dwellings (Ust-Bukorok, Tarkhan I, Khutorskaya), so people were not just passing through. The 5,000 and 4,000 BCE slices are inside every stage. 6,000 BCE is left out, because the early stage's dates are mostly on food crusts and may be too old. The spacing is a guess well below the real density: 30 dated sites is a sample, not a census."
+basis = ["literature", "neighbouring_evidence"]
+
+[[speculate]]
+target = "settlements"
+slices = [-9000, -8000, -7000, -6000]
+rule = "Place inferred lakeside forager camps, marked as inferred, at the Shigir bog (60.14, 57.38) for every slice from -9000 to -6000. Add more at other bog or lake basins on the eastern slope within 60 km of Shigir and Gorbunovo, if a person confirms them from the Sverdlovsk literature."
+confidence = "medium"
+reasoning = "Shigir holds 68 sites and Gorbunovo 38 (Zaretskaya et al. 2012), and Beregovaya-2 has dated layers in all four slices (Early Mesolithic 9800-9210 BP, Middle 9010-8405, Late 8350-7960, Early Neolithic 7325-7278). Shigir has the idol (9650 or 7900 BCE) and Varga-2 (6020-5670 cal BC). So people used these lakes throughout. Only Gorbunovo is in our record, and only to 8,990 BCE. The authors argue that Mesolithic settlement of the Middle Urals began in the early Holocene, as in central and eastern Europe. The extension to other basins is low confidence: I know other eastern-slope lakes have sites, but I have no source open for them."
+basis = ["neighbouring_evidence", "literature"]
+
+[[speculate]]
+target = "isostyle:waterlogged_organics"
+slices = [-9000, -8000, -7000, -6000, -5000, -4000, -3000]
+rule = "Within 25 km of the Shigir (60.14, 57.38) and Gorbunovo (59.93, 57.89) bogs, raise waterlogged organics from the judged 0.09 to 0.7."
+confidence = "medium"
+reasoning = "Both bogs are classics of preserved wood: the Shigir idol, the Beregovaya-2 larch trackway, sharpened stakes driven into the lake bottom, a bundle of 11 arrows, and willow-bark bindings on net sinkers that were themselves dated (Zaretskaya et al. 2012, table 1). The macro-region value is an average over a region of dry sites. 0.7 because nearly every excavated site in these two bogs has a peat-bog part, while the rocky capes above them do not."
+basis = ["literature", "neighbouring_evidence"]
+
+[[speculate.adjust]]
+kind = "near"
+point = [60.14, 57.38]
+radius_km = 25
+value = 0.7
+
+[[speculate.adjust]]
+kind = "near"
+point = [59.93, 57.89]
+radius_km = 25
+value = 0.7

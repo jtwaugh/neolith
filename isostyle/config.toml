@@ -24,6 +24,7 @@ pipeline_config = "pipeline/config.toml"
 curve = "build/settlements/intcal20.14c"
 same_km = 1.0
 same_name_km = 10.0
+share_km = 10.0
 # Occupation episodes: a site's dates are chained while their 95% calibrated
 # ranges overlap or lie within this many years of each other.
 episode_gap = 200
@@ -43,8 +44,11 @@ rules = "data/isostyle/label_presence.toml"
 # A dataset record within this distance of a dated site, overlapping one of
 # its episodes in time, marks that episode instead of adding a new one.
 match_km = 2.0
-# Hand-extracted tables kept in the repo: reader function -> path.
-inputs = { jordan2016 = "data/isostyle/inputs/jordan2016_africa.csv" }
+# Hand-extracted tables kept in the repo: reader function -> path. Empty
+# since the Jordan et al. 2016 table (an all-rights-reserved supplement) was
+# dropped on 2026-11-13; its North African and Saharan sites come from
+# Rotunno & Crema 2025 and MedAfriCarbon instead (data/isostyle/inputs/README.md).
+inputs = {}
 
 [surface]
 # Candidate kernel widths (km) for leave-one-site-out cross-validation.
@@ -218,11 +222,9 @@ id = "23738404"
 match = '^1_NREs\.csv$'
 file = "rondels_v1.1.csv"
 
-[[sources]]
-name = "Paulsson 2019 PNAS supplementary files via Europe PMC (CC BY-NC-ND; read unmodified, not redistributed)"
-kind = "url"
-url = "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC6397522/supplementaryFiles"
-file = "paulsson2019_supplement.zip"
+# Paulsson 2019 (PNAS 116:3460) megalith dates were joined here by lab number
+# until 2026-11-13. Their supplement is CC BY-NC-ND, which our CC BY-SA data
+# cannot carry, so megalithic_tombs now rests on XRONOS site types alone.
 
 # ----------------------------------------------------------------- environment
 [[sources]]

@@ -765,7 +765,7 @@ reasoning = "1770 cells, 0 edge evidence, nearest point 1071 km. The 10,000 BCE 
 literature = [
   { cite = "Huysecom et al. 2009, 'The emergence of pottery in Africa during the tenth millennium cal BC: new evidence from Ounjougou (Mali)', Antiquity 83", checked = false },
 ]
-would_settle = "Fuller digitisation of the Jordan et al. 2016 earliest-pottery table and the Ounjougou sequence."
+would_settle = "An open, per-site record of earliest pottery in West Africa transcribed from the primary reports (the Jordan et al. 2016 table is not openly licensed; data/isostyle/inputs/README.md lists its sites), and the Ounjougou sequence."
 speculative_rule = "0.15 in the Malian and Nigerien Sahel south of 18°N, 0.05 further north."
 
 [[judgement.adjust]]
@@ -1154,6 +1154,52 @@ reasoning = "No coverage in any slice. Pottery is reported from Ethiopian rock s
 literature = []
 would_settle = "Dated Ethiopian and Somali LSA/Neolithic layers with ceramic status."
 speculative_rule = "Do not fill before 5,000 BCE; after, 0.4 in the western lowlands and unknown in the highlands."
+
+# The Horn judgement above has expected = "unknown", which the fill skips, so
+# adjusts under it do nothing. This one carries the place plans' caps: it
+# withdraws itself from the whole Horn, then sets three places.
+[[judgement]]
+region = "Horn of Africa"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000]
+gap_ids = []
+why_empty = ["research_intensity", "not_in_open_compilations"]
+why_note = "Extrapolated pottery of 0.3-0.8 at three places the exotic critic looked at, where the literature has pottery only late."
+expected = 0.05
+expected_range = [0.0, 0.3]
+confidence = "low"
+basis = ["literature", "neighbouring_evidence"]
+reasoning = "Lake Tana: pottery at Kurtiye from the 6th millennium BP, none known on the plateau before the 9th-10th millennium BCE Sudanese horizon (data/places/plans/lake_tana.toml). Cape Guardafui: northern Somali pottery dated only to 1,600-2,100 BP at Karin Heegan (guardafui.toml). Lake Abhe: pottery arrives with herding, 4.8-3.3 ka cal BP (Khalidi et al. 2020 abstract; lake_abbe.toml)."
+literature = [
+  { cite = "Firew 2014, Archaeological fieldwork around Lake Tana area of Ethiopia (PhD, Bergen)", checked = false, url = "https://hdl.handle.net/1956/8931" },
+  { cite = "Khalidi et al. 2020, Quaternary Science Reviews 243:106459", checked = false, url = "https://doi.org/10.1016/j.quascirev.2020.106459" },
+]
+would_settle = "The Kurtiye and Abhe date tables with ceramic status; any dated LSA layer in north-east Somalia."
+speculative_rule = "0.05 at Lake Tana to 8,000 BCE and at Cape Guardafui to 4,000 BCE; 0.1 in the Abhe basin to 4,000 BCE; the rest of the Horn as before."
+
+[[judgement.adjust]]
+kind = "area"                              # withdraw from the whole Horn first
+bbox = [30.0, 0.0, 60.0, 20.0]
+value = "unknown"
+
+[[judgement.adjust]]
+kind = "area"                              # Lake Tana; data/places/plans/lake_tana.toml
+bbox = [36.7, 11.4, 37.9, 12.5]
+value = 0.05
+slices = [-10000, -9000, -8000]
+firm = true                                # small box: the fill otherwise smooths it back to 0.44-0.47
+
+[[judgement.adjust]]
+kind = "area"                              # Cape Guardafui; data/places/plans/guardafui.toml
+bbox = [50.1, 10.9, 51.5, 12.3]
+value = 0.05
+firm = true
+
+[[judgement.adjust]]
+kind = "near"                              # Lake Abhe basin; data/places/plans/lake_abbe.toml
+point = [41.75, 11.25]
+radius_km = 90
+value = 0.1
+firm = true
 
 # ---------------------------------------------------------------- Other (Pakistan edge)
 

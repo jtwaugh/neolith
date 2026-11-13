@@ -1,0 +1,109 @@
+[meta]
+place = "north_caspian_lowland"
+written = "2026-11-12"
+verdict = "research"
+confidence = "medium"
+really_empty = "Very thin, and half of what is there is misplaced. The proposed box (45.0-54.0 E, 45.0-50.6 N; 135 land hexes at 10,000 BCE, 264 from 9,000 to 6,000 BCE, 206 from 5,000 BCE) holds four records: Varfolomeevskaya (6,850-5,890 BCE, 13 dates), Surskoy Ostrov 2 (6,050 BCE), Kairsak III (5,840-5,630 BCE) and Dzangar (5,020-4,760 BCE). Ust-Tashelka (6,710-6,550 BCE) is 6 km outside. Nothing is in the box at 10,000-8,000 BCE or at 3,000 BCE. Varfolomeevskaya and Surskoy Ostrov 2 share the longitude 46.582 E and sit near Lake Elton. Varfolomeevka is on the Maly Uzen by the Varfolomeevskoye reservoir, about 100-150 km east of that point (Yudin, as quoted in a search summary; Dolbunova's table has 47.80 E, 50.52 N). Surskoy Ostrov is a Dnieper site and has no business here (its reference is Kotova 2009). Kairsak III's position disagrees with Dolbunova's by 75 km. Not in our data: Algay and Oroshaemoe I on the Bolshoy Uzen (18 dates, 6,271-4,557 cal BC), Baibek, Kugat IV, Tenteksor, Berezhnovka-2 (AADR), and the Orlovka type site."
+why_empty = ["not_in_open_compilations", "research_intensity", "submerged", "publication_access"]
+summary = """
+The Caspian's own lowland north of the sea: the Trans-Volga steppe from
+Volgograd and the Uzen rivers down to the Volga-Ural interfluve and the
+Kalmyk Black Lands. Most of it is below 0 m and was sea floor in the late
+Khvalynian. On the board it is half water at 10,000 BCE, wholly land from
+9,000 to 6,000 BCE (58 hexes of it are drowned later), and a quarter water
+from 5,000 BCE. So the board does track the Caspian; the question of when
+the Mangyshlak lowstand ended is set out in the volga_delta plan. The board
+has no Kamysh-Samar lakes at the end of the Uzens, no Sarpa lakes, and no
+Elton or Baskunchak, though Elton alone is about 150 km2.
+
+The record is better than our data. The Orlovka culture (Varfolomeevka;
+the lower layer at Oroshaemoe I, with pottery from c. 6200-5900 cal BC),
+the Kairshak-Tenteksor group of the interfluve, and the Cis-Caspian and
+Khvalynsk Eneolithic all have radiocarbon series. Kulkova et al. 2019 give
+18 dates for Algay and Oroshaemoe I alone, with domestic sheep and goat at
+c. 5000-4700 cal BC. Little of this reached XRONOS, and two of the four
+records that did are in the wrong place. The causes are, in order: not in
+open compilations, coordinates assigned badly on the way in, and real
+research thinness, since excavations are few, as Kulkova et al. say
+themselves. Submergence hides only the strip south of the modern coast.
+
+Do this: (1) correct Varfolomeevskaya and Surskoy Ostrov 2; (2) enter Kulkova
+et al. 2019 Table 1 and the Vybornov series; (3) add the AADR burials
+(Berezhnovka-2; Khlopkov-Bugor and Panitskoe just north); (4) put inferred
+Orlovka-type camps along the Uzens and the Sarpa until (2) is done.
+"""
+
+[proposed_place]
+key = "north_caspian_lowland"
+name = "North Caspian lowland"
+kind = "drowned_plain"
+box = [45.0, 45.0, 54.0, 50.6]
+why = "The Caspian lowland north of the sea, from the Uzen rivers and the Volga-Ural interfluve down to the Kalmyk steppe: late Khvalynian sea floor that was dry during the Mangyshlak lowstand, and in part flooded again by the New Caspian."
+
+[[known_site]]
+name = "Algay"
+lon = 48.53
+lat = 50.16
+coordinates = "approximate"
+start = -6271
+end = -4558
+what = "Multilayer site on the right bank of the Bolshoy Uzen, Saratov oblast, with Orlovka Neolithic, Cis-Caspian and Khvalynsk Eneolithic layers. 13 dates in Kulkova et al. 2019 Table 1, from 6271-6008 cal BC (humic acids, SPb-2144) to 4571-4558 cal BC (SPb-1968). The authors put the Orlovka layer at c. 5900-5700 cal BC. The coordinates are Dolbunova's, which coincide with the district centre at Alexandrov Gay, so they may be good only to about 20 km."
+cite = "Kulkova, M.A., Vybornov, A.A., Yudin, A., Doga, N. & Popov, A. 2019, New interdisciplinary research on Neolithic-Eneolithic sites in the Low Volga River region, Documenta Praehistorica 46:376-387, Table 1"
+url = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/46.23"
+checked = true
+
+[[known_site]]
+name = "Oroshaemoe I"
+lon = 48.5
+lat = 50.15
+coordinates = "approximate"
+start = -6227
+end = -4557
+what = "Stratified settlement on the right bank of the Bolshoy Uzen near Algay. The lower layer is Orlovka culture, c. 6200-5900 cal BC (SPb-2141, SPb-2143); the middle is Cis-Caspian, c. 5000-4700 cal BC, with bones of domestic sheep and goat; the top is Khvalynsk, c. 4725 cal BC (UGAMS-23059 on kulan bone). Point placed next to Algay; the paper's location map gives no coordinates."
+cite = "Kulkova, M.A. et al. 2019, Documenta Praehistorica 46:376-387, Table 1"
+url = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/46.23"
+checked = true
+
+[[known_site]]
+name = "Berezhnovka-2 (kurgan cemetery)"
+lon = 45.78
+lat = 50.3
+coordinates = "published"
+start = -4929
+end = -4173
+what = "Burials in the Nikolayevsky district, Volgograd oblast, on the left bank of the Volga. 8 genomes in AADR dated 4929-4730 calBCE (5955+/-20 BP, PSUAMS-8815) to 4235-4173 calBCE (combined 5308+/-18 BP). The AADR group is labelled EBA (Berezhnovka), but these dates are Eneolithic. Possibly reservoir-affected."
+cite = "Allen Ancient DNA Resource v66.p1 (Mallick et al. 2024); samples published by Lazaridis et al. 2025, Nature"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
+checked = true
+
+[[known_site]]
+name = "Baibek"
+lon = 48.84
+lat = 46.45
+coordinates = "published"
+start = -6000
+end = -5400
+what = "Kairshak-Tenteksor group pottery site in the Volga-Ural interfluve (53 vessel samples in Dolbunova's table). The start is its modelled pottery start of 6000 BC; the end is the end of the Lower Volga Neolithic in Vybornov et al. 2018, not a site date. Also listed in the volga_delta plan."
+cite = "Dolbunova, E. et al. 2023, Nature Human Behaviour 7:171-183, Zenodo 6619101; Vybornov, A. et al. 2018, Radiocarbon 60(5):1597-1610"
+url = "https://zenodo.org/records/6619101"
+checked = true
+
+[[research]]
+what = "Enter Kulkova et al. 2019, Table 1 (Algay, 13 dates; Oroshaemoe I, 5 dates) and the Varfolomeevka series. XRONOS already has 13 Kiev dates for Varfolomeevka, but at the wrong point; Yudin reports 36 dates from the site. Then the Vybornov series for Kairshak, Tenteksor, Baibek and Kugat (see the volga_delta plan)."
+url = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/46.23"
+yields = "6-8 well-dated sites, 6,300-4,500 cal BC, in a box that now has two correctly placed records"
+effort = "Two or three open papers; Varfolomeevka's full list is in Yudin's monograph (2004), in print"
+
+[[research]]
+what = "Fix the two misplaced records. Varfolomeevskaya: move from 46.582 E, 49.038 N to the Maly Uzen by the Varfolomeevskoye reservoir; Dolbunova's 47.80 E, 50.52 N is a first approximation, and the exact point should be read off Yudin's or Vybornov's site map. Surskoy Ostrov 2 (KI-6690, citing Kotova 2009): move to the Dnieper rapids. Both share an odd longitude, 46.582, which suggests a bad geocode somewhere upstream (XRONOS or RADON); look for other records at that longitude."
+url = "https://journals.eco-vector.com/2658-4816/article/download/569138/134519"
+yields = "Two corrections; possibly more records with the same bad geocode"
+effort = "An hour"
+
+[[speculate]]
+target = "settlements"
+slices = [-7000, -6000, -5000]
+rule = "Place inferred Orlovka- and Kairshak-type camps along the Bolshoy and Maly Uzen, the Eruslan and the Sarpa lowland, and on the dune ridges of the Volga-Ural interfluve, about one per 50 km of valley or ridge, marked inferred."
+confidence = "medium"
+reasoning = "Every excavated Neolithic site of this lowland that I could place is on one of these water lines: Varfolomeevka on the Maly Uzen; Algay and Oroshaemoe I on the Bolshoy Uzen; Kairshak, Kugat and Baibek in the interfluve. They are dated from c. 6,200 cal BC (Oroshaemoe I, lower layer) through the 6th millennium. Kulkova et al. stress how few sites have been excavated, which means the gaps between them are unexcavated, not empty. Medium confidence for 6,000 and 5,000 BCE. For 7,000 BCE confidence is lower: it rests on Varfolomeevka's early pottery dates (7,950-7,520 BP in our raw data), which may carry reservoir offsets."
+basis = ["neighbouring_evidence", "literature", "analogy"]

@@ -1,0 +1,241 @@
+[meta]
+place = "upper_volga_lakes"
+written = "2026-11-12"
+verdict = "research"
+confidence = "high"
+really_empty = "No, but thin and partly misplaced. The box (36-42.5 E, 55-58.2 N, 127 land hexes, no water in any epoch) holds six dated records, all from XRONOS via p3k14c: Ivanovskoye, Zolotoruce, Starnska Skala, Stanovoe 4, Sakhtysh 2 and Ivanovskoe 3; Podoli V (5 km W) and Berendeevo 2a (89 km N) lie just outside. Read against Zaretskaya et al. 2005, three are put in the wrong place: Ivanovskoye (37.82, 55.77; GIN-9516 = Ivanovskoe-7), Ivanovskoe 3 (38.03, 56.06) and Stanovoe 4 (37.88, 55.95; GIN-8378) all sit in Moscow's north-eastern suburbs. Ivanovskoye is the name of a district of eastern Moscow, so the records look geocoded by name. The real sites are 100-180 km further NE, near Pereslavl-Zalessky and between Yaroslavl and Ivanovo. 'Starnska Skala' (KIA-35152, citing Hartz et al. 2010) is a Stanovoje 4 date carrying a Czech site's name. 'Ivanovskoye' has a French date (OxA-19831, 14110 BP, from near Isturitz) merged into it, which gives it a false start of 15,230 BCE. The genuine Stanovoje KIA dates were merged by name into a British record at -2.65, 51.28. No site of any kind falls in the box for the 7,000 or 3,000 BCE slices. There is no Zamostje record in the box: a 'Zamostye 2' (GIN-7988, 7200 BP, citing Zaretskaya) sits at 25.43, 48.35 in Ukraine. There is nothing for Ozerki, Sakhtysh 14, Lake Nero, Lake Pleshcheyevo, the Meshchera lakes or any Lyalovo or Volosovo site."
+why_empty = ["not_in_open_compilations", "publication_access", "recording_practice", "sampling_bias"]
+summary = """
+The Upper Volga - Oka interfluve, from Tver to Murom and from the Meshchera
+to Yaroslavl, is one of the classic wetland Stone Age regions of Europe. Its
+peat bogs formed over small post-glacial lakes, and they hold stratified
+Butovo Mesolithic, Upper Volga Early Neolithic, Lyalovo and Volosovo layers
+with wood, bark, bone and antler preserved. On our board the box is 127
+boreal or temperate forest hexes with the Volga as the only river, and six
+dated records, half of them misplaced (see really_empty). The residual model
+expects 3 to 5 sites per epoch here and calls it 'as expected', because the
+site list's own pattern has nothing better to learn from. Before 6,000 BCE
+the true record is denser than ours. One paper, Zaretskaya et al. 2005,
+gives about 170 radiocarbon dates from four bog sites (Ivanovskoe-7,
+Stanovoe-4, Sakhtysh-14, Sakhtysh-2a), with layers from earliest Butovo
+(before 10,300 BP, c. 9600 cal BC) to the Upper Volga Neolithic (7030-6500 BP).
+Zamostje 2 on the Dubna has more than 100 dates (Meadows et al. 2015). Ozerki
+near Tver has about 20 Mesolithic and Neolithic sites. Pesochnoe-1 on Lake
+Nero has dated Lyalovo (4430-3900 cal BC) and Volosovo (3000-2840 cal BC)
+layers. Almost none of this is in XRONOS or p3k14c. What did get in came
+through RADON or the Vermeersch Palaeolithic list with broken names and
+positions.
+
+So the emptiness is a compilation problem, made worse by two
+data-handling faults. The first is coordinates geocoded by place name in
+the source. The second is that p3k14c's Vermeersch2019 rows have names
+shifted to an alphabetical neighbour ('Jagerhaushohle' at Ivanovskoye's
+point, 'Zolotovka' at Zolotoruce's, 'Karain B' at Karacharovo's, 'Suponevo'
+at Sungir's), and our build merges records by name across thousands of
+kilometres. The bog sites are a sampling bias of their own: they are where
+the peat was cut and organics survive. Survey of the dry sandy terraces (the
+Meshchera alone has over 150 Final Palaeolithic and Mesolithic sites, by an
+abstract I could not open) yields few dates.
+
+The user asked whether the board shows the Preboreal lakes. It does not,
+and mostly it should not. The board has no lake and no water hex in the
+box in any epoch, and lakes.toml has none nearer than Ladoga. The dated
+palaeolakes the sites sat on were small: the Podozerskiy lake at Stanovoe-4
+was 5 by 3 km, the Ivanovskoe basin two small lakes joined by a channel, and
+the Sakhtysh lake 'wide'. A hex is about 1,460 km², so none of them can be a
+water hex. Nor were the big basins bigger then. Lake Nero was lower than
+today from about 13,000 cal BP (Wohlfarth et al. 2006), and a 2022 study
+puts it 7 m below today in the Late Glacial and Early Holocene.
+Pesochnoe-1's lower part is now under the lake. Borisova et al. 2022 found
+no single large MIS 2 lake in the Rostov-Kostroma lowland: the lakes there
+were about their modern size. What the literature does describe is lake
+levels that moved: transgressions drowned Stanovoe-4 and Ivanovskoe-7 and
+pushed people off them more than once in the Preboreal and Boreal. That is
+a sub-hex wetland attribute, not a map of water.
+
+The one hex-scale Preboreal lake nearby is the Mologa-Sheksna proglacial
+lake, just north of the box (under today's Rybinsk Reservoir). It survived
+into the early Holocene and finally drained around 10.9-10.7 cal ka BP,
+about 8950-8750 BCE (search summaries of Sadokov and colleagues; the
+Allerod level was 96-102 m by an EGU abstract I opened). Our ETOPO raster
+has about 4,100 km² below 100 m and 5,200 km² below 105 m there, so a
+lakes.toml entry would give the 10,000 BCE slice two to four water hexes.
+Caution: ETOPO probably records the reservoir's surface there, not the old
+valley floor. The board also lacks the Oka and every other Volga tributary.
+
+Do this, in order. (1) Correct the three misplaced records and undo the
+name merges (corrections listed in the caller reply and the research
+entries below). (2) Enter the four bog sites from Zaretskaya et al. 2005,
+then Zamostje 2, Ozerki and Pesochnoe-1. (3) Get the IHMC radiocarbon
+catalogue of the Neolithic of northern Eurasia (Timofeev, Zaitseva et al.)
+for Lyalovo and Volosovo. (4) Hand the board two items: the Mologa-Sheksna
+lake at 10,000 BCE, and the Oka. A small speculative layer (wetland camps
+in the lake lowlands, waterlogged organics at the bog clusters) can go
+beside the record now.
+"""
+
+[proposed_place]
+key = "upper_volga_lakes"
+name = "Upper Volga - Oka interfluve lakes and bogs"
+kind = "lake_shore"
+box = [36.0, 55.0, 42.5, 58.2]
+why = "Lake and peat-bog lowlands between the upper Volga and the Oka, from Tver to Murom and from the Meshchera to Yaroslavl: the Dubna and Nerl valleys, the Rostov basin with Lake Nero, Lake Pleshcheyevo and the Meshchera lakes."
+
+[[known_site]]
+name = "Ivanovskoe-7 (Ivanovskoye peat bog)"
+lon = 39.19
+lat = 56.93
+coordinates = "approximate"
+start = -9300
+end = -3500
+what = "Multi-layer peat-bog site on a cape at the north side of a fen that filled a periglacial lake basin (two lakes joined by a channel) in the Nerl'-Klyazma valley: Early Butovo (9690-9500 BP), Middle-to-Late Butovo (8550-8200 BP), Final Butovo (7500-7320 BP), Upper Volga Early Neolithic (from c. 7100 BP) and an undated Lyalovo layer I. The 3,500 BCE end is the end of Lyalovo after Alexandrovskiy et al. 2012, not a date from this site. The position is worked out from the paper's '30 km north-east of Pereslavl'-Zalesskiy', good to about 10 km. Already in our data as 'Ivanovskoye' (GIN-9516) and probably 'Ivanovskoe 3' (LE-1904, LE-1948), but put 150 km away in eastern Moscow: this entry is the correct place for those records."
+cite = "Zaretskaya, N.E., Zhilin, M.G., Karmanov, V.N. & Uspenskaya, O.N. 2005, Radiocarbon dating of wetland Meso-Neolithic archaeological sites within the Upper Volga and Middle Vychegda, Geochronometria 24:117-131, tables 1, 3-7"
+url = "http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf"
+checked = true
+
+[[known_site]]
+name = "Stanovoe-4 (Stanovoje 4, Podozerskiy peat bog)"
+lon = 40.4
+lat = 57.3
+coordinates = "approximate"
+start = -9600
+end = -5800
+what = "Peat-bog site at the outlet of the Lakhost' river from the Podozerskiy bog, on a cape of an old lake terrace. Layers: Earliest Butovo (before 10,300 BP; main use 9600-9250 cal BC; 'the earliest dated Mesolithic settlement on the Russian plain'), Ienevo (9620-9590 BP), Middle Butovo (9280-8540 BP) and Upper Volga Early Neolithic (7030 +/- 100 BP, GIN-8378). The point is the midpoint between Yaroslavl and Ivanovo, from the paper's 'halfway between Yaroslavl' and Ivanovo'; the error could be 20 km. Wikipedia (after Zhilin) gives the lake as 5 x 3 km. In our data the record 'Stanovoe 4' (GIN-8378) sits at 37.88, 55.95 near Moscow. The KIA dates published by Hartz et al. 2010 appear as 'Starnska Skala' (40.66, 57.46), and as 'Stanovoje', merged into a British record."
+cite = "Zaretskaya et al. 2005, Geochronometria 24:117-131, tables 3, 4, 7"
+url = "http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf"
+checked = true
+
+[[known_site]]
+name = "Sakhtysh-14 (Sakhtysh peat bog)"
+lon = 40.45
+lat = 56.78
+coordinates = "approximate"
+start = -8900
+end = -6000
+what = "Peat-bog site on the right bank of the Koika, about 45 km SW of Ivanovo. Gyttja under the peat shows that 'a wide lake' once filled the basin. Layers: Early Butovo (9550-9350 BP), Middle Butovo (9010-8800 BP, ended by a lake transgression), Late Butovo (8310-7990 BP) and Final Butovo (7200 BP). Not in our data: our 'Sakhtysh 2' (40.42, 56.79) carries the Sakhtysh-2a dates. The point is that record's position; the two sites are in the same bog."
+cite = "Zaretskaya et al. 2005, Geochronometria 24:117-131, tables 3-6"
+url = "http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf"
+checked = true
+
+[[known_site]]
+name = "Zamostje 2"
+lon = 38.01
+lat = 56.68
+coordinates = "published"
+start = -7000
+end = -4000
+what = "Waterlogged Late Mesolithic to Middle Neolithic site on the Dubna river, about 100 km north of Moscow. It has more than 100 radiocarbon dates, more than 30 of them directly on food crusts, and over 18,000 Early Neolithic sherds of the Upper Volga type. Fish weirs and traps were preserved. The coordinates are from Dolbunova et al.'s lipid table, which is already in build/isostyle/sources/dolbunova2023_ora.xlsx. The start and end are rounded from search-engine summaries of Meadows et al. 2019 (c. 6500-4000 cal BC) and Lozovski et al. (Upper Volga layers 6850-6200 BP), which I did not open, so checked = false. Not in our data under any spelling inside the box. The XRONOS 'Zamostye 2' (GIN-7988, 7200 BP, RADON citing Zaretskaya) at 25.43, 48.35 in Ukraine may be this site misplaced."
+cite = "Meadows, J., Lozovski, V.M., Lozovskaya, O.V., Chirkova, S.S., Craig, O., Lucquin, A. & Spataro, M. 2015, Absolute chronology of Upper Volga-type pottery: more evidence from Zamostje 2, Samara Journal of Science 4(3):113-121"
+url = "https://snv63.ru/2309-4370/article/view/22296"
+checked = false
+
+[[known_site]]
+name = "Ozerki peat bog (Ozerki 5, 16, 17)"
+lon = 36.15
+lat = 56.75
+coordinates = "approximate"
+start = -8000
+end = -4800
+what = "About 20 Mesolithic and Neolithic sites exposed by peat cutting near the Shosha, about 20 km from Tver. Ozerki-17 has a Middle Butovo layer of about 8000 BC with stakes, points and a fish hook. Ozerki-16 is about 7800 BC and has Shigir-type arrows. Ozerki-5 is the richest, at 6200-4800 BC (7400-5900 BP), with more than 500 bone and antler items. The facts are from the Wikipedia article, which cites Zhilin 1994; I did not open Zhilin. The position is a guess from '20 km from Tver near the Shosha' and could be 20 km out. Not in our data."
+cite = "Wikipedia, Butovo culture (after Zhilin, M.G. 1994, Archaeological investigations at Ozerki peat bog in 1990-1992, Tverskoy Arkheologicheskiy Sbornik 1:47-52)"
+url = "https://en.wikipedia.org/wiki/Butovo_culture"
+checked = true
+
+[[known_site]]
+name = "Pesochnoe-1 (Lake Nero)"
+lon = 39.35
+lat = 57.12
+coordinates = "approximate"
+start = -4430
+end = -2840
+what = "Settlement on the western shore of Lake Nero, south of Rostov Veliky, whose lower part is now below the lake level. Humic carbon from the cultural layer dates the Lyalovo layer to 5600-5100 BP (4430-3900 cal BC) and the Volosovo layer to about 4400 BP (3000-2840 cal BC); Textile Ceramics layers follow after the window. The paper says other Bronze Age settlements on the Nero shore are being dated the same way. The point is read from 'western shore, south of Rostov', good to about 5 km. Not in our data."
+cite = "Alexandrovskiy, A.L., Voronin, K.V., Dolgikh, A.V., Kovalukh, N.N., Skripkin, V.V. & Glavatskaya, E.V. 2012, Radiocarbon age for the cultural layer of the Neolithic-Bronze Age settlement Pesochnoe-1 (Lake Nero, Russia), Radiocarbon 54(3-4):589-597"
+url = "https://cambridge.org/core/services/aop-cambridge-core/content/view/45D33FB54F44C9A5CCADF0C85C747413/S0033822200047275a.pdf/radiocarbon_age_for_the_cultural_layer_of_the_neolithicbronze_age_settlement_pesochnoe1_lake_nero_russia.pdf"
+checked = true
+
+[[research]]
+what = "Fix what we already hold before adding anything. (a) Move 'Ivanovskoye' (37.8201, 55.7715) and 'Ivanovskoe 3' (38.0275, 56.0571) to the Ivanovskoye bog, about 39.19, 56.93, and 'Stanovoe 4' (37.8792, 55.9496) to about 40.4, 57.3 (positions as in the known_site entries; source Zaretskaya et al. 2005). (b) Take the French OxA-19831 (14110 BP) out of 'Ivanovskoye': it belongs to the Basque site whose name was shifted in p3k14c. (c) Split the British 'Stanovoje' (-2.65, 51.28): the KIA-35153, KIA-39316 and KIA-39317 Mesolithic dates belong at Stanovoe-4. (d) Treat 'Starnska Skala' (40.66, 57.46, KIA-35152) as a Stanovoe-4 date. (e) Check 'Podoli V' (35.917, 56.867, LE-5029, 9180 BP; Tver city centre) and 'Berendeevo 2a' (40.416, 58.997, four LE dates from Dolukhanov). I believe the Berendeevo bog is near Pereslavl-Zalessky (about 39 E, 56.6 N), not in Vologda, but I have not verified it. (f) More generally, audit the p3k14c Vermeersch2019 rows: in Russia I count at least ten pairs where the name is an alphabetical neighbour's. That is a merge-by-name problem in our build, and it reaches beyond this box."
+url = "http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf"
+yields = "Three Mesolithic-Neolithic bog sites moved 100-180 km to where they belong, one false 15,000 BCE start removed, and Stanovoe-4 Mesolithic dates returned to Russia; a check that will catch the same fault elsewhere"
+effort = "An hour for (a)-(e) as corrections.toml entries; a short script for (f)"
+
+[[research]]
+what = "Enter the wetland dates of Zaretskaya et al. 2005 (tables 3-7: lab number, material, 14C age, culture layer) for Ivanovskoe-7, Stanovoe-4, Sakhtysh-14 and Sakhtysh-2a. Keep only the dates the authors accept for each layer, as they say in the text."
+url = "http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf"
+yields = "Four sites with occupation phases from 9600 cal BC to the Early Neolithic, about 170 dates (about 75 printed in the tables); fills the 10,000-6,000 BCE slices"
+effort = "Five short tables, open PDF; positions from the text (approximate, 5-20 km)"
+
+[[research]]
+what = "Zamostje 2: get the date list of Meadows et al. 2015 (Samara Journal of Science, Russian full text) and the later Quaternary International paper by Meadows, Lozovskaya and colleagues on its radiocarbon and isotope results (not opened)."
+url = "https://snv63.ru/2309-4370/article/view/22296"
+yields = "One richly dated site, Late Mesolithic to Middle Neolithic (c. 7000-4000 BCE), with food-crust dates for the reservoir-effect question"
+effort = "One or two papers; enter as phases, not 100 rows"
+
+[[research]]
+what = "The IHMC (St Petersburg) radiocarbon database behind Timofeev, Zaitseva, Dolukhanov & Shukurov 2004, 'Radiocarbon chronology of the Neolithic of Northern Eurasia' (book, title from memory, unverified), and the dataset used in Dolukhanov et al. 2005 (J. Archaeol. Sci. 32). The open way in is Zaitseva et al. 1997 in ISKOS 11, which describes the database. This is the source for Lyalovo, Volosovo and Upper Volga sites across the interfluve and the Meshchera."
+url = "https://journal.fi/iskos/article/view/110428"
+yields = "My estimate: several hundred dates from 100+ Neolithic sites in European Russia, of which perhaps 30-60 sites fall in this box; it is the only route I know to the Lyalovo and Volosovo record at scale"
+effort = "Find a digital copy (the authors' successors at IHMC; Dolukhanov et al. 2005 supplement). If only the print book exists, a few days of typing; coordinates likely need a gazetteer"
+
+[[research]]
+what = "Hartz, Terberger & Zhilin 2010, AMS dates for the Upper Volga Mesolithic (Quartär 57:155-169): the KIA dates for Stanovoje 4 and Zolotoruchje 1 that reached p3k14c under the wrong names. The full article lists the sites' contexts. Quartär is open access at Heidelberg, but its site turned away my automated request, so I have not opened the article; the citation is from Wikipedia's Butovo article and the p3k14c reference field."
+yields = "Confirms the Stanovoe-4 and Zolotoruchye records; maybe one or two more Mesolithic sites"
+effort = "One open article"
+
+[[research]]
+what = "Meshchera lowland: Sorokin's survey of more than 150 Final Palaeolithic and Mesolithic sites (45 excavated: Resseta, Ahrensburgian, Zadnee Pilevo, Kulta, Purgasovo). I could not open it (the page redirected to a 404). Most sites are dated by typology, and the author warns that many radiocarbon dates there date the deposits, not the sites."
+url = "https://readera.org/finalnyj-paleolit-i-mezolit-meshherskoj-nizmennostisovremennyj-vzgljad-143164022-en"
+yields = "A site catalogue for the empty south-east of the box, mostly period-dated, 10,000-6,000 BCE"
+effort = "Find the paper; probably a distribution map, not coordinates"
+
+[[research]]
+what = "Board (for whoever owns lakes.toml and rivers.toml). (1) The Mologa-Sheksna proglacial lake, just north of this box (about 37-39.6 E, 57.8-59.4 N): add it as a lake that lasts into the early Holocene, with level about 100-105 m and final drainage at about 10.9-10.7 cal ka BP (-8950 to -8750). Watch out that ETOPO probably shows the Rybinsk Reservoir's surface there. (2) The Oka (and the Kama, see kama_middle_urals) is missing from rivers.toml. (3) Do not try to draw the Upper Volga bog lakes as water: they were a few to tens of km² each, and their levels went up and down. Nero was lower than today in the early Holocene (Wohlfarth et al. 2006; a 2022 Doklady paper gives 7 m lower). Borisova et al. 2022 found no large MIS 2 lake in the Rostov-Kostroma lowland."
+url = "https://meetingorganizer.copernicus.org/EGU24/EGU24-12877.html"
+yields = "2-4 water hexes at 10,000 BCE north of the box; a river the interfluve's sites can be read against"
+effort = "One lakes.toml entry with a level curve and a citation; one rivers.toml entry"
+
+[[speculate]]
+target = "settlements"
+slices = [-9000, -8000, -7000, -6000, -5000, -4000, -3000]
+rule = "Place one inferred forager camp, marked as inferred, in each land hex of the box whose ETOPO1 minimum lies in a closed or near-closed lowland basin below 130 m: the Meshchera, the Rostov-Nero basin, the Pleshcheyevo basin, the Dubna and Nerl lowlands and the Ozerki-Shosha lowland. Put it at the hex's lowest point (the likely lake or bog edge). Label 9,000-7,000 BCE Butovo, 6,000 BCE Upper Volga, 5,000-4,000 BCE Lyalovo and 3,000 BCE Volosovo. Do not place one in a hex that already has a recorded site in that slice."
+confidence = "medium"
+reasoning = "Every dated site in and near the box is on a palaeolake or bog edge (Zaretskaya et al. 2005: 'all the settlements started and then developed near the lake shores or small river banks'). There are about 20 sites in the single Ozerki bog, and over 150 Mesolithic sites in the Meshchera by Sorokin's count (not opened). So people lived in each of these basins from the Preboreal on; the record is missing only the dates. One camp per hex is far fewer than the real count of sites, which is the point: it marks presence, not density. The 7,000 BCE slice is included even though no recorded site covers it here. Ivanovskoe-7 and Sakhtysh-14 have Late and Final Butovo layers in 8550-7200 BP, so the gap in our data is a gap in compilation. The culture labels follow the cultural sequence of the sites above. The weakest part is the 3,000 BCE Volosovo label, which rests on Pesochnoe-1 alone."
+basis = ["neighbouring_evidence", "literature", "environment"]
+
+[[speculate]]
+target = "isostyle:waterlogged_organics"
+slices = [-9000, -8000, -7000, -6000, -5000, -4000, -3000]
+rule = "Raise waterlogged organics near the dated bog clusters, above the macro-region's judged 0.12: 0.6 within 30 km of the Dubna (Zamostje), Ivanovskoye, Podozerskiy (Stanovoe), Sakhtysh and Ozerki bogs."
+confidence = "medium"
+reasoning = "Each of these bogs has published worked wood: Zamostje's fish traps, a basket trap and planks at Sakhtysh-2a, stakes and sticks dated at Stanovoe-4 and Ivanovskoe-7, and stakes and a pine slat at Ozerki. Zaretskaya et al. 2005 dated reworked wood, sticks and a basket trap directly. Our layer holds 0.06-0.09 here, which is the macro-region's average spread over a box where nearly every known site is a bog site. 0.6, not 1, because the dry-terrace sites of the same cultures (Butovo-1, the Meshchera sites) keep no organics."
+basis = ["literature", "neighbouring_evidence"]
+
+[[speculate.adjust]]
+kind = "near"
+point = [38.01, 56.68]
+radius_km = 30
+value = 0.6
+
+[[speculate.adjust]]
+kind = "near"
+point = [39.19, 56.93]
+radius_km = 30
+value = 0.6
+
+[[speculate.adjust]]
+kind = "near"
+point = [40.4, 57.3]
+radius_km = 30
+value = 0.6
+
+[[speculate.adjust]]
+kind = "near"
+point = [40.45, 56.78]
+radius_km = 30
+value = 0.6
+
+[[speculate.adjust]]
+kind = "near"
+point = [36.15, 56.75]
+radius_km = 30
+value = 0.6

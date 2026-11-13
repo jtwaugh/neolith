@@ -481,6 +481,120 @@ def upland_class(year, precip, coldest, ucfg):
     return "Steppe-Forest" if precip >= ucfg["forest_steppe_precip"] else "Grassland"
 
 
+def forest_type(coldest, warm, year, fcfg, lat=None):
+    """Boreal vs Temperate Forest for one climate (arrays): Boreal where the
+    coldest month's minimum is below `boreal_coldest` or the warmest quarter
+    below `boreal_warm`; Temperate from `temperate_coldest` up; in between
+    (cool mixed forest) Temperate only from `mixed_from` (broadleaf trees
+    there) and where the warmest quarter reaches `mixed_warm`. Never
+    Temperate at or north of `temperate_max_lat` (with `lat`)."""
+    mixed = (year >= fcfg["mixed_from"]) & (warm >= fcfg["mixed_warm"])
+    temperate = (coldest >= fcfg["temperate_coldest"]) | mixed
+    boreal = (coldest < fcfg["boreal_coldest"]) | (warm < fcfg["boreal_warm"]) | ~temperate
+    if lat is not None and "temperate_max_lat" in fcfg:
+        boreal = boreal | (np.asarray(lat) >= fcfg["temperate_max_lat"])
+    return np.where(boreal, "Boreal Forest", "Temperate Forest")
+
+
+def apply_forest_type(t, centres, clim, fcfg, year):
+    """`forest_type` on every Boreal or Temperate Forest hex in `box`. clim:
+    (N, 2) BIO6, BIO10. Hexes without climate keep their class. Returns
+    (terrain, hexes changed)."""
+    b = fcfg["box"]
+    m = (np.isin(t, ["Boreal Forest", "Temperate Forest"])
+         & (centres[:, 0] >= b[0]) & (centres[:, 0] <= b[2])
+         & (centres[:, 1] >= b[1]) & (centres[:, 1] <= b[3])
+         & np.isfinite(clim[:, 0]) & np.isfinite(clim[:, 1]))
+    want = forest_type(clim[:, 0], clim[:, 1], year, fcfg, centres[:, 1])
+    ch = m & (want != t)
+    if not ch.any():
+        return t, 0
+    out = t.copy()
+    out[ch] = want[ch]
+    return out, int(ch.sum())
+
+
+def dry_lowland_class(cls, precip, warm, dcfg):
+    """The class the dry-lowland rule gives a forest hex, or "" to leave it:
+    Steppe-Forest below `steppe_forest_precip` mm a year, else Woodlands below
+    `woodland_precip`, where the warmest quarter (BIO10) is at least
+    `min_warm` degC; only `apply_to` classes change."""
+    if cls not in dcfg["apply_to"] or not np.isfinite(precip) or not np.isfinite(warm):
+        return ""
+    if warm < dcfg["min_warm"]:
+        return ""
+    if precip < dcfg["steppe_forest_precip"]:
+        return "Steppe-Forest"
+    if precip < dcfg["woodland_precip"] and cls != "Woodlands":
+        return "Woodlands"
+    return ""
+
+
+def apply_dry_lowland(t, elev, centres, clim, dcfg):
+    """Apply `dry_lowland_class` to every hex (drawn or filled) in `box`
+    below `max_elevation`. clim: (N, 2) annual precipitation (mm) and
+    warmest-quarter mean (degC). Returns (terrain, hexes changed)."""
+    b = dcfg["box"]
+    cand = np.flatnonzero((np.nan_to_num(elev, nan=1e9) < dcfg["max_elevation"])
+                          & (centres[:, 0] >= b[0]) & (centres[:, 0] <= b[2])
+                          & (centres[:, 1] >= b[1]) & (centres[:, 1] <= b[3]))
+    out, n = t, 0
+    for i in cand:
+        k = dry_lowland_class(t[i], clim[i, 0], clim[i, 1], dcfg)
+        if k and k != t[i]:
+            if out is t:
+                out = t.copy()
+            out[i] = k
+            n += 1
+    return out, n
+
+
+def apply_cold_temperate(t, centres, clim, ccfg, elev=None, year=None):
+    """Temperate Forest where the coldest month's minimum (BIO6) is below
+    `max_coldest` (no test without it) becomes Steppe-Forest below
+    `steppe_forest_precip` mm a year, else Boreal Forest, in `box` (and only
+    up to the year `until`, if given). clim: (N, 2) BIO12, BIO6. Returns
+    (terrain, hexes changed)."""
+    if "until" in ccfg and (year is None or year > ccfg["until"]):
+        return t, 0
+    b = ccfg["box"]
+    m = ((t == "Temperate Forest") & (centres[:, 0] >= b[0]) & (centres[:, 0] <= b[2])
+         & (centres[:, 1] >= b[1]) & (centres[:, 1] <= b[3]))
+    if "max_coldest" in ccfg:
+        m &= np.isfinite(clim[:, 1]) & (clim[:, 1] < ccfg["max_coldest"])
+    if elev is not None and "max_elevation" in ccfg:
+        m &= np.nan_to_num(elev, nan=1e9) < ccfg["max_elevation"]
+    if not m.any():
+        return t, 0
+    out = t.copy()
+    out[m] = np.where(clim[m, 0] < ccfg["steppe_forest_precip"], "Steppe-Forest", "Boreal Forest")
+    return out, int(m.sum())
+
+
+def apply_overrides(t, centres, elev, rules, year):
+    """[[biome.override]]: in each rule's `boxes`, below `max_elevation`
+    (optional), for years in [first, last], hexes of a class in `from`
+    (default: every land biome) become `to`. Last rule wins. Returns
+    (terrain, hexes changed)."""
+    from .compose import in_boxes
+    out, n = t, 0
+    for r in rules:
+        y0, y1 = r["years"]
+        if not (y0 <= year <= y1):
+            continue
+        m = in_boxes(centres, r["boxes"])
+        if "max_elevation" in r:
+            m &= np.nan_to_num(elev, nan=1e9) < r["max_elevation"]
+        src = r.get("from")
+        m &= np.isin(t, src) if src else ~np.isin(t, NON_BIOME + ("Alpine", "Floodplain"))
+        m &= out != r["to"]
+        if m.any():
+            out = out.copy() if out is t else out
+            out[m] = r["to"]
+            n += int(m.sum())
+    return out, n
+
+
 def apply_upland(t, gap, elev, centres, clim, year, ucfg):
     """Apply `upland_class` to gap-filled hexes (`gap`) in `box` at or above
     `min_elevation` that aren't Alpine, Water or Ice. clim: (N, 2) annual

@@ -84,3 +84,656 @@ was = [61.2833, 38.95]
 rename = "Unidentified site (GIN-4442)"
 source = "https://xronos.ch/c14s/240980"
 note = "GIN-4442, 9520 +/- 130 BP, bone, reference 'Buvit I. QI 2011'. The date is not from Pors Nehue on Hoedic, Brittany: it is a Moscow (GIN) date filed under Turkmenistan in p3k14c, where the site names of this block are out of step with the dates (the row before, GIN-4440, is a Siberian position called 'Vogelherd'). XRONOS has the wrong name too and no coordinates. Renamed so the map does not show a Breton site in the Karakum; the position is p3k14c's and is unverified."
+
+# ------------------------------------------------- Russian plain and steppe
+# From data/places/plans/upper_volga_lakes.toml, onega.toml, don_mouth.toml,
+# north_caspian_lowland.toml, samara_bend.toml and manych.toml. Dates filed
+# under another site's name are moved in records.toml [[refile]] instead.
+
+[[fix]]
+name = "Ivanovskoe 3"
+was = [38.0275, 56.0571]
+to = [39.19, 56.93]
+source = "https://journal.fi/fennoscandiaarchaeologica/article/view/126513"
+note = "LE-1904, LE-1948 (Upper Volga Early Neolithic). Filed in Moscow's north-eastern suburbs, like the Ivanovskoe-7 dates, apparently geocoded by name. Ivanovskoe 3 and 7 are one point on Zhilin's map (Fig. 1, no. 6), in the Ivanovskoye bog 30 km north-east of Pereslavl'-Zalesskiy (Zaretskaya et al. 2005); point to about 10 km."
+
+[[fix]]
+name = "Berendeevo 2a"
+was = [40.4161, 58.9974]
+to = [39.02, 56.60]
+source = "https://ru.wikipedia.org/wiki/%D0%91%D0%B5%D1%80%D0%B5%D0%BD%D0%B4%D0%B5%D0%B5%D0%B2%D0%BE_(%D0%B0%D1%80%D1%85%D0%B5%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9_%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%81)"
+note = "LE-1560, -1561, -1576, -1585 (7050-7270 BP, Dolukhanov). Filed in Vologda oblast, 270 km north. Berendeevo IIa is one of the Early Neolithic sites (dates 6780-7270 BP) on the dry margins and islands of the Berendeevo bog by Berendeevo village, Pereslavl district, Yaroslavl oblast; placed at the village (56.597 N, 39.024 E), about 5 km."
+
+[[fix]]
+name = "Zamostye 2"
+was = [25.4267, 48.3483]
+to = [38.016, 56.666]
+source = "https://zenodo.org/records/6619101"
+note = "GIN-7988, 7200 +/- 90 BP, citing Zaretskaya: the Zamostje 2 bog site on the Dubna (Sergiev Posad district, Moscow oblast), not a place in Chernivtsi oblast, where a namesake village put it. Dolbunova et al. 2023 give 38.01, 56.68; the position used is AADR's for the Zamostye-2 burials (38.016, 56.666)."
+
+[[fix]]
+name = "Popovo"
+was = [61.0904, 37.5474]
+to = [38.905, 61.264]
+source = "https://amtdb.org/sample/Popovo2"
+note = "GIN-4856, 9730 +/- 110 BP: the Popovo Mesolithic cemetery at Lake Lacha (Kargopol district). Latitude and longitude swapped and a little off, which put it in Turkmenistan. Position as AMTDB's for the Popovo burials. GIN-4442 ('Pors Nehue', fixed above) is probably a Popovo date too: its swapped position is at Lake Lacha and 'Pors Nehue' is the next name after 'Popovo' in p3k14c's list."
+
+[[fix]]
+name = "Joenniemi"
+was = [65.0333, 29.0667]
+to = [29.0667, 65.0333]
+source = "https://xronos.ch/c14s/28391"
+note = "Hel-2570, Hela-100, -102, -103, -143 (CalPal), filed under Finland. Latitude and longitude swapped, which put it in Kazakhstan; swapped back it is in north-eastern Finland (Suomussalmi-Taivalkoski area). The site itself is not checked."
+
+[[fix]]
+name = "Varfolomeevskaya"
+was = [46.582, 49.0379]
+to = [48.19, 50.01]
+source = "https://ru.wikipedia.org/wiki/%D0%92%D0%B0%D1%80%D1%84%D0%BE%D0%BB%D0%BE%D0%BC%D0%B5%D0%B5%D0%B2%D0%BA%D0%B0_(%D0%A1%D0%B0%D1%80%D0%B0%D1%82%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%D1%8F_%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C)"
+note = "13 Kiev dates of the Orlovka-culture site. 46.582 E is a bogus longitude shared with Surskoy Ostrov 2 (near Lake Elton). The site is on the Maly Uzen by Varfolomeevka village, Aleksandrovo-Gaysky district, Saratov oblast; placed at the village (50.012 N, 48.189 E), which HydroRIVERS puts 4-5 km from a reach with about 6,000 km² upstream (the Maly Uzen). Dolbunova et al.'s 47.80, 50.52 has no river near it and is 60 km away; about 5 km."
+
+[[fix]]
+name = "Surskoy Ostrov 2"
+was = [46.582, 49.2678]
+to = [35.15, 48.32]
+source = "https://uk.wikipedia.org/wiki/%D0%A1%D1%83%D1%80%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D0%BE%D1%81%D1%82%D1%80%D1%96%D0%B2"
+note = "KI-6690, 7195 +/- 55 BP, citing Kotova 2009: a Surskaya-culture site on Surskyi island in the Dnieper, opposite the mouth of the Mokra Sura by Voloske (Dnipro raion). Filed at the bogus longitude 46.582 E it shares with Varfolomeevskaya; placed at the Mokra Sura mouth, about 5 km."
+
+[[fix]]
+name = "Lebyazhinka 4"
+was = [5.0625, 50.5134]
+to = [50.67, 53.68]
+source = "https://zenodo.org/records/6619101"
+note = "Seven GIN and LE dates (Zaitseva et al. 2009), 8990-7940 BP, filed in Belgium (and in the Kazakhstan download). Lebyazhinka IV is on the Sok by Lebyazhinka village, Krasnoyarsky district, Samara oblast; Dolbunova et al. 2023 ('Lebyzhinka 4') give 50.67, 53.68, as AADR does for the village burials."
+
+[[fix]]
+name = "Unterpullendorf"
+was = [41.41, 47.5]
+to = [16.54, 47.47]
+source = "https://de.wikipedia.org/wiki/Frankenau-Unterpullendorf"
+note = "VRI-42, VRI-104A (Lengyel). Longitude about 25 degrees too far east, in the Rostov steppe. Unterpullendorf is in Frankenau-Unterpullendorf, Burgenland; the position is p3k14c's for VRI-42 (EUROEVOL), about 2 km. 'Unterwölbing', misfiled the same way, is folded into Unterwölbling in records.toml."
+
+# ------------------------------------------------- Horn of Africa
+# From data/places/plans/lake_tana.toml and lake_abbe.toml (2026-11-13).
+
+[[fix]]
+name = "Lake Ashenge"
+was = [39.5088, 12.5924]
+drop = true
+source = "https://doi.org/10.1016/j.palaeo.2009.05.003"
+note = "Not a settlement: the 11 XRONOS/p3k14c dates (via KITE East Africa) are from a lake-sediment core, a diatom and stable-isotope record of lake level (Marshall et al. 2009). No archaeology is reported from the core."
+
+[[fix]]
+name = "Lake Tilo"
+was = [38.0958, 7.0625]
+drop = true
+source = "https://doi.org/10.1191/095968300677444611"
+note = "Not a settlement: the 7 XRONOS dates (via KITE East Africa) are from a sediment core of a crater lake in the Ethiopian Rift, an oxygen and carbon isotope record (Lamb et al. 2000). No archaeology is reported from the core."
+
+# ------------------------------------------------- XRONOS vs p3k14c positions
+# Sites where XRONOS and p3k14c (outside its Vermeersch2019 block) put the
+# same dates more than 50 km apart, checked against gazetteers and the cited
+# literature. Mostly whole-site coordinate typos in XRONOS.
+
+[[fix]]
+name = "Aknashen"
+was = [1.49, 42.46]
+to = [44.2941, 40.1015]
+source = "https://en.wikipedia.org/wiki/Aknashen"
+note = "Filed in Andorra (1.49, 42.46) with all 23 dates (Badalyan 2010; Poulmarc'h 2016). Aknashen is a Neolithic tell in the Ararat plain, Armavir province, Armenia; p3k14c has it at 44.29, 40.10, used here."
+
+[[fix]]
+name = "Kaster"
+was = [2.0241, 51.0]
+to = [6.54, 51.0]
+source = "https://github.com/people3k/p3k14c"
+note = "Longitude 2.02 (in the Pas-de-Calais), the bogus value several German RADON/CalPal rows share (Müddersheim, Rodingen). Kaster is a district of Bedburg in the Rhineland lignite area; p3k14c has 6.54, 51.00 for the same four Breunig 1987 dates."
+
+[[fix]]
+name = "Müddersheim"
+was = [2.0241, 50.7]
+to = [6.62, 50.73]
+source = "https://de.wikipedia.org/wiki/M%C3%BCddersheim"
+note = "Longitude 2.02, as Kaster. Müddersheim (Vettweiß, Kreis Düren), the LBK settlement; p3k14c puts its dates at 6.55-6.66, 50.70-50.75; placed at the village, about 3 km."
+
+[[fix]]
+name = "Rodingen"
+was = [2.0241, 50.9667]
+to = [6.55, 50.9667]
+source = "https://de.wikipedia.org/wiki/R%C3%B6dingen"
+note = "Longitude 2.02, as Kaster. Rödingen (Titz, Kreis Düren), LBK settlement; p3k14c has 6.55, 50.97 for H-2117/1536."
+
+[[fix]]
+name = "Rosdorf"
+was = [4.1526, 51.5]
+to = [9.904, 51.506]
+source = "https://de.wikipedia.org/wiki/Rosdorf"
+note = "Longitude 4.15 (in Zeeland), a bogus value shared with other German rows (Nordhausen 2, Rees). Rosdorf by Göttingen, the LBK settlement; p3k14c's 9.904, 51.506 used."
+
+[[fix]]
+name = "Nordhausen 2"
+was = [4.1496, 51.5167]
+to = [10.8, 51.5167]
+source = "https://de.wikipedia.org/wiki/Nordhausen"
+note = "Longitude 4.15, as Rosdorf. Nordhausen, Thuringia (Gall et al. 1983); p3k14c has 10.80, 51.52."
+
+[[fix]]
+name = "Rees"
+was = [4.137, 51.7667]
+to = [6.4, 51.7667]
+source = "https://de.wikipedia.org/wiki/Rees"
+note = "Longitude 4.14, as Rosdorf. Rees on the Lower Rhine (Lanting et al. 1999/2000); p3k14c has 6.40, 51.77."
+
+[[fix]]
+name = "Bochow"
+was = [4.287, 51.95]
+to = [13.1, 51.95]
+source = "https://de.wikipedia.org/wiki/Bochow_(Niederg%C3%B6rsdorf)"
+note = "Longitude 4.29 (South Holland), the same bogus kind as Rosdorf. Bochow (Niedergörsdorf, Teltow-Fläming), Bln-4198; p3k14c has 13.10, 51.95."
+
+[[fix]]
+name = "Langenhettenbach"
+was = [4.5992, 48.7167]
+to = [12.25, 48.7167]
+source = "https://de.wikipedia.org/wiki/Langenhettenbach"
+note = "Longitude 4.60 (Champagne). Langenhettenbach (Ergoldsbach, Lower Bavaria), Lanting & Mook 1977; p3k14c has 12.25, 48.72."
+
+[[fix]]
+name = "Dümmer"
+was = [12.997, 52.5]
+to = [8.35, 52.5]
+source = "https://en.wikipedia.org/wiki/D%C3%BCmmer"
+note = "Placed by Potsdam (13.0, 52.5). The Hannover (Hv) dates of Breunig 1987, 176-177, under 'Dümmer' and 'Dämmer', are from the Dümmer lake sites in Lower Saxony (Hüde I and neighbours); p3k14c has 8.35, 52.50 for most of them. Placed at the lake, about 5 km."
+
+[[fix]]
+name = "Bruchenbrücken 1"
+was = [9.1833, 51.7167]
+to = [8.79, 50.299]
+source = "https://www.encyclopedia.com/humanities/encyclopedias-almanacs-transcripts-and-maps/bruchenbrucken"
+note = "Placed 160 km north, by Paderborn. The oldest-LBK settlement of Bruchenbrücken is a district of Friedberg in the Wetterau, Hesse (Lüning 1997; Stäuble 1994); p3k14c has 8.79, 50.30."
+
+[[fix]]
+name = "Jäckelberg-Nord"
+was = [16.742, 54.0333]
+to = [11.459, 54.065]
+source = "https://radonb.ufg.uni-kiel.de/samples/12878"
+note = "Placed in Pomerania (16.74, 54.03). Jäckelberg-Nord (Poel 16) is a submerged Ertebølle site in Wismar Bay north of Poel island (Lübke 2000, 2004); p3k14c has 11.459, 54.065."
+
+[[fix]]
+name = "Wang"
+was = [16.5433, 47.6132]
+to = [11.92, 48.497]
+source = "https://en.wikipedia.org/wiki/Wang,_Bavaria"
+note = "Placed in Burgenland. The oldest-LBK settlement Wang-Ziegelberg is at Wang, Landkreis Freising, Bavaria (Hillemeyer 2003; Stäuble 1994); p3k14c has 11.92, 48.50."
+
+[[fix]]
+name = "Mesocco - Tec Nev"
+was = [8.697, 47.2555]
+to = [9.233, 46.392]
+source = "https://en.wikipedia.org/wiki/Mesocco"
+note = "Placed by Zürich. Mesocco is in the Misox, Graubünden; p3k14c has 9.233, 46.392."
+
+[[fix]]
+name = "Pont de Thielle"
+was = [8.95, 47.5833]
+to = [7.037, 47.021]
+source = "https://de.wikipedia.org/wiki/Zihlbr%C3%BCcke"
+note = "Placed by Winterthur. Pont de Thielle (Zihlbrücke) is on the Thielle between Lake Neuchâtel and Lake Biel; p3k14c has 7.037, 47.021."
+
+[[fix]]
+name = "Grotte Piste Brezina"
+was = [-1.25, 33.0917]
+to = [1.22, 33.13]
+source = "https://en.wikipedia.org/wiki/Br%C3%A9zina"
+note = "Longitude sign lost (-1.25 for 1.25). Brezina (El Bayadh province, Algeria) is at 1.26 E; p3k14c has 1.22, 33.13."
+
+[[fix]]
+name = "Le Méandre Brezina"
+was = [-1.3, 33.05]
+to = [1.25, 33.1]
+source = "https://en.wikipedia.org/wiki/Br%C3%A9zina"
+note = "Longitude sign lost, as Grotte Piste Brezina; p3k14c has 1.25, 33.10."
+
+[[fix]]
+name = "Bir Kiseiba"
+was = [30.1166, 22.0]
+to = [29.917, 22.683]
+source = "https://en.wikipedia.org/wiki/Bir_Kiseiba"
+note = "Placed 75 km south-east, on the Sudan border. Bir Kiseiba (Wendorf, Schild & Close 1984) is at 22 41 N, 29 55 E; p3k14c has 29.92, 22.68."
+
+[[fix]]
+name = "Maiden Castle"
+was = [-2.408, 51.2066]
+to = [-2.4686, 50.6947]
+source = "https://en.wikipedia.org/wiki/Maiden_Castle,_Dorset"
+note = "Placed in Somerset, 58 km north. All 63 dates are from Maiden Castle, Dorset (the Neolithic enclosure and long mound under the hillfort; Sharples 1991; Whittle et al. 2011); p3k14c has -2.467, 50.695."
+
+[[fix]]
+name = "Whitesheet Hill"
+was = [8.53, 51.1051]
+to = [-2.285, 51.115]
+source = "https://en.wikipedia.org/wiki/Whitesheet_Hill"
+note = "Placed in Hesse (8.53 E). Whitesheet Hill causewayed enclosure is by Mere, Wiltshire; p3k14c has -2.285, 51.115 for the Whittle et al. 2011 dates."
+
+[[fix]]
+name = "Orsett"
+was = [-0.3818, 51.4996]
+to = [0.378, 51.5]
+source = "https://en.wikipedia.org/wiki/Orsett"
+note = "Longitude sign flipped (-0.38 for 0.38, west of London). Orsett causewayed enclosure is in Thurrock, Essex; p3k14c has 0.378, 51.50."
+
+[[fix]]
+name = "Staines"
+was = [0.528, 51.4431]
+to = [-0.514, 51.431]
+source = "https://en.wikipedia.org/wiki/Staines-upon-Thames"
+note = "Longitude sign flipped (0.53 for -0.51, in Kent). The Staines (Yeoveney Lodge) causewayed enclosure is by Staines-upon-Thames; p3k14c has -0.514, 51.431."
+
+[[fix]]
+name = "Ebbsfleet"
+was = [-0.2042, 51.9867]
+to = [0.321, 51.443]
+source = "https://en.wikipedia.org/wiki/Ebbsfleet_Valley"
+note = "Placed in Hertfordshire. Ebbsfleet (the Ebbsfleet Ware type site, Northfleet) is in the Ebbsfleet valley, Kent; p3k14c has 0.321, 51.443."
+
+[[fix]]
+name = "Raddon"
+was = [-0.7442, 50.8212]
+to = [-3.58, 50.82]
+source = "https://github.com/people3k/p3k14c"
+note = "Placed in West Sussex. Raddon Hill causewayed enclosure is at Stockleigh Pomeroy, Devon (p3k14c: 'Raddon Devon', -3.58, 50.82)."
+
+[[fix]]
+name = "Aston Mill"
+was = [-0.6245, 52.0086]
+to = [-2.083, 52.018]
+source = "https://github.com/people3k/p3k14c"
+note = "Placed in Bedfordshire. Aston Mill (Aston Mill Farm, Kemerton) is in Worcestershire, by Beckford; p3k14c has -2.083, 52.018."
+
+[[fix]]
+name = "Bury Hill"
+was = [-5.76, 50.899]
+to = [-0.576, 50.899]
+source = "https://github.com/people3k/p3k14c"
+note = "Longitude mistyped -5.76 for -0.576 (in the Bristol Channel). The Neolithic dates (OxA-14175, GrA-27320, HAR-3595, -3596) are Bury Hill causewayed enclosure, West Sussex (p3k14c -0.576, 50.899). The two Iron Age dates are refiled to Bury Hill, Hampshire, in records.toml."
+
+[[fix]]
+name = "Garvald Burn"
+was = [-4.0778, 56.2448]
+to = [-3.433, 55.722]
+source = "https://canmore.org.uk/site/123482/garvald-burn"
+note = "Placed by Stirling. Garvald Burn, the Late Mesolithic chert-knapping site near Dolphinton, Scottish Borders (Canmore 123482); p3k14c has -3.433, 55.722."
+
+[[fix]]
+name = "Sewell's Cave"
+was = [34.4967, 52.1528]
+to = [-2.331, 54.095]
+source = "https://github.com/people3k/p3k14c"
+note = "Placed in Ukraine (34.50, 52.15), the position of GIN-6209, a 13,680 BP Siberian date (Kuzmin & Orlova 1998) rejected in records.toml. Sewell's Cave is near Settle, North Yorkshire; p3k14c has -2.331, 54.095 for OxA-13537."
+
+[[fix]]
+name = "Kilsheelan"
+was = [-8.0351, 52.8286]
+to = [-7.578, 52.363]
+source = "https://en.wikipedia.org/wiki/Kilsheelan"
+note = "Placed 60 km north-west, near Nenagh. Kilsheelan is in Co. Tipperary on the Suir; p3k14c has -7.578, 52.363 (Drum 2007)."
+
+[[fix]]
+name = "Rouffignac"
+was = [1.4333, 45.6]
+to = [0.99, 45.01]
+source = "https://en.wikipedia.org/wiki/Rouffignac_Cave"
+note = "Placed in Haute-Vienne. The Mesolithic dates (Rozoy 1978; Barrière's excavations) are from the Rouffignac cave entrance, Dordogne; p3k14c has 0.99, 45.01."
+
+[[fix]]
+name = "Franchthi Koilada Bay"
+was = [23.185, 38.6614]
+to = [23.131, 37.422]
+source = "https://en.wikipedia.org/wiki/Franchthi_Cave"
+note = "Placed in Euboea. The Koilada Bay dates (Jacobsen & Farrand) are from Franchthi, Argolid; p3k14c has 23.131, 37.422."
+
+[[fix]]
+name = "Szemely-Hegyes"
+was = [18.74, 46.4]
+to = [18.32, 46.01]
+source = "https://en.wikipedia.org/wiki/Szemely"
+note = "Placed 53 km north-east. Szemely is a village in Baranya, Hungary (Szécsényi-Nagy et al. 2014); p3k14c has 18.32, 46.01."
+
+[[fix]]
+name = "Tiszaszölös-Domaháza"
+was = [21.2, 47.93]
+to = [20.729, 47.606]
+source = "https://en.wikipedia.org/wiki/Tiszasz%C5%91l%C5%91s"
+note = "Placed 50 km north-east. Tiszaszőlős-Domaháza-puszta (Domboróczki 2010) is in Jász-Nagykun-Szolnok county; p3k14c has 20.729, 47.606."
+
+[[fix]]
+name = "Qanah"
+was = [35.33, 32.75]
+to = [35.0708, 32.1351]
+source = "https://pleiades.stoa.org/places/861836423"
+note = "Placed in Lower Galilee, 70 km north. The Nahal Qanah cave (Gopher 1996) is in western Samaria; position Pleiades' (35.0708, 32.1351)."
+
+[[fix]]
+name = "Yahya"
+was = [55.98, 28.2]
+to = [56.867, 28.331]
+source = "https://en.wikipedia.org/wiki/Tepe_Yahya"
+note = "Placed 90 km west. Tepe Yahya is in the Soghun valley, Kerman province; p3k14c has 56.867, 28.331."
+
+[[fix]]
+name = "Tall-i Jari B"
+was = [54.968, 29.844]
+to = [52.942, 29.84]
+source = "https://en.wikipedia.org/wiki/Marvdasht"
+note = "Longitude 2 degrees too far east. Tall-i Jari B is in the Marv Dasht plain by Persepolis, Fars (Nishiaki 2010); p3k14c has 52.942, 29.84."
+
+[[fix]]
+name = "Abu Salabikh"
+was = [42.5, 31.0]
+to = [45.083, 32.267]
+source = "https://en.wikipedia.org/wiki/Abu_Salabikh"
+note = "Placed in the desert west of the Euphrates. Abu Salabikh is at 32 16 N, 45 05 E, by Nippur; p3k14c has 45.083, 32.267."
+
+[[fix]]
+name = "Tepe Sagzabad"
+was = [40.959, 35.768]
+to = [49.926, 35.751]
+source = "https://en.wikipedia.org/wiki/Tepe_Sagzabad"
+note = "Longitude 40.96 for 49.93 (in Syria). Tepe Sagzabad is in the Qazvin plain; p3k14c has 49.926, 35.751."
+
+[[fix]]
+name = "Tol-e Nurabad"
+was = [30.1166, 51.5]
+to = [51.5, 30.1166]
+source = "https://github.com/people3k/p3k14c"
+note = "Latitude and longitude swapped (in Belarus). Tol-e Nurabad is in the Mamasani district, Fars (Weeks et al.; Pollock et al. 2010); p3k14c has 51.50, 30.12."
+
+[[fix]]
+name = "el-Khawarij"
+was = [32.1667, 35.75]
+to = [35.748, 32.331]
+source = "https://doi.org/10.1017/S0033822200045410"
+note = "Latitude and longitude swapped (in the sea south of Cyprus; listed as at_sea). el-Khawarij is a Chalcolithic upland site in the Wadi Rayyan, Ajlun, Jordan (Lovell, Meadows & Jacobsen 2010); p3k14c has 35.748, 32.331."
+
+[[fix]]
+name = "Demirköy"
+was = [47.8833, 41.0833]
+to = [41.0833, 37.8833]
+source = "https://www.exoriente.org/associated_projects/ppnd_site.php?s=84"
+note = "Latitude and longitude swapped (in Azerbaijan). Demirköy Höyük is on the west bank of the Batman Su, about 20 km above its confluence with the Tigris (PPND); p3k14c has 41.083, 37.883."
+
+[[fix]]
+name = "Via Leopardi"
+was = [12.1856, 44.8267]
+to = [11.186, 43.827]
+source = "https://github.com/people3k/p3k14c"
+note = "Offset by exactly one degree in both coordinates (in the Po delta). Via Leopardi is one of the Sesto Fiorentino sites near Florence (Manfredini et al. 2009); p3k14c (Palmisano et al. 2017) has 11.186, 43.827."
+
+[[fix]]
+name = "Palata I"
+was = [14.7847, 41.8901]
+to = [16.006, 41.2]
+source = "https://www.fastionline.org/s/survey/item/45284"
+note = "Geocoded to the village of Palata in Molise. Palata, two Neolithic ditched villages found in 2008 on the Locone aqueduct near Canosa di Puglia (FASTI); p3k14c has 16.006, 41.20."
+
+[[fix]]
+name = "Radziejów"
+was = [18.1667, 50.1667]
+to = [18.517, 52.617]
+source = "https://en.wikipedia.org/wiki/Radziej%C3%B3w"
+note = "Placed in Upper Silesia. Radziejów is in Kuyavia; p3k14c has 18.517, 52.617 (Breunig 1987, 158)."
+
+[[fix]]
+name = "Rzeszów"
+was = [33.0333, 50.0166]
+to = [22.0, 50.0333]
+source = "https://en.wikipedia.org/wiki/Rzesz%C3%B3w"
+note = "Longitude 33.03 (in Ukraine; p3k14c has 23.03, also wrong). Rzeszów is at 50 02 N, 22 00 E (Dębiec 2008)."
+
+[[fix]]
+name = "Skoroszowice"
+was = [19.75, 50.25]
+to = [17.0, 50.69]
+source = "https://pl.wikipedia.org/wiki/Skoroszowice"
+note = "Placed by Katowice. Skoroszowice is in Strzelin county, Lower Silesia; p3k14c has 16.98-17.02, 50.68-50.70."
+
+[[fix]]
+name = "Gustorzyn Site 1"
+was = [23.9484, 50.7997]
+to = [18.883, 52.65]
+source = "https://pl.wikipedia.org/wiki/Gustorzyn"
+note = "Placed by Hrubieszów. Gustorzyn (Brześć Kujawski commune) is in Kuyavia; p3k14c has 18.883, 52.65."
+
+[[fix]]
+name = "Hlinsko"
+was = [15.9095, 49.7629]
+to = [17.58, 49.494]
+source = "https://cs.wikipedia.org/wiki/Hlinsko_(okres_P%C5%99erov)"
+note = "Geocoded to the town of Hlinsko in Bohemia. The Baden settlement is Hlinsko by Lipník nad Bečvou, Moravia (Pavelčík 1992); p3k14c has 17.58, 49.49."
+
+[[fix]]
+name = "Cernavoda"
+was = [26.6346, 44.0829]
+to = [28.0336, 44.3381]
+source = "https://en.wikipedia.org/wiki/Cernavod%C4%83"
+note = "Placed in Bulgaria, 115 km west. Cernavodă, the type site of the Cernavodă culture, is on the Danube in Constanța county."
+
+[[fix]]
+name = "Meer I Meirberg"
+was = [58.8, 62.0]
+to = [4.733, 51.433]
+source = "https://en.wikipedia.org/wiki/Meer,_Belgium"
+note = "Placed in the Pechora Urals, the position of GIN-8399 (18,700 BP, Guslitzer & Kanivets), rejected in records.toml. Meer 'Meirberg' is a Mesolithic site at Meer (Hoogstraten), Antwerp province; p3k14c has 4.733, 51.433."
+
+[[fix]]
+name = "Bökeberg III"
+was = [13.1499, 56.5833]
+to = [13.21, 55.55]
+source = "https://radonb.ufg.uni-kiel.de/sites/1094"
+note = "Latitude a degree too far north (Halland). Bökeberg III, the inland Late Mesolithic site, is in Skåne; RADON-B and p3k14c have 13.21, 55.55."
+
+[[fix]]
+name = "Magoito"
+was = [-7.5833, 37.3]
+to = [-9.383, 38.8]
+source = "https://pt.wikipedia.org/wiki/Praia_do_Magoito"
+note = "Placed inland in the Algarve. The Magoito Mesolithic shell midden (Bicho 1999) is on the coast at Magoito, Sintra; p3k14c has -9.383, 38.80."
+
+[[fix]]
+name = "Abri Lechat"
+was = [4.7436, 50.113]
+to = [5.53, 50.42]
+source = "https://orbi.uliege.be/bitstream/2268/77348/1/Miller-etal2012-TAW-L%27Anthropologie.pdf"
+note = "Placed in the Viroin. The Abri Lechat is at Hamoir on the Ourthe, Liège province (Lausberg-Miny et al. 1983; Miller et al. 2012); p3k14c has 5.53, 50.42."
+
+[[fix]]
+name = "Mont-à-Henry"
+was = [4.9478, 50.2003]
+to = [4.25, 50.64]
+source = "https://umrtemps.cnrs.fr/en/terrain/ittre-mont-a-henry-2/"
+note = "Placed by Dinant. Mont-à-Henry is a Michelsberg site at Ittre, Walloon Brabant (Fourny & Van Assche); p3k14c has 4.25, 50.64."
+
+[[fix]]
+name = "Al Zèpe"
+was = [3.9865, 50.4254]
+to = [5.283, 50.717]
+source = "https://fr.wikipedia.org/wiki/Oleye"
+note = "Placed at Mons. 'Al Zèpe' is the LBK settlement at Oleye (Waremme), Hesbaye (Cahen et al. 1990); p3k14c has 5.283, 50.717."
+
+[[fix]]
+name = "Ferme de l' Hosté"
+was = [2.8367, 50.7675]
+to = [4.04, 50.51]
+source = "https://researchportal.unamur.be/en/publications/la-culture-de-michelsberg-en-belgique-%C3%A9tat-de-la-question"
+note = "Placed by Ypres. The Ferme de l'Hosté is the Michelsberg enclosure at Thieusies, Hainaut (Vermeersch & Walter 1980); p3k14c has 4.04, 50.51."
+
+[[fix]]
+name = "Moordenaarsven"
+was = [5.0393, 50.7949]
+to = [4.57, 51.32]
+source = "https://scholarlypublications.universiteitleiden.nl/access/item%3A2872090/view"
+note = "Placed by Tienen. Moordenaarsven is an Early Mesolithic site at Brecht, Antwerp Campine (Brecht-Moordenaarsven 1-3); p3k14c has 4.57, 51.32."
+
+[[fix]]
+name = "Hof-ten-Damme"
+was = [5.1867, 50.6647]
+to = [4.29, 51.25]
+source = "https://biblio.naturalsciences.be/associated_publications/notae-praehistoricae/NP42/np42_083-102_teetaert-crombe_melsele_120423_rgb-600_pa20.pdf"
+note = "Placed in Hesbaye. Hof ten Damme is at Melsele, 700 m west of the Scheldt (Van Strydonck et al. 1995; Teetaert & Crombé 2022); p3k14c has 4.29, 51.25."
+
+[[fix]]
+name = "Dok"
+was = [3.4483, 51.2083]
+to = [4.18, 51.25]
+source = "https://www.cambridge.org/core/journals/radiocarbon/article/site-of-verrebroek-dok-and-its-contribution-to-the-absolute-dating-of-the-mesolithic-in-the-low-countries/628FCA1F07A6643C1E811FE892AF3AE2"
+note = "Placed by Eeklo. 'Dok' is Verrebroek-Dok, the Early Mesolithic site in the Waasland (Van Strydonck et al. 1998, 2001); RADON in p3k14c has 4.21, 51.26; placed at Verrebroek, about 3 km."
+
+[[fix]]
+name = "Petit-Spiennes"
+was = [5.6755, 50.5769]
+to = [3.98, 50.42]
+source = "https://journals.ed.ac.uk/lithicstudies/article/download/1821/2481?inline=1"
+note = "Placed by Liège. Petit-Spiennes is a mining area of the Spiennes flint mines by Mons (Lv-1598: shaft 53.2); p3k14c has 3.97, 50.42."
+
+[[fix]]
+name = "Sint-Donaaskerk"
+was = [4.7689, 50.9202]
+to = [3.225, 51.209]
+source = "https://en.wikipedia.org/wiki/St._Donatian%27s_Cathedral"
+note = "Placed by Leuven. Sint-Donaaskerk is St Donatian's in Bruges, whose site was excavated by De Meulemeester & Matthijs (1980); p3k14c has 3.22, 51.20."
+
+[[fix]]
+name = "Grotte de la Martina"
+was = [3.7508, 50.6197]
+to = [4.92, 50.22]
+source = "https://acnpsearch.tweb-dev.unibo.it/singlejournalindex/31981005"
+note = "Placed in the Hainaut plain. La Martina cave is a Mesolithic burial cave near Dinant (Dewez et al. 1995); p3k14c has 4.92, 50.22."
+
+[[fix]]
+name = "Hoogeinds Voorhoofd"
+was = [3.9597, 50.4261]
+to = [4.97, 51.41]
+source = "https://github.com/people3k/p3k14c"
+note = "Filed at 3.9597, 50.4261 by Mons, the point XRONOS also gives the unnamed Belgian 'nd' records, so a placeholder. Verbeek & Vermeersch 1994 is a Campine Mesolithic paper; p3k14c has 4.97, 51.41 (Weelde), unverified beyond that."
+
+# ------------------------------------------------- Names with a lost letter
+# XRONOS and p3k14c lost one character of these names (U+FFFD in `name`);
+# pipeline.settlements.repair_lost found no clean spelling nearby. Some also
+# sat far from the site. Sources are in CORRECTIONS.md under "Names".
+
+[[fix]]
+name = "Combe Sauni�re"
+was = [0.8836, 45.2307]
+rename = "Combe Saunière"
+source = "https://monumentum.fr/monument-historique/pa24000011/sarliac-sur-lisle-grotte-prehistorique-de-combe-sauniere"
+note = "Lost è. The cave is a listed monument at Sarliac-sur-l'Isle (Dordogne); the position is consistent."
+
+[[fix]]
+name = "Teufelsbr�cke"
+was = [7.75, 47.9167]
+rename = "Teufelsbrücke"
+to = [11.39, 50.6204]
+source = "https://journals.ub.uni-heidelberg.de/index.php/qu/article/view/108128"
+note = "Lost ü. The Magdalenian Teufelsbrücke is a collapsed cave (now a rock arch) on the Gleitsch south of Saalfeld, Thuringia, excavated by Feustel in 1970-72. The record sat in the Black Forest near Freiburg, about 400 km away; its reference list looks merged with other sites. Position: OpenStreetMap (https://nominatim.openstreetmap.org/search?q=Teufelsbr%C3%BCcke+Saalfeld&format=json)."
+
+[[fix]]
+name = "Altwasser H�hle 1"
+was = [9.3333, 47.25]
+rename = "Altwasser Höhle 1"
+source = "https://www.hist.uzh.ch/dam/jcr:db2bd842-4a23-4361-a303-32b57857e754/Sonderegger_Fruehe_Zeugnisse.pdf"
+note = "Lost ö. A Late Palaeolithic hunting station in the Alpstein (Rüte AI) near the Bollenwees (Fischer, Jagher & Morel 1997). The record is about 7 km west of the Bollenwees, so not moved."
+
+[[fix]]
+name = "Falkensteinh�hle"
+was = [5.0, 50.47]
+rename = "Falkensteinhöhle"
+to = [9.073, 48.0823]
+source = "https://de.wikipedia.org/wiki/Thiergarten_(Beuron)"
+note = "Lost ö. The Mesolithic Falkensteinhöhle (dug by Peters in 1933) is in the upper Danube valley about 2 km WSW of Thiergarten, Beuron, Baden-Württemberg; the position is estimated from that (PANGAEA has 48.0883, 9.2167, coarser). The record sat near Namur, Belgium, about 390 km away."
+
+[[fix]]
+name = "Topole-Ba�"
+was = [19.2367, 45.3919]
+rename = "Topole-Bač"
+source = "https://zenodo.org/record/1218369"
+note = "Lost č. An Early Neolithic (Starčevo) site with human remains at Bač, Vojvodina, Serbia; the position is consistent."
+
+[[fix]]
+name = "Cabe�o da Amoreira"
+was = [-8.8, 39.0167]
+rename = "Cabeço da Amoreira"
+source = "https://www.cambridge.org/core/product/identifier/S1461957120000406/type/journal_article"
+note = "Lost ç. One of the Muge shell middens (Salvaterra de Magos), at about -8.6752, 39.1028 (OpenStreetMap), so the record is about 14 km off; under 20 km, so not moved."
+
+[[fix]]
+name = "Foeni-Sala�"
+was = [20.875, 45.529]
+rename = "Foeni-Salaș"
+source = "https://rai.ai.ac.rs/handle/123456789/1447"
+note = "Lost ș. A multi-phase Starčevo-Criș and Metal Age site in the Romanian Banat (Drăşovean writes Foeni-Sălaş); the position is consistent."
+
+[[fix]]
+name = "Ch� da Parada 3"
+was = [-8.0076, 41.2035]
+rename = "Chã da Parada 3"
+source = "https://www.infopedia.pt/artigos/$dolmen-de-chao-da-parada"
+note = "Lost ã. A megalithic necropolis on the Serra da Aboboreira, Baião; sources vary between Chã and Chão ('Chão (ou Chã) da Parada'). The position is consistent."
+
+[[fix]]
+name = "G�ytepe"
+was = [45.7573, 40.951]
+rename = "Göytepe"
+source = "https://www.archaeopress.com/Archaeopress/Products/9781789698787"
+note = "Lost ö. A Shulaveri-Shomu Neolithic mound in Tovuz District, Azerbaijan (Nishiaki & Guliyev); Wikipedia (https://en.wikipedia.org/wiki/Goytepe_archaeological_complex) puts it about 5 km away."
+
+[[fix]]
+name = "Cova d�en Pardo"
+was = [-0.0932, 38.5362]
+rename = "Cova d'en Pardo"
+to = [-0.297, 38.817]
+source = "https://www.marqalicante.com/en/?p=33296"
+note = "The lost character is the apostrophe. The cave is at Planes (El Comtat, Alicante) in the Sierra de la Albureca, where XRONOS site 15255 (https://xronos.ch/sites/15255) and OpenStreetMap agree. The record sat near the coast by Benidorm, about 36 km away."
+
+[[fix]]
+name = "Turó de Can Bellsol�"
+was = [1.622, 41.517]
+rename = "Turó de Can Bellsolà"
+to = [2.2015, 41.5301]
+source = "https://patrimonicultural.diba.cat/element/turo-de-can-bellsola"
+note = "Lost à. Three early Neolithic (Cardial) pits in Santa Perpètua de Mogoda (Vallès Occidental); the Diputació de Barcelona inventory gives 41.53008, 2.20147. The record sat near Martorell, about 48 km west."
+
+[[fix]]
+name = "Cueva Murci�lagos"
+was = [-4.31, 37.54]
+rename = "Cueva Murciélagos"
+source = "https://en.wikipedia.org/wiki/Cueva_de_los_Murci%C3%A9lagos"
+note = "Lost é. Cueva de los Murciélagos, Zuheros (Córdoba), within a few km of the record. Spain has other caves of this name (e.g. Albuñol)."
+
+[[fix]]
+name = "Ch� de Carvahal 1"
+was = [-8.0666, 41.1166]
+rename = "Chã de Carvalhal 1"
+source = "https://xronos.ch/sites/14068"
+note = "Lost ã, and 'Carvahal' is a typo for Carvalhal. A barrow (mamoa 1) on the Serra da Aboboreira; XRONOS gives 41.148, -8.083, about 4 km away."
+
+[[fix]]
+name = "Chang� (Saint Piat)"
+was = [-4.31, 37.54]
+rename = "Changé (Saint Piat)"
+to = [1.585, 48.5655]
+source = "https://isidore.science/document/10.3406/bspf.1996.10171"
+note = "Lost é. The Changé megalithic necropolis is at Saint-Piat/Maintenon, Eure-et-Loir; the new position is the Changé hamlet (OpenStreetMap). The record had the Cueva de los Murciélagos coordinates in Andalusia, about 1,300 km away."
+
+[[fix]]
+name = "Haut M�e"
+was = [-1.32, 48.4]
+rename = "Haut Mée"
+source = "https://durham-repository.worktribe.com/OutputFile/1565519"
+note = "Lost é. Le Haut Mée (Saint-Étienne-en-Coglès, Ille-et-Vilaine), an Early Neolithic (Villeneuve-Saint-Germain) house site; the position is consistent."
+
+[[fix]]
+name = "Ch�teau Blanc"
+was = [5.3413, 43.5578]
+rename = "Château Blanc"
+source = "https://www.culture.gouv.fr/content/download/123775/file/BSR_1995_2.pdf"
+note = "Lost â. The 1995 regional archaeology bulletin lists Ventabren, Château Blanc (Bouches-du-Rhône) as a Neolithic/Bronze Age site; the position is consistent."

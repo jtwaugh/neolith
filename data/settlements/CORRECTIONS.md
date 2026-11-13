@@ -29,6 +29,81 @@ on dry land; only a hint).
 | Okuzini | Öküzini Cave entered a second time, without accents, in Antalya town 25 km south-east of the cave; 34 of its 39 dates are also in 'Öküzini' (the other five are 16,580–15,460 BP, before the map) | dropped; 'Öküzini' at 37.089, 30.576 (900 m from Karain) is kept | Okuzini Cave, 32 km north-west of Antalya, https://en.wikipedia.org/wiki/Okuzini_Cave |
 | Farafra (SMU-654) | longitude missing (0, in the Algerian Sahara); latitude 25.2933 copied from the Esna entry before it in the CalPal list | 27.05, 27.95 (Farafra oasis, by name; about 30 km) | Close 1984, J. African History 25:1–24, note 37 (SMU-631, 654, 969: samples collected by Haynes; the other two are filed by oasis), https://doi.org/10.1017/S0021853700022532 |
 | Pors Nehue (H�dic) at 61.28, 38.95 (GIN-4442) | a Moscow date filed under Turkmenistan with a Breton site's name; site names in that block of p3k14c are out of step with the dates | renamed "Unidentified site (GIN-4442)", old name kept as `filed_as`; position left as p3k14c gives it, unverified | XRONOS record (same wrong name, no coordinates), https://xronos.ch/c14s/240980 |
+| Ivanovskoe 3 | geocoded to Moscow's Ivanovskoye district | 56.93, 39.19 (Ivanovskoye bog, 30 km NE of Pereslavl'-Zalesskiy) | Zhilin 2015, Fennoscandia archaeologica 32, Fig. 1, https://journal.fi/fennoscandiaarchaeologica/article/view/126513 |
+| Berendeevo 2a | in Vologda oblast, 270 km north | 56.60, 39.02 (Berendeevo bog, Pereslavl district) | https://ru.wikipedia.org/wiki/%D0%91%D0%B5%D1%80%D0%B5%D0%BD%D0%B4%D0%B5%D0%B5%D0%B2%D0%BE_(%D0%B0%D1%80%D1%85%D0%B5%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9_%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%81) |
+| Zamostye 2 | in Chernivtsi oblast (a namesake village) | 56.666, 38.016 (Zamostje 2 on the Dubna) | Dolbunova et al. 2023 site table, https://zenodo.org/records/6619101 |
+| Popovo | latitude and longitude swapped (in Turkmenistan) | 61.264, 38.905 (Lake Lacha) | AMTDB, https://amtdb.org/sample/Popovo2 |
+| Joenniemi | latitude and longitude swapped (in Kazakhstan) | 65.0333, 29.0667 (swapped back) | XRONOS, https://xronos.ch/c14s/28391 |
+| Rakushechny Yar | west of Rostov, 120 km from the site | 47.56, 40.67 (Porechny island by Razdorskaya) | Tsybrij et al. 2017, https://journals.uni-lj.si/DocumentaPraehistorica/article/view/44.13 |
+| Varfolomeevskaya | bogus longitude 46.582 (by Lake Elton) | 50.01, 48.19 (Varfolomeevka village on the Maly Uzen) | https://ru.wikipedia.org/wiki/%D0%92%D0%B0%D1%80%D1%84%D0%BE%D0%BB%D0%BE%D0%BC%D0%B5%D0%B5%D0%B2%D0%BA%D0%B0_(%D0%A1%D0%B0%D1%80%D0%B0%D1%82%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%D1%8F_%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C) |
+| Surskoy Ostrov 2 | the same bogus longitude 46.582 | 48.32, 35.15 (Surskyi island, Dnieper) | https://uk.wikipedia.org/wiki/%D0%A1%D1%83%D1%80%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D0%BE%D1%81%D1%82%D1%80%D1%96%D0%B2 |
+| Lebyazhinka 4 | in Belgium | 53.68, 50.67 (Lebyazhinka, Samara oblast) | Dolbunova et al. 2023 site table, https://zenodo.org/records/6619101 |
+| Unterpullendorf | longitude about 25° too far east | 47.47, 16.54 (Burgenland) | https://de.wikipedia.org/wiki/Frankenau-Unterpullendorf |
+| Lake Ashenge | a lake-sediment core (11 dates), not a settlement | dropped | Marshall et al. 2009, Palaeo3 279:114-127, https://doi.org/10.1016/j.palaeo.2009.05.003 |
+| Lake Tilo | a crater-lake sediment core (7 dates), not a settlement | dropped | Lamb et al. 2000, The Holocene 10:167-177, https://doi.org/10.1191/095968300677444611 |
+| Aknashen | in Andorra | 40.1015, 44.2941 (Ararat plain, Armenia) | https://en.wikipedia.org/wiki/Aknashen |
+| Kaster | longitude 2.02 (Pas-de-Calais) | 51.00, 6.54 (Bedburg-Kaster) | https://github.com/people3k/p3k14c |
+| Müddersheim | longitude 2.02 | 50.73, 6.62 (Vettweiß-Müddersheim) | https://de.wikipedia.org/wiki/M%C3%BCddersheim |
+| Rodingen | longitude 2.02 | 50.9667, 6.55 (Titz-Rödingen) | https://de.wikipedia.org/wiki/R%C3%B6dingen |
+| Rosdorf | longitude 4.15 (Zeeland) | 51.506, 9.904 (Rosdorf, Göttingen) | https://de.wikipedia.org/wiki/Rosdorf |
+| Nordhausen 2 | longitude 4.15 | 51.5167, 10.80 (Nordhausen) | https://de.wikipedia.org/wiki/Nordhausen |
+| Rees | longitude 4.14 | 51.7667, 6.40 (Rees) | https://de.wikipedia.org/wiki/Rees |
+| Bochow | longitude 4.29 | 51.95, 13.10 (Bochow, Niedergörsdorf) | https://de.wikipedia.org/wiki/Bochow_(Niederg%C3%B6rsdorf) |
+| Langenhettenbach | longitude 4.60 (Champagne) | 48.7167, 12.25 (Lower Bavaria) | https://de.wikipedia.org/wiki/Langenhettenbach |
+| Dümmer | by Potsdam | 52.50, 8.35 (Dümmer lake, Lower Saxony) | https://en.wikipedia.org/wiki/D%C3%BCmmer |
+| Bruchenbrücken 1 | 160 km north, by Paderborn | 50.299, 8.79 (Friedberg-Bruchenbrücken) | https://www.encyclopedia.com/humanities/encyclopedias-almanacs-transcripts-and-maps/bruchenbrucken |
+| Jäckelberg-Nord | in Pomerania | 54.065, 11.459 (Wismar Bay, off Poel) | https://radonb.ufg.uni-kiel.de/samples/12878 |
+| Wang | in Burgenland | 48.497, 11.92 (Wang, Freising) | https://en.wikipedia.org/wiki/Wang,_Bavaria |
+| Mesocco - Tec Nev | by Zürich | 46.392, 9.233 (Mesocco) | https://en.wikipedia.org/wiki/Mesocco |
+| Pont de Thielle | by Winterthur | 47.021, 7.037 (Zihlbrücke) | https://de.wikipedia.org/wiki/Zihlbr%C3%BCcke |
+| Grotte Piste Brezina | longitude sign lost | 33.13, 1.22 (Brezina) | https://en.wikipedia.org/wiki/Br%C3%A9zina |
+| Le Méandre Brezina | longitude sign lost | 33.10, 1.25 (Brezina) | https://en.wikipedia.org/wiki/Br%C3%A9zina |
+| Bir Kiseiba | 75 km south-east, on the Sudan border | 22.683, 29.917 | https://en.wikipedia.org/wiki/Bir_Kiseiba |
+| Maiden Castle | in Somerset, 58 km north | 50.6947, -2.4686 (Dorset) | https://en.wikipedia.org/wiki/Maiden_Castle,_Dorset |
+| Whitesheet Hill | in Hesse | 51.115, -2.285 (Mere, Wiltshire) | https://en.wikipedia.org/wiki/Whitesheet_Hill |
+| Orsett | longitude sign flipped | 51.50, 0.378 (Orsett, Essex) | https://en.wikipedia.org/wiki/Orsett |
+| Staines | longitude sign flipped | 51.431, -0.514 (Staines) | https://en.wikipedia.org/wiki/Staines-upon-Thames |
+| Ebbsfleet | in Hertfordshire | 51.443, 0.321 (Ebbsfleet, Kent) | https://en.wikipedia.org/wiki/Ebbsfleet_Valley |
+| Raddon | in West Sussex | 50.82, -3.58 (Raddon Hill, Devon) | https://github.com/people3k/p3k14c |
+| Aston Mill | in Bedfordshire | 52.018, -2.083 (Kemerton, Worcestershire) | https://github.com/people3k/p3k14c |
+| Bury Hill | longitude -5.76 for -0.576 (in the Bristol Channel) | 50.899, -0.576 (Bury Hill, West Sussex) | https://github.com/people3k/p3k14c |
+| Garvald Burn | by Stirling, 80 km north | 55.722, -3.433 (Dolphinton) | https://canmore.org.uk/site/123482/garvald-burn |
+| Sewell's Cave | in Ukraine, with a Siberian date | 54.095, -2.331 (Settle, North Yorkshire) | https://github.com/people3k/p3k14c |
+| Kilsheelan | 60 km north-west | 52.363, -7.578 (Kilsheelan, Co. Tipperary) | https://en.wikipedia.org/wiki/Kilsheelan |
+| Rouffignac | in Haute-Vienne, 72 km north-east | 45.01, 0.99 (Rouffignac cave, Dordogne) | https://en.wikipedia.org/wiki/Rouffignac_Cave |
+| Franchthi Koilada Bay | in Euboea | 37.422, 23.131 (Franchthi) | https://en.wikipedia.org/wiki/Franchthi_Cave |
+| Szemely-Hegyes | 53 km north-east | 46.01, 18.32 (Szemely, Baranya) | https://en.wikipedia.org/wiki/Szemely |
+| Tiszaszölös-Domaháza | 50 km north-east | 47.606, 20.729 (Tiszaszőlős) | https://en.wikipedia.org/wiki/Tiszasz%C5%91l%C5%91s |
+| Qanah | in Lower Galilee, 70 km north | 32.1351, 35.0708 (western Samaria) | https://pleiades.stoa.org/places/861836423 |
+| Yahya | 90 km west | 28.331, 56.867 (Soghun valley) | https://en.wikipedia.org/wiki/Tepe_Yahya |
+| Tall-i Jari B | longitude 2° too far east | 29.84, 52.942 (Marv Dasht) | https://en.wikipedia.org/wiki/Marvdasht |
+| Abu Salabikh | in the desert west of the Euphrates | 32.267, 45.083 | https://en.wikipedia.org/wiki/Abu_Salabikh |
+| Tepe Sagzabad | longitude 40.96 for 49.93 (in Syria) | 35.751, 49.926 (Qazvin plain) | https://en.wikipedia.org/wiki/Tepe_Sagzabad |
+| Tol-e Nurabad | latitude and longitude swapped (in Belarus) | 30.1166, 51.50 (Mamasani, Fars) | https://github.com/people3k/p3k14c |
+| el-Khawarij | latitude and longitude swapped (at sea) | 32.331, 35.748 (Ajlun) | https://doi.org/10.1017/S0033822200045410 |
+| Demirköy | latitude and longitude swapped (in Azerbaijan) | 37.8833, 41.0833 (Batman Su) | https://www.exoriente.org/associated_projects/ppnd_site.php?s=84 |
+| Via Leopardi | one degree off in both (Po delta) | 43.827, 11.186 (Sesto Fiorentino) | https://github.com/people3k/p3k14c |
+| Palata I | at Palata village, Molise | 41.20, 16.006 (Canosa di Puglia) | https://www.fastionline.org/s/survey/item/45284 |
+| Radziejów | in Upper Silesia | 52.617, 18.517 (Kuyavia) | https://en.wikipedia.org/wiki/Radziej%C3%B3w |
+| Rzeszów | longitude 33.03 (p3k14c 23.03) | 50.0333, 22.00 (Rzeszów) | https://en.wikipedia.org/wiki/Rzesz%C3%B3w |
+| Skoroszowice | by Katowice | 50.69, 17.00 (Strzelin county) | https://pl.wikipedia.org/wiki/Skoroszowice |
+| Gustorzyn Site 1 | by Hrubieszów | 52.65, 18.883 (Kuyavia) | https://pl.wikipedia.org/wiki/Gustorzyn |
+| Hlinsko | at Hlinsko town, Bohemia | 49.494, 17.58 (Lipník nad Bečvou) | https://cs.wikipedia.org/wiki/Hlinsko_(okres_P%C5%99erov) |
+| Cernavoda | in Bulgaria, 115 km west | 44.3381, 28.0336 (Cernavodă) | https://en.wikipedia.org/wiki/Cernavod%C4%83 |
+| Meer I Meirberg | in the Urals, with a Pechora cave date | 51.433, 4.733 (Meer, Hoogstraten) | https://en.wikipedia.org/wiki/Meer,_Belgium |
+| Bökeberg III | latitude a degree too far north | 55.55, 13.21 (Skåne) | https://radonb.ufg.uni-kiel.de/sites/1094 |
+| Magoito | inland in the Algarve | 38.80, -9.383 (Magoito, Sintra) | https://pt.wikipedia.org/wiki/Praia_do_Magoito |
+| Abri Lechat | in the Viroin | 50.42, 5.53 (Hamoir) | https://orbi.uliege.be/bitstream/2268/77348/1/Miller-etal2012-TAW-L%27Anthropologie.pdf |
+| Mont-à-Henry | by Dinant | 50.64, 4.25 (Ittre) | https://umrtemps.cnrs.fr/en/terrain/ittre-mont-a-henry-2/ |
+| Al Zèpe | at Mons | 50.717, 5.283 (Oleye, Hesbaye) | https://fr.wikipedia.org/wiki/Oleye |
+| Ferme de l' Hosté | by Ypres | 50.51, 4.04 (Thieusies) | https://researchportal.unamur.be/en/publications/la-culture-de-michelsberg-en-belgique-%C3%A9tat-de-la-question |
+| Moordenaarsven | by Tienen | 51.32, 4.57 (Brecht) | https://scholarlypublications.universiteitleiden.nl/access/item%3A2872090/view |
+| Hof-ten-Damme | in Hesbaye | 51.25, 4.29 (Melsele) | https://biblio.naturalsciences.be/associated_publications/notae-praehistoricae/NP42/np42_083-102_teetaert-crombe_melsele_120423_rgb-600_pa20.pdf |
+| Dok | by Eeklo | 51.25, 4.18 (Verrebroek) | https://www.cambridge.org/core/journals/radiocarbon/article/site-of-verrebroek-dok-and-its-contribution-to-the-absolute-dating-of-the-mesolithic-in-the-low-countries/628FCA1F07A6643C1E811FE892AF3AE2 |
+| Petit-Spiennes | by Liège | 50.42, 3.98 (Spiennes) | https://journals.ed.ac.uk/lithicstudies/article/download/1821/2481?inline=1 |
+| Sint-Donaaskerk | by Leuven | 51.209, 3.225 (Bruges) | https://en.wikipedia.org/wiki/St._Donatian%27s_Cathedral |
+| Grotte de la Martina | in the Hainaut plain | 50.22, 4.92 (Dinant) | https://acnpsearch.tweb-dev.unibo.it/singlejournalindex/31981005 |
+| Hoogeinds Voorhoofd | at the Mons placeholder point | 51.41, 4.97 (Weelde, after p3k14c) | https://github.com/people3k/p3k14c |
 
 ## Record fixes
 
@@ -38,7 +113,19 @@ on dry land; only a hint).
 with none, which would otherwise be dropped; `[[same]]` files several spellings
 of one site under one name and position, keeping every date, and the filed
 names become aliases; `[[reject]]` drops a single date filed under a site it
-does not belong to (`apply_rejects`).
+does not belong to (`apply_rejects`); `[[keep]]` admits a single date whose
+1-sigma error is above `max_std` (`load_keeps`), for old wide dates that are a
+site's only record. `[[refile]]` moves a single date filed under another
+site's name to its own site (`apply_refiles`).
+
+Before these, `drop_shifted` drops every XRONOS date taken from p3k14c's
+Vermeersch2019 rows that p3k14c itself puts more than `p3k14c_km` (50 km) from
+where XRONOS files it. Names in that block are often the next name in its
+alphabetical list ('Peschio Ranaro' for Peschanitsa, 'Vergara' for Veretye),
+and XRONOS files each record under its own site of that name, so these dates
+sat at namesakes in other countries. Neither the name nor the position of such
+a date can be trusted; the `[[refile]]` entries put back those the literature
+places.
 
 | Records | Problem | Fix | Source |
 |---|---|---|---|
@@ -46,14 +133,58 @@ does not belong to (`apply_rejects`).
 | Minshat Abu Omar (67 XRONOS dates), tombs 1590 and 1930 | no position; tombs filed 5.7 km north of the site | one site, 30.8572, 32.0194 | https://en.wikipedia.org/wiki/Minshat_Abu_Omar |
 | Kom el-Hisn (14 XRONOS dates) | no position | 30.7955, 30.6004 | https://en.wikipedia.org/wiki/Kom_el-Hisn |
 | Wustermark 22, Bln-5645 | a wood date of 1050 ± 80 BP (8th–12th century AD) among six of 15,825–9135 BP; it made a last occupation phase of 990–1990 CE | date dropped | XRONOS, https://xronos.ch/c14s/232067 |
+| Konduga, Kn-4300 | its only date, 6340 ± 250 BP, is above max_std = 200, so the Bama Ridge pottery site was dropped | date kept | Breunig, Neumann & Van Neer 1996, African Archaeological Review 13:111–145, https://doi.org/10.1007/BF01956304 |
+| Mandi, 44Gif (XRONOS 64809, 170509) | only date 9835 ± 135 BP, at Bol 45 m below the Megachad highstand at that date: a lake-deposit date | date dropped (site gone) | https://xronos.ch/c14s/64809 |
+| Beurkia, T-642 (XRONOS 64718, 324440) | only date 6990 ± 140 BP, in the Bahr el Ghazal 54 m below the lake at that date: a lake-deposit date | date dropped (site gone) | https://xronos.ch/c14s/64718 |
+| Peschio Ranaro, GIN-4858 | a Lake Lacha date (9890 ± 120 BP) filed in Lazio under the next name in p3k14c's list | moved to Peschanitsa, 61.2312, 38.9093 | AADR v66.p1 (Peschanitsa locality), https://dataverse.harvard.edu/api/access/datafile/13994515 |
+| Vergara, LE-1469 | Lower Veretye's first date (9600 ± 80 BP) filed in Spain under the next name after 'Veretye I' | moved to Veretye 1 at Lake Lacha (placed at Peschanitsa, about 15 km) | Zhilin 2015, Fennoscandia archaeologica 32, Fig. 1, https://journal.fi/fennoscandiaarchaeologica/article/view/126513 |
+| Stanovoje (KIA-35153, -39316, -39317), Starnska Skala (KIA-35152), Stanovoe 4 (GIN-8378) | Stanovoe-4 dates filed in Somerset and under a Czech cave's name; GIN-8378 geocoded to Moscow | all moved to Stanovoe 4, 57.3, 40.4 | Zaretskaya et al. 2005, Geochronometria 24, http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf |
+| Ivanovskoye (GIN-9516), Jagerhaushohle (GIN-9520) | Ivanovskoe-7 dates geocoded to Moscow's Ivanovskoye district, and one filed at the German Jägerhaushöhle | moved to Ivanovskoe 7, 56.93, 39.19 | Zaretskaya et al. 2005, Table 3, http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf |
+| Zolotovka, LE-6644 | a Zolotoruchye date (9680 ± 160 BP) filed at the Don Palaeolithic site Zolotovka under the next name in p3k14c's list | moved to Zolotoruce, 57.59, 38.4 (p3k14c's position) | p3k14c, https://github.com/people3k/p3k14c |
+| Razdorskoe I, IGAN-722 | its early date, 9470 ± 310 BP, is above max_std = 200, so it was dropped | date kept | Tsybrij et al. 2017, Documenta Praehistorica 44, Table 1, https://journals.uni-lj.si/DocumentaPraehistorica/article/view/44.13 |
+| Unterwölbing, Unterwölbling | KN-2529 filed 25° east as 'Unterwölbing' | one site, 48.3246, 15.607 | https://de.wikipedia.org/wiki/Unterw%C3%B6lbling |
+| Asa Koma, Gif-7404 | filed under Somalia at 44.69, 9.72 (near Hargeisa) | moved to the Gobaad plain, Djibouti, 11.06, 42.07 (after 3,000 BCE, so off the map by age) | https://en.wikipedia.org/wiki/Asa_Koma |
+| Crvena Stijena | XRONOS at 5.33, 46.10 (Ain, France); NeoNet in Montenegro | one site, 42.7556, 18.4847 | https://doi.org/10.1017/eaa.2019.14 |
+| Cabeço da Arruda | 15 XRONOS dates at -9.34, 39.04 (coast north of Lisbon), beside the Muge site | one site, 39.1111, -8.6695 (Muge) | https://doi.org/10.1017/RDC.2020.100 |
+| Glimmer, Glimmer Es | at 4.74, 52.66 (North Holland) and again at Glimmen | one site, 53.13, 6.63 (Glimmen) | https://en.wikipedia.org/wiki/Glimmen |
+| El Mirador: AA-102509 | a Colombian date (p3k14c) under the Atapuerca cave; it made the site start in 9050 BCE | date dropped | XRONOS record (p3k14c files it at the namesake), https://xronos.ch/c14s/171534 |
+| Cueva de la Ventana: Beta-135965, AA-35237 | two Patagonian dates (Prates et al. 2013) under the Spanish cave | dates dropped | XRONOS records (p3k14c files them at the namesake), https://xronos.ch/c14s/190167, https://xronos.ch/c14s/173144 |
+| El Perro: Beta-317784 | a Colombian date under the Cantabrian shell midden | date dropped | XRONOS record (p3k14c files it at the namesake), https://xronos.ch/c14s/216120 |
+| Bob's Cave: AA-92075, AA-92076, AA-92077, AA-92078, AA-92079, AA-92080, AA-92081 | seven dates from Bob's Cave, Nevada, under the Devon cave | dates dropped | XRONOS records (p3k14c files them at the namesake), https://xronos.ch/c14s/176071, https://xronos.ch/c14s/176072, https://xronos.ch/c14s/176073, https://xronos.ch/c14s/176074, https://xronos.ch/c14s/176075, https://xronos.ch/c14s/176076, https://xronos.ch/c14s/176077 |
+| Park Farm: GSC-6207, GSC-6209, Beta-80773, WSU-2470 | four dates from Park Farm, British Columbia (CARD), under Park Farm, Warwickshire | dates dropped | XRONOS records (p3k14c files them at the namesake), https://xronos.ch/c14s/241604, https://xronos.ch/c14s/241605, https://xronos.ch/c14s/226816, https://xronos.ch/c14s/344501 |
+| Morton: ISGS-1390, ISGS-1391, ISGS-1416, AA-38473, AA-38474 | five dates from Morton village, Illinois, under Morton, Fife | dates dropped | XRONOS records (p3k14c files them at the namesake), https://xronos.ch/c14s/266935, https://xronos.ch/c14s/266936, https://xronos.ch/c14s/266953, https://xronos.ch/c14s/173452, https://xronos.ch/c14s/173453 |
+| Badger Hole: UCIAMS-111184/PSU-1544, UCIAMS-122579/PSU-5457, UCIAMS-98369 | three Oklahoma bison-kill dates (10,300-10,395 BP) under Badger Hole, Wookey | dates dropped | XRONOS records (p3k14c files them at the namesake), https://xronos.ch/c14s/333204, https://xronos.ch/c14s/333349, https://xronos.ch/c14s/334523 |
+| Horton: Beta-225579 to -225589, Beta-196834, -196835, Tx-618, Tx-627, Tx-819, ISGS-A1102 | 17 dates from American Hortons (Wyoming, Oklahoma, ISGS) under Horton, Wiltshire | dates dropped | XRONOS records (p3k14c files them at the namesake), https://xronos.ch/c14s/205999, https://xronos.ch/c14s/206000, https://xronos.ch/c14s/206001, https://xronos.ch/c14s/206002, https://xronos.ch/c14s/206003, https://xronos.ch/c14s/206004, https://xronos.ch/c14s/206005, https://xronos.ch/c14s/206006, https://xronos.ch/c14s/206007, https://xronos.ch/c14s/206008, https://xronos.ch/c14s/206009, https://xronos.ch/c14s/200768, https://xronos.ch/c14s/200769, https://xronos.ch/c14s/327346, https://xronos.ch/c14s/327359, https://xronos.ch/c14s/327662, https://xronos.ch/c14s/268321 |
+| Hermitage: AA-10371, AA-10372 | two Glen Canyon, Utah, dates under Hermitage, Castleconnell | dates dropped | XRONOS records (p3k14c files them at the namesake), https://xronos.ch/c14s/171574, https://xronos.ch/c14s/171575 |
+| Garden: Beta-150344, Beta-150345, Beta-147212, Beta-152119, S-1275 | five American and Canadian 'Garden' dates under Garden, Stirlingshire | dates dropped | XRONOS records (p3k14c files them at the namesake), https://xronos.ch/c14s/192538, https://xronos.ch/c14s/192539, https://xronos.ch/c14s/192011, https://xronos.ch/c14s/192848, https://xronos.ch/c14s/310523 |
+| Meer I Meirberg: GIN-8399 | an 18,700 BP Pechora Urals cave date under the Belgian site, giving it its Urals position | date dropped | XRONOS record, https://xronos.ch/c14s/241165 |
+| Sewell's Cave: GIN-6209 | a 13,680 BP Siberian date under the Yorkshire cave, giving it its Ukrainian position | date dropped | XRONOS record, https://xronos.ch/c14s/241052 |
+| Bury Hill: OxA-17282, OxA-17283 | Iron Age dates of Bury Hill, Hampshire, under the Sussex causewayed enclosure | moved to Bury Hill, Hampshire, 51.19, -1.507 (p3k14c) | https://xronos.ch/c14s/292548, https://xronos.ch/c14s/292549 |
 
 ## Not yet resolved
 
 Listed in `coordinate_audit.csv` as `at_sea`; no source found yet for the right
-position: el-Khawarij, Bury Hill, Les Hauts de L'Orne, Sabha, Parmorari, Tubna.
+position: Les Hauts de L'Orne, Sabha, Parmorari, Tubna (el-Khawarij and Bury
+Hill are now fixed above).
 
 Looked at and left alone, because the record contradicts itself and no source
 settles it:
+
+- **Kairsak III** (GIN-5905, GIN-5927) is at 47.92 E, 46.76 N; Dolbunova et
+  al. 2023 put Kairshak III 75 km north, at 47.76 E, 47.42 N, by Kugat IV.
+  The excavation report puts the site in the Kairshak locality of
+  Krasnoyarsky district, Astrakhan oblast, and gives no coordinates
+  (https://snv63.ru/2309-4370/article/download/109843/84085). Neither point
+  can be confirmed from that, so the record's is kept.
+- **Grenovka** (Ki-6682, Ki-6683, 5800-5860 BP) sits at 50.09 E, 53.25 N
+  near Samara, tagged Cucuteni-Trypillia. The tag is the record's own:
+  XRONOS files both dates under Ukraine with the period "Tripolje", from
+  Telegin 2003 and a Kyiv lab. So it is probably the position, not the
+  culture, that is wrong (a Volga village of the same name), but the
+  Trypillia site has not been found, so neither is changed.
+- **Podoli V** (LE-5029, 9180 BP) sits in central Tver. Its references are
+  Siberian Palaeolithic papers, as often in p3k14c's Vermeersch2019 rows,
+  and no source places it.
 
 - **Sabha** (TO-3986, 8100 ± 70 BP; TO-3987, 8430 ± 70 BP; charcoal; PPNB;
   "Banning et al. 1994, 155") sits in the sea off the Nile delta at
@@ -71,3 +202,77 @@ settles it:
   source. The real site of SMU-654 within Farafra, and the real name and
   position of GIN-4442, would need the SMU date lists in *Radiocarbon* and
   the Vermeersch (2019) database p3k14c took the record from.
+
+### XRONOS and p3k14c more than 50 km apart
+
+Reviewed against gazetteers and the cited literature and left as they are,
+because no source settles the position (XRONOS's position first, then
+p3k14c's):
+
+- Belgian sites from Gilot 1997 and Van Strydonck et al.: **Trou la Cauche**
+  (Lv-1981 to -1983; Meuse caves 4.87, 50.35 vs. Hainaut 3.76, 50.62; a cave
+  makes the Meuse likelier), **Fond Chenai** (4.96, 50.22 vs. 5.46, 50.66),
+  **Bosstraat** (4.89, 50.22 vs. 3.67, 50.80), **Ourlaine** (4.99, 51.41
+  vs. 5.80, 50.50), **Huizerhof** (5.81, 50.53 vs. 5.46, 51.03), **Donk**
+  (4.19, 51.26 vs. 3.60, 50.84; Vermeersch's Mesolithic Donk is at
+  Herk-de-Stad, which fits neither), **Sint-Andries** (4.26, 51.31 vs.
+  Bruges, 3.17, 51.19), **Flabaert** and **Molenheide** (both 4.28, 51.22,
+  vs. 3.41, 51.13 and 5.08, 50.76), **Eindegoorheide** (3.38, 50.73 vs.
+  4.96, 51.41), and the unnamed **nd** records at 3.96, 50.43.
+- **Brunn** (Brunn am Gebirge, LBK): Lu-1282, -1283, -1284 and St-5951
+  (4610-4665 BP; Kiel DB; Wyszomirska 1986) are Swedish-lab dates of TRB age
+  that give the LBK site a phase at 3440 BCE; p3k14c puts them at a Brunn in
+  the Oberpfalz. Probably a Scandinavian site; not found.
+- **Korsnäs** and **Mören**: XRONOS files the same measurements under two
+  sites each (Korsnäs in Södermanland and in Ostrobothnia; Mören at 15.67,
+  57.26 and 16.16, 56.62), so a reject would hit both. The Ua-323xx Pitted
+  Ware dates belong to Korsnäs, Södermanland (17.8, 59.15).
+- **Bottendorf** (OxA-2919, -2922; Thuringia 11.43, 51.30 vs. Hesse 8.81,
+  51.03), **Steinhagen** (OxA-2921; 11.90, 53.87 vs. Westphalia 8.42,
+  52.01), **Bergheim** (KN-1663/1664; Hesse 9.14, 51.17 vs. the Erft 6.62,
+  50.95), **Enkingen** (Ki-3372 and Ki-3374, which p3k14c calls Strögen,
+  Lower Austria), **Lindholm** (Funen vs. Aalborg), **Klokkehøj** (West
+  Jutland vs. Bøjden, Funen), **Flixton** (AAR-7669, Fischer et al. 2007;
+  Suffolk vs. the Vale of Pickering).
+- **Newlands Cross** (OxA-707, -708, Lu-1961, -1963, -2224; Westmeath vs.
+  Clondalkin, Dublin; RADON-B lists both), **Kinloch Farm** (Fife vs. Rum),
+  **Loubressac** (Ly-2781, 9690 BP; -0.10, 47.00 vs. Mazerolles, Vienne,
+  0.68, 46.42, where there is a dolmen of that name), **Jani** (Central
+  Zagros; 47.27, 34.61 vs. 46.78, 33.95), **Pian di Cereto** (Liguria vs.
+  the Marche), **Atsebach** (OxA-3579; Bavaria vs. Luxembourg), **Carica**
+  (GrN-7197; Oltenia vs. the lower Volga), **Voronovitsy** (Ki-6677; 26.62,
+  48.08 vs. Vinnytsia, 28.66, 49.18).
+
+Checked and kept, because XRONOS is right and p3k14c wrong: Chaves (Huesca),
+Ovcarovo (Targovishte), Kovacevo, Stillfried, Mooswinkel (Mondsee), Bistoft,
+Vaengesö (Helgenæs), Cissbury, Seamer Carr, Tievebulliagh, Kilshane, Sutton,
+Beg-er-Vil, Piano Vento, Grotta Pollera, Auve (Vestfold), Stora Förvar, Cnoc
+Coig, Ogradena-Icoana, Bawwab al-Ghazal (South Azraq) and Ain Dalla. Not
+fixed, because none of their dates reach the map (graves and burials dropped
+by `exclude_types`, or every date outside the window): Westeregeln, Atteln I
+and II, Kroppenstedt, Altenbochum, Holzhausen, Oldendorf, Beckford, Roxton,
+Field Farm, Carrowmore, Behy, Aghoo, Annagh More, Annagh Beg, Olszanica,
+Krusza Zamkowa, and the Palaeolithic sites on the list.
+
+## Names
+
+Names that reached us with a letter lost upstream (shown as `?`), renamed (and, where far off, moved) by `rename` entries in `corrections.toml`. Apostrophes XRONOS turned into spaces ("Gough s Cave") are put back by `pipeline.settlements.restore_apostrophes`.
+
+| Filed as | Problem | Fix | Source |
+|---|---|---|---|
+| Combe Sauni?re | lost è | Combe Saunière | https://monumentum.fr/monument-historique/pa24000011/sarliac-sur-lisle-grotte-prehistorique-de-combe-sauniere |
+| Teufelsbr?cke | lost ü; in the Black Forest, 400 km off | Teufelsbrücke; moved to 50.6204, 11.3900 (Saalfeld; OpenStreetMap) | https://journals.ub.uni-heidelberg.de/index.php/qu/article/view/108128 |
+| Altwasser H?hle 1 | lost ö | Altwasser Höhle 1 | https://www.hist.uzh.ch/dam/jcr:db2bd842-4a23-4361-a303-32b57857e754/Sonderegger_Fruehe_Zeugnisse.pdf |
+| Falkensteinh?hle | lost ö; near Namur, 390 km off | Falkensteinhöhle; moved to 48.0823, 9.0730 (estimated, 2 km WSW of Thiergarten) | https://de.wikipedia.org/wiki/Thiergarten_(Beuron) |
+| Topole-Ba? | lost č | Topole-Bač | https://zenodo.org/record/1218369 |
+| Cabe?o da Amoreira | lost ç | Cabeço da Amoreira | https://www.cambridge.org/core/product/identifier/S1461957120000406/type/journal_article |
+| Foeni-Sala? | lost ș | Foeni-Salaș | https://rai.ai.ac.rs/handle/123456789/1447 |
+| Ch? da Parada 3 | lost ã | Chã da Parada 3 | https://www.infopedia.pt/artigos/$dolmen-de-chao-da-parada |
+| G?ytepe | lost ö | Göytepe | https://www.archaeopress.com/Archaeopress/Products/9781789698787 |
+| Cova d?en Pardo | lost apostrophe; by Benidorm, 36 km off | Cova d'en Pardo; moved to 38.8170, -0.2970 (Planes) | https://www.marqalicante.com/en/?p=33296 |
+| Turó de Can Bellsol? | lost à; near Martorell, 48 km off | Turó de Can Bellsolà; moved to 41.5301, 2.2015 (Santa Perpètua de Mogoda) | https://patrimonicultural.diba.cat/element/turo-de-can-bellsola |
+| Cueva Murci?lagos | lost é | Cueva Murciélagos | https://en.wikipedia.org/wiki/Cueva_de_los_Murci%C3%A9lagos |
+| Ch? de Carvahal 1 | lost ã; Carvahal typo | Chã de Carvalhal 1 | https://xronos.ch/sites/14068 |
+| Chang? (Saint Piat) | lost é; at the Murciélagos coordinates in Andalusia | Changé (Saint Piat); moved to 48.5655, 1.5850 (Changé, Saint-Piat; OpenStreetMap) | https://isidore.science/document/10.3406/bspf.1996.10171 |
+| Haut M?e | lost é | Haut Mée | https://durham-repository.worktribe.com/OutputFile/1565519 |
+| Ch?teau Blanc | lost â | Château Blanc | https://www.culture.gouv.fr/content/download/123775/file/BSR_1995_2.pdf |

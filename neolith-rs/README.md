@@ -59,8 +59,8 @@ current year when "Insert keyframe at current year" is on.
 cargo test --workspace
 ```
 
-The `convert` tests read the real dataset from `../game/static/game/assets/` and are skipped (with a note)
-if it is absent.
+The `convert` tests read the real dataset (`../build/combined_map.geojson` from `make maps`, and
+`../data/settlements/settlements.geojson`) and are skipped (with a note) if it is absent.
 
 ## Screenshots without a window
 

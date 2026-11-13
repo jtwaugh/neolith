@@ -1,0 +1,122 @@
+[meta]
+place = "lake_tana"
+written = "2026-11-13"
+verdict = "research"
+confidence = "medium"
+really_empty = "Yes in our data, no in the literature. No site in the box or within 100 km in any epoch; the nearest record, 250 km away, is the Lake Ashenge sediment core (39.51, 12.59), which is a palaeolake core, not a settlement. No duplicates or doubtful coordinates nearby. The whole of Ethiopia has 32 XRONOS measurements, all from three lake cores (Ashenge, Hayq, Tilo) and one late Mota Cave bone. The board also has no lake here: all 12 hexes are land in every epoch, though Lake Tana (about 3,000 km2, larger than one hex) existed throughout the period."
+why_empty = ["not_in_open_compilations", "research_intensity", "publication_access", "recording_practice"]
+summary = """
+Lake Tana is the largest lake in Ethiopia and the source of the Blue Nile, on
+a basalt plateau at about 1,800 m. In our data the box is empty in every
+epoch and nothing lies within 100 km. That says little about the past. No
+Holocene archaeological date from anywhere in the Ethiopian highlands
+reaches our open compilations: the Ethiopian XRONOS file holds lake cores
+and one Mota Cave bone, p3k14c adds nothing. The residuals read the box as
+'little dated archaeology nearby' from 5,000 BCE (peak 'missing' 15.4 at
+4,000 BCE), which is right.
+
+The literature has two sites at the lake, both from one small research
+line. Kurtiye rock shelter, on the shore, was excavated for a Bergen PhD
+(Firew 2014). Its abstract reports occupation from the sixth millennium BP,
+an assemblage dominated by wild fauna, mainly fish, with abundant lithics
+and pottery, no bone harpoons or wavy-line decoration, domestic animals only
+very late and no sign of farming until about the end of the first
+millennium BC. The radiocarbon dates and the shelter's position are in the
+thesis, whose PDF refused me (HTTP 403). Gorgora rock shelter, 1 km from the
+north shore, was dug in 1942; Sahle et al. 2024 re-dated its Middle Stone
+Age (over 42,000 cal BP) and say plainly that its Later Stone Age and
+'ceramic Neolithic' levels are undated, for lack of organic material. Both
+papers call the region understudied, and I found no survey gazetteer of the
+basin. Dombrowski's 1970s caves in Begemder (Lalibela, Natchabiet) are a
+possible third lead, but I could not confirm where they are or what they
+date.
+
+What to do: get the Firew thesis and enter Kurtiye with its dates. That is
+one dated site and probably a list of undated survey sites around the lake.
+Barnett 1999 (The Emergence of Food Production in Ethiopia) is the closest
+thing to a highland gazetteer, worth reading for any dated site within
+100 km. Beside the record, the place can carry low-density fisher-forager
+camps on the shore from the mid-Holocene, on Kurtiye's model. The evidence
+layers should be corrected where they contradict the one dated site: they
+hold domestic livestock rising to 0.61 by 3,000 BCE, against Kurtiye's very
+late domesticates and the gap critic's own Horn rule of zero before
+4,500 BCE. Two things need a person. The board needs Lake Tana as water.
+The two lake cores in our settlement list (Lake Ashenge, Lake Tilo) are
+not settlements.
+"""
+
+[[known_site]]
+name = "Kurtiye rock shelter"
+lon = 37.3
+lat = 11.95
+coordinates = "approximate"
+start = -4050
+end = -1
+what = "Small rock shelter on the shore of Lake Tana. The thesis abstract reports occupation from the sixth millennium BP (start taken as 6000 cal BP; it may be uncalibrated), fish-dominated wild fauna, abundant lithics and pottery, domestic animals only very late, no farming before about the end of the first millennium BC. Position NOT known: the coordinates are a placeholder at the middle of the lake and must be replaced from the thesis. The end date is the abstract's 'end of the first millennium BC'."
+cite = "Firew, G.A. 2014. Archaeological fieldwork around Lake Tana area of northwest Ethiopia and the implication for an understanding of aquatic adaptation. PhD thesis, University of Bergen"
+url = "https://hdl.handle.net/1956/8931"
+checked = false
+
+[[known_site]]
+name = "Gorgora rock shelter"
+lon = 37.3
+lat = 12.24
+coordinates = "approximate"
+start = -10000
+end = -1000
+what = "Rock shelter on the Narna inselberg, about 1 km from the north shore of Lake Tana, 1,930 m. Excavated in 1942 (Moysey 1943; Leakey 1943). The MSA is dated over 42,000 cal BP. The LSA and 'ceramic Neolithic' levels above it are UNDATED; the start and end here only bracket 'post-MSA, probably Holocene' and must not be read as dates. Coordinates are those of Gorgora town, near the shelter as described."
+cite = "Sahle, Y., Firew, G.A., Pearson, O.M., Stynder, D.D. & Beyin, A. 2024. MIS 3 innovative behavior and highland occupation during a stable wet episode in the Lake Tana paleoclimate record, Ethiopia. Scientific Reports 14:17038"
+url = "https://doi.org/10.1038/s41598-024-67743-x"
+checked = true
+
+[[research]]
+what = "Obtain Firew 2014 (Bergen PhD; the PDF is in the Norwegian archive NVA but returned HTTP 403 to me) and enter Kurtiye rock shelter with its radiocarbon dates, phases and position; list the other sites of his survey around the lake with whatever dating they have."
+url = "https://hdl.handle.net/1956/8931"
+yields = "One dated stratified site at the lake, c. 4,000 BCE onward, with fauna and pottery status; probably a handful of undated survey sites for inferred placement."
+effort = "One thesis; a short table. Ask a person to download it or write to the author (now at Bahir Dar University)."
+
+[[research]]
+what = "Read Barnett 1999, The Emergence of Food Production in Ethiopia (BAR International Series), for any dated LSA or 'Neolithic' site within 100 km of the lake, and as a gazetteer of dated Ethiopian highland sites generally (cited by Sahle et al. 2024)."
+yields = "Unknown at Tana itself; likely 10-20 dated highland sites across Ethiopia, most after 3,000 BCE."
+effort = "A print monograph; a library job."
+
+[[research]]
+what = "Locate Dombrowski's Lalibela and Natchabiet caves (Begemder; Annales d'Ethiopie 1970 and his 1971 Boston University thesis) and check whether any dated level predates 3,000 BCE and lies within 100 km of the box."
+yields = "Zero to two sites; most likely first millennium BCE and outside the window."
+effort = "Two print sources."
+
+[[speculate]]
+target = "settlements"
+slices = [-6000, -5000, -4000, -3000]
+rule = "Place three inferred fisher-forager camps on the lake shore of each slice, at the north shore near Gorgora, at the Blue Nile outlet near Bahir Dar and on the east shore at the edge of the Fogera plain, within 3 km of the shore, marked inferred and tagged 'aquatic forager camp'. At -6000 place one, at the north shore. When Kurtiye is entered, let it clear the camp nearest to it."
+confidence = "low"
+reasoning = "Kurtiye shows fish-based foragers with pottery on the shore from the sixth millennium BP, and Gorgora has undated LSA and ceramic levels on the north shore. The lake held water through the Holocene (Lamb et al. 2007, cited by Sahle et al. 2024; not opened by me), and lakeshore fishing was the subsistence mode over the period at comparable African lakes. One dated site does not give a density; three camps for a lake shore of about 385 km is a guess at the minimum that marks the place as used. The camp at -6000 is weaker: it extends Kurtiye back by a millennium on the strength of the African Humid Period alone."
+basis = ["neighbouring_evidence", "analogy", "environment"]
+
+[[speculate]]
+target = "isostyle:domestic_livestock"
+slices = [-8000, -7000, -6000, -5000, -4000, -3000]
+rule = "Set domestic livestock to 0 in the box from -8000 to -5000 and to 0.05 at -4000 and -3000, marked judged, replacing the inherited values that rise from 0.04 to 0.61."
+confidence = "medium"
+reasoning = "The dossier shows 0.04 (-8000) to 0.33 (-5000) to 0.61 (-3000), all judged. The gap critic's own Horn judgement in data/isostyle/intuitions/domestic_livestock.toml says 0 before 4,500 BCE (high confidence) and 0.05 outside the Eritrean lowlands at 4,000 and 3,000 BCE; the values here look like spill from the Sudanese Nile. The one dated site at the lake, Kurtiye, has domestic animals only very late (Firew 2014, abstract). Medium, because the Kurtiye dates themselves are unseen."
+basis = ["literature", "neighbouring_evidence"]
+[[speculate.adjust]]
+kind = "slice_value"
+slices = [-8000, -7000, -6000, -5000]
+value = 0.0
+[[speculate.adjust]]
+kind = "slice_value"
+slices = [-4000, -3000]
+value = 0.05
+
+[[speculate]]
+target = "isostyle:pottery"
+slices = [-10000, -9000, -8000]
+rule = "Set pottery to 0.05 in the box from -10000 to -8000, marked judged, instead of the extrapolated 0.41-0.51. Leave -6000 onward as it is."
+confidence = "low"
+reasoning = "The dossier's pottery values are all 'extrapolated', and at -10000 that puts 0.41 on the Ethiopian plateau before pottery is known anywhere in north-east Africa (my own reading: the earliest Sudanese and Saharan pottery is ninth to tenth millennium BCE, not checked here). The gap critic's Horn judgement in pottery.toml says not to fill before 5,000 BCE. At the lake, pottery is attested at Kurtiye from the sixth millennium BP (Firew 2014, abstract) and in Gorgora's undated ceramic levels, so the later slices are plausible and left alone."
+basis = ["literature", "neighbouring_evidence"]
+[[speculate.adjust]]
+kind = "slice_value"
+slices = [-10000, -9000, -8000]
+value = 0.05

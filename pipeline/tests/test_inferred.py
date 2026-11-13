@@ -89,6 +89,29 @@ class InferredTests(unittest.TestCase):
         got = [(f["geometry"]["coordinates"][0], f["properties"]["inferred"].get("tag")) for f in out]
         self.assertEqual(got, [(0.5, "t"), (2.5, "t"), (2.6, None)])
         self.assertIsNone(inferred.tag_for(rule, -6000))
+    def test_points_rule_places_named_points_on_land_and_tags_the_first(self):
+        import types
+        grid = types.SimpleNamespace(ids=[0, 1, 2], centres=np.array([[0.5, 0], [1.5, 0], [2.5, 0]]))
+        feats = [{"properties": {"terrain": {"-10000": "Water" if i == 1 else "Grassland"}}} for i in range(3)]
+        rule = {"key": "p", "plan": "p", "label": "camp", "kind": "open air", "slices": [-5000],
+                "clear": "hex", "confidence": "low", "reasoning": "x",
+                "points": {"at": [[0.5, 0.0], [1.5, 0.0], [2.5, 0.0]]},
+                "tag": {"name": "t", "slices": [-5000], "shores": 1, "confidence": "low", "reasoning": "y"}}
+        orig = inferred._hex_of
+        inferred._hex_of = lambda g, lon, lat: int(lon)
+        try:
+            out, rep = inferred.build([rule], {}, grid, feats, [], [-5000, -4000], log=lambda m: None)
+        finally:
+            inferred._hex_of = orig
+        got = [(f["geometry"]["coordinates"][0], f["properties"]["inferred"].get("tag")) for f in out]
+        self.assertEqual(got, [(0.5, "t"), (2.5, None)])     # the Water hex is dropped
+        self.assertEqual(rep[0][2]["water"], 1)
+
+
+    def test_show_false_rules_are_not_shown(self):
+        self.assertTrue(inferred.shown({"key": "a"}))
+        self.assertTrue(inferred.shown({"key": "a", "show": True}))
+        self.assertFalse(inferred.shown({"key": "a", "show": False}))
 
 if __name__ == "__main__":
     unittest.main()

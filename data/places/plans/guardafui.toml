@@ -1,0 +1,67 @@
+[meta]
+place = "guardafui"
+written = "2026-11-13"
+verdict = "speculate"
+confidence = "low"
+really_empty = "Yes. No site in the box or within 100 km in any epoch; the nearest is 430-720 km away (Hadramawt across the Gulf of Aden). The XRONOS Somalia file holds one record, Asa Koma, which is a Djibouti site misfiled at 44.69, 9.72 near Hargeisa. No duplicates. The box is 7 land and 7 water hexes in every epoch; the narrow shelf means nothing drowns, so the sea level does not explain it."
+why_empty = ["research_intensity", "recording_practice", "low_population"]
+summary = """
+Cape Guardafui (Ras Caseyr) is the tip of the Horn, where the Gulf of Aden
+meets the Indian Ocean: a limestone massif with cliffs to the sea, a coastal
+strip and few havens. Our data has nothing in the box and nothing within
+100 km. The residuals expect up to 10 'missing' sites at 4,000 BCE and call
+it 'little dated archaeology nearby'.
+
+The emptiness is mostly that nobody has looked. The only archaeological
+fieldwork on this coast I could find is Chittick's 1975 reconnaissance
+(Chittick 1976). He found Graeco-Roman coastal sites at Damo, 5 km west of
+the cape, and on the Hafun peninsula, about 50 km south of the box. He
+collected stone artefacts at 'a number of localities and rock-shelters'
+for a full account that, as far as I know, never appeared. Large numbers of
+cairns were noted. Nothing in the window is dated. Within Somaliland, rock
+shelters with pastoral paintings and LSA microlithic floors exist further
+west. The nearest, Karin Heegan (48.63E, 11.05N, about 160 km from the
+box), has LSA chert and quartz microliths and pottery, but its two dates
+are only 1,600-2,100 BP (Ali & Ibrahim 2012). The oldest dated thing in
+northern Somaliland is a charcoal date from a test pit at Laas Geel,
+4810-4760 BP (Gutherz et al. 2010, as cited by Ali & Ibrahim 2012), 700 km
+west. Puntland has had no systematic prehistoric survey; insecurity since 1991
+has kept foreign teams out (my own reading, not from a source I opened).
+
+Was it really empty? Probably thinly peopled rather than empty, and that is
+my inference, not a finding. Somaliland has a wealth of undated prehistoric
+artefacts and rock art (Ali & Ibrahim 2012), Chittick saw stone artefacts in
+the north-east, and the board makes the cape grassland and savannah through
+the African Humid Period. Speculation is therefore modest: a forager camp
+at the one sheltered beach (Damo) from the middle Holocene, and a
+correction to the evidence layers, which extrapolate 0.4-0.55 pottery onto
+the cape from 10,000 BCE with no basis. Research has little to reach. The
+one lead is to find what Chittick and the 1980s Somali Archaeological
+Survey (Brandt and Brook 1984, cited by Ali & Ibrahim 2012) collected.
+"""
+
+[[research]]
+what = "Find the north-east Somali lithic collections and any report on them: Chittick's 1975 stone artefacts from 'a number of localities and rock-shelters' deposited in the National Museum, Mogadishu (Chittick 1976, p. 118), and the northern Somalia survey of Brandt and Brook 1984 (Current Anthropology 25), with Brandt et al. 1984 on Karin Heegan. Establish whether anything east of 49.5E is dated or datable."
+url = "https://www.ancientportsantiques.com/wp-content/uploads/Documents/PLACES/IndOc-Gulf/Somalia-Chittick1976.pdf"
+yields = "Probably zero dated sites in the box; at best a list of undated LSA surface and rock-shelter localities in Bari region for inferred placement."
+effort = "Two or three short print papers; the Mogadishu collections may no longer exist."
+
+[[speculate]]
+target = "settlements"
+slices = [-6000, -5000, -4000, -3000]
+rule = "Place one inferred forager camp per slice at the sheltered bay at Damo, 5 km west of the cape (about 51.2E, 11.83N), within 2 km of the shore, marked inferred and tagged 'coastal forager camp'. Add a second at the Hafun peninsula (about 51.4E, 10.42N, outside the box) at -4000 and -3000."
+confidence = "low"
+reasoning = "Chittick 1976 describes Damo as the one beach near the cape with real protection and Hafun as the main haven on this coast. Both were used as landing places from Graeco-Roman times, and a sheltered beach on a cliff coast is where a coastal camp would sit. Somaliland has many undated prehistoric artefact sites and LSA rock-shelter floors (Ali & Ibrahim 2012), and the board gives the cape grassland and savannah from 8,000 to 3,000 BCE. My own unchecked inference: the coast faces strong seasonal monsoon upwelling, which made it rich in fish and shellfish. Against all this: no dated site in the window within 700 km on the African side, so the density is a guess and the start date is set by the African Humid Period, not by evidence."
+basis = ["analogy", "environment", "neighbouring_evidence"]
+
+[[speculate]]
+target = "isostyle:pottery"
+slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000]
+rule = "Set pottery to 0.05 in the box from -10000 to -4000, marked judged, instead of the extrapolated 0.29-0.55."
+confidence = "low"
+reasoning = "Every pottery value in the box is 'extrapolated', and the series peaks at 0.55 at -7000 on a cape with no excavated site. The gap critic's Horn judgement (data/isostyle/intuitions/pottery.toml) says not to fill before 5,000 BCE. In northern Somalia, pottery is reported only with late dates (Karin Heegan, 1,600-2,100 BP; Ali & Ibrahim 2012). Leave -3000 alone, since Laas Geel's pastoral phase begins near then."
+basis = ["literature", "neighbouring_evidence"]
+[[speculate.adjust]]
+kind = "area"
+bbox = [50.1, 10.9, 51.5, 12.3]
+value = 0.05

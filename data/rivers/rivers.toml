@@ -93,10 +93,16 @@ confidence = "medium"
 key = "wadi-howar"
 name = "Wadi Howar (Yellow Nile)"
 size = 2
-# HydroRIVERS loses the channel in a sink at 27.4°E; the rest is waypoints.
+# GEOGLOWS turns the upper wadi north into a dune sink at 25.4°E, 18.7°N;
+# the valley runs on east at about 17.2°N (Kröpelin & Pachur 1987), so the
+# trace stops at 25°E and waypoints follow the middle valley (GEOGLOWS's own
+# reaches from 26°E to its sink at 27.4°E, where HydroRIVERS also lost the
+# channel), then on to the Nile.
 from = [24.5, 16.8]
 min_upland = 3000
-then = [[28.3, 17.55], [29.2, 17.7], [30.0, 17.95], [30.6, 18.1]]
+to = [25.0, 17.26]
+then = [[25.5, 17.2], [26.0, 17.23], [26.5, 17.22], [27.0, 17.41], [27.39, 17.48],
+        [28.3, 17.55], [29.2, 17.7], [30.0, 17.95], [30.6, 18.1]]
 state = { "-10000" = "seasonal", "-8500" = "perennial", "-3300" = "seasonal" }
 confidence = "medium"
 
@@ -425,6 +431,67 @@ state = { "-10000" = "perennial" }
 lake = "black-sea"
 confidence = "high"
 
+# ============================================ Volga and Don tributaries
+# Modern courses from HydroRIVERS. Each stops where it meets the Volga or
+# the Don (drawn above). The Oka and Kama carry the Upper Volga and Cis-Ural
+# lake and bog sites (Zamostje, Sakhtysh, the Kama Neolithic); the Samara
+# the Samara Bend sites; the Uzen the Orlovka-culture sites of the Trans-Volga
+# steppe (Varfolomeevka); the Manych the trough between Don and Caspian.
+[[river]]
+key = "oka"
+name = "Oka"
+size = 2
+from = [36.3, 52.6]
+min_upland = 1000
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "kama"
+name = "Kama"
+size = 2
+from = [53.6, 58.2]
+min_upland = 1000
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+[[river]]
+key = "samara"
+name = "Samara"
+size = 1
+from = [52.2, 52.8]
+min_upland = 1000
+state = { "-10000" = "perennial" }
+confidence = "high"
+
+# HydroRIVERS joins the Bolshoi and Maly Uzen and ends them in the Kamysh-
+# Samar sink; it carries one channel, drawn as one river. Snow-fed steppe
+# rivers that shrink to pools in summer.
+[[river]]
+key = "uzen"
+name = "Uzen"
+size = 1
+from = [48.98, 51.27]
+min_upland = 1000
+# Ends in the Kamysh-Samar lakes: GEOGLOWS (TDX-Hydro) carries the
+# network on across the dry plain to the Caspian, which no river does today.
+to = [50.66, 48.26]
+state = { "-10000" = "seasonal" }
+confidence = "medium"
+
+# The western Manych, from the Manych-Gudilo lake chain to the Don. The
+# Caspian's outlet through the trough (+18 m on the board) is above its
+# level for the whole window, so no spillway; a low-gradient, salty,
+# intermittent river.
+[[river]]
+key = "manych"
+name = "Manych"
+size = 1
+from = [43.89, 45.95]
+min_upland = 1000
+state = { "-10000" = "seasonal" }
+confidence = "medium"
+
 # ================================================================ Caucasus
 # Modern courses from HydroRIVERS. The Caspian rivers run out to the
 # Caspian at its lowest (Mangyshlak) level and drown as it rises; the Black
@@ -437,6 +504,10 @@ name = "Kura"
 size = 2
 from = [42.7, 41.3]
 min_upland = 1000
+# Below Sabirabad GEOGLOWS routes the network south through the Mughan
+# lowland to an inland end; the Kura runs past Salyan to Neftçala.
+to = [48.47, 40.0]
+then = [[48.98, 39.6], [49.25, 39.37]]
 lake = "caspian"
 state = { "-10000" = "perennial" }
 confidence = "high"
@@ -534,7 +605,9 @@ confidence = "high"
 key = "danube"
 name = "Danube"
 size = 3
-from = [8.6, 48.0]
+# Sigmaringen: GEOGLOWS gives the Danube above here less than 1,000 km², so a
+# point at Donaueschingen snapped to a Rhine-basin reach (2026-11-13).
+from = [9.26, 48.07]
 min_upland = 1000
 # To the delta head at the Chilia fork above Tulcea; the delta branches are
 # below.
@@ -799,3 +872,15 @@ min_upland = 1000
 to = [29.45, 60.72]
 state = { "-3750" = "perennial" }
 confidence = "low"
+
+# Lake Onega's outlet to Ladoga (both lakes in data/lakes/lakes.toml),
+# stopped at the Ladoga shore: HydroRIVERS carries it on down the Neva.
+[[river]]
+key = "svir"
+name = "Svir"
+size = 2
+from = [35.42, 61.04]
+min_upland = 1000
+to = [32.95, 60.52]
+state = { "-10000" = "perennial" }
+confidence = "high"

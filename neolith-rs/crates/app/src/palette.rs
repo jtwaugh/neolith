@@ -22,7 +22,7 @@ pub const NO_DATA_COLOUR: Rgb = hex(0x3a3a3a);
 pub const fn terrain(t: Terrain) -> Rgb {
     match t {
         Terrain::Ice => hex(0xbfd1e5),
-        Terrain::Water => hex(0x64b5f6),
+        Terrain::Water => hex(0x3a5a6c), // dark slate: quieter than any land, so coasts read (MAP_STYLE.md)
         Terrain::Plains => hex(0xeef0b4),
         Terrain::Mountains => hex(0xbdbdbd),
         Terrain::Chaparral => hex(0xa1887f),

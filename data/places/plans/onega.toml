@@ -1,0 +1,166 @@
+[meta]
+place = "onega"
+written = "2026-11-12"
+verdict = "research"
+confidence = "high"
+really_empty = "Nearly. One site in the box in any epoch: Oleneostrovski mogilnik (Yuzhniy Oleniy Ostrov, 35.408 E 62.173 N, XRONOS, 9 dates, drawn as 6,600-4,540 BCE), and nothing else within 100 km of the box in any epoch; the nearest other site is 282-504 km away. No duplicates. The raw XRONOS file for Russia (2,271 records) holds only this site and a misplaced 'Medvezhya' (34.47 E 62.92 N, 15-19 ka BP, out of window) between 33 and 37 E; p3k14c adds the same Oleni Ostrov dates and one late Finnish date. The Oleni Ostrov span is the uncorrected bone-date span: Schulting et al. 2022 put the cemetery's main use at about 8250-8000 cal BP (about 6300-6050 BCE) after a freshwater-reservoir correction. Board problem: Lake Onega is not on the board in any epoch: all 49 hexes in the box are Boreal Forest from 10,000 to 3,000 BCE, and no river (Svir, Vodla, Shuya, Suna) is on record."
+why_empty = ["not_in_open_compilations", "publication_access", "research_intensity"]
+summary = """
+Lake Onega, the second-largest lake in Europe (9,891 km², surface 33 m), with
+the Zaonezhye peninsula and Pegrema on the north shore, the Oleni Ostrov
+cemetery in the north-west basin, and the petroglyph capes (Besov Nos, Peri
+Nos, Kladovets Nos) on the east shore near Pudozh. In our data the box holds
+one site, the Oleni Ostrov cemetery, and nothing else within 100 km in any
+epoch. The residuals read "as expected" in every hex because the site list's
+own pattern expects almost nothing in the Russian boreal forest: that
+expectation is itself an artefact of the same gap.
+
+The emptiness is a hole in the open compilations, not in the past. The
+Karelian record is large, dated and published, mostly in Russian and in
+print: Tarasov et al. 2017 compile 194 radiocarbon dates from 77 Neolithic
+and Eneolithic sites in the Karelian Republic (later 6th to 2nd millennium cal
+BC), many of them on Onega's shores (Pegrema, Sheltozero, Orovnavolok,
+Chernaya Guba, Chernaya Rechka, Kladovets, Vozhmarikha, Voynavolok, Vorob'i
+4). The Mesolithic dates are in Zaitseva et al. 2000, a table of 211
+Mesolithic dates from eastern Europe with site coordinates, which places
+Pegrema 8, Orovnavolok 9, Kladovets, Muromskoe 7 and Besov Nos 6 on this lake
+between about 7,500 and 5,700 cal BC, beside the 34 Oleni Ostrov dates we
+already hold. Lobanova 2019 lists more than 60 sites around the east-shore
+petroglyphs, with elevations and dates, and dates the Onega carvings to Pit-
+Comb Ware times, about 4,200-3,000 BCE. None of this reached XRONOS, p3k14c or
+NeoNet. Of the 2,271 Russian XRONOS records, two sites fall in all of Russian
+Karelia.
+
+What to do: ingest the Zaitseva et al. 2000 table (coordinates given) and
+Tarasov et al. 2017 Table 1 (coordinates to be read off its Map 1), then the
+Lobanova 2019 site tables. That turns one site into about twenty between
+7,500 and 3,000 BCE. Separately, a person should put Lake Onega on the board:
+it has been a lake through the whole window (the basin was free of ice by
+about 13-12 ka; Rybalko et al. 2022), with levels a few metres above today's
+around 5,000 BCE (Lobanova 2019, citing Devyatova 1986). Without the lake,
+the shore sites have no shore and the petroglyph capes are inland forest.
+Speculation is limited to the earliest slices, before the first dates on the
+lake itself. On the user's point about large early Holocene lakes: the large
+proglacial Onega stage, with its southern basin about 80-85 m a.s.l.
+(Rybalko et al. 2022 cite c. 14.5-13.3 ka for the ice-lake stages), is
+before the window. In the window the lake had roughly its present outline,
+so the board needs the lake, not a bigger palaeolake.
+"""
+
+[proposed_place]
+key = "onega"
+name = "Lake Onega"
+kind = "lake_shore"
+box = [33.8, 60.7, 36.8, 63.0]
+why = "Europe's second-largest lake: Oleni Ostrov, one of the largest early Holocene cemeteries of northern Eurasia, the Pegrema and Zaonezhye shore sites, and the east-shore petroglyphs, with the Svir draining to Ladoga."
+
+[[known_site]]
+name = "Besov Nos VI (Besov Nos 6)"
+lon = 36.05
+lat = 61.667
+coordinates = "published"
+start = -7490
+end = -6090
+what = "Mesolithic settlement on the cape of the Onega petroglyphs, 38-38.5 m a.s.l. (lake today 33 m). Ten dates 8340-7315 BP, 7489-6087 cal BC (68%), plus one of 2817-2533 cal BC. Coordinates 61°40' N 36°03' E from Zaitseva et al. 2000, no. 44-45."
+cite = "Zaitseva et al. 2000, Radiocarbon and Archaeology 1:33-52, table nos. 44-45; Lobanova 2019, Fennoscandia archaeologica XXXVI, table 3"
+url = "https://old.archeo.ru/izdaniya-1/vagnejshije-izdanija/pdf/2000Radiocarbon.pdf"
+checked = true
+
+[[known_site]]
+name = "Kladovets (settlements IV, Va, VIII, IX and burial ground)"
+lon = 35.833
+lat = 61.933
+coordinates = "published"
+start = -6810
+end = -3130
+what = "Cluster of settlements and a Neolithic burial ground on the east shore near the petroglyphs, 35-39 m a.s.l. Kladovets IV 7840±60 BP (6806-6624 cal BC), VIII 7760±100 BP (6752-6512), Va 5850±80 BP (4910-4500), IX 5310±80 BP (4247-4053), burial ground 4560±80 BP (3434-3131). Coordinates 61°56' N 35°50' E from Zaitseva et al. 2000, nos. 40-41."
+cite = "Zaitseva et al. 2000, table nos. 40-41; Lobanova 2019, table 3; Tarasov et al. 2017, table 1"
+url = "https://journal.fi/fennoscandiaarchaeologica/article/download/126571/76389/265733"
+checked = true
+
+[[known_site]]
+name = "Muromskoe 7"
+lon = 36.283
+lat = 61.833
+coordinates = "published"
+start = -7000
+end = -6240
+what = "Mesolithic settlement by Lake Muromskoe, east of Onega's shore. Two charcoal dates, 7940±120 and 7600±100 BP (7000-6630 and 6480-6240 cal BC, 1 sigma). Coordinates 61°50' N 36°17' E."
+cite = "Zaitseva et al. 2000, table nos. 42-43"
+url = "https://old.archeo.ru/izdaniya-1/vagnejshije-izdanija/pdf/2000Radiocarbon.pdf"
+checked = true
+
+[[known_site]]
+name = "Pegrema (Pegrema 8, I, II, IX)"
+lon = 34.433
+lat = 62.583
+coordinates = "published"
+start = -6100
+end = -3110
+what = "Group of settlements on the north shore of Lake Onega. Pegrema 8 is Mesolithic (three dates 7140-7050 BP, 6102-5710 cal BC); Pegrema IX has Sperrings Ware (6510±150 BP, 5730-5081 cal BC); Pegrema I and II are the Eneolithic Rhomb-Pit Ware houses (4780±50 and 4750±120 BP, 3794-3110 cal BC). Coordinates 62°35' N 34°26' E for Pegrema 8; the other Pegrema sites lie at the same locality (Tarasov et al. 2017, map 1 no. 2)."
+cite = "Zaitseva et al. 2000, table nos. 11-13; Tarasov et al. 2017, Documenta Praehistorica 44:98-121, table 1"
+url = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/44.7"
+checked = true
+
+[[known_site]]
+name = "Orovnavolok (9, V, VII)"
+lon = 35.083
+lat = 62.767
+coordinates = "published"
+start = -6600
+end = -3960
+what = "Settlement group on the north-east Onega shore. Orovnavolok 9 Mesolithic, 7720±100 BP (6600-6420 cal BC); Orovnavolok V 5850±80 BP (4931-4519 cal BC); Orovnavolok VII, Pit-Comb Ware, 5260±70 BP (4314-3958 cal BC). Coordinates 62°46' N 35°05' E for Orovnavolok 9."
+cite = "Zaitseva et al. 2000, table no. 10; Tarasov et al. 2017, table 1"
+url = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/44.7"
+checked = true
+
+[[research]]
+what = "Enter the 'Karelia and North-Western regions' and 'Northern and North-Eastern regions' rows of Zaitseva et al. 2000 (Radiocarbon and Archaeology 1:33-52, the table on pp. 34-36): lab number, BP, error, material and site coordinates in degrees and minutes. The PDF is an OCR scan, so check each '±' (often read as '1') and each minute value against the scan."
+url = "https://old.archeo.ru/izdaniya-1/vagnejshije-izdanija/pdf/2000Radiocarbon.pdf"
+yields = "About 60 Mesolithic dates from 15 sites in Karelia and Vologda, 9,500-5,500 cal BC: Pegrema 8, Orovnavolok 9, Kladovets, Muromskoe 7, Besov Nos 6, Pindushi 19, Antrea Korpilahti, Peschanitsa, Lower Veretye, Popovo cemetery, Tsareva, Ust'-Andoga, Kumozero. The same table covers Komi, the Upper Volga and the Baltic states (211 dates in all)."
+effort = "About 70 rows for the north-west, typed from the scan; coordinates are given."
+
+[[research]]
+what = "Enter Table 1 of Tarasov et al. 2017 (Neolithic-Eneolithic dates of the Karelian Republic). The table has no coordinates: locate the 27 numbered localities on Map 1 and give each site the locality's coordinates, marked approximate. Keep their Table 2 (dates without matching finds) out."
+url = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/44.7"
+yields = "About 170 dates from about 70 sites, 5,700-2,000 cal BC, of which roughly half are on the Onega shores (localities 2-10 and 14-18 on Map 1); the rest on the White Sea (11, 23), Lake Ladoga (27) and western Karelia."
+effort = "A table of about 200 rows with lab numbers; coordinates from a map, about 30 localities."
+
+[[research]]
+what = "Enter the dated rows of Lobanova 2019, Table 3 (sites around the Onega petroglyphs: Besov Nos, Kladovets, Peri Nos, Karetskiy Nos, Chernaya Rechka, with elevations a.s.l. and lab numbers). Most of the dated rows overlap the two compilations above; add only those that are new and use the site elevations to place them on the right side of the shore."
+url = "https://journal.fi/fennoscandiaarchaeologica/article/download/126571/76389/265733"
+yields = "Some 10 more dated site records on the east shore, 7,500-2,500 cal BC, and elevations for about 60 undated ones."
+effort = "Two pages of table; locations from the site names and the paper's maps (approximate)."
+
+[[research]]
+what = "Board, for a person (data/lakes/lakes.toml is not this plan's to edit): add Lake Onega as a lake held at about its present extent for the whole window, 2-4 m above today's level around 5,000 BCE (Lobanova 2019 citing Devyatova 1986), draining by the Svir to Ladoga. ETOPO1 probably records its surface as flat ground, as it did Ladoga's (data/lakes/SOURCES.md, Lake Ladoga). Add the Svir to the rivers."
+url = "https://en.wikipedia.org/wiki/Lake_Onega"
+yields = "About 10 water hexes in the box; gives the Oleni Ostrov island and the shore sites a shore."
+effort = "One [[lake]] entry with a seed and box, as for Ladoga."
+
+[[research]]
+what = "Take the reservoir-corrected modelled dates for Oleni Ostrov from Schulting et al. 2022 (supplementary data) and record them beside the existing XRONOS phase, so the cemetery can be drawn as about 6300-6050 BCE as well as the uncorrected 6600-4540 BCE. Do not delete the recorded phase."
+url = "https://baikalproject.artsrn.ualberta.ca/wp-content/uploads/2022/01/Schulting-et-al_2022_Radiocarbon-dating-from-Yuzhniy-Oleniy-Ostrov_NatEcolEvol.pdf"
+yields = "A corrected occupation phase for the one site we have; about 40 new AMS dates on 177 burials."
+effort = "Read the supplement; one field beside the recorded phase."
+
+[[speculate]]
+target = "settlements"
+slices = [-9000, -8000]
+rule = "Place inferred forager camps on the Onega shore before the first dates on the lake: one per about 50 km of shore, on capes and river mouths 2-6 m above today's lake level, the north and east shores first. Mark as inferred."
+confidence = "medium"
+reasoning = "The lake has been free of ice since before the window (Rybalko et al. 2022). The nearest dated pioneers are earlier than any Onega date: the Veretye sites at Lake Lacha, 150 km east (Peschanitsa 9890±120 BP, 9500-9010 cal BC; Lower Veretye from 9600±80 BP, 8954-8602 cal BC), and the Antrea net on the Karelian Isthmus at 8560-8240 cal BC (Zaitseva et al. 2000; Seitsonen et al. 2012). The oldest Onega dates (Besov Nos 6, 8340 BP, about 7,400 BCE; Oleni Ostrov GIN-4836, 9910±80 BP, but bone with a freshwater reservoir offset) come from shore sites already in use. A cemetery of more than 170 burials by 6,300 BCE implies a population that was there well before. At -9000 the north basin was near the retreating ice margin, so confidence there is lower than at -8000."
+basis = ["neighbouring_evidence", "literature", "environment"]
+
+[[speculate]]
+target = "isostyle:houses"
+slices = [-5000, -4000, -3000]
+rule = "Raise houses to about 0.7 within 250 km of the lake from 5,000 BCE: Karelian Neolithic and Eneolithic settlements are pit-house villages."
+confidence = "medium"
+reasoning = "Tarasov et al. 2017 list 35 dates from dwellings in Karelia, 21 of them from burnt house walls, mostly Late Neolithic and Eneolithic; Pegrema I-III are Rhomb-Pit Ware house sites of 3,800-3,100 cal BC. The layer's current judged value (0.2-0.35) follows the general 'forager dwellings' rule for the forest zone, which undercounts Karelia, where houses are the usual dated context."
+basis = ["literature"]
+[[speculate.adjust]]
+kind = "near"
+point = [35.3, 62.0]
+radius_km = 250
+value = 0.7

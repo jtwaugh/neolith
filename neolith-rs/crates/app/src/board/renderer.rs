@@ -142,6 +142,10 @@ pub struct Globals {
     /// Focus distance, haze strength, tilt-shift blur radius (fraction of
     /// the view's height), viewport aspect.
     pub depth: [f32; 4],
+    /// The relief texture's placement ([`super::heightfield::Heightfield::uniform`]):
+    /// art_global x0, y0, texels per unit, 1 when there is one (0 none).
+    /// The renderer fills it in from the last upload.
+    pub relief: [f32; 4],
 }
 
 /// A vertex of a settlement piece, already in world space.
@@ -181,6 +185,8 @@ pub struct LineMesh {
 
 struct Targets {
     size: [u32; 2],
+    /// The top-left part of the target the last pass drew into.
+    drawn: [u32; 2],
     msaa_view: wgpu::TextureView,
     depth_view: wgpu::TextureView,
     resolve: wgpu::Texture,
@@ -212,7 +218,12 @@ pub struct BoardRenderer {
     bake_bind_group: wgpu::BindGroup,
     /// The edge-blend value the art textures were baked with; `None` when the hex
     /// state changed since (see [`Self::bake_props`]).
-    art_baked_blend: Option<f32>,
+    /// What the art textures were last baked for: edge blending (terrain
+    /// mode only), map mode, saturation and the ground field switch (the
+    /// per-hex ground colour depends on all of them). `None` forces a bake.
+    art_baked_blend: Option<[f32; 4]>,
+    /// The relief texels last uploaded (the ground colour reads them).
+    state_relief: Vec<u8>,
     prop_scratch: Vec<HexInstance>,
     blit_pipeline: wgpu::RenderPipeline,
     blit_layout: wgpu::BindGroupLayout,
@@ -238,6 +249,18 @@ pub struct BoardRenderer {
     camp_tex: wgpu::Texture,
     /// The camps last uploaded.
     camp_data: Vec<u8>,
+    /// RGBA8: what people have done to each hex (see [`Self::upload_history`]).
+    history_tex: wgpu::Texture,
+    /// The history layer last uploaded.
+    history_data: Vec<u8>,
+    /// RGBA8 (uint): each hex's massif sketch (see [`Self::upload_massif`]).
+    massif_tex: wgpu::Texture,
+    /// The sketch last uploaded.
+    massif_data: Vec<u8>,
+    /// R16Float: the relief, in board-wide hex-local coordinates (see
+    /// [`Self::upload_heightfield`]), and the uniform that places it.
+    heightfield_tex: wgpu::Texture,
+    relief_uniform: [f32; 4],
     state_size: [u32; 2],
     /// CPU copy of `state_tex` (RGBA8), for single-texel flag updates.
     state_rgba: Vec<u8>,
@@ -311,6 +334,19 @@ impl BoardRenderer {
         let [camps_x, camps_y] = super::scene::CAMPS_PER_HEX;
         let camp_tex = device.create_texture(&tex_desc("camps", cols * camps_x, rows * camps_y, wgpu::TextureFormat::Rgba8Unorm));
         let camp_view = camp_tex.create_view(&Default::default());
+        let history_tex = device.create_texture(&tex_desc("hex history", cols, rows, wgpu::TextureFormat::Rgba8Unorm));
+        let history_view = history_tex.create_view(&Default::default());
+        let massif_tex = device.create_texture(&tex_desc("massifs", cols * 2, rows * 2, wgpu::TextureFormat::Rgba8Uint));
+        let massif_view = massif_tex.create_view(&Default::default());
+        let [hf_w, hf_h] = super::heightfield::size(cols, rows);
+        let heightfield_tex = device.create_texture(&tex_desc("relief", hf_w, hf_h, wgpu::TextureFormat::R16Float));
+        let heightfield_view = heightfield_tex.create_view(&Default::default());
+        let relief_sampler = device.create_sampler(&wgpu::SamplerDescriptor {
+            label: Some("relief"),
+            mag_filter: wgpu::FilterMode::Linear,
+            min_filter: wgpu::FilterMode::Linear,
+            ..Default::default()
+        });
         // The baked prop layout and glyph lists (fs_slot_bake): 4 × 3 slots
         // per hex; the per-hex art data (fs_hex_bake).
         let prop_tex = device.create_texture(&wgpu::TextureDescriptor {
@@ -375,6 +411,15 @@ impl BoardRenderer {
                 tex_entry(8, wgpu::TextureSampleType::Uint),
                 tex_entry(9, wgpu::TextureSampleType::Float { filterable: true }),
                 tex_entry(10, wgpu::TextureSampleType::Float { filterable: true }),
+                tex_entry(11, wgpu::TextureSampleType::Float { filterable: true }),
+                tex_entry(12, wgpu::TextureSampleType::Uint),
+                tex_entry(13, wgpu::TextureSampleType::Float { filterable: true }),
+                wgpu::BindGroupLayoutEntry {
+                    binding: 14,
+                    visibility: wgpu::ShaderStages::FRAGMENT,
+                    ty: wgpu::BindingType::Sampler(wgpu::SamplerBindingType::Filtering),
+                    count: None,
+                },
             ],
         });
         let bind_group = device.create_bind_group(&wgpu::BindGroupDescriptor {
@@ -407,19 +452,28 @@ impl BoardRenderer {
                 },
                 wgpu::BindGroupEntry { binding: 9, resource: wgpu::BindingResource::TextureView(&river_view) },
                 wgpu::BindGroupEntry { binding: 10, resource: wgpu::BindingResource::TextureView(&camp_view) },
+                wgpu::BindGroupEntry { binding: 11, resource: wgpu::BindingResource::TextureView(&history_view) },
+                wgpu::BindGroupEntry { binding: 12, resource: wgpu::BindingResource::TextureView(&massif_view) },
+                wgpu::BindGroupEntry { binding: 13, resource: wgpu::BindingResource::TextureView(&heightfield_view) },
+                wgpu::BindGroupEntry { binding: 14, resource: wgpu::BindingResource::Sampler(&relief_sampler) },
             ],
         });
         // The bakes render into the art textures, so can't have them bound: their own
         // layout with just what they read (globals, hex state, heights for the
-        // peak scale, river field, camps).
+        // peak scale, river field, camps, massif sketches).
         let bake_layout = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
             label: Some("prop bake layout"),
             entries: &[
                 uniform_entry(0, wgpu::ShaderStages::VERTEX_FRAGMENT),
                 tex_entry(1, wgpu::TextureSampleType::Uint),
+                tex_entry(2, wgpu::TextureSampleType::Float { filterable: true }),
+                tex_entry(3, wgpu::TextureSampleType::Uint),
                 tex_entry(4, wgpu::TextureSampleType::Sint),
+                tex_entry(8, wgpu::TextureSampleType::Uint),
                 tex_entry(9, wgpu::TextureSampleType::Float { filterable: true }),
                 tex_entry(10, wgpu::TextureSampleType::Float { filterable: true }),
+                tex_entry(11, wgpu::TextureSampleType::Float { filterable: true }),
+                tex_entry(12, wgpu::TextureSampleType::Uint),
             ],
         });
         let bake_bind_group = device.create_bind_group(&wgpu::BindGroupDescriptor {
@@ -432,11 +486,25 @@ impl BoardRenderer {
                     resource: wgpu::BindingResource::TextureView(&state_tex.create_view(&Default::default())),
                 },
                 wgpu::BindGroupEntry {
+                    binding: 2,
+                    resource: wgpu::BindingResource::TextureView(&palette_tex.create_view(&Default::default())),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 3,
+                    resource: wgpu::BindingResource::TextureView(&elevation_tex.create_view(&Default::default())),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 8,
+                    resource: wgpu::BindingResource::TextureView(&evidence_tex.create_view(&Default::default())),
+                },
+                wgpu::BindGroupEntry {
                     binding: 4,
                     resource: wgpu::BindingResource::TextureView(&height_tex.create_view(&Default::default())),
                 },
                 wgpu::BindGroupEntry { binding: 9, resource: wgpu::BindingResource::TextureView(&river_view) },
                 wgpu::BindGroupEntry { binding: 10, resource: wgpu::BindingResource::TextureView(&camp_view) },
+                wgpu::BindGroupEntry { binding: 11, resource: wgpu::BindingResource::TextureView(&history_view) },
+                wgpu::BindGroupEntry { binding: 12, resource: wgpu::BindingResource::TextureView(&massif_view) },
             ],
         });
         let bake_pipeline_layout = device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
@@ -637,7 +705,7 @@ impl BoardRenderer {
         let encode = if target_format.is_srgb() { 0.0f32 } else { 1.0 };
         let blit_params = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
             label: Some("blit params"),
-            contents: bytemuck::cast_slice(&[encode, 0.0, 0.0, 0.0]),
+            contents: bytemuck::cast_slice(&[encode, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0]),
             usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
         });
         let sampler = device.create_sampler(&wgpu::SamplerDescriptor {
@@ -698,6 +766,7 @@ impl BoardRenderer {
             hex_bake_pipeline,
             bake_bind_group,
             art_baked_blend: None,
+            state_relief: Vec::new(),
             prop_scratch: Vec::with_capacity(mesh.props.len()),
             blit_pipeline,
             blit_layout,
@@ -716,6 +785,12 @@ impl BoardRenderer {
             river_tex,
             river_field: None,
             camp_tex,
+            history_tex,
+            history_data: Vec::new(),
+            massif_tex,
+            massif_data: Vec::new(),
+            heightfield_tex,
+            relief_uniform: [0.0; 4],
             camp_data: Vec::new(),
             state_size: [cols, rows],
             state_rgba: Vec::new(),
@@ -805,12 +880,15 @@ impl BoardRenderer {
         // The prop layout reads terrain (r) and landform (a, bits 3-4), not
         // the selection, hover and lasso flags (a, bits 0-2), so selecting
         // keeps the bake.
+        // The ground colour (fs_hex_bake) reads every channel but those
+        // flags, and the relief texels.
         let layout_changed = self.state_rgba.len() != state.rgba.len()
-            || self.state_rgba.chunks_exact(4).zip(state.rgba.chunks_exact(4)).any(|(a, b)| a[0] != b[0] || a[3] >> 3 != b[3] >> 3);
+            || self.state_rgba.chunks_exact(4).zip(state.rgba.chunks_exact(4)).any(|(a, b)| a[..3] != b[..3] || a[3] >> 3 != b[3] >> 3);
         // Mountain peaks are sized by the heights (art_peak_scale).
-        if layout_changed || self.state_height != state.height {
+        if layout_changed || self.state_height != state.height || self.state_relief != state.relief {
             self.art_baked_blend = None;
         }
+        self.state_relief.clone_from(&state.relief);
         self.state_rgba.clone_from(&state.rgba);
         self.state_height.clone_from(&state.height);
         self.rendered = None;
@@ -827,6 +905,8 @@ impl BoardRenderer {
             wgpu::TexelCopyBufferLayout { offset: 0, bytes_per_row: Some(w), rows_per_image: Some(h) },
             wgpu::Extent3d { width: w, height: h, depth_or_array_layers: 1 },
         );
+        // The ground colour in Evidence and Missing sites reads it.
+        self.art_baked_blend = None;
         self.rendered = None;
     }
 
@@ -866,6 +946,60 @@ impl BoardRenderer {
         );
         self.camp_data.clear();
         self.camp_data.extend_from_slice(texels);
+        self.art_baked_blend = None;
+        self.rendered = None;
+    }
+
+    /// Replaces the relief texture ([`super::heightfield::build`]).
+    pub fn upload_heightfield(&mut self, queue: &wgpu::Queue, field: &super::heightfield::Heightfield) {
+        let (w, h) = (self.heightfield_tex.width(), self.heightfield_tex.height());
+        assert_eq!((field.width, field.height), (w, h), "heightfield size must match the grid's");
+        queue.write_texture(
+            self.heightfield_tex.as_image_copy(),
+            bytemuck::cast_slice(&field.texels),
+            wgpu::TexelCopyBufferLayout { offset: 0, bytes_per_row: Some(w * 2), rows_per_image: Some(h) },
+            wgpu::Extent3d { width: w, height: h, depth_or_array_layers: 1 },
+        );
+        self.relief_uniform = field.uniform();
+        self.rendered = None;
+    }
+
+    /// Replaces the massif sketches ([`super::scene::massif_texels`]). The
+    /// prop layout stands the peaks on them, so a new set re-bakes the art.
+    pub fn upload_massif(&mut self, queue: &wgpu::Queue, texels: &[u8]) {
+        if texels == self.massif_data.as_slice() {
+            return;
+        }
+        let (w, h) = (self.massif_tex.width(), self.massif_tex.height());
+        assert_eq!(texels.len(), (w * h * 4) as usize);
+        queue.write_texture(
+            self.massif_tex.as_image_copy(),
+            texels,
+            wgpu::TexelCopyBufferLayout { offset: 0, bytes_per_row: Some(w * 4), rows_per_image: Some(h) },
+            wgpu::Extent3d { width: w, height: h, depth_or_array_layers: 1 },
+        );
+        self.massif_data.clear();
+        self.massif_data.extend_from_slice(texels);
+        self.art_baked_blend = None;
+        self.rendered = None;
+    }
+
+    /// Replaces the history layer ([`super::scene::history_texels`]). The
+    /// prop layout thins the woods by it, so a new layer re-bakes the art.
+    pub fn upload_history(&mut self, queue: &wgpu::Queue, texels: &[u8]) {
+        if texels == self.history_data.as_slice() {
+            return;
+        }
+        let (w, h) = (self.history_tex.width(), self.history_tex.height());
+        assert_eq!(texels.len(), (w * h * 4) as usize);
+        queue.write_texture(
+            self.history_tex.as_image_copy(),
+            texels,
+            wgpu::TexelCopyBufferLayout { offset: 0, bytes_per_row: Some(w * 4), rows_per_image: Some(h) },
+            wgpu::Extent3d { width: w, height: h, depth_or_array_layers: 1 },
+        );
+        self.history_data.clear();
+        self.history_data.extend_from_slice(texels);
         self.art_baked_blend = None;
         self.rendered = None;
     }
@@ -955,6 +1089,7 @@ impl BoardRenderer {
         });
         self.targets = Some(Targets {
             size,
+            drawn: size,
             msaa_view: msaa.create_view(&Default::default()),
             depth_view: depth.create_view(&Default::default()),
             resolve,
@@ -970,14 +1105,33 @@ impl BoardRenderer {
     /// than using egui's: eframe drops a frame's encoder when it can't get a
     /// surface texture (a window not shown yet, a hidden tab), and a frame
     /// believed drawn but never executed would leave the board blank.
-    pub fn render_if_changed(&mut self, device: &wgpu::Device, queue: &wgpu::Queue, size: [u32; 2], globals: &Globals) {
+    ///
+    /// The target is `size` pixels; the pass draws into its top-left
+    /// `drawn` pixels (at most `size`), which the blit stretches over the
+    /// panel. A phone's GPU can't draw the board at full density every frame,
+    /// so while the camera moves it is drawn smaller, and sharp again once it
+    /// stops, without reallocating the target.
+    pub fn render_if_changed(
+        &mut self,
+        device: &wgpu::Device,
+        queue: &wgpu::Queue,
+        size: [u32; 2],
+        drawn: [u32; 2],
+        globals: &Globals,
+    ) {
         self.ensure_targets(device, size);
-        if self.rendered.as_ref().is_some_and(|g| bytemuck::bytes_of(g) == bytemuck::bytes_of(globals)) {
+        let drawn = [drawn[0].clamp(1, size[0]), drawn[1].clamp(1, size[1])];
+        let same_region = self.targets.as_ref().is_some_and(|t| t.drawn == drawn);
+        if same_region && self.rendered.as_ref().is_some_and(|g| bytemuck::bytes_of(g) == bytemuck::bytes_of(globals)) {
             return;
         }
+        let t = web_time::Instant::now();
         let mut encoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor { label: Some("board") });
-        self.render(device, queue, &mut encoder, size, globals);
+        self.render_region(device, queue, &mut encoder, drawn, globals);
         queue.submit([encoder.finish()]);
+        crate::perf::record("board cpu", t.elapsed().as_secs_f32() * 1000.0);
+        crate::perf::board_rendered(drawn);
+        crate::perf::time_gpu(device, queue, t);
         self.rendered = Some(*globals);
     }
 
@@ -991,9 +1145,34 @@ impl BoardRenderer {
         globals: &Globals,
     ) {
         self.ensure_targets(device, size);
-        queue.write_buffer(&self.globals, 0, bytemuck::bytes_of(globals));
+        self.render_region(device, queue, encoder, size, globals);
+    }
+
+    /// Draws the scene into the top-left `drawn` pixels of the current
+    /// target (see [`Self::render_if_changed`]).
+    fn render_region(
+        &mut self,
+        device: &wgpu::Device,
+        queue: &wgpu::Queue,
+        encoder: &mut wgpu::CommandEncoder,
+        drawn: [u32; 2],
+        globals: &Globals,
+    ) {
+        let _ = device;
+        let size = self.targets.as_ref().expect("ensure_targets first").size;
+        let drawn = [drawn[0].clamp(1, size[0]), drawn[1].clamp(1, size[1])];
+        self.targets.as_mut().unwrap().drawn = drawn;
+        let mut g = *globals;
+        g.relief = self.relief_uniform;
+        queue.write_buffer(&self.globals, 0, bytemuck::bytes_of(&g));
         // The tilt-shift is done by the blit, which has its own parameters.
-        queue.write_buffer(&self.blit_params, 0, bytemuck::cast_slice(&[self.blit_encode, globals.depth[2], globals.depth[3], 0.0]));
+        let share = [drawn[0] as f32 / size[0] as f32, drawn[1] as f32 / size[1] as f32];
+        let max_uv = [(drawn[0] as f32 - 0.5) / size[0] as f32, (drawn[1] as f32 - 0.5) / size[1] as f32];
+        queue.write_buffer(
+            &self.blit_params,
+            0,
+            bytemuck::cast_slice(&[self.blit_encode, globals.depth[2], globals.depth[3], 0.0, share[0], share[1], max_uv[0], max_uv[1]]),
+        );
         if globals.art[0] > 0.0 || globals.art[1] > 0.0 {
             self.bake_art(encoder, globals);
         }
@@ -1018,6 +1197,10 @@ impl BoardRenderer {
             occlusion_query_set: None,
             multiview_mask: None,
         });
+        if drawn != size {
+            pass.set_viewport(0.0, 0.0, drawn[0] as f32, drawn[1] as f32, 0.0, 1.0);
+            pass.set_scissor_rect(0, 0, drawn[0], drawn[1]);
+        }
         pass.set_bind_group(0, &self.bind_group, &[]);
         pass.set_pipeline(&self.background_pipeline);
         pass.draw(0..3, 0..1);
@@ -1061,7 +1244,7 @@ impl BoardRenderer {
     /// the terrain map mode) changed since the last bake. [`Self::set_flag`]
     /// doesn't touch them: the art ignores those flags.
     fn bake_art(&mut self, encoder: &mut wgpu::CommandEncoder, g: &Globals) {
-        let blend = if g.grid[2] == 0.0 { g.art[3] } else { 0.0 };
+        let blend = [if g.grid[2] == 0.0 { g.art[3] } else { 0.0 }, g.grid[2], g.tile[3], g.art[3]];
         if self.art_baked_blend == Some(blend) {
             return;
         }
@@ -1105,6 +1288,22 @@ impl BoardRenderer {
             queue.write_buffer(&self.prop_instances, 0, bytemuck::cast_slice(&out));
         }
         self.prop_scratch = out;
+    }
+
+    /// Renders the last frame's board pass `n` times back to back and waits
+    /// for the GPU: the mean ms per pass with the GPU kept busy (perf.rs).
+    #[cfg(not(target_arch = "wasm32"))]
+    pub fn bench(&mut self, device: &wgpu::Device, queue: &wgpu::Queue, n: u32) -> Option<f32> {
+        let (g, drawn) = (self.rendered?, self.targets.as_ref()?.drawn);
+        let _ = device.poll(wgpu::PollType::wait_indefinitely());
+        let t = web_time::Instant::now();
+        for _ in 0..n {
+            let mut encoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor { label: Some("board bench") });
+            self.render_region(device, queue, &mut encoder, drawn, &g);
+            queue.submit([encoder.finish()]);
+        }
+        let _ = device.poll(wgpu::PollType::wait_indefinitely());
+        Some(t.elapsed().as_secs_f32() * 1000.0 / n.max(1) as f32)
     }
 
     /// Draws the last rendered image over the current viewport of `pass`.

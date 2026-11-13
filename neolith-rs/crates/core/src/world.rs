@@ -1,5 +1,8 @@
 use crate::grid::{GridSpec, HexId, LonLat};
 use crate::lake::Lake;
+use crate::massif::Massif;
+#[cfg(test)]
+use crate::massif::{MassifKind, Summit};
 use crate::river::{River, RiverClass};
 use crate::time::Year;
 use crate::timeline::Timeline;
@@ -75,6 +78,27 @@ impl Settlement {
             Some(&(a, b)) if i == 0 => (a.min(self.founded), b),
             Some(&(a, b)) => (a, b),
         })
+    }
+
+    /// Years the site has been lived in up to `year`, not counting gaps
+    /// between phases (the first phase starting at `founded` if that is
+    /// earlier, as in [`Self::phase_at`]). Drives how big a tell has grown
+    /// and how long its ruin lasts.
+    pub fn occupied_years_by(&self, year: Year) -> i32 {
+        if self.founded > year {
+            return 0;
+        }
+        if self.occupation.is_empty() {
+            return year.0 - self.founded.0;
+        }
+        self.occupation
+            .iter()
+            .enumerate()
+            .map(|(k, &(a, b))| {
+                let a = if k == 0 { a.min(self.founded) } else { a };
+                (b.0.min(year.0) - a.0).max(0)
+            })
+            .sum()
     }
 
     /// Population at `year`: the latest population key at or before it,
@@ -204,6 +228,13 @@ pub struct World {
     /// Gulf of Guinea, the Atlantic off Senegal). Empty for files before
     /// version 12. Use [`World::edge_sea_km`].
     pub edge_sea: Vec<Timeline<u16>>,
+    /// Per hex: a sketch of its high ground ([`crate::massif`]) where it is
+    /// hilly or mountainous, from the pipeline's elevation raster. Empty
+    /// for files before version 13; the board then lays peaks out by hash.
+    pub massif: Vec<Option<Massif>>,
+    /// Today's topography at a few samples per hex ([`crate::heightmap`]),
+    /// for drawing relief only. `None` for files before version 14.
+    pub heightmap: Option<crate::heightmap::Heightmap>,
 }
 
 /// An [`World::edge_sea`] value meaning no sea beyond the edge within reach.
@@ -305,6 +336,8 @@ impl World {
             evidence: Vec::new(),
             residuals: None,
             edge_sea: Vec::new(),
+            massif: Vec::new(),
+            heightmap: None,
         }
     }
 
@@ -672,6 +705,17 @@ impl World {
         if !self.edge_sea.is_empty() && (self.edge_sea.len() != n || self.edge_sea.iter().any(|t| !t.is_sorted())) {
             return Err(format!("edge-sea layer has {} timelines for {n} hexes, or unsorted keys", self.edge_sea.len()));
         }
+        if !self.massif.is_empty() && self.massif.len() != n {
+            return Err(format!("massif layer has {} values for {n} hexes", self.massif.len()));
+        }
+        for (i, m) in self.massif.iter().enumerate() {
+            if let Some(m) = m {
+                m.validate().map_err(|e| format!("hex {i}: {e}"))?;
+            }
+        }
+        if let Some(h) = &self.heightmap {
+            h.validate()?;
+        }
         if !self.npp.is_empty() && (self.npp.len() != n || self.npp.iter().any(|t| !t.is_sorted())) {
             return Err(format!("productivity layer has {} timelines for {n} hexes, or unsorted keys", self.npp.len()));
         }
@@ -781,6 +825,18 @@ pub(crate) fn test_world(cols: u16, rows: u16) -> World {
     w
 }
 
+/// Gives `w`'s mountain hexes a massif sketch (a two-summit ridge).
+#[cfg(test)]
+pub(crate) fn add_test_massif(w: &mut World) {
+    w.massif = (0..w.grid.len())
+        .map(|i| {
+            (w.landform[i] == Some(Landform::Mountains)).then(|| {
+                Massif::new(MassifKind::Ridge, 30.0 * (i % 6) as f64, 0.5, 900.0, vec![Summit::new(0.2, -0.1, 1400.0), Summit::new(-0.4, 0.3, 600.0)])
+            })
+        })
+        .collect();
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -834,6 +890,12 @@ mod tests {
         assert_eq!(s.phase_at(Year(-9200)), Some((Year(-9500), Year(-7000))));
         assert_eq!(s.phase_at(Year(-4500)), Some((Year(-5000), Year(-4000))));
         assert_eq!(s.phase_at(Year(-6000)), None);
+        // Occupied years: from the founding, gaps not counted.
+        assert_eq!(s.occupied_years_by(Year(-9600)), 0);
+        assert_eq!(s.occupied_years_by(Year(-9000)), 500);
+        assert_eq!(s.occupied_years_by(Year(-6000)), 2500, "the hiatus adds nothing");
+        assert_eq!(s.occupied_years_by(Year(-4500)), 3000);
+        assert_eq!(s.occupied_years_by(Year(0)), 3500);
     }
 
     #[test]

@@ -40,7 +40,7 @@ def load(path):
     return from_features(load_geojson(path)["features"])
 
 
-# Flat-topped offset neighbours, same tables as game/hex_processing.py.
+# Flat-topped offset neighbours, same tables as the 2023 prototype's game/hex_processing.py.
 _DX = [0, 1, 1, 0, -1, -1]
 _DY_EVEN = [-1, 0, 1, 1, 1, 0]
 _DY_ODD = [-1, -1, 0, 1, 0, -1]

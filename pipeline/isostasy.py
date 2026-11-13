@@ -16,12 +16,27 @@ come after a time `age` ka ago is
 `scale` and `tau` (and the axes) are fitted to dated shoreline elevations
 (data/lakes/SOURCES.md, Baltic); `calibration` in the config lists them and
 pipeline/tests/test_isostasy.py checks the fit.
+
+The Fennoscandian dome alone gives no uplift east of about 36°E, where the
+White Sea coast rose too (Onega Bay, the Onega Peninsula): a second, small
+dome there (`[[isostasy.dome]]`) adds to the rate, with the same `scale`
+and `tau`.
 """
 import numpy as np
 
 
 def rate(lon, lat, cfg):
-    """Present uplift rate (mm/yr) of the dome; zero outside it."""
+    """Present uplift rate (mm/yr): the main dome plus any extra domes in
+    `cfg["dome"]` (each with its own centre, azimuth, axes and peak_rate;
+    `scale` and `tau` are shared). Zero outside them all."""
+    r = _dome(lon, lat, cfg)
+    for d in cfg.get("dome", []):
+        r = r + _dome(lon, lat, d)
+    return r
+
+
+def _dome(lon, lat, cfg):
+    """Present uplift rate (mm/yr) of one elliptical dome."""
     c0, c1 = cfg["centre"]
     x = (np.asarray(lon) - c0) * 111.32 * np.cos(np.radians((np.asarray(lat) + c1) / 2))
     y = (np.asarray(lat) - c1) * 110.57

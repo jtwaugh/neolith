@@ -90,6 +90,32 @@ class Derive(unittest.TestCase):
         self.assertEqual(sorted(f["properties"]["n_dates"] for f in feats), [3])
         self.assertEqual(len(st.derive_sites(dates, ys, (-10000, -3000), same_km=1.0)), 2)
 
+    def test_letters_nfkd_keeps_and_inner_apostrophes_fold(self):
+        self.assertEqual(st.name_tokens("Nevalı Çori"), st.name_tokens("Nevali Cori"))
+        self.assertEqual(st.name_tokens("Sølager"), frozenset({"solager"}))
+        self.assertEqual(st.name_tokens("Qala’at Jarmo"), frozenset({"qalaat", "jarmo"}))
+
+    def test_garbled_names_match_unless_qualifiers_differ(self):
+        self.assertTrue(st.garbled_same("Catalhyk East", "Çatalhöyük East"))
+        self.assertTrue(st.garbled_same("G�ytepe", "Göytepe"))
+        self.assertFalse(st.garbled_same("Catalhyk West", "Çatalhöyük East"))
+        self.assertFalse(st.garbled_same("Garma", "Germa"))
+
+    def test_shared_dates_merge_whatever_the_names(self):
+        def lab(d, n):
+            d["labnr"] = f"Lab-{n}"
+            return d
+        dates = [lab(date("Aswad", 1.0, 2.0, 9000 + k), k) for k in range(3)] + \
+                [lab(date("Tell Aswad", 1.02, 2.0, 9000 + k), k) for k in range(3)] + \
+                [lab(date("Sabi Abyad II", 1.0, 2.0, 8000 + k), 10 + k) for k in range(4)] + \
+                [lab(date("Sabi Abyad III", 1.0, 2.0, 8000), 10), date("Sabi Abyad III", 1.0, 2.0, 0),
+                 date("Sabi Abyad III", 1.0, 2.0, 0), date("Sabi Abyad III", 1.0, 2.0, 0)] + \
+                [date("Elsewhere", 1.3, 2.0, 9000)]
+        ys = np.full(len(dates), -5000.0)
+        names = lambda **kw: sorted(f["properties"]["name"] for f in st.derive_sites(dates, ys, (-10000, -3000), same_km=1.0, **kw))
+        self.assertEqual(names(share_km=10.0), ["Aswad", "Elsewhere", "Sabi Abyad II", "Sabi Abyad III"])
+        self.assertEqual(names(), ["Aswad", "Elsewhere", "Sabi Abyad II", "Sabi Abyad III", "Tell Aswad"])
+
 
 class Xronos(unittest.TestCase):
     def test_parse_dedupes_filters_and_types(self):
@@ -386,3 +412,64 @@ class Survey(unittest.TestCase):
             p = os.path.join(d, "s.csv.gz")
             st.write_survey(p, g, np.array([0.0, 6.0, 30.0, 1.0]), np.array([0, 1, 2, 0]))
             self.assertEqual(st.read_survey(p), {1: 0, 2: 1, 3: 2, 4: 0})
+
+
+class ShiftedNames(unittest.TestCase):
+    """XRONOS dates taken from p3k14c's Vermeersch2019 rows were filed at
+    namesakes thousands of km away (GIN-4858 of Lake Lacha in Lazio)."""
+    SPEC = {"name": "p3k14c", "columns": {"labnr": "LabID", "bp": "Age", "std": "Error", "lon": "Long",
+                                          "lat": "Lat", "site": "SiteName", "refs": ["Source", "Reference"]}}
+    CSV = ("LabID,Age,Error,Long,Lat,SiteName,Source,Reference\n"
+           "GIN-4858,9890,120,32.9548,60.357,Peschio Ranaro,Vermeersch2019,\n"
+           "KIA-1,9500,40,40.66,57.46,Stanovoje,Vermeersch2019,\n"
+           "TUa-6207,5777,50,11.45,61.2,Melle,Solheim_Norway,\n")
+
+    def rows(self):
+        def x(site, lon, lat, lab, bp, refs=("p3k14c",)):
+            return {**date(site, lon, lat, bp), "labnr": lab, "refs": refs}
+        return [x("Peschio Ranaro", 13.32, 41.8, "GIN-4858", 9890),       # at the Italian namesake
+                x("Peschio Ranaro", 13.32, 41.8, "R-1", 10000, ("RADON",)),  # the namesake's own date
+                x("Stanovoje", 40.661, 57.461, "KIA-1", 9500),             # where p3k14c has it
+                x("Melle", 3.80, 51.0, "TUa-6207", 5777)]                   # not the Vermeersch block
+
+    def test_drops_vermeersch_dates_far_from_their_p3k14c_twin_only(self):
+        import os, tempfile
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "p3.csv")
+            with open(p, "w") as f:
+                f.write(self.CSV)
+            dates = self.rows()
+            self.assertEqual(st.drop_shifted(dates, p, self.SPEC, 50.0), (1, 1))
+            self.assertEqual([r["labnr"] for r in dates], ["R-1", "KIA-1", "TUa-6207"])
+            # A date moved by hand ([[refile]]) is kept, at its new place.
+            dates = self.rows()
+            st.apply_refiles(dates, {("Peschio Ranaro", "gin4858"): ("Peschanitsa", 38.91, 61.23)})
+            self.assertEqual(st.drop_shifted(dates, p, self.SPEC, 50.0), (0, 0))
+            self.assertEqual(dates[0]["site"], "Peschanitsa")
+
+    def test_refiled_name_is_not_an_alias(self):
+        dates = self.rows()[:2]
+        st.apply_refiles(dates, {("Peschio Ranaro", "gin4858"): ("Peschanitsa", 38.91, 61.23)})
+        years = [-9000, -9500]
+        feats = {f["properties"]["name"]: f for f in st.derive_sites(dates, years, (-10000, -3000))}
+        self.assertEqual(feats["Peschanitsa"]["geometry"]["coordinates"], [38.91, 61.23])
+        self.assertNotIn("aliases", feats["Peschanitsa"]["properties"])
+        self.assertEqual(feats["Peschio Ranaro"]["properties"]["n_dates"], 1)
+
+    def test_refile_that_matches_nothing_raises(self):
+        with self.assertRaises(ValueError):
+            st.apply_refiles(self.rows(), {("Nowhere", "x1"): ("Somewhere", 0, 0)})
+
+
+class TestRestoreApostrophes(unittest.TestCase):
+    def test_possessive_and_elision(self):
+        from pipeline.settlements import restore_apostrophes as r
+        self.assertEqual(r("Gough s Cave"), "Gough's Cave")
+        self.assertEqual(r("Dead Man s Cave"), "Dead Man's Cave")
+        self.assertEqual(r("Pont d Ambon"), "Pont d'Ambon")
+        self.assertEqual(r("Baume d Ogens"), "Baume d'Ogens")
+
+    def test_leaves_lookalikes(self):
+        from pipeline.settlements import restore_apostrophes as r
+        for n in ("L1 (L Basin)", "Skovgaard, Hyllested s., Djurs sonder h.", "Jou´l Llobus", "Gough's Cave"):
+            self.assertEqual(r(n), n)

@@ -97,7 +97,7 @@ class Build(unittest.TestCase):
             path = os.path.join(d, "rivers.toml")
             with open(path, "w") as f:
                 f.write(cat)
-            cfg = {"rivers": {"catalogue": path, "hydrorivers": {}, "sample": 0.05,
+            cfg = {"rivers": {"catalogue": path, "geoglows": {}, "sample": 0.05,
                               "simplify": 0.01, "hex_min_length": 0.2, "snap_max": 1,
                               "shelf_window": 1},
                    "sea": {"curve": [[-12000, -60.0], [0, 0.0]]}}

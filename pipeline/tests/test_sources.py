@@ -112,7 +112,7 @@ class Sources(unittest.TestCase):
             self.skipTest("no record fixes")
         with open(path, "rb") as f:
             doc = tomllib.load(f)
-        entries = [e for k in ("locate", "same", "reject") for e in doc.get(k, [])]
+        entries = [e for k in ("locate", "same", "reject", "keep", "refile") for e in doc.get(k, [])]
         with open(os.path.join(ROOT, "data/settlements/CORRECTIONS.md")) as f:
             text = f.read()
         self.assertEqual([e.get("name", e.get("site")) for e in entries
@@ -146,6 +146,85 @@ class Sources(unittest.TestCase):
         self.assertIn("## References", text)
         self.assertEqual([s["name"] for s in sites if s["name"] not in text or s["wikipedia"] not in text], [])
         self.assertEqual([s["name"] for s in sites if s["renown"] not in (1, 2, 3)], [])
+
+
+class Attributions(unittest.TestCase):
+    """data/ATTRIBUTIONS.toml covers every download, every entry says where
+    it comes from and under what licence, nothing non-commercial or
+    no-derivatives is shipped or committed, and the generated list and app
+    credits are up to date."""
+
+    @classmethod
+    def setUpClass(cls):
+        import sys
+        sys.path.insert(0, ROOT)
+        from pipeline import attributions
+        cls.mod = attributions
+        cls.sources = attributions.load(ROOT)
+        cls.provides = {p for s in cls.sources for p in s["provides"]}
+
+    def covered(self, key):
+        if key in self.provides:
+            return True
+        if key.startswith("url:"):
+            return any(p.startswith("url:") and key.startswith(p) for p in self.provides)
+        return False
+
+    def test_fields(self):
+        need = ("key", "name", "url", "licence", "citation", "used_in", "role", "shipped", "committed",
+                "verified", "provides")
+        for s in self.sources:
+            self.assertEqual([k for k in need if k not in s], [], s.get("key"))
+            self.assertTrue(s["url"].startswith("http"), s["key"])
+            self.assertIn(s["role"], ("data", "fit", "asset", "reference"), s["key"])
+        keys = [s["key"] for s in self.sources]
+        self.assertEqual(len(keys), len(set(keys)), "duplicate keys")
+
+    def test_no_restricted_licence_shipped(self):
+        self.assertEqual([s["key"] for s in self.sources
+                          if (s["shipped"] or s["committed"]) and self.mod.restricted(s["licence"])], [])
+
+    def test_isostyle_sources_covered(self):
+        with open(os.path.join(ROOT, "isostyle/config.toml"), "rb") as f:
+            files = [s["file"] for s in tomllib.load(f).get("sources", [])]
+        self.assertEqual([x for x in files if not self.covered("isostyle:" + x)], [],
+                         "isostyle [[sources]] missing from data/ATTRIBUTIONS.toml")
+
+    def test_settlement_tables_covered(self):
+        with open(os.path.join(ROOT, "pipeline/config.toml"), "rb") as f:
+            st = tomllib.load(f).get("settlements", {})
+        names = [t["name"] for t in st.get("tables", [])]
+        self.assertEqual([n for n in names if not self.covered("settlements:" + n)], [],
+                         "[[settlements.tables]] missing from data/ATTRIBUTIONS.toml")
+
+    def test_downloads_covered(self):
+        """Every URL the Makefile downloads, and every *url / source URL in
+        pipeline/config.toml outside comments and the settlements literature
+        list, is covered."""
+        urls = set()
+        with open(os.path.join(ROOT, "Makefile")) as f:
+            urls |= set(re.findall(r"https?://[^\s\"']+", f.read()))
+        with open(os.path.join(ROOT, "pipeline/config.toml")) as f:
+            for line in f:
+                m = re.match(r"\s*\w*url\w*\s*=\s*\"(https?://[^\"]+)\"", line)
+                if m:
+                    urls.add(m.group(1))
+        for path in ("isostyle/pollen.py", "pipeline/anchors.py"):
+            with open(os.path.join(ROOT, path)) as f:
+                urls |= {u for u in re.findall(r"https?://[^\s\"'{]+", f.read()) if "api." in u}
+        self.assertEqual(sorted(u for u in urls if not self.covered("url:" + u)), [],
+                         "downloads missing from data/ATTRIBUTIONS.toml")
+
+    def test_generated_up_to_date(self):
+        with open(os.path.join(ROOT, self.mod.MARKDOWN)) as f:
+            self.assertEqual(f.read(), self.mod.render_md(self.sources),
+                             "ATTRIBUTIONS.md is stale: run `python -m pipeline attributions`")
+        with open(os.path.join(ROOT, self.mod.CREDITS)) as f:
+            self.assertEqual(f.read(), self.mod.credits_json(self.sources),
+                             "credits.json is stale: run `python -m pipeline attributions`")
+        with open(os.path.join(ROOT, self.mod.ISOSTYLE)) as f:
+            self.assertEqual(f.read(), self.mod.isostyle_md(self.sources),
+                             "data/isostyle/SOURCES.md is stale: run `python -m pipeline attributions`")
 
 
 if __name__ == "__main__":
