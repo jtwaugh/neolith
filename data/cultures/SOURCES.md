@@ -24,8 +24,8 @@ Holdout test (each labelled date voted on by the other sites, as if unlabelled):
 
 | Field | Known dates | Answered | Right |
 |---|---|---|---|
-| culture | 10346 | 4564 (44%) | 4358 (95%) |
-| stage | 24126 | 11549 (48%) | 10696 (93%) |
+| culture | 10349 | 4564 (44%) | 4358 (95%) |
+| stage | 24118 | 11549 (48%) | 10696 (93%) |
 
 Rates count dates, so well-dated sites weigh most. A neighbour can be
 the same place under another name; ignoring neighbours closer than
@@ -40,7 +40,7 @@ the same place under another name; ignoring neighbours closer than
 | Aceramic Neolithic (`aceramic_neolithic`) | 98 | [Pre-Pottery Neolithic](https://en.wikipedia.org/w/index.php?title=Pre-Pottery_Neolithic&oldid=1360754480) (1360754480) | — |
 | Neolithic (`neolithic`) | 2833 | [Neolithic](https://en.wikipedia.org/w/index.php?title=Neolithic&oldid=1384848321) (1384848321) | — |
 | Chalcolithic (Copper Age) (`chalcolithic`) | 407 | [Chalcolithic](https://en.wikipedia.org/w/index.php?title=Chalcolithic&oldid=1384441085) (1384441085) | — |
-| Bronze Age (`bronze_age`) | 358 | [Bronze Age](https://en.wikipedia.org/w/index.php?title=Bronze_Age&oldid=1384631621) (1384631621) | — |
+| Bronze Age (`bronze_age`) | 359 | [Bronze Age](https://en.wikipedia.org/w/index.php?title=Bronze_Age&oldid=1384631621) (1384631621) | — |
 | Iron Age (`iron_age`) | 20 | [Iron Age](https://en.wikipedia.org/w/index.php?title=Iron_Age&oldid=1384918549) (1384918549) | — |
 | Kebaran (`kebaran`) | 4 | [Kebaran culture](https://en.wikipedia.org/w/index.php?title=Kebaran_culture&oldid=1360699391) (1360699391) | — |
 | Natufian (`natufian`) | 10 | [Natufian culture](https://en.wikipedia.org/w/index.php?title=Natufian_culture&oldid=1380535068) (1380535068) | — |
@@ -57,12 +57,12 @@ the same place under another name; ignoring neighbours closer than
 | Shulaveri–Shomu (`shulaveri_shomu`) | 5 | [Shulaveri–Shomu culture](https://en.wikipedia.org/w/index.php?title=Shulaveri%E2%80%93Shomu_culture&oldid=1360735933) (1360735933) | — |
 | Qarunian (`qarunian`) | 5 | [Prehistoric Egypt](https://en.wikipedia.org/w/index.php?title=Prehistoric_Egypt&oldid=1384518337) (1384518337) | — |
 | Faiyum A (`faiyum_a`) | 16 | [Prehistoric Egypt](https://en.wikipedia.org/w/index.php?title=Prehistoric_Egypt&oldid=1384518337) (1384518337) | — |
-| Merimde (`merimde`) | 2 | [Merimde culture](https://en.wikipedia.org/w/index.php?title=Merimde_culture&oldid=1343931071) (1343931071) | — |
+| Merimde (`merimde`) | 1 | [Merimde culture](https://en.wikipedia.org/w/index.php?title=Merimde_culture&oldid=1343931071) (1343931071) | — |
 | El Omari (`el_omari`) | 1 | [Prehistoric Egypt](https://en.wikipedia.org/w/index.php?title=Prehistoric_Egypt&oldid=1384518337) (1384518337) | — |
 | Badarian (`badarian`) | 4 | [Badarian culture](https://en.wikipedia.org/w/index.php?title=Badarian_culture&oldid=1382464528) (1382464528) | — |
 | Naqada (`naqada`) | 25 | [Naqada culture](https://en.wikipedia.org/w/index.php?title=Naqada_culture&oldid=1375256530) (1375256530) | — |
 | Maadi–Buto (`maadi_buto`) | 4 | [Maadi-Buto culture](https://en.wikipedia.org/w/index.php?title=Maadi-Buto_culture&oldid=1381077639) (1381077639) | — |
-| Dynastic Egypt (`dynastic_egypt`) | 6 | [Early Dynastic Period of Egypt](https://en.wikipedia.org/w/index.php?title=Early_Dynastic_Period_of_Egypt&oldid=1384914774) (1384914774) | — |
+| Dynastic Egypt (`dynastic_egypt`) | 7 | [Early Dynastic Period of Egypt](https://en.wikipedia.org/w/index.php?title=Early_Dynastic_Period_of_Egypt&oldid=1384914774) (1384914774) | — |
 | Iberomaurusian (`iberomaurusian`) | 18 | [Iberomaurusian](https://en.wikipedia.org/w/index.php?title=Iberomaurusian&oldid=1374169940) (1374169940) | — |
 | Capsian (`capsian`) | 32 | [Capsian](https://en.wikipedia.org/w/index.php?title=Capsian&oldid=1384679790) (1384679790) | — |
 | Neolithic of Capsian Tradition (`capsian_neolithic`) | 14 | [Capsian](https://en.wikipedia.org/w/index.php?title=Capsian&oldid=1384679790) (1384679790) | — |

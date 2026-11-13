@@ -1,0 +1,106 @@
+[meta]
+place = "nile_delta"
+written = "2026-11-12"
+verdict = "research"
+confidence = "high"
+really_empty = "Not empty, but far emptier than it looks. The 8 records in the box are 4 real sites: Merimde Beni Salama is entered four times (Merimda, Merimde, Merimde Beni Salame, Merimde-Benisalame; the dossier's duplicate table pairs them but they are one site), plus Buto, Sais and Minshat Abu Omar, with 'Undefined site Eastern Delta' 11 km from Minshat Abu Omar probably the same again. Nothing at all before 5,190 BCE. The box edge cuts through the delta apex: Maadi, Wadi Digla, el-Omari and Giza are 3-13 km south of it. The raw downloads have no record under any spelling for Tell el-Farkha, Tell el-Iswid, Tell Ibrahim Awad, Kom el-Khilgan or Tell el-Samara, and XRONOS holds 67 dates for Minshat Abu Omar and 14 for Kom el-Hisn with no coordinates, which are dropped."
+why_empty = ["not_in_open_compilations", "recovery_methods", "true_absence", "submerged"]
+summary = """
+The largest delta on the map. Our data shows four real sites in 82,000 km2
+and none before 5,200 BCE, against 53 records within 100 km (the Memphite
+cemeteries, Maadi, the Fayum). The residuals call 10 to 16 of its hexes an
+'unexplained shortfall' from 5,000 BCE, about 20 sites missing. Three
+different things are going on.
+
+From about 4,000 BCE the shortfall is ours, not the archaeology's. The
+eastern delta has a string of excavated Predynastic and Early Dynastic
+settlements and cemeteries on sand islands (geziras), none of which is in
+our data: Tell el-Farkha (c. 3700-2600 BCE, seven phases), Tell el-Samara
+(late fifth millennium BCE to the Early Dynastic, the oldest village yet
+found in the eastern delta), and from my own knowledge, not checked here,
+Tell el-Iswid, Tell Ibrahim Awad, Kom el-Khilgan, Tell el-Murra, Mendes
+and Kafr Hassan Dawood. They are missing because the open radiocarbon
+compilations do not carry them; Egyptian chronology is mostly built on
+pottery, not radiocarbon. The EES Delta Survey lists 783 sites with period
+attributes on a public map and is the thing to ingest.
+
+From 5,000 to 4,000 BCE the record really is thin, for a reason the
+sources agree on: the Neolithic land surface lies under metres of later
+Nile silt and is reached only by coring or where a gezira stands above the
+plain (the statement about burial depth is my own knowledge and a search
+summary of a Heidelberg chapter I could not open). Merimde, Sais and Buto
+are the visible tips. This is 'buried', which the cause list has no word
+for; I have put it under recovery_methods.
+
+Before about 5,000 BCE the emptiness may be largely real. Zhao et al.
+(2025), from cores at Buto, Sais and Kom el-Khilgan, argue that during the
+African Humid Period very high Nile discharge and rapid sea-level rise
+kept the delta unstable and hindered settlement; herding appears only
+before about 7000 cal BP and sedentary farming about a millennium after
+the delta stabilised. The old shore is also drowned (8 hexes at 10,000
+BCE). So: ingest for the fourth millennium, speculate modestly for the
+sixth and fifth, and leave the early Holocene nearly empty.
+"""
+
+[[known_site]]
+name = "Tell el-Farkha"
+lon = 31.6025
+lat = 30.8706
+coordinates = "published"
+start = -3700
+end = -2600
+what = "Settlement and cemetery on three mounds, about 45,000 m2, 120 km north-east of Cairo: a Lower Egyptian community from c. 3700 BCE (Naqada IIB-C), then Naqada-culture occupation through Dynasty 0 and the Early Dynastic to c. 2600 BCE, in seven phases with a destruction by fire after phase 3 (c. 3350 BCE). Coordinates and phases as given on the site's Wikipedia page (30 deg 52 min 14 s N, 31 deg 36 min 9 s E); the dates there are archaeological phase dates, not a radiocarbon list. Heath 2023 gives the same start and the site's size."
+cite = "Wikipedia, 'Tell el-Farkha' (after Cialowicz, Chlodnicki and Maczynska, the Polish excavation reports); Heath, J. 2023, Tell el-Farkha: an exceptional predynastic site in the Nile Delta, Ancient Egypt 137"
+url = "https://en.wikipedia.org/wiki/Tell_el-Farkha"
+checked = true
+
+[[known_site]]
+name = "Tell el-Samara"
+lon = 31.6
+lat = 30.95
+coordinates = "approximate"
+start = -4200
+end = -2900
+what = "Settlement in Daqahliya governorate with a continuous sequence from the Neolithic (late fifth millennium BCE) to the end of the Early Dynastic; Neolithic storage silos with animal bone and plant remains. Excavated by the IFAO and the Egyptian ministry 2015-2019. Not opened: the HAL record refused automated access, and this is from a search engine's summary of the abstract and of press reports. The point is a guess within the governorate (about 140 km north of Cairo per the press), good to 20 km at best; the report will have the real one."
+cite = "Guyot, F. et al. 2022, Investigating the Nile Delta's first settlements: excavations at Tell el-Samara 2016-2019, BIFAO 122"
+url = "https://hal.archives-ouvertes.fr/hal-03812307"
+checked = false
+
+[[research]]
+what = "Ingest the EES Delta Survey: 783 sites across Lower Egypt on a public Esri map that can be filtered by site name, period and reference (also printed as Spencer 2024, EES Excavation Memoir 119). Take every site with a Predynastic or Early Dynastic attribution."
+url = "https://www.ees.ac.uk/delta-survey"
+yields = "My estimate, unverified: 30-60 sites of the fourth millennium BCE in the box, and a few of the fifth; nearly all period-dated, not radiocarbon-dated. The period breakdown is not stated on the page."
+effort = "No download is offered; the page says the map data are freely accessible but that reproducing them needs permission. Either query the map's feature layer or write to deltasurvey@ees.ac.uk. A person should settle the permission first. Sites enter as surveyed with period dates."
+
+[[research]]
+what = "Give coordinates to the XRONOS delta records that are dropped for having none: Minshat Abu Omar (67 dates; the site is already in our data from p3k14c at 32.0194, 30.8572 with 18), Kom el-Hisn (14 dates) and 'Merimde Benisalame' (1). And merge the four Merimde records, and probably 'Undefined site Eastern Delta', as entries for data/settlements/corrections.toml."
+yields = "49 more dates on one existing site, one new site (Kom el-Hisn, western delta, probably Old Kingdom and so after the period), and four records collapsed into one"
+effort = "An hour; coordinates for Kom el-Hisn from the Delta Survey"
+
+[[research]]
+what = "Enter Tell el-Samara from Guyot et al. 2022 (BIFAO 122) and Tell el-Farkha from the Polish reports, with whatever radiocarbon dates they publish; then look for a published radiocarbon list for the Lower Egyptian (Buto-Maadi) culture, which I did not find. The TOPOI project page says reliable radiocarbon measurements are lacking for parts of prehistoric and Predynastic Egypt, so there may be none."
+url = "https://hal.archives-ouvertes.fr/hal-03812307"
+yields = "Two key sites with coordinates and phases (above), possibly 10-30 dates; a named list of further eastern-delta sites from their bibliographies"
+effort = "Two or three reports; a person has to fetch the HAL file"
+
+[[research]]
+what = "Take the pollen and non-pollen microfossil records from the Buto, Sais and Kom el-Khilgan cores in Zhao et al. 2025 for the cereal_pollen and dung_spores layers, which are judged, not observed, across most of the delta."
+url = "https://doi.org/10.1016/j.quascirev.2025.109368"
+yields = "Three dated cores inside the box giving the onset of herding (before c. 7000 cal BP) and of farming about a millennium later"
+effort = "One paper (I read its abstract only); data from figures or supplement"
+
+[[speculate]]
+target = "settlements"
+slices = [-4000, -3000]
+rule = "Place inferred Lower Egyptian (Buto-Maadi) and then Naqada-period villages on geziras and levees within 5 km of a Nile branch flowing in that slice, across the central and eastern delta, about one per 20 km of branch, marked as inferred and removed hex by hex as the Delta Survey sites are ingested."
+confidence = "medium"
+reasoning = "Every excavated delta settlement of this date sits on a gezira and was found because the mound stands above the silt: Buto, Sais, Tell el-Farkha, Tell el-Samara. The dossier's residuals independently report an unexplained shortfall in 16 of 25 land hexes at 4,000 BCE and 13 at 3,000 BCE, about 20 and 13 sites, in the best-surveyed part of Egypt (survey level 1.94 of 2). Villages certainly existed; where they were is the uncertain part, so the rule ties them to channels. This is a stopgap for the research above, not a substitute."
+basis = ["literature", "dossier_statistics", "neighbouring_evidence"]
+
+[[speculate]]
+target = "settlements"
+slices = [-6000, -5000]
+rule = "Place a few inferred fishing and herding camps (three to five per slice) on gezira margins in the southern and western delta, marked as inferred. None in the northern third."
+confidence = "low"
+reasoning = "Sais has a sequence starting in the sixth millennium BCE (TOPOI project page) and Merimde starts at 5,190 BCE in our data; the Fayum, 27-45 km south of the box, has dated Qarunian camps from 7,070 to 6,010 BCE in the dossier. Zhao et al. (2025) put herding in the delta before about 7000 cal BP but argue the delta was unstable and hard to settle before then, so the number is kept small and the unstable, later-drowned north is left empty. Anything of this date is under metres of silt and will stay unconfirmed."
+basis = ["neighbouring_evidence", "literature", "environment"]

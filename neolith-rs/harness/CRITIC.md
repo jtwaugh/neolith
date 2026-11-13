@@ -155,7 +155,7 @@ transition zones:
   - region borders;
   - hillshade;
   - relief steps (cliffs between raised tiles);
-  - printed terrain art (2D) or raised props (3D);
+  - terrain art: 3D props, with tufts, waves and shores printed under them;
   - biome-edge blending and shore foam;
   - rivers and lake shorelines;
   - settlement pieces;
@@ -166,13 +166,12 @@ transition zones:
   - grout plus region borders double up into a heavy hex mesh;
   - hillshade muddies the biome colours;
   - relief cliffs read as walls between biomes;
-  - the 2D art pattern moirés at mid zoom;
   - 3D props hide the colour;
   - river lines are lost against forest green;
   - labels sit on busy art.
 
   **Isolate each layer with `set`** (`--hillshade 0`, `--borders 0`,
-  `--grout 0`, `--art off|2d|3d`, `--art-blend false`, `--relief false`,
+  `--grout 0`, `--art off|on`, `--art-blend false`, `--relief false`,
   `--flat-lighting true`, `--rivers false`). Compare screenshots of the same
   view with the layer on and off, and say which layers earn their place at
   which zoom.

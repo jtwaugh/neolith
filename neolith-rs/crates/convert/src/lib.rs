@@ -53,6 +53,10 @@ struct HexProps {
     /// Net primary productivity per year (g dry matter/m²/yr); absent in older files.
     #[serde(default)]
     npp: BTreeMap<String, f64>,
+    /// Km to the nearest open sea beyond the map's edge per year; 65535 for
+    /// none within reach. Absent in older files.
+    #[serde(default)]
+    edge_sea_km: BTreeMap<String, f64>,
     /// Year farming reaches the hex (static); absent where it never does,
     /// and in older files.
     #[serde(default)]
@@ -150,6 +154,8 @@ pub fn import_map(geojson: &str) -> Result<Import, String> {
     let mut survey = vec![None; feats.len()];
     let mut npp = vec![Timeline::new(); feats.len()];
     let mut with_npp = 0usize;
+    let mut edge_sea = vec![Timeline::new(); feats.len()];
+    let mut with_edge_sea = 0usize;
     let mut farming = vec![None; feats.len()];
     for f in feats {
         let p = &f.properties;
@@ -206,6 +212,14 @@ pub fn import_map(geojson: &str) -> Result<Import, String> {
                 bad.add(format!("productivity {v}"));
             }
         }
+        with_edge_sea += !p.edge_sea_km.is_empty() as usize;
+        for (k, v) in &p.edge_sea_km {
+            if v.is_finite() && (0.0..=u16::MAX as f64).contains(v) {
+                edge_sea[hex.index()].set_key(parse_year(k, &what)?, v.round() as u16);
+            } else {
+                bad.add(format!("edge-sea distance {v}"));
+            }
+        }
         for (k, v) in &p.population_density {
             match PopDensity::from_value(*v) {
                 Some(pd) => {
@@ -244,6 +258,12 @@ pub fn import_map(geojson: &str) -> Result<Import, String> {
             warnings.push(format!("{} hexes have no productivity", feats.len() - with_npp));
         }
         world.npp = npp;
+    }
+    if with_edge_sea > 0 {
+        if with_edge_sea < feats.len() {
+            warnings.push(format!("{} hexes have no edge-sea distance", feats.len() - with_edge_sea));
+        }
+        world.edge_sea = edge_sea;
     }
     if farming.iter().any(Option::is_some) {
         world.farming = farming;
@@ -347,6 +367,32 @@ pub fn import_settlement_records(text: &str) -> Result<(Vec<Settlement>, Vec<Sit
         info.push(site_info(props, &what)?);
     }
     Ok((out, info, warnings))
+}
+
+/// Appends the inferred settlements in `text` (the pipeline's
+/// `inferred.geojson`) to the world's settlements, each tagged
+/// [`SiteInfo::INFERRED`] in its sources whatever the file says, so the app
+/// never takes one for a recorded site. Ids must not clash with recorded
+/// ones. Returns how many were added.
+pub fn append_inferred(world: &mut World, text: &str) -> Result<usize, String> {
+    let (settlements, info, warnings) = import_settlement_records(text)?;
+    if let Some(w) = warnings.first() {
+        return Err(format!("inferred settlements: {w}"));
+    }
+    if world.site_info.len() != world.settlements.len() {
+        world.site_info.resize(world.settlements.len(), SiteInfo::default());
+    }
+    for (s, mut i) in settlements.into_iter().zip(info) {
+        if world.settlements.iter().any(|o| o.id == s.id) {
+            return Err(format!("inferred settlement {} ({}): id already used by a recorded settlement", s.id, s.name));
+        }
+        if !i.is_inferred() {
+            i.sources.push(SiteInfo::INFERRED.to_string());
+        }
+        world.settlements.push(s);
+        world.site_info.push(i);
+    }
+    Ok(world.settlements.iter().enumerate().filter(|(k, _)| world.is_inferred(*k)).count())
 }
 
 fn strings(v: Option<&Json>) -> Vec<String> {
@@ -670,6 +716,10 @@ pub fn hex_feature(world: &World, hex: HexId) -> Json {
         let keys: Map<String, Json> = t.keys().iter().map(|(y, v)| (y.0.to_string(), json!(v))).collect();
         feature["properties"]["npp"] = Json::Object(keys);
     }
+    if let Some(t) = world.edge_sea.get(hex.index()).filter(|t| !t.keys().is_empty()) {
+        let keys: Map<String, Json> = t.keys().iter().map(|(y, v)| (y.0.to_string(), json!(v))).collect();
+        feature["properties"]["edge_sea_km"] = Json::Object(keys);
+    }
     feature
 }
 
@@ -752,6 +802,49 @@ fn base64_decode(text: &str) -> Result<Vec<u8>, String> {
         }
         out.extend_from_slice(&n.to_be_bytes()[1..chunk.len()]);
     }
+    Ok(out)
+}
+
+/// Reads the pipeline's residual table (`data/population/residuals.csv.gz`,
+/// unpacked: columns `hex`, `year`, `sites`, `missing` and `outcome` among
+/// others) for a world of `hexes` hexes. Hex-years it has no row for (Water,
+/// Ice) get no figure.
+pub fn import_residuals(text: &str, hexes: usize) -> Result<neolith_core::Residuals, String> {
+    use neolith_core::residuals::{Residuals, NO_FIGURE, NO_OUTCOME};
+    let rows = csv_rows(text);
+    let header = rows.first().ok_or("residuals: empty file")?;
+    let col = |name: &str| header.iter().position(|h| h == name).ok_or(format!("residuals: no {name:?} column"));
+    let (hex, year, sites, missing, outcome) = (col("hex")?, col("year")?, col("sites")?, col("missing")?, col("outcome")?);
+    let body: Vec<&Vec<String>> = rows[1..].iter().filter(|r| r.len() > 1).collect();
+    let num = |r: &[String], c: usize, what: &str| -> Result<f64, String> {
+        r.get(c).and_then(|v| v.trim().parse::<f64>().ok()).ok_or(format!("residuals: bad {what} in row {r:?}"))
+    };
+    let mut slices: Vec<Year> = body.iter().map(|r| num(r, year, "year").map(|y| Year(y as i32))).collect::<Result<_, _>>()?;
+    slices.sort();
+    slices.dedup();
+    let n = slices.len() * hexes;
+    let mut out = Residuals { slices, outcomes: Vec::new(), sites: vec![0; n], missing: vec![NO_FIGURE; n], outcome: vec![NO_OUTCOME; n] };
+    for r in body {
+        let id = num(r, hex, "hex")? as u32;
+        let h = HexId::from_geojson_id(id).filter(|h| h.index() < hexes).ok_or(format!("residuals: hex {id} is not on the map"))?;
+        let k = out.slices.binary_search(&Year(num(r, year, "year")? as i32)).unwrap();
+        let i = k * hexes + h.index();
+        let name = r.get(outcome).map(|s| s.trim()).filter(|s| !s.is_empty()).ok_or(format!("residuals: no outcome in row {r:?}"))?;
+        let code = match out.outcomes.iter().position(|o| o == name) {
+            Some(c) => c,
+            None => {
+                out.outcomes.push(name.to_string());
+                out.outcomes.len() - 1
+            }
+        };
+        if code >= NO_OUTCOME as usize {
+            return Err("residuals: too many different outcomes".into());
+        }
+        out.sites[i] = num(r, sites, "sites")?.clamp(0.0, u16::MAX as f64) as u16;
+        out.missing[i] = (num(r, missing, "missing")? * 10.0).round().clamp(NO_FIGURE as f64 + 1.0, i16::MAX as f64) as i16;
+        out.outcome[i] = code as u8;
+    }
+    out.validate(hexes)?;
     Ok(out)
 }
 
@@ -878,6 +971,10 @@ pub fn stats(world: &World) -> String {
     if !world.farming.is_empty() {
         let _ = writeln!(s, "farming front: reaches {} hexes", world.farming.iter().flatten().count());
     }
+    if !world.edge_sea.is_empty() {
+        let near = world.edge_sea.iter().filter(|t| t.keys().iter().any(|(_, v)| *v != neolith_core::NO_EDGE_SEA)).count();
+        let _ = writeln!(s, "sea beyond the map edge: within reach of {near} hexes");
+    }
     if !world.npp.is_empty() {
         let last = world.npp.iter().filter_map(|t| t.keys().last().map(|(_, v)| *v));
         let _ = writeln!(s, "productivity: {} hexes, up to {} g/m²/yr at the last key", world.npp.len(), last.max().unwrap_or(0));
@@ -962,6 +1059,25 @@ mod lake_tests {
     }
 
     #[test]
+    fn inferred_settlements_are_appended_and_tagged() {
+        let mut w = World::empty(GridSpec { cols: 2, rows: 2, origin_lon: 0.0, origin_lat: 1.0, w: 0.5773502691896262, h: 0.5 });
+        let (s, info, _) = import_settlement_records(
+            r#"[{"id": 1, "geometry": {"type": "Point", "coordinates": [0.2, 0.5]},
+                "properties": {"name": "Recorded", "founding": -5000, "sources": ["xronos"]}}]"#,
+        )
+        .unwrap();
+        (w.settlements, w.site_info) = (s, info);
+        // No `sources` in the file: the tag is added all the same.
+        let inferred = r#"[{"id": 2, "geometry": {"type": "Point", "coordinates": [0.3, 0.5]},
+            "properties": {"name": "Inferred village 1", "founding": -4000, "occupation": [[-4000, -2000]],
+              "importance": 0, "evidence": 0}}]"#;
+        assert_eq!(append_inferred(&mut w, inferred).unwrap(), 1);
+        assert_eq!(w.settlements.len(), 2);
+        assert!(!w.is_inferred(0) && w.is_inferred(1));
+        assert!(append_inferred(&mut w, &inferred.replace("\"id\": 2", "\"id\": 1")).is_err());
+    }
+
+    #[test]
     fn settlement_records_carry_the_metadata() {
         let text = r#"[{"id": 7, "geometry": {"type": "Point", "coordinates": [1, 2]},
             "properties": {"name": "A", "founding": -6000, "abandoned": -5000, "type": "cave",
@@ -1030,6 +1146,27 @@ mod lake_tests {
         let mut w = World::empty(GridSpec { cols: 2, rows: 1, origin_lon: 0.0, origin_lat: 1.0, w: 0.5773502691896262, h: 0.5 });
         w.evidence = layers;
         assert!(stats(&w).contains("evidence layers: 1"));
+    }
+
+    #[test]
+    fn residuals_table() {
+        let csv = "hex,year,expected_per_km2,sites,missing,outcome\n\
+                   1,-6000,0.1,0,0.26,as expected\n\
+                   3,-6000,0.1,2,-1.5,more sites than expected\n\
+                   1,-5000,0.1,1,2.04,little dated archaeology nearby\n";
+        let r = import_residuals(csv, 4).unwrap();
+        assert_eq!(r.slices, vec![Year(-6000), Year(-5000)]);
+        assert_eq!(r.outcomes, vec!["as expected", "more sites than expected", "little dated archaeology nearby"]);
+        let at = |hex: u32, y: i32| r.at(HexId(hex), Year(y)).map(|x| (x.sites, x.missing, x.outcome.to_string()));
+        assert_eq!(at(0, -6000), Some((0, 0.3, "as expected".into())));
+        assert_eq!(at(2, -6000), Some((2, -1.5, "more sites than expected".into())));
+        assert_eq!(at(0, -5000), Some((1, 2.0, "little dated archaeology nearby".into())));
+        // No row: no figure. Hexes off the map and missing columns are errors.
+        assert_eq!(at(1, -6000), None);
+        assert_eq!(at(2, -5000), None);
+        assert!(import_residuals(csv, 2).is_err());
+        assert!(import_residuals("hex,year,sites\n1,-6000,0\n", 4).is_err());
+        assert!(import_residuals("", 4).is_err());
     }
 
     #[test]

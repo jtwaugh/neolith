@@ -12,6 +12,26 @@ pub const KIND_UNDERSIDE: u8 = 2;
 /// (`depth` 0) to the neighbour's across edge `corner` (`depth` 255). One
 /// per inside edge, double-sided; see [`STEP_EDGES`].
 pub const KIND_STEP: u8 = 3;
+/// The rest of the globe, under fog of war: a whole sphere a little below
+/// the board's top (at `depth` [`GLOBE_DEPTH`]), so the board reads as an
+/// inlaid section of it. It morphs with the board (to the plane when flat).
+pub const KIND_GLOBE: u8 = 4;
+/// The wooden table the globe sits in: a ring round its middle with an
+/// apron below. `sphere` holds the absolute position; it never morphs.
+pub const KIND_TABLE: u8 = 5;
+
+/// How far below the board's top the fog-covered globe lies, as a share
+/// (of 255) of the board's thickness: just enough to stay under every tile
+/// (no tile sits more than a few hundred metres below sea level, a small
+/// fraction of this even with relief exaggerated) while the board's edge
+/// hardly stands proud of it.
+pub const GLOBE_DEPTH: u8 = 60;
+/// The table top's height and its ring's inner and outer radii (the globe
+/// has radius 1); the apron hangs [`TABLE_APRON`] below the top.
+pub const TABLE_Y: f32 = 0.0;
+pub const TABLE_INNER: f32 = 1.004;
+pub const TABLE_OUTER: f32 = 1.42;
+pub const TABLE_APRON: f32 = 0.09;
 
 /// The edges (NE, N, NW) each hex builds steps on. The other three are its
 /// neighbours' NE/N/NW edges, so every inside edge gets exactly one step.
@@ -216,8 +236,90 @@ pub fn build(grid: &GridSpec, proj: &Projection) -> BoardMesh {
         }
     }
 
+    globe(proj, &mut vertices, &mut indices);
+    table(&mut vertices, &mut indices);
+
     let props = hex_instances(grid, proj);
     BoardMesh { vertices, indices, props, sphere_min_y: mesh_min_y, sphere_half_extent: s_ext, flat_half_extent: f_ext }
+}
+
+/// The whole globe, as a latitude-longitude sphere centred on the board's
+/// meridian (so its flat layout is one unbroken sheet), facing outwards.
+fn globe(proj: &Projection, vertices: &mut Vec<HexVertex>, indices: &mut Vec<u32>) {
+    const LONS: u32 = 144;
+    const LATS: u32 = 72;
+    let lon0 = proj.centre().lon;
+    let base = vertices.len() as u32;
+    for j in 0..=LATS {
+        let lat = -90.0 + 180.0 * j as f64 / LATS as f64;
+        for i in 0..=LONS {
+            let p = LonLat::new(lon0 - 180.0 + 360.0 * i as f64 / LONS as f64, lat);
+            vertices.push(HexVertex {
+                sphere: proj.sphere(p).as_vec3().to_array(),
+                flat: proj.flat(p).as_vec2().to_array(),
+                cell: [0, 0],
+                corner: 0,
+                rim: 0,
+                kind: KIND_GLOBE,
+                depth: GLOBE_DEPTH,
+            });
+        }
+    }
+    let at = |i: u32, j: u32| base + j * (LONS + 1) + i;
+    for j in 0..LATS {
+        for i in 0..LONS {
+            // East then north: counter-clockwise seen from outside.
+            let (a, b, c, d) = (at(i, j), at(i + 1, j), at(i + 1, j + 1), at(i, j + 1));
+            indices.extend_from_slice(&[a, b, c, a, c, d]);
+        }
+    }
+}
+
+/// The table: its top (a flat ring round the globe), the apron round its
+/// outside and the short wall inside its hole, each facing outwards.
+fn table(vertices: &mut Vec<HexVertex>, indices: &mut Vec<u32>) {
+    const SEGMENTS: u32 = 256;
+    let v = |r: f32, y: f32, a: f32| HexVertex {
+        sphere: [r * a.cos(), y, r * a.sin()],
+        flat: [0.0, 0.0],
+        cell: [0, 0],
+        corner: 0,
+        rim: 0,
+        kind: KIND_TABLE,
+        depth: 0,
+    };
+    let (top, bottom) = (TABLE_Y, TABLE_Y - TABLE_APRON);
+    // (inner radius, inner height, outer radius, outer height, outward normal sign)
+    let bands: [(f32, f32, f32, f32); 3] = [
+        (TABLE_INNER, top, TABLE_OUTER, top),
+        (TABLE_OUTER, top, TABLE_OUTER, bottom),
+        (TABLE_INNER, top - 0.04, TABLE_INNER, top),
+    ];
+    for (k, (r0, y0, r1, y1)) in bands.into_iter().enumerate() {
+        let base = vertices.len() as u32;
+        for i in 0..=SEGMENTS {
+            let a = std::f32::consts::TAU * i as f32 / SEGMENTS as f32;
+            vertices.push(v(r0, y0, a));
+            vertices.push(v(r1, y1, a));
+        }
+        // Wanted facing: the top up, the apron out, the hole's wall in.
+        let want = |p: glam::Vec3| match k {
+            0 => glam::Vec3::Y,
+            1 => glam::Vec3::new(p.x, 0.0, p.z),
+            _ => -glam::Vec3::new(p.x, 0.0, p.z),
+        };
+        for i in 0..SEGMENTS {
+            let (a, b, c, d) = (base + 2 * i, base + 2 * i + 1, base + 2 * i + 3, base + 2 * i + 2);
+            for tri in [[a, b, c], [a, c, d]] {
+                let [p, q, r] = tri.map(|n| glam::Vec3::from(vertices[n as usize].sphere));
+                if (q - p).cross(r - p).dot(want((p + q + r) / 3.0)) >= 0.0 {
+                    indices.extend_from_slice(&tri);
+                } else {
+                    indices.extend_from_slice(&[tri[0], tri[2], tri[1]]);
+                }
+            }
+        }
+    }
 }
 
 #[cfg(test)]
@@ -238,8 +340,10 @@ mod tests {
         let walls = g.outside_edges().len();
         // Every inside edge once; each step is double-sided.
         let steps = (g.len() * 6 - walls) / 2;
-        assert_eq!(m.vertices.len(), g.len() * 14 + (walls + steps) * 4);
-        assert_eq!(m.indices.len(), g.len() * 36 + walls * 6 + steps * 12);
+        let hex = |k: u8| k <= KIND_STEP;
+        assert_eq!(m.vertices.iter().filter(|v| hex(v.kind)).count(), g.len() * 14 + (walls + steps) * 4);
+        let hex_tris = m.indices.chunks(3).filter(|t| hex(m.vertices[t[0] as usize].kind)).count();
+        assert_eq!(hex_tris * 3, g.len() * 36 + walls * 6 + steps * 12);
         // And each inside edge is covered: the step's edge and its far side.
         let mut seen = std::collections::HashSet::new();
         for v in m.vertices.iter().filter(|v| v.kind == KIND_STEP) {
@@ -282,14 +386,31 @@ mod tests {
         let (g, p) = small();
         let m = build(&g, &p);
         let thick = 0.015f32;
-        let pos = |v: &HexVertex| Vec3::from(v.sphere) * (1.0 - thick * v.depth as f32 / 255.0);
+        let pos = |v: &HexVertex| match v.kind {
+            KIND_TABLE => Vec3::from(v.sphere),
+            _ => Vec3::from(v.sphere) * (1.0 - thick * v.depth as f32 / 255.0),
+        };
         for tri in m.indices.chunks(3) {
             let v: Vec<&HexVertex> = tri.iter().map(|i| &m.vertices[*i as usize]).collect();
             let (a, b, c) = (pos(v[0]), pos(v[1]), pos(v[2]));
             let normal = (b - a).cross(c - a);
             let centroid = (a + b + c) / 3.0;
+            if normal.length() < 1e-9 {
+                continue; // a globe triangle squeezed to nothing at a pole
+            }
             match v[0].kind {
-                KIND_TOP => assert!(normal.dot(centroid) > 0.0),
+                KIND_TOP | KIND_GLOBE => assert!(normal.dot(centroid) > 0.0),
+                KIND_TABLE => {
+                    let flat = Vec3::new(centroid.x, 0.0, centroid.z);
+                    let r = flat.length();
+                    if (centroid.y - TABLE_Y).abs() < 1e-5 && (a.y - b.y).abs() < 1e-6 && (a.y - c.y).abs() < 1e-6 {
+                        assert!(normal.y > 0.0, "table top faces up");
+                    } else if r > (TABLE_INNER + TABLE_OUTER) / 2.0 {
+                        assert!(normal.dot(flat) > 0.0, "apron faces out");
+                    } else {
+                        assert!(normal.dot(flat) < 0.0, "the hole's wall faces in");
+                    }
+                }
                 KIND_UNDERSIDE => assert!(normal.dot(centroid) < 0.0),
                 KIND_STEP => {}
                 _ => {
@@ -307,7 +428,8 @@ mod tests {
         let (g, p) = small();
         let m = build(&g, &p);
         let first = m.indices.iter().position(|i| m.vertices[*i as usize].kind == KIND_STEP).unwrap();
-        let step = &m.indices[first..];
+        let len = m.indices[first..].iter().take_while(|i| m.vertices[**i as usize].kind == KIND_STEP).count();
+        let step = &m.indices[first..first + len];
         assert!(step.iter().all(|i| m.vertices[*i as usize].kind == KIND_STEP));
         for quad in step.chunks(12) {
             let (front, back) = quad.split_at(6);

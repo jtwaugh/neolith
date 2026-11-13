@@ -1,5 +1,5 @@
 //! Line overlays on the board: rivers, the channel belts of their alluvial
-//! reaches and lake shorelines, as ribbons for the renderer's line pipeline.
+//! floodplain reaches, as ribbons for the renderer's line pipeline.
 //!
 //! A river is drawn in three steps. Its course is splined, resampled evenly
 //! and smoothed until no bend is tighter than the line is wide (a ribbon
@@ -58,7 +58,6 @@ pub const BED_SHARE: f64 = 1.8;
 /// A pale streak down the middle of the water, close up.
 const GLINT: [u8; 3] = [0xc4, 0xe4, 0xfb];
 const BELT: [u8; 3] = [0xd6, 0xea, 0xc0];
-const LAKE_SHORE: [u8; 3] = [0x1d, 0x48, 0x7a];
 
 /// How far a line is drawn from the map: the world width grows a little with
 /// camera distance (like pieces) so lines stay visible zoomed out.
@@ -178,6 +177,19 @@ struct Paint {
     dash: Option<f64>,
     /// Edge feather, as a fraction of the half width.
     feather: f64,
+    profile: Profile,
+}
+
+/// How the fragment shader shapes a ribbon across its width (`fs_line`).
+#[derive(Clone, Copy, PartialEq)]
+enum Profile {
+    /// One flat colour.
+    Plain = 0,
+    /// A river bed: banks sloping to the water and lit as slopes, wet and
+    /// dark at the water's edge, drier and ragged at the outer edge.
+    Bed = 1,
+    /// A river's water: paler shallows by the banks, streaks along the flow.
+    Water = 2,
 }
 
 fn unit(v: f64) -> u8 {
@@ -277,7 +289,8 @@ impl Spine {
         if n < 2 || alpha.iter().all(|a| *a < 0.004) {
             return;
         }
-        let params = [unit(p.dash.unwrap_or(0.0)), 0, unit(p.feather), 0];
+        // The shader reads the profile back as `params.y * 3`.
+        let params = [unit(p.dash.unwrap_or(0.0)), p.profile as u8 * 85, unit(p.feather), 0];
         let vertex = |pos: DVec3, i: usize, uv: [f32; 2]| LineVertex {
             pos: pos.as_vec3().to_array(),
             uv,
@@ -398,7 +411,7 @@ pub fn rivers(mesh: &mut LineMesh, rivers: &[River], lakes: &[Lake], snapshot: &
         }
         let alpha: Vec<f64> = blur(&on, (BELT_FADE_DEG / step).round() as usize).iter().map(|g| g * 0.5 * (1.0 - 0.7 * far) * shown).collect();
         let spine = Spine::new(&pts, &vec![1.0; pts.len()], belt_half, 0.00030, false, board);
-        spine.paint(mesh, &alpha, &Paint { share: 1.0, colour: BELT, dash: None, feather: 0.3 });
+        spine.paint(mesh, &alpha, &Paint { share: 1.0, colour: BELT, dash: None, feather: 0.3, profile: Profile::Plain });
     }
 
     // Channels: every river's banks, then every river's fill.
@@ -439,7 +452,7 @@ pub fn rivers(mesh: &mut LineMesh, rivers: &[River], lakes: &[Lake], snapshot: &
         for c in &channels {
             for (seasonal, alpha) in &c.phases {
                 let alpha: Vec<f64> = alpha.iter().map(|a| a * 0.9 * near).collect();
-                let paint = Paint { share: BED_SHARE, colour: BED[*seasonal as usize], dash: None, feather: 0.45 };
+                let paint = Paint { share: BED_SHARE, colour: BED[*seasonal as usize], dash: None, feather: 0.45, profile: Profile::Bed };
                 c.spine.paint(mesh, &alpha, &paint);
             }
         }
@@ -452,6 +465,8 @@ pub fn rivers(mesh: &mut LineMesh, rivers: &[River], lakes: &[Lake], snapshot: &
                     colour: if *seasonal { SEASONAL[layer] } else { PERENNIAL[layer] },
                     dash: seasonal.then_some(DASH_ON),
                     feather: 0.0,
+                    // The fill, not the dark waterline under it.
+                    profile: if layer == 0 { Profile::Water } else { Profile::Plain },
                 };
                 c.spine.paint(mesh, alpha, &paint);
             }
@@ -461,7 +476,7 @@ pub fn rivers(mesh: &mut LineMesh, rivers: &[River], lakes: &[Lake], snapshot: &
         for c in &channels {
             for (seasonal, alpha) in &c.phases {
                 let alpha: Vec<f64> = alpha.iter().map(|a| a * 0.5 * near).collect();
-                let paint = Paint { share: 0.26, colour: GLINT, dash: seasonal.then_some(DASH_ON), feather: 0.7 };
+                let paint = Paint { share: 0.26, colour: GLINT, dash: seasonal.then_some(DASH_ON), feather: 0.7, profile: Profile::Plain };
                 c.spine.paint(mesh, &alpha, &paint);
             }
         }
@@ -579,28 +594,6 @@ pub fn river_field(rivers: &[River], flowing: &[Option<bool>], grid: &GridSpec) 
         }
     }
     field
-}
-
-/// Shoreline rings of the lakes at `year`: a thin dark line showing the
-/// lake's real shape over the Water hexes.
-pub fn lakes(mesh: &mut LineMesh, lakes: &[Lake], year: Year, board: &Board) {
-    let half = 0.00022 * line_zoom(board.cam_dist);
-    for l in lakes {
-        let Some(shape) = l.shape_at(year) else { continue };
-        for ring in &shape.rings {
-            let mut closed = ring.clone();
-            if closed.first().map(|p| (p.lon, p.lat)) != closed.last().map(|p| (p.lon, p.lat)) {
-                closed.push(ring[0]);
-            }
-            let pts = river_spline(&closed, 0.04);
-            if pts.len() < 4 {
-                continue;
-            }
-            let ones = vec![1.0; pts.len()];
-            let spine = Spine::new(&pts, &ones, half, 0.00035, true, board);
-            spine.paint(mesh, &ones, &Paint { share: 1.0, colour: LAKE_SHORE, dash: None, feather: 0.0 });
-        }
-    }
 }
 
 #[cfg(test)]

@@ -1,0 +1,93 @@
+[meta]
+place = "amu_darya_delta"
+written = "2026-11-12"
+verdict = "research"
+confidence = "medium"
+really_empty = "Yes, and far beyond the box: no site in the box or within 100 km in any epoch, and the nearest site of any date is 450-857 km away. In a window from 56 to 66 E and 38 to 46 N our data holds four records, all on the Kopet Dag piedmont 400 km south (Monjukli Depe, Tilkin, Anau) apart from one misfiled Breton site (see summary). No duplicates. The box itself is partly at fault: it frames the modern Aral delta and stops at 60.6 E, while the sheet shows floodplain continuing east to 62 E, which is the old Akchadarya delta where the classic sites of this region lie."
+why_empty = ["not_in_open_compilations", "publication_access", "research_intensity", "dataset_edge"]
+summary = """
+Khwarazm: the deltas of the Amu Darya between the Kyzylkum and Karakum,
+with the Aral Sea to the north and Sarykamysh to the west. On the board it
+is 15 to 20 hexes of floodplain in desert, and there is no dated site in
+our data within 450 km of it in any epoch. The residual model, which only
+knows the site list's own pattern, expects 1.7 sites at most and reads
+'as expected'. That is the model having no neighbours to learn from, not a
+finding.
+
+This is the home region of the Kel'teminar culture, found by Tolstov's
+Khorezm expedition in 1939 at Dzhanbas-4 in the Akchadarya delta: sedentary
+fishers and hunters with pottery and very large communal houses, dated
+c. 5500-3500 BCE in the summary I could open (Wikipedia) and to the 7th-4th
+millennia BCE by Brunet et al. (2013), who name the Akchadarya and the
+Zeravshan as its two core regions. It is absent from our data because it
+was excavated and published in Russian in the Soviet period, largely before
+or without radiocarbon, and because the modern dated work (Ajakagytma, in
+the Kyzylkum 400 km to the east) has not been entered in the open
+compilations either. The single XRONOS record that looks relevant, 'Akcha'
+(RUL-241, 3750 +/- 90 BP), has no coordinates on the XRONOS page and sits
+in our raw copy at 37.6 N, 60.62 E in southern Turkmenistan.
+
+What I could verify online is thin: abstracts and a general summary. The
+site catalogues are Soviet monographs I know of but did not open
+(Vinogradov's work on the Neolithic of Khorezm and of the Central Asian
+interfluve). So the first job is to get them, and until then the plan
+proposes inferred Kel'teminar camps along the delta channels.
+
+For a person: (1) extend the box east to about 62.0 E, or add an
+'Akchadarya delta' place; (2) the record 'Pors Nehue (Hoedic)' at 61.28 E,
+38.95 N in our settlements is a Breton site (its twin is correctly at
+-2.88, 47.33) and is already in coordinate_audit.csv as same_name_far; it
+is one of only four records in this whole region; (3) the board keeps the
+Aral Sea at full size from 10,000 BCE, which I have not checked against
+the lake-level literature.
+"""
+
+[[known_site]]
+name = "Dzhanbas-4 (Janbas 4)"
+lon = 61.3
+lat = 41.86
+coordinates = "approximate"
+start = -4500
+end = -3500
+what = "Type site of the Kel'teminar culture in the Akchadarya delta: a single very large post-built communal dwelling with hearths, pottery, microlithic flint and fish and wild-animal bone, excavated 1939-40 and 1945. The date range is the conventional one as I remember it, inside the 5500-3500 BCE span given for the culture; I know of no radiocarbon date from the site. The point is the Dzhanbas-kala fortress the site is numbered from, from memory, good to perhaps 10 km. Not opened: the excavation seasons are from a search engine's summary of Vinogradov 1957, which also names a second site, Kunyak-1."
+cite = "Vinogradov, A.V. 1957, K voprosu o yuzhnykh svyazyakh kel'teminarskoi kul'tury, Sovetskaya etnografiya 1957(1):25-45; first reported in Tolstov, S.P. 1948, Drevnii Khorezm"
+url = "https://eo.iea.ras.ru/wp-content/uploads/1957/01/eoarchive_1957_1_025_vinogradov.pdf"
+checked = false
+
+[[research]]
+what = "Find and digitise the Kel'teminar site catalogues and their maps: Vinogradov's monographs on the Neolithic of Khorezm (1968) and on the hunters and fishers of the Central Asian interfluve (1981), and Tolstov 1948. Titles and years are from memory and unverified; confirming them is step one. Vinogradov 1957 (open PDF) is a way in."
+url = "https://eo.iea.ras.ru/wp-content/uploads/1957/01/eoarchive_1957_1_025_vinogradov.pdf"
+yields = "My estimate, unverified: several dozen to a few hundred Kel'teminar localities in the Akchadarya delta, the Sarykamysh delta, along the Uzboy and in the inner Kyzylkum, 6th-4th millennium BCE, nearly all dated by typology and not radiocarbon"
+effort = "Russian print monographs; site positions read off distribution maps (approximate, 5-20 km); phases assigned from the authors' typology. Days of work. Enter as surveyed, period-dated sites."
+
+[[research]]
+what = "Enter the radiocarbon dates and survey results of the French-Uzbek-Polish work on Kel'teminar: Brunet, Hudzanazarov and Szymczak 2013 (open access, PDF facsimile on the journal page) for Ajakagytma and the Kyzylkum and Akchadarya geo-archaeological surveys. Ajakagytma is 400 km east of the box but it is the dated anchor for the whole culture."
+url = "https://journals.openedition.org/asiecentrale/1814"
+yields = "One well-dated stratified site (a search summary gave its early phase as c. 6100-5400 cal BCE; I did not see the dates myself) and possibly a list of surveyed sites; the calibrated frame for every period-dated Kel'teminar site above"
+effort = "One article in French; the abstract page has no dates, they are in the PDF"
+
+[[research]]
+what = "Look at the XRONOS record 'Akcha' (RUL-241, 3750 +/- 90 BP, charcoal, from the CONTEXT database): the XRONOS page gives no coordinates, our raw copy has it at 37.6 N, 60.62 E. Decide whether it is an Akchadarya site; if so it belongs here (after 3,000 BCE, so it would still not show in the period)."
+url = "https://xronos.ch/c14s/73010"
+yields = "At most one relocated site, outside the period; a check on how records without coordinates get placed"
+effort = "Minutes"
+
+[[speculate]]
+target = "settlements"
+slices = [-6000, -5000, -4000, -3000]
+rule = "Place inferred Kel'teminar fisher-hunter settlements in floodplain hexes within 10 km of a branch of the Amu Darya that the river record has as flowing in that slice (the Sarykamysh branch throughout, the Akchadarya branch from 5,000 BCE) and on the Sarykamysh shore, about one per 40 km of channel, marked as inferred. Extend the rule east to 62 E, beyond the present box. Nothing before 6,000 BCE."
+confidence = "medium"
+reasoning = "The culture is defined from this delta and dated 5500-3500 BCE or 7th-4th millennium BCE (Brunet et al. 2013), with large communal houses for a hundred or more people, so presence from about 5,500 BCE is as safe as a statement without ingested data can be; 6,000 BCE is included on the longer chronology and is the weakest slice. The board agrees that the land was usable: 15-20 floodplain hexes in every slice. Our own speculative layers already assume people here (pottery judged 0 -> 0.53 -> 0.86, houses 0.34, ground stone observed) while the settlement layer shows none for 450 km, so the layers contradict each other until something is placed. The spacing is a guess and has low confidence: surveyed Kel'teminar localities are surface scatters on deflated takyr, much denser than this in places and absent in others."
+basis = ["literature", "environment", "other_layer"]
+
+[[speculate]]
+target = "isostyle:houses"
+slices = [-5000, -4000]
+rule = "Raise houses in the delta floodplain to a clearly present value for the slices when Kel'teminar communal dwellings are attested, falling back to the region's judged value elsewhere."
+confidence = "low"
+reasoning = "Dzhanbas-4 is a house site and the summary I opened describes dwellings of about 24 by 17 m for 100-120 people. The gap critic's 0.34 is a value for the whole of Central Asia (its note: 'Kelteminar foragers have large huts'); in the delta itself the excavated sites are known chiefly as dwellings. Low because I am leaning on a tertiary summary and one remembered excavation."
+basis = ["literature", "other_layer"]
+[[speculate.adjust]]
+kind = "area"
+bbox = [58.0, 41.3, 62.0, 43.6]
+value = 0.6

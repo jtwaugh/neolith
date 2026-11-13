@@ -156,6 +156,21 @@ class Mountains(unittest.TestCase):
 
 
 class Fill(unittest.TestCase):
+    def test_island_amid_water_takes_nearest_coast_not_a_placeholder(self):
+        # A chain: Forest, Water, Water, island (to fill), Water, Steppe, Steppe.
+        nb = [[1], [0, 2], [1, 3], [2, 4], [3, 5], [4, 6], [5]]
+        v = np.array(["Forest", "Water", "Water", "Water", "Water", "Steppe", "Steppe"], dtype=object)
+        todo = np.zeros(7, dtype=bool)
+        todo[3] = True
+        out = compose.fill_from_neighbours(v, todo, nb, exclude=("Water",))
+        self.assertEqual(out[3], "Steppe")               # two steps; Forest is three
+        todo[3], todo[1] = False, True                   # one step from Forest
+        self.assertEqual(compose.fill_from_neighbours(v, todo, nb, exclude=("Water",))[1], "Forest")
+        # Nothing usable anywhere: the old placeholder; an explicit default still wins.
+        w = np.array(["Water", "Water"], dtype=object)
+        self.assertEqual(compose.fill_from_neighbours(w, np.array([True, False]), [[1], [0]])[0], "Plains")
+        self.assertEqual(compose.fill_from_neighbours(w, np.array([True, False]), [[1], [0]], default="X")[0], "X")
+
     def test_hold(self):
         kf = {-9000: np.array(["a"]), -7000: np.array(["b"])}
         out, prov = compose.fill(kf, range(-10000, -5999, 1000))
@@ -187,6 +202,56 @@ class Fill(unittest.TestCase):
         self.assertEqual(f[centre], 0.5)
         self.assertTrue(all(f[j] == 1.0 for j in g.neighbours[centre]))
         self.assertEqual(f[0], 0)
+
+    def test_distance_fronts_are_round_not_hexagonal(self):
+        # One source hex in the middle of a big patch. By hops, the hexes
+        # switching together form a hexagon with straight vertical sides; by
+        # straight-line distance they form a circle.
+        g = make_grid(31, 31)
+        xy = g.centres
+        mid = int(np.argmin(np.hypot(*(xy - xy.mean(axis=0)).T)))
+        a = np.full(len(g), "A", dtype=object)
+        a[mid] = "B"
+        b = np.full(len(g), "B", dtype=object)
+        r = np.hypot(*(xy - xy[mid]).T)
+        hops = compose.switch_fraction(a, b, g.neighbours)
+        dist = compose.switch_fraction(a, b, g.neighbours, xy)
+        # Within a disc, how far the switch time strays from a line in the
+        # radius: small for round fronts, large for hexagonal ones.
+        disc = r < 12
+
+        def stray(f):
+            fit = np.polyval(np.polyfit(r[disc], f[disc], 1), r[disc])
+            return np.std(f[disc] - fit) / np.ptp(f[disc])
+        self.assertLess(stray(dist), 0.3 * stray(hops))
+        self.assertEqual(dist[mid], 0)
+        self.assertTrue(np.all(np.diff(dist[np.argsort(r)][1:]) > -0.05))
+
+    def test_distance_fronts_stay_inside_their_patch(self):
+        # A U-shaped patch: the far arm is reached round the bend, so it
+        # switches after the near arm even though it is close in a line.
+        g = make_grid(12, 12)
+        col = np.rint(g.centres[:, 0] / 0.75).astype(int)
+        row = np.rint(-g.centres[:, 1] / (np.sqrt(3) / 2)).astype(int)
+        a = np.full(len(g), "X", dtype=object)
+        u = ((col == 2) | (col == 6) | (row == 10)) & (col >= 2) & (col <= 6) & (row >= 1)
+        a[u] = "A"
+        a[(col == 2) & (row == 0)] = "B"
+        b = a.copy()
+        b[u] = "B"
+        f = compose.switch_fraction(a, b, g.neighbours, g.centres)
+        near, far = u & (col == 2) & (row == 3), u & (col == 6) & (row == 3)
+        self.assertLess(f[near].max(), f[far].min())
+
+    def test_front_geometry(self):
+        g = make_grid(10, 10)
+        self.assertEqual(compose.front_geometry(g, {"metric": "hops"}), (None, None))
+        xy, slow = compose.front_geometry(g, {"metric": "distance", "noise": 0.25})
+        self.assertEqual(xy.shape, (len(g), 2))
+        self.assertTrue(np.all((slow >= 0.75) & (slow <= 1.25)))
+        self.assertGreater(np.ptp(slow), 0)
+        _, none = compose.front_geometry(g, {"metric": "distance"})
+        self.assertIsNone(none)
 
     def test_fronts_hold_outside_keyframes(self):
         nb = [[]]

@@ -11,7 +11,7 @@ coordinates are screenshot pixels (what you see in the PNG).
     harness/neolith.py shot [out.png]         # screenshot of the whole window
     harness/neolith.py start [--year -7000]   # leave the start screen
     harness/neolith.py set --mode koeppen --year -6000 --playing true --speed 200
-    harness/neolith.py set --hillshade 0 --borders 0 --art 2d --art-blend false --flat-lighting true   # isolate layers
+    harness/neolith.py set --hillshade 0 --borders 0 --art off --art-blend false --flat-lighting true   # isolate layers
     harness/neolith.py set --fill false | set --fill-margin 0.4    # camera: tabletop view / more edge room
     harness/neolith.py camera --lon 30 --lat 38 --dist 0.4 --pitch 50
     harness/neolith.py click 900 500 [--button right] [--mod shift]
@@ -188,10 +188,11 @@ def main(argv=None):
     a.add_argument("--year", type=int)
     a.add_argument("--speed", type=float)
     a.add_argument("--inspect", help="hex id, or 'none'")
-    for k in ("hillshade", "borders", "grout", "bevel", "art-strength", "saturation", "relief-exaggeration", "fill-margin"):
+    for k in ("hillshade", "borders", "grout", "bevel", "art-strength", "saturation", "relief-exaggeration", "mountain-height", "fill-margin", "depth"):
         a.add_argument(f"--{k}", type=float)
-    for k in ("playing", "editor", "flat", "relief", "rivers", "style-window", "user-input", "art-blend", "flat-lighting", "fill"):
+    for k in ("playing", "editor", "flat", "relief", "rivers", "survey", "style-window", "user-input", "art-blend", "flat-lighting", "fill"):
         a.add_argument(f"--{k}", type=parse_bool)
+    a.add_argument("--tab", help="sidebar tab: Selected, Chronicle or Map")
     a = sub.add_parser("camera")
     for k in ("lon", "lat", "yaw", "pitch", "dist"):
         a.add_argument(f"--{k}", type=float)
@@ -246,15 +247,15 @@ def main(argv=None):
             req = {"cmd": "screenshot", "path": os.path.abspath(path)}
         elif c == "set":
             req = {"cmd": "set"}
-            for k in ("mode", "evidence", "tool", "art", "year", "speed", "playing", "editor", "flat", "relief", "rivers"):
+            for k in ("mode", "evidence", "tool", "art", "year", "speed", "playing", "editor", "flat", "relief", "rivers", "survey", "tab"):
                 if getattr(args, k) is not None:
                     req[k] = getattr(args, k)
             if args.style_window is not None:
                 req["style_window"] = args.style_window
             if args.user_input is not None:
                 req["user_input"] = args.user_input
-            for k in ("hillshade", "borders", "grout", "bevel", "art_strength", "saturation", "relief_exaggeration",
-                      "fill_margin", "art_blend", "flat_lighting", "fill"):
+            for k in ("hillshade", "borders", "grout", "bevel", "art_strength", "saturation", "relief_exaggeration", "mountain_height",
+                      "fill_margin", "art_blend", "flat_lighting", "fill", "depth"):
                 if getattr(args, k) is not None:
                     req[k] = getattr(args, k)
             if args.settlement is not None:

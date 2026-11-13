@@ -1,0 +1,102 @@
+[meta]
+place = "bab_el_mandeb"
+written = "2026-11-12"
+verdict = "research"
+confidence = "medium"
+really_empty = "Yes. No site in the box in any epoch and no duplicate or misfiled site hiding one. The nearest in-period sites are four records (two real sites, MK Sada and Sedd adh-Dhra'a II) 73-85 km to the north-east on the Yemeni plateau; the Tihama cluster we do hold (Ash-Shumah, Gahabah-1, Surdud-1, Qummah-3 and -4, Ibn Abbas-4) starts about 110 km north of the box. The raw XRONOS download also holds Sabir and Ma'layba near Lahj (44.9-45.1 E, 13.0 N; 33 dates, 3550-2695 BP), which are after 3,000 BCE and so never show. The African side is blank in the source itself: the XRONOS files for Djibouti and Eritrea are empty and Somalia has one date. One board problem: the sheet draws the strait as continuous land at 10,000 and 8,000 BCE."
+why_empty = ["research_intensity", "not_in_open_compilations", "submerged", "preservation"]
+summary = """
+The mouth of the Red Sea: the Yemeni Tihama and the Aden coast on one side,
+Djibouti and the Eritrean Danakil coast on the other. Our data has nothing in
+the box in any of the eight epochs, and the residuals read "little dated
+archaeology nearby" from 5,000 BCE. That reading is right. The emptiness is
+a hole in the dated record, not in the past. On the African shore almost
+nothing prehistoric has been dated: the open compilations hold no record at
+all for Djibouti or Eritrea, the known Djibouti Neolithic (Asa Koma and
+Wakrita in the Gobaad basin by Lake Abbe) is early second millennium BCE and
+west of the box, and the first radiocarbon ages from the Tadjoura coast were
+only reported from surveys in 2023-24 (Hardt et al. 2026). On the Arabian
+shore the Tihama was long written off as archaeologically barren (Lee 2023);
+the surveys that changed that (Tosi 1986, seven shell-midden sites of 8-5 ka
+cal BP; the 2003 Tihamah Coastal Survey of Khalidi) produced surface
+collections with few dates, and mainland middens there are dune-covered or
+cut away by wadis (Hausmann et al. 2019, citing Khalidi 2005). Only a small
+fraction of southern Red Sea middens are dated at all, the oldest about
+8,000 cal BP in Eritrea. Before that the shore itself is gone: 9 of the
+box's hexes drown after 10,000 BCE.
+
+The literature does have at least one dated site inside the box that we
+lack: Gihayu on the Khor Umayra lagoon west of Aden, a stratified
+fisher-shellfisher mound of the fifth to fourth millennium BCE dug by a
+German-Russian team (Vogt and Amirkhanov), said to be one of several like
+it on the Gulf of Aden coast. I could not open the paper (the journal site
+blocks automated readers), so it is entered unchecked. The things to ingest
+are the Gihayu reports, the Tihama survey site lists (Khalidi 2005; Durrani
+2005, which draws on unpublished survey data), and the Tadjoura survey.
+None of these is a table of dated sites; most of what they yield will be
+period-dated survey sites, so the plan also carries speculation for the two
+shores.
+
+Board problem, for a person: the sheet shows land right across the strait at
+10,000 and 8,000 BCE, so the Red Sea is a lake on the board until 6,000 BCE.
+Lambeck et al. (2011) show it stayed open to the Gulf of Aden through the
+last 400,000 years; at lowstand the channels south of the Hanish Sill were
+under 4 km wide. A 4 km channel cannot show at 55 km hexes, but anything
+that reads land adjacency will treat Africa and Arabia as joined. Also for a
+person: Asa Koma sits in our raw data in Somaliland (44.69 E, 9.72 N), not in
+Djibouti's Gobaad plain.
+"""
+
+[[known_site]]
+name = "Gihayu (Khor Umayra lagoon)"
+lon = 44.15
+lat = 12.63
+coordinates = "approximate"
+start = -4300
+end = -3000
+what = "Stratified Late Stone Age fishing and shellfish-gathering site, argued by the excavators to be a tell and not only a shell midden, with fish, mollusc and mammal remains; one of several similar sites on the Gulf of Aden coast. Three uncalibrated dates on shell are reported (5490 +/- 90, 4780 +/- 80, 4430 +/- 110 BP); the range entered is those dates calibrated roughly with no marine reservoir correction, and the paper's own label is fifth to fourth millennium BCE. Not opened: the journal site refused automated access, and these details are from a search engine's summary of the paper. The point is the lagoon as I remember its position, not a published coordinate; the paper's '150 km west of Aden' would put the site nearer 43.7 E. Either is inside the box."
+cite = "Rosello, E., Morales, A. & Popov, S. 2005, Preliminary survey of the Late Stone Age faunas from Gihayu (Khor Umayra lagoon, Republic of Yemen), Archaeofauna 14:253-265"
+url = "https://revistas.uam.es/archaeofauna/article/view/7448"
+checked = false
+
+[[research]]
+what = "Get the Gihayu reports: Rosello et al. 2005 (above) and the excavators' own account it cites (Amirkhanov et al. 2001), for the site's coordinates, the dates with lab numbers, and the other Gulf of Aden coast sites it is compared with."
+url = "https://revistas.uam.es/archaeofauna/article/view/7448"
+yields = "One dated site inside the box and probably two or three more undated mounds on the same coast, 5th-4th millennium BCE"
+effort = "Two papers, one in Russian or German; a person has to fetch them (the journal blocks scripts). Shell dates need a marine reservoir correction before entry."
+
+[[research]]
+what = "Extract the prehistoric sites of the Tihama surveys: Khalidi 2005 (Tihamah Coastal Survey 2003, PSAS 35:115-127) and Durrani 2005 (BAR S1456, which draws on published and unpublished survey data from c. 6000 BCE on), checking each against the Tihama sites we already hold further north (Ash-Shumah, Gahabah-1, Surdud-1, Qummah, Ibn Abbas). Tosi's seven midden sites of 8-5 ka cal BP (cited in Meredith-Williams et al. 2014) are probably those same northern sites; confirm."
+url = "https://www.barpublishing.com/?p=31436"
+yields = "Unknown until opened: my estimate is some tens of surveyed prehistoric sites on the Tihama, mostly dated by lithics and obsidian and not by radiocarbon, a minority of them south of 13.7 N inside the box"
+effort = "A book chapter and a monograph, neither open access (I saw the BAR catalogue page only; the HAL record for Khalidi's paper refused automated access). Coordinates will mostly be read off maps. Sites enter with period dates, marked as surveyed and undated."
+
+[[research]]
+what = "Read Hardt et al. 2026 on the 2023-24 surveys in the Tadjoura prefecture (Loubatanle crater, Wadi Asa Fa'o, Boli) for the radiocarbon ages and site positions. The abstract promises ages but does not give them; they may all be later than 3,000 BCE."
+url = "https://doi.org/10.34780/wwt5ah24"
+yields = "Up to three dated sites on the Djibouti shore of the box, period not yet known"
+effort = "One open-access chapter"
+
+[[speculate]]
+target = "settlements"
+slices = [-6000, -5000, -4000, -3000]
+rule = "Place inferred fisher-shellfisher camps on both shores, within 10 km of the coast of that epoch and preferring lagoons, wadi mouths and the Gulf of Tadjoura, about one per 50 km of shore, marked as inferred. Do not place any inland on this argument."
+confidence = "medium"
+reasoning = "The southern Red Sea has more than 4,200 shell-midden sites, with dated ones from about 8,000 cal BP in Eritrea, 7,500 cal BP on the Farasan Islands and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019). Our own data has the Tihama middens from 6,610 BCE 110-200 km north of the box, and the literature has Gihayu inside it in the fifth to fourth millennium BCE. There is no environmental break between those coasts and this one. That the box shows none is explained by dune cover and wadi erosion on the mainland shore (Hausmann et al. 2019) and by nobody having dated anything on the African side. Presence is a medium-confidence claim; the spacing is a guess (low) taken from how thinly the mainland Tihama middens are spread compared with the islands."
+basis = ["neighbouring_evidence", "analogy", "literature"]
+
+[[speculate]]
+target = "settlements"
+slices = [-10000, -9000, -8000, -7000]
+rule = "Place a few inferred forager camps (two to four per slice) on the coast of that epoch at the narrows and on the then-exposed shelf, marked as inferred and as drowned where the hex later floods."
+confidence = "low"
+reasoning = "While sea level was below about -50 m the channels south of the Hanish Sill were under 4-5 km wide with both shores in sight of each other (Lambeck et al. 2011), and the dossier counts 9 box hexes at 10,000 BCE that drown later, 6 at 8,000 and 3 at 7,000: the early Holocene shore and its shelf are under water, which is also why no midden anywhere in the Red Sea is older than about 8,000 cal BP. Nothing of this date is known on either shore, so this rests on environment alone. Bailey et al. (2019) warn that coastal use in this region was episodic and that absence of evidence here is weak either way. Low confidence, deliberately few sites."
+basis = ["environment", "literature", "intuition"]
+
+[[speculate]]
+target = "settlements"
+slices = [-5000, -4000, -3000]
+rule = "Mark the strait and the southern Red Sea as crossed by boat from 5,000 BCE: if the game has a contact or route layer, link the Danakil coast to the Tihama across the water; otherwise let one of the inferred coastal camps on each shore carry an obsidian-exchange tag. No extra sites."
+confidence = "low"
+reasoning = "Lee (2023) reports obsidian tools on Yemen's al-Salif peninsula as early as 5000 BC and the sourcing of Tihama obsidian to Nabro volcano in the Danakil, 175 km away across the Red Sea (Oppenheimer et al. 2019, cited there). That is a sea crossing north of the box by 5,000 BCE; the strait itself is the shortest crossing and would not have been avoided. The 5000 BC date is given in a short society-journal article without its source, hence low."
+basis = ["literature", "neighbouring_evidence"]

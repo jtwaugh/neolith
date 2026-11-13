@@ -24,6 +24,17 @@ def point(name, lon, lat, founding, fid=None, **props):
     return f
 
 
+class Rejects(unittest.TestCase):
+    def test_drops_only_the_named_date_and_insists_it_exists(self):
+        dates = [{"site": "Wustermark 22", "labnr": "Bln-5645"}, {"site": "Wustermark 22", "labnr": "KIA-32463"},
+                 {"site": "Elsewhere", "labnr": "Bln-5645"}]
+        self.assertEqual(st.apply_rejects(dates, {("Wustermark 22", st.lab_key("BLN 5645"))}), 1)
+        self.assertEqual([(d["site"], d["labnr"]) for d in dates],
+                         [("Wustermark 22", "KIA-32463"), ("Elsewhere", "Bln-5645")])
+        with self.assertRaises(ValueError):
+            st.apply_rejects(dates, {("Wustermark 22", "bln5645")})
+
+
 class Calibrate(unittest.TestCase):
     def test_identity_curve_gives_the_date_back(self):
         cal = np.arange(0, 20001, st.CAL_STEP, dtype=float)

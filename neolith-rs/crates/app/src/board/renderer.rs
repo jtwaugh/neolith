@@ -110,6 +110,12 @@ pub fn shader_source() -> String {
         super::lines::FIELD_HALF_MAX,
         super::lines::BED_SHARE,
     ));
+    src.push_str(&format!(
+        "const CAMP_SPAN: f32 = {:?};\nconst CAMP_RADIUS_MAX: f32 = {:?};\n",
+        super::scene::CAMP_SPAN,
+        super::scene::CAMP_RADIUS_MAX,
+    ));
+    const _: () = assert!(super::scene::CAMPS_PER_HEX[0] == 2 && super::scene::CAMPS_PER_HEX[1] == 2, "art_camp reads 2 x 2");
     src.push_str(include_str!("terrain_art.wgsl"));
     src.push_str(include_str!("board.wgsl"));
     src
@@ -133,6 +139,9 @@ pub struct Globals {
     pub shadow: [f32; 4],
     pub art: [f32; 4],
     pub hex: [f32; 4],
+    /// Focus distance, haze strength, tilt-shift blur radius (fraction of
+    /// the view's height), viewport aspect.
+    pub depth: [f32; 4],
 }
 
 /// A vertex of a settlement piece, already in world space.
@@ -157,8 +166,9 @@ pub struct LineVertex {
     pub along: f32,
     /// sRGB colour and opacity.
     pub colour: [u8; 4],
-    /// x: dash "on" fraction (0 = solid), z: edge feather (fraction of
-    /// the half width); y and w unused.
+    /// x: dash "on" fraction (0 = solid), y: the profile across the ribbon
+    /// (`lines::Profile` × 85), z: edge feather (fraction of the half
+    /// width); w unused.
     pub params: [u8; 4],
 }
 
@@ -207,6 +217,8 @@ pub struct BoardRenderer {
     blit_pipeline: wgpu::RenderPipeline,
     blit_layout: wgpu::BindGroupLayout,
     blit_params: wgpu::Buffer,
+    /// 1 when the blit must gamma-encode by hand (see `BlitParams`).
+    blit_encode: f32,
     sampler: wgpu::Sampler,
     globals: wgpu::Buffer,
     bind_group: wgpu::BindGroup,
@@ -222,9 +234,15 @@ pub struct BoardRenderer {
     river_tex: wgpu::Texture,
     /// The field last uploaded, so an unchanged one isn't re-sent.
     river_field: Option<super::lines::RiverField>,
+    /// RGBA8: the camps in and around each hex (see [`Self::upload_camps`]).
+    camp_tex: wgpu::Texture,
+    /// The camps last uploaded.
+    camp_data: Vec<u8>,
     state_size: [u32; 2],
     /// CPU copy of `state_tex` (RGBA8), for single-texel flag updates.
     state_rgba: Vec<u8>,
+    /// The heights last baked with (the mountain peak scale reads them).
+    state_height: Vec<i16>,
     pieces: wgpu::Buffer,
     piece_capacity: usize,
     piece_count: u32,
@@ -290,6 +308,9 @@ impl BoardRenderer {
         let [river_w, river_h] = super::lines::field_size(cols, rows).0;
         let river_tex = device.create_texture(&tex_desc("river field", river_w, river_h, wgpu::TextureFormat::Rgba8Unorm));
         let river_view = river_tex.create_view(&Default::default());
+        let [camps_x, camps_y] = super::scene::CAMPS_PER_HEX;
+        let camp_tex = device.create_texture(&tex_desc("camps", cols * camps_x, rows * camps_y, wgpu::TextureFormat::Rgba8Unorm));
+        let camp_view = camp_tex.create_view(&Default::default());
         // The baked prop layout and glyph lists (fs_slot_bake): 4 × 3 slots
         // per hex; the per-hex art data (fs_hex_bake).
         let prop_tex = device.create_texture(&wgpu::TextureDescriptor {
@@ -353,6 +374,7 @@ impl BoardRenderer {
                 tex_entry(7, wgpu::TextureSampleType::Uint),
                 tex_entry(8, wgpu::TextureSampleType::Uint),
                 tex_entry(9, wgpu::TextureSampleType::Float { filterable: true }),
+                tex_entry(10, wgpu::TextureSampleType::Float { filterable: true }),
             ],
         });
         let bind_group = device.create_bind_group(&wgpu::BindGroupDescriptor {
@@ -384,16 +406,20 @@ impl BoardRenderer {
                     resource: wgpu::BindingResource::TextureView(&evidence_tex.create_view(&Default::default())),
                 },
                 wgpu::BindGroupEntry { binding: 9, resource: wgpu::BindingResource::TextureView(&river_view) },
+                wgpu::BindGroupEntry { binding: 10, resource: wgpu::BindingResource::TextureView(&camp_view) },
             ],
         });
         // The bakes render into the art textures, so can't have them bound: their own
-        // layout with just what they read (globals, hex state, river field).
+        // layout with just what they read (globals, hex state, heights for the
+        // peak scale, river field, camps).
         let bake_layout = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
             label: Some("prop bake layout"),
             entries: &[
                 uniform_entry(0, wgpu::ShaderStages::VERTEX_FRAGMENT),
                 tex_entry(1, wgpu::TextureSampleType::Uint),
+                tex_entry(4, wgpu::TextureSampleType::Sint),
                 tex_entry(9, wgpu::TextureSampleType::Float { filterable: true }),
+                tex_entry(10, wgpu::TextureSampleType::Float { filterable: true }),
             ],
         });
         let bake_bind_group = device.create_bind_group(&wgpu::BindGroupDescriptor {
@@ -405,7 +431,12 @@ impl BoardRenderer {
                     binding: 1,
                     resource: wgpu::BindingResource::TextureView(&state_tex.create_view(&Default::default())),
                 },
+                wgpu::BindGroupEntry {
+                    binding: 4,
+                    resource: wgpu::BindingResource::TextureView(&height_tex.create_view(&Default::default())),
+                },
                 wgpu::BindGroupEntry { binding: 9, resource: wgpu::BindingResource::TextureView(&river_view) },
+                wgpu::BindGroupEntry { binding: 10, resource: wgpu::BindingResource::TextureView(&camp_view) },
             ],
         });
         let bake_pipeline_layout = device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
@@ -607,7 +638,7 @@ impl BoardRenderer {
         let blit_params = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
             label: Some("blit params"),
             contents: bytemuck::cast_slice(&[encode, 0.0, 0.0, 0.0]),
-            usage: wgpu::BufferUsages::UNIFORM,
+            usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
         });
         let sampler = device.create_sampler(&wgpu::SamplerDescriptor {
             label: Some("blit sampler"),
@@ -671,6 +702,7 @@ impl BoardRenderer {
             blit_pipeline,
             blit_layout,
             blit_params,
+            blit_encode: encode,
             sampler,
             globals,
             bind_group,
@@ -683,8 +715,11 @@ impl BoardRenderer {
             evidence_tex,
             river_tex,
             river_field: None,
+            camp_tex,
+            camp_data: Vec::new(),
             state_size: [cols, rows],
             state_rgba: Vec::new(),
+            state_height: Vec::new(),
             pieces,
             piece_capacity,
             piece_count: 0,
@@ -772,10 +807,12 @@ impl BoardRenderer {
         // keeps the bake.
         let layout_changed = self.state_rgba.len() != state.rgba.len()
             || self.state_rgba.chunks_exact(4).zip(state.rgba.chunks_exact(4)).any(|(a, b)| a[0] != b[0] || a[3] >> 3 != b[3] >> 3);
-        if layout_changed {
+        // Mountain peaks are sized by the heights (art_peak_scale).
+        if layout_changed || self.state_height != state.height {
             self.art_baked_blend = None;
         }
         self.state_rgba.clone_from(&state.rgba);
+        self.state_height.clone_from(&state.height);
         self.rendered = None;
     }
 
@@ -809,6 +846,26 @@ impl BoardRenderer {
             wgpu::Extent3d { width: w, height: h, depth_or_array_layers: 1 },
         );
         self.river_field = Some(field.clone());
+        self.art_baked_blend = None;
+        self.rendered = None;
+    }
+
+    /// Replaces the camps ([`super::scene::camp_texels`]). The prop layout
+    /// leaves a clearing around each, so a new set re-bakes the art.
+    pub fn upload_camps(&mut self, queue: &wgpu::Queue, texels: &[u8]) {
+        if texels == self.camp_data.as_slice() {
+            return;
+        }
+        let (w, h) = (self.camp_tex.width(), self.camp_tex.height());
+        assert_eq!(texels.len(), (w * h * 4) as usize);
+        queue.write_texture(
+            self.camp_tex.as_image_copy(),
+            texels,
+            wgpu::TexelCopyBufferLayout { offset: 0, bytes_per_row: Some(w * 4), rows_per_image: Some(h) },
+            wgpu::Extent3d { width: w, height: h, depth_or_array_layers: 1 },
+        );
+        self.camp_data.clear();
+        self.camp_data.extend_from_slice(texels);
         self.art_baked_blend = None;
         self.rendered = None;
     }
@@ -935,6 +992,8 @@ impl BoardRenderer {
     ) {
         self.ensure_targets(device, size);
         queue.write_buffer(&self.globals, 0, bytemuck::bytes_of(globals));
+        // The tilt-shift is done by the blit, which has its own parameters.
+        queue.write_buffer(&self.blit_params, 0, bytemuck::cast_slice(&[self.blit_encode, globals.depth[2], globals.depth[3], 0.0]));
         if globals.art[0] > 0.0 || globals.art[1] > 0.0 {
             self.bake_art(encoder, globals);
         }
@@ -1088,8 +1147,9 @@ mod tests {
         // Every terrain the art switches on has a constant.
         let art = include_str!("terrain_art.wgsl");
         for case in art.lines().filter_map(|l| l.trim().strip_prefix("case ")) {
-            let name = case.split(':').next().unwrap().trim();
-            assert!(src.contains(&format!("const {name}: u32")), "{name} has no constant");
+            for name in case.split(':').next().unwrap().split(',').map(str::trim) {
+                assert!(src.contains(&format!("const {name}: u32")), "{name} has no constant");
+            }
         }
     }
 }

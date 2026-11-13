@@ -86,6 +86,26 @@ pub fn show(ui: &mut egui::Ui, world: &World, i: usize, year: Year) {
     let empty = SiteInfo::default();
     let info = info.unwrap_or(&empty);
 
+    if info.is_inferred() {
+        ui.label(RichText::new("Inferred, not recorded").strong()).on_hover_text(
+            "No site is recorded here. The record is thin for a known reason (buried under silt, drowned, never \
+             entered in the open compilations), so a settlement is placed where people very probably lived. It \
+             disappears from its hex once a recorded site is entered there.",
+        );
+        for r in &info.references {
+            ui.weak(r);
+        }
+        ui.separator();
+    }
+
+    // A famous site: what it is known for, first.
+    if let Some(f) = crate::renown::lookup(st) {
+        let e = f.entry();
+        ui.label(RichText::new(&e.known_for).italics());
+        ui.hyperlink_to("Wikipedia", &e.wikipedia);
+        ui.add_space(2.0);
+    }
+
     // Kind and place.
     let kind = if info.kind.is_empty() || info.kind == "site" { "Site".to_string() } else { capitalise(&info.kind) };
     ui.weak(format!("{kind} · {:.2}°{}, {:.2}°{}", st.pos.lat.abs(), if st.pos.lat >= 0.0 { "N" } else { "S" },
@@ -116,6 +136,8 @@ pub fn show(ui: &mut egui::Ui, world: &World, i: usize, year: Year) {
     if n > 0 {
         let so_far = info.dates.iter().filter(|d| d.cal <= year).count();
         ui.weak(format!("{n} radiocarbon date{} · {so_far} by {year}", if n == 1 { "" } else { "s" }));
+    } else if info.is_inferred() {
+        ui.weak("Years from the inference rule, not from dates");
     } else if info.sources.iter().any(|s| s == "curated") {
         ui.weak("Founding year from a curated entry");
     } else if info.sources.iter().any(|s| s == "wikidata") {
@@ -135,7 +157,7 @@ pub fn show(ui: &mut egui::Ui, world: &World, i: usize, year: Year) {
                 plus one for a long occupation and one for many dates, each compared with sites within 150 km so heavily \
                 excavated regions don't get bigger pieces for being excavated.");
     }
-    if st.evidence == 0 {
+    if st.evidence == 0 && !info.is_inferred() {
         ui.weak("Known from a single date: drawn pale");
     }
     let survey = world.grid.hex_at(st.pos).and_then(|h| world.survey_at(h));

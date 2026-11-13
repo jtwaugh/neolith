@@ -160,6 +160,8 @@ def run(cfg, log=print):
 
     spath = os.path.join(out, "speculative", "speculative.csv.gz")
     spec = pd.read_csv(spath) if os.path.exists(spath) else None
+    if spec is not None and "land" in spec:
+        spec = spec[spec["land"] == 1]  # cells that are land only between slices are for the game
     judg = _judgements(out, registry) if spec is not None else {}
     from .gaps import cell_regions
     _, region = cell_regions(grid["lon"].values, grid["lat"].values)

@@ -6,6 +6,8 @@ their position. An entry names a site and where it is now (`was`, matched
 within 0.02°), and gives one of:
 - `to = [lon, lat]`: the right position (the hex is reassigned);
 - `drop = true`: a duplicate of another entry, removed;
+- `rename = "..."`: the record carries another site's name (the old name is
+  kept as `filed_as`); may be combined with `to`;
 - `submerged = true`: the site really is under water today, so the audit
   doesn't flag it as a coordinate error.
 Every entry has a `source` (a link) and a `note`; data/settlements/SOURCES.md
@@ -69,6 +71,10 @@ def apply(feats, fixes, grid):
             applied.append((p["name"], "drop"))
             continue
         f = {**f, "properties": dict(p)}
+        if x.get("rename"):
+            f["properties"]["filed_as"] = p["name"]
+            f["properties"]["name"] = x["rename"]
+            applied.append((p["name"], "renamed"))
         if "to" in x:
             f["geometry"] = {"type": "Point", "coordinates": [float(x["to"][0]), float(x["to"][1])]}
             h = _hex_of(grid, *x["to"])

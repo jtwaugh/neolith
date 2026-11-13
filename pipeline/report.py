@@ -240,6 +240,16 @@ def write(build_dir, grid, terrain, raw_terrain, legacy_terrain, prov, sea_stats
         for y in sorted(rt):
             L.append(f"| {y} | " + " | ".join(str(rt[y].get(k, 0)) for k in range(len(rules))) + " |")
 
+    md = (clean or {}).get("misdated")
+    if md:
+        rules = clean.get("misdated_rules", [])
+        L += ["", "## Mis-dated drawn regions ([[terrain.misdated]])", "",
+              "Drawn hexes made biome gaps because the drawing there copies a source map of another time.", ""]
+        for k, r in enumerate(rules):
+            got = ", ".join(f"{y}: {md[y][k]}" for y in sorted(md) if k in md[y])
+            L.append(f"- {r['name']}: {got or 'none'} hexes"
+                     + (f"; gaps trained on the {r['train_from']} drawing too" if "train_from" in r else ""))
+
     up = (clean or {}).get("upland")
     if up:
         L += ["", "## Upland rule ([biome.upland])", "",

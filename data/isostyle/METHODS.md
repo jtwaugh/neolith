@@ -219,6 +219,76 @@ Known approximations:
 
 The viewer's Speculative view colours each cell by value and hatches judged cells: sparse hatching for high confidence, dense for low, crosshatch for extrapolated. Hovering a judged cell shows the judgement behind it.
 
+### Smoothing and its evals (added 2026-11-12)
+
+After the fill, speculative cells are smoothed; **observed cells never move**. Three settings in
+`isostyle/config.toml` `[speculative]` control it:
+
+| Setting | Value | What it does |
+|---|---|---|
+| `blend_rings` | 12 | Judged cells within this many hex rings of observed cells lean toward the observed values (weight falls linearly with distance). It was 3. |
+| `time_smooth` | 0.4 | Each speculative cell moves this share of the way toward the mean of its own value in the slices before and after. |
+| `smooth_iters` | 16 | Passes in which each speculative cell moves halfway to the mean of its neighbours. |
+| `bridge` | 0.75 | A speculative cell observed in both neighbouring slices moves this share of the way toward the mean of those two values (less for firmer judgements; not where the judgement names a value for that slice). |
+
+`python -m isostyle evals` measures the result (`data/isostyle/evals/report.md`), and `--search` chose these
+settings: the smoothest of 60 grid points that pass every guard (`evals/search.json`). Against the unsmoothed fill:
+
+| Measure | Unsmoothed | Now |
+|---|---|---|
+| Mean step, observed cell to speculative neighbour (share of the layer's range) | 0.072 | 0.031 |
+| Mean step between speculative neighbours | 0.0056 | 0.0037 |
+| Speculative neighbour pairs more than 0.4 apart, per 1,000 | 1.75 | 0 |
+| Speculative cell-slices that reverse by more than 0.15 each way, per 1,000 | 2.7 | 0.7 |
+| Hold-out error: hide a tenth of observed cells in blocks, refill, compare | 0.095 | 0.029 |
+| Mean move of speculative cells away from the unsmoothed fill (limit 0.03) | 0 | 0.021 |
+
+Limits to keep in mind:
+- The chosen settings sit at the corner of the grid searched, so the search did not find an optimum; it stopped
+  where the grid did. The 0.03 limit on drift is a judgement call, not a derived number.
+- The hold-out test hides blocks two rings deep, so it rewards blending close to evidence. It says nothing about
+  the fill hundreds of km from any evidence; only the drift limit protects the critics' judgements there.
+- Time smoothing softens real arrivals as well as flicker. The check that farming still arrives in order
+  (Anatolia, Balkans, central Europe, British Isles) passes with the same slice for each region as before, but arrivals in speculative
+  cells are more gradual than the judgements state.
+
+A second critic, `.claude/agents/smooth-critic.md`, looks at the maps for artefacts the numbers miss. Its claims
+are tested with `python -m isostyle evals --check claims.json`; confirmed ones become permanent cases in
+`data/isostyle/evals/regressions.toml`.
+
+**Critic round (2026-11-12).** The smooth-critic reviewed all 34 layers and made 18 claims; the numbers confirmed
+16: 13 artefacts (6 flicker, 4 rings round small observed patches, 3 seams) and 3 real patterns. The 13 are cases in
+`evals/regressions.toml`. Its four proposed changes to the fill were added as switches and searched (64
+combinations, `evals/search.json`; the first search is `search_stage1.json`):
+
+| Switch | Result |
+|---|---|
+| `bridge`: a speculative cell observed in both neighbouring slices leans toward those values | Kept (0.75). Score 0.344 to 0.341. |
+| `blend_conf`: firmer judgements resist the blend | Rejected: hold-out error rises from 0.030 to 0.048. |
+| `kernel_cap`: blend no further than the layer's kernel | Rejected: hold-out error rises to 0.037, observed-edge steps grow. |
+| `hold_rings`: keep the ring nearest evidence fixed while smoothing | Rejected: no gain alone; fails the hold-out guard with `blend_conf`. |
+| `time_from_observed` off: do not pull evidence into the slice before it | Rejected: flicker rises from 0.7 to 0.9 per 1,000. |
+
+**None of the 13 cases passes under any combination.** Two causes lie outside the fill settings:
+- In the sparse presence-only layers (mines, pile dwellings, metallurgy, enclosures, megalithic tombs, waterlogged
+  organics) an observed cell reads 1.0 ("recorded here") while the critics' judgements for the same layer run
+  0 to 0.4 ("share of land with one"). Every observed patch is an island whatever the fill does. Nine of the 13
+  cases are in these layers.
+- The cases measure how steep a step is. A shorter blend, which the critic asked for to remove rings, makes the
+  step steeper, so the ring cases cannot pass by that route.
+One judgement was edited: `open_land.toml` Caucasus, whose elevation rule now ramps over 300 to 1,200 m (new
+optional `ramp_m` on elevation rules). Its case still fails (0.228 against 0.1).
+
+**Confidence lines.** `conf_edges` in the report counts speculative neighbour pairs in different confidence
+classes: 17 per 1,000, and 84% of them have a value step under 0.02. The game draws each class at a different
+strength, so region borders (for example 56°N across Russia) show as straight lines over a smooth value. No fill
+setting changes this; it needs confidence exported as a number and smoothed, or drawn differently.
+
+**Coasts and time in the game.** A slice now carries values for every cell that is land at any time from the slice
+before to the slice after (column `land` = 0 marks cells that are not land in the slice year itself; the maps and
+viewer leave them out). The game interpolates each hex linearly between slices, takes the weaker of the two
+confidence levels, and hides hexes that are sea or ice in the current year.
+
 ## Known biases
 
 - **Outside Europe, North Africa and Anatolia, presence still rests on labels.** The Levant,

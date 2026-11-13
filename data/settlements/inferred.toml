@@ -1,0 +1,122 @@
+# Inferred settlements: places where the record is thin for a known reason
+# (buried, drowned, never compiled) but people plainly lived. Each [[rule]]
+# turns one `[[speculate]] target = "settlements"` of a place plan
+# (data/places/plans/<key>.toml) into points. `python -m pipeline inferred`
+# (pipeline/inferred.py) writes data/settlements/inferred.geojson, which only
+# the app reads (neolith-convert --inferred). They never join the recorded
+# settlements: no residual, survey, culture or importance step sees them.
+# Reasoning and references: INFERRED.md.
+#
+# key, plan        rule id; the plan it comes from
+# label, kind      piece name ("Inferred <label> <n>") and site type
+# A rule places points either down rivers (branches ...) or along a coast
+# ([rule.coast]).
+# branches         river keys in data/rivers/rivers.toml; a point goes down a
+#                  branch only in slices where that branch flows
+# spacing_km       distance between points along a branch
+# shift            (optional, 0-1) start the first point this share of a
+#                  spacing down the branch; per slice when a list
+# offset_km        distances from the channel, cycled; sides alternate
+# max_lat, min_lat, max_lon, min_lon (optional) keep points inside these
+# [rule.coast]     box = [west, south, east, north]: the shore of each slice's
+#                  own sea level ([sea] curve on ETOPO1) inside the box, at
+#                  2 arc-min (a point stands on a land cell beside open sea,
+#                  so within about 4 km of that shore); spacing_km: least
+#                  distance between points; prefer (optional): [lon, lat]
+#                  places taken first, each at the nearest coast cell within
+#                  prefer_km (default 15); max_points (optional) per slice
+# [rule.tag]       (optional, coast rules) name, slices, shores (default 2):
+#                  in those slices the first point on each of the box's
+#                  `shores` largest land masses carries the tag; confidence,
+#                  reasoning
+# A point whose hex is sea later in the period is marked drowned.
+# slices           of -10000..-3000 by 1000
+# persist          true: one site lives from the first slice to the end of the
+#                  last; false: a new set of points per slice, for its 1000 years
+# clear            "hex": drop a point whose hex holds a recorded site occupied
+#                  while it would be, so ingested sites replace the guesses
+# confidence, reasoning, sources (links, listed in INFERRED.md)
+
+[[rule]]
+key = "nile_delta_villages"
+plan = "data/places/plans/nile_delta.toml"
+label = "village"
+kind = "settlement"
+branches = ["nile-sebennytic", "nile-pelusiac"]
+spacing_km = 20.0
+shift = 0.5
+offset_km = [2.5, 4.0]
+slices = [-4000, -3000]
+persist = true
+clear = "hex"
+confidence = "medium"
+reasoning = "Lower Egyptian (Buto-Maadi) and then Naqada-period villages on geziras and levees beside the central and eastern branches, about one per 20 km. Every excavated delta settlement of this date sits on a gezira and was found because the mound stands above the silt (Buto, Sais, Tell el-Farkha, Tell el-Samara); the residuals report an unexplained shortfall in 16 of 25 land hexes at 4,000 BCE and 13 at 3,000 BCE in the best-surveyed part of Egypt. A stopgap until the EES Delta Survey is ingested."
+sources = ["https://www.ees.ac.uk/delta-survey", "https://www.ifao.egnet.net/bifao/122/11/"]
+
+[[rule]]
+key = "nile_delta_camps"
+plan = "data/places/plans/nile_delta.toml"
+label = "camp"
+kind = "open air"
+branches = ["nile-canopic", "nile-pelusiac"]
+spacing_km = 40.0
+shift = [0.35, 0.85]
+offset_km = [3.0]
+max_lat = 30.95
+max_lon = 31.7
+slices = [-6000, -5000]
+persist = false
+clear = "hex"
+confidence = "low"
+reasoning = "A few fishing and herding camps on gezira margins in the southern and western delta, none in the unstable northern third. Sais has a sequence from the sixth millennium BCE and Merimde starts about 5,100 BCE; the Fayum, just south, has dated camps from 7,000 BCE. Zhao et al. (2025) put herding in the delta before about 7000 cal BP but a delta too unstable to settle much before then. Anything of this date is under metres of silt."
+sources = ["https://topoi.org/feature/the-neolithic-in-the-nile-delta/", "https://doi.org/10.1016/j.quascirev.2025.109368"]
+
+# ------------------------------------------------- Bab-el-Mandeb
+# From data/places/plans/bab_el_mandeb.toml. Box as in data/places/places.toml.
+
+[[rule]]
+key = "bab_el_mandeb_shore_camps"
+plan = "data/places/plans/bab_el_mandeb.toml"
+label = "shore camp"
+kind = "open air"
+slices = [-6000, -5000, -4000, -3000]
+persist = false
+clear = "hex"
+confidence = "medium"
+reasoning = "Fisher-shellfisher camps on both shores of the strait, about one per 50 km of the shore of the time, at lagoons, wadi mouths and the Gulf of Tadjoura first; none inland. The southern Red Sea has more than 4,200 shell-midden sites, dated ones from about 8,000 cal BP in Eritrea and 8-5 ka cal BP on the Yemeni Tihama (Meredith-Williams et al. 2014; Hausmann et al. 2019); our own data has Tihama middens from 6,610 BCE 110-200 km north of the box, and Gihayu on the Khor Umayra lagoon, inside it, is a stratified fisher-shellfisher site of the fifth to fourth millennium BCE not yet in our data. The box is empty because mainland middens are dune-covered or cut by wadis and nothing on the African side has been dated. Presence is medium confidence; the spacing is a guess."
+sources = ["https://intarch.ac.uk/journal/issue37/2/2.html", "https://nora.nerc.ac.uk/id/eprint/521853/1/Hausmann%20et%20al.%202019.%20Res%20Sea%20book%20chapter.pdf", "https://revistas.uam.es/archaeofauna/article/view/7448", "https://eprints.whiterose.ac.uk/id/eprint/206498/1/Yemen_Ethiopia_Lee_.pdf"]
+
+[rule.coast]
+box = [42.3, 11.3, 44.3, 13.7]
+spacing_km = 50.0
+# Arabian side of the narrows; Khor Angar lagoon (Djibouti); Khor Umayra
+# lagoon (Gihayu, position approximate); Tadjoura and Djibouti on the Gulf of
+# Tadjoura; the mouth of the wadi at Mocha; Assab bay (Eritrea).
+prefer = [[43.45, 12.68], [43.33, 11.95], [44.15, 12.63], [42.88, 11.78], [43.15, 11.6], [43.25, 13.32], [42.74, 13.0]]
+
+[rule.tag]
+name = "obsidian exchange"
+slices = [-5000, -4000, -3000]
+shores = 2
+confidence = "low"
+reasoning = "One camp on each shore takes part in crossing the southern Red Sea by boat. Obsidian tools appear on Yemen's al-Salif peninsula as early as 5000 BC, and Tihama obsidian has been sourced to Nabro volcano in the Danakil, 175 km across the water (Lee 2023, citing Oppenheimer et al. 2019); the strait is the shortest crossing. The 5000 BC date is given without its source, hence low."
+
+[[rule]]
+key = "bab_el_mandeb_lowstand_camps"
+plan = "data/places/plans/bab_el_mandeb.toml"
+label = "forager camp"
+kind = "open air"
+slices = [-10000, -9000, -8000, -7000]
+persist = false
+clear = "hex"
+confidence = "low"
+reasoning = "A few forager camps on the early Holocene shore at the narrows and on the shelf that was then dry. While sea level was below about -50 m the channels south of the Hanish Sill were under 4-5 km wide, both shores in sight of each other (Lambeck et al. 2011). That shore and its shelf are now under water, which is why no midden in the Red Sea is older than about 8,000 cal BP. Nothing of this date is known on either shore: this rests on the environment alone, and coastal use here was probably episodic (Bailey et al. 2019). Deliberately few."
+sources = ["https://disperse-project.org/sites/disperse-project.org/files/uploads/2011_Lambeck_etal._QSR_RedSea.pdf", "https://disperse-project.org/sites/disperse-project.org/files/uploads/2019_Chap26_Bailey_etal.pdf"]
+
+[rule.coast]
+box = [42.3, 11.3, 44.3, 13.7]
+spacing_km = 40.0
+max_points = 3
+prefer_km = 25.0
+# The two sides of the narrows, then the exposed shelf west of Aden.
+prefer = [[43.3, 12.45], [43.5, 12.65], [44.0, 12.55]]

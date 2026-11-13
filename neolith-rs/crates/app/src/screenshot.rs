@@ -55,7 +55,17 @@ pub fn run(world: &World, opt: &Options) -> Result<(), String> {
             Some(id) => world.evidence_layer(id).ok_or(format!("no evidence layer {id:?}"))?,
             None => world.evidence.first().ok_or("this world has no evidence layers")?,
         };
-        renderer.upload_evidence(&queue, &scene::evidence_texels(grid, layer.codes_at(opt.year)));
+        let mut codes = layer.codes_at(opt.year);
+        for (code, terrain) in codes.iter_mut().zip(&snapshot.terrain) {
+            if *terrain == neolith_core::Terrain::Ice as u8 {
+                *code = neolith_core::evidence::NO_VALUE;
+            }
+        }
+        renderer.upload_evidence(&queue, &scene::evidence_texels(grid, &codes));
+    }
+    if opt.mode == MapMode::Missing {
+        let table = world.residuals.as_ref().ok_or("this world has no missing-sites table")?;
+        renderer.upload_evidence(&queue, &scene::evidence_texels(grid, &table.bands_at(opt.year)));
     }
 
     let mut cam = Camera::initial(grid);
@@ -88,16 +98,17 @@ pub fn run(world: &World, opt: &Options) -> Result<(), String> {
     let pieces: Vec<Piece> = world
         .settlements
         .iter()
-        .filter(|s| s.exists_at(opt.year))
-        .map(|s| Piece::new(s, opt.year))
+        .enumerate()
+        .filter(|(_, s)| s.exists_at(opt.year))
+        .map(|(i, st)| Piece::for_site(world, i, opt.year, crate::renown::lookup(st)))
         .collect();
     let relief = crate::board::relief::Relief::new(grid, &snapshot.height, crate::board::relief::scale(&style));
     let verts = scene::piece_vertices(&pieces, &proj, &relief, opt.flat, cam.dist);
     renderer.upload_pieces(&device, &queue, &verts);
+    renderer.upload_camps(&queue, &scene::camp_texels(grid, &pieces));
     let mut line_mesh = LineMesh::default();
     let line_board = lines::Board { proj: &proj, relief: &relief, t: opt.flat, cam_dist: cam.dist };
     lines::rivers(&mut line_mesh, &world.rivers, &world.lakes, &snapshot, &line_board);
-    lines::lakes(&mut line_mesh, &world.lakes, opt.year, &line_board);
     renderer.upload_lines(&device, &queue, &line_mesh);
     renderer.upload_river_field(&queue, &lines::river_field(&world.rivers, &lines::flowing(&world.rivers, opt.year), grid));
 

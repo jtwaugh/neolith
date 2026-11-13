@@ -7,6 +7,7 @@ use neolith_core::evidence;
 use neolith_core::farming;
 use neolith_core::forager;
 use neolith_core::productivity;
+use neolith_core::residuals;
 use neolith_core::{Koeppen, MapMode, PopDensity, Terrain, Value, NO_DATA};
 
 pub type Rgb = [u8; 3];
@@ -162,6 +163,15 @@ pub fn evidence(code: u8) -> Rgb {
     }
 }
 
+/// Missing-sites bands ([`residuals::band`] order): a neutral for "fewer
+/// than half a site", then one blue from light to dark.
+const MISSING: [Rgb; residuals::BAND_COUNT as usize] =
+    [hex(0xd9d8d2), hex(0x86b6ef), hex(0x5598e7), hex(0x2a78d6), hex(0x1c5cab), hex(0x0d366b)];
+
+pub fn missing(band: u8) -> Rgb {
+    MISSING.get(band as usize).copied().unwrap_or(NO_DATA_COLOUR)
+}
+
 pub fn colour(v: Value) -> Rgb {
     match v {
         Value::Terrain(t) => terrain(t),
@@ -186,6 +196,7 @@ pub fn layer_colour(mode: MapMode, v: u8) -> Rgb {
         (MapMode::Biodiversity, None) => biodiversity(v),
         (MapMode::Expected, None) => expected(v),
         (MapMode::Evidence, None) => evidence(v),
+        (MapMode::Missing, None) => missing(v),
         (_, None) => elevation(v),
     }
 }
@@ -200,7 +211,7 @@ pub fn palette_texture() -> Vec<u8> {
     let mut px = Vec::with_capacity(PALETTE_WIDTH * PALETTE_ROWS * 4);
     for mode in MapMode::ALL {
         for i in 0..PALETTE_WIDTH {
-            let sea = i == SEA_INDEX as usize && matches!(mode, MapMode::Koeppen | MapMode::Pop | MapMode::Npp | MapMode::Biodiversity | MapMode::Expected | MapMode::Evidence);
+            let sea = i == SEA_INDEX as usize && matches!(mode, MapMode::Koeppen | MapMode::Pop | MapMode::Npp | MapMode::Biodiversity | MapMode::Expected | MapMode::Evidence | MapMode::Missing);
             let c = if sea { SEA_COLOUR } else { layer_colour(mode, i as u8) };
             px.extend_from_slice(&[c[0], c[1], c[2], 255]);
         }
@@ -288,7 +299,7 @@ mod tests {
         let px = palette_texture();
         let row = MapMode::Evidence.index();
         assert_eq!(row, 7);
-        assert_eq!(PALETTE_ROWS, 8);
+        assert_eq!(PALETTE_ROWS, MapMode::ALL.len());
         let at = |i: usize| [px[(row * 256 + i) * 4], px[(row * 256 + i) * 4 + 1], px[(row * 256 + i) * 4 + 2]];
         for c in 0..LEVELS {
             for b in 0..BINS {
@@ -314,6 +325,22 @@ mod tests {
         }
         assert!(EVIDENCE_STRENGTH.windows(2).all(|w| w[1] < w[0]));
         assert!(delta_e(EVIDENCE_GREY, NO_DATA_COLOUR) > 20.0, "faded values must not read as no data");
+    }
+
+    #[test]
+    fn missing_sites_row_darkens_with_the_count() {
+        let l: Vec<f64> = (1..residuals::BAND_COUNT).map(|b| luma(missing(b))).collect();
+        assert!(l.windows(2).all(|w| w[1] < w[0]), "{l:?}");
+        assert!(luma(missing(0)) > luma(missing(1)));
+        let px = palette_texture();
+        let at = |i: usize| {
+            let o = (MapMode::Missing.index() * PALETTE_WIDTH + i) * 4;
+            [px[o], px[o + 1], px[o + 2]]
+        };
+        assert_eq!(at(4), missing(4));
+        assert_eq!(at(SEA_INDEX as usize), SEA_COLOUR);
+        assert_eq!(at(NO_DATA as usize), NO_DATA_COLOUR);
+        assert_eq!(missing(residuals::BAND_COUNT), NO_DATA_COLOUR);
     }
 
     #[test]

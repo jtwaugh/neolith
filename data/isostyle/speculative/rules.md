@@ -7,8 +7,8 @@ flat expected value. Each line names its judgement (file#index).
 ## Pottery
 
 - **Arabia**, 7,000–10,000 BCE (high, flat value): 0 across the peninsula for 10,000-7,000 BCE. `pottery.toml#26`
-- **Arabia**, 4,000–6,000 BCE (medium, encoded (5 adjust)): Set 0 inland; set 0.3 within 50 km of the Gulf coast at 5,000 BCE only; do not extend the 0.5-0.7 rim values into the peninsula. `pottery.toml#27`
-- **Arabia**, 3,000–3,000 BCE (low, encoded (6 adjust)): 0.7 in Oman, the UAE and highland Yemen; 0.1 in the interior and the Hejaz. `pottery.toml#28`
+- **Arabia**, 4,000–6,000 BCE (medium, encoded (6 adjust)): Set 0 inland; set 0.3 within 50 km of the Gulf coast at 5,000 BCE only; do not extend the 0.5-0.7 rim values into the peninsula. `pottery.toml#27`
+- **Arabia**, 3,000–3,000 BCE (low, encoded (7 adjust)): 0.7 in Oman, the UAE and highland Yemen; 0.1 in the interior and the Hejaz. `pottery.toml#28`
 - **Baltic**, 7,000–10,000 BCE (high, flat value): 0 for 10,000-7,000 BCE. `pottery.toml#12`
 - **Baltic**, 6,000–6,000 BCE (medium, flat value): 0.05 across the Baltic at 6,000 BCE. `pottery.toml#13`
 - **Baltic**, 3,000–3,000 BCE (high, flat value): Copy the adjacent 0.99 into the hole. `pottery.toml#14`
@@ -237,8 +237,8 @@ flat expected value. Each line names its judgement (file#index).
 - **Anatolia & Cyprus**, 7,000–8,000 BCE (medium, encoded (7 adjust)): At 8,000 BCE fill 0.6 on the central plateau and Cyprus and 0 west of 31°E; at 7,000 BCE fill 0.9 on the plateau and Lake District, 0.5 on the Aegean coast and 0 in the Pontic north. `domestic_livestock.toml#7`
 - **Anatolia & Cyprus**, 3,000–6,000 BCE (high, encoded (2 adjust)): Fill all Anatolia and Cyprus at 0.95 from 6,000 BCE, except the Pontic forest coast at 0.7 at 6,000 BCE. `domestic_livestock.toml#8`
 - **Arabia**, 8,000–10,000 BCE (high, flat value): Set livestock to 0 in Arabia before 7,500 BCE. `domestic_livestock.toml#16`
-- **Arabia**, 6,000–7,000 BCE (low, encoded (3 adjust)): Fill 0.2 at 7,000 BCE and 0.5 at 6,000 BCE in the north and west of the peninsula and Yemen; 0.1 in the Rub' al-Khali. `domestic_livestock.toml#17`
-- **Arabia**, 3,000–5,000 BCE (medium, encoded (5 adjust)): Fill 0.85 in the Gulf hinterland, Oman and Yemen and 0.5 on the fishing coasts from 5,000 BCE; leave the Rub' al-Khali masked after 4,000 BCE. `domestic_livestock.toml#18`
+- **Arabia**, 6,000–7,000 BCE (low, encoded (4 adjust)): Fill 0.2 at 7,000 BCE and 0.5 at 6,000 BCE in the north and west of the peninsula and Yemen; 0.1 in the Rub' al-Khali. `domestic_livestock.toml#17`
+- **Arabia**, 3,000–5,000 BCE (medium, encoded (6 adjust)): Fill 0.85 in the Gulf hinterland, Oman and Yemen and 0.5 on the fishing coasts from 5,000 BCE; leave the Rub' al-Khali masked after 4,000 BCE. `domestic_livestock.toml#18`
 - **Balkans & Greece**, 8,000–10,000 BCE (high, flat value): Set livestock to 0 in the Balkans and Greece before 7,000 BCE. `domestic_livestock.toml#35`
 - **Balkans & Greece**, 7,000–7,000 BCE (medium, encoded (4 adjust)): Set 0.6 in Crete, Thessaly and Greek Macedonia and 0 elsewhere at 7,000 BCE. `domestic_livestock.toml#36`
 - **Balkans & Greece**, 3,000–6,000 BCE (high, encoded (3 adjust)): Fill at 0.95 from 6,000 BCE, with the Iron Gates gorge at 0.5 at 6,000 BCE. `domestic_livestock.toml#37`
@@ -424,7 +424,7 @@ flat expected value. Each line names its judgement (file#index).
 
 - **Anatolia & Cyprus**, 10,000–10,000 BCE (low, encoded (2 adjust)): 0.3 in the Taurus foothills and upper Tigris; 0.1 elsewhere. `houses.toml#5`
 - **Anatolia & Cyprus**, 3,000–9,000 BCE (medium, flat value): 0.7 in the farming zone, 0.3 in the arid margins. `houses.toml#3`
-- **Arabia**, 3,000–10,000 BCE (low, encoded (5 adjust)): 0.05 before 7,000 BCE, 0.2 after, 0.3 on the Gulf coast. `houses.toml#15`
+- **Arabia**, 3,000–10,000 BCE (low, encoded (6 adjust)): 0.05 before 7,000 BCE, 0.2 after, 0.3 on the Gulf coast. `houses.toml#15`
 - **Balkans & Greece**, 7,000–10,000 BCE (low, encoded (2 adjust)): 0.15, rising to 0.5 in the Iron Gates gorge at 7,000 BCE. `houses.toml#16`
 - **Balkans & Greece**, 3,000–6,000 BCE (medium, encoded (6 adjust)): 0.75 in the lowlands, 0.4 in the uplands. `houses.toml#17`
 - **Baltic**, 5,000–10,000 BCE (low, encoded (2 adjust)): 0.2 before 7,000 BCE, 0.3 after. `houses.toml#32`

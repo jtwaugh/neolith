@@ -696,6 +696,11 @@ value = 0.0
 kind = "slice_value"
 slices = [-6000, -4000]
 value = 0.0
+[[judgement.adjust]]
+kind = "area"                              # Socotra: no dated occupation before about the 1st century BCE, so not the mainland value. Low confidence; argument and source in data/places/plans/socotra.toml
+bbox = [52.0, 11.8, 54.9, 13.0]
+value = 0.02
+firm = true                                # an island 350 km offshore: mainland evidence must not lean across the water
 
 [[judgement]]
 region = "Arabia"
@@ -740,6 +745,11 @@ points = [[43.4, 13.0], [43.6, 14.5], [43.4, 16.0], [43.7, 17.3], [44.6, 17.0], 
 value = 0.7
 
 # ---------------------------------------------------------------- Sahara–Sahel
+[[judgement.adjust]]
+kind = "area"                              # Socotra: no dated occupation before about the 1st century BCE, so not the mainland value. Low confidence; argument and source in data/places/plans/socotra.toml
+bbox = [52.0, 11.8, 54.9, 13.0]
+value = 0.02
+firm = true                                # an island 350 km offshore: mainland evidence must not lean across the water
 
 [[judgement]]
 region = "Sahara–Sahel"

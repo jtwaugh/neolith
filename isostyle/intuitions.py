@@ -65,6 +65,8 @@ Schema:
   kind = "elevation"                       # value above (or below) a height, from ETOPO1
   above_m = 1500                           # or below_m = 200
   value = 0.1
+  ramp_m = 600                             # optional: reach the value over this much height
+                                           # beyond the threshold, not at one contour
 
   [[judgement.adjust]]
   kind = "river"                           # value within some distance of rivers or lakes
@@ -85,6 +87,8 @@ Schema:
     slices = [-5000, -4000]                # apply only in these slices
     mode = "add"                           # add `value` (may be negative) instead of replacing;
                                            # for gradients, add the interpolated value
+    firm = true                            # area, coast, near, elevation, river, polygon: these cells keep
+                                           # the value; no leaning toward observed cells nearby (an island)
   Results are clipped to the layer's range (0-1, or vmin..vmax).
   `value = "unknown"` (area, coast, near, elevation, river, polygon; mode set) withdraws the
   judgement from those cells, which then fall back to extrapolation.
@@ -184,6 +188,8 @@ def validate(path, layer_ids, regions=None, sets=None, hydro=None):
                         errs.append(f"{where}: adjust {kind} values must be clade tables for this set")
                 elif not isinstance(v, (int, float)):
                     errs.append(f"{where}: adjust {kind} values must be numbers")
+            if "firm" in a and (not isinstance(a["firm"], bool) or kind in ("gradient", "slice_value")):
+                errs.append(f"{where}: firm must be true or false, on an adjust that picks cells")
             if kind == "river":
                 if not (a.get("names") or a.get("lakes") or a.get("min_upland_km2")):
                     errs.append(f"{where}: river needs names, lakes or min_upland_km2")

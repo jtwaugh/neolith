@@ -1,6 +1,6 @@
 use neolith_convert::{
     attach_dates, export_lakes, export_map, export_rivers, export_settlements, import_cultures, import_evidence, import_lakes, import_map, import_rivers,
-    import_settlement_records, stats,
+    import_settlement_records, stats, append_inferred,
 };
 use neolith_core::{io, World};
 use std::io::BufWriter;
@@ -11,8 +11,11 @@ neolith-convert: GeoJSON ⇄ world.bin
 
 USAGE:
   neolith-convert <combined_map.geojson> [settlements.geojson] [--rivers <rivers.geojson>] [--lakes <lakes.geojson>]
-                   [--dates <dates.csv[.gz]>] [--cultures <cultures.json>] [--evidence <evidence_layers.json>] -o <world.bin>
+                   [--dates <dates.csv[.gz]>] [--cultures <cultures.json>] [--evidence <evidence_layers.json>]
+                   [--inferred <inferred.geojson>] -o <world.bin>
   neolith-convert --attach-evidence <evidence_layers.json> <world.bin> -o <world.bin>
+  neolith-convert <world.bin> --residuals <residuals.csv[.gz]> -o <world.bin>
+                   (sets the world's missing-sites table; also accepted when building from GeoJSON)
                    (replaces the world's evidence layers; no GeoJSON needed)
   neolith-convert --to-geojson <world.bin> -o <combined_map.geojson> [--settlements-out <file>] [--rivers-out <file>] [--lakes-out <file>]
   neolith-convert --stats <world.bin | combined_map.geojson> [settlements.geojson]
@@ -45,6 +48,11 @@ struct Extras {
     cultures: Option<String>,
     /// isostyle's `evidence_layers.json`.
     evidence: Option<String>,
+    /// The pipeline's `residuals.csv[.gz]`.
+    residuals: Option<String>,
+    /// The pipeline's `inferred.geojson`: inferred settlements, appended
+    /// after the recorded ones.
+    inferred: Option<String>,
 }
 
 fn load(inputs: &[String], extras: &Extras) -> Result<World, String> {
@@ -79,6 +87,10 @@ fn load(inputs: &[String], extras: &Extras) -> Result<World, String> {
         world.site_info = info;
     } else {
         eprintln!("note: no settlements file given; the world has no settlements");
+    }
+    if let Some(path) = &extras.inferred {
+        let n = append_inferred(&mut world, &read_text(path)?)?;
+        eprintln!("{n} inferred settlements added from {path}");
     }
     match rivers {
         Some(path) => world.rivers = import_rivers(&read_text(path)?)?,
@@ -117,6 +129,8 @@ fn run() -> Result<(), String> {
                 extras.evidence = Some(args.next().ok_or("--attach-evidence needs a path")?);
                 attach = true;
             }
+            "--inferred" => extras.inferred = Some(args.next().ok_or("--inferred needs a path")?),
+            "--residuals" => extras.residuals = Some(args.next().ok_or("--residuals needs a path")?),
             "--lakes-out" => lakes_out = Some(args.next().ok_or("--lakes-out needs a path")?),
             "--rivers-out" => rivers_out = Some(args.next().ok_or("--rivers-out needs a path")?),
             "--to-geojson" => to_geojson = true,
@@ -148,6 +162,12 @@ fn run() -> Result<(), String> {
         world.evidence = import_evidence(&read_text(path)?, world.grid.len()).map_err(|e| format!("{path}: {e}"))?;
         world.validate().map_err(|e| format!("{path}: {e}"))?;
         eprintln!("{} evidence layers from {path}", world.evidence.len());
+    }
+    if let Some(path) = &extras.residuals {
+        let table = neolith_convert::import_residuals(&read_maybe_gz(path)?, world.grid.len()).map_err(|e| format!("{path}: {e}"))?;
+        eprintln!("residuals for {} epochs from {path}", table.slices.len());
+        world.residuals = Some(table);
+        world.validate().map_err(|e| format!("{path}: {e}"))?;
     }
 
     if want_stats {

@@ -12,13 +12,14 @@ struct Globals {
     fill_light: vec4<f32>,
     tile: vec4<f32>,         // grout, bevel, quantise levels (0 = off), saturation
     lines: vec4<f32>,        // region-border strength, hillshade strength, ambient, flat lighting (0/1)
-    wall_colour: vec4<f32>,  // rgb (linear)
+    wall_colour: vec4<f32>,  // rgb (linear), a = mountain prop height (Board style)
     frame_colour: vec4<f32>, // rgb (linear), a = frame lip on (0/1)
     bg_top: vec4<f32>,
     bg_bottom: vec4<f32>,
     shadow: vec4<f32>,       // table height (y), half extent x, half extent z, strength
-    art: vec4<f32>,          // 2D art strength (0 = off), 3D props (0/1), pixels per (size / distance), edge blending (0/1)
+    art: vec4<f32>,          // printed detail strength (0 = art off), props (0/1), pixels per (size / distance), edge blending (0/1)
     hex: vec4<f32>,          // flat-board hex half width and half height (radians), relief (board units per metre; 0 = off), unused
+    depth: vec4<f32>,        // focus distance (eye to the view's centre), haze strength (0 = off), unused (the blit's blur), unused
 };
 
 @group(0) @binding(0) var<uniform> g: Globals;
@@ -47,6 +48,9 @@ const MODE_NPP: u32 = 4u;
 const MODE_BIODIVERSITY: u32 = 5u;
 const MODE_EXPECTED: u32 = 6u;
 const MODE_EVIDENCE: u32 = 7u;
+// Missing sites shares the evidence texture: the app uploads its bands
+// (neolith_core::residuals::band, 255 = no figure) while that mode is shown.
+const MODE_MISSING: u32 = 8u;
 const NO_DATA: u32 = 255u;
 
 // Tile mesh by zoom, from the hex radius on screen in pixels: grout and the
@@ -62,6 +66,7 @@ const BORDER_PX_HI: f32 = 14.0;
 const RECEDE_PX_LO: f32 = 30.0;
 const RECEDE_PX_HI: f32 = 80.0;
 const RECEDE_LAND: f32 = 0.35;
+const RECEDE_ALWAYS: f32 = 0.4;
 const RECEDE_WATER_GROUT: f32 = 0.12;
 
 // How far a hex's tile is raised (board units); must match board::relief.
@@ -86,7 +91,7 @@ fn layer_value(st: vec4<u32>, cell: vec2<i32>, mode: u32) -> u32 {
     if (mode == MODE_NPP) {
         return textureLoad(elevation_tex, cell, 0).b;
     }
-    if (mode == MODE_EVIDENCE) {
+    if (mode == MODE_EVIDENCE || mode == MODE_MISSING) {
         return textureLoad(evidence_tex, cell, 0).r;
     }
     if (mode == MODE_BIODIVERSITY || mode == MODE_EXPECTED) {
@@ -101,6 +106,8 @@ const KIND_TOP: u32 = 0u;
 const KIND_WALL: u32 = 1u;
 const KIND_UNDERSIDE: u32 = 2u;
 const KIND_STEP: u32 = 3u;
+const KIND_GLOBE: u32 = 4u;
+const KIND_TABLE: u32 = 5u;
 const SQRT3_2: f32 = 0.8660254;
 const SIXTY: f32 = 1.0471976;
 
@@ -121,6 +128,9 @@ struct BoardOut {
     @location(3) depth: f32,
     @location(4) @interpolate(flat) cell: vec2<u32>,
     @location(5) @interpolate(flat) kind: u32,
+    // Direction from the globe's centre (the table's own position), for
+    // the fog's noise: the same for the board and the globe, at any morph.
+    @location(6) dir: vec3<f32>,
 };
 
 @vertex
@@ -151,7 +161,14 @@ fn vs_board(in: BoardIn) -> BoardOut {
     // Curved: on the unit sphere, sunk radially. Flat: on the plane y = 1.
     let curved = in.sphere * (1.0 - sink + lift);
     let flat_p = vec3<f32>(in.flat_pos.x, 1.0 - sink + lift, -in.flat_pos.y);
-    let world = mix(curved, flat_p, t);
+    var world = mix(curved, flat_p, t);
+    var up = mix(in.sphere, vec3<f32>(0.0, 1.0, 0.0), t);
+    if (kind == KIND_TABLE) {
+        // The table stays put; as the board flattens it sinks out of sight
+        // under the fog sheet the globe becomes.
+        world = in.sphere - vec3<f32>(0.0, 4.0 * t, 0.0);
+        up = vec3<f32>(0.0, 1.0, 0.0);
+    }
 
     var out: BoardOut;
     out.clip = g.view_proj * vec4<f32>(world, 1.0);
@@ -159,7 +176,12 @@ fn vs_board(in: BoardIn) -> BoardOut {
     // Hex-local coordinates: corners on the unit circle, centre at 0.
     let a = f32(in.attrs.x) * SIXTY;
     out.local = vec2<f32>(cos(a), sin(a)) * (f32(in.attrs.y) / 255.0);
-    out.up = mix(in.sphere, vec3<f32>(0.0, 1.0, 0.0), t);
+    if (kind == KIND_GLOBE) {
+        // The globe has no hexes; it carries its (λ, φ) for the graticule.
+        out.local = in.flat_pos;
+    }
+    out.up = up;
+    out.dir = in.sphere;
     out.depth = depth;
     out.cell = out_cell;
     out.kind = in.attrs.z;
@@ -193,9 +215,131 @@ fn lighting(n: vec3<f32>) -> f32 {
     return mix(light, 1.0, g.lines.w);
 }
 
+// Aerial perspective: ground well beyond the point the camera looks at
+// fades towards a pale, cool haze, so a tilted view has a far and a near.
+const HAZE: vec3<f32> = vec3<f32>(0.58, 0.67, 0.76);
+
+fn haze(c: vec3<f32>, world: vec3<f32>) -> vec3<f32> {
+    let far = distance(g.cam_pos.xyz, world) / max(g.depth.x, 1e-6);
+    return mix(c, HAZE, smoothstep(1.0, 2.0, far) * 0.5 * g.depth.y);
+}
+
 fn saturate_colour(c: vec3<f32>) -> vec3<f32> {
     let luma = dot(c, vec3<f32>(0.2126, 0.7152, 0.0722));
     return max(mix(vec3<f32>(luma), c, g.tile.w), vec3<f32>(0.0));
+}
+
+// ------------------------------------------------------- fog of war ----
+// Everything off the board is unknown country: the globe is wrapped in a
+// sepia parchment cloud, and the board's outermost hexes go under it too,
+// with a ragged edge, so the map fades into the fog rather than stopping
+// at a sawtooth of hexes.
+
+fn fog_hash3(p: vec3<f32>) -> f32 {
+    let q = vec3<u32>(vec3<i32>(floor(p)) + vec3<i32>(4096));
+    return f32(art_pcg(q.x * 1973u + q.y * 9277u + q.z * 26699u) & 0xffffu) / 65535.0;
+}
+
+fn fog_noise3(p: vec3<f32>) -> f32 {
+    let i = floor(p);
+    let f = fract(p);
+    let u = f * f * (3.0 - 2.0 * f);
+    let x00 = mix(fog_hash3(i), fog_hash3(i + vec3<f32>(1.0, 0.0, 0.0)), u.x);
+    let x10 = mix(fog_hash3(i + vec3<f32>(0.0, 1.0, 0.0)), fog_hash3(i + vec3<f32>(1.0, 1.0, 0.0)), u.x);
+    let x01 = mix(fog_hash3(i + vec3<f32>(0.0, 0.0, 1.0)), fog_hash3(i + vec3<f32>(1.0, 0.0, 1.0)), u.x);
+    let x11 = mix(fog_hash3(i + vec3<f32>(0.0, 1.0, 1.0)), fog_hash3(i + vec3<f32>(1.0, 1.0, 1.0)), u.x);
+    return mix(mix(x00, x10, u.y), mix(x01, x11, u.y), u.z);
+}
+
+fn fog_fbm(p: vec3<f32>) -> f32 {
+    return fog_noise3(p) * 0.5 + fog_noise3(p * 2.03 + 17.0) * 0.25 + fog_noise3(p * 4.1 + 31.0) * 0.15
+        + fog_noise3(p * 8.3 + 47.0) * 0.1;
+}
+
+// Parchment cloud (linear colour) at a direction from the globe's centre.
+fn fog_colour(dir: vec3<f32>) -> vec3<f32> {
+    let d = normalize(dir);
+    let f = fog_fbm(d * 7.0 + fog_fbm(d * 3.0) * 1.5);
+    let shadow = vec3<f32>(0.30, 0.25, 0.185);
+    let paper = vec3<f32>(0.47, 0.40, 0.29);
+    let cloud = vec3<f32>(0.66, 0.61, 0.51);
+    var c = mix(shadow, paper, smoothstep(0.2, 0.55, f));
+    c = mix(c, cloud, smoothstep(0.55, 0.85, f));
+    return c;
+}
+
+// How deep under the fog a point of the board is (0 clear, 1 hidden), from
+// how many hexes it lies inside the board's edge, made ragged by noise.
+const FOG_EDGE_HEXES: f32 = 5.0;
+fn edge_fog(cell: vec2<u32>, local: vec2<f32>, dir: vec3<f32>) -> f32 {
+    // Position in hex steps: columns 1.5 corner radii apart, rows √3, the
+    // odd columns half a row lower; local y is north (up the rows).
+    let x = f32(cell.x) + local.x / 1.5;
+    let y = f32(cell.y) + 0.5 * f32(cell.x & 1u) - local.y / 1.7320508;
+    let e = min(min(x + 0.5, g.grid.x - 0.5 - x), min(y + 0.5, g.grid.y - 0.5 - y));
+    let rag = (fog_fbm(normalize(dir) * 45.0) - 0.5) * FOG_EDGE_HEXES * 1.6;
+    return 1.0 - smoothstep(0.6, FOG_EDGE_HEXES, e + rag);
+}
+
+// Far out, a hex is only a few pixels across: its colour blends into its
+// neighbours' (and the coast rounds off) between these radii, so the map
+// reads as painted country, not a mosaic.
+const BLEND_PX_LO: f32 = 6.0;
+const BLEND_PX_HI: f32 = 18.0;
+
+// The table: a polished walnut ring with a pale inlaid horizon band,
+// engraved in degrees, and a brass bead round the hole.
+fn table_colour(world: vec3<f32>, ng: vec3<f32>, view_dir: vec3<f32>) -> vec3<f32> {
+    let r = length(world.xz);
+    let a = atan2(world.z, world.x);
+    let dark = vec3<f32>(0.075, 0.032, 0.013);
+    let light = vec3<f32>(0.24, 0.095, 0.034);
+    if (abs(ng.y) < 0.5) {
+        // The apron and the hole's wall: grain running down.
+        let grain = bg_noise(vec2<f32>(a * 140.0, world.y * 8.0));
+        let c = mix(dark, light, 0.25 + 0.35 * grain) * 0.7;
+        return c * lighting(ng);
+    }
+    // Twelve turned segments; the grain runs round each.
+    let seg = floor((a + 3.14159265) / 0.5235988);
+    // Figured walnut: broad wavy bands with finer figure and pores.
+    let warp = bg_noise(vec2<f32>(a * 14.0 + seg * 7.0, r * 9.0)) * 3.0 + bg_noise(vec2<f32>(a * 40.0, r * 30.0));
+    let grain = 0.5 + 0.5 * sin(r * 110.0 + warp * 5.0 + seg * 1.7);
+    let figure = bg_noise(vec2<f32>(a * 60.0 + seg * 3.0, r * 25.0));
+    let fine = bg_noise(vec2<f32>(a * 900.0, r * 60.0));
+    var c = mix(dark, light, 0.35 + 0.25 * grain * grain + 0.25 * figure + 0.1 * fine);
+    c *= 0.9 + 0.2 * fog_hash3(vec3<f32>(seg, 3.0, 1.0));
+    let joint = abs(fract((a + 3.14159265) / 0.5235988) - 0.5) * 2.0;
+    c *= mix(0.45, 1.0, smoothstep(0.995, 0.985, joint));
+    // The horizon band: boxwood, with degree ticks (every 5°, longer each 30°).
+    let band_lo = 1.035;
+    let band_hi = 1.13;
+    let band = smoothstep(band_lo, band_lo + 0.002, r) * (1.0 - smoothstep(band_hi - 0.002, band_hi, r));
+    let fine_box = bg_noise(vec2<f32>(a * 300.0, r * 30.0));
+    let box = vec3<f32>(0.52, 0.36, 0.17) * (0.92 + 0.08 * fine_box);
+    c = mix(c, box, band);
+    let deg = (a + 3.14159265) * 57.29578;
+    let tick5 = abs(fract(deg / 5.0 + 0.5) - 0.5) * 5.0;
+    let tick30 = abs(fract(deg / 30.0 + 0.5) - 0.5) * 30.0;
+    let w = 0.12;
+    let short = (1.0 - smoothstep(w, w * 2.0, tick5)) * smoothstep(band_hi - 0.03, band_hi - 0.028, r);
+    let long = (1.0 - smoothstep(w * 1.5, w * 3.0, tick30)) * smoothstep(band_lo + 0.02, band_lo + 0.022, r);
+    let rule = (1.0 - smoothstep(0.0008, 0.0016, abs(r - (band_hi - 0.03))))
+        + (1.0 - smoothstep(0.0008, 0.0016, abs(r - (band_lo + 0.02))));
+    c = mix(c, vec3<f32>(0.06, 0.035, 0.02), clamp(max(max(short, long), rule), 0.0, 1.0) * band * 0.85);
+    // A dark line where the band is let in, and a brass bead round the hole.
+    let edge_line = (1.0 - smoothstep(0.0, 0.002, abs(r - band_lo))) + (1.0 - smoothstep(0.0, 0.002, abs(r - band_hi)));
+    c = mix(c, c * 0.3, clamp(edge_line, 0.0, 1.0));
+    let bead = 1.0 - smoothstep(0.0, 0.012, r - 1.006);
+    let brass = vec3<f32>(0.62, 0.42, 0.13);
+    // Polished: a soft varnish highlight, sharper on the brass.
+    let h = normalize(g.key_light.xyz + view_dir);
+    let nh = max(h.y, 0.0);
+    var lit = mix(c, brass, bead) * lighting(vec3<f32>(0.0, 1.0, 0.0));
+    lit += vec3<f32>(1.0, 0.92, 0.8) * (pow(nh, 40.0) * 0.18 + pow(nh, 300.0) * 0.5 * bead);
+    // The globe shades the ring just round the hole.
+    lit *= mix(0.55, 1.0, smoothstep(1.004, 1.06, r));
+    return lit;
 }
 
 @fragment
@@ -226,6 +370,29 @@ fn fs_board(in: BoardOut) -> @location(0) vec4<f32> {
 
     let view_dir = normalize(g.cam_pos.xyz - in.world);
 
+    if (in.kind == KIND_GLOBE) {
+        // Fog of war, with a faint graticule every 15° (from the board's
+        // centre) showing through, lit as the sphere it is.
+        var c = fog_colour(in.dir);
+        let step = 0.2617994;
+        let f = in.local / step;
+        let fw = (abs(dlx) + abs(dly)) / step;
+        let gl = abs(fract(f + 0.5) - 0.5);
+        let line = (vec2<f32>(1.0) - smoothstep(fw * 0.5, fw * 1.5, gl)) * (vec2<f32>(1.0) - smoothstep(vec2<f32>(0.04), vec2<f32>(0.12), fw));
+        c = mix(c, c * 0.55, max(line.x, line.y) * 0.5);
+        let n = normalize(in.up);
+        let limb = smoothstep(0.0, 0.45, dot(n, view_dir));
+        c *= lighting(n) * mix(0.55, 1.0, limb);
+        return vec4<f32>(haze(c, in.world), 1.0);
+    }
+    if (in.kind == KIND_TABLE) {
+        var ng = normalize(cross(dwx, dwy));
+        if (dot(ng, view_dir) < 0.0) {
+            ng = -ng;
+        }
+        return vec4<f32>(table_colour(in.world, ng, view_dir), 1.0);
+    }
+
     if (in.kind != KIND_TOP) {
         // Walls and underside: fixed material, face normal from derivatives.
         var ng = normalize(cross(dwx, dwy));
@@ -239,7 +406,13 @@ fn fs_board(in: BoardOut) -> @location(0) vec4<f32> {
             let st = textureLoad(state_tex, cell, 0);
             let albedo = saturate_colour(
                 textureLoad(palette_tex, vec2<i32>(i32(layer_value(st, cell, mode)), i32(mode)), 0).rgb);
-            return vec4<f32>(albedo * 0.62 * lighting(ng), 1.0);
+            let fogged = mix(albedo, fog_colour(in.dir), edge_fog(in.cell, vec2<f32>(0.0), in.dir));
+            return vec4<f32>(haze(fogged * 0.62 * lighting(ng), in.world), 1.0);
+        }
+        if (in.kind == KIND_WALL) {
+            // The board's edge stands a hair proud of the globe, under the
+            // fog: lit like the surface round it, so it leaves no seam.
+            return vec4<f32>(haze(fog_colour(in.dir) * lighting(normalize(in.up)), in.world), 1.0);
         }
         var colour = g.wall_colour.rgb * lighting(ng);
         if (in.kind == KIND_WALL) {
@@ -282,6 +455,41 @@ fn fs_board(in: BoardOut) -> @location(0) vec4<f32> {
     let grout_k = smoothstep(GROUT_PX_LO, GROUT_PX_HI, hex_px);
     let border_k = smoothstep(BORDER_PX_LO, BORDER_PX_HI, hex_px);
 
+    // Far out: blend into the neighbours, land with land and sea with sea,
+    // and draw the coast where the blended wetness crosses a half, so it
+    // rounds off instead of stepping round each hex. Each neighbour weighs
+    // in towards their shared edge (equal shares on the edge, thirds at a
+    // corner), so the colour is continuous across hexes.
+    let far = 1.0 - smoothstep(BLEND_PX_LO, BLEND_PX_HI, hex_px);
+    var far_shade = f32(textureLoad(elevation_tex, cell, 0).g) / 128.0;
+    if (far > 0.001) {
+        let own_wet = f32(st.r == TERRAIN_WATER);
+        var land = albedo * (1.0 - own_wet);
+        var land_w = 1.0 - own_wet;
+        var sea = albedo * own_wet;
+        var sea_w = own_wet;
+        var shade_sum = far_shade * (1.0 - own_wet);
+        for (var i = 0u; i < 6u; i++) {
+            let w = smoothstep(0.15, 1.0, dot(in.local, edge_normal(i)) / SQRT3_2);
+            let c = cell + neighbour_offset(in.cell.x & 1u, i);
+            if (w <= 0.0 || c.x < 0 || c.y < 0 || c.x >= i32(g.grid.x) || c.y >= i32(g.grid.y)) {
+                continue;
+            }
+            let s = textureLoad(state_tex, c, 0);
+            let col = saturate_colour(textureLoad(palette_tex, vec2<i32>(i32(layer_value(s, c, mode)), i32(mode)), 0).rgb);
+            let wet = f32(s.r == TERRAIN_WATER);
+            land += col * w * (1.0 - wet);
+            land_w += w * (1.0 - wet);
+            sea += col * w * wet;
+            sea_w += w * wet;
+            shade_sum += f32(textureLoad(elevation_tex, c, 0).g) / 128.0 * w * (1.0 - wet);
+        }
+        let wet = sea_w / max(land_w + sea_w, 1e-4);
+        let blended = mix(land / max(land_w, 1e-4), sea / max(sea_w, 1e-4), smoothstep(0.42, 0.58, wet));
+        albedo = mix(albedo, blended, far);
+        far_shade = mix(far_shade, shade_sum / max(land_w, 1e-4), far);
+    }
+
     var normal = n_top;
     let lip = g.frame_colour.a > 0.5 && !inside && rim > 0.45;
     if (lip) {
@@ -312,7 +520,6 @@ fn fs_board(in: BoardOut) -> @location(0) vec4<f32> {
             art.k = art_on * mix(1.0, 0.75, art.mono);
             art.clip = 1.0 - smoothstep(0.84, 0.90, rim);
             art.blend = g.art.w;
-            art.raised = g.art.y;
             art.detail = smoothstep(ART_DETAIL_LO, ART_DETAIL_HI, hex_px);
             // Prop shadows fall away from the key light, longer the lower it is.
             let key = g.key_light.xyz;
@@ -327,11 +534,13 @@ fn fs_board(in: BoardOut) -> @location(0) vec4<f32> {
         // Hillshade on land: the elevation gradient, as a multiplier (it is
         // static, so the shore follows the year's Water, not today's coast).
         if (g.lines.y > 0.0 && st.r != T_WATER && st.r < T_COUNT) {
-            let shade = f32(textureLoad(elevation_tex, cell, 0).g) / 128.0;
-            albedo *= mix(1.0, shade, g.lines.y);
+            albedo *= mix(1.0, far_shade, g.lines.y);
         }
         // Bevel: tip the normal outwards near the rim so tiles catch light.
-        let recede = smoothstep(RECEDE_PX_LO, RECEDE_PX_HI, hex_px) * f32(mode == 0u) * clamp(g.art.x, 0.0, 1.0);
+        // (With the art on, the mesh is never at full strength on the terrain
+        // map: the ground should read as country first, tiles second.)
+        let recede = max(smoothstep(RECEDE_PX_LO, RECEDE_PX_HI, hex_px), RECEDE_ALWAYS)
+            * f32(mode == 0u) * clamp(g.art.x, 0.0, 1.0);
         let is_water = st.r == T_WATER;
         let bevel = smoothstep(0.70, 0.94, rim) * g.tile.y * detail * grout_k
             * mix(1.0, select(RECEDE_LAND, 0.0, is_water), recede);
@@ -364,8 +573,11 @@ fn fs_board(in: BoardOut) -> @location(0) vec4<f32> {
         let ink = vec3<f32>(0.18, 0.16, 0.14);
         albedo = mix(albedo, ink, line * 0.7 * strength * hatch_k * detail);
         let grey = vec3<f32>(dot(albedo, vec3<f32>(0.299, 0.587, 0.114)));
-        albedo = mix(albedo, mix(grey, vec3<f32>(0.55), 0.3), 0.35 * strength * (1.0 - hatch_k));
+        albedo = mix(albedo, mix(grey, vec3<f32>(0.55), 0.3), 0.35 * strength * (1.0 - hatch_k) * (1.0 - 0.6 * far));
     }
+
+    // The board's rim goes under the fog of war.
+    albedo = mix(albedo, fog_colour(in.dir), edge_fog(in.cell, in.local, in.dir));
 
     // Selection / lasso tints.
     let selected = (st.a & 1u) != 0u;
@@ -388,7 +600,7 @@ fn fs_board(in: BoardOut) -> @location(0) vec4<f32> {
         let band = smoothstep(0.80 - aa, 0.80 + aa, rim);
         colour = mix(colour, vec3<f32>(1.0, 1.0, 1.0), band * 0.9);
     }
-    return vec4<f32>(colour, 1.0);
+    return vec4<f32>(haze(colour, in.world), 1.0);
 }
 
 // ----------------------------------------------------------- background ----
@@ -427,22 +639,16 @@ fn bg_noise(p: vec2<f32>) -> f32 {
 
 @fragment
 fn fs_background(in: ScreenOut) -> @location(0) vec4<f32> {
-    // The table the board rests on: dark walnut planks with a running grain,
-    // lit warmly from above-left and falling off into shadow at the edges.
+    // A dim study round the globe table: warm near the light, falling off
+    // to near black at the edges, dithered so the gradient doesn't band.
     let aspect = max(g.bg_bottom.w, 0.1);
-    let p = vec2<f32>(in.uv.x * aspect, in.uv.y);
-    let plank = floor(p.y * 5.0);
-    let along = p.x * 1.6 + bg_hash(vec2<f32>(plank, 7.0)) * 13.0;
-    let warp = bg_noise(vec2<f32>(along * 2.0, p.y * 40.0)) * 2.2 + bg_noise(vec2<f32>(along * 0.5, p.y * 6.0)) * 3.0;
-    let grain = 0.5 + 0.5 * sin((p.y * 5.0 - plank) * 38.0 + warp * 3.0);
-    let fine = bg_noise(vec2<f32>(along * 30.0, p.y * 400.0));
-    var wood = mix(g.bg_bottom.rgb, g.bg_top.rgb, 0.35 + 0.4 * grain * grain + 0.15 * fine);
-    wood *= 0.88 + 0.24 * bg_hash(vec2<f32>(plank, 3.0));
-    // Seams between planks.
-    let seam = abs(fract(p.y * 5.0) - 0.5) * 2.0;
-    wood *= mix(0.55, 1.0, smoothstep(0.96, 0.9, seam));
-    let d = length(in.uv - vec2<f32>(0.42, 0.38));
-    return vec4<f32>(wood * (1.15 - 0.75 * smoothstep(0.2, 0.95, d)), 1.0);
+    let p = (in.uv - vec2<f32>(0.42, 0.36)) * vec2<f32>(aspect, 1.0);
+    let d = length(p);
+    let warm = vec3<f32>(0.050, 0.040, 0.032);
+    let dark = vec3<f32>(0.006, 0.005, 0.005);
+    var c = mix(warm, dark, smoothstep(0.05, 1.1, d));
+    c += (bg_hash(in.clip.xy) - 0.5) * 0.0025;
+    return vec4<f32>(c, 1.0);
 }
 
 // -------------------------------------------------------- contact shadow ----
@@ -486,6 +692,7 @@ struct PieceOut {
     @builtin(position) clip: vec4<f32>,
     @location(0) normal: vec3<f32>,
     @location(1) colour: vec4<f32>,
+    @location(2) world: vec3<f32>,
 };
 
 @vertex
@@ -494,6 +701,7 @@ fn vs_piece(in: PieceIn) -> PieceOut {
     out.clip = g.view_proj * vec4<f32>(in.pos, 1.0);
     out.normal = in.normal;
     out.colour = in.colour;
+    out.world = in.pos;
     return out;
 }
 
@@ -501,7 +709,7 @@ fn vs_piece(in: PieceIn) -> PieceOut {
 fn fs_piece(in: PieceOut) -> @location(0) vec4<f32> {
     // Opacity becomes MSAA coverage (alpha to coverage): smoke is see-through
     // in any draw order, and everything else is solid.
-    return vec4<f32>(in.colour.rgb * lighting(normalize(in.normal)), in.colour.a);
+    return vec4<f32>(haze(in.colour.rgb * lighting(normalize(in.normal)), in.world), in.colour.a);
 }
 
 // ---------------------------------------------------------- line overlays ----
@@ -523,7 +731,11 @@ struct LineOut {
     @location(2) colour: vec4<f32>,
     @location(3) params: vec4<f32>,
     @location(4) normal: vec3<f32>,
+    @location(5) world: vec3<f32>,
 };
+
+const LINE_BED: u32 = 1u;
+const LINE_WATER: u32 = 2u;
 
 @vertex
 fn vs_line(in: LineIn) -> LineOut {
@@ -534,6 +746,7 @@ fn vs_line(in: LineIn) -> LineOut {
     out.colour = in.colour;
     out.params = in.params;
     out.normal = mix(normalize(in.pos), vec3<f32>(0.0, 1.0, 0.0), g.cam_pos.w);
+    out.world = in.pos;
     return out;
 }
 
@@ -544,15 +757,42 @@ fn fs_line(in: LineOut) -> @location(0) vec4<f32> {
     let aa = max(fwidth(d), 1e-4);
     let along_w = max(fwidth(in.along), 1e-5);
     let soft = max(aa, in.params.z);
-    var alpha = in.colour.a * (1.0 - smoothstep(1.0 - soft, 1.0, d));
+    // World direction across the ribbon, towards its uv.x = 1 edge.
+    let across = dpdx(in.world) * dpdx(in.uv.x) + dpdy(in.world) * dpdy(in.uv.x);
+    // The profile across the ribbon (lines::Profile).
+    let profile = u32(in.params.y * 3.0 + 0.5);
+    var rgb = pow(in.colour.rgb, vec3<f32>(2.2));
+    var normal = normalize(in.normal);
+    var edge = d;
+    if (profile == LINE_BED) {
+        // A river bed. The water's edge is at 1 / RIVER_BED of its width.
+        let shore = 1.0 / RIVER_BED;
+        // The banks slope down to the water, so one catches the light and
+        // the other is in shade: the channel reads as cut into the ground.
+        let slope = smoothstep(shore - 0.05, shore + 0.12, d) * (1.0 - smoothstep(0.78, 1.0, d));
+        let side = across * inverseSqrt(max(dot(across, across), 1e-30)) * sign(in.uv.x);
+        normal = normalize(normal - side * slope * 1.1);
+        // Wet mud by the water, drying to sand.
+        rgb *= mix(0.55, 1.0, smoothstep(shore, shore + 0.3, d));
+        // A ragged outer edge (finer than a pixel from far out: none).
+        let rag = (art_noise(vec2<f32>(in.along * 11.0, in.uv.x * 1.5)) - 0.5) * 0.35;
+        edge = d + rag * (1.0 - smoothstep(0.02, 0.2, along_w * 11.0));
+    } else if (profile == LINE_WATER) {
+        // Paler shallows towards the banks, and streaks drawn out along the flow.
+        rgb = mix(rgb, rgb * vec3<f32>(1.12, 1.22, 1.12) + 0.02, smoothstep(0.45, 1.0, d) * 0.6);
+        let streak = art_noise(vec2<f32>(in.along * 6.0, in.uv.x * 3.0 + 5.0));
+        let fine = 1.0 - smoothstep(0.05, 0.3, along_w * 6.0);
+        rgb = mix(rgb, rgb * 1.3 + 0.04, smoothstep(0.58, 0.8, streak) * 0.45 * fine);
+        rgb = mix(rgb, rgb * 0.82, smoothstep(0.58, 0.8, 1.0 - streak) * 0.45 * fine);
+    }
+    var alpha = in.colour.a * (1.0 - smoothstep(1.0 - soft, 1.0, edge));
     let on = in.params.x;
     if (on > 0.0) {
         // Dashes with soft ends.
         let f = abs(fract(in.along) - 0.5 * on);
         alpha *= 1.0 - smoothstep(0.5 * on - along_w, 0.5 * on + along_w, f);
     }
-    let rgb = pow(in.colour.rgb, vec3<f32>(2.2));
-    return vec4<f32>(rgb * lighting(normalize(in.normal)), alpha);
+    return vec4<f32>(haze(rgb * lighting(normal), in.world), alpha);
 }
 
 // ------------------------------------------------------------------ blit ----
@@ -560,7 +800,9 @@ fn fs_line(in: LineOut) -> @location(0) vec4<f32> {
 
 struct BlitParams {
     // x = 1 when the destination is not an sRGB format (egui's usual case),
-    // so the linear colour must be gamma-encoded by hand.
+    // so the linear colour must be gamma-encoded by hand. y: the tilt-shift's
+    // widest blur radius, as a fraction of the view's height (0 = off);
+    // z: the view's aspect (width / height).
     flags: vec4<f32>,
 };
 
@@ -576,7 +818,25 @@ fn linear_to_srgb(c: vec3<f32>) -> vec3<f32> {
 
 @fragment
 fn fs_blit(in: ScreenOut) -> @location(0) vec4<f32> {
-    let c = textureSample(blit_tex, blit_sampler, in.uv).rgb;
+    // Tilt-shift: sharp across the middle of the view, where the camera
+    // looks, and out of focus towards the top (far) and, less, the bottom
+    // (near). A disc of taps, wider the further from the band in focus.
+    let off = in.uv.y - 0.5;
+    let radius = blit.flags.y * smoothstep(0.17, 0.5, abs(off)) * select(1.0, 0.6, off > 0.0);
+    var c = textureSampleLevel(blit_tex, blit_sampler, in.uv, 0.0).rgb;
+    if (radius > 0.0003) {
+        var taps = array<vec2<f32>, 12>(
+            vec2<f32>(1.0, 0.0), vec2<f32>(0.5, 0.866), vec2<f32>(-0.5, 0.866),
+            vec2<f32>(-1.0, 0.0), vec2<f32>(-0.5, -0.866), vec2<f32>(0.5, -0.866),
+            vec2<f32>(0.433, 0.25), vec2<f32>(0.0, 0.5), vec2<f32>(-0.433, 0.25),
+            vec2<f32>(-0.433, -0.25), vec2<f32>(0.0, -0.5), vec2<f32>(0.433, -0.25),
+        );
+        let scale = vec2<f32>(radius / max(blit.flags.z, 0.1), radius);
+        for (var i = 0; i < 12; i++) {
+            c += textureSampleLevel(blit_tex, blit_sampler, in.uv + taps[i] * scale, 0.0).rgb;
+        }
+        c /= 13.0;
+    }
     if (blit.flags.x > 0.5) {
         return vec4<f32>(linear_to_srgb(c), 1.0);
     }

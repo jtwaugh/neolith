@@ -384,7 +384,7 @@ def literature_labels(path, holdout_k, grid):
     return out
 
 
-def calibrated_biomes(grid, cfg, years, drawn, model, shift=None, anchors=None):
+def calibrated_biomes(grid, cfg, years, drawn, model, shift=None, anchors=None, borrow=None, model_ice=None):
     """Gap biomes for each year from the drawn maps' biome-climate relation.
 
     For year y, a Calibration is trained on the drawn keyframe nearest y
@@ -396,8 +396,14 @@ def calibrated_biomes(grid, cfg, years, drawn, model, shift=None, anchors=None):
     `anchors` ({year: [(hex, class)]}, `literature_labels`) are added to the
     training for the keyframe of their year, each `anchor_weight` times: they
     give the classes the drawings never use for these climates (the drawn maps
-    leave the Irano-Anatolian uplands as "Mountains"). Returns
-    ({year: names}, {year: stats}).
+    leave the Irano-Anatolian uplands as "Mountains"). `borrow` ({keyframe:
+    [(other keyframe, hex mask)]}) adds the drawn biomes of another keyframe
+    on the masked hexes, with that keyframe's climate, to a keyframe's
+    training: a region whose own drawing is mis-dated learns from a drawing
+    of it that isn't. `model_ice` ({year: hex mask}): there, where the model
+    has land ice the hex keeps it (ice is a boundary condition of the model
+    run, not something to learn from climate); elsewhere the calibration's
+    class wins as usual. Returns ({year: names}, {year: stats}).
     """
     c = cfg["calibrate"]
     spec = c["features"]
@@ -427,13 +433,20 @@ def calibrated_biomes(grid, cfg, years, drawn, model, shift=None, anchors=None):
                 tx = np.vstack([tx, x[idx]])
                 ty_lab = np.concatenate([ty_lab, np.repeat([k for _, k in extra], w).astype(object)])
                 tll = np.vstack([tll, grid.centres[idx]])
+            for oy, mask in (borrow or {}).get(ty, []):
+                ol = drawn[oy]
+                om = mask & ~np.isin(ol, NON_BIOME + tuple(cfg.get("gaps", ())))
+                tx = np.vstack([tx, feat(oy)[om]])
+                ty_lab = np.concatenate([ty_lab, ol[om]])
+                tll = np.vstack([tll, grid.centres[om]])
             fits[ty] = (Calibration(tx, ty_lab, c["k"], c["max_distance_quantile"],
                                     c.get("max_distance_factor", 1.0), ll=tll, max_km=c.get("max_km") or None),
                         block_cv(x[m], lab[m], grid.centres[m], c["k"], c["block_degrees"]),
                         float((model[ty][raw_m] == lab[raw_m]).mean()))
         cal, cv, raw_agree = fits[ty]
         pred = cal.predict(feat(y), grid.centres)
-        out[y] = np.where(pred != "", pred, model[y])
+        ice = (model[y] == "Ice") & (model_ice or {}).get(y, False)
+        out[y] = np.where((pred != "") & ~ice, pred, model[y])
         stats[y] = {"trained_on": ty, "cv": cv, "raw": raw_agree, "pred": pred}
     return out, stats
 

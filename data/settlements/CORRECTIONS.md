@@ -24,8 +24,50 @@ on dry land; only a hint).
 | Cocina Cave | at sea east of Valencia | 39.29, -0.80 (Dos Aguas) | Cueva de la Cocina, https://es.hispanopedia.com/wiki/Cueva_de_la_Cocina |
 | Villa Comunale, Foggia | in the Bay of Naples | 41.46, 15.55 (Foggia) | XRONOS site 12897 (no coordinates given), https://xronos.ch/sites/12897 |
 | Almonda | in Switzerland | 39.5057, -8.6157 (Zibreira, Torres Novas) | https://en.wikipedia.org/wiki/Almonda |
+| Siegerswoude I | longitude 0, with the longitude in the latitude field (in Ghana) | 53.1, 6.233 (Siegerswoude, Friesland) | https://en.wikipedia.org/wiki/Siegerswoude |
+| Chemin de Kristel | longitude missing (0), 44 km east of Kristel | 35.8261, -0.4833 (Kristel, Oran) | https://fr.wikipedia.org/wiki/Kristel |
+| Okuzini | Öküzini Cave entered a second time, without accents, in Antalya town 25 km south-east of the cave; 34 of its 39 dates are also in 'Öküzini' (the other five are 16,580–15,460 BP, before the map) | dropped; 'Öküzini' at 37.089, 30.576 (900 m from Karain) is kept | Okuzini Cave, 32 km north-west of Antalya, https://en.wikipedia.org/wiki/Okuzini_Cave |
+| Farafra (SMU-654) | longitude missing (0, in the Algerian Sahara); latitude 25.2933 copied from the Esna entry before it in the CalPal list | 27.05, 27.95 (Farafra oasis, by name; about 30 km) | Close 1984, J. African History 25:1–24, note 37 (SMU-631, 654, 969: samples collected by Haynes; the other two are filed by oasis), https://doi.org/10.1017/S0021853700022532 |
+| Pors Nehue (H�dic) at 61.28, 38.95 (GIN-4442) | a Moscow date filed under Turkmenistan with a Breton site's name; site names in that block of p3k14c are out of step with the dates | renamed "Unidentified site (GIN-4442)", old name kept as `filed_as`; position left as p3k14c gives it, unverified | XRONOS record (same wrong name, no coordinates), https://xronos.ch/c14s/240980 |
+
+## Record fixes
+
+`data/settlements/records.toml` fixes the dated records themselves, before
+`make settlements` groups them into sites (`load_records` and `apply_same` in
+`pipeline/settlements.py`). `[[locate]]` gives a position to records filed
+with none, which would otherwise be dropped; `[[same]]` files several spellings
+of one site under one name and position, keeping every date, and the filed
+names become aliases; `[[reject]]` drops a single date filed under a site it
+does not belong to (`apply_rejects`).
+
+| Records | Problem | Fix | Source |
+|---|---|---|---|
+| Merimde Beni Salame, Merimde, Merimda, Merimde-Benisalame, Merimde Benisalame | one site under five spellings at three positions (17 km apart), one with no position; shared measurements, one date (KN-3280) only under Merimde-Benisalame | one site, 30.3166, 30.85 | Merimde culture (spellings; 45 km north-west of Cairo), https://en.wikipedia.org/wiki/Merimde_culture |
+| Minshat Abu Omar (67 XRONOS dates), tombs 1590 and 1930 | no position; tombs filed 5.7 km north of the site | one site, 30.8572, 32.0194 | https://en.wikipedia.org/wiki/Minshat_Abu_Omar |
+| Kom el-Hisn (14 XRONOS dates) | no position | 30.7955, 30.6004 | https://en.wikipedia.org/wiki/Kom_el-Hisn |
+| Wustermark 22, Bln-5645 | a wood date of 1050 ± 80 BP (8th–12th century AD) among six of 15,825–9135 BP; it made a last occupation phase of 990–1990 CE | date dropped | XRONOS, https://xronos.ch/c14s/232067 |
 
 ## Not yet resolved
 
 Listed in `coordinate_audit.csv` as `at_sea`; no source found yet for the right
 position: el-Khawarij, Bury Hill, Les Hauts de L'Orne, Sabha, Parmorari, Tubna.
+
+Looked at and left alone, because the record contradicts itself and no source
+settles it:
+
+- **Sabha** (TO-3986, 8100 ± 70 BP; TO-3987, 8430 ± 70 BP; charcoal; PPNB;
+  "Banning et al. 1994, 155") sits in the sea off the Nile delta at
+  30.5013 E, 32.3281 N, but XRONOS and p3k14c both file it under Jordan
+  (https://xronos.ch/sites/12960). Swapping the two numbers, as the audit
+  hint suggests, gives 32.33 E, 30.50 N, by Ismailia in Egypt, which is no
+  better; XRONOS's own DMS line has them swapped the same way. The latitude
+  fits northern Jordan, where Banning's Wadi Ziqlab dates come from, but the
+  site's longitude can't be recovered from the record and no source we found
+  names a Neolithic site Sabha with a position
+  (https://xronos.ch/references/5553). Needs Banning, Rahimi & Siggers 1994
+  (Paléorient 20/2) itself.
+- **Farafra** (SMU-654) and **Pors Nehue (H�dic)** at 61.28, 38.95 (GIN-4442)
+  are fixed above as far as the records allow, but neither is settled at the
+  source. The real site of SMU-654 within Farafra, and the real name and
+  position of GIN-4442, would need the SMU date lists in *Radiocarbon* and
+  the Vermeersch (2019) database p3k14c took the record from.

@@ -1,0 +1,47 @@
+# Hand fixes to the dated records themselves, applied by `make settlements`
+# (pipeline/settlements.py) before the records are grouped into sites. This
+# is unlike corrections.toml, which moves finished sites in the map build.
+#
+# [[locate]]  site: the name exactly as filed; at = [lon, lat]. Gives a
+#             position to records filed with none (otherwise dropped). A
+#             record that has a position keeps it.
+# [[same]]    name: the site's name; members: names as filed (exact) that are
+#             all this one site; at = [lon, lat]: the site's position, given
+#             to every member's records, including ones filed with none. The
+#             filed names become the site's aliases.
+# [[reject]]  site: the name exactly as filed; lab: the lab number. Drops
+#             that one date, filed under a site it does not belong to. A
+#             reject that matches no date stops the build.
+# Every entry has a `source` (a link) and a `note`. CORRECTIONS.md lists the
+# sources (pipeline/tests/test_sources.py checks).
+
+# ------------------------------------------------- Nile delta
+# From data/places/plans/nile_delta.toml.
+
+[[same]]
+name = "Merimde Beni Salame"
+members = ["Merimde Beni Salame", "Merimde", "Merimda", "Merimde-Benisalame", "Merimde Benisalame"]
+at = [30.85, 30.3166]
+source = "https://en.wikipedia.org/wiki/Merimde_culture"
+note = "One site filed under five spellings at three positions (and once with none): 30.85, 30.3166 (Merimde, 37 records), 30.8403, 30.3011 (2 km away) and 30.67, 30.33 (Merimda, Merimde-Benisalame; 17 km west, in the desert). They share their measurements (KN-3275 to KN-3279, U-6, U-9, U-10, U-31, U-32, U-73, W-4355, WSU-1846; some lab numbers garbled, e.g. 'UlOa', 'U9bb'); KN-3280 is only under Merimde-Benisalame. Merimde is on the western edge of the delta about 45 km north-west of Cairo, which fits the first two. Merimde Abu Ghalib, 10 km away, is a different site and is left alone."
+
+[[same]]
+name = "Minshat Abu Omar"
+members = ["Minshat Abu Omar", "Minshat Abu Omar, tomb 1590", "Minshat Abu Omar, tomb 1930"]
+at = [32.0194, 30.8572]
+source = "https://en.wikipedia.org/wiki/Minshat_Abu_Omar"
+note = "XRONOS files 67 dates with no position under the site's name, and two dates from single tombs of the cemetery at 32.0183, 30.9083 (5.7 km north). The position is Wikipedia's (30°51'26\"N 32°01'10\"E), the same as p3k14c's for its 18 dates."
+
+[[locate]]
+site = "Kom el-Hisn"
+at = [30.6004, 30.7955]
+source = "https://en.wikipedia.org/wiki/Kom_el-Hisn"
+note = "14 XRONOS dates filed with no position. Western delta; an Old Kingdom settlement, so its dates probably fall after the period and drop out, but they now drop out for their age, not for a missing position."
+
+# ------------------------------------------------- Stray dates
+
+[[reject]]
+site = "Wustermark 22"
+lab = "Bln-5645"
+source = "https://xronos.ch/c14s/232067"
+note = "Wood, 1050 +/- 80 BP (8th-12th c. AD), filed under a site whose other six dates run 15,825-9135 BP; with no other date for a thousand years it made a last occupation phase of 990-1990 CE."

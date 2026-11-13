@@ -1,0 +1,2422 @@
+{
+ "baseline": {
+  "rough_oo": 0.007860788689056413,
+  "rough_os": 0.07175544574396617,
+  "rough_ss": 0.005599389010688217,
+  "cliffs": 1.7508295652362291,
+  "rule_edge_cliffs": 1.1228506956047049,
+  "time_step": 0.022522217605644126,
+  "flicker": 2.7415975224564115,
+  "holdout": 0.09531784826431156,
+  "drift": 0.0,
+  "coverage": 0.9993352924713126,
+  "observed_moved": 0.0
+ },
+ "best": {
+  "settings": {
+   "blend_rings": 12,
+   "smooth_iters": 16,
+   "smooth_rate": 0.5,
+   "time_smooth": 0.4,
+   "blend_conf": 0,
+   "kernel_cap": 0,
+   "hold_rings": 0,
+   "bridge": 0.75,
+   "time_from_observed": 1
+  },
+  "score": 0.34055973796599326,
+  "failing": 13,
+  "guards": {
+   "observed": true,
+   "coverage": true,
+   "holdout": true,
+   "drift": true,
+   "spread": true,
+   "regressions": true
+  },
+  "passes": true,
+  "overall": {
+   "rough_oo": 0.007860788689056413,
+   "rough_os": 0.03132629635202353,
+   "rough_ss": 0.0037290970586443344,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "time_step": 0.022167360044577155,
+   "flicker": 0.6935055953307391,
+   "holdout": 0.029608318689862852,
+   "drift": 0.020925445761150643,
+   "coverage": 0.9993352924713126,
+   "observed_moved": 0.0
+  }
+ },
+ "tried": [
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 0,
+    "hold_rings": 0,
+    "bridge": 0.0,
+    "time_from_observed": 1
+   },
+   "score": 0.36662470587586793,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.03774472583486174,
+    "rough_ss": 0.0037177529300111913,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.021097069999184224,
+    "flicker": 0.739911822776303,
+    "holdout": 0.033718188227482064,
+    "drift": 0.017141485548526587,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 0,
+    "hold_rings": 0,
+    "bridge": 0.0,
+    "time_from_observed": 0
+   },
+   "score": 0.38959441259732824,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.039391274768138626,
+    "rough_ss": 0.0037301265054247254,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.021595605349310147,
+    "flicker": 0.923038163580237,
+    "holdout": 0.03701971859951554,
+    "drift": 0.016337967544310834,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 0,
+    "hold_rings": 0,
+    "bridge": 0.75,
+    "time_from_observed": 1
+   },
+   "score": 0.3623948316583041,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.03781502979771699,
+    "rough_ss": 0.003721204809093521,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.02101889043632433,
+    "flicker": 0.6891806502449223,
+    "holdout": 0.03425348646436196,
+    "drift": 0.017177734302551845,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 0,
+    "hold_rings": 0,
+    "bridge": 0.75,
+    "time_from_observed": 0
+   },
+   "score": 0.37876408288250213,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.03948602024651254,
+    "rough_ss": 0.0037310138623316076,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.021449363864091,
+    "flicker": 0.8002222633537928,
+    "holdout": 0.03776610590479664,
+    "drift": 0.016382326169485536,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 0,
+    "hold_rings": 1,
+    "bridge": 0.0,
+    "time_from_observed": 1
+   },
+   "score": 0.46543354845788976,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.0783229928440384,
+    "rough_ss": 0.0036657584161505774,
+    "cliffs": 0.016113774770841884,
+    "rule_edge_cliffs": 0.0009341318707734425,
+    "time_step": 0.02027131453935043,
+    "flicker": 0.2750141803840521,
+    "holdout": 0.06575106532577539,
+    "drift": 0.017185186135139856,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 0,
+    "hold_rings": 1,
+    "bridge": 0.0,
+    "time_from_observed": 0
+   },
+   "score": 0.5116806734661805,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.08564135050035607,
+    "rough_ss": 0.003687700712158377,
+    "cliffs": 0.01626946341597079,
+    "rule_edge_cliffs": 0.0009341318707734425,
+    "time_step": 0.020950017726375454,
+    "flicker": 0.4921602075324329,
+    "holdout": 0.07456641630531673,
+    "drift": 0.016351345818544267,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 0,
+    "hold_rings": 1,
+    "bridge": 0.75,
+    "time_from_observed": 1
+   },
+   "score": 0.4645726174061551,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.07913839480139302,
+    "rough_ss": 0.0036713752214777933,
+    "cliffs": 0.01626946341597079,
+    "rule_edge_cliffs": 0.0009341318707734425,
+    "time_step": 0.020167823387347364,
+    "flicker": 0.23151451124344224,
+    "holdout": 0.0686709039678124,
+    "drift": 0.017253382293138032,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 0,
+    "hold_rings": 1,
+    "bridge": 0.75,
+    "time_from_observed": 0
+   },
+   "score": 0.5008519428726462,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.08685216914430928,
+    "rough_ss": 0.0036815920938377414,
+    "cliffs": 0.0164251520610997,
+    "rule_edge_cliffs": 0.0009341318707734425,
+    "time_step": 0.02074060467936461,
+    "flicker": 0.329898886173163,
+    "holdout": 0.07879976566982899,
+    "drift": 0.01642834410368368,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 1,
+    "hold_rings": 0,
+    "bridge": 0.0,
+    "time_from_observed": 1
+   },
+   "score": 0.378989956916107,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.041179493875225695,
+    "rough_ss": 0.0037152853114361052,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.020707120030829303,
+    "flicker": 0.7456498784819605,
+    "holdout": 0.0362791865340702,
+    "drift": 0.016015166274762925,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 1,
+    "hold_rings": 0,
+    "bridge": 0.0,
+    "time_from_observed": 0
+   },
+   "score": 0.4052334494015377,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.042968792043077145,
+    "rough_ss": 0.0037222042585935405,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.021220162336897372,
+    "flicker": 0.9618563933271558,
+    "holdout": 0.039951931802147955,
+    "drift": 0.01520037368485659,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 1,
+    "hold_rings": 0,
+    "bridge": 0.75,
+    "time_from_observed": 1
+   },
+   "score": 0.37358806084759216,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.04124113456731838,
+    "rough_ss": 0.0037190194708372286,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.020626565053435984,
+    "flicker": 0.682260150548961,
+    "holdout": 0.03678158300852028,
+    "drift": 0.016053985908149625,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 1,
+    "hold_rings": 0,
+    "bridge": 0.75,
+    "time_from_observed": 0
+   },
+   "score": 0.3925929952644195,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.043049279193436096,
+    "rough_ss": 0.0037236228943147544,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.02106950309292046,
+    "flicker": 0.8194777032713962,
+    "holdout": 0.04064600257973126,
+    "drift": 0.015248702279734395,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 1,
+    "hold_rings": 1,
+    "bridge": 0.0,
+    "time_from_observed": 1
+   },
+   "score": 0.4832785793059806,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.08362429531531684,
+    "rough_ss": 0.003658671222789133,
+    "cliffs": 0.016113774770841884,
+    "rule_edge_cliffs": 0.0009341318707734425,
+    "time_step": 0.019861834822386765,
+    "flicker": 0.27185108495574034,
+    "holdout": 0.07006755993360096,
+    "drift": 0.01610792592588911,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 1,
+    "hold_rings": 1,
+    "bridge": 0.0,
+    "time_from_observed": 0
+   },
+   "score": 0.5322153718598048,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.09166822490675841,
+    "rough_ss": 0.0036695423532016715,
+    "cliffs": 0.01634485442010508,
+    "rule_edge_cliffs": 0.0009341318707734425,
+    "time_step": 0.020554736505680772,
+    "flicker": 0.49601714474796216,
+    "holdout": 0.07973317010372713,
+    "drift": 0.015264623578370207,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 1,
+    "hold_rings": 1,
+    "bridge": 0.75,
+    "time_from_observed": 1
+   },
+   "score": 0.4819546361479606,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.08440170550604398,
+    "rough_ss": 0.003664591838104082,
+    "cliffs": 0.01626946341597079,
+    "rule_edge_cliffs": 0.0009341318707734425,
+    "time_step": 0.019756742195340574,
+    "flicker": 0.22457711497148103,
+    "holdout": 0.0729149937524019,
+    "drift": 0.016179303478246063,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 1,
+    "hold_rings": 1,
+    "bridge": 0.75,
+    "time_from_observed": 0
+   },
+   "score": 0.5210588728086075,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.09281516513688538,
+    "rough_ss": 0.003664640721127449,
+    "cliffs": 0.01650054306523399,
+    "rule_edge_cliffs": 0.0009341318707734425,
+    "time_step": 0.02034169000958692,
+    "flicker": 0.33201796140494977,
+    "holdout": 0.08383380579907672,
+    "drift": 0.015348759669017779,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 0,
+    "hold_rings": 0,
+    "bridge": 0.0,
+    "time_from_observed": 1
+   },
+   "score": 0.4088656944756386,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.05053812549524123,
+    "rough_ss": 0.0036850522198951185,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.02082209059674129,
+    "flicker": 0.7307489928943321,
+    "holdout": 0.05033591803042188,
+    "drift": 0.01584249691250113,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 0,
+    "hold_rings": 0,
+    "bridge": 0.0,
+    "time_from_observed": 0
+   },
+   "score": 0.4374861535423075,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.052816436387020604,
+    "rough_ss": 0.0036865937978204644,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.021360958487675365,
+    "flicker": 0.9569513497247352,
+    "holdout": 0.05684593502670108,
+    "drift": 0.015024736733465638,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 0,
+    "hold_rings": 0,
+    "bridge": 0.75,
+    "time_from_observed": 1
+   },
+   "score": 0.404067652142981,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.05057575029780629,
+    "rough_ss": 0.003689058446421141,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.020740993058906358,
+    "flicker": 0.67476706790518,
+    "holdout": 0.05070067021441344,
+    "drift": 0.015884710460081292,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 0,
+    "hold_rings": 0,
+    "bridge": 0.75,
+    "time_from_observed": 0
+   },
+   "score": 0.4252298385918906,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.05285140819176418,
+    "rough_ss": 0.003688654010099397,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.021208672592601164,
+    "flicker": 0.8202134739443291,
+    "holdout": 0.05729184907600693,
+    "drift": 0.015079044652701394,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 0,
+    "hold_rings": 1,
+    "bridge": 0.0,
+    "time_from_observed": 1
+   },
+   "score": 0.675777388444549,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": false,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": false,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.14282498747217506,
+    "rough_ss": 0.003478674615445746,
+    "cliffs": 0.013268094953464439,
+    "rule_edge_cliffs": 0.0034001952163430858,
+    "time_step": 0.01980263742219291,
+    "flicker": 0.21514253658796959,
+    "holdout": 0.11675153207357092,
+    "drift": 0.016108143721908955,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 0,
+    "hold_rings": 1,
+    "bridge": 0.0,
+    "time_from_observed": 0
+   },
+   "score": 0.748366542674151,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": false,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": false,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.15783859882292678,
+    "rough_ss": 0.0034684057503743364,
+    "cliffs": 0.014971062304323069,
+    "rule_edge_cliffs": 0.005030224881497584,
+    "time_step": 0.020520430696493345,
+    "flicker": 0.44063039426132383,
+    "holdout": 0.13809722755630852,
+    "drift": 0.01536136478873836,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 0,
+    "hold_rings": 1,
+    "bridge": 0.75,
+    "time_from_observed": 1
+   },
+   "score": 0.6735625311599139,
+   "failing": 12,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": false,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": false,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.1433201669315205,
+    "rough_ss": 0.0034875810456611,
+    "cliffs": 0.013423783598593347,
+    "rule_edge_cliffs": 0.0034001952163430858,
+    "time_step": 0.01969892466378711,
+    "flicker": 0.16743049044609615,
+    "holdout": 0.11895133598937144,
+    "drift": 0.01618315391246407,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 0,
+    "hold_rings": 1,
+    "bridge": 0.75,
+    "time_from_observed": 0
+   },
+   "score": 0.735256358033306,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": false,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": false,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.15848186833790956,
+    "rough_ss": 0.003469238015004864,
+    "cliffs": 0.015126750949451977,
+    "rule_edge_cliffs": 0.005030224881497584,
+    "time_step": 0.0203054879616557,
+    "flicker": 0.2716651812378345,
+    "holdout": 0.14101081182887562,
+    "drift": 0.01544824444788168,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 1,
+    "hold_rings": 0,
+    "bridge": 0.0,
+    "time_from_observed": 1
+   },
+   "score": 0.41862500077328973,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.052928030723806495,
+    "rough_ss": 0.003683539071722707,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.02050034968587608,
+    "flicker": 0.7473165616794049,
+    "holdout": 0.0519105778183417,
+    "drift": 0.015048644163338606,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 1,
+    "hold_rings": 0,
+    "bridge": 0.0,
+    "time_from_observed": 0
+   },
+   "score": 0.4492865407565019,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.05529407347018483,
+    "rough_ss": 0.0036806000645797448,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.02104894172910239,
+    "flicker": 0.9947109413764779,
+    "holdout": 0.05863213396087169,
+    "drift": 0.014233168844329465,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 1,
+    "hold_rings": 0,
+    "bridge": 0.75,
+    "time_from_observed": 1
+   },
+   "score": 0.4131398617164771,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.052959324530169154,
+    "rough_ss": 0.003687751604351372,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.02041737346742358,
+    "flicker": 0.6839417111902092,
+    "holdout": 0.05225254167365853,
+    "drift": 0.015092320154127458,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 1,
+    "hold_rings": 0,
+    "bridge": 0.75,
+    "time_from_observed": 0
+   },
+   "score": 0.43555520776291246,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.05531807469372091,
+    "rough_ss": 0.003683069701357698,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.02089309542046393,
+    "flicker": 0.8420184888363674,
+    "holdout": 0.059040417317387385,
+    "drift": 0.014289501605033072,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 1,
+    "hold_rings": 1,
+    "bridge": 0.0,
+    "time_from_observed": 1
+   },
+   "score": 0.6893132613144454,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": false,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": false,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.146279123220861,
+    "rough_ss": 0.0034719906355119147,
+    "cliffs": 0.013654056311857222,
+    "rule_edge_cliffs": 0.00363237245389351,
+    "time_step": 0.01946846274222029,
+    "flicker": 0.23440349379849965,
+    "holdout": 0.11950352131239408,
+    "drift": 0.015395984690357589,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 1,
+    "hold_rings": 1,
+    "bridge": 0.0,
+    "time_from_observed": 0
+   },
+   "score": 0.7633390622148781,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": false,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": false,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.1617163800709827,
+    "rough_ss": 0.0034527853013716766,
+    "cliffs": 0.015584145336693037,
+    "rule_edge_cliffs": 0.0054895237930251955,
+    "time_step": 0.020196541929077255,
+    "flicker": 0.4634255069859372,
+    "holdout": 0.14136305972416285,
+    "drift": 0.014661125879757545,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 1,
+    "hold_rings": 1,
+    "bridge": 0.75,
+    "time_from_observed": 1
+   },
+   "score": 0.6864410863160662,
+   "failing": 12,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": false,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": false,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.14674696930635656,
+    "rough_ss": 0.0034811037868542776,
+    "cliffs": 0.01380974495698613,
+    "rule_edge_cliffs": 0.00363237245389351,
+    "time_step": 0.01936373351428752,
+    "flicker": 0.18042626387233437,
+    "holdout": 0.12165292233693709,
+    "drift": 0.015471963583170868,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 8,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 1,
+    "hold_rings": 1,
+    "bridge": 0.75,
+    "time_from_observed": 0
+   },
+   "score": 0.7493936492786463,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": false,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": false,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.16231369466873619,
+    "rough_ss": 0.003454538283137508,
+    "cliffs": 0.015739833981821945,
+    "rule_edge_cliffs": 0.0054895237930251955,
+    "time_step": 0.019978590154835416,
+    "flicker": 0.28661105230827405,
+    "holdout": 0.1441786616378737,
+    "drift": 0.014749232353440112,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 0,
+    "hold_rings": 0,
+    "bridge": 0.0,
+    "time_from_observed": 1
+   },
+   "score": 0.343721418254684,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.031241881955865,
+    "rough_ss": 0.0037263674540301706,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.022246484109928345,
+    "flicker": 0.7327130523085281,
+    "holdout": 0.02902959648842104,
+    "drift": 0.020900536931482,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 0,
+    "hold_rings": 0,
+    "bridge": 0.0,
+    "time_from_observed": 0
+   },
+   "score": 0.3667529850176583,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.03257886829345915,
+    "rough_ss": 0.003748169459309352,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.022734392141707645,
+    "flicker": 0.9237938314905785,
+    "holdout": 0.031601619794473644,
+    "drift": 0.020168748487282333,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 0,
+    "hold_rings": 0,
+    "bridge": 0.75,
+    "time_from_observed": 1
+   },
+   "score": 0.34055973796599326,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.03132629635202353,
+    "rough_ss": 0.0037290970586443344,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.022167360044577155,
+    "flicker": 0.6935055953307391,
+    "holdout": 0.029608318689862852,
+    "drift": 0.020925445761150643,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 0,
+    "hold_rings": 0,
+    "bridge": 0.75,
+    "time_from_observed": 0
+   },
+   "score": 0.35386673008679226,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.03269964039632201,
+    "rough_ss": 0.003747537187932587,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.02258797843590122,
+    "flicker": 0.7781689848312708,
+    "holdout": 0.03242537555910547,
+    "drift": 0.020190504041490354,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 0,
+    "hold_rings": 1,
+    "bridge": 0.0,
+    "time_from_observed": 1
+   },
+   "score": 0.4320994908924951,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.06777682643495032,
+    "rough_ss": 0.0036870476695224567,
+    "cliffs": 0.017670661222130953,
+    "rule_edge_cliffs": 0.001011976193337896,
+    "time_step": 0.02146152967867063,
+    "flicker": 0.2991642508710448,
+    "holdout": 0.05759830717423893,
+    "drift": 0.020915668129072924,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 0,
+    "hold_rings": 1,
+    "bridge": 0.0,
+    "time_from_observed": 0
+   },
+   "score": 0.4731988773709088,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.07343855814352393,
+    "rough_ss": 0.0037288352211474994,
+    "cliffs": 0.017826349867259863,
+    "rule_edge_cliffs": 0.001011976193337896,
+    "time_step": 0.022130465049682385,
+    "flicker": 0.5135193122119985,
+    "holdout": 0.0647081850037037,
+    "drift": 0.020150471312463204,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 0,
+    "hold_rings": 1,
+    "bridge": 0.75,
+    "time_from_observed": 1
+   },
+   "score": 0.4320985764513521,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.06863915912104947,
+    "rough_ss": 0.0036927230642858446,
+    "cliffs": 0.017826349867259863,
+    "rule_edge_cliffs": 0.001011976193337896,
+    "time_step": 0.021355928634225602,
+    "flicker": 0.2632773422935884,
+    "holdout": 0.06061306245768684,
+    "drift": 0.02097161911678454,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 0,
+    "hold_rings": 1,
+    "bridge": 0.75,
+    "time_from_observed": 0
+   },
+   "score": 0.4597494879240414,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.0747392155530398,
+    "rough_ss": 0.003720760751968446,
+    "cliffs": 0.01798203851238877,
+    "rule_edge_cliffs": 0.001011976193337896,
+    "time_step": 0.02191871391352335,
+    "flicker": 0.3200355857355244,
+    "holdout": 0.06912462027006498,
+    "drift": 0.020200735347372326,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 1,
+    "hold_rings": 0,
+    "bridge": 0.0,
+    "time_from_observed": 1
+   },
+   "score": 0.3777642720096362,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.0407799575293019,
+    "rough_ss": 0.003716466785629205,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.021033372839524084,
+    "flicker": 0.7468843038195225,
+    "holdout": 0.036115973128054535,
+    "drift": 0.017056950213447553,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 1,
+    "hold_rings": 0,
+    "bridge": 0.0,
+    "time_from_observed": 0
+   },
+   "score": 0.40637066998781873,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.04252290250689965,
+    "rough_ss": 0.0037264984051658574,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.021548585699037327,
+    "flicker": 0.9892755927987511,
+    "holdout": 0.03974248352150726,
+    "drift": 0.01629829500759343,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 1,
+    "hold_rings": 0,
+    "bridge": 0.75,
+    "time_from_observed": 1
+   },
+   "score": 0.3725177648027803,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.04084920748581226,
+    "rough_ss": 0.0037196776897127073,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.02095000429348659,
+    "flicker": 0.6851600683809811,
+    "holdout": 0.03663120191333403,
+    "drift": 0.01708646719578918,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 1,
+    "hold_rings": 0,
+    "bridge": 0.75,
+    "time_from_observed": 0
+   },
+   "score": 0.3908767446129283,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.042618805963459266,
+    "rough_ss": 0.0037268467486046572,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.02139444617549279,
+    "flicker": 0.8155301274306979,
+    "holdout": 0.040465923843793404,
+    "drift": 0.016327309458854234,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 1,
+    "hold_rings": 1,
+    "bridge": 0.0,
+    "time_from_observed": 1
+   },
+   "score": 0.48169222144097523,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.08292255641057124,
+    "rough_ss": 0.0036662406120628885,
+    "cliffs": 0.017670661222130953,
+    "rule_edge_cliffs": 0.001011976193337896,
+    "time_step": 0.020198862890893857,
+    "flicker": 0.2751500787741651,
+    "holdout": 0.0697606805862053,
+    "drift": 0.017143853829532256,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 1,
+    "hold_rings": 1,
+    "bridge": 0.0,
+    "time_from_observed": 0
+   },
+   "score": 0.532109867537625,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.09078742086825545,
+    "rough_ss": 0.0036838111374444807,
+    "cliffs": 0.01790174087139415,
+    "rule_edge_cliffs": 0.001011976193337896,
+    "time_step": 0.020895544062948176,
+    "flicker": 0.5191659592366827,
+    "holdout": 0.07930145293381187,
+    "drift": 0.01636071344015789,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 1,
+    "hold_rings": 1,
+    "bridge": 0.75,
+    "time_from_observed": 1
+   },
+   "score": 0.4806352634019783,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.08371668910522363,
+    "rough_ss": 0.0036723051905129924,
+    "cliffs": 0.017826349867259863,
+    "rule_edge_cliffs": 0.001011976193337896,
+    "time_step": 0.020090171888398702,
+    "flicker": 0.23009676544918325,
+    "holdout": 0.0726389391987737,
+    "drift": 0.01720544651213504,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 0,
+    "kernel_cap": 1,
+    "hold_rings": 1,
+    "bridge": 0.75,
+    "time_from_observed": 0
+   },
+   "score": 0.5177964459684719,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.09197298374677855,
+    "rough_ss": 0.0036777360840166695,
+    "cliffs": 0.01805742951652306,
+    "rule_edge_cliffs": 0.001011976193337896,
+    "time_step": 0.020677257173738518,
+    "flicker": 0.31963626934523137,
+    "holdout": 0.08347550697229694,
+    "drift": 0.016423173899272937,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 0,
+    "hold_rings": 0,
+    "bridge": 0.0,
+    "time_from_observed": 1
+   },
+   "score": 0.39020405084584125,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.046093146946001494,
+    "rough_ss": 0.0036918016274614146,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.02175315076525918,
+    "flicker": 0.6924452888543678,
+    "holdout": 0.04753205128764811,
+    "drift": 0.018621852645014286,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 0,
+    "hold_rings": 0,
+    "bridge": 0.0,
+    "time_from_observed": 0
+   },
+   "score": 0.41850359200149817,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.04818147299312797,
+    "rough_ss": 0.0037011590807288814,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.02228312291598463,
+    "flicker": 0.9186173825081905,
+    "holdout": 0.053654705475550304,
+    "drift": 0.01784955264898422,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 0,
+    "hold_rings": 0,
+    "bridge": 0.75,
+    "time_from_observed": 1
+   },
+   "score": 0.3857803856289974,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.04614202854552106,
+    "rough_ss": 0.0036951629528285696,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.021671312394796426,
+    "flicker": 0.640449798150656,
+    "holdout": 0.04792838375836518,
+    "drift": 0.018654766071963695,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 0,
+    "hold_rings": 0,
+    "bridge": 0.75,
+    "time_from_observed": 0
+   },
+   "score": 0.40519660971244187,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.0482379600470503,
+    "rough_ss": 0.00370188933901686,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.022131971575865366,
+    "flicker": 0.7701759042416256,
+    "holdout": 0.05415709310209823,
+    "drift": 0.01788515735859147,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 0,
+    "hold_rings": 1,
+    "bridge": 0.0,
+    "time_from_observed": 1
+   },
+   "score": 0.6524293512690212,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": false,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": false,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.13599767336696947,
+    "rough_ss": 0.0034997602914456773,
+    "cliffs": 0.013961677752556884,
+    "rule_edge_cliffs": 0.003441485479837103,
+    "time_step": 0.020770751525684448,
+    "flicker": 0.20836138173464627,
+    "holdout": 0.111673020260136,
+    "drift": 0.01878508156675837,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 0,
+    "hold_rings": 1,
+    "bridge": 0.0,
+    "time_from_observed": 0
+   },
+   "score": 0.7233681596920544,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": false,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": false,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.15005734539496746,
+    "rough_ss": 0.003506443856906995,
+    "cliffs": 0.01581842922425787,
+    "rule_edge_cliffs": 0.005225299265833959,
+    "time_step": 0.02147730305155754,
+    "flicker": 0.44375271260059607,
+    "holdout": 0.132026450637289,
+    "drift": 0.018068805238621994,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 0,
+    "hold_rings": 1,
+    "bridge": 0.75,
+    "time_from_observed": 1
+   },
+   "score": 0.6505921179261824,
+   "failing": 12,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": false,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": false,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.13652988881055778,
+    "rough_ss": 0.0035086334392690683,
+    "cliffs": 0.014117366397685788,
+    "rule_edge_cliffs": 0.003441485479837103,
+    "time_step": 0.02066553472006893,
+    "flicker": 0.16339353333647377,
+    "holdout": 0.11394278090139792,
+    "drift": 0.01885089477368856,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 0,
+    "hold_rings": 1,
+    "bridge": 0.75,
+    "time_from_observed": 0
+   },
+   "score": 0.7080052987817371,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": false,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": false,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.15077128424609534,
+    "rough_ss": 0.0035054934639886393,
+    "cliffs": 0.015974117869386774,
+    "rule_edge_cliffs": 0.005225299265833959,
+    "time_step": 0.02126234176314468,
+    "flicker": 0.2482439805813066,
+    "holdout": 0.1350827011479608,
+    "drift": 0.01813649615202556,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 1,
+    "hold_rings": 0,
+    "bridge": 0.0,
+    "time_from_observed": 1
+   },
+   "score": 0.417390270610332,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.0525911167254509,
+    "rough_ss": 0.003684621030292333,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.020775326627719082,
+    "flicker": 0.7461102598382919,
+    "holdout": 0.05175763722381738,
+    "drift": 0.015917936878555063,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 1,
+    "hold_rings": 0,
+    "bridge": 0.0,
+    "time_from_observed": 0
+   },
+   "score": 0.44998311246539835,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.05491617885806433,
+    "rough_ss": 0.003684359336823901,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.021323569084282158,
+    "flicker": 1.0149605425357813,
+    "holdout": 0.05843954504076705,
+    "drift": 0.015149860725913337,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 1,
+    "hold_rings": 0,
+    "bridge": 0.75,
+    "time_from_observed": 1
+   },
+   "score": 0.4118819344059974,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.052629077827287624,
+    "rough_ss": 0.0036883529243225467,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.020690246130384986,
+    "flicker": 0.6824578272666867,
+    "holdout": 0.05211146645784673,
+    "drift": 0.01595358425418461,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 1,
+    "hold_rings": 0,
+    "bridge": 0.75,
+    "time_from_observed": 0
+   },
+   "score": 0.4337760843235491,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": true,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": true,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.05495373532334697,
+    "rough_ss": 0.003685863181905926,
+    "cliffs": 0.0,
+    "rule_edge_cliffs": 0.0,
+    "time_step": 0.021166369069187924,
+    "flicker": 0.8350650459195222,
+    "holdout": 0.058874185518426214,
+    "drift": 0.015189288960237243,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 1,
+    "hold_rings": 1,
+    "bridge": 0.0,
+    "time_from_observed": 1
+   },
+   "score": 0.6872906461415724,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": false,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": false,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.14563866145452775,
+    "rough_ss": 0.003479222510150704,
+    "cliffs": 0.014666032505195119,
+    "rule_edge_cliffs": 0.003710216776457963,
+    "time_step": 0.01975285843378432,
+    "flicker": 0.2315956818039115,
+    "holdout": 0.11921614074739863,
+    "drift": 0.016238705492046125,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 1,
+    "hold_rings": 1,
+    "bridge": 0.0,
+    "time_from_observed": 0
+   },
+   "score": 0.7625697613758139,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": false,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": false,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.16090989857698249,
+    "rough_ss": 0.0034660504052013022,
+    "cliffs": 0.016596121530030934,
+    "rule_edge_cliffs": 0.005567368115589649,
+    "time_step": 0.02048144038387839,
+    "flicker": 0.4777948436295952,
+    "holdout": 0.14096504487280476,
+    "drift": 0.015550469296569095,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 1,
+    "hold_rings": 1,
+    "bridge": 0.75,
+    "time_from_observed": 1
+   },
+   "score": 0.6844998567582022,
+   "failing": 12,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": false,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": false,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.14612178451569682,
+    "rough_ss": 0.0034884022918341027,
+    "cliffs": 0.014821721150324025,
+    "rule_edge_cliffs": 0.003710216776457963,
+    "time_step": 0.01964545747983513,
+    "flicker": 0.17789603396015594,
+    "holdout": 0.12139393542910018,
+    "drift": 0.016306594922459006,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  },
+  {
+   "settings": {
+    "blend_rings": 12,
+    "smooth_iters": 16,
+    "smooth_rate": 0.5,
+    "time_smooth": 0.4,
+    "blend_conf": 1,
+    "kernel_cap": 1,
+    "hold_rings": 1,
+    "bridge": 0.75,
+    "time_from_observed": 0
+   },
+   "score": 0.7462421854989698,
+   "failing": 13,
+   "guards": {
+    "observed": true,
+    "coverage": true,
+    "holdout": false,
+    "drift": true,
+    "spread": true,
+    "regressions": true
+   },
+   "passes": false,
+   "overall": {
+    "rough_oo": 0.007860788689056413,
+    "rough_os": 0.1615420351174518,
+    "rough_ss": 0.0034667060486448906,
+    "cliffs": 0.016751810175159837,
+    "rule_edge_cliffs": 0.005567368115589649,
+    "time_step": 0.02026085842900614,
+    "flicker": 0.27405492695819317,
+    "holdout": 0.1438485143898971,
+    "drift": 0.015620740552818493,
+    "coverage": 0.9993352924713126,
+    "observed_moved": 0.0
+   }
+  }
+ ]
+}

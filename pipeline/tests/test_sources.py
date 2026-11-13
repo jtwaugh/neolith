@@ -44,6 +44,19 @@ class Sources(unittest.TestCase):
     def test_coasts(self):
         self.check("data/coasts/coasts.toml", "coast", "data/coasts/SOURCES.md")
 
+    def test_places(self):
+        """Every exotic place is written up, and every link in the critic's
+        plans is in the places write-up."""
+        import glob
+        self.check("data/places/places.toml", "place", "data/places/SOURCES.md")
+        with open(os.path.join(ROOT, "data/places/SOURCES.md")) as f:
+            text = f.read()
+        for path in sorted(glob.glob(os.path.join(ROOT, "data/places/plans/*.toml"))):
+            with open(path) as f:
+                urls = {u.rstrip(".,;") for u in re.findall(r"https?://[^\s\"'<>)\]]+", f.read())}
+            self.assertEqual(sorted(u for u in urls if u not in text), [],
+                             f"links in {os.path.basename(path)} missing from data/places/SOURCES.md")
+
     def test_population(self):
         """Methods and visibility factors are written up, and a factor
         marked as sourced has a reference."""
@@ -91,6 +104,48 @@ class Sources(unittest.TestCase):
                          "corrections without a source link")
         self.assertEqual(sorted(u for u in {x["source"] for x in fixes} if u not in text), [],
                          "correction sources missing from data/settlements/CORRECTIONS.md")
+
+    def test_settlement_records(self):
+        """Every record fix (records.toml) has a link, listed in CORRECTIONS.md."""
+        path = os.path.join(ROOT, "data/settlements/records.toml")
+        if not os.path.exists(path):
+            self.skipTest("no record fixes")
+        with open(path, "rb") as f:
+            doc = tomllib.load(f)
+        entries = [e for k in ("locate", "same", "reject") for e in doc.get(k, [])]
+        with open(os.path.join(ROOT, "data/settlements/CORRECTIONS.md")) as f:
+            text = f.read()
+        self.assertEqual([e.get("name", e.get("site")) for e in entries
+                          if not str(e.get("source", "")).startswith("http")], [], "record fixes without a source link")
+        self.assertEqual(sorted(u for u in {e["source"] for e in entries} if u not in text), [],
+                         "record fix sources missing from data/settlements/CORRECTIONS.md")
+
+    def test_inferred_settlements(self):
+        """Every inferred-settlement rule names its plan and cites links listed
+        in data/settlements/INFERRED.md."""
+        path = os.path.join(ROOT, "data/settlements/inferred.toml")
+        if not os.path.exists(path):
+            self.skipTest("no inferred settlements")
+        with open(path, "rb") as f:
+            rules = tomllib.load(f).get("rule", [])
+        with open(os.path.join(ROOT, "data/settlements/INFERRED.md")) as f:
+            text = f.read()
+        for r in rules:
+            self.assertTrue(os.path.exists(os.path.join(ROOT, r["plan"])), r["key"])
+            self.assertEqual([u for u in r.get("sources", []) if u not in text], [],
+                             f"{r['key']}: sources missing from data/settlements/INFERRED.md")
+
+    def test_renown(self):
+        """Every famous site is written up with its link, and has a renown
+        of 1-3 and a reference."""
+        import json
+        with open(os.path.join(ROOT, "neolith-rs/crates/app/assets/renown.json")) as f:
+            sites = json.load(f)["site"]
+        with open(os.path.join(ROOT, "data/renown/SOURCES.md")) as f:
+            text = f.read()
+        self.assertIn("## References", text)
+        self.assertEqual([s["name"] for s in sites if s["name"] not in text or s["wikipedia"] not in text], [])
+        self.assertEqual([s["name"] for s in sites if s["renown"] not in (1, 2, 3)], [])
 
 
 if __name__ == "__main__":

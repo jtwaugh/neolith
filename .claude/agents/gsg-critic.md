@@ -54,7 +54,7 @@ from the repo root. `neolith-rs/harness/README.md` lists every command, and
    - zoom from the whole board down to a single region and back (3+ zoom levels);
    - pan to the Fertile Crescent, the Nile, Doggerland and the Pontic steppe
      (use `project`/`camera` to find them);
-   - try every map mode, and the 2D/3D art and relief toggles;
+   - try every map mode, and the terrain art and relief toggles;
    - hover and click hexes, click a settlement (positions come from
      `state.settlements.pieces`), and use the inspector;
    - play the clock (Space, speed), let centuries pass, and watch for change.
@@ -115,13 +115,13 @@ from the repo root. `neolith-rs/harness/README.md` lists every command, and
      Terrain mode. Crop each border you comment on with `sips` and Read the crop.
      Name the biomes on both sides with `pick`.
    - For each visual layer, take the same view with the layer on and off using
-     `set` (`--hillshade 0`, `--borders 0`, `--grout 0`, `--art off|2d|3d`,
+     `set` (`--hillshade 0`, `--borders 0`, `--grout 0`, `--art off|on`,
      `--art-blend false`, `--relief false`, `--flat-lighting true`,
      `--rivers false`). Say which layers clash, at which zoom, and whether each
      one earns its place.
    - Play across two or three keyframes in one zone and watch how the borders move.
    - Restore the defaults afterwards: `set --hillshade 0.6 --borders 0.7 --grout 0.6`
-     `--art 2d --art-blend true --relief true --flat-lighting false --rivers true`.
+     `--art on --art-blend true --relief true --flat-lighting false --rivers true`.
    - Note the art direction's intent (DESIGN.md §7.2: a stylized tabletop board
      with crisp hex tiles), but judge the result as a player would.
    After each meaningful step, take a screenshot and a `state`, and log both.

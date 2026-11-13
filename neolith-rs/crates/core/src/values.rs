@@ -57,6 +57,13 @@ impl Terrain {
     pub fn from_u8(v: u8) -> Option<Self> {
         Self::ALL.get(v as usize).copied()
     }
+
+    /// Classes kept only so old u8 codes keep their meaning (the drawn
+    /// palette's Land, Free and Mountains, the old Plains fill, Unknown). The
+    /// pipeline no longer writes them, and the editor does not offer them.
+    pub fn is_legacy(self) -> bool {
+        matches!(self, Terrain::Plains | Terrain::Mountains | Terrain::Land | Terrain::Free | Terrain::Unknown)
+    }
 }
 
 /// Static landform of a hex, from the share of its elevation cells that are
@@ -209,6 +216,11 @@ impl Prop {
         }
     }
 
+    /// The values the editor offers: every value but the legacy terrains.
+    pub fn palette(self) -> Vec<Value> {
+        self.values().into_iter().filter(|v| !matches!(v, Value::Terrain(t) if t.is_legacy())).collect()
+    }
+
     /// Every value of this property, in palette order.
     pub fn values(self) -> Vec<Value> {
         match self {
@@ -234,10 +246,12 @@ pub enum MapMode {
     Biodiversity,
     Expected,
     Evidence,
+    /// Sites the list is missing ([`crate::residuals`]).
+    Missing,
 }
 
 impl MapMode {
-    pub const ALL: [MapMode; 8] = [
+    pub const ALL: [MapMode; 9] = [
         MapMode::Terrain,
         MapMode::Koeppen,
         MapMode::Pop,
@@ -246,12 +260,13 @@ impl MapMode {
         MapMode::Biodiversity,
         MapMode::Expected,
         MapMode::Evidence,
+        MapMode::Missing,
     ];
 
     /// The modes offered in the top-bar map selector. Population is hidden
     /// for now (not useful yet); it stays in [`MapMode::ALL`] so palette
     /// rows and harness `--mode pop` keep working.
-    pub const MENU: [MapMode; 7] = [
+    pub const MENU: [MapMode; 8] = [
         MapMode::Terrain,
         MapMode::Koeppen,
         MapMode::Elevation,
@@ -259,6 +274,7 @@ impl MapMode {
         MapMode::Biodiversity,
         MapMode::Expected,
         MapMode::Evidence,
+        MapMode::Missing,
     ];
 
     /// Also the row of the GPU palette texture.
@@ -272,7 +288,7 @@ impl MapMode {
             MapMode::Terrain => Some(Prop::Terrain),
             MapMode::Koeppen => Some(Prop::Koeppen),
             MapMode::Pop => Some(Prop::Pop),
-            MapMode::Elevation | MapMode::Npp | MapMode::Biodiversity | MapMode::Expected | MapMode::Evidence => None,
+            MapMode::Elevation | MapMode::Npp | MapMode::Biodiversity | MapMode::Expected | MapMode::Evidence | MapMode::Missing => None,
         }
     }
 
@@ -283,6 +299,7 @@ impl MapMode {
             MapMode::Biodiversity => "Biodiversity",
             MapMode::Expected => "Expected population",
             MapMode::Evidence => "Evidence",
+            MapMode::Missing => "Missing sites",
             _ => self.prop().map_or("", Prop::label),
         }
     }
@@ -298,6 +315,7 @@ impl MapMode {
             "biodiversity" => Some(MapMode::Biodiversity),
             "expected" => Some(MapMode::Expected),
             "evidence" => Some(MapMode::Evidence),
+            "missing" => Some(MapMode::Missing),
             _ => None,
         }
     }
@@ -380,6 +398,9 @@ mod tests {
         }
         assert_eq!(Landform::from_u8(4), None);
         assert!(!Landform::Hills.is_mountain() && Landform::HighMountains.is_mountain());
+        let palette = Prop::Terrain.palette();
+        assert!(palette.contains(&Value::Terrain(Terrain::Grassland)));
+        assert!(!palette.iter().any(|v| matches!(v, Value::Terrain(t) if t.is_legacy())));
     }
 
     #[test]
@@ -427,6 +448,8 @@ mod tests {
         assert_eq!(MapMode::Expected.index(), 6);
         assert_eq!(MapMode::from_arg("evidence"), Some(MapMode::Evidence));
         assert_eq!(MapMode::Evidence.index(), 7);
+        assert_eq!(MapMode::from_arg("missing"), Some(MapMode::Missing));
+        assert_eq!((MapMode::Missing.index(), MapMode::Missing.prop(), MapMode::Missing.label()), (8, None, "Missing sites"));
         assert_eq!(MapMode::Evidence.prop(), None);
         assert!(MapMode::ALL.contains(&MapMode::Evidence) && MapMode::MENU.contains(&MapMode::Evidence));
         assert_eq!(MapMode::Pop.label(), Prop::Pop.label());

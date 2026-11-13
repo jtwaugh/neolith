@@ -1,0 +1,1642 @@
+{
+ "settings": {
+  "blend_rings": 12,
+  "smooth_iters": 16,
+  "smooth_rate": 0.5,
+  "time_smooth": 0.4,
+  "blend_conf": 0,
+  "kernel_cap": 0,
+  "hold_rings": 0,
+  "bridge": 0.75,
+  "time_from_observed": 1
+ },
+ "overall": {
+  "rough_oo": 0.007867148581456328,
+  "rough_os": 0.031327582772063586,
+  "rough_ss": 0.003728058105932176,
+  "cliffs": 0.0,
+  "rule_edge_cliffs": 0.0,
+  "conf_edges": 16.795179653058828,
+  "time_step": 0.02215545613245815,
+  "flicker": 0.6930517404538417,
+  "holdout": 0.02951249169381301,
+  "drift": 0.02092053986693664,
+  "coverage": 0.9993370967629388,
+  "observed_moved": 0.0
+ },
+ "spread": {
+  "cereals": {
+   "first": {
+    "Anatolia & Cyprus": -9000,
+    "Balkans & Greece": -6000,
+    "Central Europe": -5000,
+    "British Isles": -4000
+   },
+   "ok": true
+  },
+  "domestic_livestock": {
+   "first": {
+    "Anatolia & Cyprus": -7000,
+    "Balkans & Greece": -6000,
+    "Central Europe": -6000,
+    "British Isles": -5000
+   },
+   "ok": true
+  }
+ },
+ "regressions": [
+  {
+   "name": "Northern Italy and Liguria: mines read 1.0 (observed) at 5,000 BCE, drop to about 0.37 everywhere at 4,000 BCE",
+   "layer": "mines",
+   "year": -4000,
+   "p95_step": 0.633,
+   "max": 0.1,
+   "ok": false
+  },
+  {
+   "name": "Romania and the lower Danube: enclosures go 0.18 (6,000 BCE) to 0.61 (5,000) to 0.23 (4,000). The whole strip ",
+   "layer": "enclosures",
+   "year": -5000,
+   "p95_step": 0.65,
+   "max": 0.207,
+   "ok": false
+  },
+  {
+   "name": "Northern Ireland and SW Scotland: houses observed at 1.0 at 6,000 BCE, a flat speculative 0.45 at 5,000 BCE (n",
+   "layer": "houses",
+   "year": -5000,
+   "p95_step": 0.589,
+   "max": 0.1,
+   "ok": false
+  },
+  {
+   "name": "Algerian Saharan Atlas: sampling goes 0.40 (5,000 BCE) to 0.74 (4,000) to 0.40 (3,000). A yellow observed patc",
+   "layer": "adna_samples",
+   "year": -4000,
+   "p95_step": 0.564,
+   "max": 0.215,
+   "ok": false
+  },
+  {
+   "name": "Atlantic Morocco: cereals 0.22 (6,000 BCE), 0.70 (5,000), 0.42 (4,000), 0.33 (3,000). The inland plain south o",
+   "layer": "cereals",
+   "year": -5000,
+   "p95_step": 0.477,
+   "max": 0.169,
+   "ok": false
+  },
+  {
+   "name": "SE Poland: an isolated observed patch of megalithic tombs at 1.0 with a glow that runs east into Ukraine (0.46",
+   "layer": "megalithic_tombs",
+   "year": -4000,
+   "p95_step": 0.189,
+   "max": 0.1,
+   "ok": false
+  },
+  {
+   "name": "Western Alps and Rhone: a 10-cell observed patch at 1.0 with a round glow averaging 0.65 across the box and re",
+   "layer": "pile_dwellings",
+   "year": -3000,
+   "p95_step": 0.221,
+   "max": 0.1,
+   "ok": false
+  },
+  {
+   "name": "Sinai, Negev and NW Arabia: observed 1.0 around the Arabah with a glow of 0.4-0.8 across Sinai and into Arabia",
+   "layer": "metallurgy",
+   "year": -4000,
+   "p95_step": 0.152,
+   "max": 0.1,
+   "ok": false
+  },
+  {
+   "name": "Central Anatolia: a north-south string of 7 observed cells at 1.0 (Kestel area) with a glow of 0.25-0.6 over t",
+   "layer": "mines",
+   "year": -3000,
+   "p95_step": 0.206,
+   "max": 0.1,
+   "ok": false
+  },
+  {
+   "name": "Middle Egypt: the observed block at 1.0 ends in a diagonal edge across the Western Desert; speculative cells b",
+   "layer": "waterlogged_organics",
+   "year": -3000,
+   "p95_step": 0.194,
+   "max": 0.1,
+   "ok": false
+  },
+  {
+   "name": "Eastern Poland: the east edge of the observed 1.0 block; the first speculative ring is about 0.75-0.8 and the ",
+   "layer": "enclosures",
+   "year": -5000,
+   "p95_step": 0.194,
+   "max": 0.1,
+   "ok": false
+  },
+  {
+   "name": "Georgia and Armenia: a 7-cell observed patch at about 0.85 in a speculative surround of 0.5-0.6, with observed",
+   "layer": "open_land",
+   "year": -3000,
+   "p95_step": 0.228,
+   "max": 0.1,
+   "ok": false
+  },
+  {
+   "name": "SW Anatolian lake district: cells observed at about 0.2 (6,000 BCE) and 0.33 (4,000 BCE) are filled at 0.67 at",
+   "layer": "open_land",
+   "year": -5000,
+   "p95_step": 0.487,
+   "max": 0.1,
+   "ok": false
+  }
+ ],
+ "layers": {
+  "pottery": {
+   "rough_oo": 0.010863051555255321,
+   "rough_os": 0.01970481101412065,
+   "rough_ss": 0.0072700189189035,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 26.93148640333076,
+   "time_step": 0.11883033477063559,
+   "flicker": 1.3304677105721012,
+   "holdout": 0.018804489323645757,
+   "drift": 0.06323780629312416,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "flaked_stone": {
+   "rough_oo": 0.0,
+   "rough_os": 0.0003740409366164961,
+   "rough_ss": 0.0007574673686709151,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 10.564133605372602,
+   "time_step": 0.0003985298606212889,
+   "flicker": 0.0,
+   "holdout": 9.26225593982965e-05,
+   "drift": 0.002524834907599784,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "ground_stone": {
+   "rough_oo": 0.0031593028781893248,
+   "rough_os": 0.01255030546663185,
+   "rough_ss": 0.00705574277659497,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 16.997292531962138,
+   "time_step": 0.08289801033676307,
+   "flicker": 0.010514583727630223,
+   "holdout": 0.010269811784666068,
+   "drift": 0.06172161471969007,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "bone_antler": {
+   "rough_oo": 0.0,
+   "rough_os": 0.021627689198168088,
+   "rough_ss": 0.009298973508379714,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 20.636994913625504,
+   "time_step": 0.011975882009118798,
+   "flicker": 0.7543302828026928,
+   "holdout": 0.021584828666441458,
+   "drift": 0.03606794952676146,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "ornaments": {
+   "rough_oo": 0.0,
+   "rough_os": 0.01756323113268936,
+   "rough_ss": 0.005060741783870288,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 5.666103696554877,
+   "time_step": 0.01351862520309158,
+   "flicker": 0.06584530742442422,
+   "holdout": 0.012327724939662391,
+   "drift": 0.021876428356107758,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "cereals": {
+   "rough_oo": 0.0035740210612411815,
+   "rough_os": 0.028041591715250162,
+   "rough_ss": 0.006206601231878222,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 24.398534963310187,
+   "time_step": 0.03804739588019083,
+   "flicker": 1.007627075013055,
+   "holdout": 0.013373551039661875,
+   "drift": 0.038192995898739104,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "domestic_livestock": {
+   "rough_oo": 0.005864179942149118,
+   "rough_os": 0.029353123709095687,
+   "rough_ss": 0.007150748865460688,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 26.7088748137686,
+   "time_step": 0.08927728518507289,
+   "flicker": 0.007428592653121866,
+   "holdout": 0.015892868662304698,
+   "drift": 0.047046430221131884,
+   "coverage": 0.9993370967629388,
+   "observed_moved": 0.0
+  },
+  "enclosures": {
+   "rough_oo": 0.0,
+   "rough_os": 0.06077008081710662,
+   "rough_ss": 0.0013611704207689489,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 9.485953539293842,
+   "time_step": 0.019492104845727564,
+   "flicker": 2.3620310621313774,
+   "holdout": 0.07545877439202944,
+   "drift": 0.013229522857745776,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "megalithic_tombs": {
+   "rough_oo": 0.0,
+   "rough_os": 0.05231054708876289,
+   "rough_ss": 0.0016506552423096617,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 6.772478905698249,
+   "time_step": 0.01832025852548247,
+   "flicker": 0.21465215618090883,
+   "holdout": 0.034467689681108006,
+   "drift": 0.015873573561339557,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "pile_dwellings": {
+   "rough_oo": 0.0,
+   "rough_os": 0.12865403652672072,
+   "rough_ss": 0.0005807512239003961,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 4.626259646102019,
+   "time_step": 0.003596920371996178,
+   "flicker": 0.0,
+   "holdout": 0.11024981962143258,
+   "drift": 0.004120482199024189,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "houses": {
+   "rough_oo": 0.0,
+   "rough_os": 0.037519340830658034,
+   "rough_ss": 0.004110997922073058,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 7.986168285855426,
+   "time_step": 0.023606326421574498,
+   "flicker": 0.6782837323786082,
+   "holdout": 0.09539034294157157,
+   "drift": 0.02274623685040997,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "mines": {
+   "rough_oo": 0.0,
+   "rough_os": 0.10864436529003253,
+   "rough_ss": 0.0008015691328689371,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 8.257412160475425,
+   "time_step": 0.007156300740446901,
+   "flicker": 1.0075284766729171,
+   "holdout": 0.11392276956581678,
+   "drift": 0.007049488919394736,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "metallurgy": {
+   "rough_oo": 0.0,
+   "rough_os": 0.11693809010167928,
+   "rough_ss": 0.0004842450361943013,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 6.516421575736481,
+   "time_step": 0.003077298910594734,
+   "flicker": 0.0,
+   "holdout": 0.0,
+   "drift": 0.002912464439004293,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "waterlogged_organics": {
+   "rough_oo": 0.0,
+   "rough_os": 0.07926930722533693,
+   "rough_ss": 0.0018799497978343458,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 27.741474000703175,
+   "time_step": 0.006957911981157027,
+   "flicker": 0.28006497507421724,
+   "holdout": 0.04095946317511924,
+   "drift": 0.011369973985897844,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "cereal_pollen": {
+   "rough_oo": 0.0154819646117358,
+   "rough_os": 0.013842810478131995,
+   "rough_ss": 0.0061423781614733395,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 18.703137435596698,
+   "time_step": 0.013111964047332546,
+   "flicker": 0.5378378916754646,
+   "holdout": 0.013899753495934392,
+   "drift": 0.031081103025570368,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "dung_spores": {
+   "rough_oo": 0.01814600749495532,
+   "rough_os": 0.01681288041632218,
+   "rough_ss": 0.006165901969939686,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 6.004558562827289,
+   "time_step": 0.02949719950067943,
+   "flicker": 0.37562800306762867,
+   "holdout": 0.01948400374962272,
+   "drift": 0.027492279989229044,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "open_land": {
+   "rough_oo": 0.06488247861795525,
+   "rough_os": 0.07640492309422535,
+   "rough_ss": 0.013442371730270939,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 28.606627219559293,
+   "time_step": 0.029273917422978208,
+   "flicker": 0.5594134363648569,
+   "holdout": 0.12813065840570764,
+   "drift": 0.0519471153813084,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "adna_samples": {
+   "rough_oo": 0.0,
+   "rough_os": 0.028390674749898547,
+   "rough_ss": 0.011422181736450862,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 20.71679692171145,
+   "time_step": 0.035131995639309056,
+   "flicker": 2.950727415147574,
+   "holdout": 0.01749811823887493,
+   "drift": 0.06667665465367383,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "y_i2": {
+   "rough_oo": 0.02890078933043005,
+   "rough_os": 0.03294944903831815,
+   "rough_ss": 0.003982607970819739,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 18.358975686132425,
+   "time_step": 0.019998838369063587,
+   "flicker": 2.314900689276519,
+   "holdout": 0.041041393728866886,
+   "drift": 0.02075262694744742,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "y_g2a": {
+   "rough_oo": 0.019598757031391762,
+   "rough_os": 0.022104332373678665,
+   "rough_ss": 0.001695847448457823,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 18.358975686132425,
+   "time_step": 0.01434234551416659,
+   "flicker": 1.0387374887779253,
+   "holdout": 0.030906613773647045,
+   "drift": 0.009937650415076755,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "y_r1b": {
+   "rough_oo": 0.018273997459626202,
+   "rough_os": 0.02425214544923692,
+   "rough_ss": 0.0035746810248461097,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 18.358975686132425,
+   "time_step": 0.015425020847462287,
+   "flicker": 1.201967665585885,
+   "holdout": 0.02846793118281852,
+   "drift": 0.01564781242020132,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "y_r1a": {
+   "rough_oo": 0.004705271275630558,
+   "rough_os": 0.010601672422783046,
+   "rough_ss": 0.0023979935726216217,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 18.358975686132425,
+   "time_step": 0.009823674657151166,
+   "flicker": 0.01483910698254179,
+   "holdout": 0.017087849469464175,
+   "drift": 0.011773641031969225,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "y_c": {
+   "rough_oo": 0.008357557612048629,
+   "rough_os": 0.010689708029208597,
+   "rough_ss": 0.000948582523403534,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 18.358975686132425,
+   "time_step": 0.007759326822288717,
+   "flicker": 0.46001231645879553,
+   "holdout": 0.009638532492354208,
+   "drift": 0.0057119855333335676,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "y_j2": {
+   "rough_oo": 0.006411177644710579,
+   "rough_os": 0.010227459992786833,
+   "rough_ss": 0.0019688586007486743,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 18.358975686132425,
+   "time_step": 0.007654997248028979,
+   "flicker": 0.7642140096009022,
+   "holdout": 0.011628033646032395,
+   "drift": 0.00882736166790916,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "y_h2": {
+   "rough_oo": 0.002649791326438033,
+   "rough_os": 0.0032846392848885917,
+   "rough_ss": 0.00026920259284846847,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 18.358975686132425,
+   "time_step": 0.0020346767397647967,
+   "flicker": 0.02967821396508358,
+   "holdout": 0.003422221131474766,
+   "drift": 0.0017401534141975661,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "y_other": {
+   "rough_oo": 0.020586100526220286,
+   "rough_os": 0.029088763688522014,
+   "rough_ss": 0.005079327830196859,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 18.358975686132425,
+   "time_step": 0.020576183391010913,
+   "flicker": 1.6100431076057842,
+   "holdout": 0.03926242392743625,
+   "drift": 0.021589723298885706,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "mt_u5": {
+   "rough_oo": 0.008434385822745733,
+   "rough_os": 0.017387940797376766,
+   "rough_ss": 0.0034124450825878923,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 18.355449191682112,
+   "time_step": 0.023007039188440413,
+   "flicker": 1.6549752694036448,
+   "holdout": 0.01929079499890832,
+   "drift": 0.019601587393840814,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "mt_u4": {
+   "rough_oo": 0.004365708718008085,
+   "rough_os": 0.009459504749159423,
+   "rough_ss": 0.0016935078047888047,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 18.355449191682112,
+   "time_step": 0.01276475606422414,
+   "flicker": 0.05641961145694243,
+   "holdout": 0.008451525111528144,
+   "drift": 0.008963889218820829,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "mt_h": {
+   "rough_oo": 0.004198352289719175,
+   "rough_os": 0.008631630174030475,
+   "rough_ss": 0.001461949346860571,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 18.355449191682112,
+   "time_step": 0.012512743466837534,
+   "flicker": 0.5547928459932673,
+   "holdout": 0.011196351366042677,
+   "drift": 0.008226254433910044,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "mt_k": {
+   "rough_oo": 0.00514680828485708,
+   "rough_os": 0.010163666748667142,
+   "rough_ss": 0.0019138974526988234,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 18.355449191682112,
+   "time_step": 0.016264061715967795,
+   "flicker": 0.6864386060594663,
+   "holdout": 0.010376376857336835,
+   "drift": 0.01272322010293429,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "mt_j": {
+   "rough_oo": 0.002327757358261222,
+   "rough_os": 0.003843104734592306,
+   "rough_ss": 0.0009528998415150938,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 18.355449191682112,
+   "time_step": 0.005934564848051559,
+   "flicker": 0.0,
+   "holdout": 0.005149592812357205,
+   "drift": 0.004913346122031792,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "mt_t2": {
+   "rough_oo": 0.0029024686713165285,
+   "rough_os": 0.004627042857715081,
+   "rough_ss": 0.0008656616636993753,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 18.355449191682112,
+   "time_step": 0.007879769300916196,
+   "flicker": 0.2350817144039268,
+   "holdout": 0.00584621882710279,
+   "drift": 0.005293332001878614,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "mt_n1a": {
+   "rough_oo": 0.0014950655514716525,
+   "rough_os": 0.002645937012477789,
+   "rough_ss": 0.00036336891485196353,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 18.355449191682112,
+   "time_step": 0.0050696480619896196,
+   "flicker": 0.0,
+   "holdout": 0.003994725334816857,
+   "drift": 0.0026684652490972364,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  },
+  "mt_other": {
+   "rough_oo": 0.00715805670515826,
+   "rough_os": 0.016408967105272697,
+   "rough_ss": 0.005330677102905863,
+   "cliffs": 0.0,
+   "rule_edge_cliffs": 0.0,
+   "conf_edges": 18.355449191682112,
+   "time_step": 0.02806960061544022,
+   "flicker": 0.7992778289733511,
+   "holdout": 0.015856842686457435,
+   "drift": 0.027760350438559043,
+   "coverage": 1.0,
+   "observed_moved": 0.0
+  }
+ },
+ "hotspots": [
+  {
+   "layer": "open_land",
+   "year": -9000,
+   "kind": "seam",
+   "step": 0.577,
+   "pairs": 28,
+   "bbox": [
+    -13.4,
+    47.1,
+    -3.4,
+    57.1
+   ],
+   "region": "British Isles",
+   "judgements": []
+  },
+  {
+   "layer": "open_land",
+   "year": -5000,
+   "kind": "seam",
+   "step": 0.565,
+   "pairs": 21,
+   "bbox": [
+    -5.2,
+    47.4,
+    4.8,
+    57.4
+   ],
+   "region": "British Isles",
+   "judgements": []
+  },
+  {
+   "layer": "open_land",
+   "year": -10000,
+   "kind": "seam",
+   "step": 0.567,
+   "pairs": 20,
+   "bbox": [
+    -13.4,
+    47.1,
+    -3.4,
+    57.1
+   ],
+   "region": "British Isles",
+   "judgements": []
+  },
+  {
+   "layer": "open_land",
+   "year": -9000,
+   "kind": "seam",
+   "step": 0.456,
+   "pairs": 39,
+   "bbox": [
+    -4.7,
+    47.1,
+    5.3,
+    57.1
+   ],
+   "region": "British Isles",
+   "judgements": []
+  },
+  {
+   "layer": "open_land",
+   "year": -3000,
+   "kind": "seam",
+   "step": 0.52,
+   "pairs": 21,
+   "bbox": [
+    0.9,
+    38.9,
+    10.9,
+    48.9
+   ],
+   "region": "France & Low Countries",
+   "judgements": [
+    "open_land.toml#24"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -4000,
+   "kind": "seam",
+   "step": 0.537,
+   "pairs": 18,
+   "bbox": [
+    -5.2,
+    47.4,
+    4.8,
+    57.4
+   ],
+   "region": "British Isles",
+   "judgements": []
+  },
+  {
+   "layer": "open_land",
+   "year": -10000,
+   "kind": "seam",
+   "step": 0.537,
+   "pairs": 16,
+   "bbox": [
+    7.8,
+    43.9,
+    17.8,
+    53.9
+   ],
+   "region": "Central Europe",
+   "judgements": [
+    "open_land.toml#22"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -6000,
+   "kind": "seam",
+   "step": 0.512,
+   "pairs": 15,
+   "bbox": [
+    -5.2,
+    47.4,
+    4.8,
+    57.4
+   ],
+   "region": "British Isles",
+   "judgements": []
+  },
+  {
+   "layer": "open_land",
+   "year": -10000,
+   "kind": "seam",
+   "step": 0.435,
+   "pairs": 24,
+   "bbox": [
+    -4.7,
+    47.1,
+    5.3,
+    57.1
+   ],
+   "region": "British Isles",
+   "judgements": []
+  },
+  {
+   "layer": "open_land",
+   "year": -9000,
+   "kind": "seam",
+   "step": 0.489,
+   "pairs": 13,
+   "bbox": [
+    7.8,
+    43.9,
+    17.8,
+    53.9
+   ],
+   "region": "Central Europe",
+   "judgements": [
+    "open_land.toml#22"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -4000,
+   "kind": "seam",
+   "step": 0.415,
+   "pairs": 14,
+   "bbox": [
+    2.6,
+    47.9,
+    12.6,
+    57.9
+   ],
+   "region": "Central Europe",
+   "judgements": [
+    "open_land.toml#23"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -5000,
+   "kind": "seam",
+   "step": 0.463,
+   "pairs": 10,
+   "bbox": [
+    2.6,
+    47.9,
+    12.6,
+    57.9
+   ],
+   "region": "Central Europe",
+   "judgements": [
+    "open_land.toml#23"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -3000,
+   "kind": "seam",
+   "step": 0.432,
+   "pairs": 12,
+   "bbox": [
+    7.0,
+    36.9,
+    17.0,
+    46.9
+   ],
+   "region": "Italy & islands",
+   "judgements": [
+    "open_land.toml#27"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -8000,
+   "kind": "seam",
+   "step": 0.452,
+   "pairs": 10,
+   "bbox": [
+    -13.4,
+    47.1,
+    -3.4,
+    57.1
+   ],
+   "region": "British Isles",
+   "judgements": []
+  },
+  {
+   "layer": "open_land",
+   "year": -5000,
+   "kind": "seam",
+   "step": 0.414,
+   "pairs": 12,
+   "bbox": [
+    -7.3,
+    42.1,
+    2.7,
+    52.1
+   ],
+   "region": "France & Low Countries",
+   "judgements": [
+    "open_land.toml#24"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -4000,
+   "kind": "seam",
+   "step": 0.437,
+   "pairs": 10,
+   "bbox": [
+    7.0,
+    36.9,
+    17.0,
+    46.9
+   ],
+   "region": "Italy & islands",
+   "judgements": [
+    "open_land.toml#27"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -4000,
+   "kind": "seam",
+   "step": 0.391,
+   "pairs": 13,
+   "bbox": [
+    4.8,
+    42.1,
+    14.8,
+    52.1
+   ],
+   "region": "Central Europe",
+   "judgements": [
+    "open_land.toml#23"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -7000,
+   "kind": "seam",
+   "step": 0.53,
+   "pairs": 6,
+   "bbox": [
+    24.7,
+    33.1,
+    34.7,
+    43.1
+   ],
+   "region": "Anatolia & Cyprus",
+   "judgements": [
+    "open_land.toml#18"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -9000,
+   "kind": "seam",
+   "step": 0.422,
+   "pairs": 10,
+   "bbox": [
+    17.4,
+    35.4,
+    27.4,
+    45.4
+   ],
+   "region": "Balkans & Greece",
+   "judgements": [
+    "open_land.toml#26"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -3000,
+   "kind": "seam",
+   "step": 0.46,
+   "pairs": 7,
+   "bbox": [
+    11.3,
+    44.4,
+    21.3,
+    54.4
+   ],
+   "region": "Central Europe",
+   "judgements": [
+    "open_land.toml#23"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -8000,
+   "kind": "seam",
+   "step": 0.415,
+   "pairs": 9,
+   "bbox": [
+    9.1,
+    44.1,
+    19.1,
+    54.1
+   ],
+   "region": "Central Europe",
+   "judgements": [
+    "open_land.toml#22"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -6000,
+   "kind": "seam",
+   "step": 0.431,
+   "pairs": 8,
+   "bbox": [
+    24.7,
+    33.1,
+    34.7,
+    43.1
+   ],
+   "region": "Anatolia & Cyprus",
+   "judgements": [
+    "open_land.toml#18"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -7000,
+   "kind": "seam",
+   "step": 0.36,
+   "pairs": 12,
+   "bbox": [
+    9.1,
+    44.1,
+    19.1,
+    54.1
+   ],
+   "region": "Central Europe",
+   "judgements": [
+    "open_land.toml#23"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -10000,
+   "kind": "seam",
+   "step": 0.428,
+   "pairs": 7,
+   "bbox": [
+    26.9,
+    35.9,
+    36.9,
+    45.9
+   ],
+   "region": "Anatolia & Cyprus",
+   "judgements": [
+    "open_land.toml#17"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -5000,
+   "kind": "seam",
+   "step": 0.37,
+   "pairs": 10,
+   "bbox": [
+    4.8,
+    42.1,
+    14.8,
+    52.1
+   ],
+   "region": "Central Europe",
+   "judgements": [
+    "open_land.toml#23"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -4000,
+   "kind": "seam",
+   "step": 0.374,
+   "pairs": 9,
+   "bbox": [
+    11.3,
+    44.4,
+    21.3,
+    54.4
+   ],
+   "region": "Central Europe",
+   "judgements": [
+    "open_land.toml#23"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -6000,
+   "kind": "seam",
+   "step": 0.41,
+   "pairs": 7,
+   "bbox": [
+    17.8,
+    37.1,
+    27.8,
+    47.1
+   ],
+   "region": "Balkans & Greece",
+   "judgements": [
+    "open_land.toml#26"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -9000,
+   "kind": "seam",
+   "step": 0.43,
+   "pairs": 6,
+   "bbox": [
+    14.8,
+    49.4,
+    24.8,
+    59.4
+   ],
+   "region": "Central Europe",
+   "judgements": [
+    "open_land.toml#22"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -7000,
+   "kind": "seam",
+   "step": 0.418,
+   "pairs": 6,
+   "bbox": [
+    17.8,
+    37.1,
+    27.8,
+    47.1
+   ],
+   "region": "Balkans & Greece",
+   "judgements": [
+    "open_land.toml#26"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -3000,
+   "kind": "seam",
+   "step": 0.349,
+   "pairs": 7,
+   "bbox": [
+    15.6,
+    61.9,
+    25.6,
+    71.9
+   ],
+   "region": "Scandinavia",
+   "judgements": [
+    "open_land.toml#20"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -3000,
+   "kind": "seam",
+   "step": 0.371,
+   "pairs": 6,
+   "bbox": [
+    5.7,
+    57.1,
+    15.7,
+    67.1
+   ],
+   "region": "Scandinavia",
+   "judgements": [
+    "open_land.toml#20"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -7000,
+   "kind": "seam",
+   "step": 0.366,
+   "pairs": 6,
+   "bbox": [
+    -2.1,
+    43.1,
+    7.9,
+    53.1
+   ],
+   "region": "France & Low Countries",
+   "judgements": [
+    "open_land.toml#24"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -8000,
+   "kind": "seam",
+   "step": 0.37,
+   "pairs": 5,
+   "bbox": [
+    14.8,
+    49.4,
+    24.8,
+    59.4
+   ],
+   "region": "Central Europe",
+   "judgements": [
+    "open_land.toml#22"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -8000,
+   "kind": "seam",
+   "step": 0.369,
+   "pairs": 5,
+   "bbox": [
+    5.7,
+    57.1,
+    15.7,
+    67.1
+   ],
+   "region": "Scandinavia",
+   "judgements": [
+    "open_land.toml#20"
+   ]
+  },
+  {
+   "layer": "mines",
+   "year": -3000,
+   "kind": "seam",
+   "step": 0.315,
+   "pairs": 7,
+   "bbox": [
+    29.9,
+    33.1,
+    39.9,
+    43.1
+   ],
+   "region": "Anatolia & Cyprus",
+   "judgements": [
+    "mines.toml#28"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -6000,
+   "kind": "seam",
+   "step": 0.349,
+   "pairs": 5,
+   "bbox": [
+    11.3,
+    44.4,
+    21.3,
+    54.4
+   ],
+   "region": "Central Europe",
+   "judgements": [
+    "open_land.toml#23"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -10000,
+   "kind": "seam",
+   "step": 0.438,
+   "pairs": 3,
+   "bbox": [
+    7.8,
+    49.4,
+    17.8,
+    59.4
+   ],
+   "region": "Central Europe",
+   "judgements": [
+    "open_land.toml#22"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -5000,
+   "kind": "seam",
+   "step": 0.345,
+   "pairs": 4,
+   "bbox": [
+    11.7,
+    49.1,
+    21.7,
+    59.1
+   ],
+   "region": "Central Europe",
+   "judgements": [
+    "open_land.toml#23"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -6000,
+   "kind": "seam",
+   "step": 0.342,
+   "pairs": 4,
+   "bbox": [
+    7.0,
+    49.4,
+    17.0,
+    59.4
+   ],
+   "region": "Central Europe",
+   "judgements": [
+    "open_land.toml#23"
+   ]
+  },
+  {
+   "layer": "open_land",
+   "year": -8000,
+   "kind": "seam",
+   "step": 0.369,
+   "pairs": 3,
+   "bbox": [
+    23.0,
+    39.1,
+    33.0,
+    49.1
+   ],
+   "region": "Balkans & Greece",
+   "judgements": [
+    "open_land.toml#26"
+   ]
+  }
+ ],
+ "time_hotspots": [
+  {
+   "layer": "domestic_livestock",
+   "year": -6000,
+   "to": -5000,
+   "region": "Maghreb",
+   "cells": 1358,
+   "mean_change": 0.504
+  },
+  {
+   "layer": "pottery",
+   "year": -6000,
+   "to": -5000,
+   "region": "Russia: forest north of 56\u00b0N",
+   "cells": 1218,
+   "mean_change": 0.489
+  },
+  {
+   "layer": "pottery",
+   "year": -7000,
+   "to": -6000,
+   "region": "Russia: steppe and forest-steppe",
+   "cells": 1019,
+   "mean_change": 0.514
+  },
+  {
+   "layer": "pottery",
+   "year": -7000,
+   "to": -6000,
+   "region": "Russia: forest north of 56\u00b0N",
+   "cells": 1025,
+   "mean_change": 0.485
+  },
+  {
+   "layer": "domestic_livestock",
+   "year": -6000,
+   "to": -5000,
+   "region": "Sahara\u2013Sahel",
+   "cells": 783,
+   "mean_change": 0.519
+  },
+  {
+   "layer": "domestic_livestock",
+   "year": -9000,
+   "to": -8000,
+   "region": "Iran & Afghanistan",
+   "cells": 725,
+   "mean_change": 0.503
+  },
+  {
+   "layer": "domestic_livestock",
+   "year": -6000,
+   "to": -5000,
+   "region": "Libya & Egypt",
+   "cells": 660,
+   "mean_change": 0.545
+  },
+  {
+   "layer": "enclosures",
+   "year": -6000,
+   "to": -5000,
+   "region": "Central Europe",
+   "cells": 433,
+   "mean_change": 0.673
+  },
+  {
+   "layer": "cereals",
+   "year": -6000,
+   "to": -5000,
+   "region": "Central Europe",
+   "cells": 461,
+   "mean_change": 0.624
+  },
+  {
+   "layer": "domestic_livestock",
+   "year": -7000,
+   "to": -6000,
+   "region": "Central Europe",
+   "cells": 487,
+   "mean_change": 0.534
+  },
+  {
+   "layer": "cereals",
+   "year": -7000,
+   "to": -6000,
+   "region": "Balkans & Greece",
+   "cells": 411,
+   "mean_change": 0.627
+  },
+  {
+   "layer": "pottery",
+   "year": -6000,
+   "to": -5000,
+   "region": "Scandinavia",
+   "cells": 367,
+   "mean_change": 0.675
+  },
+  {
+   "layer": "pottery",
+   "year": -7000,
+   "to": -6000,
+   "region": "Ukraine & Belarus",
+   "cells": 428,
+   "mean_change": 0.542
+  },
+  {
+   "layer": "megalithic_tombs",
+   "year": -5000,
+   "to": -4000,
+   "region": "Central Europe",
+   "cells": 387,
+   "mean_change": 0.541
+  },
+  {
+   "layer": "cereals",
+   "year": -6000,
+   "to": -5000,
+   "region": "France & Low Countries",
+   "cells": 315,
+   "mean_change": 0.664
+  },
+  {
+   "layer": "cereals",
+   "year": -6000,
+   "to": -5000,
+   "region": "Iberia",
+   "cells": 313,
+   "mean_change": 0.663
+  },
+  {
+   "layer": "domestic_livestock",
+   "year": -7000,
+   "to": -6000,
+   "region": "Balkans & Greece",
+   "cells": 373,
+   "mean_change": 0.491
+  },
+  {
+   "layer": "domestic_livestock",
+   "year": -7000,
+   "to": -6000,
+   "region": "France & Low Countries",
+   "cells": 304,
+   "mean_change": 0.602
+  },
+  {
+   "layer": "enclosures",
+   "year": -6000,
+   "to": -5000,
+   "region": "British Isles",
+   "cells": 246,
+   "mean_change": 0.743
+  },
+  {
+   "layer": "pottery",
+   "year": -7000,
+   "to": -6000,
+   "region": "Central Asia",
+   "cells": 348,
+   "mean_change": 0.519
+  },
+  {
+   "layer": "cereals",
+   "year": -9000,
+   "to": -8000,
+   "region": "Iran & Afghanistan",
+   "cells": 391,
+   "mean_change": 0.45
+  },
+  {
+   "layer": "megalithic_tombs",
+   "year": -6000,
+   "to": -5000,
+   "region": "France & Low Countries",
+   "cells": 275,
+   "mean_change": 0.627
+  },
+  {
+   "layer": "enclosures",
+   "year": -6000,
+   "to": -5000,
+   "region": "France & Low Countries",
+   "cells": 275,
+   "mean_change": 0.571
+  },
+  {
+   "layer": "cereals",
+   "year": -5000,
+   "to": -4000,
+   "region": "British Isles",
+   "cells": 206,
+   "mean_change": 0.689
+  },
+  {
+   "layer": "megalithic_tombs",
+   "year": -7000,
+   "to": -6000,
+   "region": "British Isles",
+   "cells": 199,
+   "mean_change": 0.682
+  },
+  {
+   "layer": "enclosures",
+   "year": -7000,
+   "to": -6000,
+   "region": "Central Europe",
+   "cells": 225,
+   "mean_change": 0.584
+  },
+  {
+   "layer": "enclosures",
+   "year": -6000,
+   "to": -5000,
+   "region": "Balkans & Greece",
+   "cells": 161,
+   "mean_change": 0.732
+  },
+  {
+   "layer": "domestic_livestock",
+   "year": -6000,
+   "to": -5000,
+   "region": "Central Europe",
+   "cells": 224,
+   "mean_change": 0.517
+  },
+  {
+   "layer": "mines",
+   "year": -5000,
+   "to": -4000,
+   "region": "France & Low Countries",
+   "cells": 178,
+   "mean_change": 0.635
+  },
+  {
+   "layer": "domestic_livestock",
+   "year": -6000,
+   "to": -5000,
+   "region": "Iberia",
+   "cells": 214,
+   "mean_change": 0.509
+  },
+  {
+   "layer": "megalithic_tombs",
+   "year": -8000,
+   "to": -7000,
+   "region": "Iberia",
+   "cells": 169,
+   "mean_change": 0.637
+  },
+  {
+   "layer": "cereals",
+   "year": -7000,
+   "to": -6000,
+   "region": "Italy & islands",
+   "cells": 165,
+   "mean_change": 0.614
+  },
+  {
+   "layer": "cereals",
+   "year": -7000,
+   "to": -6000,
+   "region": "Central Europe",
+   "cells": 208,
+   "mean_change": 0.485
+  },
+  {
+   "layer": "enclosures",
+   "year": -4000,
+   "to": -3000,
+   "region": "Iberia",
+   "cells": 143,
+   "mean_change": 0.703
+  },
+  {
+   "layer": "megalithic_tombs",
+   "year": -5000,
+   "to": -4000,
+   "region": "Scandinavia",
+   "cells": 201,
+   "mean_change": 0.495
+  },
+  {
+   "layer": "domestic_livestock",
+   "year": -5000,
+   "to": -4000,
+   "region": "Ukraine & Belarus",
+   "cells": 200,
+   "mean_change": 0.477
+  },
+  {
+   "layer": "houses",
+   "year": -5000,
+   "to": -4000,
+   "region": "British Isles",
+   "cells": 162,
+   "mean_change": 0.58
+  },
+  {
+   "layer": "domestic_livestock",
+   "year": -8000,
+   "to": -7000,
+   "region": "Anatolia & Cyprus",
+   "cells": 161,
+   "mean_change": 0.569
+  },
+  {
+   "layer": "pile_dwellings",
+   "year": -5000,
+   "to": -4000,
+   "region": "Central Europe",
+   "cells": 148,
+   "mean_change": 0.605
+  },
+  {
+   "layer": "domestic_livestock",
+   "year": -7000,
+   "to": -6000,
+   "region": "Italy & islands",
+   "cells": 169,
+   "mean_change": 0.521
+  }
+ ],
+ "score": 0.3401573403524687,
+ "guards": {
+  "observed": true,
+  "coverage": true,
+  "holdout": true,
+  "drift": true,
+  "spread": true,
+  "regressions": true
+ },
+ "baseline": {
+  "rough_oo": 0.007867148581456328,
+  "rough_os": 0.0717497474986587,
+  "rough_ss": 0.0056086874709072015,
+  "cliffs": 1.7460023221374803,
+  "rule_edge_cliffs": 1.1196260878637865,
+  "conf_edges": 16.795179653058828,
+  "time_step": 0.022488954829485774,
+  "flicker": 2.7439907104001775,
+  "holdout": 0.0953755733337699,
+  "drift": 0.0,
+  "coverage": 0.9993370967629388,
+  "observed_moved": 0.0
+ }
+}

@@ -18,6 +18,7 @@ import math
 import os
 import re
 import time
+import tomllib
 import unicodedata
 import urllib.error
 import urllib.parse
@@ -234,10 +235,78 @@ def _clean(s):
     return " ".join((s or "").split())
 
 
-def parse_xronos(path, seen=None, type_aliases=None):
+def load_records(path):
+    """data/settlements/records.toml -> (locate, same).
+
+    locate: filed site name -> (lon, lat) for records filed with no position.
+    same: filed site name -> (site name, lon, lat), for `apply_same`.
+    Every `[[same]]` member is also in `locate`, at the site's position."""
+    if not path or not os.path.exists(path):
+        return {}, {}
+    with open(path, "rb") as f:
+        doc = tomllib.load(f)
+    locate, same = {}, {}
+    for e in doc.get("locate", []):
+        locate[e["site"]] = tuple(e["at"])
+    for e in doc.get("same", []):
+        for m in e["members"]:
+            if m in same:
+                raise ValueError(f"{path}: {m!r} is in two [[same]] entries")
+            same[m] = (e["name"], *e["at"])
+            locate[m] = tuple(e["at"])
+    return locate, same
+
+
+def load_rejects(path):
+    """data/settlements/records.toml `[[reject]]` entries -> {(filed site
+    name, lab_key(lab))}: single dates filed under the wrong site, dropped
+    before the records are grouped into sites."""
+    if not path or not os.path.exists(path):
+        return set()
+    with open(path, "rb") as f:
+        doc = tomllib.load(f)
+    return {(e["site"], lab_key(e["lab"])) for e in doc.get("reject", [])}
+
+
+def apply_rejects(dates, rejects):
+    """Drop the date rows named by `load_rejects`, in place. Raises when a
+    reject matches no row (the record changed under it). Returns how many
+    rows were dropped."""
+    hit = set()
+    keep = []
+    for d in dates:
+        k = (d["site"], lab_key(d["labnr"]))
+        if k in rejects:
+            hit.add(k)
+        else:
+            keep.append(d)
+    missing = sorted(rejects - hit)
+    if missing:
+        raise ValueError(f"records.toml [[reject]] matches no date: {missing}")
+    n = len(dates) - len(keep)
+    dates[:] = keep
+    return n
+
+
+def apply_same(dates, same):
+    """Refile the date rows of each `[[same]]` member under the site's name
+    and position; the filed name is kept as `filed` (it becomes an alias).
+    Returns how many rows were refiled."""
+    n = 0
+    for d in dates:
+        hit = same.get(d["site"])
+        if hit:
+            d["filed"], (d["site"], d["lon"], d["lat"]) = d["site"], hit
+            n += 1
+    return n
+
+
+def parse_xronos(path, seen=None, type_aliases=None, locate=None):
     """XRONOS API dump -> date rows.
 
     seen: set of measurement ids already taken from other dumps; updated.
+    locate: filed site name -> (lon, lat) for records filed with no position
+    (`load_records`); without one such a record is dropped.
     """
     out, seen = [], set() if seen is None else seen
     for row in json.load(open(path)) or []:  # an empty result is `null`
@@ -245,11 +314,17 @@ def parse_xronos(path, seen=None, type_aliases=None):
         if m["id"] in seen:
             continue
         seen.add(m["id"])
+        name = _clean(fix_mojibake(m.get("site")))  # before _clean: it eats NBSP bytes
         try:
-            lat, lon, bp, std = float(m["lat"]), float(m["lng"]), float(m["bp"]), float(m["std"])
+            bp, std = float(m["bp"]), float(m["std"])
         except (TypeError, ValueError):
             continue
-        name = _clean(fix_mojibake(m.get("site")))  # before _clean: it eats NBSP bytes
+        try:
+            lat, lon = float(m["lat"]), float(m["lng"])
+        except (TypeError, ValueError):
+            if not (locate and name in locate):
+                continue
+            lon, lat = locate[name]
         if not name or std <= 0:
             continue
         refs = tuple(sorted({r for x in m.get("reference") or [] if (r := _clean(x.get("reference")))}))
@@ -430,6 +505,8 @@ def derive_sites(dates, years, window, trim=0.0, same_km=0.0, same_name_km=0.0,
             groups[(d["site"], round(d["lon"], 4), round(d["lat"], 4))].append((int(y), d))
     feats, seen = [], {}
     for name, lon, lat, rows, aliases in merge_spellings(groups, same_km, same_name_km):
+        # Names refiled by `apply_same` are aliases too.
+        aliases = sorted(set(aliases) | {f for _, d in rows if (f := d.get("filed")) and f != name})
         rows = collapse_duplicates(rows)
         ys = [y for y, _ in rows]
         if not any(window[0] <= y <= window[1] for y in ys):
@@ -592,7 +669,7 @@ def merge_curated(feats, curated, merge_km):
     """Hand entries win key by key over a derived site; the derived site's
     other properties are kept. The site is the one whose name or alias equals
     the entry's `match` property (the best dated, if several), else the
-    nearest within merge_km. Unmatched entries are added as they are. A null
+    nearest dated site within merge_km (never an earlier hand entry). Unmatched entries are added as they are. A null
     geometry takes the matched site's."""
     feats = list(feats)
     for c in curated:
@@ -604,8 +681,9 @@ def merge_curated(feats, curated, merge_km):
             if not near:
                 raise ValueError(f"curated {own['name']!r}: no dated site named {want!r}")
         else:
-            near = [(d, i) for i, f in enumerate(feats)
-                    if (d := _km(geom["coordinates"], f["geometry"]["coordinates"])) <= merge_km]
+            # Never another hand entry: two of them close together are two sites.
+            near = [(d, i) for i, f in enumerate(feats) if f["properties"].get("sources") != ["curated"]
+                    and (d := _km(geom["coordinates"], f["geometry"]["coordinates"])) <= merge_km]
         props = {"type": "settlement", "population": {}, "sources": ["curated"], "references": [], **own}
         if near:
             _, i = min(near)
@@ -828,9 +906,10 @@ def build(cfg, grid, log=print):
         dumps = list(ex.map(get, queries))
     prov += dumps
     aliases = xc.get("type_aliases")
+    locate, same = load_records(sc.get("records"))
     dates, seen = [], set()
     for p in dumps:
-        dates += parse_xronos(p["path"], seen, aliases)
+        dates += parse_xronos(p["path"], seen, aliases, locate)
     log(f"xronos: {len(dates)} usable dates from {len(dumps)} queries")
 
     labs = {lab_key(d["labnr"]) for d in dates}
@@ -841,6 +920,9 @@ def build(cfg, grid, log=print):
         log(f"{spec['name']}: {len(rows)} usable dates not already in hand")
         dates += rows
 
+    log(f"records: {apply_rejects(dates, load_rejects(sc.get('records')))} dates rejected")
+    log(f"records: {apply_same(dates, same)} dates refiled under {len(set(v[0] for v in same.values()))} sites "
+        f"({sc.get('records')})")
     fixed, lost = repair_lost(dates, sc["same_name_km"])
     log(f"names: {fixed} with lost letters matched to a clean spelling nearby, {lost} left as they are")
 

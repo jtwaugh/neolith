@@ -332,6 +332,11 @@ value = 0.2
 kind = "slice_value"
 slices = [-10000, -9000, -8000]
 value = 0.05
+[[judgement.adjust]]
+kind = "area"                              # Socotra: no dated occupation before about the 1st century BCE, so not the mainland value. Low confidence; argument and source in data/places/plans/socotra.toml
+bbox = [52.0, 11.8, 54.9, 13.0]
+value = 0.02
+firm = true                                # an island 350 km offshore: mainland evidence must not lean across the water
 
 [[judgement]]
 region = "Balkans & Greece"

@@ -45,3 +45,42 @@ was = [8.9369, 47.0131]
 to = [-8.6157, 39.5057]
 source = "https://en.wikipedia.org/wiki/Almonda"
 note = "Placed in Switzerland; the Almonda karst caves (Gruta do Almonda, Gruta da Aroeira) are at Zibreira, Torres Novas, Portugal."
+
+[[fix]]
+name = "Siegerswoude I"
+was = [0.0, 6.23]
+to = [6.233, 53.1]
+source = "https://en.wikipedia.org/wiki/Siegerswoude"
+note = "The record has longitude 0 and the longitude (6.23) in the latitude field, which put a Dutch Mesolithic site in Ghana. Siegerswoude is a village in Opsterland, Friesland; position to the village, about 3 km."
+
+[[fix]]
+name = "Chemin de Kristel"
+was = [0.0, 35.83]
+to = [-0.4833, 35.8261]
+source = "https://fr.wikipedia.org/wiki/Kristel"
+note = "Longitude missing (0), which put the site 44 km east of where its name says. Kristel is a village on the coast 26 km from Oran, Algeria (the record files it under Morocco); position to the village, about 5 km."
+
+# Merimde Beni Salama's five spellings are folded into one site at the
+# record level instead: data/settlements/records.toml [[same]], which keeps
+# every date (KN-3280 and the record filed with no position included).
+
+[[fix]]
+name = "Okuzini"
+was = [30.7, 36.88]
+drop = true
+source = "https://en.wikipedia.org/wiki/Okuzini_Cave"
+note = "Öküzini Cave under its unaccented spelling, placed in Antalya town 25 km south-east of the cave. 34 of its 39 dates are also held by the entry 'Öküzini' at 30.576, 37.089, which is kept (30 under the same lab numbers, four under garbled Heidelberg numbers); the five it alone has (OxA-5177, -5178, -5179, -5181, -5182, 16,580-15,460 BP) are older than the map. Fixed here only, not also in records.toml: a [[same]] merge there would leave this drop matching nothing."
+
+[[fix]]
+name = "Farafra"
+was = [0.0, 25.2933]
+to = [27.95, 27.05]
+source = "https://doi.org/10.1017/S0021853700022532"
+note = "SMU-654, 7310 +/- 60 BP. Longitude missing (0), and the latitude is not this record's: 25.2933 is the latitude of the entry before it in the same CalPal list (Esna, 32.5564, 25.2933), copied down. So the name is the field to trust. Close 1984 (note 37) lists SMU-631, 654 and 969 together as samples collected by Haynes; the other two are filed by oasis (Dakhla, Gebel Nabta). Placed at Farafra oasis, where the other Farafra entries are; position to the oasis, about 30 km. No source gives the site itself."
+
+[[fix]]
+name = "Pors Nehue (H\uFFFDdic)"
+was = [61.2833, 38.95]
+rename = "Unidentified site (GIN-4442)"
+source = "https://xronos.ch/c14s/240980"
+note = "GIN-4442, 9520 +/- 130 BP, bone, reference 'Buvit I. QI 2011'. The date is not from Pors Nehue on Hoedic, Brittany: it is a Moscow (GIN) date filed under Turkmenistan in p3k14c, where the site names of this block are out of step with the dates (the row before, GIN-4440, is a Siberian position called 'Vogelherd'). XRONOS has the wrong name too and no coordinates. Renamed so the map does not show a Breton site in the Karakum; the position is p3k14c's and is unverified."
