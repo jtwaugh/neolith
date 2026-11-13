@@ -33,6 +33,28 @@ impl SideTab {
     }
 }
 
+/// Narrower than this (in points) the app takes its phone layout.
+const COMPACT_WIDTH: f32 = 720.0;
+
+/// A phone-sized screen: the sidebar becomes a sheet, the bars condense.
+pub fn is_compact(ctx: &egui::Context) -> bool {
+    ctx.content_rect().width() < COMPACT_WIDTH
+}
+
+/// Once the app has seen a touch, makes buttons and other targets big enough
+/// for a finger (egui's defaults are sized for a mouse).
+fn touch_style(ctx: &egui::Context) {
+    if !ctx.input(|i| i.has_touch_screen()) || ctx.global_style().spacing.interact_size.y >= 32.0 {
+        return;
+    }
+    ctx.global_style_mut(|st| {
+        st.spacing.interact_size.y = 32.0;
+        st.spacing.button_padding = vec2(10.0, 6.0);
+        st.spacing.item_spacing = vec2(10.0, 8.0);
+        st.spacing.scroll.bar_width = 12.0;
+    });
+}
+
 /// The Selected tab: the open settlement's record, else the hex inspector.
 fn selected(ui: &mut egui::Ui, s: &mut Session, now: f64) {
     let year = s.year();
@@ -138,9 +160,58 @@ impl NeolithApp {
     pub fn main_screen(&mut self, ui: &mut egui::Ui, now: f64, dt: f64) {
         let ctx = ui.ctx().clone();
         self.shortcuts(&ctx);
-        self.top_bar(ui, now);
-        self.timeline(ui);
+        touch_style(&ctx);
+        let compact = is_compact(&ctx);
+        self.top_bar(ui, now, compact);
+        self.timeline(ui, compact);
         let Some(session) = &mut self.session else { return };
+        if compact {
+            // A phone: no editor (its tool palette needs the width), and the
+            // sidebar is a sheet over the bottom of the board, opened by a
+            // tap on the map or the Info button.
+            if session.editor {
+                session.set_editor(false);
+            }
+            let style = &mut self.style;
+            if session.sheet {
+                let max = (ctx.content_rect().height() * 0.6).max(160.0);
+                egui::Panel::bottom("sheet")
+                    .resizable(true)
+                    .default_size((ctx.content_rect().height() * 0.38).min(max))
+                    .min_size(110.0)
+                    .max_size(max)
+                    .show(ui, |ui| {
+                        ui.add_space(4.0);
+                        ui.horizontal(|ui| {
+                            for tab in SideTab::ALL {
+                                ui.selectable_value(&mut session.side_tab, tab, tab.label());
+                            }
+                            ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                                if ui.button("Close").clicked() {
+                                    session.sheet = false;
+                                }
+                            });
+                        });
+                        ui.separator();
+                        // The legend folds away: a phone's sheet is short.
+                        egui::Panel::bottom("sheet_legend").resizable(false).show(ui, |ui| {
+                            egui::CollapsingHeader::new("Legend").id_salt("sheet_legend_fold").show(ui, |ui| {
+                                ui.set_max_height(ui.ctx().content_rect().height() * 0.25);
+                                legend(ui, session, style.survey);
+                            });
+                        });
+                        match session.side_tab {
+                            SideTab::Selected => selected(ui, session, now),
+                            SideTab::Chronicle => chronicle(ui, session, now),
+                            SideTab::Map => map_tab(ui, style, session),
+                        }
+                    });
+            }
+            egui::CentralPanel::default().frame(egui::Frame::NONE).show(ui, |ui| {
+                crate::view::board_view(ui, session, &self.style, self.gpu.as_ref().unwrap(), now, dt);
+            });
+            return;
+        }
         if session.editor {
             egui::Panel::left("tools").resizable(false).exact_size(210.0).show(ui, |ui| tools_panel(ui, session));
         }
@@ -213,11 +284,58 @@ impl NeolithApp {
         }
     }
 
-    fn top_bar(&mut self, ui: &mut egui::Ui, now: f64) {
+    fn top_bar(&mut self, ui: &mut egui::Ui, now: f64, compact: bool) {
         let ctx = ui.ctx().clone();
         let (mut open, mut save) = (false, false);
         egui::Panel::top("top").show(ui, |ui| {
             let Some(s) = &mut self.session else { return };
+            if compact {
+                // One row: the menu, the map mode and the sheet button. The
+                // rest of the bar's settings live in the menu.
+                ui.horizontal(|ui| {
+                    ui.menu_button("Menu", |ui| {
+                        if ui.button("Open world…").clicked() {
+                            open = true;
+                            ui.close();
+                        }
+                        if ui.button("Download world.bin").clicked() {
+                            save = true;
+                            ui.close();
+                        }
+                        ui.separator();
+                        ui.label("Terrain art");
+                        ui.horizontal(|ui| {
+                            for art in ArtMode::ALL {
+                                ui.selectable_value(&mut self.style.terrain_art, art, art.label());
+                            }
+                        });
+                        ui.toggle_value(&mut self.style.relief, "Relief");
+                        if ui.button("Board style").clicked() {
+                            s.side_tab = SideTab::Map;
+                            s.sheet = true;
+                            ui.close();
+                        }
+                        if ui.button("Chronicle").clicked() {
+                            s.side_tab = SideTab::Chronicle;
+                            s.sheet = true;
+                            ui.close();
+                        }
+                    });
+                    map_mode_picker(ui, s);
+                    ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                        ui.toggle_value(&mut s.sheet, "Info");
+                    });
+                });
+                if s.mode == MapMode::Evidence {
+                    ui.horizontal(|ui| evidence_picker(ui, s));
+                }
+                if let Some((msg, t)) = &self.status {
+                    if now - t < 6.0 {
+                        ui.weak(msg);
+                    }
+                }
+                return;
+            }
             ui.horizontal(|ui| {
                 ui.menu_button("File", |ui| {
                     if ui.button("Open world…").clicked() {
@@ -281,10 +399,42 @@ impl NeolithApp {
     }
 
     /// Bottom bar: play/pause, speed, the year scrubber and the readout.
-    fn timeline(&mut self, ui: &mut egui::Ui) {
+    fn timeline(&mut self, ui: &mut egui::Ui, compact: bool) {
         let Some(s) = &mut self.session else { return };
         egui::Panel::bottom("timeline").show(ui, |ui| {
             ui.add_space(4.0);
+            if compact {
+                // Two rows: the controls and the year, then the scrubber at
+                // full width (a thumb needs the length).
+                ui.horizontal(|ui| {
+                    let label = if s.clock.playing { "Pause" } else { "Play" };
+                    if ui.add(egui::Button::new(label).min_size(vec2(72.0, 0.0))).clicked() {
+                        let (min, max) = s.clock.range();
+                        if !s.clock.playing && s.year() >= max {
+                            s.clock.set_year(min);
+                        }
+                        s.clock.playing = !s.clock.playing;
+                    }
+                    let step = s.clock.speed_step();
+                    egui::ComboBox::from_id_salt("speed")
+                        .selected_text(format!("{:.0} yr/s", SPEEDS[step]))
+                        .width(84.0)
+                        .show_ui(ui, |ui| {
+                            for (i, v) in SPEEDS.iter().enumerate() {
+                                if ui.selectable_label(i == step, format!("{v:.0} yr/s")).clicked() {
+                                    s.clock.set_speed_step(i);
+                                }
+                            }
+                        });
+                    ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                        ui.label(RichText::new(s.year().to_string()).strong().size(15.0));
+                    });
+                });
+                ui.add_space(2.0);
+                scrubber(ui, s);
+                ui.add_space(4.0);
+                return;
+            }
             ui.horizontal(|ui| {
                 let label = if s.clock.playing { "Pause" } else { "Play" };
                 let play = ui.add_enabled(!s.editor, egui::Button::new(label).min_size(vec2(72.0, 24.0)));

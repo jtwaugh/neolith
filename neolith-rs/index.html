@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#1b1b1b" />
     <title>Neolith</title>
     <!-- Size-tuned build: see [profile.web] in Cargo.toml. -->
     <link data-trunk rel="rust" href="crates/app/Cargo.toml" data-bin="neolith" data-cargo-profile="web" data-wasm-opt="z" />
@@ -13,7 +16,15 @@
     <link rel="preload" href="world.bin" as="fetch" type="application/octet-stream" crossorigin="anonymous" />
     <style>
       html, body { margin: 0; height: 100%; overflow: hidden; background: #1b1b1b; }
-      canvas { display: block; width: 100%; height: 100%; outline: none; }
+      /* Phones: the dynamic viewport excludes the browser's own bars, and
+         the board takes every touch (no page scroll, zoom, text selection
+         or long-press callout). */
+      body { height: 100dvh; overscroll-behavior: none; }
+      canvas {
+        display: block; width: 100%; height: 100%; outline: none;
+        touch-action: none; user-select: none; -webkit-user-select: none;
+        -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;
+      }
       #loading {
         position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
         color: #b9ad94; font: italic 20px/1.4 Georgia, "Times New Roman", serif; letter-spacing: 0.08em;
@@ -26,5 +37,11 @@
     <canvas id="neolith_canvas"></canvas>
     <!-- Removed by the app once it is running (main.rs). -->
     <div id="loading">Loading Neolith…</div>
+    <script>
+      // iOS Safari ignores user-scalable=no: stop its page pinch-zoom so the
+      // pinch reaches the board instead.
+      for (const ev of ["gesturestart", "gesturechange", "gestureend"])
+        document.addEventListener(ev, (e) => e.preventDefault(), { passive: false });
+    </script>
   </body>
 </html>
