@@ -402,6 +402,43 @@ pub fn haloed_text(painter: &Painter, pos: Pos2, align: egui::Align2, text: &str
 /// `shown` holds the sea and region names visible last frame (for hysteresis)
 /// and is updated.
 #[allow(clippy::too_many_arguments)]
+/// A label size snapped to half a point (see `draw_geography`).
+fn quantize(size: f32) -> f32 {
+    (size * 2.0).round() / 2.0
+}
+
+/// Each river's course as drawn (splined) and its cumulative length along
+/// the ground, built once per world rather than every frame.
+fn river_courses(rivers: &[neolith_core::River]) -> Arc<Vec<(Vec<LonLat>, Vec<f64>)>> {
+    use std::sync::Mutex;
+    static CACHE: Mutex<Option<(usize, usize, Arc<Vec<(Vec<LonLat>, Vec<f64>)>>)>> = Mutex::new(None);
+    let key = (rivers.as_ptr() as usize, rivers.len());
+    let mut cache = CACHE.lock().unwrap();
+    if let Some((p, n, c)) = cache.as_ref() {
+        if (*p, *n) == key {
+            return c.clone();
+        }
+    }
+    let courses: Vec<_> = rivers
+        .iter()
+        .map(|r| {
+            if r.points.len() < 2 {
+                return (Vec::new(), Vec::new());
+            }
+            let course = crate::board::scene::river_spline(&r.points, 0.03);
+            let mut cum = vec![0.0f64];
+            for w in course.windows(2) {
+                let dx = (w[1].lon - w[0].lon) * ((w[0].lat + w[1].lat) / 2.0).to_radians().cos();
+                cum.push(cum.last().unwrap() + dx.hypot(w[1].lat - w[0].lat));
+            }
+            (course, cum)
+        })
+        .collect();
+    let c = Arc::new(courses);
+    *cache = Some((key.0, key.1, c.clone()));
+    c
+}
+
 pub fn draw_geography(
     painter: &Painter,
     rect: Rect,
@@ -419,6 +456,7 @@ pub fn draw_geography(
     let mut drawn = Vec::new();
     let water_at = |ll: LonLat| grid.hex_at(ll).map(|h| terrain[h.index()] == Terrain::Water as u8);
 
+    let regions_span = crate::perf::span("geo regions");
     for l in geo_labels() {
         let mid = l.at(0.5);
         if water_at(mid) != Some(l.kind.is_water()) {
@@ -453,7 +491,10 @@ pub fn draw_geography(
         if alpha <= 0.01 {
             continue;
         }
-        let size = size.clamp(MIN_SIZE - 1.0, max);
+        // Sizes snap to half points: egui caches glyphs and layouts per
+        // exact size, so a size that drifts with every zoom step would
+        // rasterize fresh glyphs each frame.
+        let size = quantize(size.clamp(MIN_SIZE - 1.0, max));
         let font = if l.kind.is_water() { serif_italic(size) } else { serif(size) };
         let (c, halo) = l.kind.colours();
         if let Some(bounds) = draw_along(painter, &line, &text, font, l.kind.tracking(), faded(c, alpha), faded(halo, alpha)) {
@@ -476,13 +517,16 @@ pub fn draw_geography(
     // camera (never round the curve or squashed on the horizon) and is clear
     // of the names placed before geography (famous sites) wins; last frame's
     // point is kept while it still works.
+    drop(regions_span);
+    let rivers_span = crate::perf::span("geo rivers");
     if cam_dist < 0.55 {
         let mut named: Vec<&str> = Vec::new();
         let font = serif_italic(14.0);
         let inside = rect.shrink(20.0);
         let colour = Color32::from_rgba_unmultiplied(18, 62, 128, 225);
         let halo = Color32::from_rgba_unmultiplied(235, 245, 255, 80);
-        for r in world.rivers.iter().filter(|r| r.size >= 2 && r.state_at(year) != RiverState::Absent) {
+        let courses = river_courses(&world.rivers);
+        for (r, (course, cum)) in world.rivers.iter().zip(courses.iter()).filter(|(r, _)| r.size >= 2 && r.state_at(year) != RiverState::Absent) {
             let key_prefix = format!("river\u{1f}{}\u{1f}", r.name);
             let previous = shown.iter().find(|k| k.starts_with(&key_prefix)).cloned();
             if let Some(k) = &previous {
@@ -490,13 +534,6 @@ pub fn draw_geography(
             }
             if named.contains(&r.name.as_str()) || r.points.len() < 2 {
                 continue;
-            }
-            // The course as drawn (splined), and its length along the ground.
-            let course = crate::board::scene::river_spline(&r.points, 0.03);
-            let mut cum = vec![0.0f64];
-            for w in course.windows(2) {
-                let dx = (w[1].lon - w[0].lon) * ((w[0].lat + w[1].lat) / 2.0).to_radians().cos();
-                cum.push(cum.last().unwrap() + dx.hypot(w[1].lat - w[0].lat));
             }
             let text_w = r.name.chars().count() as f32 * 14.0 * 0.5 + 40.0;
             // Clear of earlier names, and not round a hairpin (letters set
@@ -519,7 +556,7 @@ pub fn draw_geography(
             let Some((f, mut seg)) = kept
                 .into_iter()
                 .chain(anchor_fractions())
-                .filter_map(|f| river_stretch(view, relief, rect, inside, &course, &cum, f, text_w).map(|seg| (f, seg)))
+                .filter_map(|f| river_stretch(view, relief, rect, inside, course, cum, f, text_w).map(|seg| (f, seg)))
                 .find(|(_, seg)| clear(seg))
             else {
                 continue;
@@ -535,6 +572,8 @@ pub fn draw_geography(
         }
     }
 
+    drop(rivers_span);
+    let _lakes_span = crate::perf::span("geo lakes");
     // Lakes: the name across the lake, if it fits.
     for lake in &world.lakes {
         let Some(shape) = lake.shape_at(year) else { continue };
@@ -544,10 +583,26 @@ pub fn draw_geography(
             continue;
         }
         let Some(ring) = shape.rings.iter().max_by_key(|r| r.len()) else { continue };
+        let n = lake.name.chars().count() as f32;
+        // Cheap rejection before projecting the whole shore: the corners of
+        // the ring's lon/lat box give a screen box at least as big as the
+        // shore's (give or take curvature), so a name too small for it, or a
+        // box off screen, is skipped.
+        let (lo, hi) = ring.iter().fold(
+            (LonLat::new(f64::MAX, f64::MAX), LonLat::new(f64::MIN, f64::MIN)),
+            |(lo, hi), p| (LonLat::new(lo.lon.min(p.lon), lo.lat.min(p.lat)), LonLat::new(hi.lon.max(p.lon), hi.lat.max(p.lat))),
+        );
+        let corners = [lo, LonLat::new(hi.lon, lo.lat), hi, LonLat::new(lo.lon, hi.lat)];
+        if let Some(c) = screen_line(view, relief, rect, corners.into_iter()) {
+            let bb = Rect::from_points(&c).expand(4.0);
+            let size = (bb.width() * 0.7 / (n * 0.55)).min(bb.height() * 0.5) * 1.25;
+            if size < 11.0 || !rect.intersects(bb) {
+                continue;
+            }
+        }
         let Some(pts) = screen_line(view, relief, rect, ring.iter().copied()) else { continue };
         let bb = Rect::from_points(&pts);
-        let n = lake.name.chars().count() as f32;
-        let size = (bb.width() * 0.7 / (n * 0.55)).min(bb.height() * 0.5).min(24.0);
+        let size = quantize((bb.width() * 0.7 / (n * 0.55)).min(bb.height() * 0.5).min(24.0));
         if size < 11.0 || !rect.contains(bb.center()) {
             continue;
         }

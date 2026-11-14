@@ -588,6 +588,8 @@ impl eframe::App for NeolithApp {
             }
             Screen::Start => self.start_screen(ui),
             Screen::Main => {
+                #[cfg(target_arch = "wasm32")]
+                crate::web_gpu::frame_drawn();
                 if let Some(s) = &mut self.session {
                     if s.tick(clock_dt, now) {
                         ctx.request_repaint();
