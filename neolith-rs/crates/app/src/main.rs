@@ -20,6 +20,8 @@ mod site_record;
 mod sound;
 mod splash;
 mod view;
+#[cfg(target_arch = "wasm32")]
+mod web_gpu;
 
 #[cfg(not(target_arch = "wasm32"))]
 const USAGE: &str = "\
@@ -188,9 +190,22 @@ fn main() {
             .and_then(|d| d.get_element_by_id("neolith_canvas"))
             .and_then(|e| e.dyn_into::<web_sys::HtmlCanvasElement>().ok())
             .expect("index.html must contain <canvas id=\"neolith_canvas\">");
-        let result = eframe::WebRunner::new()
-            .start(canvas, eframe::WebOptions::default(), Box::new(|cc| Ok(Box::new(app::NeolithApp::new(cc, None)))))
-            .await;
+        use web_gpu::Backend;
+        let start = |canvas: web_sys::HtmlCanvasElement, backend: Backend| async move {
+            log::info!("starting with {backend:?}");
+            web_gpu::mark_pending(backend);
+            eframe::WebRunner::new()
+                .start(canvas, web_gpu::web_options(backend), Box::new(|cc| Ok(Box::new(app::NeolithApp::new(cc, None)))))
+                .await
+        };
+        let first = web_gpu::first_choice();
+        let mut result = start(canvas.clone(), first).await;
+        if let (Err(e), Backend::WebGpu) = (&result, first) {
+            log::warn!("WebGPU failed to start ({e:?}); retrying with WebGL");
+            if let Some(fresh) = web_gpu::fresh_canvas(&canvas) {
+                result = start(fresh, Backend::WebGl).await;
+            }
+        }
         // Clear the page's "Loading…" placeholder, or turn it into the error.
         let loading = web_sys::window().and_then(|w| w.document()).and_then(|d| d.get_element_by_id("loading"));
         match result {

@@ -42,6 +42,24 @@
       // pinch reaches the board instead.
       for (const ev of ["gesturestart", "gesturechange", "gestureend"])
         document.addEventListener(ev, (e) => e.preventDefault(), { passive: false });
+      // WebGPU fallback (web_gpu.rs): if the wasm traps while a WebGPU start
+      // is still unproven, reload once; the app then starts with WebGL.
+      // The flag is cleared on a WebGL start, so this cannot loop.
+      function webgpuCrashed() {
+        try {
+          if (sessionStorage.getItem("neolith.webgpu-pending") !== "1") return;
+          sessionStorage.setItem("neolith.webgpu-pending", "crashed");
+        } catch (_) { return; }
+        const el = document.getElementById("loading");
+        if (el) { el.className = ""; el.textContent = "Switching to WebGL…"; }
+        setTimeout(() => location.reload(), 300);
+      }
+      window.addEventListener("error", (e) => {
+        if (e.error instanceof WebAssembly.RuntimeError) webgpuCrashed();
+      });
+      window.addEventListener("unhandledrejection", (e) => {
+        if (e.reason instanceof WebAssembly.RuntimeError) webgpuCrashed();
+      });
     </script>
   </body>
 </html>
