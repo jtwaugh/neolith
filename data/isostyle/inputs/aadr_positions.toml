@@ -1,0 +1,21 @@
+# Corrected positions for AADR v66.p1 genomes whose annotation coordinates
+# contradict their own locality text. Applied by isostyle/people.py
+# load_anno(), by Genetic ID, before any layer or the ancestry table reads
+# them. Each entry: the genetic IDs, the corrected lon/lat, the AADR position
+# it replaces, and the source.
+
+[[position]]
+gid = ["KEB.4.WGC.SG", "KEB.6.WGC.SG", "KEB.1.plus.8.WGC.SG"]
+site = "Kehf el Baroud (Kaf el-Baroud)"
+lon = -7.0
+lat = 33.6667
+was = [5.15, 33.345]
+source = "AADR's locality text for these genomes reads '10 km northeast of Ben Slimane', Morocco (Fregel et al. 2018, PNAS, https://doi.org/10.1073/pnas.1800851115), but its coordinates fall in the Algerian Saharan Atlas. MedAfriCarbon (Lucarini et al. 2020, via XRONOS, dates Gif-2888 and Gif-2889) places the cave at 33.6667N, 7.0W, about 12 km ENE of Benslimane (33.617N, 7.117W). The paper's SI was not read (blocked); position good to about 5 km."
+
+[[position]]
+gid = ["sha003.SG", "sha004.SG", "sha006.SG", "sha007.SG", "sha008.SG", "sha009.SG", "sha010.SG", "sha012.SG", "sha014.SG", "sha014_d.SG", "sha004_d.SG"]
+site = "Shah Tepe"
+lon = 54.381
+lat = 36.945
+was = [56.87, 28.33]
+source = "AADR's locality text for these genomes reads 'Shah Tepe (Golestan Province, Gorgan Plain)' (Koptekin et al. 2023, Current Biology, https://doi.org/10.1016/j.cub.2022.11.034), but its coordinates fall near the Strait of Hormuz, 950 km to the south. Wikipedia, 'Shah Tepe' (https://en.wikipedia.org/wiki/Shah_Tepe, read 2026-11-13), places the mound 'about 13 km north – northwest from the city of Gorgan' and 20 km east of the Caspian Sea; the position here is that offset from Gorgan's coordinates (36.83694N, 54.43722E, https://en.wikipedia.org/wiki/Gorgan). Neither page gives the mound's own coordinates; position good to about 5 km."

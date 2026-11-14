@@ -160,8 +160,12 @@ what = "Ingest the ten AADR burial localities of the Manych box (above, plus Vol
 url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
 yields = "10 dated sites, 4,350-2,900 BCE; the box goes from 0 to 10 in the 4,000 and 3,000 BCE slices"
 effort = "Minutes once the filter exists"
+status = "done"
+done_in = "data/settlements/aadr_dates.csv (AADR v66.p1): Aygurskiy-2, Ipatovo-3, Rasshevatskiy-1, Sengeleevskiy-7, Sharakhalsun-3, Sharakhalsun-6, Sukhaya-Termista-1, Ulan-4, Zolotaryovka-1, Volga-Chogray-Channel-53"
 
 [[research]]
+status = "dropped"
+reason = "Triage 2026-11-13: the plan's author searched and found no such literature; the box now has its AADR burials (item 1). Reopen if a Manych survey publication turns up."
 what = "Find the Mesolithic-Neolithic survey literature of the Manych valley and its tributaries (Kalaus, Yegorlyk, Sal). I did not find it. Lavrentyev 2022 is a way in, and so are the Rostov and Kalmyk institutes' publications (the Yulovskaya Palaeolithic team; Kremennaya and Rassypnaya in Tsybrij et al. 2017). Look for dated sites on the Manych-Gudilo and Chograi lake shores."
 url = "https://journals.rcsi.science/2658-3518/article/view/289402"
 yields = "Unknown. My guess is a handful of surface sites with few dates. If none exist, that is worth recording as a finding."

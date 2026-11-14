@@ -56,17 +56,18 @@ checked = true
 
 [[known_site]]
 name = "Tell el-Samara"
-lon = 31.6
-lat = 30.95
+lon = 31.57
+lat = 30.89
 coordinates = "approximate"
-start = -4200
+start = -4500
 end = -2900
-what = "Settlement in Daqahliya governorate with a continuous sequence from the Neolithic (late fifth millennium BCE) to the end of the Early Dynastic; Neolithic storage silos with animal bone and plant remains. Excavated by the IFAO and the Egyptian ministry 2015-2019. Not opened: the HAL record refused automated access, and this is from a search engine's summary of the abstract and of press reports. The point is a guess within the governorate (about 140 km north of Cairo per the press), good to 20 km at best; the report will have the real one."
-cite = "Guyot, F. et al. 2022, Investigating the Nile Delta's first settlements: excavations at Tell el-Samara 2016-2019, BIFAO 122"
-url = "https://hal.archives-ouvertes.fr/hal-03812307"
-checked = false
+what = "Tell of about 6 ha in Daqahliya governorate, 25 km south-east of al-Mansura, bordering Samara village to the east (Guyot et al. 2022, p. 311). The prehistoric settlement runs c. 4500-3000 BCE: Level 1 c. 4500-4000 BCE (ephemeral dwellings above virgin sand), Level 2 c. 4000-3600, Level 3 c. 3600-3300, Level 4 c. 3300-2900 BCE with the first mudbrick architecture; an Early Dynastic cemetery of more than 85 burials lies in the south-east of the tell. The article prints no radiocarbon list. The point is 25 km south-east of al-Mansura's centre as English Wikipedia gives it (31.05 N, 31.383 E, https://en.wikipedia.org/wiki/Mansoura,_Egypt), so it is good to about 10 km; the article gives no coordinates."
+cite = "Guyot, F., Abdel Azim, M.A., Lesur, J. & Midant-Reynes, B. 2022, Investigating the Nile Delta's first settlements: excavations at Tell el-Samara 2016-2019, BIFAO 122:309-400"
+url = "https://www.ifao.egnet.net/bifao/122/11/"
+checked = true
 
 [[research]]
+next = "Find the feature service behind the EES Delta Survey Esri map, check its terms, and if they allow it pull the sites tagged Predynastic or earlier with their references."
 what = "Ingest the EES Delta Survey: 783 sites across Lower Egypt on a public Esri map that can be filtered by site name, period and reference (also printed as Spencer 2024, EES Excavation Memoir 119). Take every site with a Predynastic or Early Dynastic attribution."
 url = "https://www.ees.ac.uk/delta-survey"
 yields = "My estimate, unverified: 30-60 sites of the fourth millennium BCE in the box, and a few of the fifth; nearly all period-dated, not radiocarbon-dated. The period breakdown is not stated on the page."
@@ -76,14 +77,18 @@ effort = "No download is offered; the page says the map data are freely accessib
 what = "Give coordinates to the XRONOS delta records that are dropped for having none: Minshat Abu Omar (67 dates; the site is already in our data from p3k14c at 32.0194, 30.8572 with 18), Kom el-Hisn (14 dates) and 'Merimde Benisalame' (1). And merge the four Merimde records, and probably 'Undefined site Eastern Delta', as entries for data/settlements/corrections.toml."
 yields = "49 more dates on one existing site, one new site (Kom el-Hisn, western delta, probably Old Kingdom and so after the period), and four records collapsed into one"
 effort = "An hour; coordinates for Kom el-Hisn from the Delta Survey"
+status = "done"
+done_in = "data/settlements/records.toml, section 'Nile delta': [[same]] Merimde Beni Salame, [[same]] Minshat Abu Omar, [[locate]] Kom el-Hisn ('Undefined site Eastern Delta' was left as filed)"
 
 [[research]]
+next = "Tell el-Samara: BIFAO 122:309-400 (opened 2026-11-13, https://www.ifao.egnet.net/bifao/122/11/) dates its Levels 1-4 to c. 4500-2900 BCE but prints no radiocarbon list; look for one in the later reports. Then Tell el-Farkha's radiocarbon list from the Polish excavation reports."
 what = "Enter Tell el-Samara from Guyot et al. 2022 (BIFAO 122) and Tell el-Farkha from the Polish reports, with whatever radiocarbon dates they publish; then look for a published radiocarbon list for the Lower Egyptian (Buto-Maadi) culture, which I did not find. The TOPOI project page says reliable radiocarbon measurements are lacking for parts of prehistoric and Predynastic Egypt, so there may be none."
 url = "https://hal.archives-ouvertes.fr/hal-03812307"
 yields = "Two key sites with coordinates and phases (above), possibly 10-30 dates; a named list of further eastern-delta sites from their bibliographies"
 effort = "Two or three reports; a person has to fetch the HAL file"
 
 [[research]]
+next = "Download the supplementary data of Zhao et al. 2025 and extract the cereal-type pollen and dung-fungal spore counts per dated level of the Buto, Sais and Kom el-Khilgan cores."
 what = "Take the pollen and non-pollen microfossil records from the Buto, Sais and Kom el-Khilgan cores in Zhao et al. 2025 for the cereal_pollen and dung_spores layers, which are judged, not observed, across most of the delta."
 url = "https://doi.org/10.1016/j.quascirev.2025.109368"
 yields = "Three dated cores inside the box giving the onset of herding (before c. 7000 cal BP) and of farming about a millennium later"

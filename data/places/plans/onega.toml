@@ -119,14 +119,19 @@ what = "Enter the 'Karelia and North-Western regions' and 'Northern and North-Ea
 url = "https://old.archeo.ru/izdaniya-1/vagnejshije-izdanija/pdf/2000Radiocarbon.pdf"
 yields = "About 60 Mesolithic dates from 15 sites in Karelia and Vologda, 9,500-5,500 cal BC: Pegrema 8, Orovnavolok 9, Kladovets, Muromskoe 7, Besov Nos 6, Pindushi 19, Antrea Korpilahti, Peschanitsa, Lower Veretye, Popovo cemetery, Tsareva, Ust'-Andoga, Kumozero. The same table covers Komi, the Upper Volga and the Baltic states (211 dates in all)."
 effort = "About 70 rows for the north-west, typed from the scan; coordinates are given."
+status = "done"
+done_in = "data/settlements/literature_dates.csv, source 'Zaitseva et al. 2000' (265 dates, 75 sites: the whole table, not only the north-west)"
 
 [[research]]
 what = "Enter Table 1 of Tarasov et al. 2017 (Neolithic-Eneolithic dates of the Karelian Republic). The table has no coordinates: locate the 27 numbered localities on Map 1 and give each site the locality's coordinates, marked approximate. Keep their Table 2 (dates without matching finds) out."
 url = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/44.7"
 yields = "About 170 dates from about 70 sites, 5,700-2,000 cal BC, of which roughly half are on the Onega shores (localities 2-10 and 14-18 on Map 1); the rest on the White Sea (11, 23), Lake Ladoga (27) and western Karelia."
 effort = "A table of about 200 rows with lab numbers; coordinates from a map, about 30 localities."
+status = "done"
+done_in = "data/settlements/literature_dates.csv, source 'Tarasov et al. 2017' (162 dates, 64 sites)"
 
 [[research]]
+next = "Open Lobanova 2019 and enter the Table 3 rows with lab numbers that Zaitseva et al. 2000 and Tarasov et al. 2017 do not already give, placed at the named capes."
 what = "Enter the dated rows of Lobanova 2019, Table 3 (sites around the Onega petroglyphs: Besov Nos, Kladovets, Peri Nos, Karetskiy Nos, Chernaya Rechka, with elevations a.s.l. and lab numbers). Most of the dated rows overlap the two compilations above; add only those that are new and use the site elevations to place them on the right side of the shore."
 url = "https://journal.fi/fennoscandiaarchaeologica/article/download/126571/76389/265733"
 yields = "Some 10 more dated site records on the east shore, 7,500-2,500 cal BC, and elevations for about 60 undated ones."
@@ -137,8 +142,12 @@ what = "Board, for a person (data/lakes/lakes.toml is not this plan's to edit): 
 url = "https://en.wikipedia.org/wiki/Lake_Onega"
 yields = "About 10 water hexes in the box; gives the Oleni Ostrov island and the shore sites a shore."
 effort = "One [[lake]] entry with a seed and box, as for Ladoga."
+status = "done"
+done_in = "data/lakes/lakes.toml, [[lake]] key 'onega' (data/lakes/SOURCES.md, 'Lake Onega'); data/rivers/rivers.toml, 'Svir'"
 
 [[research]]
+status = "dropped"
+reason = "Triage 2026-11-13: Oleni Ostrov already has 26 dates from Zaitseva et al. 2000; modelled dates would refine its span, not add a site, and the settlements take dates, not models."
 what = "Take the reservoir-corrected modelled dates for Oleni Ostrov from Schulting et al. 2022 (supplementary data) and record them beside the existing XRONOS phase, so the cemetery can be drawn as about 6300-6050 BCE as well as the uncorrected 6600-4540 BCE. Do not delete the recorded phase."
 url = "https://baikalproject.artsrn.ualberta.ca/wp-content/uploads/2022/01/Schulting-et-al_2022_Radiocarbon-dating-from-Yuzhniy-Oleniy-Ostrov_NatEcolEvol.pdf"
 yields = "A corrected occupation phase for the one site we have; about 40 new AMS dates on 177 burials."

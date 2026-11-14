@@ -19,9 +19,9 @@ expected = 0.1
 expected_range = [0.0, 0.3]
 confidence = "low"
 basis = ["literature", "environment"]
-reasoning = "2,002 cells, no edge evidence, nearest point 1,755 km. Swiderian-related and earliest Butovo assemblages are flaked; ground tools are rare before the Boreal."
+reasoning = "2,002 cells, no edge evidence, nearest point 1,755 km. Swiderian-related and earliest Butovo assemblages are flaked; ground tools are thought rare before the Boreal, but no checked source says so (the 'Zhilin 2007' cite matched no known work and was removed). Zhilin 2015 shows that Early Mesolithic Butovo axe and adze blades on the peat-bog sites are of antler, which fits but does not measure ground stone."
 literature = [
-  { cite = "Zhilin 2007, Mesolithic of the Upper Volga (Butovo, Veretye)", checked = false },
+  { cite = "Zhilin 2015, Early Mesolithic bone arrowheads from the Volga-Oka interfluve, central Russia, Fennoscandia archaeologica 32", checked = false, url = "https://journal.fi/fennoscandiaarchaeologica/article/download/126513/76331/265675", read = "full text (searched passages)", note = "Lists antler axe and adze blades in the Early Mesolithic Butovo bone industry; says nothing about ground stone, so it does not support the claim directly." },
 ]
 would_settle = "Dated Final Palaeolithic and Mesolithic sites of NW Russia with tool inventories."
 speculative_rule = "0.1 across the zone."
@@ -484,9 +484,9 @@ expected = 0.9
 expected_range = [0.75, 1.0]
 confidence = "medium"
 basis = ["literature", "other_layer"]
-reasoning = "466-1,729 cells; edges 0.91-1.0; pottery and livestock inside where present."
+reasoning = "466-1,729 cells; edges 0.91-1.0; pottery and livestock inside where present. In Wadi Howar grinding material is recorded on the excavated sites, abundantly at Abu Tabari 02/1 (c. 4000 BCE); the wadi has no attested occupation before the end of the 6th millennium BCE. Jesse 2010 (early pottery in Northern Africa), cited here before, does not address grinding stones and was removed; the early slices rest on the edge evidence."
 literature = [
-  { cite = "Jesse 2010, Journal of African Archaeology 8", checked = false },
+  { cite = "Jesse 2006, A short history of the Wadi Howar, Sudan, Sudan & Nubia 10", checked = true, url = "https://www.sudarchrs.org.uk/wp-content/uploads/2019/03/SARS_SN10-Jesse_opt.pdf", read = "full text", note = "Supports grinding material on Wadi Howar sites from c. 5200 BCE, large amounts at Abu Tabari 02/1 c. 4000 BC; says nothing of the Sahara as a whole or of the 9th-7th millennia." },
 ]
 would_settle = "Saharan site lists with inventories."
 speculative_rule = "0.9 where occupied; mark the north as low occupation after 4,000 BCE."

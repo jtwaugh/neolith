@@ -25,8 +25,8 @@ confidence = "medium"
 basis = ["neighbouring_evidence", "literature", "dossier_statistics"]
 reasoning = "Edge cells average 0.93 (3 cells) and the slice mean is 0.825. The 10,000 BCE window is late Natufian to early PPNA; wild barley and wheat grains are present at most sites with flotation (Abu Hureyra 1, Wadi Hammeh 27, Dhra', Netiv Hagdud, Gilgal). The layer counts wild-type grain before 8500 BCE, so presence is high wherever plant remains were sampled; desert sites in the Negev and Sinai are the exceptions."
 literature = [
-  { cite = "Arranz-Otaegui & Roe 2023, SW Asian Neolithic archaeobotany compilation", checked = false },
-  { cite = "Weiss, Kislev & Hartmann 2006, Autonomous cultivation before domestication, Science 312", checked = false },
+  { cite = "Arranz-Otaegui & Roe 2023, Revisiting the concept of the 'Neolithic founder crops' in southwest Asia, Vegetation History and Archaeobotany 32 (SW Asian Neolithic archaeobotany compilation)", checked = true, url = "https://doi.org/10.1007/s00334-023-00917-1", read = "abstract" },
+  { cite = "Weiss, Kislev & Hartmann 2006, Autonomous cultivation before domestication, Science 312", checked = false, url = "https://doi.org/10.1126/science.1127235" },
 ]
 would_settle = "Lower the cereal kernel's mask threshold or widen sigma to 100 km; the record exists."
 speculative_rule = "Fill the Levant at 0.75 west of the 200 mm isohyet and 0.3 in the Negev, Sinai and eastern Jordanian desert at 10,000 BCE."
@@ -58,7 +58,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "dossier_statistics", "literature"]
 reasoning = "Edge cells average 0.91-0.98 across these slices (14-20 cells each) and the nearest point is 74-196 km away. The few Levantine absences (Ain Ghazal, Ayn Abu Nakhayla, Basta PN, Dhuweila, Umbashi) are mostly phases with 1-5 taxa listed, not real absences; Ain Ghazal is famous for its cereals. Desert pastoral camps of the 6th-4th millennia would be the true low points."
 literature = [
-  { cite = "Arranz-Otaegui & Roe 2023, SW Asian Neolithic archaeobotany compilation", checked = false },
+  { cite = "Arranz-Otaegui & Roe 2023, Revisiting the concept of the 'Neolithic founder crops' in southwest Asia, Vegetation History and Archaeobotany 32 (SW Asian Neolithic archaeobotany compilation)", checked = true, url = "https://doi.org/10.1007/s00334-023-00917-1", read = "abstract" },
 ]
 would_settle = "Require a minimum number of taxa or seeds before a SW Asian phase counts as cereal-absent, and widen sigma; no new data needed."
 speculative_rule = "Fill the Levant at 0.95 from 9,000 BCE in the Mediterranean zone and Jordan valley, 0.6 in the steppe-desert fringe east of the 200 mm isohyet."
@@ -85,7 +85,7 @@ confidence = "low"
 basis = ["literature", "dossier_statistics"]
 reasoning = "No edge cells with evidence; nearest point 369 km. Nemrik 9's PPNA phase lists one taxon and Qermez Dere has Hordeum in a non-cereal coding, so the recorded absences are weak. Contemporary Zagros-foothill sites (Chogha Golan, Sheikh-e Abad) and Upper Tigris sites (Hasankeyf, Körtik Tepe) show wild barley at modest levels; I expect wild-type grain in most sampled phases in the rain-fed north and nothing in the alluvial south, which was barely occupied."
 literature = [
-  { cite = "Riehl, Zeidi & Conard 2013, Emergence of agriculture in the foothills of the Zagros (Chogha Golan), Science 341", checked = false },
+  { cite = "Riehl, Zeidi & Conard 2013, Emergence of agriculture in the foothills of the Zagros Mountains of Iran (Chogha Golan), Science 341", checked = true, url = "https://doi.org/10.1126/science.1236743", read = "abstract" },
 ]
 would_settle = "Full plant lists for Nemrik, Qermez Dere and M'lefaat; a minimum-sample rule for SW Asian absences."
 speculative_rule = "Fill north Mesopotamia above 34°N at 0.55 at 10,000 BCE and leave the alluvial south masked (low population)."
@@ -107,7 +107,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "literature"]
 reasoning = "Edge cells average 0.93-0.99 wherever any exist (2-8 cells per slice). Hassuna, Samarra, Halaf and Ubaid economies were cereal-based; Ubaid Eridu and Tell el-Oueili have barley and wheat. The 3,000 BCE absences (Tell Taya, Hajji Ibrahim, Jerablus Tahtani) are thin late lists, outside the Neolithic focus of the compilation."
 literature = [
-  { cite = "Arranz-Otaegui & Roe 2023, SW Asian Neolithic archaeobotany compilation", checked = false },
+  { cite = "Arranz-Otaegui & Roe 2023, Revisiting the concept of the 'Neolithic founder crops' in southwest Asia, Vegetation History and Archaeobotany 32 (SW Asian Neolithic archaeobotany compilation)", checked = true, url = "https://doi.org/10.1007/s00334-023-00917-1", read = "abstract" },
 ]
 would_settle = "Digitise Ubaid and Uruk plant reports (Oueili, Abu Salabikh, Tell Brak) and widen sigma."
 speculative_rule = "Fill Mesopotamia at 0.95 from 8,000 BCE in the rain-fed north and from 6,000 BCE in the irrigated south; 0.8 at 9,000 BCE in the north only."
@@ -140,7 +140,7 @@ confidence = "low"
 basis = ["literature", "neighbouring_evidence"]
 reasoning = "One edge cell at 0.92; nearest point 398 km. Hallan Çemi and Körtik Tepe have few cereals (nuts and legumes dominate) and Hasankeyf is a recorded absence; Göbekli Tepe has wild cereals. Expect half in the southeast and none in the west, where Epipalaeolithic foragers (Pınarbaşı, Öküzini) did not use grain much."
 literature = [
-  { cite = "Savard, Nesbitt & Jones 2006, The role of wild grasses in subsistence at Hallan Çemi and other PPNA sites, World Archaeology 38", checked = false },
+  { cite = "Savard, Nesbitt & Jones 2006, The role of wild grasses in subsistence and sedentism: new evidence from the northern Fertile Crescent (Hallan Çemi, Demirköy, Qermez Dere, M'lefaat), World Archaeology 38", checked = true, url = "https://doi.org/10.1080/00438240600689016", read = "abstract" },
 ]
 would_settle = "Plant lists from Göbekli Tepe, Körtik Tepe and Boncuklu with phase dates."
 speculative_rule = "Fill southeast Anatolia (east of 37°E, south of 39°N) at 0.5 at 10,000 BCE; set the plateau and west to 0.05."
@@ -167,7 +167,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "other_layer", "literature"]
 reasoning = "Edge cells average 0.92-0.98 (4-25 cells per slice); cereal pollen inside the gap reads 0.49-0.73, well above the 6% wild-grass background; pottery and livestock inside run 0.9+ from 6,000 BCE. Aşıklı, Boncuklu, Çatalhöyük, Can Hasan III, Hacılar, Ulucak, Barcın and Cyprus PPNB sites all have cereals. Cyprus had cereals from c. 8800 BCE."
 literature = [
-  { cite = "Fairbairn 2005, Charred plant remains from Çatalhöyük", checked = false },
+  { cite = "Fairbairn 2005, A history of agricultural production at Neolithic Çatalhöyük East, Turkey, World Archaeology 37", checked = true, url = "https://doi.org/10.1080/00438240500094762", read = "abstract" },
 ]
 would_settle = "Widen sigma; add plant reports from northern Anatolia (Ikiztepe, Kuruçay) and the Pontic coast."
 speculative_rule = "Fill Anatolia and Cyprus at 0.9 from 9,000 BCE in the southeast and central plateau, from 7,000 BCE in the west and northwest, and from 6,000 BCE on the Pontic coast."
@@ -201,7 +201,7 @@ confidence = "low"
 basis = ["literature", "other_layer", "neighbouring_evidence"]
 reasoning = "At 9,000 BCE 6 edge cells read 0.96; nearest point 686-694 km. Cereal pollen inside reads 0.61-0.63, which in SW Asia is wild grassland, not farming. Chogha Golan has wild barley from c. 9800 BCE rising to domestic emmer by 7800 BCE; Sheikh-e Abad's 9500 BCE absence is from a small sample. The plateau interior (Dasht-e Kavir, Lut) was nearly empty."
 literature = [
-  { cite = "Riehl, Zeidi & Conard 2013, Science 341", checked = false },
+  { cite = "Riehl, Zeidi & Conard 2013, Science 341", checked = true, url = "https://doi.org/10.1126/science.1236743", read = "abstract" },
 ]
 would_settle = "Phase-level plant data for East Chia Sabz, Ganj Dareh and Asiab."
 speculative_rule = "Fill the Zagros foothills at 0.6 at 10,000 and 0.8 at 9,000 BCE; leave the central deserts masked and set the rest of the plateau to 0.1."
@@ -243,9 +243,9 @@ expected = 0.9
 expected_range = [0.7, 1.0]
 confidence = "medium"
 basis = ["neighbouring_evidence", "literature", "other_layer"]
-reasoning = "Edge cells read 0.96-0.99 where present (3-13 cells); pottery inside rises from 0.22 at 8,000 to 0.88 at 6,000 BCE, tracking settled villages. Sang-e Chakhmaq (c. 7000-6000 BCE) has einkorn, emmer and barley; Ali Kosh and Chogha Bonut have cereals from c. 7500 BCE."
+reasoning = "Edge cells read 0.96-0.99 where present (3-13 cells); pottery inside rises from 0.22 at 8,000 to 0.88 at 6,000 BCE, tracking settled villages. Sang-e Chakhmaq (c. 7000-6000 BCE) has two-grained einkorn, a 'new-type' glume wheat and barley (Whitlam et al.'s summary); Ali Kosh and Chogha Bonut have cereals from c. 7500 BCE."
 literature = [
-  { cite = "Harris 2010, Origins of Agriculture in Western Central Asia (Jeitun and Sang-e Chakhmaq)", checked = false },
+  { cite = "Harris 2010, Origins of Agriculture in Western Central Asia (Jeitun and Sang-e Chakhmaq)", checked = false, url = "https://doi.org/10.2307/j.ctt3fj6gz" },
 ]
 would_settle = "Ingest the Iranian Neolithic plant reports compiled in the Riehl/ADEMNES flora beyond the Zagros."
 speculative_rule = "Fill the Zagros at 0.95 from 8,000 BCE and the northern and southern plateau rims (Sialk, Chakhmaq, Kerman) at 0.9 from 7,000 BCE; the central deserts stay masked."
@@ -298,7 +298,7 @@ confidence = "low"
 basis = ["literature", "analogy"]
 reasoning = "No evidence and the nearest point is 1,120-1,666 km away. Mehrgarh has domestic barley from c. 7000 BCE; Kech-Makran villages with barley and wheat appear in the 5th millennium. Before 7000 BCE expect 0; from 5,000 BCE expect most sampled phases to have cereals. The 0.5 is a compromise over the slices; use the rule, not the number."
 literature = [
-  { cite = "Jarrige et al. 1995, Mehrgarh Field Reports 1974-1985", checked = false },
+  { cite = "Jarrige et al. 1995, Mehrgarh: Field Reports 1974-1985, from Neolithic times to the Indus civilization", checked = false, url = "https://openalex.org/W619750733" },
   { cite = "Besenval 2005, Chronology of protohistoric Kech-Makran", checked = false },
 ]
 would_settle = "Extend the grid east to 70°E and digitise Mehrgarh and Kech-Makran plant data."
@@ -342,7 +342,7 @@ confidence = "medium"
 basis = ["literature", "dossier_statistics"]
 reasoning = "No edge evidence and the nearest point is 503-547 km away. Cereal pollen inside (0.15-0.48) is wild grassland on the Armenian plateau. The South Caucasus Neolithic (Shulaveri-Shomu) begins c. 6000 BCE; nothing earlier has domestic grain."
 literature = [
-  { cite = "Hamon et al. 2016, Gadachrili Gora: architecture and agriculture of a Shulaveri-Shomu village", checked = false },
+  { cite = "Hamon et al. 2016, Gadachrili Gora: architecture and organisation of a Neolithic settlement in the middle Kura Valley (6th millennium BC, Georgia), Quaternary International 395", checked = true, url = "https://doi.org/10.1016/j.quaint.2015.01.055", read = "abstract (repository record)" },
 ]
 would_settle = "Plant lists from Caucasian Mesolithic caves would confirm the absence."
 speculative_rule = "Set cereals to 0 in the Caucasus before 6,500 BCE."
@@ -357,10 +357,11 @@ expected = 0.85
 expected_range = [0.6, 1.0]
 confidence = "medium"
 basis = ["literature", "other_layer", "neighbouring_evidence"]
-reasoning = "At 6,000 BCE 3 edge cells read 0.97 and the nearest point is 8 km; pottery inside is 0.94-0.99. Shulaveri-Shomu sites (Gadachrili Gora, Shulaveris Gora, Aruchlo, Göytepe) have emmer, einkorn, bread wheat and barley from c. 5900 BCE; Kura-Araxes is agricultural."
+reasoning = "At 6,000 BCE 3 edge cells read 0.97 and the nearest point is 8 km; pottery inside is 0.94-0.99. Shulaveri-Shomu sites (Gadachrili Gora, Shulaveris Gora, Aruchlo, Göytepe) have emmer, einkorn, bread wheat and barley from c. 5900 BCE; Kura-Araxes is agro-pastoral (Maxta I)."
 literature = [
-  { cite = "Hamon et al. 2016, Gadachrili Gora", checked = false },
-  { cite = "Batiuk et al. 2022, The Kura-Araxes phenomenon", checked = false },
+  { cite = "Hamon et al. 2016, Gadachrili Gora, Quaternary International 395", checked = true, url = "https://doi.org/10.1016/j.quaint.2015.01.055", read = "abstract (repository record)" },
+  { cite = "Batiuk, Rothman, Samei & Hovsepyan 2022, Unravelling the Kura-Araxes cultural tradition across space and time, Ancient Near Eastern Studies 59", checked = false, note = "Real work (the earlier cite gave a wrong title); not read, no open copy found, so its support for Kura-Araxes farming is unverified." },
+  { cite = "Maurer et al. 2026, Seasonality and mobility: an integrative framework for reconstructing Kura-Araxes pastoral systems at Maxta I, Nakhchivan, PLoS ONE 21(4), e0346108", checked = true, url = "https://doi.org/10.1371/journal.pone.0346108", read = "abstract", note = "Abstract (OpenAlex record): Maxta I had a seasonally flexible agro-pastoral system with permanent settlement; one site, not the whole tradition." },
 ]
 would_settle = "Digitise Shulaveri-Shomu and Kura-Araxes archaeobotany (Hovsepyan's compilations)."
 speculative_rule = "Fill the Kura and Araxes lowlands and the Armenian plateau at 0.85 from 6,000 BCE; set high Greater Caucasus valleys to 0.3 until 4,000 BCE."
@@ -383,7 +384,7 @@ confidence = "high"
 basis = ["literature"]
 reasoning = "No evidence within 1,500 km. Cereal pollen at 11 cells (0.31-0.63) is wild steppe grass. Jeitun, the first farming culture, starts c. 6200 BCE; nothing in the 7,500-6,500 window is agricultural."
 literature = [
-  { cite = "Harris 2010, Origins of Agriculture in Western Central Asia", checked = false },
+  { cite = "Harris 2010, Origins of Agriculture in Western Central Asia", checked = true, url = "https://doi.org/10.2307/j.ctt3fj6gz", read = "book review (Bendrey 2013, Pastoralism 3:9)" },
 ]
 would_settle = "Nothing needed; confirmation would come from flotation at Dam-Dam Chashma or Jebel cave."
 speculative_rule = "Set cereals to 0 across Central Asia before 6,500 BCE."
@@ -398,9 +399,9 @@ expected = 0.25
 expected_range = [0.1, 0.45]
 confidence = "medium"
 basis = ["literature", "environment", "other_layer"]
-reasoning = "Nearest evidence 1,068-1,273 km away. Pottery inside reads 0.87-0.99 but is labels for Kelteminar as well as Jeitun. Jeitun has einkorn, emmer and barley from c. 6200 BCE; Namazga I-IV is agricultural; Kelteminar (Kyzylkum, Aral) and Kazakh steppe groups are foragers or herders with no grain. The region-wide value is low because the farming strip is narrow."
+reasoning = "Nearest evidence 1,068-1,273 km away. Pottery inside reads 0.87-0.99 but is labels for Kelteminar as well as Jeitun. Jeitun has mainly einkorn (with two-grained einkorn and 'new-type' glume wheat) and six-row barley from c. 6200 BCE, with emmer lacking; Namazga I-IV is agricultural; Kelteminar (Kyzylkum, Aral) and Kazakh steppe groups are foragers or herders with no grain. The region-wide value is low because the farming strip is narrow."
 literature = [
-  { cite = "Harris 2010, Origins of Agriculture in Western Central Asia", checked = false },
+  { cite = "Harris 2010, Origins of Agriculture in Western Central Asia", checked = false, url = "https://doi.org/10.2307/j.ctt3fj6gz" },
 ]
 would_settle = "Digitise Jeitun, Chagylly and Namazga plant data; a dated Kelteminar site list as recorded absences."
 speculative_rule = "Set 0.9 in a 60 km strip along the Kopet Dag piedmont (Turkmenistan, 54-61°E) from 6,000 BCE and in the Tejen and Murghab deltas from 4,000 BCE; 0 elsewhere in Central Asia."
@@ -439,7 +440,7 @@ confidence = "medium"
 basis = ["literature", "environment"]
 reasoning = "Nearest evidence 970-1,126 km; 3 edge cells at 7,000 BCE (0.97) come from the southern Levant fringe. Pottery and livestock inside are labels and Levantine spill. Cereals arrive in southeast Arabia and Yemen only with the Bronze Age (Hafit and later); Dosariyah and Jebel Buhais have no grain."
 literature = [
-  { cite = "Magee 2014, The Archaeology of Prehistoric Arabia", checked = false },
+  { cite = "Magee 2014, The Archaeology of Prehistoric Arabia", checked = false, url = "https://doi.org/10.1017/cbo9781139016667" },
 ]
 would_settle = "Flotation from Neolithic coastal sites in the Gulf and Yemen."
 speculative_rule = "Set cereals to 0 in Arabia before 4,000 BCE, except 0.3 on the Gulf coast within 50 km of Ubaid-contact sites at 5,000 BCE."
@@ -482,7 +483,7 @@ confidence = "low"
 basis = ["literature"]
 reasoning = "No edge evidence; nearest point 1,104 km. Hili 8 (c. 3000 BCE) has wheat and barley with date palm; Yemeni highland terraces with cereals date from the mid-4th to 3rd millennium. Most of the peninsula remained pastoral."
 literature = [
-  { cite = "Cleuziou & Costantini 1980, Premiers éléments sur l'agriculture protohistorique de l'Arabie orientale (Hili 8)", checked = false },
+  { cite = "Cleuziou & Costantini 1980, Premiers éléments sur l'agriculture protohistorique de l'Arabie orientale (Hili 8)", checked = true, url = "https://doi.org/10.3406/paleo.1980.4278", read = "abstract and part of full text" },
 ]
 would_settle = "Digitise Hili, Bat and Yemeni highland archaeobotany."
 speculative_rule = "Set 0.6 in the Oman piedmont oases and Yemeni highlands at 3,000 BCE and 0 elsewhere in Arabia."
@@ -514,7 +515,7 @@ confidence = "high"
 basis = ["literature", "other_layer"]
 reasoning = "Nearest evidence 1,285-1,323 km away; the 1-2 edge cells (0.79-0.96) are on the Sinai border. Nabta Playa's huge plant assemblage (c. 7000 BCE) is wild sorghum, millets and tubers with no Near Eastern cereals."
 literature = [
-  { cite = "Wasylikowa et al. 2001, Nabta Playa plant remains", checked = false },
+  { cite = "Wasylikowa 2001, Site E-75-6: vegetation and subsistence of the Early Neolithic at Nabta Playa, Egypt, reconstructed from charred plant remains, in Holocene Settlement of the Egyptian Sahara", checked = false, url = "https://doi.org/10.1007/978-1-4615-0653-9_21" },
 ]
 would_settle = "Nothing needed; Nabta and the Acacus already show the absence."
 speculative_rule = "Set cereals to 0 across Libya and Egypt before 6,500 BCE."
@@ -531,8 +532,8 @@ confidence = "medium"
 basis = ["literature", "environment", "neighbouring_evidence"]
 reasoning = "At 3,000 BCE 9 edge cells read 0.98 and cereal pollen inside is 0.51, both from the Nile and Delta; elsewhere no evidence. Fayum A granaries (c. 5200 BCE), Merimde and Sais have emmer and barley; Badarian and Naqada are cereal-based. Western Desert oases and Cyrenaica pastoralists (Haua Fteah) lack them. The region value is low because most sampled occupations are desert sites."
 literature = [
-  { cite = "Wendrich & Cappers 2005, Egypt's earliest granaries (Fayum), Antiquity 79", checked = false },
-  { cite = "Shirai 2010, The Archaeology of the First Farmer-Herders in Egypt", checked = false },
+  { cite = "Wendrich & Cappers 2005, Egypt's earliest granaries: evidence from the Fayum, Egyptian Archaeology 27", checked = false, url = "https://www.ifao.egnet.net/bases/beo/beo11653" },
+  { cite = "Shirai 2010, The Archaeology of the First Farmer-Herders in Egypt", checked = false, url = "https://doi.org/10.24415/9789048512690" },
 ]
 would_settle = "Digitise Fayum, Merimde, Sais and Badarian plant data; the desert is already understood."
 speculative_rule = "Set 0.05 at 6,000 BCE, then 0.9 within 20 km of the Nile, the Delta and the Fayum from 5,000 BCE; 0.05 in the Western Desert oases and 0 in the open desert and Cyrenaica."
@@ -605,7 +606,7 @@ confidence = "medium"
 basis = ["literature"]
 reasoning = "No edge evidence; nearest point 1,326-1,998 km. Kadero and Esh Shaheinab have sorghum impressions, not wheat or barley. A-Group sites in Lower Nubia have some barley and wheat in the 4th millennium, and Pre-Kerma at the end of it; the 3,000 BCE slice might reach 0.1-0.15 in the far north."
 literature = [
-  { cite = "Fuller & Lucas 2021, Savanna on the Nile: long-term agricultural diversification in Sudan", checked = false },
+  { cite = "Fuller & Lucas 2021, Savanna on the Nile: long-term agricultural diversification and intensification in Nubia, in The Oxford Handbook of Ancient Nubia", checked = true, url = "https://doi.org/10.1093/oxfordhb/9780190496272.013.45", read = "abstract" },
 ]
 would_settle = "Flotation from A-Group and Pre-Kerma sites in northern Sudan."
 speculative_rule = "Set 0 in Sudan throughout, except 0.15 along the Nile north of the Third Cataract at 3,000 BCE."
@@ -635,7 +636,7 @@ confidence = "high"
 basis = ["literature", "environment"]
 reasoning = "Nearest evidence 2,038-3,455 km. Cereal pollen inside (0.05-0.12) is wild grass. Ground stone and pottery inside reflect wild-grass processing, not Near Eastern crops. Pearl millet is first domestic at Tilemsi c. 2500 BCE."
 literature = [
-  { cite = "Manning et al. 2011, 4500-year-old domesticated pearl millet from the Tilemsi Valley, Mali, Antiquity 85", checked = false },
+  { cite = "Manning et al. 2011, 4500-year old domesticated pearl millet (Pennisetum glaucum) from the Tilemsi Valley, Mali, Journal of Archaeological Science 38", checked = true, url = "https://doi.org/10.1016/j.jas.2010.09.007", read = "title only" },
 ]
 would_settle = "No ingestion would change this; if the game wants an 'any cereal' layer, a millet layer is a separate job."
 speculative_rule = "Set cereals to 0 across the Sahara and Sahel in all slices."
@@ -652,7 +653,7 @@ confidence = "high"
 basis = ["literature", "environment"]
 reasoning = "Nearest evidence 2,813-4,142 km. Kintampo (c. 2000 BCE) has pearl millet and oil palm, after this period and outside the layer."
 literature = [
-  { cite = "D'Andrea et al. 2001, Early domesticated cowpea from central Ghana (Kintampo), Antiquity 75", checked = false },
+  { cite = "D'Andrea et al. 2007, Early domesticated cowpea (Vigna unguiculata) from central Ghana (Kintampo), Antiquity 81", checked = true, url = "https://doi.org/10.1017/s0003598x00095661", read = "abstract" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set cereals to 0 across West Africa in all slices."
@@ -669,7 +670,7 @@ confidence = "medium"
 basis = ["literature"]
 reasoning = "Nearest evidence 2,058-2,391 km. Mochena Borago and Lake Besaka are forager or herder sites without grain. Some argue for earlier highland cereal cultivation but no grain is dated before c. 1000 BCE."
 literature = [
-  { cite = "D'Andrea 2008, T'ef and the origins of agriculture in Ethiopia", checked = false },
+  { cite = "D'Andrea 2008, T'ef (Eragrostis tef) in ancient agricultural systems of highland Ethiopia, Economic Botany 62", checked = true, url = "https://doi.org/10.1007/s12231-008-9053-4", read = "abstract" },
 ]
 would_settle = "Flotation at Holocene highland rock shelters."
 speculative_rule = "Set cereals to 0 across the Horn of Africa in all slices."
@@ -686,7 +687,7 @@ confidence = "high"
 basis = ["literature", "other_layer"]
 reasoning = "No edge evidence and nearest point 1,644-3,091 km. Cereal pollen inside (0.06-0.17) is wild grass. Taforalt and Capsian middens have acorns, pine nuts and wild legumes."
 literature = [
-  { cite = "Morales et al. 2016, The earliest domestic cereals in North Africa (Ifri Oudadane), Antiquity", checked = false },
+  { cite = "Morales et al. 2013, The origins of agriculture in North-West Africa: macro-botanical remains from Epipalaeolithic and Early Neolithic levels of Ifri Oudadane (Morocco), Journal of Archaeological Science 40", checked = true, url = "https://doi.org/10.1016/j.jas.2013.01.026", read = "abstract (repository record)" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set cereals to 0 in the Maghreb before 6,000 BCE."
@@ -703,8 +704,8 @@ confidence = "medium"
 basis = ["literature", "environment", "other_layer"]
 reasoning = "Nearest evidence 834-1,415 km; no edge cells. Pottery inside rises 0.60-0.95 and ground stone near 1. Ifri Oudadane (c. 5600 BCE) and Kaf Taht el-Ghar have barley and wheat; Neolithic of Capsian tradition sites in Algeria and Tunisia show herding but few cereals. The region's bounding box runs to 19°N, so most cells are Sahara."
 literature = [
-  { cite = "Morales et al. 2016, Ifri Oudadane, Antiquity", checked = false },
-  { cite = "Zapata et al. 2013, Early Neolithic agriculture in the Mediterranean Maghreb", checked = false },
+  { cite = "Morales et al. 2013, Ifri Oudadane, Journal of Archaeological Science 40", checked = true, url = "https://doi.org/10.1016/j.jas.2013.01.026", read = "abstract (repository record)" },
+  { cite = "Zapata et al. 2013, Holocene environmental change in NE Morocco: archaeological and palaeobotanical evidences from Ifri Oudadane, The Holocene 23", checked = true, url = "https://crc806db.uni-koeln.de/dataset/show/holocene-environmental-change-in-ne-morocco-archaeological-and-palaeobotanical-evidences-from-ifri/", read = "abstract (repository record)" },
 ]
 would_settle = "Ingest the Moroccan Early Neolithic plant data (Kaf Taht el-Ghar, Ifri Oudadane, Ifri n'Etsedda) and a dated NCT site list."
 speculative_rule = "Set 0.1 at 6,000 BCE and 0.6 from 5,000 BCE north of the Rif and Middle Atlas and in coastal Tell; 0.2 in the Algerian and Tunisian Tell; 0 south of the Saharan Atlas."
@@ -773,7 +774,7 @@ confidence = "medium"
 basis = ["literature", "other_layer"]
 reasoning = "Nearest evidence 614 km; pottery inside reads 0.51 and livestock 0.87 at 3 cells. Knossos aceramic (c. 7000 BCE) and Thessalian Early Neolithic (Argissa, Sesklo, Mavropigi c. 6700-6500 BCE) have einkorn, emmer and barley; Iron Gates and Adriatic foragers do not."
 literature = [
-  { cite = "Perlès 2001, The Early Neolithic in Greece", checked = false },
+  { cite = "Perlès 2001, The Early Neolithic in Greece", checked = true, url = "https://doi.org/10.1017/cbo9780511612855", read = "publisher description" },
 ]
 would_settle = "Phase-level plant data for Thessalian and Macedonian Early Neolithic sites."
 speculative_rule = "Set 0.6 in Crete, Thessaly and Greek Macedonia and 0 elsewhere in the Balkans at 7,000 BCE."
@@ -810,7 +811,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "other_layer", "literature"]
 reasoning = "Edge cells average 0.98-0.99 (1-19 cells); pottery inside 0.93-1.0; cereal pollen inside 0.38-0.49, well above background. The Danube-Balkan Neolithic and Chalcolithic were cereal farmers."
 literature = [
-  { cite = "Marinova & Valamoti 2014, Crop diversity in the Neolithic and Chalcolithic Balkans", checked = false },
+  { cite = "Marinova & Valamoti 2014, Crop diversity and choices in the prehistory of SE Europe: the archaeobotanical evidence from Greece and Bulgaria, in Plants and People: choices and diversity through time", checked = true, url = "https://biblio.naturalsciences.be/library-1/rbins-staff-publications/articlereference.2015-02-03.1526477865", read = "abstract (repository record)" },
 ]
 would_settle = "Widen sigma; add the Balkan archaeobotany compiled in EUROEVOL and the ADEMNES Greek sites."
 speculative_rule = "Fill the Balkans and Greece at 0.95 from 6,000 BCE, except the Dinaric Alps and Adriatic islands at 0.6 until 5,000 BCE."
@@ -838,7 +839,7 @@ confidence = "high"
 basis = ["literature"]
 reasoning = "No edge evidence, nearest point 367-1,969 km. Impressed Ware farming begins in Puglia c. 6100 BCE."
 literature = [
-  { cite = "Fiorentino et al. 2013, Climate changes and human-environment interactions in the Apulia region, Holocene", checked = false },
+  { cite = "Fiorentino et al. 2013, Climate changes and human-environment interactions in the Apulia region of southeastern Italy during the Neolithic period, The Holocene 23", checked = false, url = "https://doi.org/10.1177/0959683613486942" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set cereals to 0 in Italy before 6,500 BCE."
@@ -855,7 +856,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "literature", "other_layer"]
 reasoning = "Edge cells average 0.97-0.99 (1-8 cells); pottery inside 0.66 at 6,000 rising to 0.99; cereal pollen inside 0.34-0.52. The 6,000 BCE window (6,500-5,500) includes the Impressa spread through the south and Sicily but the north stays forager until c. 5600; hence 0.85 overall with 6,000 lower."
 literature = [
-  { cite = "Rottoli & Castiglioni 2009, Prehistory of plant growing and collecting in northern Italy", checked = false },
+  { cite = "Rottoli & Castiglioni 2009, Prehistory of plant growing and collecting in northern Italy, Vegetation History and Archaeobotany 18", checked = true, url = "https://doi.org/10.1007/s00334-007-0139-1", read = "abstract" },
 ]
 would_settle = "Widen sigma; digitise Italian Neolithic archaeobotany (Rottoli's compilations)."
 speculative_rule = "At 6,000 BCE fill southern Italy and Sicily at 0.8 and the north at 0.2; from 5,000 BCE fill all Italy and the islands at 0.95."
@@ -887,7 +888,7 @@ confidence = "high"
 basis = ["literature"]
 reasoning = "No edge evidence, nearest point 665-3,268 km. The Iberian Mesolithic has no domestic grain."
 literature = [
-  { cite = "Zapata et al. 2004, Early Neolithic agriculture in the Iberian Peninsula, Journal of World Prehistory 18", checked = false },
+  { cite = "Zapata et al. 2004, Early Neolithic agriculture in the Iberian Peninsula, Journal of World Prehistory 18", checked = true, url = "https://doi.org/10.1007/s10963-004-5621-4", read = "abstract" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set cereals to 0 in Iberia before 6,000 BCE."
@@ -904,7 +905,7 @@ confidence = "medium"
 basis = ["literature", "other_layer"]
 reasoning = "Nearest evidence 176 km; livestock inside reads 0.93 at 20 cells and pottery 0.44. Earliest Iberian cereals: Mas d'Is, Cova de l'Or, La Draga, c. 5600-5300 BCE."
 literature = [
-  { cite = "Zapata et al. 2004, Journal of World Prehistory 18", checked = false },
+  { cite = "Zapata et al. 2004, Journal of World Prehistory 18", checked = true, url = "https://doi.org/10.1007/s10963-004-5621-4", read = "abstract" },
 ]
 would_settle = "Directly dated grain from the earliest Cardial layers."
 speculative_rule = "Set 0.5 on the Mediterranean coast from Catalonia to Valencia and 0 inland and in the west at 6,000 BCE."
@@ -974,7 +975,7 @@ confidence = "high"
 basis = ["literature", "other_layer"]
 reasoning = "No edge evidence, nearest point 451-2,839 km; cereal pollen inside 0.10-0.16 is at the wild-grass background."
 literature = [
-  { cite = "Behre 2007, Evidence for Mesolithic agriculture in and around central Europe?, Vegetation History and Archaeobotany 16", checked = false },
+  { cite = "Behre 2007, Evidence for Mesolithic agriculture in and around central Europe?, Vegetation History and Archaeobotany 16", checked = true, url = "https://doi.org/10.1007/s00334-006-0081-7", read = "abstract" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set cereals to 0 in France and the Low Countries before 6,000 BCE."
@@ -991,7 +992,7 @@ confidence = "medium"
 basis = ["literature", "other_layer"]
 reasoning = "Nearest evidence 438 km; livestock inside 0.85 at 160 cells is inflated by the contested Gazel and Font-des-Pigeons 'Mesolithic sheep'. Pottery inside 0.32."
 literature = [
-  { cite = "Manen et al. 2019, The Neolithic transition in the western Mediterranean", checked = false },
+  { cite = "Manen et al. 2019, The Neolithic transition in the western Mediterranean: a complex and non-linear diffusion process, Radiocarbon 61", checked = true, url = "https://doi.org/10.1017/rdc.2018.98", read = "full text (first 100,000 characters)" },
 ]
 would_settle = "Plant data from Pendimoun and Peiro Signado."
 speculative_rule = "Set 0.4 on the Provence and Languedoc coast and 0 elsewhere in France and the Low Countries at 6,000 BCE."
@@ -1029,7 +1030,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "other_layer", "literature"]
 reasoning = "Edge cells 0.99 (17-30 cells); livestock inside 0.99-1.0; pottery 0.87-0.98. Swifterbant in the Dutch wetlands had small cereal fields from c. 4300 BCE; the Atlantic west and Brittany farm from c. 4800 BCE."
 literature = [
-  { cite = "Colledge, Conolly & Shennan 2016, EUROEVOL archaeobotany", checked = false },
+  { cite = "Colledge 2016, The Cultural Evolution of Neolithic Europe. EUROEVOL Dataset 3: Archaeobotanical Data, Journal of Open Archaeology Data 5", checked = true, url = "https://doi.org/10.5334/joad.42", read = "abstract" },
 ]
 would_settle = "Widen sigma; check how many EUROEVOL archaeobotany phases were dropped by the phase-dating rule."
 speculative_rule = "Fill at 0.95 from 5,000 BCE, except the Low Countries wetlands and Brittany at 0.4 at 5,000 BCE."
@@ -1066,7 +1067,7 @@ confidence = "high"
 basis = ["literature", "other_layer"]
 reasoning = "No edge evidence, nearest point 617-2,240 km; cereal pollen inside 0.11-0.16 sits at the 6% wild-grass background plus noise."
 literature = [
-  { cite = "Behre 2007, Vegetation History and Archaeobotany 16", checked = false },
+  { cite = "Behre 2007, Vegetation History and Archaeobotany 16", checked = true, url = "https://doi.org/10.1007/s00334-006-0081-7", read = "abstract" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set cereals to 0 in Central Europe before 6,000 BCE."
@@ -1083,7 +1084,7 @@ confidence = "medium"
 basis = ["literature", "other_layer"]
 reasoning = "Nearest evidence 305 km; livestock inside 0.72 at 235 cells; pottery 0.47; cereal pollen 0.22, rising above background."
 literature = [
-  { cite = "Bánffy 2019, First Farmers of the Carpathian Basin", checked = false },
+  { cite = "Bánffy 2019, First Farmers of the Carpathian Basin", checked = true, url = "https://prehistoricsociety.org/publications/research-papers/8", read = "publisher description" },
 ]
 would_settle = "Plant data from Körös sites (Ecsegfalva, Szarvas)."
 speculative_rule = "Set 0.8 in the Hungarian plain and 0.1 in Austria, Moravia and Slovakia, 0 further north and west at 6,000 BCE."
@@ -1120,7 +1121,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "other_layer", "literature"]
 reasoning = "Edge cells 0.97-0.99 (17-79 cells); livestock inside 0.93-1.0; pottery 0.91-0.99; cereal pollen 0.27-0.48. North European Plain foragers in Pomerania and Mecklenburg until c. 4000 BCE are the only exception."
 literature = [
-  { cite = "Kreuz 2007, Archaeobotanical perspectives on the beginning of agriculture north of the Alps", checked = false },
+  { cite = "Kreuz 2007, Archaeobotanical perspectives on the beginning of agriculture north of the Alps", checked = false, url = "https://doi.org/10.4324/9781315417615-22" },
 ]
 would_settle = "Widen sigma or relax the mask; add Kreuz's LBK plant data."
 speculative_rule = "Fill at 0.97 from 5,000 BCE south of 52.5°N; north of it 0.3 at 5,000 BCE and 0.9 from 4,000 BCE."
@@ -1156,7 +1157,7 @@ confidence = "high"
 basis = ["literature", "other_layer"]
 reasoning = "No edge evidence, nearest point 441-3,525 km; cereal pollen inside 0.04-0.15. The 5,000 BCE window ends at 4,500 BCE, before the Neolithic; the livestock reading inside (0.4-0.6) is the kernel reaching across the Channel."
 literature = [
-  { cite = "Stevens & Fuller 2012, Did Neolithic farming fail? Antiquity 86", checked = false },
+  { cite = "Stevens & Fuller 2012, Did Neolithic farming fail? Antiquity 86", checked = true, url = "https://doi.org/10.1017/s0003598x00047864", read = "abstract" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set cereals to 0 in Britain and Ireland before 4,500 BCE."
@@ -1173,8 +1174,8 @@ confidence = "medium"
 basis = ["neighbouring_evidence", "literature", "other_layer"]
 reasoning = "Edge cells 0.99 (7-29 cells) and nearest point 36-122 km. Early Neolithic houses and pits (c. 3800-3400 BCE) are full of emmer and barley; Stevens & Fuller argue for a decline to hazelnut-dominated assemblages in the Late Neolithic, so the 3,000 BCE window should be lower than 4,000. The highlands of Scotland and western Ireland lag."
 literature = [
-  { cite = "Stevens & Fuller 2012, Antiquity 86", checked = false },
-  { cite = "McClatchie et al. 2014, Neolithic farming in north-western Europe (Ireland)", checked = false },
+  { cite = "Stevens & Fuller 2012, Antiquity 86", checked = true, url = "https://doi.org/10.1017/s0003598x00047864", read = "abstract" },
+  { cite = "McClatchie et al. 2014, Neolithic farming in north-western Europe: archaeobotanical evidence from Ireland, Journal of Archaeological Science 51", checked = true, url = "https://doi.org/10.1016/j.jas.2012.10.022", read = "abstract (repository record)" },
 ]
 would_settle = "Ingest the Stevens & Fuller site list and the Irish Neolithic plant database."
 speculative_rule = "Fill at 0.85 at 4,000 BCE and 0.6 at 3,000 BCE in lowland Britain and eastern Ireland; 0.4 in the Highlands and the west of Ireland."
@@ -1211,7 +1212,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "literature", "dossier_statistics"]
 reasoning = "Recorded absences at Ageröd, Tybrind Vig, Møllegabet II and Margrethes Næs; 5 edge cells at 5,000 BCE read 0.38, pulled up by north German presences. Cereal pollen inside 0.03-0.07. Isolated cereal impressions in late Ertebølle pottery are after 4500 BCE."
 literature = [
-  { cite = "Sørensen & Karg 2014, The expansion of agrarian societies towards the north, Journal of Archaeological Science 51", checked = false },
+  { cite = "Sørensen & Karg 2014, The expansion of agrarian societies towards the north, Journal of Archaeological Science 51", checked = true, url = "https://doi.org/10.1016/j.jas.2012.08.042", read = "abstract (repository record)" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set cereals to 0 in Scandinavia before 4,500 BCE."
@@ -1228,7 +1229,7 @@ confidence = "medium"
 basis = ["neighbouring_evidence", "literature", "environment"]
 reasoning = "Edge cells 0.99 (3-11 cells) in the south; one small gap at 4,000 BCE has 6 edge cells at 0.74. Livestock inside 0.91-0.99 is southern. Cereal pollen 0.09-0.13 over the whole gap. The gap mostly covers Norway, northern Sweden and Finland, where cereal farming starts in the Bronze Age, so the region value is low."
 literature = [
-  { cite = "Sørensen & Karg 2014, Journal of Archaeological Science 51", checked = false },
+  { cite = "Sørensen & Karg 2014, Journal of Archaeological Science 51", checked = true, url = "https://doi.org/10.1016/j.jas.2012.08.042", read = "abstract (repository record)" },
 ]
 would_settle = "Ingest the Sørensen & Karg directly dated grain list."
 speculative_rule = "Fill 0.85 south of 59°N in Sweden, Denmark and the Oslofjord, 0.3 up to 61°N on the Swedish east coast, and 0 to the north, from 4,000 BCE; at 3,000 BCE lower the Swedish east coast to 0.15 for Pitted Ware."
@@ -1272,7 +1273,7 @@ confidence = "high"
 basis = ["literature", "other_layer"]
 reasoning = "No edge evidence, nearest point 535-2,414 km. Cereal pollen inside is 0.02-0.11 to 5,000 BCE and 0.21 at 4,000 BCE, the latter mostly southern Lithuania near the Globular Amphora frontier."
 literature = [
-  { cite = "Piličiauskas et al. 2017, The Corded Ware culture in the eastern Baltic: new evidence on chronology, diet, beaker, bone and flint tool production", checked = false },
+  { cite = "Piličiauskas et al. 2018, The Corded Ware culture in the Eastern Baltic: new evidence on chronology, diet, beaker, bone and flint tool function, Journal of Archaeological Science: Reports 21", checked = false, url = "https://doi.org/10.1016/j.jasrep.2018.08.023" },
 ]
 would_settle = "Directly dated grains from Šventoji and Narva-period sites."
 speculative_rule = "Set cereals to 0 in the Baltic states before 3,500 BCE."
@@ -1289,7 +1290,7 @@ confidence = "low"
 basis = ["literature", "other_layer"]
 reasoning = "No edge evidence; nearest point 535 km. Cereal pollen 0.23 at 100 cells. Directly dated cereal grains in Lithuania begin only c. 2400 BCE in Piličiauskas's work."
 literature = [
-  { cite = "Piličiauskas et al. 2017, eastern Baltic Corded Ware", checked = false },
+  { cite = "Piličiauskas et al. 2018, eastern Baltic Corded Ware, Journal of Archaeological Science: Reports 21", checked = true, url = "https://doi.org/10.1016/j.jasrep.2018.08.023", read = "abstract (repository record)" },
 ]
 would_settle = "Directly dated grain from Lithuanian and Latvian Corded Ware contexts."
 speculative_rule = "Set 0.1 in Lithuania and 0 to the north at 3,000 BCE."
@@ -1316,7 +1317,7 @@ confidence = "medium"
 basis = ["literature", "other_layer"]
 reasoning = "No edge evidence, nearest point 777-1,609 km. Cereal pollen inside 0.04-0.09. Criş sites in the far southwest of Ukraine (c. 5800 BCE) may carry the only grain."
 literature = [
-  { cite = "Motuzaite Matuzeviciute et al. 2023, reassessment of early cereal impressions in Ukrainian ceramics", checked = false },
+  { cite = "Endo, Nasu, Haskevych, Gershkovych, Videiko & Yanevich 2022, Re-identification of plant impressions on prehistoric pottery from Ukraine, Journal of Archaeological Science: Reports 42, 103364", checked = true, url = "https://elibrary.kubg.edu.ua/id/eprint/42600/", read = "abstract", note = "Replaces an unverifiable 'Motuzaite Matuzeviciute et al. 2023' cite. No reliable cereal impressions in Ukrainian sub-Neolithic pottery; West Asian cereals appear in Linear Band and Eneolithic pottery." },
 ]
 would_settle = "Directly dated grain from Bug-Dniester and Criş sites in Ukraine."
 speculative_rule = "Set 0 in Ukraine and Belarus before 6,000 BCE and 0.1 west of the Dniester at 6,000 BCE."
@@ -1396,10 +1397,10 @@ expected = 0.03
 expected_range = [0.0, 0.15]
 confidence = "medium"
 basis = ["literature", "other_layer"]
-reasoning = "No edge evidence; nearest point 1,096-1,557 km. Cereal pollen inside 0.05-0.28 rises late but stays near background. Yamnaya diet isotopes and plant remains show little grain; Maikop-Novosvobodnaya (c. 3700-3000 BCE) has barley and wheat."
+reasoning = "No edge evidence; nearest point 1,096-1,557 km. Cereal pollen inside 0.05-0.28 rises late but stays near background. Yamnaya diet isotopes and plant remains show little grain. Maikop-Novosvobodnaya (c. 3700-3000 BCE) is described as a farming and herding society, but no checked source gives its crops: the barley and wheat claimed here before rested on a citation ('Lebedeva 2005') that matches no known work, so the 0.5 in the foothills is an estimate from that general description, not from plant data."
 literature = [
   { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false },
-  { cite = "Lebedeva 2005, Archaeobotany of the Maikop culture (in Russian)", checked = false },
+  { cite = "Korenevskij 2022, The Maikop culture in the Northern Caucasus, Godišnjak Centra za balkanološka ispitivanja 41", checked = true, url = "https://doi.org/10.5644/Godisnjak.CBI.ANUBiH-41.1", read = "abstract", note = "Places Maikop among pre-urban agricultural and livestock communities; names no crops." },
 ]
 would_settle = "Maikop and Yamnaya plant remains from Russian publications."
 speculative_rule = "Set 0 across the Russian steppe in all slices, except 0.5 in the north Caucasus foothills south of 45.5°N at 4,000 and 3,000 BCE."
@@ -1444,7 +1445,7 @@ confidence = "medium"
 basis = ["environment", "literature"]
 reasoning = "Nearest evidence 605-3,591 km. Doggerland was gone by c. 6200 BCE, long before farming reached the North Sea. The Gulf basin flooded by c. 6000 BCE; its foragers had no cereals as far as anyone knows, though Rose's 'Gulf Oasis' idea leaves room for surprise."
 literature = [
-  { cite = "Rose 2010, New light on human prehistory in the Arabo-Persian Gulf Oasis, Current Anthropology 51", checked = false },
+  { cite = "Rose 2010, New light on human prehistory in the Arabo-Persian Gulf Oasis, Current Anthropology 51", checked = true, url = "https://doi.org/10.1086/657397", read = "abstract" },
 ]
 would_settle = "Submerged-landscape survey; nothing ingestible."
 speculative_rule = "Set cereals to 0 on all now-drowned land."

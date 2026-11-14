@@ -22,6 +22,10 @@
 #   units_label   for continuous and grid layers, the value's unit
 #   vmin, vmax    for continuous and grid layers, the colour scale's range
 #   licence, note shown on maps and in the viewer
+#   value_field   for a share layer: the column of data/ancestry/ancestry.csv.gz that
+#                 gives each sample a fractional value (ancestry weights)
+#   fill          false: recorded only; the speculative step never fills its gaps
+#   colour        overrides the palette colour (default: by position in the set or group)
 #   set           layers sharing a set (haplogroup clades) are picked together
 #   evidence_word what a unit is called on maps ("occupations", "cores", "samples")
 
@@ -448,3 +452,99 @@ sigma = "mt_u5"
 evidence_word = "genomes"
 note = "Every other mitochondrial lineage, including U2 and X."
 licence = "AADR v66.p1, CC0"
+
+# Autosomal ancestry (data/ancestry/ancestry.csv.gz, isostyle/ancestry.py):
+# each genome's qpAdm weight for one of six reference groups. All six share
+# one kernel width, so a cell's six values sum to 1. Recorded only: `fill =
+# false` keeps the speculative step from filling unsampled land. `colour` is
+# the game's colour for the component (neolith-rs palette.rs ANCESTRY; checked
+# with the dataviz palette validator, all pairs, 2026-11-13).
+[[layer]]
+id = "anc_whg"
+name = "Western hunter-gatherer"
+group = "People"
+set = "Ancestry"
+kind = "share"
+unit = "sample"
+value_field = "w_whg"
+colour = "#2a78d6"
+sigma = "anc_ana"
+fill = false
+evidence_word = "genomes"
+note = "Ancestry like the Mesolithic foragers of western Europe (Loschbour, Bichon, Villabruna). Falls as farmers arrive, then partly returns in the Middle Neolithic. A model estimate from six reference groups: shared ancestry, not a people, language or culture."
+licence = "AADR v66.p1, CC0; proportions CC BY-SA (data/ancestry/SOURCES.md)"
+
+[[layer]]
+id = "anc_ehg"
+name = "Eastern hunter-gatherer"
+group = "People"
+set = "Ancestry"
+kind = "share"
+unit = "sample"
+value_field = "w_ehg"
+colour = "#4a3aa7"
+sigma = "anc_ana"
+fill = false
+evidence_word = "genomes"
+note = "Ancestry like the Mesolithic foragers of Karelia and the Volga. One of the two halves of the later steppe ancestry. A model estimate from six reference groups: shared ancestry, not a people, language or culture."
+licence = "AADR v66.p1, CC0; proportions CC BY-SA (data/ancestry/SOURCES.md)"
+
+[[layer]]
+id = "anc_ana"
+name = "Anatolian farmer"
+group = "People"
+set = "Ancestry"
+kind = "share"
+unit = "sample"
+value_field = "w_ana"
+colour = "#d95926"
+sigma = "cv"
+fill = false
+evidence_word = "genomes"
+note = "Ancestry like the first farmers of north-west Anatolia (Barcın, Menteşe). It moves up the Danube and across the Mediterranean between 7000 and 4000 BCE. A model estimate from six reference groups: shared ancestry, not a people, language or culture."
+licence = "AADR v66.p1, CC0; proportions CC BY-SA (data/ancestry/SOURCES.md)"
+
+[[layer]]
+id = "anc_irn"
+name = "Iranian farmer / Caucasus hunter-gatherer"
+group = "People"
+set = "Ancestry"
+kind = "share"
+unit = "sample"
+value_field = "w_irn"
+colour = "#1baf7a"
+sigma = "anc_ana"
+fill = false
+evidence_word = "genomes"
+note = "Ancestry like the first herders of the Zagros (Ganj Dareh) and the foragers of the Caucasus (Kotias, Satsurblia). The other half of the later steppe ancestry. A model estimate from six reference groups: shared ancestry, not a people, language or culture."
+licence = "AADR v66.p1, CC0; proportions CC BY-SA (data/ancestry/SOURCES.md)"
+
+[[layer]]
+id = "anc_lev"
+name = "Levantine forager"
+group = "People"
+set = "Ancestry"
+kind = "share"
+unit = "sample"
+value_field = "w_lev"
+colour = "#eda100"
+sigma = "anc_ana"
+fill = false
+evidence_word = "genomes"
+note = "Ancestry like the Natufian foragers of the Levant. A model estimate from six reference groups: shared ancestry, not a people, language or culture."
+licence = "AADR v66.p1, CC0; proportions CC BY-SA (data/ancestry/SOURCES.md)"
+
+[[layer]]
+id = "anc_naf"
+name = "North African forager"
+group = "People"
+set = "Ancestry"
+kind = "share"
+unit = "sample"
+value_field = "w_naf"
+colour = "#e87ba4"
+sigma = "anc_ana"
+fill = false
+evidence_word = "genomes"
+note = "Ancestry like the Iberomaurusian foragers of Taforalt, Morocco. A model estimate from six reference groups: shared ancestry, not a people, language or culture."
+licence = "AADR v66.p1, CC0; proportions CC BY-SA (data/ancestry/SOURCES.md)"

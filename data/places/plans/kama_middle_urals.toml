@@ -83,19 +83,26 @@ what = "Enter Zaretskaya et al. 2012 table 1 (61 dates, open PDF). The paper giv
 url = "https://resolve.cambridge.org/core/services/aop-cambridge-core/content/view/F3D2E5D73C3850C8E41225E739698432/S0033822200047433a.pdf/radiocarbon-chronology-of-the-shigir-and-gorbunovo-archaeological-bog-sites-middle-urals-russia.pdf"
 yields = "One existing site carried from 9,000 down to about 6,100 BCE, plus one new Early Neolithic site; fills the box's 8,000-6,000 BCE slices"
 effort = "A table of 61 rows with clear contexts; an hour"
+status = "done"
+done_in = "data/settlements/literature_dates.csv, source 'Zaretskaya et al. 2012' (Beregovaya-2 33 dates, Varga-2 6, Anin Ostrov 3)"
 
 [[research]]
 what = "Kama Neolithic: enter table 1 of Lychagina & Vybornov 2017 (about 50 dates, 30 sites in three stages: Early, second quarter of the 6th to the beginning of the 5th millennium cal BC; Khutorskaya, first half of the 5th; Lyovshino, second half of the 5th to the beginning of the 4th) after geolocating the sites. The paper has only a numbered map (fig. 1). Most dates are on pottery food crusts, so allow for a freshwater reservoir effect."
 url = "https://revije.ff.uni-lj.si/DocumentaPraehistorica/article/download/44.9/7343"
 yields = "About 30 Kama Neolithic sites, 5500-3900 cal BC, on the Kama, Vishera, Vyatka, Belaya and Chusovaya; roughly two-thirds inside this box"
 effort = "Typing the table is an hour; geolocating 30 sites from fig. 1 and Russian gazetteers (Perm and Udmurt site registers) is a day. Coordinates approximate, 5-15 km"
+status = "done"
+done_in = "data/settlements/literature_dates.csv, source 'Lychagina & Vybornov 2017' (48 dates, 31 sites)"
 
 [[research]]
+next = "Check whether Chairkina, Kuzmin & Hodgins 2017 (Radiocarbon 59(2)) is open on Cambridge Core; if so, enter its dates for sites inside the box that Zaretskaya et al. 2012 and Lychagina & Vybornov 2017 do not already give."
 what = "Chairkina, Kuzmin & Hodgins 2017, Radiocarbon 59(2), 153 dates for the Trans-Urals Mesolithic to Bronze Age, and Piezonka et al. 2020, J. Archaeol. Sci. 116:105100, on early pottery in the Urals and West Siberia (new dates). I saw only abstracts and citations."
 yields = "My estimate: 30-60 dated sites on the eastern slope and Trans-Urals lowland, 9000-3000 BCE, many of them just east of the box"
 effort = "Two papers, probably behind paywalls; the University of Arizona repository may hold the Radiocarbon one"
 
 [[research]]
+status = "dropped"
+reason = "Not needed, and not research. The board's named rivers (data/rivers/rivers.toml) are the traced great rivers; the Kama is already there (key 'kama', size 2). The isostyle `river` rule does not depend on names: isostyle/hydro.py also measures distance to unnamed GEOGLOWS / TDX-Hydro reaches above `min_upland_km2` (cache of reaches of 1,000 km2 and more), which already include the Vishera, Chusovaya, Belaya, Vyatka, Tagil, Neiva and Iset. A speculation here can use `kind = \"river\"` with `min_upland_km2` and no `names`. Adding them to rivers.toml would change only the drawn lines and the floodplain rule, which is a board decision for the owner of rivers.toml, not this plan."
 what = "Board (for whoever owns rivers.toml): add the Kama with the Vishera, Chusovaya, Belaya and Vyatka. On the eastern slope add the Tagil, Neiva and Iset (Ob basin). Without them the 'river' rules in isostyle and any river-based speculation have nothing to work with here. Do not add the Shigir and Gorbunovo palaeolakes as water: they are sub-hex."
 url = "https://revije.ff.uni-lj.si/DocumentaPraehistorica/article/download/44.9/7343"
 yields = "The river skeleton of the whole Cis-Urals; no new sites"

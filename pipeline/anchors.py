@@ -330,9 +330,11 @@ def rank_score(cov, gap, n, basin, acfg):
     return cov * min(1.0, n / acfg["full_levels"]) * min(1.0, acfg["good_gap"] / max(gap, 1.0)) * w
 
 
-def embsecbio_candidates(paths):
+def embsecbio_candidates(paths, overrides=()):
     """{id: candidate} for EMBSeCBIO fossil entities in Cruz-Silva's
-    downcore file, with their samples as (year, {taxon: percent})."""
+    downcore file, with their samples as (year, {taxon: percent}).
+    `overrides` ([[anchors.override]]: id, lon, lat, source) replace a
+    position the database has wrong; the database's own is kept as `filed_at`."""
     z = zipfile.ZipFile(paths["embsecbio"])
 
     def table(name):
@@ -362,6 +364,12 @@ def embsecbio_candidates(paths):
                            "basin": st.get("ID_BASIN_SIZE", ""),
                            "reference": e2pub.get(e) or "https://doi.org/10.17864/1947.309",
                            "years": [y for y, _ in smp.values()], "samples": list(smp.values())}
+    for o in overrides:
+        c = out.get(o["id"])
+        if c is None:
+            raise SystemExit(f"anchors: [[anchors.override]] {o['id']} matches no EMBSeCBIO entity")
+        c["filed_at"] = (c["lon"], c["lat"])
+        c["lon"], c["lat"] = float(o["lon"]), float(o["lat"])
     return out
 
 
@@ -512,7 +520,7 @@ def build(cfg, log=print):
     training, thr = load_training(paths["train"], paths["cutpoints"])
     log(f"anchors: {len(training)} training taxa, thresholds for {len(thr)} biomes")
 
-    emb = embsecbio_candidates(paths)
+    emb = embsecbio_candidates(paths, acfg.get("override", []))
     neo = neotoma_candidates(acfg["neotoma_levels"])
     log(f"anchors: {len(emb)} EMBSeCBIO and {len(neo)} Neotoma candidate records")
     chosen, qualified = select(list(emb.values()) + list(neo.values()), acfg, start, end)

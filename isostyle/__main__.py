@@ -7,6 +7,7 @@ python -m isostyle intuitions               # validate the gap critic's intuitio
 python -m isostyle speculative              # fill the gaps from the intuitions (for the game)
 python -m isostyle evals [--search]         # measure the fill's smoothness and guards; search its settings
 python -m isostyle export                   # speculative layers -> evidence_layers.json for neolith-convert
+python -m isostyle ancestry [--spike N] [--remote]   # qpAdm ancestry per AADR individual (needs R; opt-in)
 python -m isostyle audit    # Phase 1 data audit (uses isostyle/audit.toml)
 
 --config PATH overrides the config file."""
@@ -18,7 +19,7 @@ import tomllib
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("command", choices=["fetch", "pollen", "build", "viewer", "gaps", "intuitions", "speculative", "export", "evals", "audit"])
+    ap.add_argument("command", choices=["fetch", "pollen", "build", "viewer", "gaps", "intuitions", "speculative", "export", "evals", "audit", "ancestry"])
     ap.add_argument("--config", default=None)
     ap.add_argument("--layer", action="append", default=None, help="gaps: layer id (repeatable; default all)")
     ap.add_argument("--min-cells", type=int, default=25, help="gaps: smallest gap reported")
@@ -26,6 +27,8 @@ def main():
     ap.add_argument("--check", default=None, metavar="CLAIMS.json", help="evals: test a critic's claims against the numbers")
     ap.add_argument("--crop", nargs=7, default=None, metavar=("LAYER", "YEAR", "LON0", "LAT0", "LON1", "LAT1", "OUT.png"),
                     help="evals: draw one layer, slice and place")
+    ap.add_argument("--spike", type=int, default=0, metavar="N", help="ancestry: model about N stratified individuals and report the fit rate")
+    ap.add_argument("--remote", action="store_true", help="ancestry: read only the needed genotype rows by HTTP range instead of the 7 GB file")
     args = ap.parse_args()
     path = args.config or ("isostyle/audit.toml" if args.command == "audit" else "isostyle/config.toml")
     cfg = tomllib.load(open(path, "rb"))
@@ -63,6 +66,9 @@ def main():
             evals.search(cfg, log, args.layer)
         else:
             raise SystemExit(0 if evals.run(cfg, log, args.layer) else 1)
+    elif args.command == "ancestry":
+        from . import ancestry
+        raise SystemExit(0 if ancestry.run(cfg, log, spike=args.spike, remote=args.remote) else 1)
     elif args.command == "export":
         from . import export
         export.run(cfg, log)

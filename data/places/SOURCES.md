@@ -172,6 +172,12 @@ lake ends (data/lakes/SOURCES.md).
 - Guyot, F. et al. 2022. Investigating the Nile Delta's first settlements:
   excavations at Tell el-Samara 2016–2019. *BIFAO* 122 (not opened: access
   refused). https://hal.archives-ouvertes.fr/hal-03812307
+- Guyot, F., Abdel Azim, M.A., Lesur, J. & Midant-Reynes, B. 2022. BIFAO
+  122:309–400, on the IFAO site (read 2026-11-13: 25 km south-east of
+  al-Mansura; Levels 1–4 c. 4500–2900 BCE; no radiocarbon list).
+  https://www.ifao.egnet.net/bifao/122/11/
+- Wikipedia, "Mansoura, Egypt" (read; 31.05 N, 31.383 E; used to place Tell
+  el-Samara 25 km south-east of it). https://en.wikipedia.org/wiki/Mansoura,_Egypt
 
 **North-west Russia: Lake Onega, Lake Ladoga and the Karelian Isthmus, White Sea Karelia**
 
@@ -249,6 +255,14 @@ lake ends (data/lakes/SOURCES.md).
   https://en.wikipedia.org/wiki/Lake_Onega
 - Wikipedia, "Butovo culture" (read; c. 9600–6000 BC, Upper Volga lake
   shores). https://en.wikipedia.org/wiki/Butovo_culture
+- Kulkova, M., Gusentzova, T., Nesterov, E., Sorokin, P. & Sapelko, T. 2012.
+  Chronology of Neolithic-Early Metal Age sites at the Okhta River mouth
+  (Saint Petersburg, Russia). *Radiocarbon* 54(3–4):1049–1063 (read 2026-11-13;
+  Okhta 1 occupied from 4200–3600 cal BC, upper layer 3200–2200 cal BC; date list
+  in the Appendix).
+  https://cambridge.org/core/services/aop-cambridge-core/content/view/E5FC79A1B1B86C866C4CE71BCF5DC383/S0033822200047664a.pdf/chronology_of_neolithicearly_metal_age_sites_at_the_okhta_river_mouth_saint_petersburg_russia.pdf
+- Wikipedia, "Nyenschantz" (read; 59°56′39″N 30°24′25″E, at the Okhta–Neva
+  confluence; used to place Okhta 1). https://en.wikipedia.org/wiki/Nyenschantz
 
 **Upper Volga - Oka interfluve lakes and bogs** (proposed place `upper_volga_lakes`)
 
@@ -376,6 +390,10 @@ lake ends (data/lakes/SOURCES.md).
   Manych strait 17.7–14.9 ka by OSL; 'few Mesolithic sites were known').
   https://journals.rcsi.science/2658-3518/article/view/289402
   https://doi.org/10.31951/2658-3518-2022-A-4-1459
+- Vybornov, A. et al. 2017. Radiocarbon chronology of the Neolithic in the
+  Povolzhye. *Documenta Praehistorica* 44:224–239, PDF (read; Tab. 1 holds the
+  Middle Volga Elshanka dates still to enter for the Samara Bend).
+  https://journals.uni-lj.si/DocumentaPraehistorica/article/download/44.14/7348
 
 **Lake Megachad**
 
@@ -434,6 +452,13 @@ lake ends (data/lakes/SOURCES.md).
 - Seidensticker, D., Hubau, W. & Jungnickel, K. aDRAC, Archive des datations
   radiocarbone d'Afrique centrale (data read; nothing in window near the
   box). https://github.com/dirkseidensticker/aDRAC
+- Delibrias, G., Guillier, M.T. & Labeyrie, J. 1971. Gif Natural Radiocarbon
+  Measurements VI. *Radiocarbon* 13(2):213–254 (read 2026-11-13: Gif-1094,
+  -1095 and -1097 at Nedeley and Koro-Toro are geologic samples of Servant's
+  Tchad series, not sites).
+  https://cambridge.org/core/services/aop-cambridge-core/content/view/1213EB9A380A3C605F23C79502621665/S0033822200008444a.pdf/gif-natural-radiocarbon-measurements-vi.pdf
+- XRONOS site 'Konduga' (read; 11.797 N, 13.420 E; Kn-4300).
+  https://xronos.ch/sites/60668
 
 **Lake Tana**
 

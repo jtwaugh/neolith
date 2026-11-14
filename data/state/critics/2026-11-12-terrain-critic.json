@@ -1,0 +1,13 @@
+{
+ "critic": "terrain-critic",
+ "date": "2026-11-12",
+ "rubric_version": null,
+ "report": "build/critic/terrain/20261112-1527/REPORT.md",
+ "findings": [
+  {"id": "terrain-2026-11-12-F1", "title": "Europe at -9000 and -8000 drawn from Late Glacial maps", "severity": "high", "status": "fixed", "where": "pipeline/config.toml [[terrain.misdated]]"},
+  {"id": "terrain-2026-11-12-F2", "title": "Fronts fill draws straight north-south edges", "severity": "high", "status": "fixed", "where": "pipeline/compose.py switch_fraction"},
+  {"id": "terrain-2026-11-12-F3", "title": "Floodplain decided per year from that year's biome", "severity": "medium", "status": "fixed", "where": "pipeline/biome_clean.py floodplain_eligibility"},
+  {"id": "terrain-2026-11-12-F4", "title": "Ruler-straight 57N line in Russia from the -5000 drawing", "severity": "medium", "status": "open", "where": "pipeline/config.toml [biome.edges] apply_to = \"model\"", "check": "terrain suspects (S005, S006, S012, S025, S004, S009 should drop out)"},
+  {"id": "terrain-2026-11-12-F5", "title": "Pollen anchor Avrig 1 has lon = lat = 45.716", "severity": "low", "status": "fixed", "where": "data/terrain/anchors.csv emb:1686 (upstream EMBSeCBIO)"}
+ ]
+}

@@ -7,7 +7,7 @@
 # Add cases; do not delete one because it fails.
 
 # How many cases may fail before the evals guard trips. Lower it as fixes land.
-allowed_failing = 13
+allowed_failing = 2
 
 [[case]]
 name = "Northern Italy and Liguria: mines read 1.0 (observed) at 5,000 BCE, drop to about 0.37 everywhere at 4,000 BCE"
@@ -17,26 +17,6 @@ kind = "flicker"
 bbox = [8.6, 42.1, 13.1, 45.7]
 max = 0.1
 was = 0.633
-recorded = "2026-11-12"
-
-[[case]]
-name = "Romania and the lower Danube: enclosures go 0.18 (6,000 BCE) to 0.61 (5,000) to 0.23 (4,000). The whole strip "
-layer = "enclosures"
-year = -5000
-kind = "flicker"
-bbox = [22.5, 44.1, 25.7, 47.7]
-max = 0.207
-was = 0.65
-recorded = "2026-11-12"
-
-[[case]]
-name = "Northern Ireland and SW Scotland: houses observed at 1.0 at 6,000 BCE, a flat speculative 0.45 at 5,000 BCE (n"
-layer = "houses"
-year = -5000
-kind = "flicker"
-bbox = [-8.2, 53.3, -5.1, 56.4]
-max = 0.1
-was = 0.593
 recorded = "2026-11-12"
 
 [[case]]
@@ -120,16 +100,6 @@ was = 0.194
 recorded = "2026-11-12"
 
 [[case]]
-name = "Georgia and Armenia: a 7-cell observed patch at about 0.85 in a speculative surround of 0.5-0.6, with observed"
-layer = "open_land"
-year = -3000
-kind = "seam"
-bbox = [42.8, 38.6, 46.6, 43.4]
-max = 0.1
-was = 0.229
-recorded = "2026-11-12"
-
-[[case]]
 name = "SW Anatolian lake district: cells observed at about 0.2 (6,000 BCE) and 0.33 (4,000 BCE) are filled at 0.67 at"
 layer = "open_land"
 year = -5000
@@ -158,3 +128,24 @@ layer = "y_other"
 year = -10000
 bbox = [-6.4, 35.4, -4.8, 36.6]
 why = "Different judgements either side (y_haplogroup.toml#2 Iberia, #43 Maghreb) joined by two or three hex links across the strait, too narrow for the smoothing to level. A sea strait between two populatio"
+
+[[keep]]
+layer = "open_land"
+year = -3000
+bbox = [42.8, 38.6, 46.6, 43.4]
+was = 0.229
+why = "Moved from the cases (2026-11-13): two observed pollen cells two hexes apart read about 0.85 and 0.18. The step is a contrast between records, not between fill and evidence, so no fill setting can remove it."
+
+[[keep]]
+layer = "enclosures"
+year = -5000
+bbox = [22.5, 44.1, 25.7, 47.7]
+was = 0.65
+why = "Moved from the cases (2026-11-13): the lower Danube enclosures (0.18 at 6,000 BCE, 0.61 at 5,000, 0.23 at 4,000) follow the dated tell and enclosure phases; the change between slices is real. Do not raise the judgement to hide it."
+
+[[keep]]
+layer = "houses"
+year = -5000
+bbox = [-8.2, 53.3, -5.1, 56.4]
+was = 0.593
+why = "Moved from the cases (2026-11-13). The 6,000 BCE patch came from two early dates at multi-period sites, now rejected in data/settlements/records.toml (Curraghatoor GrN-19563, Corrstown UB-6250); no cell is observed before 4,000 BCE. What remains is the arrival of rectangular houses with the first farmers c. 3800 BCE, a real change between the 5,000 and 4,000 BCE slices. Do not raise the judgement to hide it."

@@ -1,0 +1,86 @@
+# Fixed views for `make state-visual` (pipeline/visual.py): where a player
+# looks first, and places where the pipeline has gone wrong before. Each is
+# rendered headless with `neolith --screenshot` and compared with the last
+# accepted render. Flags as in `neolith --help`. Keep this list short.
+
+size = "640x400"
+pixel_step = 24       # a pixel "moved" if any channel changed by more than this (0-255)
+changed_share = 0.02  # a view is "changed" when more than this share of pixels moved
+
+[[view]]
+name = "jericho-8000"
+year = -8000
+lon = 35.44
+lat = 31.87
+dist = 0.15
+
+[[view]]
+name = "catalhoyuk-6500"
+year = -6500
+lon = 32.83
+lat = 37.67
+dist = 0.15
+
+[[view]]
+name = "gobekli-9000"
+year = -9000
+lon = 38.92
+lat = 37.22
+dist = 0.15
+
+[[view]]
+name = "stonehenge-3000"
+year = -3000
+lon = -1.83
+lat = 51.18
+dist = 0.15
+
+# Europe at -8000: the Late Glacial mis-dating (terrain critic F1).
+[[view]]
+name = "europe-8000"
+year = -8000
+lon = 15.0
+lat = 50.0
+dist = 1.2
+
+# The Russian 57N line (terrain critic F4).
+[[view]]
+name = "russia-5000"
+year = -5000
+lon = 45.0
+lat = 56.0
+dist = 0.8
+
+[[view]]
+name = "levant-cereals-8000"
+year = -8000
+mode = "evidence"
+evidence = "cereals"
+lon = 37.0
+lat = 34.0
+dist = 0.6
+
+[[view]]
+name = "doggerland-7000"
+year = -7000
+lon = 3.0
+lat = 54.0
+dist = 0.6
+
+[[view]]
+name = "nile-delta-pop-5000"
+year = -5000
+mode = "pop"
+lon = 31.0
+lat = 30.5
+dist = 0.4
+
+# `make state-ui` (pipeline/interact.py): clicks on these views, and the UI
+# stability sequence (open a record, change year and mode, play, close) on ui_view.
+[interact]
+views = ["jericho-8000", "catalhoyuk-6500", "gobekli-9000", "stonehenge-3000"]
+ui_view = "jericho-8000"
+jitter_px = 8         # off-centre clicks, in screenshot pixels (4 points on a 2x display)
+crowd_px = 24         # pieces closer than this are ambiguous targets
+pieces_per_view = 12
+ui_shift_px = 4       # a widget "moved" if its centre shifted more than this

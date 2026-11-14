@@ -149,7 +149,7 @@ confidence = "high"
 basis = ["literature", "dossier_statistics"]
 reasoning = "Coverage of 57% at 6,000 and 60% at 5,000 BCE, and edge cells at 8,000 BCE, cannot be enclosures: the first causewayed enclosures in Britain date 3700-3600 BCE (Whittle et al. 2011). The rule inherits the site type for pre-monument charcoal and Mesolithic features."
 literature = [
-  { cite = "Whittle, Healy & Bayliss 2011, Gathering Time", checked = false },
+  { cite = "Whittle, Healy & Bayliss 2011, Gathering Time: Dating the Early Neolithic Enclosures of Southern Britain and Ireland, Oxbow Books", checked = true, url = "https://www.stir.ac.uk/research/hub/publication/648549", read = "abstract", note = "Causewayed and related enclosures in southern Britain appeared in the final decades of the 38th century cal BC." },
 ]
 would_settle = "Restrict the rule to dates whose context is the enclosure ditch or bank."
 speculative_rule = "Fill with 0 and suppress the evidenced cells before 4,500 BCE."
@@ -166,7 +166,8 @@ confidence = "medium"
 basis = ["literature", "neighbouring_evidence"]
 reasoning = "Italy reads 10% at 5,000 BCE with 8 edge cells; in Apulia most Early Neolithic villages are ditched (fossati), elsewhere in Italy almost none are."
 literature = [
-  { cite = "Brown 2001, Tavoliere ditched settlement survey", checked = false },
+  { cite = "Brown 2001-2003, 'Aerial archaeology of the Tavoliere: the Italian air photographic record and the Riley archive', Accordia Research Papers 9, 123-146", checked = false, note = "Was 'Brown 2001, Tavoliere ditched settlement survey'; full reference as printed in Whitehouse 2014. Not online." },
+  { cite = "Whitehouse 2014, 'The chronology of the Neolithic ditched settlements of the Tavoliere and the Ofanto valley', Accordia Research Papers 13, 57-77", checked = true, url = "https://discovery.ucl.ac.uk/id/eprint/1508583/1/Whitehouse.pdf", read = "full text (searched passages)", note = "The ditched enclosure is overwhelmingly the dominant settlement form of the earlier Neolithic in the Tavoliere and Ofanto valley, in use c. 6000-5000 cal BC; 776 sites documented, far fewer than existed." },
 ]
 would_settle = "Digitise the Tavoliere ditched-village gazetteer (Jones, Brown) with associated dates."
 speculative_rule = "0.4 in Apulia and Basilicata from 6,000 to 5,000 BCE, 0.02 in the rest of the peninsula."
@@ -373,7 +374,7 @@ confidence = "medium"
 basis = ["dossier_statistics", "literature"]
 reasoning = "31% coverage at 3,000 BCE with 20 edge cells; none at 4,000, though the earliest examples (c. 3500) straddle the slices."
 literature = [
-  { cite = "Márquez-Romero & Jiménez-Jáimez 2010, Recintos de fosos", checked = false },
+  { cite = "Márquez-Romero & Jiménez-Jáimez 2010, Recintos de fosos: genealogía y significado de una tradición en la Prehistoria del suroeste de la Península Ibérica (IV-III milenios AC), Universidad de Málaga", checked = false, note = "Book; only catalogue records found online, no text to check the dates against." },
 ]
 would_settle = "Márquez-Romero & Jiménez-Jáimez's enclosure catalogue with dates."
 speculative_rule = "0.03 at 4,000 BCE; 0.2 at 3,000 BCE in Andalusia, Alentejo and the Meseta, 0.05 in the north."

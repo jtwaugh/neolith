@@ -1,0 +1,38 @@
+# Published ancient genomes that are not in AADR v66.p1, added to the sample
+# layers (adna_samples and the Y/mt haplogroup shares) by isostyle/people.py
+# units(). They are NOT added to the ancestry table: that needs AADR
+# genotypes, and these individuals have none in our build.
+#
+# Each entry: an individual id, the publication, a calibrated date as a mean
+# and SD in years BP (1950), the position, sex, Y and mt calls ("" = no call),
+# 1240K SNPs covered, and the source. Written up in data/isostyle/SOURCES.md.
+
+[[genome]]
+individual = "TKH001"
+group = "Libya_Takarkori_PastoralNeolithic"
+locality = "Takarkori rock shelter (Tadrart Acacus, Ghat District)"
+publication = "Salem et al. 2025, Nature 641"
+bp = 6977
+sd = 95
+lat = 24.883
+lon = 10.333
+sex = "F"
+y = ""
+mt = "N"
+snps = 881765
+source = "Salem et al. 2025, 'Ancient DNA from the Green Sahara reveals ancestral North African lineage', Nature 641, https://doi.org/10.1038/s41586-025-08793-7 (open text at https://pmc.ncbi.nlm.nih.gov/articles/PMC12043513/; reads in ENA PRJEB84057). Two naturally mummified adult women, both carrying a basal branch of mt haplogroup N; 881,765 1240K SNPs. The paper gives the two direct dates 7,158-6,796 and 6,555-6,281 cal BP (95.4%) 'respectively' without naming each individual in the text we read; we assign them in the order the individuals are introduced (TKH001, TKH009). The swap would move each woman by about 550 years, within one 1,000-year slice. Mean and SD here are the midpoint and a quarter of the 95% range. Position: Wikipedia, 'Takarkori' (https://en.wikipedia.org/wiki/Takarkori, read 2026-11-13), 24.883N 10.333E; no survey coordinate found, good to about 10 km."
+
+[[genome]]
+individual = "TKH009"
+group = "Libya_Takarkori_PastoralNeolithic"
+locality = "Takarkori rock shelter (Tadrart Acacus, Ghat District)"
+publication = "Salem et al. 2025, Nature 641"
+bp = 6418
+sd = 70
+lat = 24.883
+lon = 10.333
+sex = "F"
+y = ""
+mt = "N"
+snps = 23317
+source = "As TKH001: Salem et al. 2025, https://doi.org/10.1038/s41586-025-08793-7. Low coverage (23,317 1240K SNPs in Results; 22,484 in Methods), enough for the mt call but not for the autosomal model."

@@ -31,7 +31,8 @@ Schema:
   confidence = "low"                       # low | medium | high
   basis = ["neighbouring_evidence", "literature"]            # from BASES
   reasoning = "the argument, citing dossier numbers"
-  literature = [ { cite = "Author year, title", checked = true, url = "..." } ]
+  literature = [ { cite = "Author year, title", checked = true, url = "...", read = "abstract" } ]
+                                           # keys: cite, checked, url, read, note (LITERATURE_KEYS)
   would_settle = "what data or fieldwork would answer it"
   speculative_rule = "how a speculative layer should fill this, in one or two sentences"
 
@@ -124,6 +125,11 @@ CAUSES = {
     "burial_practice": "the dead were cremated, exposed or not buried in recoverable places",
     "unknown": "no good explanation",
 }
+# Keys of a literature entry: cite and checked always; url is the page the
+# claim was checked against (required when checked = true), read says how much
+# of it was read ("abstract", "full text", ...), note records why an entry is
+# left unchecked or what the source does not support.
+LITERATURE_KEYS = {"cite", "checked", "url", "read", "note"}
 BASES = {"neighbouring_evidence", "other_layer", "literature", "environment", "analogy", "dossier_statistics", "intuition"}
 CONFIDENCE = {"low", "medium", "high"}
 
@@ -211,6 +217,11 @@ def validate(path, layer_ids, regions=None, sets=None, hydro=None):
         for ref in j.get("literature", []):
             if "cite" not in ref or "checked" not in ref:
                 errs.append(f"{where}: each literature entry needs cite and checked")
+            extra = set(ref) - LITERATURE_KEYS
+            if extra:
+                errs.append(f"{where}: unknown literature keys {sorted(extra)} (allowed: {sorted(LITERATURE_KEYS)})")
+            if ref.get("checked") and not ref.get("url"):
+                errs.append(f"{where}: a checked literature entry needs the url it was checked against")
     return errs
 
 

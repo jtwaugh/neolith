@@ -12,6 +12,10 @@
 # [[reject]]  site: the name exactly as filed; lab: the lab number. Drops
 #             that one date, filed under a site it does not belong to. A
 #             reject that matches no date stops the build.
+# [[keep_site]] site: the site's name (as filed, or a [[same]] name). Its
+#             dates pass [settlements.xronos] exclude_types although its type
+#             is a tomb or necropolis. A keep_site that matches no date stops
+#             the build.
 # Every entry has a `source` (a link) and a `note`. CORRECTIONS.md lists the
 # sources (pipeline/tests/test_sources.py checks).
 
@@ -536,3 +540,101 @@ name = "Bury Hill, Hampshire"
 at = [-1.507, 51.19]
 source = "https://xronos.ch/c14s/292549"
 note = "2175 BP, as OxA-17282."
+
+# ------------------------------------------------- Famous sites
+# From docs/plans/housekeeping/2026-11-13-1806.md (2.1, 2.2): the sites of
+# neolith-rs/crates/app/assets/renown.json that the compilations file twice,
+# under two spellings at rounded or wrong positions, or with no position.
+
+[[locate]]
+site = "Dimini"
+at = [22.8833, 39.35]
+source = "https://en.wikipedia.org/wiki/Dimini"
+note = "Two XRONOS records of one date (nd-133, 5630 +/- 150 BP; type Settlement) filed with no position. The position is Wikipedia's (39°21'N 22°53'E, to the arcminute, about 1 km)."
+
+[[same]]
+name = "Çatalhöyük West"
+members = ["Çatalhöyük West", "Catalhyk West", "Catalhöyük West", "�atalh�y�k West", "Catalhoyuk"]
+at = [32.8229, 37.6663]
+source = "https://en.wikipedia.org/wiki/%C3%87atalh%C3%B6y%C3%BCk"
+note = "The West mound (Early Chalcolithic, from about 5600 BC) lies about 300 m west of the East mound across an old channel of the Çarşamba (Wikipedia). XRONOS files it with no position (129 records), as 'Catalhyk West' at the rounded 32.82, 37.65 (2 km south) and, without a mound, as 'Catalhoyuk' at 32.8167, 37.65 (OxA-12105, OxA-12106, both also under Çatalhöyük West). The position is p3k14c's for its West mound dates (https://github.com/people3k/p3k14c), 0.4 km west of the East mound's. The East mound keeps its own record."
+
+[[same]]
+name = "Tell Ramad"
+members = ["Tell Ramad", "Ramad"]
+at = [36.115, 33.4125]
+source = "https://ugp.rug.nl/Palaeohistoria/article/download/24836/22284/28973"
+note = "One site filed twice with the same measurements (GrN-4426 to GrN-4428, GrN-4821 to GrN-4823): 'Ramad' at 36.1, 33.41 (30 records) and 'Tell Ramad' at 35.9489, 33.3602 (7 records, from NERD), 15 km apart. van Zeist & Bakker-Heeres 1982 (Archaeobotanical studies in the Levant I, Palaeohistoria 24, p. 173, after de Contenson & van Liere 1964) put the tell 'about 20 km SW of Damascus and about 3 km SE of Qatana', c. 900 m a.s.l. on the Wadi Qatana. The position is 3 km south-east of Qatana as Wikipedia gives it (33.43167, 36.0925, https://en.wikipedia.org/wiki/Qatana), good to about 1-2 km; the 'Ramad' records were 1.4 km from it. The Wikipedia infobox's coordinates for Tell Ramad (33.360178, 35.948949, the NERD records') lie 15 km south-west of Qatana and do not fit."
+
+[[same]]
+name = "Jarmo"
+members = ["Jarmo", "Qala’at Jarmo"]
+at = [44.9303, 35.5558]
+source = "https://en.wikipedia.org/wiki/Jarmo"
+note = "Qal'at Jarmo is Jarmo's full name. XRONOS files it twice: 'Jarmo' at 44.93, 35.556 and 'Qala’at Jarmo' (from the ASPRO base) at the rounded 45.6, 35.5, 61 km east; 13 of the second's 19 lab numbers are also under the first (C-113, C-742 to C-744, GL-44, GL-45 ...). The position is Wikipedia's (35°33'21\"N 44°55'49\"E)."
+
+[[same]]
+name = "Ali Kosh"
+members = ["Ali Kosh", "Tepe Ali Kosh"]
+at = [47.3249, 32.5578]
+source = "https://en.wikipedia.org/wiki/Ali_Kosh"
+note = "'Tepe Ali Kosh' at 47.26, 32.33 (25 km south) holds two dates, SI-160 and SI-160R, which are also filed under 'Ali Kosh' at 47.32, 32.55. The position is Wikipedia's (32.5578, 47.3249), which p3k14c also gives."
+
+[[same]]
+name = "Tell Halaf"
+members = ["Tell Halaf", "Halaf"]
+at = [40.0396, 36.8266]
+source = "https://en.wikipedia.org/wiki/Tell_Halaf"
+note = "'Halaf' at the rounded 40.05, 36.81 (2 km away) holds one date, GrN-2660, also filed under 'Tell Halaf'. The position is Wikipedia's (36.8266, 40.0396), the same as the 'Tell Halaf' records'."
+
+[[same]]
+name = "Franchthi Cave"
+members = ["Franchthi Cave", "Franchthi"]
+at = [23.1322, 37.4233]
+source = "https://en.wikipedia.org/wiki/Franchthi_Cave"
+note = "'Franchthi' at 22.73, 37.63 (42 km north-west) is the cave filed a second time: 37 of its 39 lab numbers are also under 'Franchthi Cave' (the other two are P-1518-A and P-2097-(bis)). The position is Wikipedia's (37.4233, 23.1322), the same as the XRONOS 'Franchthi Cave' records'."
+
+[[same]]
+name = "Vinča-Belo Brdo"
+members = ["Vinča-Belo Brdo", "Vinca-Belo Brdo", "Vinča"]
+at = [20.6231, 44.7619]
+source = "https://en.wikipedia.org/wiki/Vin%C4%8Da-Belo_Brdo"
+note = "One tell filed three ways: 'Vinča-Belo Brdo' with no position (148 XRONOS records), 'Vinca-Belo Brdo' at the rounded 20.6, 44.8 (18 lab numbers, all also under the first) and 'Vinča' at 20.6167, 44.75 (GrN-1537, GrN-1546, also under the first). The position is Wikipedia's (44.7619, 20.6231)."
+
+[[same]]
+name = "Varna Cemetery"
+members = ["Varna Cemetery", "Varna"]
+at = [27.8644, 43.2131]
+source = "https://en.wikipedia.org/wiki/Varna_Necropolis"
+note = "The Copper Age cemetery filed three ways: 'Varna Cemetery' with no position (50 XRONOS records), 'Varna Cemetery' at the rounded 27.9, 43.2 (p3k14c) and 'Varna' at 27.9167, 43.2167 (typed 'settlement'); 21 of the 25 'Varna Cemetery' lab numbers are also under 'Varna' (the Oxford and Mannheim burial dates of Higham et al. and Krauß et al.). The position is Wikipedia's for the necropolis (43.2131, 27.8644), 4 km west of where 'Varna' was filed."
+
+# ------------------------------------------------- Famous sites typed as tombs
+# From docs/plans/research/2026-11-13-2026.md (3.1): famous sites whose own
+# XRONOS records the build dropped with the tombs (exclude_types).
+
+[[keep_site]]
+site = "Newgrange"
+source = "https://en.wikipedia.org/wiki/Newgrange"
+note = "126 XRONOS records (e.g. GrN-5462, https://xronos.ch/c14s/43419) typed 'Boyne Passage Grave', at 53.7043, -6.4667, 1 km from the tomb; oldest UBA-23055, 4649 +/- 35 BP (Lynch et al. 2014, via IRDD). They date the passage tomb and the Beaker-period activity around it. The site is a famous one (renown.json), so its own dates are kept; the two Cassidy et al. 2020 burial dates in literature_dates.csv stay too and join it by name."
+
+[[keep_site]]
+site = "Los Millares"
+source = "https://en.wikipedia.org/wiki/Los_Millares"
+note = "99 XRONOS records (e.g. Beta-125859, https://xronos.ch/c14s/57309) typed 'Settlement with megalithic necropolis' at 36.9664, -2.5175; oldest SUERC-86912, 4569 +/- 35 BP. The walled Copper Age settlement is the famous site (renown.json); its type names the necropolis too, which exclude_types drops. Replaces the hand entry in curated.geojson."
+
+# ------------------------------------------------- Irish Bronze Age houses
+# From docs/plans/research/2026-11-13-2026.md (2.3): single early dates at
+# multi-period sites typed "house", which made 6,000 BCE houses.
+
+[[reject]]
+site = "Curraghatoor"
+lab = "GrN-19563"
+source = "https://tipperarystudies.ie/wp-content/uploads/2021/10/Bronze-Age-Settlements-in-Co.-Tipperary-Fifteen-Years-of-Research.pdf"
+note = "Filed as 7180 +/- 70 BP (Cleary 2007, 55; XRONOS 41662, 82892, 93441, 255230, 122481); the excavator prints it as 7130 +/- 70 BP, 6170-5848 BC. It dates the fill of the ditch of a circular enclosure that predates the Later Bronze Age settlement and 'may indicate even earlier activity during the Mesolithic period in the vicinity' (Doody, Bronze Age Settlements in Co. Tipperary: Fifteen Years of Research, p. 102). Not a house: the earliest house, a rectangular one, is GrN-19564, 4190 +/- 50 BP (2914-2614 BC), which is kept, and the latest phase, the huts, dates 2940-2730 BP. The site's type is 'house', so the ditch date made a 6,000 BCE house."
+
+[[reject]]
+site = "Corrstown"
+lab = "UB-6250"
+source = "https://rmchapple.blogspot.com/2012/04/corrstown-coastal-community-excavations.html"
+note = "Charcoal, 7522 +/- 44 BP (about 6400 BCE), filed from Ginn & Rathbone 2012 (Corrstown: A Coastal Community, Oxbow), p. 231 (XRONOS 127099, 41563, 329491). The site's other 32 dates on that page run 3556-2157 BP. The excavators' analysis puts the founding of the Bronze Age village at about 1500 cal BC, and the earliest activity found is a small amount of Early Neolithic pottery (nine bowls); some of the unidentified charcoal was old wood (Chapple's review of the monograph, which reports its date tables and phases; the monograph itself is not online and the sample's context was not read). A date millennia older than any find on the site is not a house; the site's type is 'house', so it made a 6,000 BCE house."
+

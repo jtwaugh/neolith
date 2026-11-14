@@ -1,0 +1,14 @@
+{
+ "critic": "terrain-critic",
+ "date": "2026-11-13",
+ "rubric_version": null,
+ "report": "returned in the hand-off message (subagent could not write build/critic/terrain/20261113-2048/REPORT.md); trial scripts in build/critic/terrain/20261113-2048/",
+ "findings": [
+  {"id": "terrain-2026-11-12-F1", "title": "Europe at -9000 and -8000 drawn from Late Glacial maps", "severity": "high", "status": "fixed", "where": "pipeline/config.toml [[terrain.misdated]]"},
+  {"id": "terrain-2026-11-12-F2", "title": "Fronts fill draws straight north-south edges", "severity": "high", "status": "fixed", "where": "pipeline/compose.py switch_fraction"},
+  {"id": "terrain-2026-11-12-F3", "title": "Floodplain decided per year from that year's biome", "severity": "medium", "status": "fixed", "where": "pipeline/biome_clean.py floodplain_eligibility"},
+  {"id": "terrain-2026-11-12-F4", "title": "Edge warp moves no hex more than one row, so long row edges survive (57.5N 45-55E at -8000/-3000; was the -5000 57N line)", "severity": "medium", "status": "open", "where": "pipeline/config.toml [biome.edges] amplitude = 1.2 (proposed 1.8); pipeline/biome_clean.py warp_targets noise not normalised", "check": "terrain suspects: straight edges at ~57.5N 45-55E (S025, S031 on 2026-11-13) and ~56N 36-42E (S027) drop out; straight-edge count below 49"},
+  {"id": "terrain-2026-11-12-F5", "title": "Pollen anchor Avrig 1 has lon = lat = 45.716", "severity": "low", "status": "fixed", "where": "data/terrain/anchors.csv emb:1686 (upstream EMBSeCBIO)"},
+  {"id": "terrain-2026-11-13-F6", "title": "Russian Plain misdated rule's north seam (55N) is flat along 36-42E; ecotone band runs parallel", "severity": "low", "status": "open", "where": "pipeline/config.toml [[terrain.misdated]] 'Russian Plain' edge_noise amplitude = 1.5 (backstop: 3.0)", "check": "terrain suspects: straight Boreal/Steppe-Forest edge ~56N 36-42E at -9000/-7000 (S027 on 2026-11-13) drops out"}
+ ]
+}

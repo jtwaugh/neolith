@@ -8,7 +8,7 @@ use neolith_core::farming;
 use neolith_core::forager;
 use neolith_core::productivity;
 use neolith_core::residuals;
-use neolith_core::{Koeppen, MapMode, PopDensity, Terrain, Value, NO_DATA};
+use neolith_core::{Cover, Koeppen, MapMode, PopDensity, Terrain, Value, NO_DATA};
 
 pub type Rgb = [u8; 3];
 
@@ -18,6 +18,50 @@ const fn hex(c: u32) -> Rgb {
 
 /// Shown where no keyframe is in effect yet.
 pub const NO_DATA_COLOUR: Rgb = hex(0x3a3a3a);
+
+/// The mean colour of each ground cover (Ground map mode): what the
+/// procedural texture averages to from far out, and its legend swatch.
+/// Muted, earthy tones, as photographed ground is.
+pub const fn cover(c: Cover) -> Rgb {
+    match c {
+        Cover::Grass => hex(0x6f8a3c),
+        Cover::Moss => hex(0x5f6e48),
+        Cover::Sand => hex(0xd4b27c),
+        Cover::Rock => hex(0x8c8681),
+        Cover::Snow => hex(0xe6edf3),
+        Cover::Litter => hex(0x5c4a32),
+    }
+}
+
+/// A terrain's mean ground colour in the Ground map mode: its cover
+/// ([`cover`]) as that biome wears it, so the biome mosaic still reads from
+/// far out (steppe straw, floodplain green). Tones follow the terrain map's
+/// natural ground on the heightmap ranges (board.wgsl `natural_ground`).
+pub const fn ground_terrain(t: Terrain) -> Rgb {
+    match t {
+        Terrain::Water => terrain(Terrain::Water),
+        Terrain::Ice => cover(Cover::Snow),
+        Terrain::Alpine | Terrain::Mountains => cover(Cover::Rock),
+        Terrain::ExtremeDesert => hex(0xd2b483),
+        Terrain::SemiDesert => hex(0xb8a479),
+        Terrain::Savannah => hex(0xa89a64),
+        Terrain::Chaparral => hex(0x948a64),
+        Terrain::Grassland | Terrain::Plains => hex(0x9b9c64),
+        Terrain::SteppeForest => hex(0x80915a),
+        Terrain::Floodplain => hex(0x6c9351),
+        Terrain::Land | Terrain::Free | Terrain::Unknown => hex(0x8f9060),
+        Terrain::Tundra => hex(0x858a71),
+        Terrain::BorealForest => hex(0x4a5a3a),
+        Terrain::Woodlands => hex(0x6f7a48),
+        Terrain::TemperateForest => hex(0x5f6a3c),
+        Terrain::TropicalForest => hex(0x4a5f32),
+    }
+}
+
+/// A terrain byte's colour in the Ground map mode.
+pub fn ground(v: u8) -> Rgb {
+    Terrain::from_u8(v).map_or(NO_DATA_COLOUR, ground_terrain)
+}
 
 pub const fn terrain(t: Terrain) -> Rgb {
     match t {
@@ -172,6 +216,80 @@ pub fn missing(band: u8) -> Rgb {
     MISSING.get(band as usize).copied().unwrap_or(NO_DATA_COLOUR)
 }
 
+/// The six ancestry components, in the table's order (whg, ehg, ana, irn,
+/// lev, naf). Checked with the dataviz palette validator against every pair
+/// (2026-11-13): the main contrast, western hunter-gatherer blue against
+/// Anatolian-farmer orange, is the pair furthest apart under every kind of
+/// colour blindness; the weakest pair (irn green, naf pink) never meets on the map.
+pub const ANCESTRY: [Rgb; neolith_core::ancestry::COMPONENTS] =
+    [hex(0x2a78d6), hex(0x4a3aa7), hex(0xd95926), hex(0x1baf7a), hex(0xeda100), hex(0xe87ba4)];
+
+/// How much of the mixture colour a thin hex keeps (few genomes in reach);
+/// the rest is [`EVIDENCE_GREY`].
+pub const ANCESTRY_THIN: f32 = 0.5;
+
+fn srgb_to_linear(v: u8) -> f32 {
+    let c = v as f32 / 255.0;
+    if c <= 0.04045 { c / 12.92 } else { ((c + 0.055) / 1.055).powf(2.4) }
+}
+
+fn linear_to_srgb(c: f32) -> u8 {
+    let c = c.clamp(0.0, 1.0);
+    let v = if c <= 0.003_130_8 { c * 12.92 } else { 1.055 * c.powf(1.0 / 2.4) - 0.055 };
+    (v * 255.0).round() as u8
+}
+
+/// OKLab (Ottosson 2020) of an sRGB colour.
+pub fn oklab(c: Rgb) -> [f32; 3] {
+    let (r, g, b) = (srgb_to_linear(c[0]), srgb_to_linear(c[1]), srgb_to_linear(c[2]));
+    let l = (0.412_221_46 * r + 0.536_332_55 * g + 0.051_445_995 * b).cbrt();
+    let m = (0.211_903_5 * r + 0.680_699_5 * g + 0.107_396_96 * b).cbrt();
+    let s = (0.088_302_46 * r + 0.281_718_85 * g + 0.629_978_7 * b).cbrt();
+    [
+        0.210_454_26 * l + 0.793_617_8 * m - 0.004_072_047 * s,
+        1.977_998_5 * l - 2.428_592_2 * m + 0.450_593_7 * s,
+        0.025_904_037 * l + 0.782_771_77 * m - 0.808_675_77 * s,
+    ]
+}
+
+pub fn from_oklab(c: [f32; 3]) -> Rgb {
+    let l = (c[0] + 0.396_337_78 * c[1] + 0.215_803_76 * c[2]).powi(3);
+    let m = (c[0] - 0.105_561_346 * c[1] - 0.063_854_17 * c[2]).powi(3);
+    let s = (c[0] - 0.089_484_18 * c[1] - 1.291_485_5 * c[2]).powi(3);
+    [
+        linear_to_srgb(4.076_741_7 * l - 3.307_711_6 * m + 0.230_969_94 * s),
+        linear_to_srgb(-1.268_438 * l + 2.609_757_4 * m - 0.341_319_38 * s),
+        linear_to_srgb(-0.004_196_086_3 * l - 0.703_418_6 * m + 1.707_614_7 * s),
+    ]
+}
+
+/// The colour of a mixture of the six components: their colours averaged in
+/// OKLab by share, so a half-and-half hex reads as an honest in-between and
+/// not as a third thing.
+pub fn ancestry_mix(shares: &[f32]) -> Rgb {
+    let total: f32 = shares.iter().take(ANCESTRY.len()).sum::<f32>().max(1e-6);
+    let mut lab = [0.0f32; 3];
+    for (share, colour) in shares.iter().zip(ANCESTRY) {
+        let c = oklab(colour);
+        for k in 0..3 {
+            lab[k] += share / total * c[k];
+        }
+    }
+    from_oklab(lab)
+}
+
+/// The colour of an Ancestry map code ([`neolith_core::ancestry::code`]);
+/// [`NO_DATA_COLOUR`] for a hex with no genome in reach.
+pub fn ancestry(code: u8) -> Rgb {
+    match neolith_core::ancestry::decode(code) {
+        Some((shares, thin)) => {
+            let c = ancestry_mix(&shares);
+            if thin { mix(EVIDENCE_GREY, c, ANCESTRY_THIN) } else { c }
+        }
+        None => NO_DATA_COLOUR,
+    }
+}
+
 pub fn colour(v: Value) -> Rgb {
     match v {
         Value::Terrain(t) => terrain(t),
@@ -192,11 +310,13 @@ pub const SEA_COLOUR: Rgb = hex(0x5f7d99);
 pub fn layer_colour(mode: MapMode, v: u8) -> Rgb {
     match (mode, mode.prop()) {
         (_, Some(prop)) => Value::from_u8(prop, v).map_or(NO_DATA_COLOUR, colour),
+        (MapMode::Ground, None) => ground(v),
         (MapMode::Npp, None) => productivity(v),
         (MapMode::Biodiversity, None) => biodiversity(v),
         (MapMode::Expected, None) => expected(v),
         (MapMode::Evidence, None) => evidence(v),
         (MapMode::Missing, None) => missing(v),
+        (MapMode::Ancestry, None) => ancestry(v),
         (_, None) => elevation(v),
     }
 }
@@ -211,7 +331,7 @@ pub fn palette_texture() -> Vec<u8> {
     let mut px = Vec::with_capacity(PALETTE_WIDTH * PALETTE_ROWS * 4);
     for mode in MapMode::ALL {
         for i in 0..PALETTE_WIDTH {
-            let sea = i == SEA_INDEX as usize && matches!(mode, MapMode::Koeppen | MapMode::Pop | MapMode::Npp | MapMode::Biodiversity | MapMode::Expected | MapMode::Evidence | MapMode::Missing);
+            let sea = i == SEA_INDEX as usize && matches!(mode, MapMode::Koeppen | MapMode::Pop | MapMode::Npp | MapMode::Biodiversity | MapMode::Expected | MapMode::Evidence | MapMode::Missing | MapMode::Ancestry);
             let c = if sea { SEA_COLOUR } else { layer_colour(mode, i as u8) };
             px.extend_from_slice(&[c[0], c[1], c[2], 255]);
         }
@@ -227,6 +347,108 @@ mod tests {
 
     fn luma(c: Rgb) -> f64 {
         0.2126 * c[0] as f64 + 0.7152 * c[1] as f64 + 0.0722 * c[2] as f64
+    }
+
+    /// sRGB to CIELAB (D65).
+    fn lab_of(c: [f64; 3]) -> [f64; 3] {
+        let [r, g, b] = c;
+        let x = (0.4124564 * r + 0.3575761 * g + 0.1804375 * b) / 0.95047;
+        let y = 0.2126729 * r + 0.7151522 * g + 0.0721750 * b;
+        let z = (0.0193339 * r + 0.1191920 * g + 0.9503041 * b) / 1.08883;
+        let f = |t: f64| if t > 0.008856 { t.cbrt() } else { 7.787 * t + 16.0 / 116.0 };
+        [116.0 * f(y) - 16.0, 500.0 * (f(x) - f(y)), 200.0 * (f(y) - f(z))]
+    }
+
+    fn to_linear(c: Rgb) -> [f64; 3] {
+        c.map(|v| {
+            let v = v as f64 / 255.0;
+            if v <= 0.04045 { v / 12.92 } else { ((v + 0.055) / 1.055).powf(2.4) }
+        })
+    }
+
+    /// Colour difference (CIE76) between two colours as seen through `sim`,
+    /// a 3x3 matrix on linear RGB (the identity for full colour vision).
+    fn seen_delta_e(a: Rgb, b: Rgb, sim: &[[f64; 3]; 3]) -> f64 {
+        let see = |c: Rgb| {
+            let l = to_linear(c);
+            lab_of(sim.map(|row| (row[0] * l[0] + row[1] * l[1] + row[2] * l[2]).clamp(0.0, 1.0)))
+        };
+        let (p, q) = (see(a), see(b));
+        ((p[0] - q[0]).powi(2) + (p[1] - q[1]).powi(2) + (p[2] - q[2]).powi(2)).sqrt()
+    }
+
+    /// The map-mode ramps as seen with red-green colour blindness: every pair
+    /// of neighbouring steps should still be told apart. Prints a line that
+    /// `python -m pipeline state` reads (`cargo test -p neolith-app
+    /// ramp_contrast_audit -- --nocapture`); only reports, the target is in
+    /// data/state/targets.toml.
+    #[test]
+    fn ramp_contrast_audit() {
+        // Machado, Oliveira & Fernandes 2009, severity 1.0.
+        const PROTAN: [[f64; 3]; 3] =
+            [[0.152286, 1.052583, -0.204868], [0.114503, 0.786281, 0.099216], [-0.003882, -0.048116, 1.051998]];
+        const DEUTAN: [[f64; 3]; 3] =
+            [[0.367322, 0.860646, -0.227968], [0.280085, 0.672501, 0.047413], [-0.011820, 0.042940, 0.968881]];
+        // Below this two flat fills side by side are hard to tell apart.
+        const MIN_STEP: f64 = 5.0;
+        let ramps: Vec<(&str, Vec<Rgb>)> = vec![
+            ("population", PopDensity::ALL.iter().map(|p| pop(*p)).collect()),
+            ("elevation, water", ELEVATION[..7].to_vec()),
+            ("elevation, land", ELEVATION[7..].to_vec()),
+            ("productivity", PRODUCTIVITY.to_vec()),
+            ("biodiversity", BIODIVERSITY.to_vec()),
+            ("expected population", EXPECTED.to_vec()),
+            ("evidence", PLASMA.to_vec()),
+        ];
+        let mut weak = Vec::new();
+        let mut least = (f64::INFINITY, String::new());
+        for (name, ramp) in &ramps {
+            for (k, w) in ramp.windows(2).enumerate() {
+                for (who, sim) in [("protan", &PROTAN), ("deutan", &DEUTAN)] {
+                    let d = seen_delta_e(w[0], w[1], sim);
+                    if d < least.0 {
+                        least = (d, format!("{name} steps {k}-{} ({who})", k + 1));
+                    }
+                    if d < MIN_STEP {
+                        weak.push(format!("{name} {k}-{} {who} {d:.1}", k + 1));
+                    }
+                }
+            }
+        }
+        println!(
+            "RAMP_AUDIT {}",
+            serde_json::json!({"weak_steps": weak.len(), "weak": weak, "least": (least.0 * 10.0).round() / 10.0, "least_at": least.1, "min_step": MIN_STEP, "ramps": ramps.len()})
+        );
+        // Sanity: the simulation is the identity on greys.
+        assert!(seen_delta_e([120, 120, 120], [120, 120, 120], &DEUTAN) < 1e-9);
+        assert!((seen_delta_e([0, 0, 0], [255, 255, 255], &DEUTAN) - 100.0).abs() < 1.5);
+    }
+
+    #[test]
+    fn ancestry_mixtures_are_in_between() {
+        use neolith_core::ancestry::{code, COMPONENTS, MIXTURES, NO_CODE};
+        // OKLab round-trips, and a pure component is its own colour.
+        for c in ANCESTRY {
+            assert_eq!(from_oklab(oklab(c)), c);
+        }
+        let pure = |k: usize| -> [f32; COMPONENTS] { std::array::from_fn(|i| (i == k) as u8 as f32) };
+        assert_eq!(ancestry(code(&pure(2), false)), ANCESTRY[2]);
+        // Half hunter-gatherer, half farmer sits between the two in lightness.
+        let mut half = [0.0; COMPONENTS];
+        (half[0], half[2]) = (0.5, 0.5);
+        let (a, b, m) = (oklab(ANCESTRY[0])[0], oklab(ANCESTRY[2])[0], oklab(ancestry(code(&half, false)))[0]);
+        assert!(m > a.min(b) - 1e-3 && m < a.max(b) + 1e-3);
+        // Thin hexes are the same hue, greyer; every code differs from no data.
+        let thin = ancestry(code(&pure(2), true));
+        assert!(thin != ANCESTRY[2] && thin != NO_DATA_COLOUR);
+        assert_eq!(ancestry(NO_CODE), NO_DATA_COLOUR);
+        let row = MapMode::Ancestry.index();
+        let tex = palette_texture();
+        let at = |i: usize| -> Rgb { let o = (row * PALETTE_WIDTH + i) * 4; [tex[o], tex[o + 1], tex[o + 2]] };
+        assert!((0..2 * MIXTURES as usize).all(|i| at(i) != NO_DATA_COLOUR));
+        assert_eq!(at(SEA_INDEX as usize), SEA_COLOUR);
+        // The main contrast: western hunter-gatherer against Anatolian farmer.
+        assert!(delta_e(ANCESTRY[0], ANCESTRY[2]) > 40.0);
     }
 
     #[test]

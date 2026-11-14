@@ -81,12 +81,16 @@ url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
 checked = true
 
 [[research]]
+status = "done"
+done_in = "data/settlements/literature_dates.csv: Kairshak I, III and VI, Baibek, Tenteksor I, Kugat IV, Kulagaysi and Jangar from Vybornov et al. 2013, Vybornov 2016, Vybornov et al. 2017 and Vybornov et al. 2022 (sources of those names). Left out, checked 2026-11-13: Kumyska I has two dates in Vybornov et al. 2022 (Vestnik VolGU 27(3), p. 11: Ki-16271, 5870+/-70 BP, Cis-Caspian pottery; Ki-16273, 5260+/-80 BP, Khvalynsk pottery; both quoted from Yudin 2012), but no source I could open gives the site's position, and it is not on Vybornov 2016 Fig. 1 or in Vybornov et al. 2017 Tab. 1. Vybornov et al. 2018 (Radiocarbon 60(5):1597-1610) is paywalled; Cambridge served only the abstract page."
 what = "Enter the Lower Volga Neolithic-Eneolithic radiocarbon series: Kairshak III and VI, Baibek, Tenteksor, Kugat IV, Dzhangar, Kumyska I. Vybornov et al. 2017 (Documenta Praehistorica 44:224-239, open access) is the regional radiocarbon chronology of the Povolzhye. Vybornov et al. 2013 (DP 40:13-20) holds the Tenteksor shell/organic pair (Ua-35226, Ua-35227). Vybornov et al. 2018 (Radiocarbon 60:1597) adds the diet and chronology dates. Take coordinates from Dolbunova's SI_ORA.xlsx where it has them, and from the papers' maps otherwise."
 url = "https://dlib.si/stream/URN:NBN:SI:DOC-OO2ZWENB/f7d624c3-476d-4e35-ad9b-6dafdad30f80/PDF"
 yields = "5-8 dated sites in or within 50 km of the box, 6500-4700 cal BC, with several dates each; the box goes from 1 doubtful site to a real Neolithic cluster"
 effort = "Two or three open PDFs, a few dozen rows; the reservoir offsets on shell-tempered pottery and fish-eating humans must be carried as a note"
 
 [[research]]
+status = "done"
+done_in = "Decided in data/settlements/literature_dates.csv (the `precision` note of every Kairshak III row): kept at the XRONOS point, 46.7565 N, 47.9164 E, which is 9 km from pos. Aksaraysky and consistent with the dot on Vybornov 2016 Fig. 1; Vybornov et al. 2022 (Samarskii nauchnyi vestnik 11(4), p. 162) puts the Kairshak tract 25-30 km from Aksaraysky. Dolbunova's 47.42 N, 47.76 E is 72 km away in another district and is not used. Marked approximate, about +-30 km. No corrections.toml entry was needed: the rows carry the position themselves."
 what = "Resolve Kairsak III's position. XRONOS (via the Ukraine country file, GIN-5905 and GIN-5927) has 46.7565 N, 47.9164 E. Dolbunova's table has 47.42 N, 47.76 E, next to Kugat IV. Find the excavation report or a Vybornov map and correct one of them in data/settlements/corrections.toml."
 url = "https://zenodo.org/records/6619101"
 yields = "One site in the right place; decides whether the box has any recorded site at all"
@@ -97,6 +101,8 @@ what = "Enter the AADR-dated burials of the Caspian steppe as dated sites. AADR 
 url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
 yields = "Across the five southern Russian places: about 50 directly dated burial sites, 9,650-2,900 BCE. For this box: Volga-Chogray-Channel-53 only; the yield is to the west (Manych) and north (Samara, Saratov, Volgograd)."
 effort = "A filter on a file already on disk; flag human-bone dates as possibly reservoir-affected"
+status = "done"
+done_in = "data/settlements/aadr_dates.csv (249 dates, 69 Russian localities, source 'AADR v66.p1 (Mallick et al. 2024)'); data/settlements/SOURCES.md, `aadr`"
 
 [[speculate]]
 target = "settlements"

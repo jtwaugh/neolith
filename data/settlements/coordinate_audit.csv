@@ -9,13 +9,13 @@ Abingdon,-1.2833,51.0667,4776,same_name_far,120,68,,xronos
 "Abingdon, Oxfordshire",-1.2626,51.681,4775,same_name_far,86,68,,xronos
 Acconia,16.5833,38.9,10638,same_name_far,444,29,,xronos
 "Acconia, Curinga",16.2592,38.8353,10499,same_name_far,505,29,,xronos
-Achilleion,22.3833,39.2833,12444,same_name_far,574,216,,p3k14c
+Achilleion,22.3833,39.2833,12444,same_name_far,574,216,,p3k14c;wikidata
 Achilleion,19.9,39.6,11610,same_name_far,135,216,,p3k14c
 Agia Triada,22.9,40.5,12581,same_name_far,124,627,,p3k14c
 Agia Triada,24.793,35.0593,13287,same_name_far,272,627,,p3k14c
 Almonda,-8.6157,39.5057,2436,same_name_far,619,31,,xronos
 Almonda (Galeria da Cisterna),-8.3648,39.3013,2576,same_name_far,168,31,,neonetatl
-Arene Candide,8.3283,44.1625,7848,same_name_far,259,40,,neonet;p3k14c;xronos
+Arene Candide,8.3283,44.1625,7848,same_name_far,259,40,,neonet;p3k14c;xronos;wikidata
 Arene Candide,8.5,44.5,7986,same_name_far,808,40,,p3k14c
 BLAGNAT,6.6,43.65,7293,same_name_far,1049,184,,xronos
 Balme Rousse,5.39,45.07,7012,same_name_far,1314,112,,xronos
@@ -39,6 +39,8 @@ Caldeirão,-8.2454,39.3854,2575,same_name_far,169,42,,neonetatl
 Caldeirão,-8.7057,39.518,2436,same_name_far,464,42,,xronos
 Camere,8.3889,44.2272,7986,same_name_far,464,32,,xronos
 Camere (Camerotto),8.0202,44.1141,7848,same_name_far,970,32,,xronos
+Chagar Bazar,40.8982,36.8745,18426,same_name_far,392,51,,wikidata
+Chagar Bazar,40.535,36.523,18288,same_name_far,362,51,,xronos
 Chazelles,4.2,44.3333,6596,same_name_far,266,338,,xronos
 "Chazelles, grotte de Queroy",0.32,45.65,5343,same_name_far,166,338,,xronos
 Chełmiczki,21.32,50.02,12145,same_name_far,318,352,,xronos
@@ -54,7 +56,7 @@ Crno Vrilo,15.2297,44.1344,10072,same_name_far,78,46,,xronos
 Crno Vrilo,15.073,44.5284,10071,same_name_far,971,46,,neonet
 Denekamp,7.009,52.3797,7414,same_name_far,53,331,,xronos
 "Denekamp, Klokkenberg",2.125,52.375,5885,same_name_far,-29,331,,xronos
-Dereivka,33.7649,48.9142,16039,same_name_far,151,43,,p3k14c
+Dereivka,33.7649,48.9142,16039,same_name_far,151,43,,p3k14c;wikidata
 Dereivka,34.3138,48.7668,16317,same_name_far,85,43,,p3k14c
 Dęby 29,16.333,54.3754,10468,same_name_far,15,237,,xronos
 Dęby 29,18.5609,52.7058,11167,same_name_far,93,237,,xronos
@@ -72,7 +74,7 @@ Fimon-Molino Casarotto,11.691,45.7623,8957,same_name_far,920,34;33;33,,xronos
 Grotta dell Edera,8.47,44.32,7986,same_name_far,431,440,,xronos
 Grotta dell'Edera,8.32,44.196,7986,same_name_far,506,457,,xronos
 Grotta dell'Edera,13.696,45.756,9651,same_name_far,250,457;440,,neonet;xronos
-Horton,-1.9219,51.3685,4636,same_name_far,189,97,,xronos
+Horton,-1.9219,51.3685,4636,same_name_far,189,97,,xronos;wikidata
 "Horton, Berkshire",-0.5361,51.4635,5053,same_name_far,64,97,,xronos
 Izriten,-9.79,31.45,2174,same_name_far,70,452;474,,xronos
 Izriten (Tarfaya),-12.2667,28.0,1347,same_name_far,55,452;35,,xronos
@@ -122,6 +124,8 @@ Pont d'Ambon,0.6,45.3167,5482,same_name_far,182,37,,xronos
 Pont d'Ambon,0.24,45.54,5343,same_name_far,188,37,,xronos
 Pulli,24.5833,58.3167,13102,same_name_far,20,100,,literature
 Pulli,22.9573,58.6066,12545,same_name_far,20,100,,xronos
+Qermez Dere,42.45,36.37,18844,same_name_far,447,38,,xronos
+Qermez Dere,42.8333,36.5167,18983,same_name_far,344,38,,wikidata
 "Rimbeck, Weißes Holz",9.05,51.5333,8111,same_name_far,325,413,,xronos
 "Rimbeck, Weißes Holz (enclosure)",12.5637,48.5839,9229,same_name_far,478,413,,xronos
 Rond du Barry,-0.59,45.56,5065,same_name_far,49,353,,xronos
@@ -140,7 +144,7 @@ Scabba Wood Shelter,-1.2,53.5,4910,same_name_far,98,205,,xronos
 Spiginas,22.4357,55.7647,12411,same_name_far,168,46,,p3k14c
 Spiginas,21.85,56.0167,12272,same_name_far,175,46,,literature
 Spong Hill,-2.4108,52.6925,4495,same_name_far,161,225,,xronos
-"Spong Hill, Norfolk",0.934,52.737,5607,same_name_far,56,225,,xronos
+"Spong Hill, Norfolk",0.934,52.737,5607,same_name_far,56,225,,xronos;wikidata
 Stenby mölle,17.783,59.05,10876,same_name_far,52,461,,xronos
 Stenby mølle,14.8827,55.2157,10050,same_name_far,106,461,,xronos
 São Julião,-9.1667,39.0833,2298,same_name_far,261,28,,xronos

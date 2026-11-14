@@ -13,7 +13,7 @@ WORLD := neolith-rs/assets/world.bin
 
 # Inferred settlements (data/settlements/INFERRED.md): `make inferred` after
 # `make maps`, then `make maps` again to put them in the world file.
-.PHONY: inferred maps maps-unlocked test settlements cultures-check anchors residuals residuals-unlocked
+.PHONY: inferred maps maps-unlocked test settlements cultures-check anchors residuals residuals-unlocked state state-visual state-ui state-all
 BIOME_URL := https://ndownloader.figshare.com/files/22659026
 GEOGLOWS_URL := https://geoglows-v2.s3.amazonaws.com
 GEOGLOWS := build/geoglows/v2-model-table.parquet build/geoglows/global_streams_simplified.gpkg
@@ -29,6 +29,7 @@ maps-unlocked:
 		../build/combined_map.geojson ../build/settlements.geojson --rivers ../build/rivers.geojson --lakes ../build/lakes.geojson \
 		$(if $(wildcard data/settlements/dates.csv.gz),--dates ../data/settlements/dates.csv.gz) \
 		$(if $(wildcard data/isostyle/speculative/evidence_layers.json),--evidence ../data/isostyle/speculative/evidence_layers.json) \
+		$(if $(wildcard data/isostyle/speculative/ancestry_samples.json),--samples ../data/isostyle/speculative/ancestry_samples.json) \
 		$(if $(wildcard data/population/residuals.csv.gz),--residuals ../data/population/residuals.csv.gz) \
 		$(if $(wildcard data/settlements/inferred.geojson),--inferred ../data/settlements/inferred.geojson) \
 		--heightmap ../build/etopo.asc \
@@ -63,6 +64,26 @@ cultures-check: .venv
 # Downloads about 30 MB once to build/anchors/, plus one Neotoma record per anchor.
 anchors: .venv build/combined_map.geojson
 	$(PY) -m pipeline anchors
+
+# The state of the game on one page (data/state/STATE.md, scorecard.json):
+# tests, validators, isostyle evals, terrain screens, famous sites, research
+# debt, critic runs. About 90 s. Exits 1 only on a gated target
+# (data/state/targets.toml). SKIP=cargo,web,evals,python to leave parts out.
+state: .venv
+	$(PY) -m pipeline state $(if $(SKIP),--skip $(SKIP))
+
+# Fixed views rendered headless (data/state/views.toml) and compared with
+# data/state/golden/; flags views that changed. GOLDEN=1 accepts the new renders.
+state-visual: .venv
+	$(PY) -m pipeline.visual $(if $(GOLDEN),--accept)
+
+# Can you click what you see, and does the UI stay put? Drives the app through
+# its harness on a private port (opens a window; needs a display). About a minute.
+state-ui: .venv
+	$(PY) -m pipeline.interact
+
+# The whole mechanical pass: renders and clicks first, so the scorecard reports them.
+state-all: state-visual state-ui state
 
 test: .venv
 	$(PY) -m unittest discover -s pipeline/tests -t .

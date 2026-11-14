@@ -5,7 +5,7 @@ emb:1823,GGC18BSE (Bulgarian Black Sea),timeseries,EMBSeCBIO,1823,28.4064,42.465
 emb:1691,Steregoiu,timeseries,EMBSeCBIO,1691,23.5447,47.8130,MEDI,150,1.00,420,0.798,1,0,,"Björkman, L., Feurdean, A., and Wohlfarth, B., (2003) Late-Glacial and Holocene forest dynamics at Steregoiu in the Gutaiului Mountains, Northwest Romania. Review of Palaeobotany and palynology 124:79-111"
 emb:1073,Lake Maliq S1,timeseries,EMBSeCBIO,1073,20.7833,40.7667,MEDI,77,0.99,119,0.792,0,0,,"Bordon, A., O. Peyron, A.M. Lezine, S. Brewer, and E. Fouache. (2009) Pollen-inferred Late-Glacial and Holocene climate in southern Balkans (Lake Maliq). Quaternary International, 200:19-30."
 emb:1694,Dry Lake 2,timeseries,EMBSeCBIO,1694,23.5330,42.0380,MEDI,40,0.99,353,0.788,0,0,,"Bozilova, E., and A.G. Smit 1979. Palynology of lake Sucho Ezero from South Rila Mountain (Bulgaria). Phytologia 11:54-67."
-emb:1686,Avrig 1,timeseries,EMBSeCBIO,1686,45.7160,45.7160,MEDI,71,0.98,203,0.785,1,0,,"Tantau, I. 2003. Pollen analytic researches in the Eastern Romanian Carpathians. History of vegetation and human impact. Thesis of environmental Sciences, Paleontology and Stratigraphy. Aix-Marseille III University and Babes-Bolyai of Cluj-Napoca University."
+emb:1686,Avrig 1,timeseries,EMBSeCBIO,1686,24.3833,45.7167,MEDI,71,0.98,203,0.785,1,0,,"Tantau, I. 2003. Pollen analytic researches in the Eastern Romanian Carpathians. History of vegetation and human impact. Thesis of environmental Sciences, Paleontology and Stratigraphy. Aix-Marseille III University and Babes-Bolyai of Cluj-Napoca University."
 emb:1053,Core-149,timeseries,EMBSeCBIO,1053,27.5800,42.0400,LARG,28,0.90,573,0.731,0,0,,"Filipova-Marinova, M. 2003. Postglacial vegetation dynamics in the coastal part of the Strandza Mountains, Southeastern Bulgaria. In: Tonkov, S. (ed.), Aspects of Palynology and Palaeoecology: Festschrift in honour of Elissaveta Bozilova. Pp. 213-231. Pensoft, Sofia-Moscow."
 emb:1831,Orestias G25,timeseries,EMBSeCBIO,1831,21.2578,40.5117,MEDI,44,0.93,511,0.727,1,0,,"Kouli, K., and M.D. Dermitzakis. 2010. Contributions to the European Pollen Database. 11. Lake Orestiás (Kastoria, northern Greece). Grana, 49(3):154-156."
 neotoma:3938,Bledowo Lake,timeseries,European Pollen Database,3938,20.6758,52.5432,,165,1.00,99,0.699,0,0,,https://doi.org/10.21233/b0fw-9e91
@@ -44,7 +44,6 @@ neotoma:45343,Svartvatnet,timeseries,European Pollen Database,45343,8.8778,63.35
 neotoma:47525,Lago Grande di Monticchio,timeseries,European Pollen Database,47525,15.6043,40.9305,,87,0.99,469,0.690,0,0,,https://doi.org/10.21233/KVNC-0856
 neotoma:4421,Loch Sionascaig,timeseries,European Pollen Database,4421,-5.2008,58.0690,,58,0.98,258,0.689,1,0,,https://doi.org/10.21233/hfmb-2e61
 neotoma:4118,Liptovský Ján,timeseries,European Pollen Database,4118,19.6778,49.0417,,43,0.98,214,0.688,0,0,,https://doi.org/10.21233/sczz-2g33
-neotoma:44951,Kis-Mohos Tó,timeseries,European Pollen Database,44951,20.4248,48.3372,,52,0.98,384,0.688,1,0,,https://doi.org/10.21233/y4ss-7811
 neotoma:41909,Charco da Candieira,timeseries,European Pollen Database,41909,-7.5764,40.3417,,145,0.98,228,0.687,1,0,,https://doi.org/10.21233/6tgg-3a45
 neotoma:4325,Osvea,timeseries,European Pollen Database,4325,28.0833,56.0500,,34,0.98,270,0.686,0,0,,https://doi.org/10.21233/nr1k-kx95
 neotoma:4332,Påidre,timeseries,European Pollen Database,4332,25.5048,58.2759,,58,0.98,192,0.686,0,0,,https://doi.org/10.21233/xa3s-kj49
@@ -144,6 +143,7 @@ biome6000:Ulanovo,Ulanovo,6ka,BIOME 6000,Ulanovo,48.7200,55.5500,,,,,,1,0,,https
 biome6000:Mulianka,Mulianka,6ka,BIOME 6000,Mulianka,56.3200,57.7800,,,,,,1,0,,https://doi.org/10.17864/1947.99
 biome6000:Balkashkinskii,Balkashkinskii,6ka,BIOME 6000,Balkashkinskii,35.3700,53.0300,,,,,,0,0,,https://doi.org/10.17864/1947.99
 biome6000:Liman,Liman,6ka,BIOME 6000,Liman,37.6700,49.7300,,,,,,0,0,,https://doi.org/10.17864/1947.99
+biome6000:Solenoe Zaimishche,Solenoe Zaimishche,6ka,BIOME 6000,Solenoe Zaimishche,46.1700,47.9000,,,,,,0,0,,https://doi.org/10.17864/1947.99
 biome6000:Ti-n tora,Ti-n tora,6ka,BIOME 6000,Ti-n tora,10.5800,25.8000,,,,,,0,0,,https://doi.org/10.17864/1947.99
 biome6000:Uan Muhuggiag,Uan Muhuggiag,6ka,BIOME 6000,Uan Muhuggiag,10.4800,24.8300,,,,,,0,0,,https://doi.org/10.17864/1947.99
 biome6000:Rub'al Khali,Rub'al Khali,6ka,BIOME 6000,Rub'al Khali,46.6200,20.4800,,,,,,0,0,,https://doi.org/10.17864/1947.99

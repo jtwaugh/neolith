@@ -2,6 +2,7 @@
 //! the editing commands. No UI or rendering dependencies; everything here is
 //! unit-tested and is the only thing a future `sim` crate needs.
 
+pub mod ancestry;
 pub mod edit;
 pub mod elevation;
 pub mod evidence;
@@ -21,6 +22,7 @@ pub mod timeline;
 pub mod values;
 pub mod world;
 
+pub use ancestry::Ancestry;
 pub use edit::{fill, lasso, pencil, Command, Edit, History, KeyMode, Selection};
 pub use grid::{GridSpec, HexId, LonLat};
 pub use heightmap::Heightmap;
@@ -32,5 +34,5 @@ pub use timeline::Timeline;
 pub use elevation::NO_ELEVATION;
 pub use evidence::EvidenceLayer;
 pub use residuals::Residuals;
-pub use values::{Koeppen, Landform, MapMode, PopDensity, Prop, Terrain, Value};
+pub use values::{Cover, Koeppen, Landform, MapMode, PopDensity, Prop, Terrain, Value};
 pub use world::{C14Date, CultureInfo, Expected, Settlement, SiteInfo, Snapshot, World, NO_DATA, NO_EDGE_SEA};

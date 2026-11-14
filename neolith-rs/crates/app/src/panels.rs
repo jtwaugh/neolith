@@ -7,7 +7,7 @@ use crate::clock::SPEEDS;
 use crate::palette;
 use egui::{vec2, Align2, Color32, FontId, Rect, RichText, Sense, Stroke};
 use neolith_core::{
-    elevation, evidence, farming, forager, pencil, productivity, residuals, Command, Edit, HexId, KeyMode, Koeppen, MapMode, PopDensity, Prop, RiverClass, RiverState, Terrain, Value, World,
+    elevation, evidence, farming, forager, pencil, productivity, residuals, Command, Cover, Edit, HexId, KeyMode, Koeppen, MapMode, PopDensity, Prop, RiverClass, RiverState, Terrain, Value, World,
     Year, NO_DATA, NO_ELEVATION,
 };
 
@@ -72,8 +72,10 @@ fn selected(ui: &mut egui::Ui, s: &mut Session, now: f64) {
             go = ui.small_button("Go to").on_hover_text("Move the map to this settlement").clicked();
         });
     });
-    egui::ScrollArea::vertical().id_salt("settlement_record").auto_shrink([false, false]).show(ui, |ui| {
-        crate::site_record::show(ui, &s.world, i, year);
+    // The tabs stay put above the scrolling body.
+    let tab = crate::site_record::tab_strip(ui);
+    egui::ScrollArea::vertical().id_salt(("settlement_record", tab.label())).auto_shrink([false, false]).show(ui, |ui| {
+        crate::site_record::show(ui, &s.world, i, year, tab);
     });
     if go {
         s.glide_to(pos, now);
@@ -111,22 +113,10 @@ impl NeolithApp {
         let Some(session) = &mut self.session else { return };
         let (min, max) = session.clock.range();
         let mut start = false;
-        egui::CentralPanel::default().show(ui, |ui| {
+        // The start controls stay in view below the scrolling splash text.
+        egui::Panel::bottom("start_bar").show(ui, |ui| {
             ui.vertical_centered(|ui| {
-                ui.add_space(ui.available_height() * 0.22);
-                ui.label(RichText::new("Neolithic Deities").size(44.0).strong());
-                ui.add_space(6.0);
-                ui.label("A map-staring game set in the Neolithic.");
-                ui.add_space(4.0);
-                ui.weak(format!(
-                    "{} hexes · {} keyframes ({} – {}) · {} settlements",
-                    session.world.grid.len(),
-                    session.keyframes.len(),
-                    min,
-                    session.keyframes.last().copied().unwrap_or(min),
-                    session.world.settlements.len()
-                ));
-                ui.add_space(28.0);
+                ui.add_space(10.0);
                 ui.horizontal(|ui| {
                     // Centre the row by hand: label + drag value + era + button.
                     let row = 330.0;
@@ -149,10 +139,24 @@ impl NeolithApp {
                 if self.start_year != DEFAULT_START_YEAR && ui.small_button("Reset to 7500 BCE").clicked() {
                     self.start_year = DEFAULT_START_YEAR;
                 }
-                ui.add_space(18.0);
+                ui.add_space(4.0);
                 if ui.link(RichText::new("Credits & data sources").small()).clicked() {
                     crate::credits::open(ui.ctx());
                 }
+                ui.add_space(8.0);
+            });
+        });
+        egui::CentralPanel::default().show(ui, |ui| {
+            egui::ScrollArea::vertical().auto_shrink(false).show(ui, |ui| {
+                let w = ui.available_width().min(crate::splash::COLUMN);
+                ui.horizontal(|ui| {
+                    ui.add_space(((ui.available_width() - w) / 2.0).max(0.0));
+                    ui.vertical(|ui| {
+                        ui.set_width(w);
+                        crate::splash::show(ui, w);
+                        ui.add_space(24.0);
+                    });
+                });
             });
         });
         crate::credits::show(ui.ctx());
@@ -641,64 +645,112 @@ fn tools_panel(ui: &mut egui::Ui, s: &mut Session) {
     });
 }
 
+/// The classes of one layer the legend lists, in class-code order (the
+/// palette's order): every class any keyframe holds, so a row never appears,
+/// vanishes or changes place as the years pass. `true` where the class has
+/// hexes this year; the rest are drawn grey.
+fn legend_rows<T: Copy>(ui: &egui::Ui, s: &Session, salt: &str, timelines: &[neolith_core::Timeline<T>], code: impl Fn(T) -> u8, now: &[u8], skip_water: bool) -> Vec<(u8, bool)> {
+    // Classes ever present: scanned again only when the snapshot changes
+    // (a new epoch, a new file or an edit).
+    let id = egui::Id::unique(("legend-ever", salt));
+    let key = (s.file_name.clone(), s.snapshot_gen);
+    let cached = ui.data(|d| d.get_temp::<std::sync::Arc<((String, u64), [bool; 256])>>(id)).filter(|c| c.0 == key);
+    let ever = match cached {
+        Some(c) => c.1,
+        None => {
+            let mut ever = [false; 256];
+            for t in timelines {
+                for (_, v) in t.keys() {
+                    ever[code(*v) as usize] = true;
+                }
+            }
+            ui.data_mut(|d| d.insert_temp(id, std::sync::Arc::new((key, ever))));
+            ever
+        }
+    };
+    let mut present = [false; 256];
+    for (i, v) in now.iter().enumerate() {
+        if !(skip_water && s.snapshot.terrain[i] == Terrain::Water as u8) {
+            present[*v as usize] = true;
+        }
+    }
+    (0..=255u8).filter(|v| *v != NO_DATA && (ever[*v as usize] || present[*v as usize])).map(|v| (v, present[v as usize])).collect()
+}
+
+/// A legend row; grey when the class has no hexes this year.
+fn legend_row(ui: &mut egui::Ui, v: Value, present: bool, text: impl FnOnce(&mut egui::Ui)) {
+    ui.horizontal(|ui| {
+        if !present {
+            ui.set_opacity(0.35);
+        }
+        swatch(ui, v);
+        text(ui);
+    })
+    .response
+    .on_hover_text(if present { "On the map this year" } else { "Not on the map this year" });
+}
+
 /// The legend for the current map mode, docked at the foot of the sidebar
-/// (collapsible). Terrain and Köppen list the values present this year, most common
-/// first; Population is the whole ramp; the read-only layers their bands.
+/// (collapsible). Terrain and Köppen list every class the map ever holds, in
+/// a fixed order, greying those absent this year; Population is the whole
+/// ramp; the read-only layers their bands.
 fn legend(ui: &mut egui::Ui, s: &Session, survey: bool) {
-    const MAX_ROWS: usize = 10;
     ui.add_space(4.0);
     egui::CollapsingHeader::new(RichText::new(format!("Legend · {}", s.mode.label())).strong())
         .id_salt("legend-open")
         .default_open(true)
         .show(ui, |ui| {
-            let counts = |layer: &[u8], skip_water: bool| {
-                let mut n = [0usize; 256];
-                for (i, v) in layer.iter().enumerate() {
-                    if !(skip_water && s.snapshot.terrain[i] == Terrain::Water as u8) {
-                        n[*v as usize] += 1;
-                    }
-                }
-                let mut present: Vec<(u8, usize)> =
-                    (0..=255u8).filter(|v| *v != NO_DATA && n[*v as usize] > 0).map(|v| (v, n[v as usize])).collect();
-                present.sort_by(|a, b| b.1.cmp(&a.1));
-                present
-            };
             let sea_row = |ui: &mut egui::Ui| {
                 ui.horizontal(|ui| {
                     swatch_rgb(ui, palette::SEA_COLOUR);
                     ui.label("Sea and lakes");
                 });
             };
-            let more = |ui: &mut egui::Ui, n: usize| {
-                if n > MAX_ROWS {
-                    ui.weak(format!("… and {} rarer", n - MAX_ROWS));
-                }
-            };
+            // A long list (Köppen has some 25 classes) scrolls in place
+            // rather than pushing the record off the sidebar.
+            let max = ui.ctx().content_rect().height() * 0.42;
+            egui::ScrollArea::vertical().id_salt("legend-scroll").max_height(max).auto_shrink([false, true]).show(ui, |ui| {
             match s.mode {
                 MapMode::Terrain => {
-                    let present = counts(&s.snapshot.terrain, false);
-                    for (v, _) in present.iter().take(MAX_ROWS) {
-                        if let Some(val) = Value::from_u8(Prop::Terrain, *v) {
-                            ui.horizontal(|ui| {
-                                swatch(ui, val);
+                    for (v, present) in legend_rows(ui, s, "terrain", &s.world.terrain, |t| t as u8, &s.snapshot.terrain, false) {
+                        if let Some(val) = Value::from_u8(Prop::Terrain, v) {
+                            legend_row(ui, val, present, |ui| {
                                 ui.label(val.label());
                             });
                         }
                     }
-                    more(ui, present.len());
+                }
+                MapMode::Ground => {
+                    // One row per cover in view now (from the terrain layer).
+                    let mut shown = [false; Cover::ALL.len()];
+                    for v in s.snapshot.terrain.iter() {
+                        if let Some(c) = Terrain::from_u8(*v).and_then(Terrain::cover) {
+                            shown[c as usize] = true;
+                        }
+                    }
+                    for c in Cover::ALL {
+                        ui.horizontal(|ui| {
+                            swatch_rgb(ui, palette::cover(c));
+                            let label = RichText::new(c.label());
+                            ui.label(if shown[c as usize] { label } else { label.weak() });
+                        });
+                    }
+                    ui.horizontal(|ui| {
+                        swatch_rgb(ui, palette::terrain(Terrain::Water));
+                        ui.label("Sea and lakes");
+                    });
                 }
                 MapMode::Koeppen => {
-                    let present = counts(&s.snapshot.koeppen, true);
-                    for (v, _) in present.iter().take(MAX_ROWS) {
-                        if let Some(k) = Koeppen::new(*v) {
-                            ui.horizontal(|ui| {
-                                swatch(ui, Value::Koeppen(k));
+                    let rows = legend_rows(ui, s, "koeppen", &s.world.koeppen, |k| k.index(), &s.snapshot.koeppen, true);
+                    for (v, present) in rows {
+                        // The ocean class is the sea row below.
+                        if let Some(k) = Koeppen::new(v).filter(|k| *k != Koeppen::OCEAN) {
+                            legend_row(ui, Value::Koeppen(k), present, |ui| {
                                 ui.label(RichText::new(k.code()).monospace());
                                 ui.label(k.description());
                             });
                         }
                     }
-                    more(ui, present.len());
                     sea_row(ui);
                 }
                 MapMode::Pop => {
@@ -747,8 +799,14 @@ fn legend(ui: &mut egui::Ui, s: &Session, survey: bool) {
                         sea_row(ui);
                     }
                 }
+                MapMode::Ancestry => {
+                    crate::ancestry_view::legend(ui, s);
+                    sea_row(ui);
+                }
             }
-            if survey && !s.world.survey.is_empty() {
+            });
+            // The Ancestry mode keeps the hatch for one meaning: no genome.
+            if survey && !s.world.survey.is_empty() && s.mode != MapMode::Ancestry {
                 ui.separator();
                 ui.horizontal(|ui| {
                     hatch_swatch(ui);
@@ -792,6 +850,7 @@ const MAP_MODE_GROUPS: [(&str, &[(MapMode, &str)]); 4] = [
         "Land",
         &[
             (MapMode::Terrain, "The biome of each hex: forest, steppe, desert, ice, water"),
+            (MapMode::Ground, "The same land as photographed ground: grass, moss, sand, rock, snow, forest floor"),
             (MapMode::Koeppen, "Köppen climate class, from the climate model"),
             (MapMode::Elevation, "Height above today's sea level, and depth of water"),
         ],
@@ -808,6 +867,7 @@ const MAP_MODE_GROUPS: [(&str, &[(MapMode, &str)]); 4] = [
         &[
             (MapMode::Expected, "How many people the land would carry: foragers, then farmers once farming arrives"),
             (MapMode::Missing, "Sites each hex would have if nothing hid them, less the sites known"),
+            (MapMode::Ancestry, "Whose ancestry ancient genomes carry, where genomes exist; unsampled land is left unknown"),
         ],
     ),
     ("Evidence", &[(MapMode::Evidence, "Speculative layers from the evidence atlas: pick one beside this menu")]),
@@ -820,6 +880,9 @@ fn map_mode_unavailable(mode: MapMode, world: &World) -> Option<&'static str> {
             Some("This world file has no evidence layers (add them with neolith-convert --attach-evidence)")
         }
         MapMode::Missing if world.residuals.is_none() => Some("This world file has no missing-sites table (run make residuals)"),
+        MapMode::Ancestry if !world.has_ancestry() => {
+            Some("This world file has no ancestry table (python -m isostyle export, then neolith-convert --attach-evidence and --attach-samples)")
+        }
         _ => None,
     }
 }
@@ -1089,6 +1152,9 @@ fn inspector(ui: &mut egui::Ui, s: &mut Session, now: f64) {
             });
             ui.label(format!("Reading: {}", r.outcome));
             ui.separator();
+        }
+        if s.mode == MapMode::Ancestry && !water {
+            crate::ancestry_view::inspector(ui, s, hex);
         }
         if let Some(l) = s.evidence().filter(|_| s.mode == MapMode::Evidence) {
             let code = s.evidence_code(hex);
@@ -1365,7 +1431,7 @@ fn map_tab(ui: &mut egui::Ui, style: &mut BoardStyle, s: &mut Session) {
             ui.label("Relief");
             ui.horizontal(|ui| {
                 ui.checkbox(&mut style.relief, "");
-                ui.add_enabled(style.relief, egui::Slider::new(&mut style.relief_exaggeration, 1.0..=40.0).suffix("×"))
+                ui.add_enabled(style.relief, egui::Slider::new(&mut style.relief_exaggeration, 1.0..=80.0).suffix("×"))
                     .on_hover_text("Vertical exaggeration of the tile heights");
             });
             ui.end_row();
@@ -1443,7 +1509,8 @@ mod tests {
         let grid = GridSpec { cols: 3, rows: 2, origin_lon: 0.0, origin_lat: 10.0, w: 0.5773502691896262, h: 0.5 };
         let bare = World::empty(grid);
         assert!(map_mode_unavailable(MapMode::Evidence, &bare).is_some() && map_mode_unavailable(MapMode::Missing, &bare).is_some());
-        assert!(MapMode::MENU.iter().filter(|m| map_mode_unavailable(**m, &bare).is_none()).count() == MapMode::MENU.len() - 2);
+        assert!(map_mode_unavailable(MapMode::Ancestry, &bare).is_some());
+        assert!(MapMode::MENU.iter().filter(|m| map_mode_unavailable(**m, &bare).is_none()).count() == MapMode::MENU.len() - 3);
         let with = World { residuals: Some(neolith_core::Residuals::default()), ..bare };
         assert!(map_mode_unavailable(MapMode::Missing, &with).is_none());
     }

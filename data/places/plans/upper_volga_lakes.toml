@@ -122,12 +122,12 @@ name = "Zamostje 2"
 lon = 38.01
 lat = 56.68
 coordinates = "published"
-start = -7000
-end = -4000
-what = "Waterlogged Late Mesolithic to Middle Neolithic site on the Dubna river, about 100 km north of Moscow. It has more than 100 radiocarbon dates, more than 30 of them directly on food crusts, and over 18,000 Early Neolithic sherds of the Upper Volga type. Fish weirs and traps were preserved. The coordinates are from Dolbunova et al.'s lipid table, which is already in build/isostyle/sources/dolbunova2023_ora.xlsx. The start and end are rounded from search-engine summaries of Meadows et al. 2019 (c. 6500-4000 cal BC) and Lozovski et al. (Upper Volga layers 6850-6200 BP), which I did not open, so checked = false. Not in our data under any spelling inside the box. The XRONOS 'Zamostye 2' (GIN-7988, 7200 BP, RADON citing Zaretskaya) at 25.43, 48.35 in Ukraine may be this site misplaced."
-cite = "Meadows, J., Lozovski, V.M., Lozovskaya, O.V., Chirkova, S.S., Craig, O., Lucquin, A. & Spataro, M. 2015, Absolute chronology of Upper Volga-type pottery: more evidence from Zamostje 2, Samara Journal of Science 4(3):113-121"
+start = -6000
+end = -5000
+what = "Waterlogged multi-layer site on the Dubna river about 100 km north of Moscow, with an undisturbed sequence from the Late Mesolithic to the Middle Neolithic (Upper Volga and Lyalovo pottery), about 70 dates on terrestrial samples and about 25 on sapropel, and 30 directly dated food crusts; fish-traps and a paddle are preserved (Meadows et al. 2015, pp. 113-115). The authors' sapropel model puts the end of the Late Mesolithic at about 5900 cal BC and the start of the Early Neolithic just before 5600 cal BC, or at the earliest early in the 6th millennium if the oldest food-crust dates are not reservoir-affected. start and end here frame that Early Neolithic; the Middle Neolithic is not dated in the paper. Coordinates from Dolbunova et al. 2023 SI_ORA (Zenodo 6619101, 38.01 E, 56.68 N); AADR has the same site as 'Zamostye-2' at 38.016, 56.666 with two burial dates. 13 of the paper's dates are now in data/settlements/literature_dates.csv under 'Zamostye-2'."
+cite = "Meadows, J., Lozovski, V.M., Lozovskaya, O.V., Chirkova, S., Craig, O., Lucquin, A. & Spataro, M. 2015, Absolute chronology of Upper Volga-type pottery: more evidence from Zamostje 2, Samara Journal of Science 4(3):113-121"
 url = "https://snv63.ru/2309-4370/article/view/22296"
-checked = false
+checked = true
 
 [[known_site]]
 name = "Ozerki peat bog (Ozerki 5, 16, 17)"
@@ -158,31 +158,43 @@ what = "Fix what we already hold before adding anything. (a) Move 'Ivanovskoye' 
 url = "http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf"
 yields = "Three Mesolithic-Neolithic bog sites moved 100-180 km to where they belong, one false 15,000 BCE start removed, and Stanovoe-4 Mesolithic dates returned to Russia; a check that will catch the same fault elsewhere"
 effort = "An hour for (a)-(e) as corrections.toml entries; a short script for (f)"
+status = "done"
+done_in = "data/settlements/corrections.toml, [[fix]] Ivanovskoe 3 and Berendeevo 2a; data/settlements/records.toml, [[refile]] entries to Stanovoe 4, Ivanovskoe 7 and Zolotoruce (section 'p3k14c names out of step'); pipeline/settlements.py drop_shifted with [settlements] p3k14c_km for (b) and (f); Podoli V looked at and left alone (data/settlements/CORRECTIONS.md, 'Not yet resolved')"
 
 [[research]]
 what = "Enter the wetland dates of Zaretskaya et al. 2005 (tables 3-7: lab number, material, 14C age, culture layer) for Ivanovskoe-7, Stanovoe-4, Sakhtysh-14 and Sakhtysh-2a. Keep only the dates the authors accept for each layer, as they say in the text."
 url = "http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf"
 yields = "Four sites with occupation phases from 9600 cal BC to the Early Neolithic, about 170 dates (about 75 printed in the tables); fills the 10,000-6,000 BCE slices"
 effort = "Five short tables, open PDF; positions from the text (approximate, 5-20 km)"
+status = "done"
+done_in = "data/settlements/literature_dates.csv, source 'Zaretskaya et al. 2005' (Ivanovskoe-7, Stanovoe-4, Sakhtysh-14, Sakhtysh-2a; 53 dates with Pezmog-4)"
 
 [[research]]
+status = "done"
+done_in = "data/settlements/literature_dates.csv, source 'Meadows et al. 2015' (13 dates under the site name 'Zamostye-2', AADR's spelling, so they merge with AADR's two burial dates there): the AMS food-crust dates KIA-50684/50685/50690/50906, the repair-fibre date KIA-50907, the fish-trap paddle CNA-1342, and the radiometric food-crust dates Ki-15032 and SPb-720 to 723, 725 and 728, each with its layer and the authors' reservoir-effect reading. The paper prints dates in its text, not a table, and gives no lab numbers for the sapropel and pile dates, so those are not entered. The later Quaternary International paper was not opened."
 what = "Zamostje 2: get the date list of Meadows et al. 2015 (Samara Journal of Science, Russian full text) and the later Quaternary International paper by Meadows, Lozovskaya and colleagues on its radiocarbon and isotope results (not opened)."
 url = "https://snv63.ru/2309-4370/article/view/22296"
 yields = "One richly dated site, Late Mesolithic to Middle Neolithic (c. 7000-4000 BCE), with food-crust dates for the reservoir-effect question"
 effort = "One or two papers; enter as phases, not 100 rows"
 
 [[research]]
+status = "dropped"
+reason = "The book's title was written from memory and never verified, and no digitised copy is known. Zaitseva et al. 2000 (already entered, 'Zaitseva et al. 2000') covers the same St Petersburg lab series for the Upper Volga bog sites, and Zaretskaya et al. 2005 adds the wetland series."
 what = "The IHMC (St Petersburg) radiocarbon database behind Timofeev, Zaitseva, Dolukhanov & Shukurov 2004, 'Radiocarbon chronology of the Neolithic of Northern Eurasia' (book, title from memory, unverified), and the dataset used in Dolukhanov et al. 2005 (J. Archaeol. Sci. 32). The open way in is Zaitseva et al. 1997 in ISKOS 11, which describes the database. This is the source for Lyalovo, Volosovo and Upper Volga sites across the interfluve and the Meshchera."
 url = "https://journal.fi/iskos/article/view/110428"
 yields = "My estimate: several hundred dates from 100+ Neolithic sites in European Russia, of which perhaps 30-60 sites fall in this box; it is the only route I know to the Lyalovo and Volosovo record at scale"
 effort = "Find a digital copy (the authors' successors at IHMC; Dolukhanov et al. 2005 supplement). If only the print book exists, a few days of typing; coordinates likely need a gazetteer"
 
 [[research]]
+status = "dropped"
+reason = "Not reachable by the tools here: Quartär's site (journals.ub.uni-heidelberg.de, redirecting to prop.ub.uni-heidelberg.de) answers automated requests with an Anubis bot check, again on 2026-11-13. What it would confirm is covered: Stanovoe-4 has 19 dates from Zaretskaya et al. 2005 in data/settlements/literature_dates.csv. Reopen if a person downloads the PDF and finds sites beyond Stanovoje 4 and Zolotoruchje 1."
 what = "Hartz, Terberger & Zhilin 2010, AMS dates for the Upper Volga Mesolithic (Quartär 57:155-169): the KIA dates for Stanovoje 4 and Zolotoruchje 1 that reached p3k14c under the wrong names. The full article lists the sites' contexts. Quartär is open access at Heidelberg, but its site turned away my automated request, so I have not opened the article; the citation is from Wikipedia's Butovo article and the p3k14c reference field."
 yields = "Confirms the Stanovoe-4 and Zolotoruchye records; maybe one or two more Mesolithic sites"
 effort = "One open article"
 
 [[research]]
+status = "dropped"
+reason = "Triage 2026-11-13: the page redirected and no open copy was found; the survey is mostly of Final Palaeolithic and Mesolithic sites known from typology. Lower priority than the dated bog series already entered."
 what = "Meshchera lowland: Sorokin's survey of more than 150 Final Palaeolithic and Mesolithic sites (45 excavated: Resseta, Ahrensburgian, Zadnee Pilevo, Kulta, Purgasovo). I could not open it (the page redirected to a 404). Most sites are dated by typology, and the author warns that many radiocarbon dates there date the deposits, not the sites."
 url = "https://readera.org/finalnyj-paleolit-i-mezolit-meshherskoj-nizmennostisovremennyj-vzgljad-143164022-en"
 yields = "A site catalogue for the empty south-east of the box, mostly period-dated, 10,000-6,000 BCE"
@@ -193,6 +205,8 @@ what = "Board (for whoever owns lakes.toml and rivers.toml). (1) The Mologa-Shek
 url = "https://meetingorganizer.copernicus.org/EGU24/EGU24-12877.html"
 yields = "2-4 water hexes at 10,000 BCE north of the box; a river the interfluve's sites can be read against"
 effort = "One lakes.toml entry with a level curve and a citation; one rivers.toml entry"
+status = "done"
+done_in = "data/lakes/lakes.toml, [[lake]] key 'mologa-sheksna' (data/lakes/SOURCES.md, 'Mologa-Sheksna lake'); data/rivers/rivers.toml, 'Oka' and 'Kama'"
 
 [[speculate]]
 target = "settlements"

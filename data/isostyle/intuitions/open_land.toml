@@ -23,8 +23,8 @@ confidence = "medium"
 basis = ["environment", "literature"]
 reasoning = "There are no edges, so this rests on environment. African Humid Period pollen (Yoa, Chad, Oursi) shows grass-dominated savanna with Sudanian trees at low cover. After c. 4000-3000 BCE it was desert. Both are 'open' in REVEALS terms. Tree cover under 15% is plausible everywhere except the Tibesti, Aïr and Hoggar wadis during the humid phase."
 literature = [
-  { cite = "Watrin, Lézine & Hély 2009, 'Plant migration and plant communities at the time of the green Sahara', CR Geoscience 341", checked = false },
-  { cite = "Hély et al. 2014, 'Holocene changes in African vegetation: tradeoff between climate and water availability', Climate of the Past 10", checked = false },
+  { cite = "Watrin, Lézine & Hély 2009, 'Plant migration and plant communities at the time of the green Sahara', CR Geoscience 341", checked = true, url = "https://comptes-rendus.academie-sciences.fr/geoscience/articles/10.1016/j.crte.2009.06.007", read = "full text", note = "Saharan pollen sequences stay dominated by grasses; tropical trees entered as gallery forest along rivers and lakes." },
+  { cite = "Hély, Lézine & APD contributors 2014, 'Holocene changes in African vegetation: tradeoff between climate and water availability', Climate of the Past 10, 681-686", checked = true, url = "https://cp.copernicus.org/articles/10/681/2014/", read = "full text (searched passages)", note = "Tropical trees used river banks to enter semi-desert and desert; humid taxa rare north of 20°N and gone after c. 5.5 ka; late-Holocene aridification of Sahel and Sahara." },
 ]
 would_settle = "A REVEALS or biome reconstruction from African Pollen Database records (e.g. Hély et al. biomisation)."
 speculative_rule = "Fill at 95%. In the southern Sahel (south of 15°N), use 85% for 9,000-5,000 BCE."
@@ -70,7 +70,7 @@ confidence = "high"
 basis = ["environment", "literature"]
 reasoning = "Humid-phase lake pollen (Wahalah, Awafi, Tayma) shows grass and herb steppe with some Acacia and Prosopis. Tree cover never closed."
 literature = [
-  { cite = "Parker et al. 2004, 'Holocene vegetation dynamics in the northeastern Rub al-Khali desert', Holocene 14", checked = false },
+  { cite = "Parker et al. 2004, 'Holocene vegetation dynamics in the northeastern Rub' al-Khali desert, Arabian Peninsula: a phytolith, pollen and carbon isotope study', Journal of Quaternary Science 19, 665-676", checked = true, url = "https://api.crossref.org/works/10.1002/jqs.880", read = "abstract", note = "Was cited as Holocene 14; it is JQS 19. Awafi: grassland with a woody element 8500-6000 cal BP, then C3/C4 grasses, then incomplete cover after 4100 cal BP. Does not name Acacia or Prosopis." },
 ]
 would_settle = "None needed."
 speculative_rule = "Fill at 95%, and at 70% on the Asir, Yemeni and Hajar highlands above 1,500 m."
@@ -137,7 +137,7 @@ confidence = "medium"
 basis = ["neighbouring_evidence", "environment", "literature"]
 reasoning = "Valid LandClim cells in NW Iran (44-50°E) read 97% at 10,000 BCE, falling to 84-90% by 5,000-3,000 BCE as Zagros oak spread. The dossier edges (27-43%) are dragged down by zero-filled no-data rows. The interior plateau is drier than the Zagros and should be at least as open."
 literature = [
-  { cite = "Djamali et al. 2008, 'A late Pleistocene long pollen record from Lake Urmia, NW Iran', QR 69", checked = false },
+  { cite = "Djamali et al. 2008, 'A late Pleistocene long pollen record from Lake Urmia, NW Iran', Quaternary Research 69, 413-420", checked = true, url = "https://bura.brunel.ac.uk/handle/2438/4254?mode=full", read = "abstract", note = "Artemisia-Poaceae steppe through the glacials; late-glacial to Holocene succession ends with Juniperus and Quercus. Not quantified for the Holocene." },
 ]
 would_settle = "Fix the zero-row bug and the edges will read correctly. Beyond 50°E, use a biome map."
 speculative_rule = "Fill at 92% on the plateau, 75% in the Zagros and the Afghan highlands, and 40% in the Hyrcanian strip."
@@ -202,21 +202,21 @@ expected = 85
 expected_range = [45, 98]
 confidence = "medium"
 basis = ["environment", "literature"]
-reasoning = "Most of the gap is desert (95%+). The Tell and Atlas carried cedar, evergreen oak and pine forest, with Middle Atlas pollen showing woodland expansion after c. 7000 BCE, so 40-60% open there. Region-wide, the desert dominates."
+reasoning = "Most of the gap is desert (95%+). The Tell and Atlas carried cedar, evergreen oak and pine forest, with Middle Atlas pollen (Tigalmamine) showing herb-rich grassland until oak forest replaced it about 8,500 radiocarbon years ago (c. 7500 BCE), so 40-60% open there. Region-wide, the desert dominates."
 literature = [
-  { cite = "Cheddadi et al. 2016/2017, Middle Atlas cedar forest history (Tigalmamine, Sidi Ali)", checked = false },
+  { cite = "Lamb, Eicher & Switsur 1989, 'An 18,000-year record of vegetation, lake-level and climatic change from Tigalmamine, Middle Atlas, Morocco', Journal of Biogeography 16, 65-74", checked = true, url = "https://research.aber.ac.uk/en/publications/an-18000-year-record-of-vegetation-lake-level-and-climatic-change/", read = "abstract", note = "Replaces 'Cheddadi et al. 2016/2017, Middle Atlas cedar forest history', which matches no single work. Herb-rich grassland until oak forest c. 8500 BP; Cedrus arrives c. 4000 BP." },
 ]
 would_settle = "Run REVEALS on Moroccan and Tunisian EPD cores."
-speculative_rule = "Fill at 95% south of the Saharan Atlas. In the Tell and Atlas, use 60% at 10,000-9,000 BCE and 45% from 8,000 BCE."
+speculative_rule = "Fill at 95% south of the Saharan Atlas. In the Tell and Atlas, use 60% at 10,000-8,000 BCE and 45% from 7,000 BCE."
 
 # ---------------------------------------------------------------- African savannas and highlands
 [[judgement.adjust]]
 kind = "slice_value"
-slices = [-10000, -9000]
+slices = [-10000, -9000, -8000]
 value = 60
 [[judgement.adjust]]
 kind = "slice_value"
-slices = [-8000, -7000, -6000, -5000, -4000, -3000]
+slices = [-7000, -6000, -5000, -4000, -3000]
 value = 45
 [[judgement.adjust]]
 kind = "polygon"                         # Sahara south of the Atlas and Saharan Atlas
@@ -233,24 +233,20 @@ expected = 55
 expected_range = [30, 80]
 confidence = "low"
 basis = ["environment", "literature"]
-reasoning = "Pollen from Lake Tilla and Bosumtwi shows wooded savanna, with forest elements maximal at 8,000-5,000 BCE. REVEALS-style open land would be about 40-50% then and 60-70% before and after."
+reasoning = "Pollen from Lac Sélé in southern Benin shows semi-evergreen rainforest from c. 6450 to 2550 BCE where the Dahomey Gap savanna is today; the savanna corridor opened abruptly between c. 2550 and 1450 BCE. So the forest-savanna belt stayed at its most wooded until after 3,000 BCE. REVEALS-style open land would be about 40-50% from 9,000 to 3,000 BCE and 60-70% at 10,000 BCE."
 literature = [
-  { cite = "Salzmann & Hoelzmann 2005, 'The Dahomey Gap: an abrupt climatically induced rain forest fragmentation in West Africa during the late Holocene', Holocene 15", checked = false },
+  { cite = "Salzmann & Hoelzmann 2005, 'The Dahomey Gap: an abrupt climatically induced rain forest fragmentation in West Africa during the late Holocene', The Holocene 15, 190-199", checked = true, url = "https://api.crossref.org/works/10.1191/0959683605hl799rp", read = "abstract", note = "Lac Sélé (Benin), not Tilla or Bosumtwi. Rainforest c. 8400-4500 cal BP, opening 4500-3400 cal BP: against the earlier reasoning's reopening by 4,000 BCE, so the 4,000-3,000 BCE slices were lowered to 45%." },
 ]
 would_settle = "A biomisation of West African APD cores."
-speculative_rule = "Fill at 65% at 10,000 BCE, 45% for 9,000-5,000 BCE and 60% for 4,000-3,000 BCE. Make it 15% more open north of 11°N."
+speculative_rule = "Fill at 65% at 10,000 BCE and 45% for 9,000-3,000 BCE. Make it 15% more open north of 11°N."
 [[judgement.adjust]]
 kind = "slice_value"
 slices = [-10000]
 value = 65
 [[judgement.adjust]]
 kind = "slice_value"
-slices = [-9000, -8000, -7000, -6000, -5000]
+slices = [-9000, -8000, -7000, -6000, -5000, -4000, -3000]
 value = 45
-[[judgement.adjust]]
-kind = "slice_value"
-slices = [-4000, -3000]
-value = 60
 [[judgement.adjust]]
 kind = "area"
 bbox = [-17.0, 11.0, 27.0, 17.0]
@@ -321,7 +317,7 @@ confidence = "medium"
 basis = ["environment", "neighbouring_evidence", "literature"]
 reasoning = "The edges (15-17%, range 0-89) are dominated by zero rows. The few valid cells at the Ukrainian forest-steppe read 44-88%. The Pontic-Caspian steppe was grassland and Artemisia steppe through the Holocene, with forest only in ravines and floodplains."
 literature = [
-  { cite = "Kremenetski 2003, 'Steppe and forest-steppe belt of Eurasia: Holocene environmental history', in Prehistoric Steppe Adaptation and the Horse", checked = false },
+  { cite = "Kremenetski 2003, 'Steppe and forest-steppe belt of Eurasia: Holocene environmental history', in Prehistoric Steppe Adaptation and the Horse", checked = false, note = "The chapter exists (Levine, Renfrew & Boyle eds., McDonald Institute 2003) but no text or abstract is online to check the claim against." },
 ]
 would_settle = "Run REVEALS on Russian Pollen Database records for the lower Volga."
 speculative_rule = "Fill at 85% south of 50°N and 60% in the forest-steppe from 50°N to 54°N. Add 10 points at 10,000 BCE."
@@ -352,7 +348,7 @@ confidence = "medium"
 basis = ["neighbouring_evidence", "environment"]
 reasoning = "Valid cells (30-50°E) read 52% at 10,000 BCE, 44% at 9,000 BCE and 38% at 8,000 BCE. The dossier edges (9-13%) are pulled down by zero rows. Tundra persisted on the Barents coast."
 literature = [
-  { cite = "Binney et al. 2017, 'Vegetation of Eurasia from the last glacial maximum to present', QSR 157", checked = false },
+  { cite = "Binney et al. 2017, 'Vegetation of Eurasia from the last glacial maximum to present: key biogeographic patterns', QSR 157, 80-97", checked = false, note = "Abstract (ora.ox.ac.uk) only says woody biomes expanded from c. 14 ka; it does not address north-Russian openness or Barents-coast tundra. The open-access PDF repositories blocked fetching." },
 ]
 would_settle = "REVEALS on RPD records for Komi and the Pechora."
 speculative_rule = "Fill at 55% at 10,000 BCE, 40% at 9,000 BCE and 30% at 8,000 BCE. Use 80% north of 66°N."
@@ -454,8 +450,8 @@ confidence = "medium"
 basis = ["neighbouring_evidence", "literature"]
 reasoning = "Valid central Anatolian cells read 70%, 65% and 56%. The dossier edges (31-40%) are depressed by zero rows. Eastern Anatolian cells are 80-94%."
 literature = [
-  { cite = "Woldring & Bottema 2003, 'The vegetation history of east-central Anatolia in relation to archaeology: the Eski Acıgöl pollen evidence', Palaeohistoria 43/44", checked = false },
-  { cite = "Roberts et al. 2001, 'The tempo of Holocene climatic change in the eastern Mediterranean region', Holocene 11", checked = false },
+  { cite = "Woldring & Bottema 2002, 'The vegetation history of East-Central Anatolia in relation to archaeology: the Eski Acıgöl pollen evidence compared with the Near Eastern environment', Palaeohistoria 43/44 (2001/2002)", checked = true, url = "https://ugp.rug.nl/Palaeohistoria/article/view/25111", read = "abstract", note = "Late-glacial steppe with patches of oak; change to grass steppe and oak-terebinth woodland in the early Holocene." },
+  { cite = "Roberts et al. 2001, 'The tempo of Holocene climatic change in the eastern Mediterranean region: new high-resolution crater-lake sediment data from central Turkey', The Holocene 11, 721-736", checked = true, url = "https://api.crossref.org/works/10.1191/09596830195744", read = "abstract", note = "Eski Acıgöl: Artemisia-chenopod steppe replaced by grass-oak-terebinth parkland at the start of the Holocene; tree pollen rises gradually until c. 6500 cal BP." },
 ]
 would_settle = "Fix the zero-row bug."
 speculative_rule = "Fill at 70% at 10,000 BCE, 65% at 9,000 BCE and 58% at 8,000 BCE."
@@ -507,7 +503,7 @@ confidence = "low"
 basis = ["environment", "neighbouring_evidence"]
 reasoning = "Valid Caucasus cells read 89% at 10,000 BCE, 76% at 9,000 BCE and 29-45% later, but these are mostly wooded Georgian mountain cells. The Kura lowland is Artemisia semi-desert and should stay well above them. The dossier edges (29-45%) mix the two and include zero rows."
 literature = [
-  { cite = "Connor & Kvavadze 2009, Georgian pollen data synthesis, J. Biogeography", checked = false },
+  { cite = "Connor & Kvavadze 2009, 'Modelling late Quaternary changes in plant distribution, vegetation and climate using pollen data from Georgia, Caucasus', Journal of Biogeography 36, 529-545", checked = true, url = "https://api.crossref.org/works/10.1111/j.1365-2699.2008.02019.x", read = "abstract", note = "Late-glacial desert-steppe (Chenopodiaceae, Artemisia, Ephedra) giving way to oak-xerophyte communities and mixed forest in Georgia. Covers Georgia only; the Kura-lowland semi-desert reading is not from this source." },
 ]
 would_settle = "REVEALS on Azerbaijani lowland records."
 speculative_rule = "Fill at 85% at 10,000-9,000 BCE and 75% thereafter below 500 m. In the foothills, follow the Georgian edge values."
@@ -636,7 +632,7 @@ confidence = "medium"
 basis = ["neighbouring_evidence", "other_layer"]
 reasoning = "Valid cells read 40%, 39%, 34%, 31% and 31%. The dossier edges (14-23%) are depressed by zero rows."
 literature = [
-  { cite = "Trondman et al. 2015, 'Pollen-based quantitative reconstructions of Holocene regional vegetation cover in Europe', Global Change Biology 21", checked = false },
+  { cite = "Trondman et al. 2015, 'Pollen-based quantitative reconstructions of Holocene regional vegetation cover (plant-functional types and land-cover types) in Europe suitable for climate modelling', Global Change Biology 21, 676-697", checked = true, url = "https://api.crossref.org/works/10.1111/gcb.12737", read = "abstract", note = "The REVEALS method and 1° open-land estimates behind LandClim; its windows start at 6k BP, so the earlier values come from the later LandClimII files." },
 ]
 would_settle = "Fix the zero-row bug."
 speculative_rule = "Fill at 35% for 7,000-6,000 BCE and 30% from 5,000 BCE. Add 10 points on the Hungarian plain."
@@ -666,7 +662,7 @@ confidence = "medium"
 basis = ["neighbouring_evidence"]
 reasoning = "Valid Paris Basin cells read 80%, 75%, 63%, 50%, 42%, 49%, 54% and 56%. That is open early, lowest at 6,000 BCE, and reopening with Neolithic farming. The dossier edges (22-33%) are depressed by zero rows."
 literature = [
-  { cite = "Fyfe et al. 2015, 'From forest to farmland: pollen-inferred land cover change across Europe using the pseudobiomization approach', Global Change Biology 21", checked = false },
+  { cite = "Fyfe, Woodbridge & Roberts 2015, 'From forest to farmland: pollen-inferred land cover change across Europe using the pseudobiomization approach', Global Change Biology 21, 1197-1212", checked = true, url = "https://api.crossref.org/works/10.1111/gcb.12776", read = "abstract", note = "Neolithic clearance of broadleaf forest detectable at European scale from c. 6000 BP; western France is a case-study region." },
 ]
 would_settle = "Fix the zero-row bug."
 speculative_rule = "Fill with the valid-cell curve: 80, 75, 63, 50, 42, 49, 54, 56% from 10,000 to 3,000 BCE."
@@ -756,21 +752,21 @@ expected = 25
 expected_range = [10, 70]
 confidence = "low"
 basis = ["neighbouring_evidence", "environment"]
-reasoning = "Valid Wallachia-Serbia cells read 69%, 55% and 40% from 10,000 to 8,000 BCE, then 11-23%. Those are mostly Carpathian and Dinaric mountain cells. The Bărăgan and Moldavian lowlands were forest-steppe and should be more open (35-50%). The dossier edges (10-38%) include zero rows."
+reasoning = "Valid Wallachia-Serbia cells read 69%, 55% and 40% from 10,000 to 8,000 BCE, then 11-23%. Those are mostly Carpathian and Dinaric mountain cells. The Bărăgan and Moldavian lowlands were forest-steppe and should be more open: REVEALS at Lake Oltina in the lower Danube plain gives about 40% tree cover (60% open) from c. 4000 to 2200 BCE, so about 55% across the lowlands. The dossier edges (10-38%) include zero rows."
 literature = [
-  { cite = "Feurdean et al. 2015, 'Broadleaf deciduous forest counterbalanced the direct effect of climate on Holocene fire regime', QSR (Romanian REVEALS)", checked = false },
+  { cite = "Feurdean et al. 2021, 'The transformation of the forest steppe in the lower Danube Plain of south-eastern Europe: 6000 years of vegetation and land use dynamics', Biogeosciences 18, 1081-1103", checked = true, url = "https://bg.copernicus.org/articles/18/1081/2021/", read = "full text (searched passages)", note = "Replaces 'Feurdean et al. 2015, Broadleaf deciduous forest counterbalanced ... fire regime', which is QSR 169 (2017) and about hemiboreal NE Europe, not Romania. REVEALS tree cover c. 40% 6000-4200 cal BP, c. 50% 4200-2500 cal BP; lowland value raised from 45% to 55%." },
 ]
 would_settle = "REVEALS on lowland Romanian records."
-speculative_rule = "Fill with the mountain curve (69, 55, 40, then 20%) above 400 m, and at 45% in the Danube and Moldavian lowlands from 7,000 BCE."
+speculative_rule = "Fill with the mountain curve (69, 55, 40, then 20%) above 400 m, and at 55% in the Danube and Moldavian lowlands from 7,000 BCE."
 [[judgement.adjust]]
 kind = "polygon"                         # Wallachian and lower Danube plain
 points = [[22.5, 44.6], [23.5, 44.9], [24.5, 44.95], [26.0, 45.1], [27.0, 45.4], [28.0, 45.45], [28.0, 44.4], [27.0, 44.1], [25.5, 43.65], [24.0, 43.7], [22.9, 43.85]]
-value = 45
+value = 55
 slices = [-7000, -6000, -5000, -4000, -3000]
 [[judgement.adjust]]
 kind = "polygon"                         # Moldavian lowlands
 points = [[26.5, 48.3], [27.8, 48.4], [29.2, 48.0], [30.2, 46.6], [29.7, 45.3], [28.2, 45.3], [27.3, 45.8], [26.5, 47.0]]
-value = 45
+value = 55
 slices = [-7000, -6000, -5000, -4000, -3000]
 [[judgement.adjust]]
 kind = "elevation"
@@ -832,9 +828,9 @@ expected = 50
 expected_range = [35, 95]
 confidence = "low"
 basis = ["neighbouring_evidence", "environment", "literature"]
-reasoning = "Doggerland's edges are 16-25% with zero rows included. North Sea vibrocore pollen shows open wetland and birch-pine at 10,000-9,000 BCE, closing by 8,000 BCE. That is about 50%, then 30%. The Gulf and Caspian shelves were desert-steppe, about 95%."
+reasoning = "Doggerland's edges are 16-25% with zero rows included. Doggerland vibrocore pollen shows grass tundra in the Younger Dryas, open birch forest with pine and wet heathland in the Preboreal, and birch-pine forest with hazel in the Boreal, as on the north European Plain. That is about 50%, then 30%. The Gulf and Caspian shelves were desert-steppe, about 95%."
 literature = [
-  { cite = "Gearey et al. 2017 / Europe's Lost Frontiers project, Southern North Sea palaeoenvironments", checked = false },
+  { cite = "Krüger, Dörfler, Bennike & Wolters 2017, 'Life in Doggerland – palynological investigations of the environment of prehistoric hunter-gatherer societies in the North Sea Basin', E&G Quaternary Science Journal 66, 3-13", checked = true, url = "https://egqsj.copernicus.org/articles/66/3/2017/", read = "full text (searched passages)", note = "Replaces 'Gearey et al. 2017 / Europe's Lost Frontiers project', which matches no single work. The paper calls the Boreal forest 'open birch-pine forest with hazel', so the drop to 30% at 8,000 BCE is a REVEALS-style reading, not the paper's." },
 ]
 would_settle = "Pollen from North Sea vibrocores; marine cores for the Gulf."
 speculative_rule = "Fill Doggerland at 55% at 10,000 BCE, 45% at 9,000 BCE and 30% at 8,000 BCE. Fill the Gulf and Caspian shelves at 95% while dry."

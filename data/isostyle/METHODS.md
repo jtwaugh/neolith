@@ -136,7 +136,7 @@ are three kinds of evidence point:
 | Environment | Dung-fungus spores in cores | presence and absence | cores that count non-pollen palynomorphs | Neotoma / EPD |
 | Environment | Open land | gridded value, % | 1° REVEALS cells | LandClimII, Fyfe et al. 2021 (CC BY) |
 | Structures & organics | Enclosures, megalithic tombs, pile dwellings, houses, mines, metallurgy, waterlogged organics | presence only | dated occupations | XRONOS site types and dated materials (CC BY); rondel enclosures (CC BY) |
-| People | Ancient genomes; Y clades I2, G2a, R1b, R1a, C, J2, H2, other; mt clades U5, U4, H, K, J, T2, N1a, other | presence only (genomes); share | samples | AADR v66.p1 (CC0) |
+| People | Ancient genomes; Y clades I2, G2a, R1b, R1a, C, J2, H2, other; mt clades U5, U4, H, K, J, T2, N1a, other; ancestry shares (western and eastern hunter-gatherer, Anatolian farmer, Iranian farmer / Caucasus hunter-gatherer, Levantine forager, North African forager) | presence only (genomes); share | samples | AADR v66.p1 (CC0); ancestry from `data/ancestry/` |
 
 ### Rules
 
@@ -147,13 +147,13 @@ are three kinds of evidence point:
 - **Open land.** Each hex takes the 1° cell containing its centre. A slice averages the REVEALS windows that are at least half inside it. Firmness is the probability from the reconstruction's standard error that open land is 50% or more.
 - **Structures.** These are regex rules on XRONOS's free-text site type and dated material (`layers.toml`). Paulsson's 2019 megalith dates (CC BY-NC-ND) were joined by lab number until 2026-11-13 and are no longer used, because their licence forbids derivatives.
 - **Haplogroups.** Clades are matched by prefix on AADR's manual Y call (else its ISOGG call) and its mt call; mt H excludes HV. Each clade's share is computed among samples with a call of that kind, and Y only among males. The two smallest mt clades (U2, X) are folded into "other" so the set fits the 8-colour palette.
+- **Ancestry.** Each genome's value is its qpAdm weight for one of six reference groups, from `data/ancestry/ancestry.csv.gz` (method, reference groups and limits in `data/ancestry/SOURCES.md`): a fraction, not 0 or 1. Only genomes with a fitted model count; reference individuals, low-coverage genomes and genomes no model fits are left out. The six layers share one kernel width (cross-validated on the Anatolian-farmer share), so a cell's six values sum to 1. They are estimates from a statistical model: shared ancestry, not peoples, languages or cultures.
 - **Kernel widths.** These are cross-validated per layer where it has at least 20 presences and absences. Dung spores borrow from cereal pollen, the Y clades from Y I2, the mt clades from mt U5, and the structure layers from pottery.
 
 ### Not built, and why
 
 - **Wool:** no open spindle-whorl, loom-weight or textile compilation before 2200 BCE, and no open kill-off (mortality profile) compilation.
 - **Isotopes and strontium mobility:** IsoArcH has no bulk download. MAIA's licence and download need checking, and calling a person non-local needs a strontium baseline (Hoogewerff et al. 2019, CC BY-NC). These are left for a later pass.
-- **Ancestry proportions:** AADR has none. Computing them (qpAdm or ADMIXTURE on the genotypes) is a separate job; haplogroup shares stand in.
 - **Lanting's logboat dates:** these exist only in a PDF and still need extracting.
 - **Metal lead isotopes:** too sparse before 3000 BCE.
 
@@ -191,6 +191,8 @@ For each layer, slice and land cell (ice and sea stay empty):
 
 Acid-soil masks are filled: the game wants use, not survival.
 
+**The ancestry layers are never filled** (`fill = false` in `layers.toml`). Only their observed cells are written, the export leaves every other cell at "no value", and the game draws that land as unknown. A filled ancestry map would be read as proof of where peoples were.
+
 Judged regions are groups of modern countries (Russia split at 56°N), so judged values change at modern borders.
 
 The critics' free-text fill rules were then translated into machine-readable `adjust` entries in the intuition files, by one agent per theme instructed to encode only what each rule says. The schema is in `isostyle/intuitions.py`, and the builder applies the entries in order before blending:
@@ -226,10 +228,13 @@ After the fill, speculative cells are smoothed; **observed cells never move**. T
 
 | Setting | Value | What it does |
 |---|---|---|
-| `blend_rings` | 12 | Judged cells within this many hex rings of observed cells lean toward the observed values (weight falls linearly with distance). It was 3. |
+| `blend_rings` | 16 | Judged cells within this many hex rings of observed cells lean toward the observed values (weight falls linearly with distance). It was 3, then 12. |
 | `time_smooth` | 0.4 | Each speculative cell moves this share of the way toward the mean of its own value in the slices before and after. |
 | `smooth_iters` | 16 | Passes in which each speculative cell moves halfway to the mean of its neighbours. |
-| `bridge` | 0.75 | A speculative cell observed in both neighbouring slices moves this share of the way toward the mean of those two values (less for firmer judgements; not where the judgement names a value for that slice). |
+| `bridge` | 1.0 | A speculative cell observed in both neighbouring slices moves this share of the way toward the mean of those two values (not where the judgement names a value for that slice). It was 0.75. |
+| `bridge_conf` | 0 | With 1, firmer judgements resist the bridge. Off since 2026-11-13: the cell's own record either side outranks a judgement. |
+| `bridge_hold` | 1 | A bridged cell keeps its bridged value through the time and space smoothing, so a neighbouring observed cell cannot pull it back. |
+| `soft_sources`, `soft_power` | 1, 0.1 | Presence-only layers: a cell with dated evidence under the threshold moves from its filled value v to v + s(1 − v), s = (E/e_min)^0.1. See below. |
 
 `python -m isostyle evals` measures the result (`data/isostyle/evals/report.md`), and `--search` chose these
 settings: the smoothest of 60 grid points that pass every guard (`evals/search.json`). Against the unsmoothed fill:
@@ -288,6 +293,26 @@ setting changes this; it needs confidence exported as a number and smoothed, or 
 before to the slice after (column `land` = 0 marks cells that are not land in the slice year itself; the maps and
 viewer leave them out). The game interpolates each hex linearly between slices, takes the weaker of the two
 confidence levels, and hides hexes that are sea or ice in the current year.
+
+### One scale for presence-only layers (2026-11-13)
+
+In a presence-only layer an observed cell reads 1.0 ("recorded here"), while the critics' judgements are shares of
+land with one (0 to 0.4). A patch observed in one slice and just under the evidence threshold in the next was a 1.0
+island in time and space, and five of the regression cases came from it. Until 2026-11-13 four of them were held by
+hand-painted 1.0 cores in `intuitions/{mines,pile_dwellings,waterlogged_organics}.toml` and a pinned pollen cell in
+`open_land.toml`; those were removed and the fill changed instead:
+- **Sub-threshold evidence counts.** The kernel evidence E (each dated unit weighted by its share of the slice) is
+  smooth and reaches `e_min` at the edge of the observed cells. Below it, the filled value rises toward 1.0 by
+  s = (E/e_min)^`soft_power`, so the fill meets the observed cells continuously, and a patch that dips under the
+  threshold in one slice fades rather than vanishes. These cells stay judged or extrapolated; nothing is written as
+  observed. A first try that made such cells point sources for the blend made the maps speckled (score 0.45).
+- **A cell's own record outranks its neighbours'.** A speculative cell observed in the slices before and after takes
+  the mean of those two values and keeps it through the smoothing (`bridge_hold`), which settles the SW Anatolian
+  lake-district case without a pinned value.
+- **Cost.** The mean speculative value of the presence-only layers rises by 0.01 to 0.02 (mines 0.012 to 0.028, pile
+  dwellings 0.007 to 0.012), all of it within the kernel's reach (2.5σ) of a dated unit. `soft_power` = 0.1 is strong:
+  E at a hundredth of the threshold still gives s = 0.63. It was chosen as the smallest power that passes the
+  Ligurian mines case; 0.25 leaves that case at 0.2. The hold-out error rises from 0.020 to 0.027 (within its guard).
 
 ## Known biases
 

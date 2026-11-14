@@ -104,18 +104,21 @@ url = "https://intarch.ac.uk/journal/issue37/2/ia.37.2.pdf"
 checked = true
 
 [[research]]
+next = "Open Beyin & Bar-Yosef Mayer 2018 at Fig. 4 for the seven shell dates with lab numbers, and Beyin 2011 for the site map; enter the three middens in literature_dates.csv, marked approximate."
 what = "Enter the three dated Buri/Zula middens (Misse East, Gelalo NW, Asfet Unit F) with their seven shell dates from Beyin & Bar-Yosef Mayer 2018 Fig. 4. Take coordinates from the site map in Beyin 2011 (Azania 46:123-140) or Beyin & Shea 2007 (JFA 32:1-16), resolve the duplicated lab number GX-32911, and apply a Red Sea marine reservoir correction. Also list the other LSA and MSA sites the survey recorded around Buri Lake and the southern Gulf of Zula, which have no dates. NOT YET ENTERED (2026-11-13): all seven are marine-shell dates, and pipeline/settlements.py calibrates every date on IntCal20 with no reservoir correction, so they would come out several centuries too old. They need marine calibration (Marine20 plus a Red Sea Delta-R) in the pipeline first."
 url = "https://doi.org/10.1080/0067270X.2011.580139"
 yields = "3 dated sites (7 dates, 6550-3525 BCE) at the south edge of the box: the first dated prehistory of the Eritrean coast in our data, plus about 10 undated survey sites"
 effort = "Small: one table of seven rows is already transcribed above. Coordinates need the Azania paper (paywalled) or the authors."
 
 [[research]]
+next = "A person writes to the DISPERSE team for the Fig. 3 point file and its licence; the points are undated, so they would feed the [[speculate]] items, not the settlements."
 what = "Ask the York / DISPERSE team (Bailey, Meredith-Williams, Hausmann) for the point file behind Meredith-Williams et al. 2014 Fig. 3: about 1,200 remote-sensed shell mounds centred on the Dahlak islands and 19 possible sites at Massawa. Enter them as surveyed, undated and unverified, in a separate class that never counts as a dated site, or use them only to place speculative sites."
 url = "https://intarch.ac.uk/journal/issue37/2/ia.37.2.pdf"
 yields = "About 1,200 candidate shell-mound locations in the box. Undated; probably mid-Holocene by analogy with the dated Farasan mounds"
 effort = "One request for a shapefile; the paper shows only a small-scale map. Without the file, reading points off Fig. 3 is not worth doing."
 
 [[research]]
+next = "Search for any dated Dahlak or Buri-coast site published after 2014 (fieldwork reports and the obsidian-sourcing papers that mention the Irafailo source); record what exists even if nothing is dated."
 what = "Look for any ground-truthing or dating on Dahlak since 2014: Eritrean National Museum work, the obsidian sourcing of Dahlak and coastal sources (an Irafailo source is mentioned in search summaries of Khalidi's work), and Oppenheimer et al. 2019 on Nabro obsidian, which ties the Danakil coast to the Tihama."
 url = "https://doi.org/10.1016/j.quascirev.2019.105995"
 yields = "Unknown. Probably nothing dated on the islands, but it would settle whether the mounds are real"

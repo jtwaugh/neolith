@@ -27,6 +27,26 @@ pub fn serif_italic(size: f32) -> FontId {
     FontId::new(size, FontFamily::Name(SERIF_ITALIC.into()))
 }
 
+/// The display face: IM FELL English roman, renamed "Neolith Fell" in our
+/// subset as its Reserved Font Name requires (OFL, `assets/fonts/OFL-IMFell.txt`).
+pub const DISPLAY: &str = "display";
+/// The start screen's body text: Alegreya (OFL, `assets/fonts/OFL-Alegreya.txt`).
+pub const BOOK: &str = "book";
+
+pub fn display(size: f32) -> FontId {
+    FontId::new(size, FontFamily::Name(DISPLAY.into()))
+}
+
+pub fn book(size: f32) -> FontId {
+    FontId::new(size, FontFamily::Name(BOOK.into()))
+}
+
+pub const BOOK_ITALIC: &str = "book-italic";
+
+pub fn book_italic(size: f32) -> FontId {
+    FontId::new(size, FontFamily::Name(BOOK_ITALIC.into()))
+}
+
 /// Registers EB Garamond (SIL Open Font License, `assets/fonts/OFL.txt`;
 /// web-sized by `scripts/subset_fonts.py`) as
 /// the `serif` and `serif-italic` families, falling back to egui's fonts for
@@ -41,8 +61,20 @@ pub fn install_fonts(ctx: &egui::Context) {
         "garamond-italic".into(),
         Arc::new(egui::FontData::from_static(include_bytes!("../assets/fonts/EBGaramond-Italic.subset.ttf"))),
     );
+    fonts.font_data.insert(
+        "fell".into(),
+        Arc::new(egui::FontData::from_static(include_bytes!("../assets/fonts/NeolithFell.subset.ttf"))),
+    );
+    fonts.font_data.insert(
+        "alegreya".into(),
+        Arc::new(egui::FontData::from_static(include_bytes!("../assets/fonts/Alegreya.subset.ttf"))),
+    );
+    fonts.font_data.insert(
+        "alegreya-italic".into(),
+        Arc::new(egui::FontData::from_static(include_bytes!("../assets/fonts/Alegreya-Italic.subset.ttf"))),
+    );
     let fallback = fonts.families.get(&FontFamily::Proportional).cloned().unwrap_or_default();
-    for (family, font) in [(SERIF, "garamond"), (SERIF_ITALIC, "garamond-italic")] {
+    for (family, font) in [(SERIF, "garamond"), (SERIF_ITALIC, "garamond-italic"), (DISPLAY, "fell"), (BOOK, "alegreya"), (BOOK_ITALIC, "alegreya-italic")] {
         let mut list = vec![font.to_string()];
         list.extend(fallback.iter().cloned());
         fonts.families.insert(FontFamily::Name(family.into()), list);

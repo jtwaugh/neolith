@@ -57,6 +57,20 @@ class Sources(unittest.TestCase):
             self.assertEqual(sorted(u for u in urls if u not in text), [],
                              f"links in {os.path.basename(path)} missing from data/places/SOURCES.md")
 
+    def test_ancestry(self):
+        """The ancestry table's write-up exists, names the AADR release it is
+        computed from and the tool, and lists every configured reference group."""
+        with open(os.path.join(ROOT, "data/ancestry/SOURCES.md")) as f:
+            text = f.read()
+        self.assertIn("## References", text)
+        for needle in ("10.7910/DVN/FFIDCW", "https://github.com/uqrmaie1/admixtools", "10.1093/genetics/iyaa045"):
+            self.assertIn(needle, text)
+        self.assertNotIn("PLACEHOLDER", text)
+        with open(os.path.join(ROOT, "isostyle/config.toml"), "rb") as f:
+            acfg = tomllib.load(f)["ancestry"]
+        groups = [g for s in acfg["sources"].values() for g in s["groups"]] + [g for r in acfg["right"] for g in r["groups"]]
+        self.assertEqual([g for g in groups if g not in text], [], "reference groups missing from data/ancestry/SOURCES.md")
+
     def test_population(self):
         """Methods and visibility factors are written up, and a factor
         marked as sourced has a reference."""
@@ -112,7 +126,7 @@ class Sources(unittest.TestCase):
             self.skipTest("no record fixes")
         with open(path, "rb") as f:
             doc = tomllib.load(f)
-        entries = [e for k in ("locate", "same", "reject", "keep", "refile") for e in doc.get(k, [])]
+        entries = [e for k in ("locate", "same", "reject", "keep", "refile", "keep_site") for e in doc.get(k, [])]
         with open(os.path.join(ROOT, "data/settlements/CORRECTIONS.md")) as f:
             text = f.read()
         self.assertEqual([e.get("name", e.get("site")) for e in entries

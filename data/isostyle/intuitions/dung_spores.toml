@@ -26,7 +26,7 @@ confidence = "low"
 basis = ["dossier_statistics", "neighbouring_evidence", "environment"]
 reasoning = "The edges are 0.12-0.24 from 7-12 cells. Finland-Karelia NPP cores record 0 of 1-3 in every slice. Closed taiga lakes collect few spores, so a forest of low herbivore density should sit below the European mean (0.20-0.35)."
 literature = [
-  { cite = "Baker, Bhagwat & Willis 2013, 'Do dung fungal spores make a good proxy for past distribution of large herbivores?', QSR 62", checked = false },
+  { cite = "Baker, Bhagwat & Willis 2013, 'Do dung fungal spores make a good proxy for past distribution of large herbivores?', QSR 62, 21-31", checked = false, note = "Real (doi:10.1016/j.quascirev.2012.11.018). Only the abstract was reachable (ORA record): a meta-analysis of which spore types indicate large herbivores and how to express their abundance. It says nothing about taiga lakes or forest herbivore density; the full text is paywalled." },
 ]
 would_settle = "Recount NPPs on archived slides from Komi and Karelian cores, or ingest RPD sites that report Sporormiella."
 speculative_rule = "Fill at 0.15 in all slices and 0.25 in the tundra strip north of 66°N for 10,000-9,000 BCE (reindeer herds)."
@@ -48,7 +48,7 @@ confidence = "low"
 basis = ["environment", "analogy", "literature"]
 reasoning = "There is no edge evidence before 4,000 BCE, and the nearest evidence is 990-1109 km away. By analogy with Iranian and Central Asian NPP cores (0.5-1.0) and with Pleistocene-Holocene steppe Sporormiella records elsewhere, open grassland with large migratory herds should give spores in most cores."
 literature = [
-  { cite = "Perrotti & van Asperen 2019, 'Dung fungi as a proxy for megaherbivores: opportunities and limitations for archaeological applications', VHA 28", checked = false },
+  { cite = "Perrotti & van Asperen 2019, 'Dung fungi as a proxy for megaherbivores: opportunities and limitations for archaeological applications', VHA 28, 93-104", checked = false, note = "Real (doi:10.1007/s00334-018-0686-7). Springer and the Durham repository copy both refused automated access and no abstract was reachable, so the claim about steppe Sporormiella records was not checked." },
 ]
 would_settle = "NPP counts on a lower Volga or Manych lake core."
 speculative_rule = "Fill at 0.55 for 10,000-6,000 BCE, and fade to 0.35 in the forest-steppe north of 53°N."
@@ -70,7 +70,7 @@ confidence = "low"
 basis = ["other_layer", "literature", "environment", "neighbouring_evidence"]
 reasoning = "The few edge cells are 0.13 (4,000 BCE) and 0.42 (3,000 BCE). The ancient-genome and pottery layers inside the gap mark herders. Herding should add to an already high wild baseline."
 literature = [
-  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false },
+  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false, note = "Book (Princeton University Press). The publisher page and JSTOR refused automated access and no open text was reached, so the claim was not checked against the book itself." },
 ]
 would_settle = "NPP counts on a steppe lake core next to a Yamnaya kurgan field."
 speculative_rule = "Fill at 0.65, and at 0.45 in the forest-steppe north of 53°N."
@@ -91,7 +91,7 @@ confidence = "low"
 basis = ["dossier_statistics", "other_layer", "environment"]
 reasoning = "The edges are 0.16-0.23 until 4,000 BCE and 0.39 at 3,000 BCE. Domestic livestock appears inside the gap from 4,000 BCE. Polesian forest should be low and the forest-steppe higher."
 literature = [
-  { cite = "Kremenetski 1995, Holocene vegetation history of southwestern Ukraine", checked = false },
+  { cite = "Kremenetski 1995, 'Holocene vegetation and climate history of southwestern Ukraine', Review of Palaeobotany and Palynology 85, 289-301", checked = false, note = "Real (doi:10.1016/0034-6667(94)00123-2), but no abstract was reachable (ScienceDirect refused, none in OpenAlex). It covers the steppe and forest-steppe of SW Ukraine, so at best it bears on the forest-steppe part of this judgement, not Polesia." },
 ]
 would_settle = "NPP counts on a Trypillia-adjacent core (e.g. near Maidanetske)."
 speculative_rule = "Fill at 0.2 for 10,000-6,000 BCE, 0.3 at 5,000 BCE and 0.4 for 4,000-3,000 BCE."
@@ -121,9 +121,7 @@ expected_range = [0.05, 0.3]
 confidence = "low"
 basis = ["dossier_statistics", "neighbouring_evidence", "environment"]
 reasoning = "The edges are 0.10-0.12 until 7,000 BCE, then 0.21-0.24 for 6,000-4,000 BCE, then 0.15 at 3,000 BCE. Herding stays south of 60°N (Funnel Beaker from c. 4000 BCE), so the boreal interior is like the Russian taiga."
-literature = [
-  { cite = "Gauthier, Bichet & Massa 2010, 'Fungal spores as proxies for past livestock?'  (method review)", checked = false },
-]
+literature = []
 would_settle = "NPP recounts of central Swedish and Trøndelag cores."
 speculative_rule = "Fill at 0.15, rising to 0.25 south of 60°N from 4,000 BCE."
 [[judgement.adjust]]
@@ -217,7 +215,7 @@ confidence = "medium"
 basis = ["dossier_statistics", "neighbouring_evidence", "literature"]
 reasoning = "Southern Iberian NPP cores rise from 0.0-0.25 before 6,000 BCE to 0.56-0.83 from 6,000 BCE, and the edges go from 0.20-0.28 to 0.45-0.59. The Neolithic arrives c. 5500 BCE and the megalithic herding landscape after."
 literature = [
-  { cite = "López-Sáez & López-Merino 2007, 'Coprophilous fungi as a source of information of anthropic activities during the Prehistory in the Amblés Valley', Revista Española de Micropaleontología", checked = false },
+  { cite = "López Sáez & López Merino 2007, 'Coprophilous fungi as a source of information of anthropic activities during the Prehistory in the Amblés Valley (Ávila, Spain): the archaeopalynological record', Revista Española de Micropaleontología 39(1-2), 103-116", checked = true, url = "https://produccioncientifica.ucm.es/documentos/5f07a3e92999527a01a3ea09", read = "abstract", note = "Coprophilous fungi record pastoral activity at all eleven Amblés Valley sites from the Neolithic on. The valley is in central Spain (Ávila), not the south." },
 ]
 would_settle = "NPP counts on Alentejo pond records."
 speculative_rule = "Fill at 0.25 until 7,000 BCE, 0.45 at 6,000 BCE and 0.6 from 5,000 BCE."
@@ -322,7 +320,7 @@ confidence = "low"
 basis = ["dossier_statistics", "neighbouring_evidence", "other_layer", "environment"]
 reasoning = "Anatolian NPP cores record 0.0-0.5 (4-5 cores), and the edges are 0.10-0.12 at 9,000-8,000 BCE from one cell, then 0.21-0.46. Livestock inside the gap from 8,000 BCE and an open plateau argue for higher values than in temperate Europe."
 literature = [
-  { cite = "Roberts et al. 2016, 'A tale of two lakes: a multi-proxy comparison of Lateglacial and Holocene environmental change in Cappadocia', JQS", checked = false },
+  { cite = "Roberts et al. 2016, 'A tale of two lakes: a multi-proxy comparison of Lateglacial and Holocene environmental change in Cappadocia, Turkey', JQS 31, 348-362", checked = false, note = "Real (doi:10.1002/jqs.2852). The abstract (OpenAlex) is about climate proxies at Nar and Eski Acıgöl; it mentions Quercus/chenopod ratios (lower in dry phases, higher in the wet early-mid Holocene) but not grazing or dung spores, so it does not support the herbivore part. Wiley refused automated access to the full text." },
 ]
 would_settle = "NPP counts on Nar or Eski Acıgöl archived samples."
 speculative_rule = "Fill at 0.3 for 10,000-9,000 BCE and 0.45 from 8,000 BCE."
@@ -372,7 +370,7 @@ confidence = "low"
 basis = ["environment", "analogy", "literature", "other_layer"]
 reasoning = "There is no edge evidence, and the nearest NPP core is 728 km away. By analogy with Iranian NPP cores (0.5-1.0) and the dense game and herding the archaeology shows, most cores should carry spores."
 literature = [
-  { cite = "Crassard et al. 2015, 'Addressing the desert kites phenomenon and its global range through a multi-proxy approach', JAMT", checked = false },
+  { cite = "Crassard et al. 2015, 'Addressing the Desert Kites Phenomenon and Its Global Range Through a Multi-proxy Approach', Journal of Archaeological Method and Theory 22, 1093-1121", checked = true, url = "https://api.archives-ouvertes.fr/search/?q=halId_s:hal-01829329&fl=title_s,abstract_s", read = "abstract", note = "HAL record hal-01829329 (doi:10.1007/s10816-014-9218-7). Kites, often considered hunting traps and possibly used for husbandry, operated from the Neolithic on across the Middle East. The abstract does not name gazelle or onager." },
 ]
 would_settle = "NPP counts on Dead Sea or Hula cores."
 speculative_rule = "Fill at 0.6 in all slices."
@@ -412,7 +410,7 @@ confidence = "low"
 basis = ["dossier_statistics", "neighbouring_evidence", "environment"]
 reasoning = "Two NPP cores in Iran record 0.5-1.0, and the edges are 0.39-0.71 (mostly 0.65-0.70). Steppe-desert with onager and goat, then early herding (Ganj Dareh goats c. 8000 BCE)."
 literature = [
-  { cite = "Zeder & Hesse 2000, 'The initial domestication of goats (Capra hircus) in the Zagros mountains 10,000 years ago', Science 287", checked = false },
+  { cite = "Zeder & Hesse 2000, 'The initial domestication of goats (Capra hircus) in the Zagros mountains 10,000 years ago', Science 287, 2254-2257", checked = true, url = "https://europepmc.org/article/MED/10731145", read = "abstract", note = "Initial goat management in the highlands of western Iran at 10,000 cal years ago. The abstract does not name Ganj Dareh." },
 ]
 would_settle = "NPP counts on any plateau playa core."
 speculative_rule = "Fill at 0.65 in all slices."
@@ -444,7 +442,7 @@ confidence = "low"
 basis = ["environment", "literature", "other_layer"]
 reasoning = "There is no edge evidence before 3,000 BCE, when 1 core records 1. Livestock appears inside the gap from 7,000 BCE. Lake-bound herds in the humid phase would deposit spores. Before 8,000 BCE and after 4,000 BCE lakes were few and grazing sparse."
 literature = [
-  { cite = "Petraglia et al. 2020, 'Human responses to climate and ecosystem change in ancient Arabia', PNAS 117", checked = false },
+  { cite = "Petraglia et al. 2020, 'Human responses to climate and ecosystem change in ancient Arabia', PNAS 117, 8263-8270", checked = true, url = "https://pmc.ncbi.nlm.nih.gov/articles/PMC7165439/", read = "full text (searched passages)", note = "Paleolakes expanded after c. 10 ka and aridity returned after c. 6 ka; herding from c. 8.2-8.0 ka in the southeast, domestic bovines at Jebel Oraf 2 (c. 7.2-6.3 ka)." },
 ]
 would_settle = "NPP counts on Jubbah, Tayma or Mundafan lake sediments."
 speculative_rule = "Fill at 0.3 for 10,000-9,000 BCE, 0.55 for 8,000-5,000 BCE, and 0.35 for 4,000-3,000 BCE."
@@ -490,8 +488,8 @@ confidence = "low"
 basis = ["environment", "literature", "other_layer"]
 reasoning = "The nearest evidence is over 2,000 km away. The pottery, ground-stone and later livestock layers inside the gap show herders and hunters at lakes. Spore input per lake would be high while lakes held water (8,000-4,000 BCE) and fall as they dried."
 literature = [
-  { cite = "Dunne et al. 2012, 'First dairying in green Saharan Africa in the fifth millennium BC', Nature 486", checked = false },
-  { cite = "di Lernia 2013, 'The emergence and spread of herding in Northern Africa', in Oxford Handbook of African Archaeology", checked = false },
+  { cite = "Dunne et al. 2012, 'First dairying in green Saharan Africa in the fifth millennium BC', Nature 486, 390-394", checked = true, url = "https://europepmc.org/article/MED/22722200", read = "abstract", note = "In the green Sahara a reliance on cattle, sheep and goats was a stable, widespread way of life; dairying at Takarkori in the 5th millennium BC. Says nothing about lakes or spores." },
+  { cite = "di Lernia 2013, 'The Emergence and Spread of Herding in Northern Africa: A Critical Reappraisal', in Mitchell & Lane (eds), The Oxford Handbook of African Archaeology, 526-540", checked = false, note = "Real (doi:10.1093/oxfordhb/9780199569885.013.0036). The Oxford Academic abstract only says the chapter reappraises models of herding's origin and spread (climate, intensification, rock art, ethnography); it gives no dates or lake settings, and the text is paywalled." },
 ]
 would_settle = "NPP counts on Lake Yoa or the Chad megalake sediments."
 speculative_rule = "Fill at 0.4 for 10,000-9,000 BCE, 0.6 for 8,000-5,000 BCE, 0.45 at 4,000 BCE and 0.3 at 3,000 BCE. North of 22°N, drop to 0.2 after 4,000 BCE."
@@ -529,7 +527,7 @@ confidence = "low"
 basis = ["environment", "literature", "neighbouring_evidence"]
 reasoning = "The only edge is 0.43 at 3,000 BCE (15 cells, Nile side). The desert interior had grazers only in the humid phase."
 literature = [
-  { cite = "Wendorf & Schild 2001, Holocene Settlement of the Egyptian Sahara", checked = false },
+  { cite = "Wendorf & Schild 2001, Holocene Settlement of the Egyptian Sahara, Volume 1: The Archaeology of Nabta Playa", checked = false, note = "Real (Springer, doi:10.1007/978-1-4615-0653-9). Springer refused automated access and the chapters carry no abstracts, so the claim was not checked." },
 ]
 would_settle = "NPP counts on Nile Delta cores."
 speculative_rule = "Fill at 0.35 for 9,000-5,000 BCE and 0.15 otherwise in the desert. Use 0.5 in the Nile strip from 5,000 BCE."
@@ -669,7 +667,7 @@ confidence = "low"
 basis = ["neighbouring_evidence", "analogy"]
 reasoning = "The Doggerland edges are 0.17-0.23, which is ordinary for the early Holocene North Sea plain. The Gulf has no evidence; by analogy with Mesopotamia it should be higher, 0.5."
 literature = [
-  { cite = "Gaffney, Fitch & Smith 2009, Europe's Lost World: the rediscovery of Doggerland", checked = false },
+  { cite = "Gaffney, Fitch & Smith 2009, Europe's Lost World: the rediscovery of Doggerland, CBA Research Report 160", checked = false, note = "Real (Council for British Archaeology, York). No open copy from the publisher was found; only reviews (Antiquity, CAJ) were reachable, so the claim was not checked." },
 ]
 would_settle = "NPP counts on North Sea vibrocores (Europe's Lost Frontiers project)."
 speculative_rule = "Fill Doggerland at 0.25 and the Gulf floor at 0.5 while dry."

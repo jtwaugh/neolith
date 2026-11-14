@@ -1,5 +1,6 @@
 //! Neolith: the map, clock and editor. One codebase for native and web.
 
+mod ancestry_view;
 mod app;
 mod board;
 mod clock;
@@ -16,15 +17,17 @@ mod renown;
 #[cfg(not(target_arch = "wasm32"))]
 mod screenshot;
 mod site_record;
+mod sound;
+mod splash;
 mod view;
 
 #[cfg(not(target_arch = "wasm32"))]
 const USAGE: &str = "\
 neolith [world.bin]
-neolith --screenshot <out.png> [--world <world.bin>] [--year <y>] [--mode terrain|koeppen|pop|elevation|evidence]
+neolith --screenshot <out.png> [--world <world.bin>] [--year <y>] [--mode terrain|ground|koeppen|pop|elevation|evidence]
         [--evidence <layer id>]
         [--flat <0..1>] [--yaw <deg>] [--pitch <deg>] [--dist <d>] [--lon <deg>] [--lat <deg>]
-        [--size <W>x<H>] [--lip] [--art on|off] [--no-blend] [--material wood|slate|cardboard]
+        [--size <W>x<H>] [--lip] [--art on|off] [--no-blend] [--micro on|off] [--material wood|slate|cardboard]
         [--hillshade <0..1>] [--relief <exaggeration, 0 = off>]
 neolith --ui-screenshot <out.png> [--editor] [--flat 1] [--mode …] [--year <y>]   (opens the window briefly)
 neolith --harness [<port>] [--world <world.bin>] [--size <W>x<H>]
@@ -56,8 +59,8 @@ fn main() -> std::process::ExitCode {
         editor: args.iter().any(|a| a == "--editor"),
         flat: value_of("--flat").is_some_and(|v| v != "0"),
         mode: match value_of("--mode").as_deref() {
-            Some(m) => neolith_core::MapMode::from_arg(m).unwrap_or(neolith_core::MapMode::Terrain),
-            None => neolith_core::MapMode::Terrain,
+            Some(m) => neolith_core::MapMode::from_arg(m).unwrap_or(neolith_core::MapMode::Ground),
+            None => neolith_core::MapMode::Ground,
         },
         year: value_of("--year").and_then(|v| v.parse().ok()),
         frames: 0,
@@ -137,7 +140,7 @@ fn screenshot_cli(args: &[String]) -> Result<(), String> {
         out: get("--screenshot").ok_or("--screenshot needs an output path")?,
         year: Year(num("--year")?.unwrap_or(app::DEFAULT_START_YEAR as f64) as i32),
         mode: match get("--mode").as_deref() {
-            None => MapMode::Terrain,
+            None => MapMode::Ground,
             Some(m) => MapMode::from_arg(m).ok_or(format!("unknown --mode {m}"))?,
         },
         flat: num("--flat")?.unwrap_or(0.0).clamp(0.0, 1.0),
@@ -160,6 +163,11 @@ fn screenshot_cli(args: &[String]) -> Result<(), String> {
             Some(other) => return Err(format!("unknown --art {other}")),
         },
         blend: !args.iter().any(|a| a == "--no-blend"),
+        micro: match get("--micro").as_deref() {
+            None | Some("on") => true,
+            Some("off") => false,
+            Some(other) => return Err(format!("unknown --micro {other}")),
+        },
         hillshade: num("--hillshade")?,
         relief: num("--relief")?,
         evidence: get("--evidence"),

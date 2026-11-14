@@ -32,6 +32,534 @@
   "fetched": "2026-11-12"
  },
  {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%28-16.464168425+16.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%28-6.464168425+26.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_-16.4642_16.108.csv",
+  "sha256": "c5bb1b915835a71385a6237d315dee66cab9727da287e8f48089c67e35d1d831",
+  "bytes": 340,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%28-16.464168425+26.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%28-6.464168425+36.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_-16.4642_26.108.csv",
+  "sha256": "4c805c246126f44afdf0c297d3d4df63877eb63b31c955ecfa262cbc90c3a379",
+  "bytes": 2901,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%28-16.464168425+36.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%28-6.464168425+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_-16.4642_36.108.csv",
+  "sha256": "1ba61f3d4a773feb0588fd55a84816921ab980fae011217acfd46aac8458dec7",
+  "bytes": 25562,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%28-16.464168425+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%28-6.464168425+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_-16.4642_46.108.csv",
+  "sha256": "995fac43f5557514dc4620438f16cb3d9eb148a118c86b82625f488bfb350835",
+  "bytes": 37468,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%28-16.464168425+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%28-6.464168425+66.108035103%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_-16.4642_56.108.csv",
+  "sha256": "82c1598d3f55f30c31a2bef9356028636b70536cc061e560606ec72833e685c4",
+  "bytes": 3552,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%28-16.464168425+6.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%28-6.464168425+16.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_-16.4642_6.10804.csv",
+  "sha256": "37320a917d18f4961c720cb371a9443a9e196ed858ec59798a0e4f53a0c87d3b",
+  "bytes": 378,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%28-16.464168425+66.108035103%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%28-6.464168425+75.858035103%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_-16.4642_66.108.csv",
+  "sha256": "011e38a49b4e0ce319599922bf01798f7bb67bb72ad5a8ac33a5514f77644d3d",
+  "bytes": 145,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%28-6.464168425+16.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%283.5358315749999996+26.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_-6.46417_16.108.csv",
+  "sha256": "775c6cea5dec36e9d329c4aaf1c011beb3146db23a402db03be98be6633e960f",
+  "bytes": 143,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%28-6.464168425+26.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%283.5358315749999996+36.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_-6.46417_26.108.csv",
+  "sha256": "c0a897345dbd57d68e0da5fe1053cc25126ef5841d79394a049b9b7a786f3b75",
+  "bytes": 4933,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%28-6.464168425+36.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%283.5358315749999996+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_-6.46417_36.108.csv",
+  "sha256": "195c6ea944b23b4724bb2d9a221800a812073e0a768c9157e18ef8281bdfe31e",
+  "bytes": 45348,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%28-6.464168425+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%283.5358315749999996+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_-6.46417_46.108.csv",
+  "sha256": "93c82ba0830e2dbc0b1de4e31dfe1c9762cda33970cc3293ffd631e033458027",
+  "bytes": 209231,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%28-6.464168425+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%283.5358315749999996+66.108035103%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_-6.46417_56.108.csv",
+  "sha256": "4d9ffac8dca4f12f8cf82f627ec76d7000c657d658bcd8e389974d261608953c",
+  "bytes": 30197,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%28-6.464168425+6.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%283.5358315749999996+16.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_-6.46417_6.10804.csv",
+  "sha256": "79a494575951bd9c85f700a2cb2c8c6c60d68aea11dc80b10170929703742491",
+  "bytes": 1263,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%28-6.464168425+66.108035103%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%283.5358315749999996+75.858035103%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_-6.46417_66.108.csv",
+  "sha256": "8f3627331a42e5bc5969b16d94b99ea9624b7f0167be676f069cead2986ad012",
+  "bytes": 139,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2813.535831575+16.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2823.535831575+26.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_13.5358_16.108.csv",
+  "sha256": "2160d9cac527ebfa8ef383220aa9975a2bd7088677c42eff28b80a382a1f62c2",
+  "bytes": 146,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2813.535831575+26.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2823.535831575+36.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_13.5358_26.108.csv",
+  "sha256": "9545d302b6374e0cc9f30e234ef13b7591848a10ced895ea4dbabf984fdff1fe",
+  "bytes": 8438,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2813.535831575+36.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2823.535831575+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_13.5358_36.108.csv",
+  "sha256": "589a6306f431973ca9593c4081a79a7f01757ccb95727aee89f91020191c4c32",
+  "bytes": 160539,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2813.535831575+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2823.535831575+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_13.5358_46.108.csv",
+  "sha256": "8d1ba631c363069ffaeff2b84cc8fe362261a8caee7ee9e9f101a9d1edc0fdae",
+  "bytes": 13087,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2813.535831575+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2823.535831575+66.108035103%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_13.5358_56.108.csv",
+  "sha256": "5e9c3c81ea134a1e19bb5786a8798dd360455e08f450ff9abb87348419b7ddc0",
+  "bytes": 7567,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2813.535831575+6.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2823.535831575+16.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_13.5358_6.10804.csv",
+  "sha256": "2f74ec10e31ef1afff6ddf3e9d32d11232b1c559fb213dc69fbe2018a53bb2c1",
+  "bytes": 442,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2813.535831575+66.108035103%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2823.535831575+75.858035103%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_13.5358_66.108.csv",
+  "sha256": "ae4226bf6583b9f1250edb93307be302405aac0c301570cb6cdad886604ab41a",
+  "bytes": 1547,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2823.535831575+16.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2833.535831575+26.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_23.5358_16.108.csv",
+  "sha256": "e35fd9715e010a19d58f46a02a5ce6562df3cb52c9d388b16b4b69e40996cb78",
+  "bytes": 31463,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2823.535831575+26.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2833.535831575+36.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_23.5358_26.108.csv",
+  "sha256": "05b36a0a0b43b18284537e43e5a700345ae6b42ea82c59053f4f9f7c96c412b7",
+  "bytes": 53161,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2823.535831575+36.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2833.535831575+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_23.5358_36.108.csv",
+  "sha256": "4acc0e0c7eabb497a7802a65f73ca40679e74e3042e331dae4122eb877e945ab",
+  "bytes": 161727,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2823.535831575+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2833.535831575+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_23.5358_46.108.csv",
+  "sha256": "c0a431997c5bed04c1fa364d52004c4e699509b7f127f718f26f6faf4698f652",
+  "bytes": 8249,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2823.535831575+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2833.535831575+66.108035103%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_23.5358_56.108.csv",
+  "sha256": "6ab2225becfa30128fbf65b3df74053890c6776270161f9e9c47596d8a96edfa",
+  "bytes": 3656,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2823.535831575+6.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2833.535831575+16.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_23.5358_6.10804.csv",
+  "sha256": "9c6945b6f2a68647fe16d1cd83df856df29c6a41b541bc3f73561c8ccb70fc45",
+  "bytes": 549,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2823.535831575+66.108035103%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2833.535831575+75.858035103%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_23.5358_66.108.csv",
+  "sha256": "8a964d7f532100b3f044906d811703f4b60558e68e5d60df7a3208e238fe8e22",
+  "bytes": 1001,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%283.5358315749999996+16.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2813.535831575+26.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_3.53583_16.108.csv",
+  "sha256": "303143c439549303511e15dda155e50edd81c313fea44354358299755162d580",
+  "bytes": 1202,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%283.5358315749999996+26.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2813.535831575+36.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_3.53583_26.108.csv",
+  "sha256": "92807bcd04ecbcb138d6e59a8ab00d8c4d361f97a8733a054b2a900cf6117e5c",
+  "bytes": 6909,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%283.5358315749999996+36.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2813.535831575+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_3.53583_36.108.csv",
+  "sha256": "3651b0148b5eabde2d8c0d2569c612474126942cd4f2ce22f76c9adc8d59f9ec",
+  "bytes": 103028,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%283.5358315749999996+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%288.535831575+51.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_3.53583_46.108_5.csv",
+  "sha256": "6bf737f9ced4e9c8c74af82f30fc83a4592ad6ed9e8d4b12f41aa38d9ee183a6",
+  "bytes": 23525,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%283.5358315749999996+51.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%288.535831575+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_3.53583_51.108_5.csv",
+  "sha256": "b0d581bd7d6bed01967944c32f959f99e354dc8150c423838f7beb524c79e885",
+  "bytes": 5410,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%283.5358315749999996+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2813.535831575+66.108035103%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_3.53583_56.108.csv",
+  "sha256": "ac4ad1b9d8c1671ed40c50f47e47a157356c5af93bcde2becf5eae3335e7efe8",
+  "bytes": 8860,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%283.5358315749999996+6.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2813.535831575+16.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_3.53583_6.10804.csv",
+  "sha256": "d12d403b1f4e63d495c31807d97978f11bb48cf62cba0834801fdf614bcf982d",
+  "bytes": 892,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%283.5358315749999996+66.108035103%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2813.535831575+75.858035103%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_3.53583_66.108.csv",
+  "sha256": "acad98d40914c8c9a1d2f39bd30d03a357678deb365d87c6e165be54cc8ca033",
+  "bytes": 1117,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2833.535831575+16.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2843.535831575+26.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_33.5358_16.108.csv",
+  "sha256": "23a7ba6e09cac2a13403a4a777e1726a26c77495000dfcec1597ac121b74474a",
+  "bytes": 1944,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2833.535831575+26.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2843.535831575+36.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_33.5358_26.108.csv",
+  "sha256": "1eef17599836b9f70a1324a8d50559d5a5aa54b06bee2acade84cb4e50e8270d",
+  "bytes": 87817,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2833.535831575+36.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2843.535831575+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_33.5358_36.108.csv",
+  "sha256": "b63a687424eb1ab82d04ef4e4d0f3b0a77d71742574c6267798e9744ab46f280",
+  "bytes": 51886,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2833.535831575+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2843.535831575+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_33.5358_46.108.csv",
+  "sha256": "0d45ff32c2f09692e3e8b5270a994ddfaaa4d97441ccb4612dda05c887f61a8c",
+  "bytes": 3215,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2833.535831575+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2843.535831575+66.108035103%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_33.5358_56.108.csv",
+  "sha256": "6cf3ab7d38d0697850b92869ca183d4fc6f54b61a8171c12f38a9283eec51d32",
+  "bytes": 1739,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2833.535831575+6.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2843.535831575+16.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_33.5358_6.10804.csv",
+  "sha256": "b014dfa9e2fbac6518a1b34f456b41bfd06a92eeb53d2f62628eeb143cb95eeb",
+  "bytes": 2379,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2833.535831575+66.108035103%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2843.535831575+75.858035103%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_33.5358_66.108.csv",
+  "sha256": "461f45aec11c7bf4da2e6533ff6d3e4e6d4f692b7fadff008001f645c5d78494",
+  "bytes": 883,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2843.535831575+16.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2853.535831575+26.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_43.5358_16.108.csv",
+  "sha256": "9802352c6e0f97eb0f82540629e3ae86850f9508089578b8b98685b2a2ab9cda",
+  "bytes": 1885,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2843.535831575+26.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2853.535831575+36.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_43.5358_26.108.csv",
+  "sha256": "f9f28201526d46cd7186197b9bf94b1525fb8bdfbf60837270f2460111959d74",
+  "bytes": 19819,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2843.535831575+36.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2853.535831575+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_43.5358_36.108.csv",
+  "sha256": "ced04c23db909138b9d6a10116f5f08aaf28b484953338aa299aa329dd82ca53",
+  "bytes": 8873,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2843.535831575+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2853.535831575+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_43.5358_46.108.csv",
+  "sha256": "ae6e0a1ab52fca4456f7e61642d5bbbb333a429aef2f016ac96c35bdc180f321",
+  "bytes": 1136,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2843.535831575+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2853.535831575+66.108035103%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_43.5358_56.108.csv",
+  "sha256": "bdcd8b755d979e7b2c249aaaa76ba56b191fd5df06a272be0c4937dfcd487db6",
+  "bytes": 173,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2843.535831575+6.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2853.535831575+16.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_43.5358_6.10804.csv",
+  "sha256": "94f2f86977600b03e31867106972c8fde1f25f01140fa8905cca504a3631ad10",
+  "bytes": 1982,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2843.535831575+66.108035103%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2853.535831575+75.858035103%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_43.5358_66.108.csv",
+  "sha256": "e24c2c8fbff53c2be1ae4438731343240e137556ce3e97b3f7b09144b41e3434",
+  "bytes": 167,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2853.535831575+16.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2863.535831575+26.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_53.5358_16.108.csv",
+  "sha256": "97161ef52369e6a2bc6ee9eca8451a04d67afe6594b9c3d7b57bbff2d97b990f",
+  "bytes": 4317,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2853.535831575+26.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2863.535831575+36.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_53.5358_26.108.csv",
+  "sha256": "d4ad49e5b80ad203863eb3c1edf89ee6d037f2f6b1301fe467ef7f6122d512a6",
+  "bytes": 2308,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2853.535831575+36.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2863.535831575+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_53.5358_36.108.csv",
+  "sha256": "369aff3f96c29d6f57569bbfb00c78da37a07e72936179c2e96e4eb94d4b6782",
+  "bytes": 3661,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2853.535831575+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2863.535831575+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_53.5358_46.108.csv",
+  "sha256": "85e40e9405b5986315f8cb615572515a31cb40e29e1e736ead7e111247f1663a",
+  "bytes": 993,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2853.535831575+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2863.535831575+66.108035103%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_53.5358_56.108.csv",
+  "sha256": "83cf60880b40cea1ba36b489536a88384b1bf9a841054e0f102e623fc8ed5d21",
+  "bytes": 48,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2853.535831575+6.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2863.535831575+16.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_53.5358_6.10804.csv",
+  "sha256": "83cf60880b40cea1ba36b489536a88384b1bf9a841054e0f102e623fc8ed5d21",
+  "bytes": 48,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2853.535831575+66.108035103%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2863.535831575+75.858035103%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_53.5358_66.108.csv",
+  "sha256": "c79dcf9fc4a052b2fd4e6c5c00a93a227fbe7acb5b4ae77e7afa3ab37b897308",
+  "bytes": 159,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2863.535831575+16.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2865.95258250181912+26.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_63.5358_16.108.csv",
+  "sha256": "83cf60880b40cea1ba36b489536a88384b1bf9a841054e0f102e623fc8ed5d21",
+  "bytes": 48,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2863.535831575+26.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2865.95258250181912+36.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_63.5358_26.108.csv",
+  "sha256": "f38c38e061004390cf42af3660639ad2f5a5164effdc6f47c2f3d028ed315d4e",
+  "bytes": 1240,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2863.535831575+36.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2865.95258250181912+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_63.5358_36.108.csv",
+  "sha256": "2783e259ab3a392fe61f001a0bc2c5878a573e38f3045fa1dc2df86868c304e9",
+  "bytes": 681,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2863.535831575+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2865.95258250181912+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_63.5358_46.108.csv",
+  "sha256": "83cf60880b40cea1ba36b489536a88384b1bf9a841054e0f102e623fc8ed5d21",
+  "bytes": 48,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2863.535831575+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2865.95258250181912+66.108035103%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_63.5358_56.108.csv",
+  "sha256": "6408dbebd71719ee837411b741a751dbfc0a071cc789ca271139caf54d838c42",
+  "bytes": 253,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2863.535831575+6.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2865.95258250181912+16.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_63.5358_6.10804.csv",
+  "sha256": "83cf60880b40cea1ba36b489536a88384b1bf9a841054e0f102e623fc8ed5d21",
+  "bytes": 48,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%2863.535831575+66.108035103%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2865.95258250181912+75.858035103%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_63.5358_66.108.csv",
+  "sha256": "83cf60880b40cea1ba36b489536a88384b1bf9a841054e0f102e623fc8ed5d21",
+  "bytes": 48,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%288.535831575+46.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2813.535831575+51.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_8.53583_46.108_5.csv",
+  "sha256": "199f3b9141d592dd3ca358bbec0e4ca6639d3a89c8cebf1e371f27dee697dcb8",
+  "bytes": 27088,
+  "fetched": "2026-11-14"
+ },
+ {
+  "dataset": "wikidata",
+  "url": "https://query.wikidata.org/sparql?query=SELECT+%3Fitem+%28SAMPLE%28%3Flabel%29+AS+%3Fname%29+%28SAMPLE%28%3Fcoord%29+AS+%3Fpoint%29+%28MIN%28%3Finc%29+AS+%3Finception%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3FcultureLabel%3B+separator%3D%22%7C%22%29+AS+%3Fcultures%29%0A+++++++%28GROUP_CONCAT%28DISTINCT+%3Falt%3B+separator%3D%22%7C%22%29+AS+%3Falts%29+%28SAMPLE%28%3Ftitle%29+AS+%3Fenwiki%29+WHERE+%7B%0A++SERVICE+wikibase%3Abox+%7B+%3Fitem+wdt%3AP625+%3Fcoord+.%0A++++bd%3AserviceParam+wikibase%3AcornerSouthWest+%22Point%288.535831575+51.108035103000006%29%22%5E%5Egeo%3AwktLiteral+%3B%0A++++++++++++++++++++wikibase%3AcornerNorthEast+%22Point%2813.535831575+56.108035103000006%29%22%5E%5Egeo%3AwktLiteral+.+%7D%0A++%3Fitem+wdt%3AP31%2Fwdt%3AP279%2A+wd%3AQ839954+.%0A++%3Fart+schema%3Aabout+%3Fitem+%3B+schema%3AisPartOf+%3Chttps%3A%2F%2Fen.wikipedia.org%2F%3E+%3B+schema%3Aname+%3Ftitle+.%0A++OPTIONAL+%7B+%3Fitem+rdfs%3Alabel+%3Flabel+FILTER%28LANG%28%3Flabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP571+%3Finc+%7D%0A++OPTIONAL+%7B+%3Fitem+wdt%3AP2596+%3Fculture+.+%3Fculture+rdfs%3Alabel+%3FcultureLabel+FILTER%28LANG%28%3FcultureLabel%29+%3D+%22en%22%29+%7D%0A++OPTIONAL+%7B+%3Fitem+skos%3AaltLabel+%3Falt+FILTER%28LANG%28%3Falt%29+%3D+%22en%22%29+%7D%0A%7D+GROUP+BY+%3Fitem",
+  "path": "build/settlements/wikidata_8.53583_51.108_5.csv",
+  "sha256": "bbc5bbc6baee15f16c077645a8df0ab7176d41f905fece382d90b006b871b9dd",
+  "bytes": 9922,
+  "fetched": "2026-11-14"
+ },
+ {
   "dataset": "xronos",
   "url": "https://xronos.ch/api/v1/data?query_country=AD",
   "path": "build/settlements/xronos_country_AD.json",
@@ -867,8 +1395,8 @@
   "dataset": "literature",
   "url": "data/settlements/literature_dates.csv",
   "path": "data/settlements/literature_dates.csv",
-  "sha256": "0ff98b3bfe70d2a5f7de103b8f2a8b0c729605a55f9f67ac50b42dae919b3971",
-  "bytes": 608329,
-  "fetched": "2026-11-13"
+  "sha256": "f434ba9b2f20dfe2b367b8871560358ea8c70cf1147300ea13e7f3a096582710",
+  "bytes": 635768,
+  "fetched": "2026-11-14"
  }
 ]

@@ -78,14 +78,20 @@ what = "Enter Tsybrij et al. 2017, Table 1 (111 dates) site by site: Rakushechny
 url = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/44.13"
 yields = "About 10 dated sites, 7,460-3,000 cal BC, 5-7 of them new to us, and one corrected site with 60 dates instead of 10"
 effort = "One table of 111 rows; an afternoon. Add a note that the food-crust dates may carry reservoir offsets."
+status = "done"
+done_in = "data/settlements/literature_dates.csv, source 'Tsybrij et al. 2017' (109 dates, 9 sites); data/settlements/records.toml, [[keep]] Razdorskoe I IGAN-722 and [[same]] Rakushechny Yar (section 'Lower Don')"
 
 [[research]]
+status = "done"
+done_in = "Krivyansky-9: data/settlements/aadr_dates.csv (the Russia-only AADR ingest). Mariupol': one row in data/settlements/literature_dates.csv (PSUAMS-10373, 6395+/-35 BP, source 'AADR v66.p1 (Mallick et al. 2024)', the only directly dated Mariupol' individual in AADR v66.p1, group Ukraine_Donetsk_N), entered by hand as Newgrange was rather than widening the ingest to Ukraine. AADR gives the locality at municipality level, so the row is marked approximate."
 what = "Enter the AADR-dated burials of the Lower Don and north Azov (Krivyansky-9, Mariupol'), as part of the regional AADR ingest described in the volga_delta plan"
 url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
 yields = "2 dated burial sites here, 5,500-2,900 BCE"
 effort = "Minutes once the filter exists"
 
 [[research]]
+status = "dropped"
+reason = "Triage 2026-11-13: Cherkasskaya 5 is upstream and outside the box (as the item says), and the Lower Don already has 109 rows from Tsybrij et al. 2017 in literature_dates.csv. A Don-basin AMS ingest belongs to a plan for that region."
 what = "Check Courel et al. 2021 and its supplement for new AMS dates on Don-basin pottery further upstream (Cherkasskaya 5, 7135+/-20 BP on a horse tooth, 6055-5985 cal BC). Upstream of this box, but it is the terrestrial anchor for the Don's early pottery chronology."
 url = "https://eprints.whiterose.ac.uk/177764/"
 yields = "About 20 Middle/Upper Don sites with modelled dates (outside this box, 300-500 km north)"

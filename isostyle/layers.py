@@ -36,8 +36,10 @@ class Registry:
             L.setdefault("licence", "")
             L.setdefault("note", "")
             L.setdefault("set", "")
-            if L["kind"] == "share" and not (L.get("prefixes") or L.get("other")):
-                raise ValueError(f"{path}: {L['id']}: a share layer needs `prefixes` or `other = true`")
+            if L["kind"] == "share" and not (L.get("prefixes") or L.get("other") or L.get("value_field")):
+                raise ValueError(f"{path}: {L['id']}: a share layer needs `prefixes`, `other = true` or `value_field`")
+            # fill = false: the speculative step keeps only observed cells (no judged or extrapolated values).
+            L.setdefault("fill", True)
             L.setdefault("evidence_word", WORD[L["unit"]])
             L["slug"] = L["id"].replace("_", "-")
             for k in ("site_type", "dated_material"):
@@ -46,7 +48,12 @@ class Registry:
             key = L["set"] or L["group"]
             n = slot.get(key, 0)
             slot[key] = n + 1
-            L["colour"], L["colour_dark"] = PALETTE[n % len(PALETTE)]
+            # `colour` in the registry overrides the slot colour (the Ancestry
+            # set names the colours the game uses for the same components).
+            auto = PALETTE[n % len(PALETTE)]
+            given = L.get("colour")
+            L["colour"] = given or auto[0]
+            L["colour_dark"] = L.get("colour_dark") or given or auto[1]
             self.layers.append(L)
         for L in self.layers:
             if L["sigma"] != "cv" and L["sigma"] not in seen:

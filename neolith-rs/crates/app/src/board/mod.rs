@@ -1,5 +1,6 @@
 pub mod camera;
 pub mod heightfield;
+pub mod layout;
 pub mod lines;
 pub mod mesh;
 pub mod projection;

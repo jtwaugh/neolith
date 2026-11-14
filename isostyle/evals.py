@@ -38,6 +38,11 @@ Guards (a setting that breaks one is rejected, however smooth):
   regressions  the cases in data/isostyle/evals/regressions.toml (artefacts a
                critic reported and the numbers confirmed): no more may fail
                than that file's `allowed_failing`
+  ancestry     (when data/ancestry/ancestry.csv.gz exists) the table is sound
+               and reproduces the known results in [[ancestry.validate]]. The
+               ancestry layers are recorded only (`fill = false`), so they are
+               left out of every number above; the report gives their kernel
+               width and the share of land with a fitted genome in reach.
 
 `--search` tries a grid of settings and reports the one that passes every
 guard with the fewest failing regression cases, then the lowest score
@@ -80,6 +85,8 @@ class Bench:
     def __init__(self, cfg, log=print, layers=None):
         self.cfg, self.log = cfg, log
         self.prep = spec.prepare(cfg, log, layers)
+        # Recorded-only layers (fill = false: ancestry) have no fill to measure.
+        self.prep["layers"] = {m: P for m, P in self.prep["layers"].items() if self.prep["registry"][m]["fill"]}
         NB = self.NB = self.prep["NB"]
         n = len(NB)
         i, j = np.repeat(np.arange(n), 6), NB.ravel()
@@ -301,6 +308,17 @@ def _md(res, base, score, guards):
         lines += ["", "## Regression cases", ""] + [
             f"- {'ok' if r['ok'] else 'FAIL'}: {r['name']} ({r['layer']}, {-r['year']} BCE): {r['p95_step']} against {r['max']}"
             for r in res["regressions"]]
+    if res.get("ancestry"):
+        a = res["ancestry"]
+        lines += ["", "## Ancestry (recorded only, no fill)", "",
+                  f"{a['individuals']} individuals: {a['status']}; {a['fit_rate']:.0%} of modelled genomes fit. "
+                  f"Kernel width {a['sigma_km']} km (cross-validated on the Anatolian-farmer share).", "",
+                  "| Slice | Land with a fitted genome in reach | Genomes |", "|---|---|---|"]
+        lines += [f"| {-b['slice']} BCE | {b['share']:.1%} | {b['genomes']} |" for b in a["land_with_genomes"]]
+        lines += ["", "| Known result | Individual | Component | Expected | Got | |", "|---|---|---|---|---|---|"]
+        lines += [f"| {v['name']} | {v['individual']} | {v['component']} | {v['expected']} | {v['got']} | {'ok' if v['ok'] else 'FAIL'} |"
+                  for v in a["validation"]]
+        lines += [f"- TABLE PROBLEM: {p}" for p in a["table_problems"]]
     lines += ["", "## Per layer", "", "| Layer | rough_os | rough_ss | cliffs | flicker | time_step | holdout | drift |", "|---|---|---|---|---|---|---|---|"]
     for m, v in res["layers"].items():
         lines.append(f"| {m} | {v['rough_os']:.3f} | {v['rough_ss']:.3f} | {v['cliffs']:.1f} | {v['flicker']:.1f} | {v['time_step']:.3f} | {v['holdout']:.3f} | {v['drift']:.3f} |")
@@ -313,14 +331,52 @@ def _md(res, base, score, guards):
     return "\n".join(lines) + "\n"
 
 
-def run(cfg, log=print, layers=None):
-    out = os.path.join(cfg["output"]["out_dir"], "evals")
-    os.makedirs(out, exist_ok=True)
+def measure(cfg, log=print, layers=None):
+    """The evals report without writing anything: (res, base). `res` carries
+    score, guards, baseline and allowed_failing; `python -m pipeline state` reads it."""
     bench = Bench(cfg, log, layers)
     base = bench.evaluate(dict(spec.DEFAULTS))
     res = bench.evaluate(spec.params(cfg), full=True)
     score, guards = judge(res, base, bench.allowed_failing)
-    res.update(score=score, guards=guards, baseline=base["overall"])
+    anc = ancestry_report(cfg, bench.prep["summary"])
+    if anc is not None:
+        res["ancestry"] = anc
+        guards["ancestry"] = anc["ok"]
+    res.update(score=score, guards=guards, baseline=base["overall"], allowed_failing=bench.allowed_failing)
+    return res, base
+
+
+def ancestry_report(cfg, summary):
+    """The recorded ancestry layers (no fill, so none of the numbers above
+    apply): the kernel width cross-validation chose, the share of land with
+    at least one fitted genome in reach per slice, and the known results the
+    table must reproduce ([[ancestry.validate]]). None if the table is not built."""
+    import pandas as pd
+
+    from . import ancestry
+    acfg = cfg.get("ancestry", {})
+    if not os.path.exists(acfg.get("out", "")):
+        return None
+    d = pd.read_csv(acfg["out"])
+    problems = ancestry.check_table(d, acfg["order"])
+    val = [{"name": n, "individual": i, "component": c, "expected": w, "got": None if g != g else round(g, 3), "ok": bool(ok)}
+           for n, i, c, w, g, ok in ancestry.validation(acfg, d)]
+    lay = summary["layers"].get("anc_ana", {})
+    modelled = d["status"].isin(["fit", "no_fit"])
+    return {"individuals": int(len(d)), "status": {k: int(v) for k, v in d["status"].value_counts().items()},
+            "fit_rate": round(float((d["status"] == "fit").sum() / max(modelled.sum(), 1)), 3),
+            "sigma_km": lay.get("sigma_km"), "cv": lay.get("cv"),
+            "land_with_genomes": [{"slice": b["slice"], "share": round(b["cells_unmasked"] / max(b["land_cells"], 1), 4),
+                                   "genomes": b["occupations"]} for b in lay.get("by_slice", [])],
+            "validation": val, "table_problems": problems,
+            "ok": not problems and all(v["ok"] for v in val)}
+
+
+def run(cfg, log=print, layers=None):
+    out = os.path.join(cfg["output"]["out_dir"], "evals")
+    os.makedirs(out, exist_ok=True)
+    res, base = measure(cfg, log, layers)
+    score, guards = res["score"], res["guards"]
     json.dump(res, open(os.path.join(out, "report.json"), "w"), indent=1)
     open(os.path.join(out, "report.md"), "w").write(_md(res, base, score, guards))
     log(f"evals: score {score:.3f}; guards " + ", ".join(f"{k}={'ok' if v else 'FAIL'}" for k, v in guards.items()))

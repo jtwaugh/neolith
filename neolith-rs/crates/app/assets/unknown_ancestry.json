@@ -1,0 +1,12 @@
+{
+  "_comment": "Named regions where the Ancestry map mode is unknown for a reason worth telling the player. Shown in the legend and in the hex inspector when a hex has no genome in reach and its centre lies inside `polygon` ([lon, lat] pairs). Written up, with sources, in data/ancestry/SOURCES.md ('Named unknown regions').",
+  "region": [
+    {
+      "key": "sahel",
+      "label": "Unknown (Sahelian)",
+      "short": "No ancient DNA has survived here",
+      "why": "No ancient genome has been recovered between Senegal and the Red Sea Hills for this period. That is not because nobody lived here. Gobero in Niger holds about 200 Holocene burials, and Kadruka and al-Khiday in Sudan are large Neolithic cemeteries. Heat breaks DNA down in bone: Kadruka's Neolithic teeth and petrous bones yielded none, and its one genome, from a lock of Kerma-period hair (c. 2000 BCE), is too thin to model. The nearest genomes are two Green Saharan herders at Takarkori in Libya (c. 5000 BCE, mitochondrial DNA only on this map), Shum Laka in Cameroon and Mota in Ethiopia.",
+      "polygon": [[-17.5, 10.0], [-17.5, 20.5], [37.5, 20.5], [37.0, 15.0], [36.0, 12.5], [35.0, 10.0]]
+    }
+  ]
+}

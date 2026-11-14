@@ -145,14 +145,19 @@ what = "Turn the AADR localities of the Middle Volga into dated sites: Khvalynsk
 url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
 yields = "About 14 dated burial sites in or next to the box, 9,650-2,900 BCE, which fill the 10,000-8,000 BCE and 4,000 BCE slices that are empty now"
 effort = "A filter on build/isostyle/sources/aadr_v66.p1_1240K.anno, already on disk"
+status = "done"
+done_in = "data/settlements/aadr_dates.csv (AADR v66.p1): Khvalynsk-1, Khvalynsk-2, Ekaterinovskiy-Mys, S'yezzheye, Chekalino-4, Maksimovka-1, Labazy, Sidel'kino-2, Utyovka-5, Utyovka-11, Podlesny-1, Grachevka-2, Nizhnaya-Orlyanka-1; reservoir caveat in data/settlements/SOURCES.md (`aadr`)"
 
 [[research]]
+status = "dropped"
+reason = "Settlements are built from dated records, and SI_ORA has none: it gives vessels with site coordinates and a reference (for these sites 'Courel et al 2021'), not dates per site. It is already used where it helps: as the coordinate source for literature rows (the `literature` note in pipeline/config.toml; registered in data/ATTRIBUTIONS.toml) and in the isostyle pottery layer. The Middle Volga sites should come in with their own radiocarbon dates through the next item, placed from SI_ORA."
 what = "Make the Dolbunova et al. 2023 site table (SI_ORA.xlsx, already downloaded for the pottery layer) a settlements source as well, with each site dated by its modelled or published span. In this box it adds Ilyinka, Lebyzhinka 4 (correct position), Nizhnyaya Orlyanka II, Bolshaya Rakovka 2 and Krasny Gorodok; across southern Russia also Algay, Baibek, Kugat IV, Kairshak III, Varfolomeevka and Rakushechny Yar (as 'Rakucheshny Yar'), with coordinates."
 url = "https://zenodo.org/records/6619101"
 yields = "About 40 forager-pottery sites in the Don and Volga basins with coordinates. They are only period-dated unless their dates are taken from Courel et al. 2021 and Vybornov's papers."
 effort = "Small: the file is on disk; the work is deciding the date span per site"
 
 [[research]]
+next = "Enter the Middle Volga rows of Vybornov et al. 2017 Tab. 1 (Elshanka sites: Ivanovskaya, Chekalino IV, Vjunovo lake I, Imerka VII, Utuzh I and others) from the same PDF already used for the Lower Volga (https://journals.uni-lj.si/DocumentaPraehistorica/article/download/44.14/7348), placing sites from SI_ORA where it names them and from the paper's Fig. 1 otherwise."
 what = "Take the Elshanka and Middle Volga radiocarbon list from Vybornov et al. 2017 (Documenta Praehistorica 44:224-239) and Vybornov 2011 (DP 38), and the modelled ranges of Courel et al. 2021. Enter Staraya Elshanka II, Ilyinka, Chekalino IV, Lebyazhinka IV and Ivanovka with all their dates, marking the shell and TOCC dates that Courel et al. down-weight."
 url = "https://dlib.si/stream/URN:NBN:SI:DOC-OO2ZWENB/f7d624c3-476d-4e35-ad9b-6dafdad30f80/PDF"
 yields = "5-8 settlements with 3-15 dates each, c. 7,000-4,500 cal BC on the authors' own reading, 6,000-4,500 on Courel's"

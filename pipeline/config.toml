@@ -436,10 +436,12 @@ line = [[28.9, 40.75], [28.98, 41.02], [29.05, 41.2], [29.25, 41.35]]
 # breaks up the BIOME4 grid's straight rows and columns. One fixed field for
 # all years, so the edges don't shimmer. apply_to: "model" or "all".
 enabled = true
-apply_to = "model"
+apply_to = "all"
 seed = 7
-# Displacement (hexes) and the noise wavelength (hexes).
-amplitude = 1.2
+# Displacement (hexes) and the noise wavelength (hexes). The noise sum has a
+# median size of about 0.23, so the typical move is about a quarter of
+# amplitude; at 1.2 straight edges near 57°N survived (finding F4, 2026-11-13).
+amplitude = 1.8
 period = 4.0
 
 [biome.upland]
@@ -920,6 +922,17 @@ max_local_share = 40.0
 # Hand-entered anchors from the literature, for the gap cells.
 literature = "data/terrain/anchors_literature.csv"
 # Known-bad labels: what = "published", "biomised" or "all".
+# Positions the source database has wrong, replaced before anything reads
+# them (the database's own is kept on the candidate as `filed_at`). Each has a
+# `source` link, listed in data/terrain/SOURCES.md.
+# Avrig 1: EMBSeCBIO has longitude = latitude = 45.716 (a point in Kalmykia);
+# the Avrig bogs are in southern Transylvania at 45°43'N, 24°23'E, 400 m.
+[[anchors.override]]
+id = "emb:1686"
+lon = 24.3833
+lat = 45.7167
+source = "https://doi.org/10.1002/jqs.937"
+
 [[anchors.exclude]]
 name = "Hawks Tor"
 what = "all"
@@ -1242,7 +1255,7 @@ note = "`data/settlements/aadr_dates.csv`: the direct radiocarbon dates (convent
 
 [settlements.citations.literature]
 title = "Radiocarbon dates transcribed from papers"
-citation = "`data/settlements/literature_dates.csv` in this repository, transcribed from: Zaitseva, G.I. et al. 2000, Radiocarbon and Archaeology 1:33-52 (https://old.archeo.ru/izdaniya-1/vagnejshije-izdanija/pdf/2000Radiocarbon.pdf); Zaretskaya, N.E. et al. 2005, Geochronometria 24:117-131 (http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf); Zaretskaya, N.E. et al. 2012, Radiocarbon 54(3-4):783-794 (https://resolve.cambridge.org/core/services/aop-cambridge-core/content/view/F3D2E5D73C3850C8E41225E739698432/S0033822200047433a.pdf/radiocarbon-chronology-of-the-shigir-and-gorbunovo-archaeological-bog-sites-middle-urals-russia.pdf); Tsybrij, A. et al. 2017, Documenta Praehistorica 44:204-223 (https://doi.org/10.4312/dp.44.13); Kulkova, M.A. et al. 2019, Documenta Praehistorica 46:376-387 (https://doi.org/10.4312/dp.46.23); Lychagina, E. & Vybornov, A. 2017, Documenta Praehistorica 44 (https://doi.org/10.4312/dp.44.9); Tarasov, A. et al. 2017, Documenta Praehistorica 44:98-121 (https://doi.org/10.4312/dp.44.7); Seitsonen, O. et al. 2012, Geochronometria 39(2):101-121 (https://doi.org/10.2478/s13386-012-0002-9); Tribolo, C. et al. 2017, PLoS ONE 12(1):e0169418 (https://doi.org/10.1371/journal.pone.0169418; Goda Buticha, Table 1, placed from https://www.mindat.org/loc-417079.html); Vybornov, A. et al. 2013, Documenta Praehistorica 40:13-20 (https://doi.org/10.4312/dp.40.2); Vybornov, A. 2016, Documenta Praehistorica 43:161-166 (https://doi.org/10.4312/dp.43.7); Vybornov, A. et al. 2017, Documenta Praehistorica 44:224-239 (https://doi.org/10.4312/dp.44.14); Vybornov, A.A. et al. 2022, Vestnik VolGU ser. 4, 27(3):6-15 (https://doi.org/10.15688/jvolsu4.2022.3.1; Lower Volga and North Caspian sites, placed from Grechkina et al. 2014 https://snv63.ru/2309-4370/article/download/22443/18625, Vybornov et al. 2022 https://snv63.ru/2309-4370/article/download/133233/111035, Burataev 2014 https://kigiran.elpub.ru/jour/article/download/1037/2075 and Vybornov 2016 Fig. 1). Each row gives its paper, page and table row."
+citation = "`data/settlements/literature_dates.csv` in this repository, transcribed from: Zaitseva, G.I. et al. 2000, Radiocarbon and Archaeology 1:33-52 (https://old.archeo.ru/izdaniya-1/vagnejshije-izdanija/pdf/2000Radiocarbon.pdf); Zaretskaya, N.E. et al. 2005, Geochronometria 24:117-131 (http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf); Zaretskaya, N.E. et al. 2012, Radiocarbon 54(3-4):783-794 (https://resolve.cambridge.org/core/services/aop-cambridge-core/content/view/F3D2E5D73C3850C8E41225E739698432/S0033822200047433a.pdf/radiocarbon-chronology-of-the-shigir-and-gorbunovo-archaeological-bog-sites-middle-urals-russia.pdf); Tsybrij, A. et al. 2017, Documenta Praehistorica 44:204-223 (https://doi.org/10.4312/dp.44.13); Kulkova, M.A. et al. 2019, Documenta Praehistorica 46:376-387 (https://doi.org/10.4312/dp.46.23); Lychagina, E. & Vybornov, A. 2017, Documenta Praehistorica 44 (https://doi.org/10.4312/dp.44.9); Tarasov, A. et al. 2017, Documenta Praehistorica 44:98-121 (https://doi.org/10.4312/dp.44.7); Seitsonen, O. et al. 2012, Geochronometria 39(2):101-121 (https://doi.org/10.2478/s13386-012-0002-9); Tribolo, C. et al. 2017, PLoS ONE 12(1):e0169418 (https://doi.org/10.1371/journal.pone.0169418; Goda Buticha, Table 1, placed from https://www.mindat.org/loc-417079.html); Vybornov, A. et al. 2013, Documenta Praehistorica 40:13-20 (https://doi.org/10.4312/dp.40.2); Vybornov, A. 2016, Documenta Praehistorica 43:161-166 (https://doi.org/10.4312/dp.43.7); Vybornov, A. et al. 2017, Documenta Praehistorica 44:224-239 (https://doi.org/10.4312/dp.44.14); Vybornov, A.A. et al. 2022, Vestnik VolGU ser. 4, 27(3):6-15 (https://doi.org/10.15688/jvolsu4.2022.3.1; Lower Volga and North Caspian sites, placed from Grechkina et al. 2014 https://snv63.ru/2309-4370/article/download/22443/18625, Vybornov et al. 2022 https://snv63.ru/2309-4370/article/download/133233/111035, Burataev 2014 https://kigiran.elpub.ru/jour/article/download/1037/2075 and Vybornov 2016 Fig. 1); Card, N. et al. 2018, European Journal of Archaeology 21(2):217-263 (https://doi.org/10.1017/eaa.2016.29; Ness of Brodgar); Cassidy, L.M. et al. 2020, Nature 582:384-388 (https://doi.org/10.1038/s41586-020-2378-6; the two directly dated Newgrange burials, as listed in AADR v66.p1); Meadows, J. et al. 2015, Samara Journal of Science 4(3):113-121 (https://doi.org/10.17816/snv20153210; Zamostje 2 food-crust, fibre and wood dates, placed from Dolbunova et al. 2023 SI_ORA); Nikitin et al. 2025 (AADR 'NikitinReichNature2025'), Nature (https://doi.org/10.1038/s41586-024-08372-2; the directly dated Mariupol' burial, as listed in AADR v66.p1); Firew, G.A. 2014, PhD thesis, University of Bergen (https://hdl.handle.net/1956/8931; Kurtiye rock shelter, Lake Tana, section 5.1). Each row gives its paper, page and table row."
 licence = "Facts from the cited papers; the transcription is the project's own."
 note = "Only Zaitseva et al. print coordinates (to 1 arcminute). Every other row is placed from the paper's map, text or locality, or from Dolbunova et al. 2023 SI_ORA, and is marked approximate with how and to what precision. Dates the authors reject are left out, as are rows without a lab number and lab numbers printed for two different dates or sites."
 
@@ -1250,16 +1263,24 @@ note = "Only Zaitseva et al. print coordinates (to 1 arcminute). Every other row
 # archaeological site and that have an English Wikipedia article. Items with
 # an inception date in [time] start..end that match no dated site are added.
 #
-# Off until `contact` is set: the query service answered this client with
-# 429 and a 1000 s Retry-After (2026-11-11). Wikimedia's User-Agent policy
-# asks automated clients to give contact details; put a URL or email in
-# `contact` (it is sent in the User-Agent header) and set enabled = true.
+# The query service answered this client with 429 and a 1000 s Retry-After
+# while `contact` was empty (2026-11-11). Wikimedia's User-Agent policy asks
+# automated clients to give contact details; `contact` is sent in the
+# User-Agent header. If it is emptied, set enabled = false.
 [settlements.wikidata]
 enabled = true
-contact = ""
+contact = "https://github.com/jtwaugh/neolith"
 url = "https://query.wikidata.org/sparql"
 tile_degrees = 10.0
 match_km = 5.0
+# An unmatched item is not added as a site of its own when a site sharing its
+# name lies within this distance (the same place, recorded a little apart).
+add_km = 10.0
+# Items never added as sites: modern places whose inception Wikidata gives as
+# the founding of an older site nearby. Q5687 is the modern city of Jericho
+# (inception -9600, from Tell es-Sultan, which is matched to Q6585622);
+# Q60305 is the Tower of Jericho, a structure on that same tell.
+skip = ["Q5687", "Q60305"]
 
 # What SOURCES.md says about each dataset. Keys are the names used in each
 # site's `sources` property.
@@ -1302,7 +1323,7 @@ note = "Supplies `wikidata`, `wikipedia` and `culture`, and the whole record for
 title = "Hand entries"
 citation = "`data/settlements/curated.geojson` in this repository, carried over from the 2023 `settlements.geojson`."
 licence = "Project's own."
-note = "Names, founding years and populations entered by hand without recorded sources. The populations are placeholders."
+note = "Names, founding years and populations entered by hand. The entries carried over from 2023 have no recorded sources and their populations are placeholders. The later ones (Tell el-Farkha, Tell el-Samara, Eridu, Ur, Ġgantija) are sites with no radiocarbon date inside the period in the compilations; each gives its sources in `references` and says in its `note` which date lists were checked."
 
 [settlements.citations.intcal20]
 title = "IntCal20 calibration curve"

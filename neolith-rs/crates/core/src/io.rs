@@ -19,8 +19,9 @@ pub const MAGIC: [u8; 4] = *b"NEOL";
 /// settlement importance and evidence and the survey layer, version 8
 /// productivity, version 9 the farming front, version 10 the speculative
 /// evidence layers, version 11 the missing-sites residuals, version 12 the sea beyond the
-/// map's edge, version 13 the massif sketch. Older files still load.
-pub const VERSION: u16 = 14;
+/// map's edge, version 13 the massif sketch, version 14 the heightmap, version 15 the
+/// ancestry samples. Older files still load.
+pub const VERSION: u16 = 15;
 const HEADER_LEN: usize = 6;
 
 #[derive(Debug)]
@@ -93,6 +94,8 @@ pub fn decode(bytes: &[u8]) -> Result<World, IoError> {
         postcard::from_bytes::<WorldV12>(&raw).map_err(corrupt)?.into()
     } else if version == 13 {
         postcard::from_bytes::<WorldV13>(&raw).map_err(corrupt)?.into()
+    } else if version == 14 {
+        postcard::from_bytes::<WorldV14>(&raw).map_err(corrupt)?.into()
     } else {
         postcard::from_bytes(&raw).map_err(|e| IoError::Corrupt(e.to_string()))?
     };
@@ -539,6 +542,59 @@ impl From<WorldV11> for World {
     }
 }
 
+/// The version 14 layout: the heightmap, no ancestry samples.
+#[derive(Deserialize)]
+struct WorldV14 {
+    grid: GridSpec,
+    terrain: Vec<Timeline<Terrain>>,
+    koeppen: Vec<Timeline<Koeppen>>,
+    pop: Vec<Timeline<PopDensity>>,
+    settlements: Vec<Settlement>,
+    river: Vec<Timeline<u8>>,
+    rivers: Vec<River>,
+    lakes: Vec<Lake>,
+    elevation: Vec<i16>,
+    landform: Vec<Option<Landform>>,
+    site_info: Vec<SiteInfo>,
+    cultures: Vec<CultureInfo>,
+    survey: Vec<u8>,
+    npp: Vec<Timeline<u16>>,
+    farming: Vec<Option<crate::time::Year>>,
+    evidence: Vec<crate::evidence::EvidenceLayer>,
+    residuals: Option<crate::residuals::Residuals>,
+    edge_sea: Vec<Timeline<u16>>,
+    massif: Vec<Option<crate::massif::Massif>>,
+    heightmap: Option<crate::heightmap::Heightmap>,
+}
+
+impl From<WorldV14> for World {
+    fn from(v: WorldV14) -> Self {
+        World {
+            grid: v.grid,
+            terrain: v.terrain,
+            koeppen: v.koeppen,
+            pop: v.pop,
+            settlements: v.settlements,
+            river: v.river,
+            rivers: v.rivers,
+            lakes: v.lakes,
+            elevation: v.elevation,
+            landform: v.landform,
+            site_info: v.site_info,
+            cultures: v.cultures,
+            survey: v.survey,
+            npp: v.npp,
+            farming: v.farming,
+            evidence: v.evidence,
+            residuals: v.residuals,
+            edge_sea: v.edge_sea,
+            massif: v.massif,
+            heightmap: v.heightmap,
+            ancestry: None,
+        }
+    }
+}
+
 /// The version 13 layout: the massif sketch, no heightmap.
 #[derive(Deserialize)]
 struct WorldV13 {
@@ -587,6 +643,7 @@ impl From<WorldV13> for World {
             edge_sea: v.edge_sea,
             massif: v.massif,
             heightmap: None,
+            ancestry: None,
         }
     }
 }
@@ -1295,6 +1352,23 @@ mod tests {
         let mut bad = w.clone();
         bad.residuals.as_mut().unwrap().missing.pop();
         assert!(matches!(decode(&encode(&bad)), Err(IoError::Invalid(_))));
+    }
+
+    #[test]
+    fn reads_version_14_files_and_round_trips_ancestry() {
+        // A version 14 file is today's layout without the last field.
+        let mut w = test_world(6, 5);
+        let raw = postcard::to_stdvec(&w).unwrap();
+        let mut bytes = MAGIC.to_vec();
+        bytes.extend_from_slice(&14u16.to_le_bytes());
+        bytes.extend_from_slice(&compress_pure(&raw[..raw.len() - 1]));
+        let old = decode(&bytes).unwrap();
+        assert_eq!(old.ancestry, None);
+        assert_eq!(old, w);
+        w.ancestry = Some(crate::ancestry::test_table());
+        assert_eq!(decode(&encode(&w)).unwrap(), w);
+        w.ancestry.as_mut().unwrap().samples[0].weights.pop();
+        assert!(matches!(decode(&encode(&w)), Err(IoError::Invalid(_))));
     }
 
     #[test]

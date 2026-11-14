@@ -162,13 +162,47 @@ Removed: Paulsson 2019 megalith dates (CC BY-NC-ND), joined by lab number until 
 """
 
 
-def isostyle_md(sources):
+INTUITIONS = "data/isostyle/intuitions"
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def checked_literature(root=None):
+    """Checked citations in the gap critic's judgements, as {layer: [(cite, url, read)]},
+    deduplicated by cite and url, in file order."""
+    import glob
+    out = {}
+    for path in sorted(glob.glob(os.path.join(root or REPO, INTUITIONS, "*.toml"))):
+        with open(path, "rb") as f:
+            doc = tomllib.load(f)
+        seen, refs = set(), []
+        for j in doc.get("judgement", []):
+            for ref in j.get("literature", []):
+                key = (ref["cite"], ref.get("url", ""))
+                if ref.get("checked") and key not in seen:
+                    seen.add(key)
+                    refs.append((ref["cite"], ref.get("url", ""), ref.get("read", "")))
+        if refs:
+            out[os.path.splitext(os.path.basename(path))[0]] = refs
+    return out
+
+
+def isostyle_md(sources, root=None):
     iso = [s for s in sources if s["shipped"] or s["committed"]
            if any(p.startswith("isostyle:") for p in s["provides"]) or "isostyle" in s["used_in"]]
     rows = [f"| {s['name']} [`{s['key']}`] | {s['used_in']} | {s['licence']}"
             f"{'' if s.get('verified') else ' (to confirm)'} | {s['url']} |" for s in iso]
     refs = [f"- {s['citation']} {s['url']}" for s in iso]
-    return ISOSTYLE_HEAD + "\n".join(rows) + "\n\n## References\n\n" + "\n".join(refs) + "\n"
+    md = ISOSTYLE_HEAD + "\n".join(rows) + "\n\n## References\n\n" + "\n".join(refs) + "\n"
+    lit = checked_literature(root)
+    if lit:
+        md += ("\n## Literature checked for the gap critic's judgements\n\n"
+               "Generated from the `literature` lists in `intuitions/*.toml`: the entries with "
+               "`checked = true`, each with the page it was checked against and how much of it "
+               "was read. Unchecked entries are left out.\n")
+        for layer, items in lit.items():
+            md += f"\n### {layer}\n\n" + "\n".join(
+                f"- {c} {u}" + (f" ({r})" if r else "") for c, u, r in items) + "\n"
+    return md
 
 
 def write(root="."):
@@ -178,7 +212,7 @@ def write(root="."):
     with open(os.path.join(root, CREDITS), "w") as f:
         f.write(credits_json(sources))
     with open(os.path.join(root, ISOSTYLE), "w") as f:
-        f.write(isostyle_md(sources))
+        f.write(isostyle_md(sources, root))
     msg = f"wrote {MARKDOWN}, {ISOSTYLE} and {CREDITS} ({len(sources)} sources)"
     tp = third_party(root)
     if tp is not None:

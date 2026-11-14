@@ -1,0 +1,15 @@
+{
+ "critic": "gsg-critic",
+ "date": "2026-11-12",
+ "rubric_version": "8-category-v1",
+ "report": "build/critic/20261112-0104/report.md",
+ "overall": 1.4,
+ "scores": {"map_hero": 2, "labels": 1, "map_modes": 2, "time": 2, "info_architecture": 1, "art_ui_skin": 2, "playability": 0, "feel": 2},
+ "findings": [
+  {"id": "gsg-2026-11-12-01", "title": "Off-screen settlement steals hover and click", "severity": "high", "status": "fixed", "where": "board/scene.rs piece_on_screen"},
+  {"id": "gsg-2026-11-12-02", "title": "No map-mode legend; sea same colour as empty land in Population", "severity": "medium", "status": "fixed", "where": "panels.rs legend"},
+  {"id": "gsg-2026-11-12-03", "title": "Settlement labels are catalogue codes and duplicates; no geography labels", "severity": "high", "status": "open", "where": "view.rs, labels.rs", "check": "famous sites with stray records; garbled site names"},
+  {"id": "gsg-2026-11-12-04", "title": "Board sits in a grey void; clock runs past the data", "severity": "medium", "status": "open", "where": "board/camera.rs, app.rs", "note": "status not re-verified"},
+  {"id": "gsg-2026-11-12-05", "title": "No events, no speed keys, no goals: Playability 0", "severity": "high", "status": "open", "where": "events.rs, panels.rs", "note": "events ticker and Num1-5 speed keys shipped; still no player verb"}
+ ]
+}

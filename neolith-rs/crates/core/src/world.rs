@@ -235,6 +235,10 @@ pub struct World {
     /// Today's topography at a few samples per hex ([`crate::heightmap`]),
     /// for drawing relief only. `None` for files before version 14.
     pub heightmap: Option<crate::heightmap::Heightmap>,
+    /// Ancestry of individual ancient genomes ([`crate::ancestry`]), for the
+    /// Ancestry map mode. `None` for files before version 15 and worlds
+    /// built without it.
+    pub ancestry: Option<crate::ancestry::Ancestry>,
 }
 
 /// An [`World::edge_sea`] value meaning no sea beyond the edge within reach.
@@ -293,12 +297,12 @@ impl Snapshot {
     /// (see [`crate::EvidenceLayer::codes_at`]).
     pub fn layer(&self, mode: MapMode) -> &[u8] {
         match mode {
-            MapMode::Evidence | MapMode::Missing => &[],
+            MapMode::Evidence | MapMode::Missing | MapMode::Ancestry => &[],
             MapMode::Elevation => &self.elevation,
             MapMode::Npp => &self.npp,
             MapMode::Biodiversity => &self.biodiversity,
             MapMode::Expected => &self.expected,
-            MapMode::Terrain => &self.terrain,
+            MapMode::Terrain | MapMode::Ground => &self.terrain,
             MapMode::Koeppen => &self.koeppen,
             MapMode::Pop => &self.pop,
         }
@@ -338,8 +342,86 @@ impl World {
             edge_sea: Vec::new(),
             massif: Vec::new(),
             heightmap: None,
+            ancestry: None,
         }
     }
+
+    /// Whether the world can show the Ancestry map mode: the sample table
+    /// and one `anc_<key>` evidence layer per component.
+    pub fn has_ancestry(&self) -> bool {
+        self.ancestry.as_ref().is_some_and(|a| {
+            a.components.len() == crate::ancestry::COMPONENTS
+                && a.components.iter().all(|c| self.evidence_layer(&format!("anc_{}", c.key)).is_some())
+        })
+    }
+
+    /// One hex's ancestry shares at `year` from the `anc_*` layers, in
+    /// component order and normalised to sum to 1; `None` where no genome is
+    /// in reach (the layers are recorded only and never filled).
+    pub fn ancestry_shares(&self, hex: HexId, year: Year) -> Option<[f32; crate::ancestry::COMPONENTS]> {
+        let a = self.ancestry.as_ref()?;
+        let mut shares = [0.0f32; crate::ancestry::COMPONENTS];
+        for (k, c) in a.components.iter().take(shares.len()).enumerate() {
+            let l = self.evidence_layer(&format!("anc_{}", c.key))?;
+            shares[k] = l.value(l.code_at(hex, year))?;
+        }
+        let total: f32 = shares.iter().sum();
+        (total > 1e-6).then(|| shares.map(|v| v / total))
+    }
+
+    /// The Ancestry map code of every hex at `year` ([`crate::ancestry::code`];
+    /// [`crate::ancestry::NO_CODE`] where no genome is in reach). A hex is
+    /// "thin" when fewer than [`World::ANCESTRY_FIRM`] date-weighted fitted
+    /// genomes lie within [`World::ANCESTRY_REACH_KM`] of it.
+    pub fn ancestry_codes(&self, year: Year) -> Vec<u8> {
+        use crate::ancestry::{code, Status, COMPONENTS, NO_CODE};
+        let n = self.grid.len();
+        let Some(a) = self.ancestry.as_ref().filter(|_| self.has_ancestry()) else {
+            return vec![NO_CODE; n];
+        };
+        let layers: Vec<Vec<u8>> = a
+            .components
+            .iter()
+            .map(|c| self.evidence_layer(&format!("anc_{}", c.key)).map_or(Vec::new(), |l| l.codes_at(year)))
+            .collect();
+        // Fitted genomes dated near this year, with their weight.
+        let near: Vec<(crate::grid::LonLat, f32)> = a
+            .samples
+            .iter()
+            .filter(|s| s.status == Status::Fit)
+            .map(|s| (s.pos, s.overlap(year, Self::ANCESTRY_HALF_YEARS)))
+            .filter(|(_, w)| *w > 0.01)
+            .collect();
+        let dlat = Self::ANCESTRY_REACH_KM / 111.0;
+        self.grid
+            .ids()
+            .map(|hex| {
+                let mut shares = [0.0f32; COMPONENTS];
+                for (k, codes) in layers.iter().enumerate() {
+                    match crate::evidence::bin(codes.get(hex.index()).copied().unwrap_or(crate::evidence::NO_VALUE)) {
+                        Some(b) => shares[k] = (b as f32 + 0.5) / crate::evidence::BINS as f32,
+                        None => return NO_CODE,
+                    }
+                }
+                let p = self.grid.centre(hex);
+                let dlon = dlat / p.lat.to_radians().cos().max(0.2);
+                let weight: f32 = near
+                    .iter()
+                    .filter(|(q, _)| (q.lat - p.lat).abs() <= dlat && (q.lon - p.lon).abs() <= dlon)
+                    .filter(|(q, _)| crate::geom::great_circle_km([q.lon, q.lat], [p.lon, p.lat]) <= Self::ANCESTRY_REACH_KM)
+                    .map(|(_, w)| *w)
+                    .sum();
+                code(&shares, weight < Self::ANCESTRY_FIRM)
+            })
+            .collect()
+    }
+
+    /// How far a hex looks for the genomes behind its colour, in km.
+    pub const ANCESTRY_REACH_KM: f64 = 150.0;
+    /// Half the window of years a genome counts for around the current year.
+    pub const ANCESTRY_HALF_YEARS: f32 = 500.0;
+    /// Date-weighted fitted genomes in reach below which a hex is drawn thin.
+    pub const ANCESTRY_FIRM: f32 = 2.0;
 
     /// The evidence layer with this id.
     pub fn evidence_layer(&self, id: &str) -> Option<&EvidenceLayer> {
@@ -735,6 +817,9 @@ impl World {
         if let Some(r) = &self.residuals {
             r.validate(n)?;
         }
+        if let Some(a) = &self.ancestry {
+            a.validate()?;
+        }
         for (i, l) in self.evidence.iter().enumerate() {
             l.validate(n)?;
             if self.evidence[..i].iter().any(|o| o.id == l.id) {
@@ -753,6 +838,55 @@ impl World {
             }
         }
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod ancestry_tests {
+    use super::*;
+    use crate::ancestry::{decode, Component, Sample, Status, COMPONENTS, NO_CODE};
+
+    #[test]
+    fn hex_codes_come_from_the_layers_and_thin_out_without_genomes() {
+        let mut w = test_world(6, 5);
+        let n = w.grid.len();
+        assert!(!w.has_ancestry());
+        assert!(w.ancestry_codes(Year(-6000)).iter().all(|c| *c == NO_CODE));
+        let keys = ["whg", "ehg", "ana", "irn", "lev", "naf"];
+        let here = w.grid.centre(HexId(0));
+        let sample = |id: &str, year: i32| Sample {
+            id: id.into(), group: "G".into(), locality: String::new(), pos: here, year: Year(year), sd: 50, snps: 500_000,
+            status: Status::Fit, model: "whg+ana".into(), p_milli: Some(300), weights: vec![250, 0, 750, 0, 0, 0], publication: String::new(),
+        };
+        w.ancestry = Some(crate::ancestry::Ancestry {
+            components: keys.iter().map(|k| Component { key: k.to_string(), name: k.to_string() }).collect(),
+            samples: vec![sample("c", -6010), sample("a", -6000), sample("b", -6000)],
+        });
+        assert!(!w.has_ancestry(), "the layers are needed too");
+        // One slice; hex 0: 25% whg, 75% ana (bins 12 and 37 of 50); hex 1: the same; the rest unknown.
+        for (k, key) in keys.iter().enumerate() {
+            let mut l = crate::evidence::test_layer(&format!("anc_{key}"), n);
+            l.slices = vec![Year(-6000)];
+            l.codes = vec![crate::evidence::NO_VALUE; n];
+            for hex in [0, n - 1] {
+                l.codes[hex] = match k { 0 => 12, 2 => 37, _ => 0 };
+            }
+            w.evidence.push(l);
+        }
+        assert_eq!(w.validate(), Ok(()));
+        assert!(w.has_ancestry());
+        let codes = w.ancestry_codes(Year(-6000));
+        let (shares, thin) = decode(codes[0]).unwrap();
+        assert_eq!(shares, [0.25, 0.0, 0.75, 0.0, 0.0, 0.0]);
+        assert!(!thin, "three genomes of that date beside the hex");
+        let (far, thin_far) = decode(codes[n - 1]).unwrap();
+        assert_eq!(far, shares);
+        assert!(thin_far, "no genome within reach of the far corner");
+        assert!(codes[1..n - 1].iter().all(|c| *c == NO_CODE), "unsampled land stays unknown");
+        let s = w.ancestry_shares(HexId(0), Year(-6000)).unwrap();
+        assert!((s.iter().sum::<f32>() - 1.0).abs() < 1e-5 && s[2] > 0.7);
+        assert_eq!(w.ancestry_shares(HexId(1), Year(-6000)), None);
+        assert_eq!(COMPONENTS, keys.len());
     }
 }
 

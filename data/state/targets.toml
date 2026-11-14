@@ -1,0 +1,117 @@
+# Targets for `python -m pipeline state` (pipeline/state.py), by row name.
+# min / max / equals set what "ok" means. `gate = true` makes a miss fail
+# the run (exit 1); everything else is reported, not enforced.
+# Ratchet these as things improve: tighten a max when a fix lands; don't
+# loosen one to make a run pass.
+
+[row."python tests failing"]
+max = 0
+gate = true
+
+[row."rust tests failing"]
+max = 0
+gate = true
+
+# The app type-checks for the browser (cargo check, wasm32). SKIP=web leaves it out.
+[row."web build errors"]
+max = 0
+gate = true
+
+[row."place plan problems"]
+max = 0
+gate = true
+
+[row."intuition files invalid"]
+max = 0
+gate = true
+
+[row."evals guards failing"]
+max = 0
+gate = true
+
+# The regression cases themselves gate through the evals guard
+# (allowed_failing in data/isostyle/evals/regressions.toml); keep this max
+# equal to allowed_failing so both ratchet together.
+[row."regression cases failing"]
+max = 2
+
+[row."evals score"]
+max = 0.35
+
+[row."pollen anchors same class"]
+min = 65
+
+[row."pollen anchors compatible"]
+min = 85
+
+[row."terrain suspects"]
+max = 195
+
+[row."settlements on water"]
+max = 15
+
+# Neighbouring steps of a map-mode ramp under ΔE 5 with protanopia or
+# deuteranopia (palette.rs `ramp_contrast_audit`). 3 when first measured:
+# elevation land steps 4-5 (both) and evidence steps 1-2 (protan).
+[row."ramp steps hard to tell apart colour-blind"]
+max = 3
+
+[row."garbled site names"]
+max = 0
+
+[row."famous sites missing"]
+max = 0
+
+[row."famous sites dated off the map"]
+max = 0
+
+[row."famous sites with stray records"]
+max = 0
+
+[row."views failed to render"]
+max = 0
+
+# Not a failure: a prompt to look at the render and accept it.
+[row."views changed since accepted"]
+max = 0
+
+# Clicking and UI stability (make state-ui, pipeline/interact.py): "can I click
+# what I see, and does the UI stay where it was?"
+[row."piece clicks that open the piece"]
+min = 99
+
+# 96.9% once a quick second click stopped being swallowed as a double click
+# (view.rs); the rest are neighbours within 8 px of each other.
+[row."off-centre clicks that open the piece"]
+min = 95
+
+[row."name clicks that open the site"]
+min = 95
+
+# Measured at regional zoom (dist 0.15), where neighbours a few km apart are
+# a few pixels apart: that is the geography, not a layout fault (pieces are
+# nudged apart only close up, board/layout.rs). 25 was a first guess; the
+# first pass measured 25.8% (40 of 155). What matters is that a crowded
+# piece can still be picked: a repeated click goes round the pieces under
+# it and a chooser lists them (view.rs `pick_among`). Lower this if the
+# layout starts spreading pieces at regional zoom.
+[row."crowded pieces"]
+max = 26
+
+[row."clicks that moved the camera"]
+max = 0
+
+[row."controls that moved under the player"]
+max = 0
+gate = true
+
+[row."labels that moved under the player"]
+max = 0
+gate = true
+
+# GPU ms per board pass at 1600x1000 on a 2x display, worst of the click views
+# (harness `perf bench`). 45 ms when first measured, 2026-11-13: under 25 fps
+# at full density, so this is a ceiling against getting worse, not a goal.
+# The goal is 16.7 (60 fps); lower this as the board shader gets cheaper.
+[row."board pass time"]
+max = 48

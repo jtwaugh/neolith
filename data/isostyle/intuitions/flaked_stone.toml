@@ -22,7 +22,7 @@ confidence = "high"
 basis = ["literature", "analogy"]
 reasoning = "Coverage 0% in every slice; nearest evidence 2,168-3,720 km. Butovo, Veretye, Kunda, Lyalovo, Pit-Comb and Volosovo assemblages are all flaked-stone industries; the Karelian and Kola quartz industries are flaked too, alongside ground slate."
 literature = [
-  { cite = "Zhilin 2007, Mesolithic of the Upper Volga (Butovo, Veretye)", checked = false },
+  { cite = "Zhilin 2015, Early Mesolithic bone arrowheads from the Volga-Oka interfluve, central Russia, Fennoscandia archaeologica 32", checked = true, url = "https://journal.fi/fennoscandiaarchaeologica/article/download/126513/76331/265675", read = "full text (searched passages)", note = "Replaces 'Zhilin 2007, Mesolithic of the Upper Volga', which matches no known work. Butovo and Ienevo cultures were defined from the flint industries of dry-land sites; peat-bog Butovo sites span the whole Mesolithic." },
 ]
 would_settle = "Any Russian site catalogue with assemblage type; or a rule that a dated forager or Neolithic occupation implies flaked stone."
 speculative_rule = "Fill every occupied cell with 0.98."

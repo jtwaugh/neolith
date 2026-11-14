@@ -42,7 +42,8 @@ MAX_WAIT = 120  # seconds; a longer Retry-After is treated as a refusal
 def fetch(url, path, dataset, accept=None, tries=1, contact=""):
     """Download url to path unless it's already there. Returns provenance.
 
-    tries: attempts allowed when the server answers 429 (too many requests);
+    tries: attempts allowed when the server answers 429 (too many requests)
+    or 502-504 (busy or timed out);
     it waits as long as the server's Retry-After says (65 s if it doesn't),
     and gives up if that is over MAX_WAIT.
     contact: appended to the User-Agent, for services that ask for one.
@@ -63,7 +64,9 @@ def fetch(url, path, dataset, accept=None, tries=1, contact=""):
             except urllib.error.HTTPError as e:
                 wait = e.headers.get("Retry-After", "")
                 wait = int(wait) + 1 if wait.isdigit() else 65
-                if e.code != 429 or attempt == tries - 1 or wait > MAX_WAIT:
+                # 429: too many requests; 502-504: a busy or timed-out query
+                # service (Wikidata's SPARQL endpoint), worth another try.
+                if e.code not in (429, 502, 503, 504) or attempt == tries - 1 or wait > MAX_WAIT:
                     raise
                 time.sleep(wait)
         os.replace(tmp, path)
@@ -293,6 +296,27 @@ def load_keeps(path):
 def kept(d, keeps):
     """Whether date row d is named by a `[[keep]]` (by its filed name)."""
     return (d.get("filed", d["site"]), lab_key(d["labnr"])) in keeps
+
+
+def load_keep_sites(path):
+    """data/settlements/records.toml `[[keep_site]]` entries -> {site name}:
+    sites whose dates pass [settlements.xronos] exclude_types although their
+    type is a tomb or necropolis (a famous monument, or a settlement filed
+    with its cemetery)."""
+    if not path or not os.path.exists(path):
+        return set()
+    with open(path, "rb") as f:
+        doc = tomllib.load(f)
+    return {e["site"] for e in doc.get("keep_site", [])}
+
+
+def excluded(d, skip, keep_sites=frozenset()):
+    """Whether date row d is dropped by its site type: its type contains one
+    of `skip` (exclude_types), unless its table keeps such types
+    (`keep_types`) or its site, by name or filed name, is a `[[keep_site]]`."""
+    if d.get("keep_type") or d["site"] in keep_sites or d.get("filed") in keep_sites:
+        return False
+    return any(x in d["type"] for x in skip)
 
 
 def apply_rejects(dates, rejects):
@@ -764,15 +788,19 @@ def _distinct(name):
     return name_tokens(name) - GENERIC
 
 
-def enrich_wikidata(feats, items, match_km, window):
+def enrich_wikidata(feats, items, match_km, window, add_km=None, skip=()):
     """Attach Wikidata ids to sites and add Wikidata sites founded in window.
 
     An item matches the nearest site within match_km that shares its name:
     ignoring GENERIC words, one name's words all appear in the other's. A
     site takes its nearest matching item. Items that match nothing and have
-    an inception date inside window become sites of their own.
+    an inception date inside window become sites of their own, unless a site
+    sharing their name lies within add_km (the same place recorded a little
+    further off: Ugarit beside Ras Shamra). Items in `skip` are ignored.
     """
-    cell = _cell_size(match_km)
+    skip = set(skip)
+    add_km = max(add_km or match_km, match_km)
+    cell = _cell_size(add_km)
     cells = defaultdict(list)
     names = []
     for i, f in enumerate(feats):
@@ -783,20 +811,22 @@ def enrich_wikidata(feats, items, match_km, window):
     best, seen_q = {}, set()   # feature index -> (km, item)
     unmatched = []
     for it in items:
-        if it["qid"] in seen_q:  # tiles share their edges
+        if it["qid"] in seen_q or it["qid"] in skip:  # tiles share their edges
             continue
         seen_q.add(it["qid"])
         toks = [t for n in it["names"] if (t := _distinct(n))]
         cx, cy = math.floor(it["lon"] / cell), math.floor(it["lat"] / cell)
-        hit = None
+        hit, near = None, False
         for i in (i for dx in (-1, 0, 1) for dy in (-1, 0, 1) for i in cells.get((cx + dx, cy + dy), ())):
             if not any(a <= b or b <= a for a in toks for b in names[i]):
                 continue
             d = _km((it["lon"], it["lat"]), feats[i]["geometry"]["coordinates"])
+            near |= d <= add_km
             if d <= match_km and (hit is None or d < hit[0]):
                 hit = (d, i)
         if hit is None:
-            unmatched.append(it)
+            if not near:
+                unmatched.append(it)
         elif hit[1] not in best or hit[0] < best[hit[1]][0]:
             best[hit[1]] = (hit[0], it)
     for i, (_, it) in best.items():
@@ -1123,8 +1153,12 @@ def build(cfg, grid, log=print):
     hit = {(d.get("filed", d["site"]), lab_key(d["labnr"])) for d in dates if kept(d, keeps)}
     if keeps - hit:
         raise ValueError(f"records.toml [[keep]] matches no date: {sorted(keeps - hit)}")
+    keep_sites = load_keep_sites(sc.get("records"))
+    missing = keep_sites - {n for d in dates for n in (d["site"], d.get("filed"))}
+    if missing:
+        raise ValueError(f"records.toml [[keep_site]] matches no date: {sorted(missing)}")
     dates = [d for d in dates
-             if (d["std"] <= sc["max_std"] or kept(d, keeps)) and (d.get("keep_type") or not any(x in d["type"] for x in skip))
+             if (d["std"] <= sc["max_std"] or kept(d, keeps)) and not excluded(d, skip, keep_sites)
              and bounds[0] <= d["lon"] <= bounds[2] and bounds[1] <= d["lat"] <= bounds[3]]
 
     cal = calibrate([d["bp"] for d in dates], [d["std"] for d in dates], curve)
@@ -1137,17 +1171,28 @@ def build(cfg, grid, log=print):
 
     wc = sc.get("wikidata", {})
     if wc.get("enabled"):
-        def tile(t):
+        def tile(t, top=True):
+            """Provenance of one tile, or of its quarters if the query service
+            times out on it (dense tiles such as France and the Alps)."""
             url = wc["url"] + "?" + urllib.parse.urlencode({"query": WIKIDATA_QUERY % t})
-            name = "wikidata_%g_%g.csv" % t[:2]
-            return fetch(url, os.path.join(raw, name), "wikidata", accept="text/csv", tries=10,
-                         contact=wc.get("contact", ""))
+            name = ("wikidata_%g_%g.csv" % t[:2]) if top else ("wikidata_%g_%g_%g.csv" % (*t[:2], t[2] - t[0]))
+            try:
+                return [fetch(url, os.path.join(raw, name), "wikidata", accept="text/csv", tries=3,
+                              contact=wc.get("contact", ""))]
+            except urllib.error.HTTPError as e:
+                if e.code != 504 or t[2] - t[0] <= wc["tile_degrees"] / 8:
+                    raise
+            x0, y0, x1, y1 = t
+            xm, ym = (x0 + x1) / 2, (y0 + y1) / 2
+            return [p for q in ((x0, y0, xm, ym), (xm, y0, x1, ym), (x0, ym, xm, y1), (xm, ym, x1, y1))
+                    for p in tile(q, False)]
 
         # One at a time: the query service limits request rates.
-        tiles = [tile(t) for t in wikidata_tiles(bounds, wc["tile_degrees"])]
+        tiles = [p for t in wikidata_tiles(bounds, wc["tile_degrees"]) for p in tile(t)]
         prov += tiles
         items = [it for p in tiles for it in parse_wikidata(p["path"])]
-        feats, matched, added = enrich_wikidata(feats, items, wc["match_km"], window)
+        feats, matched, added = enrich_wikidata(feats, items, wc["match_km"], window, wc.get("add_km"),
+                                                wc.get("skip", ()))
         log(f"wikidata: {matched} sites matched, {added} added from {len(tiles)} tiles")
 
     if os.path.exists(sc["curated"]):

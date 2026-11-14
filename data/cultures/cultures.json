@@ -55,18 +55,18 @@
   "unverified": [],
   "sites": 132,
   "observed": {
-   "start_p10": -19818,
-   "start_median": -13320,
+   "start_p10": -19618,
+   "start_median": -13270,
    "start_p90": -8905,
    "centre": [
-    4.19,
-    44.28
+    4.05,
+    44.48
    ],
    "bbox_p5_p95": [
     -4.95,
-    38.06,
-    21.94,
-    51.4
+    38.48,
+    21.12,
+    51.52
    ]
   }
  },
@@ -136,7 +136,7 @@
   "unverified": [],
   "sites": 625,
   "observed": {
-   "start_p10": -8710,
+   "start_p10": -8702,
    "start_median": -6580,
    "start_p90": -4850,
    "centre": [
@@ -187,7 +187,7 @@
    "bbox_p5_p95": [
     33.08,
     29.98,
-    43.47,
+    43.23,
     37.76
    ]
   }
@@ -218,18 +218,18 @@
   "unverified": [],
   "sites": 2674,
   "observed": {
-   "start_p10": -6080,
-   "start_median": -4565,
-   "start_p90": -3362,
+   "start_p10": -6070,
+   "start_median": -4560,
+   "start_p90": -3360,
    "centre": [
-    8.55,
-    47.54
+    8.54,
+    47.55
    ],
    "bbox_p5_p95": [
     -6.29,
     29.6,
-    37.99,
-    56.83
+    37.96,
+    56.86
    ]
   }
  },
@@ -260,20 +260,20 @@
    "wikidata": "Q130253"
   },
   "unverified": [],
-  "sites": 446,
+  "sites": 448,
   "observed": {
-   "start_p10": -5075,
-   "start_median": -3750,
-   "start_p90": -2675,
+   "start_p10": -5069,
+   "start_median": -3745,
+   "start_p90": -2677,
    "centre": [
-    26.77,
+    26.64,
     45.73
    ],
    "bbox_p5_p95": [
-    1.84,
+    1.68,
     25.97,
-    50.31,
-    53.41
+    50.28,
+    53.53
    ]
   }
  },
@@ -298,13 +298,13 @@
   "observed": {
    "start_p10": -3670,
    "start_median": -1760,
-   "start_p90": -1020,
+   "start_p90": -1015,
    "centre": [
     1.46,
     48.08
    ],
    "bbox_p5_p95": [
-    -8.04,
+    -8.0,
     34.64,
     35.51,
     55.13
@@ -547,7 +547,7 @@
    "bbox_p5_p95": [
     33.05,
     29.95,
-    44.29,
+    43.89,
     37.54
    ]
   },
@@ -1643,7 +1643,7 @@
    "bbox_p5_p95": [
     7.11,
     37.73,
-    22.42,
+    22.49,
     45.59
    ]
   },
@@ -1737,7 +1737,7 @@
    ]
   },
   "dates_used": 7,
-  "dates_outside_range": 56
+  "dates_outside_range": 63
  },
  {
   "id": "federmesser",
@@ -2253,12 +2253,12 @@
   "unverified": [],
   "sites": 11,
   "observed": {
-   "start_p10": -5420,
-   "start_median": -5240,
+   "start_p10": -5500,
+   "start_median": -5250,
    "start_p90": -4720,
    "centre": [
     20.83,
-    44.75
+    44.76
    ],
    "bbox_p5_p95": [
     19.15,
@@ -2267,7 +2267,7 @@
     46.08
    ]
   },
-  "dates_used": 83,
+  "dates_used": 199,
   "dates_outside_range": 20
  },
  {
@@ -3160,24 +3160,24 @@
    "wikidata": "Q470867"
   },
   "unverified": [],
-  "sites": 49,
+  "sites": 50,
   "observed": {
-   "start_p10": -2922,
-   "start_median": -2390,
-   "start_p90": -1977,
+   "start_p10": -2933,
+   "start_median": -2430,
+   "start_p90": -1984,
    "centre": [
-    4.79,
-    48.85
+    4.75,
+    49.14
    ],
    "bbox_p5_p95": [
-    -8.98,
+    -8.95,
     38.74,
-    17.88,
-    54.47
+    17.82,
+    54.44
    ]
   },
-  "dates_used": 203,
-  "dates_outside_range": 320
+  "dates_used": 228,
+  "dates_outside_range": 333
  },
  {
   "id": "swifterbant",

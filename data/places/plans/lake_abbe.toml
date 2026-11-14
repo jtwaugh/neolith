@@ -82,12 +82,14 @@ url = "https://journals.openedition.org/africanistes/7945"
 checked = true
 
 [[research]]
+next = "Open the accepted manuscript of Khalidi et al. 2020 and enter its 37 dates with the seven site positions in literature_dates.csv; then the lake-level dates of Mologni et al. 2021 as context only (they are not sites)."
 what = "Extract the 37 radiocarbon dates and seven site positions of Khalidi et al. 2020 (lower Awash / northern Abhe basin, Ethiopia), and the lake-level dates in Mologni et al. 2021. The accepted manuscript is marked open access on ScienceDirect and on HAL (hal-02911601), but both refused automated access; a person can download it."
 url = "https://doi.org/10.1016/j.quascirev.2020.106459"
 yields = "7 dated sites inside the box, about 9000-1350 BCE, in three phases; perhaps 25 dates in our window"
 effort = "One paper with a date table; a few hours"
 
 [[research]]
+next = "Read Cauliez et al. 2008 (L'Anthropologie 112:691-715) for the Hara Idé 2 dates with lab numbers and positions, then the Hara Idé 3 and Ali Dabba dates; the after-3,000 BCE part of the item (Wakrita, Asa Koma) is outside the board's window and can be skipped."
 what = "Enter the Gobaad basin (Djibouti) chronology: the Asa Koma monograph (Gutherz dir. 2017) and Wakrita (Gutherz et al. 2015, JFA 40:55-68; UBA-20229 3561+/-27 BP on cattle bone) for the after-3,000 BCE sites, and above all the Hara Idé 3, Hara Idé 2 and Ali Dabba dates and the 4th-millennium BCE tombs. The tombs are mentioned in the review but not listed. Cauliez et al. 2008 (L'Anthropologie 112:691-715) on Hara Idé 2 is the place to start."
 url = "https://doi.org/10.1016/j.anthro.2008.06.003"
 yields = "3-6 dated sites in the box before 3,000 BCE (Hara Idé 3, Hara Idé 2, Ali Dabba, tombs) and 2-3 just after (Asa Koma, Wakrita, Antakari 3)"
@@ -98,6 +100,8 @@ what = "Correct the Asa Koma record (XRONOS Gif-7404, raw file xronos_country_SO
 url = "https://archeologie.culture.gouv.fr/en/banks-lake-abbe"
 yields = "One record put back in the right place; outside the window, so no change to our map before 3,000 BCE"
 effort = "One line"
+status = "done"
+done_in = "data/settlements/records.toml, [[same]] Asa Koma (section 'Horn of Africa'), listed in data/settlements/CORRECTIONS.md; done at record level, not in corrections.toml"
 
 [[speculate]]
 target = "settlements"

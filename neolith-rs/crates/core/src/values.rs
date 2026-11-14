@@ -64,6 +64,57 @@ impl Terrain {
     pub fn is_legacy(self) -> bool {
         matches!(self, Terrain::Plains | Terrain::Mountains | Terrain::Land | Terrain::Free | Terrain::Unknown)
     }
+
+    /// The ground cover the Ground map mode paints under this biome's
+    /// props; `None` for water.
+    pub fn cover(self) -> Option<Cover> {
+        Some(match self {
+            Terrain::Water => return None,
+            Terrain::ExtremeDesert | Terrain::SemiDesert => Cover::Sand,
+            Terrain::Plains
+            | Terrain::Grassland
+            | Terrain::Savannah
+            | Terrain::SteppeForest
+            | Terrain::Floodplain
+            | Terrain::Chaparral
+            | Terrain::Land
+            | Terrain::Free
+            | Terrain::Unknown => Cover::Grass,
+            Terrain::BorealForest | Terrain::Tundra => Cover::Moss,
+            Terrain::TemperateForest | Terrain::Woodlands | Terrain::TropicalForest => Cover::Litter,
+            Terrain::Alpine | Terrain::Mountains => Cover::Rock,
+            Terrain::Ice => Cover::Snow,
+        })
+    }
+}
+
+/// Ground cover in the Ground map mode: what the soil surface looks like
+/// between the props, drawn as a procedural texture.
+#[repr(u8)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize)]
+pub enum Cover {
+    Grass,
+    Moss,
+    Sand,
+    Rock,
+    Snow,
+    /// Forest floor: leaf and needle litter on dark soil.
+    Litter,
+}
+
+impl Cover {
+    pub const ALL: [Cover; 6] = [Cover::Grass, Cover::Moss, Cover::Sand, Cover::Rock, Cover::Snow, Cover::Litter];
+
+    pub fn label(self) -> &'static str {
+        match self {
+            Cover::Grass => "Grass",
+            Cover::Moss => "Moss and heath",
+            Cover::Sand => "Sand",
+            Cover::Rock => "Bare rock",
+            Cover::Snow => "Snow and ice",
+            Cover::Litter => "Forest floor",
+        }
+    }
 }
 
 /// Static landform of a hex, from the share of its elevation cells that are
@@ -248,10 +299,17 @@ pub enum MapMode {
     Evidence,
     /// Sites the list is missing ([`crate::residuals`]).
     Missing,
+    /// Autosomal ancestry of ancient genomes ([`crate::ancestry`]): recorded
+    /// only, land without genomes is drawn as unknown.
+    Ancestry,
+    /// The terrain map's props and landforms over a realistic ground cover
+    /// ([`Terrain::cover`]) instead of the flat biome colours. Appended
+    /// last: the index is the palette row and the shader's mode number.
+    Ground,
 }
 
 impl MapMode {
-    pub const ALL: [MapMode; 9] = [
+    pub const ALL: [MapMode; 11] = [
         MapMode::Terrain,
         MapMode::Koeppen,
         MapMode::Pop,
@@ -261,12 +319,15 @@ impl MapMode {
         MapMode::Expected,
         MapMode::Evidence,
         MapMode::Missing,
+        MapMode::Ancestry,
+        MapMode::Ground,
     ];
 
     /// The modes offered in the top-bar map selector. Population is hidden
     /// for now (not useful yet); it stays in [`MapMode::ALL`] so palette
     /// rows and harness `--mode pop` keep working.
-    pub const MENU: [MapMode; 8] = [
+    pub const MENU: [MapMode; 10] = [
+        MapMode::Ground,
         MapMode::Terrain,
         MapMode::Koeppen,
         MapMode::Elevation,
@@ -275,11 +336,18 @@ impl MapMode {
         MapMode::Expected,
         MapMode::Evidence,
         MapMode::Missing,
+        MapMode::Ancestry,
     ];
 
     /// Also the row of the GPU palette texture.
     pub fn index(self) -> usize {
         self as usize
+    }
+
+    /// Drawn as the terrain map is (full-colour art, soft biome edges,
+    /// sward and snow), not as a data wash over it.
+    pub fn terrain_like(self) -> bool {
+        matches!(self, MapMode::Terrain | MapMode::Ground)
     }
 
     /// The editable property this mode shows, if any.
@@ -288,7 +356,7 @@ impl MapMode {
             MapMode::Terrain => Some(Prop::Terrain),
             MapMode::Koeppen => Some(Prop::Koeppen),
             MapMode::Pop => Some(Prop::Pop),
-            MapMode::Elevation | MapMode::Npp | MapMode::Biodiversity | MapMode::Expected | MapMode::Evidence | MapMode::Missing => None,
+            MapMode::Elevation | MapMode::Npp | MapMode::Biodiversity | MapMode::Expected | MapMode::Evidence | MapMode::Missing | MapMode::Ancestry | MapMode::Ground => None,
         }
     }
 
@@ -300,6 +368,8 @@ impl MapMode {
             MapMode::Expected => "Expected population",
             MapMode::Evidence => "Evidence",
             MapMode::Missing => "Missing sites",
+            MapMode::Ancestry => "Ancestry",
+            MapMode::Ground => "Ground cover",
             _ => self.prop().map_or("", Prop::label),
         }
     }
@@ -316,6 +386,8 @@ impl MapMode {
             "expected" => Some(MapMode::Expected),
             "evidence" => Some(MapMode::Evidence),
             "missing" => Some(MapMode::Missing),
+            "ancestry" => Some(MapMode::Ancestry),
+            "ground" | "cover" => Some(MapMode::Ground),
             _ => None,
         }
     }
@@ -378,6 +450,26 @@ impl Value {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn every_land_terrain_has_a_cover() {
+        for t in Terrain::ALL {
+            assert_eq!(t.cover().is_none(), *t == Terrain::Water, "{t:?}");
+        }
+        assert_eq!(Terrain::ExtremeDesert.cover(), Some(Cover::Sand));
+        assert_eq!(Terrain::Ice.cover(), Some(Cover::Snow));
+        assert_eq!(Terrain::Alpine.cover(), Some(Cover::Rock));
+    }
+
+    #[test]
+    fn ground_mode_is_appended() {
+        // Its index is a palette row and the shader's mode number: the
+        // modes before it keep theirs.
+        assert_eq!(MapMode::Ground.index(), MapMode::ALL.len() - 1);
+        assert_eq!(MapMode::Ancestry.index(), 9);
+        assert!(MapMode::Ground.terrain_like() && !MapMode::Evidence.terrain_like());
+        assert_eq!(MapMode::from_arg("ground"), Some(MapMode::Ground));
+    }
 
     #[test]
     fn terrain_round_trips() {
