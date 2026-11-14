@@ -22,7 +22,7 @@ confidence = "low"
 basis = ["literature", "environment"]
 reasoning = "Coverage 0% except 0.7% at 9,000 BCE (7 edge cells at 1.0); nearest evidence 1,388-3,649 km. The forest-zone wetland sites are among Europe's richest bone-tool assemblages; dune and moraine camps keep only lithics."
 literature = [
-  { cite = "Zhilin, Savchenko et al., Zamostje 2 bone and antler industry", checked = false },
+  { cite = "Zhilin 2015, 'Early Mesolithic bone arrowheads from the Volga-Oka interfluve, Central Russia', Fennoscandia archaeologica XXXII, 35-54", checked = true, url = "https://journal.fi/fennoscandiaarchaeologica/article/download/126513/76331/265675", read = "full text (searched passages)", note = "Replaces 'Zhilin, Savchenko et al., Zamostje 2 bone and antler industry', which names no specific work. Peat-bog sites of the Volga-Oka interfluve have produced rich lithic, bone and antler industries; the Finnish and Karelian sites on sandy soils keep no organic material." },
 ]
 would_settle = "Inventories of the Upper Volga and Onega wetland sites; Shigir and Gorbunovo collections."
 speculative_rule = "0.75 within 5 km of lakes and rivers with peat, 0.35 elsewhere."
@@ -39,7 +39,7 @@ confidence = "medium"
 basis = ["literature", "environment"]
 reasoning = "Coverage 0%; nearest evidence 1,364-1,991 km."
 literature = [
-  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false },
+  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false, note = "Book (Princeton University Press). The publisher page and JSTOR refused automated access and no open text was reached, so the claim was not checked against the book itself." },
 ]
 would_settle = "Steppe site and cemetery inventories (Khvalynsk, Varfolomeevka)."
 speculative_rule = "0.8 across the steppe."
@@ -80,7 +80,7 @@ confidence = "low"
 basis = ["literature", "neighbouring_evidence"]
 reasoning = "Coverage 45% at 9,000 BCE, 0% otherwise; edges 1.0. The other slices are masked because only direct dates on bone points were ingested, not because the material stops."
 literature = [
-  { cite = "Zagorska & Zagorskis, Zvejnieki cemetery bone and antler artefacts", checked = false },
+  { cite = "David 2003, 'The Mesolithic Zvejnieki site (Latvia) in its European context: preliminary results delivered by a technological study of the bone and antler industry', Eesti Arheoloogia Ajakiri (Estonian Journal of Archaeology) 7(2), 99-122", checked = true, url = "https://doi.org/10.3176/arch.2003.2.01", read = "full text (searched passages)", note = "Replaces 'Zagorska & Zagorskis, Zvejnieki cemetery bone and antler artefacts' (no year or title; Zagorska & Zagorskis 1989 is cited in the literature but could not be reached). Read from the kirj.ee PDF: 327 bone and antler artefacts from the Preboreal and Boreal horizons, in excellent preservation in an anaerobic setting. It covers only those horizons, not the later slices." },
 ]
 would_settle = "Zvejnieki and Estonian wetland-site inventories."
 speculative_rule = "0.75 near lakes and rivers with peat, 0.4 elsewhere."
@@ -99,7 +99,7 @@ confidence = "low"
 basis = ["literature", "environment"]
 reasoning = "Coverage 6% at 9,000-8,000 BCE (dated bone points), 0% otherwise. Denmark and Scania would be 0.7-0.8; the interior north under 0.3."
 literature = [
-  { cite = "Tsirintoulaki, Matzig & Riede 2023 (in atlas)", checked = false },
+  { cite = "Tsirintoulaki, Matzig & Riede 2023, 'A 2D Geometric Morphometric Assessment of Chrono-Cultural Trends in Osseous Barbed Points of the European Final Palaeolithic and Early Mesolithic', Open Archaeology 9", checked = true, url = "https://api.openalex.org/works/doi:10.1515/opar-2022-0276", read = "abstract", note = "The atlas source (tsirintoulaki2023). 50 directly dated Late Pleistocene and Early Holocene barbed points, mainly from northern and western Europe, which is why only the early slices have coverage. De Gruyter refused automated access, so the abstract was read from OpenAlex." },
 ]
 would_settle = "Danish and Swedish museum inventories of bone and antler finds."
 speculative_rule = "0.75 in Denmark and Scania and along shell-midden coasts; 0.3 in the interior north."
@@ -457,7 +457,7 @@ confidence = "medium"
 basis = ["literature"]
 reasoning = "Coverage 0%."
 literature = [
-  { cite = "Arkell 1949, Early Khartoum", checked = false },
+  { cite = "Arkell 1949, Early Khartoum: an account of the excavation of an early occupation site carried out by the Sudan Government Antiquities Service in 1944-5 (Oxford University Press)", checked = false, note = "Real (British Museum catalogue; reviewed in Antiquity 24, 1950). No abstract or open text was reachable, so the bone-harpoon claim was not checked." },
 ]
 would_settle = "Sudanese site reports."
 speculative_rule = "0.75."

@@ -28,6 +28,21 @@ Per layer, slice and land cell (ice and sea stay empty):
                    0.25 by distance), so region borders are not cliffs
   4. extrapolated  else the mean of the nearest observed values, spread ring by
                    ring across the grid; confidence "none"
+In a presence-only layer an observed cell reads 1.0 ("recorded here") while
+judgements are shares of land (0-0.4), so a patch observed in one slice and
+just under the evidence threshold in the next would be a 1.0 island in time.
+With `soft_sources` on, observed and judged meet on one scale there: a land
+cell with dated evidence below the threshold (0 < E < e_min; E is the
+kernel-weighted evidence, each unit counted by its share of the slice) moves
+from its filled value v to v + s * (1 - v), s = (E / e_min) ** soft_power,
+before the time and space smoothing. E is smooth and reaches e_min at the
+edge of the observed cells, so the fill rises continuously to the observed
+1.0 instead of stepping up to it, and a patch that falls just under the
+threshold in one slice fades instead of vanishing. Such cells keep basis
+judged or extrapolated; they are never written as observed.
+A layer with `fill = false` in layers.toml (the Ancestry set) stops after
+step 1: only its observed cells are written, and the game draws the rest as
+unknown.
 
 Judgements may carry `adjust` entries, the critics' fill rules in machine
 form (schema in isostyle/intuitions.py): gradients along latitude or
@@ -64,7 +79,8 @@ CONF_WEIGHT = {"high": 3.0, "medium": 2.0, "low": 1.0}
 # Fill settings; [speculative] in config.toml overrides them (chosen by
 # `python -m isostyle evals --search`).
 DEFAULTS = {"blend_rings": 3, "smooth_iters": 0, "smooth_rate": 0.5, "time_smooth": 0.0,
-            "blend_conf": 0, "kernel_cap": 0, "hold_rings": 0, "bridge": 0.0, "time_from_observed": 1}
+            "blend_conf": 0, "kernel_cap": 0, "hold_rings": 0, "bridge": 0.0, "time_from_observed": 1,
+            "soft_sources": 0, "soft_power": 1.0, "bridge_conf": 1, "bridge_hold": 0}
 # With blend_conf on, how far a judged cell leans toward nearby observed
 # values, by the judgement's confidence: a firm judgement resists more.
 CONF_BLEND = {"low": 1.0, "medium": 0.6, "high": 0.35}
@@ -243,10 +259,11 @@ def ring_distance(sources, values, nb):
 
 
 def fill(observed, land, judged, judged_conf, judged_ref, nb, blend_rings=3, rings=None, by_conf=False,
-         firm=None):
+         firm=None, soft=None):
     """One layer and slice. observed: values (NaN where masked); land: bool;
     judged: expected value per cell (NaN where no judgement). rings: the
-    ring_distance result for these observed cells, if already computed.
+    ring_distance result for these observed cells, if already computed. soft:
+    optional sub-threshold evidence weight s per cell (presence-only layers).
     Returns value, basis, confidence, ref arrays."""
     n = len(observed)
     have = land & ~np.isnan(observed)
@@ -266,6 +283,13 @@ def fill(observed, land, judged, judged_conf, judged_ref, nb, blend_rings=3, rin
     basis[jd], conf[jd], ref[jd] = "judged", judged_conf[jd], judged_ref[jd]
     ex = land & ~have & ~jd & ~np.isnan(near)
     value[ex], basis[ex], conf[ex] = near[ex], "extrapolated", "none"
+    if soft is not None:
+        # Toward the observed 1.0 by the sub-threshold evidence, except where a
+        # firm judgement holds the cell (an island across the water).
+        weak = land & ~have & ~np.isnan(value) & (soft > 0)
+        if firm is not None:
+            weak &= ~firm
+        value[weak] = value[weak] + soft[weak] * (1.0 - value[weak])
     return value, basis, conf, ref
 
 
@@ -284,19 +308,22 @@ def smooth_space(value, fixed, nb, iters, rate=0.5):
     return v
 
 
-def bridge_time(V, fixed, conf, explicit, b):
+def bridge_time(V, fixed, conf, explicit, b, by_conf=True):
     """A speculative cell that is observed in both the slice before and the
     slice after leans `b` of the way (less for a firmer judgement) toward the
     mean of those two observations. Cells whose judgement names a value for
-    this very slice (`explicit`) are left alone."""
+    this very slice (`explicit`) are left alone. by_conf off: every such cell
+    leans the full `b`. Returns the values and the mask of bridged cells."""
     if b <= 0 or len(V) < 3:
-        return V
+        return V, np.zeros(V.shape, bool)
     V = V.copy()
+    bridged = np.zeros(V.shape, bool)
     for j in range(1, len(V) - 1):
         sel = ~fixed[j] & fixed[j - 1] & fixed[j + 1] & ~np.isnan(V[j]) & ~explicit[j]
-        w = b * np.array([CONF_BLEND.get(c, 1.0) for c in conf[j][sel]])
+        bridged[j] = sel
+        w = b * (np.array([CONF_BLEND.get(c, 1.0) for c in conf[j][sel]]) if by_conf else np.ones(sel.sum()))
         V[j, sel] = (1 - w) * V[j, sel] + w * (V[j - 1, sel] + V[j + 1, sel]) / 2
-    return V
+    return V, bridged
 
 
 def smooth_time(V, fixed, mu, from_observed=True):
@@ -360,6 +387,10 @@ def prepare(cfg, log=print, layers=None):
              # How far the layer's own kernel reaches, in hex rings.
              "kernel_rings": (cfg["surface"]["cutoff"] * summary["layers"][m]["sigma_km"] / HEX_KM
                               if summary["layers"][m].get("sigma_km") else None)}
+        # Weights for the soft_sources setting (applied only when a fill turns it on).
+        soft_on = L["kind"] == "presence_only" and L.get("fill", True)
+        if soft_on:
+            P["soft"] = np.zeros((S, n))
         for j, y in enumerate(years):
             t = s[s["slice"] == y]
             ci = ix.reindex(t["cell"].values).values.astype(int)
@@ -374,6 +405,11 @@ def prepare(cfg, log=print, layers=None):
             # Acid soil masks survival, not use: treat its cells as gaps.
             P["obs"][j, reason == "acid soil"] = np.nan
             P["obs"][j, ~now] = np.nan
+            if soft_on:
+                e = np.zeros(n)
+                e[ci] = t["evidence"].fillna(0).values
+                w = np.clip(e / cfg["surface"]["e_min"], 0, 1) ** params(cfg)["soft_power"]
+                P["soft"][j] = np.where(np.isnan(P["obs"][j]) & now & (e > 0), w, 0.0)
             acc = {}
             coast = None
             for jj in js:
@@ -421,15 +457,20 @@ def fill_layer(P, nb, par, hide=None, rings=None):
     if par["kernel_cap"] and P.get("kernel_rings"):
         reach = min(reach, P["kernel_rings"])
     firm = P.get("firm")
+    soft = P.get("soft") if par.get("soft_sources") else None
     out = [fill(obs[j], P["land"][j], P["judged"][j], P["jconf"][j], P["jref"][j], NB, reach, rings[j],
-                bool(par["blend_conf"]), None if firm is None else firm[j])
+                bool(par["blend_conf"]), None if firm is None else firm[j], None if soft is None else soft[j])
            for j in range(S)]
     V = np.stack([o[0] for o in out])
     basis, conf, ref = (np.stack([o[k] for o in out]) for k in (1, 2, 3))
     fixed = basis == "observed"
     if firm is not None:
         fixed = fixed | (firm & (basis == "judged"))
-    V = bridge_time(V, fixed, conf, P["explicit"], par["bridge"])
+    V, bridged = bridge_time(V, fixed, conf, P["explicit"], par["bridge"], bool(par["bridge_conf"]))
+    if par["bridge_hold"]:
+        # The cell's own record either side outranks its neighbours': keep
+        # the bridged value through the time and space smoothing.
+        fixed = fixed | bridged
     V = smooth_time(V, fixed, par["time_smooth"], bool(par["time_from_observed"]))
     if par["smooth_iters"]:
         # hold_rings: the cells nearest the evidence keep their blended value,
@@ -438,6 +479,13 @@ def fill_layer(P, nb, par, hide=None, rings=None):
         V = np.stack([smooth_space(V[j], held[j], NB, par["smooth_iters"], par["smooth_rate"]) for j in range(S)])
     lo, hi = P["range"]
     return np.clip(V, lo, hi), basis, conf, ref
+
+
+def written(land, basis, fill):
+    """The cells of one layer and slice that go into speculative.csv.gz: all
+    land, or for a recorded-only layer (`fill = false`, ancestry) only the
+    observed cells, so unsampled land stays unknown."""
+    return land if fill else land & (basis == "observed")
 
 
 def run(cfg, log=print):
@@ -450,9 +498,10 @@ def run(cfg, log=print):
     rows, stats, rules = [], {}, {}
     for m, P in prep["layers"].items():
         V, basis, conf, ref = fill_layer(P, prep["NB"], par)
+        nofill = not registry[m]["fill"]
         stats[m] = []
         for j, y in enumerate(years):
-            keep = P["land"][j]
+            keep = written(P["land"][j], basis[j], not nofill)
             rows.append(pd.DataFrame({"cell": grid["cell"].values[keep], "slice": y, "layer": m,
                                       "value": np.round(V[j][keep], 3), "basis": basis[j][keep],
                                       "confidence": conf[j][keep], "judgement": ref[j][keep],

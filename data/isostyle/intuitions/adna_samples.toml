@@ -24,8 +24,8 @@ confidence = "medium"
 basis = ["literature", "environment", "dossier_statistics"]
 reasoning = "The forest gap is the largest in every slice (1,645-2,089 cells), with the nearest genome 505-778 km from its centre. Where people buried in ochre graves on sandy ridges or in peat (Yuzhny Oleni Ostrov c. 6300 BCE, Sakhtysh, Minino, Popovo) DNA survives well in the cold, so preservation is not the main bar. But podzolised sands of the Pechora and Dvina basins dissolve unburnt bone within millennia, and Mesolithic-Neolithic population north of 62°N was thin. mt surfaces leak into the gap (U5 0.29-0.48, U4 0.18-0.55 over ~500-850 cells) only because of the wider mt kernel, not because of samples inside."
 literature = [
-  { cite = "Mathieson et al. 2018, 'The genomic history of southeastern Europe', Nature (Karelian EHG)", checked = false },
-  { cite = "Saag et al. 2019/2021, Volga-Oka and Upper Volga forest-zone genomes", checked = false },
+  { cite = "Posth et al. 2023, 'Palaeogenomics of Upper Palaeolithic to Neolithic European hunter-gatherers', Nature 615", checked = true, url = "https://doi.org/10.1038/s41586-023-05726-0", read = "AADR annotation + abstract", note = "Replaces 'Mathieson et al. 2018 (Karelian EHG)': that paper has no Karelian genomes. AADR: 15 Yuzhny Oleni Ostrov and 9 Minino genomes here." },
+  { cite = "Saag et al. 2021, 'Genetic ancestry changes in Stone to Bronze Age transition in the East European plain', Sci. Adv. 7", checked = true, url = "https://doi.org/10.1126/sciadv.abd6535", read = "AADR annotation + abstract", note = "Replaces 'Saag et al. 2019/2021'. AADR: Vologda Mesolithic and Upper Volga Fatyanovo genomes; abstract: 3 Stone Age foragers and 26 Fatyanovo." },
 ]
 would_settle = "Sequence curated forest-zone Mesolithic-Eneolithic skeletons in Russian museum collections (Sakhtysh, Volosovo, Pechora cemeteries); ingest any published but non-AADR genomes."
 speculative_rule = "Fill 0.65 south of 62°N in the Upper Volga and Karelia, fading to 0.3 at the Arctic coast and on the Pechora; same for every slice."
@@ -55,8 +55,8 @@ confidence = "medium"
 basis = ["literature", "neighbouring_evidence", "environment"]
 reasoning = "Coverage is 0% to 7,000 BCE and 9% at 6,000 BCE, then jumps to 32-53% once Khvalynsk, Ekaterinovka and Yamnaya kurgans enter. Dry chernozem and loess preserve bone well; the only reason the early slices are empty is that few Mesolithic graves have been sampled (Lebyazhinka, Sidelkino and the Lower Volga are the main ones). Gaps of ~1,050-1,090 cells sit 414-823 km from genomes."
 literature = [
-  { cite = "Haak et al. 2015, 'Massive migration from the steppe', Nature", checked = false },
-  { cite = "Allentoft et al. 2024, 'Population genomics of post-glacial western Eurasia', Nature", checked = false },
+  { cite = "Mathieson et al. 2015, 'Genome-wide patterns of selection in 230 ancient Eurasians', Nature 528", checked = true, url = "https://doi.org/10.1038/nature16152", read = "AADR annotation + abstract", note = "Replaces Haak et al. 2015 for the early steppe graves: abstract gives the Samara transect from 5600 BC; AADR Samara forager (Lebyazhinka) first published here." },
+  { cite = "Allentoft et al. 2024, 'Population genomics of post-glacial western Eurasia', Nature 625", checked = true, url = "https://doi.org/10.1038/s41586-023-06865-0", read = "AADR annotation + abstract", note = "AADR: adds a Ural River Mesolithic and Middle Don Neolithic genomes; abstract: Middle Don HG contributed to Yamnaya." },
 ]
 would_settle = "Ingest Allentoft et al. 2024 Mesolithic steppe genomes if not yet in AADR v66; sample Mesolithic graves of the Lower Don and Kama."
 speculative_rule = "Fill 0.75 across the steppe and forest-steppe for 10,000-6,000 BCE, 0.85 near the Volga bend."
@@ -80,7 +80,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "literature", "dossier_statistics"]
 reasoning = "Gaps here are 106-478 cells with nearest evidence 80-467 km away; they are the Kalmyk, Orenburg and Bashkir margins of the Khvalynsk-Yamnaya world, where kurgans are abundant and bone survives in dry steppe soils."
 literature = [
-  { cite = "Wang et al. 2019, 'Ancient human genome-wide data from a 3000-year interval in the Caucasus', Nat. Commun.", checked = false },
+  { cite = "Wang et al. 2019, 'Ancient human genome-wide data from a 3000-year interval in the Caucasus corresponds with eco-geographic regions', Nat. Commun. 10", checked = true, url = "https://doi.org/10.1038/s41467-018-08220-8", read = "AADR annotation + abstract", note = "Abstract: 45 North Caucasus and steppe genomes over 3,000 years incl. Yamnaya." },
 ]
 would_settle = "Sample Yamnaya and Eneolithic kurgans in Orenburg and Bashkortostan."
 speculative_rule = "Extend the neighbouring presence (1.0) across the steppe gaps for 5,000-3,000 BCE, 0.85 at the forest-steppe edge."
@@ -103,8 +103,8 @@ confidence = "medium"
 basis = ["literature", "environment", "neighbouring_evidence"]
 reasoning = "Coverage climbs from 4-15% before 7,000 BCE to 50-57% by 4,000-3,000 BCE. The persistent gap (185-450 cells, 287-488 km from evidence) lies over Belarus and northern Ukraine. Dnieper-Donets cemeteries (Vasilievka, Volos'ke, Mariupol) show bone survives in the south; Belarusian sandy podzols and peat edges hold few skeletons. Trypillia communities rarely buried their dead in cemeteries (Verteba cave is the exception), so the 4,000 BCE west-Ukrainian hole is real in skeletons, not just in effort."
 literature = [
-  { cite = "Mathieson et al. 2018, Nature (Ukraine Mesolithic/Neolithic)", checked = false },
-  { cite = "Nikitin et al. 2019, Verteba cave Trypillian genomes", checked = false },
+  { cite = "Mathieson et al. 2018, 'The genomic history of southeastern Europe', Nature 555", checked = true, url = "https://doi.org/10.1038/nature25778", read = "AADR annotation + abstract", note = "AADR: Zaporizhia/Kirovohrad (Dnieper) Mesolithic and Neolithic genomes." },
+  { cite = "Nikitin et al. 2025, 'A genomic history of the North Pontic Region from the Neolithic to the Bronze Age', Nature 639", checked = true, url = "https://doi.org/10.1038/s41586-024-08372-2", read = "AADR annotation + abstract", note = "Replaces 'Nikitin et al. 2019', an LBK Austria paper. AADR: Verteba Cave and Ternopil Trypillia genomes. Says nothing on how rare Trypillian burial was." },
 ]
 would_settle = "Sequence Belarusian Neman and Narva-culture burials (e.g. Krasnasielski); ingest Ukrainian Neolithic genomes from Nikitin's and Lillie's projects."
 speculative_rule = "Fill 0.85 in the Ukrainian steppe and Dnieper rapids, 0.6 in the forest-steppe at 4,000 BCE, and 0.4 across Belarus north of the Pripyat."
@@ -144,7 +144,7 @@ confidence = "medium"
 basis = ["literature", "dossier_statistics"]
 reasoning = "Coverage is 0% to 8,000 BCE, then 18% at 7,000 BCE and 79-93% afterwards, when Zvejnieki and the Narva-culture sites dominate. Pre-Kunda and Kunda sites (Pulli, Kunda Lammasmägi) yield tools, not graves. The 84-122-cell gap is the whole of the three countries."
 literature = [
-  { cite = "Mittnik et al. 2018, 'The genetic prehistory of the Baltic Sea region', Nat. Commun.", checked = false },
+  { cite = "Mittnik et al. 2018, 'The genetic prehistory of the Baltic Sea region', Nat. Commun. 9", checked = true, url = "https://doi.org/10.1038/s41467-018-02825-9", read = "AADR annotation + abstract", note = "Abstract: 38 North Europeans from ~9500 BP; AADR earliest Lithuanian genome c. 6300 BCE." },
 ]
 would_settle = "Date and sample isolated Early Mesolithic human bone from Latvian and Estonian collections."
 speculative_rule = "Fill 0.3 at 10,000-9,000 BCE and 0.5 at 8,000-7,000 BCE across the Baltic, rising to 0.8 around Lake Burtnieks."
@@ -177,7 +177,7 @@ confidence = "medium"
 basis = ["environment", "literature", "dossier_statistics"]
 reasoning = "0-2% coverage; at 10,000 BCE the 274-cell gap is 2,001 km from any genome, and the Fennoscandian ice sheet covered most of it. By 8,000 BCE coasts of western Norway and Bohuslän were settled, and shell middens there preserve bone; inland Sweden and Finland were thinly peopled."
 literature = [
-  { cite = "Günther et al. 2018, 'Population genomics of Mesolithic Scandinavia', PLoS Biol.", checked = false },
+  { cite = "Günther et al. 2018, 'Population genomics of Mesolithic Scandinavia', PLoS Biol. 16", checked = true, url = "https://doi.org/10.1371/journal.pbio.2003703", read = "AADR annotation + abstract", note = "Abstract: seven Scandinavian HGs 9,500-6,000 BP; north-eastern migrants followed the ice-free Norwegian coast." },
 ]
 would_settle = "More Early Mesolithic coastal burials from Norway and Bohuslän."
 speculative_rule = "Fill 0 under the ice margin at 10,000 BCE; 0.4 on deglaciated coasts at 9,000-8,000 BCE and 0.15 inland."
@@ -200,7 +200,7 @@ confidence = "medium"
 basis = ["environment", "literature", "dossier_statistics"]
 reasoning = "Coverage stays 4-14% because genomes cluster in Skåne, Gotland, Öland and Motala. The 700-800-cell gap is Finland, Norrland and northern Norway. Finnish Stone Age burials survive almost only as ochre stains or burnt bone; the first Finnish genomes are Iron Age (Levänluhta, in a lake). Northern Norwegian coastal middens are the exception."
 literature = [
-  { cite = "Lamnidis et al. 2018, 'Ancient Fennoscandian genomes', Nat. Commun.", checked = false },
+  { cite = "Lamnidis et al. 2018, 'Ancient Fennoscandian genomes reveal origin and spread of Siberian ancestry in Europe', Nat. Commun. 9", checked = true, url = "https://doi.org/10.1038/s41467-018-07483-5", read = "AADR annotation + abstract", note = "AADR: its Finnish genomes are Levänluhta, c. 550 CE; abstract: Iron Age Finland." },
 ]
 would_settle = "Sample burnt-bone-free Comb Ware and Pitted Ware graves; target petrous bones in northern Norwegian middens."
 speculative_rule = "Fill 0.15 across Finland and inland Norrland, 0.5 on the Norwegian coast and 0.8 in southern Sweden and Denmark for 7,000-3,000 BCE."
@@ -238,7 +238,7 @@ confidence = "medium"
 basis = ["literature", "environment", "neighbouring_evidence"]
 reasoning = "Coverage is 0% to 7,000 BCE, then 30-92% once LBK cemeteries appear: a burial-practice switch, not a preservation one. The 620-cell gap is 221-848 km from evidence."
 literature = [
-  { cite = "Posth et al. 2023, 'Palaeogenomics of Upper Palaeolithic to Neolithic European hunter-gatherers', Nature", checked = false },
+  { cite = "Posth et al. 2023, 'Palaeogenomics of Upper Palaeolithic to Neolithic European hunter-gatherers', Nature 615", checked = true, url = "https://doi.org/10.1038/s41586-023-05726-0", read = "AADR annotation + abstract", note = "Abstract: 356 hunter-gatherer genomes 35,000-5,000 BP, few from central European Mesolithic in the AADR." },
 ]
 would_settle = "Ingest Posth et al. 2023 and later Mesolithic genomes; sample Ofnet and Bad Dürrenberg collections."
 speculative_rule = "Fill 0.8 across Germany, Poland, Czechia and Austria for 10,000-7,000 BCE."
@@ -275,7 +275,7 @@ confidence = "medium"
 basis = ["literature", "environment", "dossier_statistics"]
 reasoning = "Coverage is 7-18% to 6,000 BCE, then 68-85%. Early gaps of 300-345 cells lie 173-448 km from genomes."
 literature = [
-  { cite = "Rivollat et al. 2020, 'Ancient genome-wide DNA from France', Sci. Adv.", checked = false },
+  { cite = "Rivollat et al. 2020, 'Ancient genome-wide DNA from France highlights the complexity of interactions between Mesolithic hunter-gatherers and Neolithic farmers', Sci. Adv. 6", checked = true, url = "https://doi.org/10.1126/sciadv.aaz5344", read = "AADR annotation + abstract", note = "Abstract: 101 individuals, only 3 Mesolithic against 98 Neolithic (7000-3000 BCE)." },
 ]
 would_settle = "Sample Mesolithic burials of the Paris Basin and the Meuse caves."
 speculative_rule = "Fill 0.75 before 5,000 BCE and 0.9 after, with 0.5 on Breton granite and Campine sand."
@@ -307,7 +307,7 @@ confidence = "medium"
 basis = ["literature", "environment", "dossier_statistics"]
 reasoning = "Coverage is 0% to 7,000 BCE, 19-52% by 6,000-4,000 BCE, 94% at 3,000 BCE. Early gaps are 296-301 cells, 352-1,234 km from genomes. Bone preservation is good in limestone caves, poorer in southern open sites."
 literature = [
-  { cite = "Olalde et al. 2019, 'The genomic history of the Iberian Peninsula', Science", checked = false },
+  { cite = "Olalde et al. 2019, 'The genomic history of the Iberian Peninsula over the past 8000 years', Science 363", checked = true, url = "https://doi.org/10.1126/science.aav4040", read = "AADR annotation + abstract", note = "Abstract: 271 ancient Iberians; AADR Mesolithic genomes few against many Neolithic-Chalcolithic." },
 ]
 would_settle = "Sample interior Iberian Mesolithic sites (El Collado, Cueva de la Cocina)."
 speculative_rule = "Fill 0.75 in the north and Atlantic coast, 0.5 on the Meseta and in the south, for all slices."
@@ -339,7 +339,7 @@ confidence = "medium"
 basis = ["literature", "environment", "dossier_statistics"]
 reasoning = "Coverage is 0-6% to 5,000 BCE and 97-100% after farming. Gaps of 151-294 cells cover Ireland and Scotland. 'recording_practice' stands in for a burial-practice cause here, which the CAUSES list lacks."
 literature = [
-  { cite = "Brace et al. 2019, 'Ancient genomes indicate population replacement in Early Neolithic Britain', Nat. Ecol. Evol.", checked = false },
+  { cite = "Brace et al. 2019, 'Ancient genomes indicate population replacement in Early Neolithic Britain', Nat. Ecol. Evol. 3", checked = true, url = "https://doi.org/10.1038/s41559-019-0871-9", read = "AADR annotation + abstract", note = "Abstract: 6 Mesolithic against 67 Neolithic genomes, 8500-2500 BC." },
 ]
 would_settle = "Sample Mesolithic remains from Scottish shell middens (Oronsay) and Irish caves."
 speculative_rule = "Fill 0.25 in Ireland and Scotland and 0.6 in limestone England for 10,000-5,000 BCE; 0.9 after 4,000 BCE."
@@ -376,8 +376,8 @@ confidence = "medium"
 basis = ["literature", "environment", "neighbouring_evidence"]
 reasoning = "Coverage swings 0-69% between slices; gaps of 25-153 cells sit 102-725 km from genomes. Limestone caves preserve bone well."
 literature = [
-  { cite = "Antonio et al. 2019, 'Ancient Rome', Science (Italian Neolithic)", checked = false },
-  { cite = "Fernandes et al. 2020, 'The spread of steppe and Iranian-related ancestry in the islands of the western Mediterranean', Nat. Ecol. Evol.", checked = false },
+  { cite = "Antonio et al. 2019, 'Ancient Rome: a genetic crossroads of Europe and the Mediterranean', Science 366 (includes Italian Mesolithic-Neolithic)", checked = true, url = "https://doi.org/10.1126/science.aay6826", read = "AADR annotation + abstract", note = "Abstract: 127 genomes from 29 sites around Rome spanning 12,000 years." },
+  { cite = "Fernandes et al. 2020, 'The spread of steppe and Iranian-related ancestry in the islands of the western Mediterranean', Nat. Ecol. Evol. 4", checked = true, url = "https://doi.org/10.1038/s41559-020-1102-0", read = "AADR annotation + abstract", note = "Abstract: Sardinian, Sicilian and Balearic genomes raised from 5 to 66." },
 ]
 would_settle = "Sample Apulian and Calabrian Neolithic graves."
 speculative_rule = "Fill 0.8, 0.6 in the south."
@@ -399,7 +399,7 @@ confidence = "medium"
 basis = ["literature", "neighbouring_evidence", "dossier_statistics"]
 reasoning = "The main early gap (323-417 cells) lies only 107-129 km from genomes, i.e. just past the Iron Gates. Later gaps are small (28-132 cells)."
 literature = [
-  { cite = "Mathieson et al. 2018, Nature", checked = false },
+  { cite = "Mathieson et al. 2018, 'The genomic history of southeastern Europe', Nature 555", checked = true, url = "https://doi.org/10.1038/nature25778", read = "AADR annotation + abstract", note = "AADR: Iron Gates (Serbia/Romania) Mesolithic genomes are the dense early cluster." },
 ]
 would_settle = "Sample Mesolithic and Early Neolithic graves in Bulgaria and Albania."
 speculative_rule = "Fill 0.8; 0.6 in the Dinaric karst uplands."
@@ -421,7 +421,7 @@ confidence = "medium"
 basis = ["literature", "dossier_statistics", "environment"]
 reasoning = "Coverage 0-66%; the 5,000 BCE gap (359 cells, 308 km) is a slice artefact between Barcın/Tepecik-Çiftlik and the Chalcolithic of Çamlıbel Tarlası. Heat in SE Anatolia lowers success."
 literature = [
-  { cite = "Kılınç et al. 2016, 'The demographic development of the first farmers in Anatolia', Curr. Biol.", checked = false },
+  { cite = "Kılınç et al. 2016, 'The demographic development of the first farmers in Anatolia', Curr. Biol. 26", checked = true, url = "https://doi.org/10.1016/j.cub.2016.07.057", read = "AADR annotation + abstract", note = "Abstract: nine central Anatolian Neolithic genomes." },
 ]
 would_settle = "Sample Middle Chalcolithic burials (Yumuktepe, Değirmentepe)."
 speculative_rule = "Fill 0.75 on the plateau, 0.5 in the SE lowlands."
@@ -448,7 +448,7 @@ confidence = "medium"
 basis = ["literature", "neighbouring_evidence"]
 reasoning = "Coverage 0-72%; gaps of 28-95 cells in Azerbaijan, 44-958 km from genomes."
 literature = [
-  { cite = "Lazaridis et al. 2022, 'The genetic history of the Southern Arc', Science", checked = false },
+  { cite = "Lazaridis et al. 2022, 'The genetic history of the Southern Arc: a bridge between West Asia and Europe', Science 377", checked = true, url = "https://doi.org/10.1126/science.abm4247", read = "AADR annotation + abstract", note = "Abstract: 727 individuals from the Southern Arc incl. the Caucasus." },
 ]
 would_settle = "Sample Shomutepe and Leylatepe burials in Azerbaijan."
 speculative_rule = "Fill 0.75; 0.6 on the Kura-Araxes lowlands."
@@ -475,8 +475,8 @@ confidence = "medium"
 basis = ["literature", "environment", "dossier_statistics"]
 reasoning = "Coverage alternates (39% at 8,000, 0% at 5,000, 31% at 4,000 BCE). Petrous sampling succeeds in Natufian and PPNB caves (Raqefet, Ain Ghazal, Ba'ja), less in open sites. Syria is barely sampled."
 literature = [
-  { cite = "Lazaridis et al. 2016, 'Genomic insights into the origin of farming in the ancient Near East', Nature", checked = false },
-  { cite = "Harney et al. 2018, Peqi'in Chalcolithic genomes, Nat. Commun.", checked = false },
+  { cite = "Lazaridis et al. 2016, 'Genomic insights into the origin of farming in the ancient Near East', Nature 536", checked = true, url = "https://doi.org/10.1038/nature19310", read = "AADR annotation + abstract", note = "AADR: Natufian and PPNB genomes from Israel/Jordan caves." },
+  { cite = "Harney et al. 2018, 'Ancient DNA from Chalcolithic Israel reveals the role of population mixture in cultural transformation', Nat. Commun. 9", checked = true, url = "https://doi.org/10.1038/s41467-018-05649-9", read = "AADR annotation + abstract", note = "Abstract: 22 genomes from Peqi'in Cave." },
 ]
 would_settle = "Sample Wadi Rabah and Syrian PPN/Halaf burials."
 speculative_rule = "Fill 0.6 in hill country, 0.4 in the Syrian desert; 0.3 at 5,000 BCE everywhere."
@@ -508,7 +508,7 @@ confidence = "low"
 basis = ["environment", "literature"]
 reasoning = "Coverage 0-8%; genomes only from Nemrik, Shanidar, Bestansur. Southern Ubaid and Uruk cemeteries (Eridu) exist but DNA rarely survives."
 literature = [
-  { cite = "Lazaridis et al. 2022, Science", checked = false },
+  { cite = "Lazaridis et al. 2022, 'The genetic history of the Southern Arc: a bridge between West Asia and Europe', Science 377", checked = true, url = "https://doi.org/10.1126/science.abm4247", read = "AADR annotation + abstract", note = "AADR: Mesopotamian genomes only from Nemrik, Shanidar and Bestansur." },
 ]
 would_settle = "Petrous sampling from Iraqi Kurdistan Neolithic sites."
 speculative_rule = "Fill 0.6 in the northern foothills, 0.15 on the southern alluvium."
@@ -535,7 +535,7 @@ confidence = "low"
 basis = ["literature", "environment"]
 reasoning = "Coverage 0-24%; the 662-891-cell gap is the plateau and Afghanistan, 259-855 km from genomes."
 literature = [
-  { cite = "Narasimhan et al. 2019, 'The formation of human populations in South and Central Asia', Science", checked = false },
+  { cite = "Narasimhan et al. 2019, 'The formation of human populations in South and Central Asia', Science 365", checked = true, url = "https://doi.org/10.1126/science.aat7487", read = "AADR annotation + abstract", note = "Abstract: 523 ancient South and Central Asians; AADR Iranian genomes cluster in the Zagros, Hissar and Shahr-i Sokhta." },
 ]
 would_settle = "Sample Zagros and Kerman Neolithic-Chalcolithic burials."
 speculative_rule = "Fill 0.55 in the Zagros, 0.4 on the plateau, 0.25 in the deserts and Afghanistan."
@@ -577,7 +577,7 @@ confidence = "low"
 basis = ["literature", "environment"]
 reasoning = "Coverage 0-21%; gaps of 753-1,007 cells, 452-1,518 km from genomes."
 literature = [
-  { cite = "Narasimhan et al. 2019, Science", checked = false },
+  { cite = "Narasimhan et al. 2019, 'The formation of human populations in South and Central Asia', Science 365", checked = true, url = "https://doi.org/10.1126/science.aat7487", read = "AADR annotation + abstract", note = "AADR: Central Asian genomes mostly Turkmenistan Chalcolithic and later." },
 ]
 would_settle = "Sample Kelteminar and Jeitun burials."
 speculative_rule = "Fill 0.6 in the Kopet Dag piedmont and Kazakh steppe, 0.3 in the Karakum and Kyzylkum."
@@ -614,7 +614,7 @@ confidence = "low"
 basis = ["environment", "literature"]
 reasoning = "0% coverage in every slice; the nearest genome is 1,220-1,611 km away. The 1,119-1,181-cell gap is pure extrapolation."
 literature = [
-  { cite = "Martiniano et al. 2024, Tylos-period genomes from Bahrain, Cell", checked = false },
+  { cite = "Martiniano et al. 2024, 'Ancient genomes illuminate Eastern Arabian population history and adaptation against malaria', Cell Genomics 4 (Tylos-period Bahrain)", checked = true, url = "https://doi.org/10.1016/j.xgen.2024.100507", read = "AADR annotation + abstract", note = "Abstract: harsh climate has hindered ancient DNA in Arabia; four Tylos-period Bahraini genomes." },
 ]
 would_settle = "Petrous sampling from Jebel Buhais and Omani highland caves."
 speculative_rule = "Fill 0.15, 0.3 in the Hajar and Yemeni highlands."
@@ -641,8 +641,8 @@ confidence = "low"
 basis = ["environment", "literature"]
 reasoning = "0% coverage; nearest genome 973-1,551 km away. Pure extrapolation for haplogroups."
 literature = [
-  { cite = "Salem et al. 2025, Takarkori genomes, Nature", checked = false },
-  { cite = "Morez Jacobs et al. 2025, Nuwayrat Old Kingdom genome, Nature", checked = false },
+  { cite = "Salem et al. 2025, 'Ancient DNA from the Green Sahara reveals ancestral North African lineage', Nature 641", checked = true, url = "https://doi.org/10.1038/s41586-025-08793-7", read = "AADR annotation + abstract", note = "Abstract: DNA rarely preserves in the Sahara; two Takarkori genomes. Not in AADR v66.p1: added from the paper via data/isostyle/inputs/supplementary_genomes.toml (sample and mt layers only)." },
+  { cite = "Morez Jacobs et al. 2025, 'Whole-genome ancestry of an Old Kingdom Egyptian', Nature (Nuwayrat)", checked = true, url = "https://doi.org/10.1038/s41586-025-09195-5", read = "AADR annotation + abstract", note = "Abstract: poor DNA preservation has kept Egyptian whole genomes out of reach; one Nuwayrat genome c. 2700 BCE." },
 ]
 would_settle = "Sample Badarian and Naqada petrous bones."
 speculative_rule = "Fill 0.3 in the Nile Valley and Libyan rock shelters, 0.05 in the dune seas."
@@ -700,14 +700,16 @@ region = "Nile & Sudan"
 slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
 gap_ids = ["adna_samples-10000-09", "adna_samples-9000-39", "adna_samples-8000-69", "adna_samples-7000-100", "adna_samples-5000-157", "adna_samples-6000-128", "adna_samples-3000-211", "adna_samples-4000-186"]
 why_empty = ["preservation", "research_intensity"]
-why_note = "PRESERVATION; huge cemeteries (Jebel Sahaba, Al Khiday, Kadruka) exist."
+why_note = "PRESERVATION; huge cemeteries (Jebel Sahaba, Al Khiday, Kadruka) exist, and sampling has been tried: Kadruka's Neolithic bone gave no DNA."
 expected = 0.2
 expected_range = [0.05, 0.4]
 confidence = "low"
 basis = ["environment", "literature"]
-reasoning = "0% coverage; nearest genome 1,252-2,771 km. Extrapolation."
-literature = []
-would_settle = "Petrous sampling from Al Khiday and Kadruka."
+reasoning = "0% coverage; nearest genome 1,252-2,771 km. Extrapolation. The one Sudanese genome of the period, Kadruka 1 (c. 2000 BCE), comes from mummified hair and covers 534 1240K SNPs in AADR (assessment CRITICAL), so it is filtered out; Kadruka 21's Neolithic teeth, petrous bones and crania yielded none."
+literature = [
+  { cite = "Wang et al. 2022, '4000-year-old hair from the Middle Nile highlights unusual ancient DNA degradation pattern and a potential source of early eastern Africa pastoralists', Sci. Rep. 12", checked = true, url = "https://doi.org/10.1038/s41598-022-25384-y", read = "abstract + AADR annotation", note = "Only a Kerma-period hair sample (3928-4139 cal BP) gave authentic DNA; Neolithic Kadruka 21 bone did not. Genome close to early eastern African pastoralists. AADR KDR001: 534 SNPs, CRITICAL." },
+]
+would_settle = "Petrous sampling from Al Khiday and Kadruka; more mummified hair or skin from desert burials."
 speculative_rule = "Fill 0.2 along the Nile, 0.05 elsewhere."
 
 [[judgement.adjust]]
@@ -729,7 +731,8 @@ confidence = "low"
 basis = ["environment", "literature"]
 reasoning = "0% coverage; nearest 1,764-2,457 km. Extrapolation."
 literature = [
-  { cite = "Sereno et al. 2008, Gobero, PLoS ONE", checked = false },
+  { cite = "Sereno et al. 2008, 'Lakeside cemeteries in the Sahara: 5000 years of Holocene population and environmental change', PLoS ONE 3 (Gobero)", checked = true, url = "https://doi.org/10.1371/journal.pone.0002995", read = "abstract", note = "Abstract: ~200 Holocene burials at Gobero (c. 7700-2500 BCE), so skeletons exist; no aDNA reported." },
+  { cite = "Stojanowski, Irish & Sereno 2026, 'Early to Middle Holocene hunter-fisher-gatherers from the Green Sahara (Gobero, Niger): dental evidence for regional African affinities', Am. J. Biol. Anthropol. 190", checked = true, url = "https://doi.org/10.1002/ajpa.70262", read = "abstract + repository page", note = "Says poor preservation precludes aDNA in the region, so uses teeth: Early and Middle Holocene Gobero are continuous and closest to al-Khiday (Sudan). The nearest thing to genetics the Sahel has for this period." },
 ]
 would_settle = "Sample Gobero and Takarkori-like rockshelters."
 speculative_rule = "Fill 0.1, 0.2 in rock shelters of Aïr and Tibesti."
@@ -756,7 +759,7 @@ confidence = "medium"
 basis = ["environment", "literature"]
 reasoning = "0% coverage; nearest 2,639-3,752 km."
 literature = [
-  { cite = "Lipson et al. 2020, Shum Laka, Nature", checked = false },
+  { cite = "Lipson et al. 2020, 'Ancient West African foragers in the context of African population history', Nature 577 (Shum Laka)", checked = true, url = "https://doi.org/10.1038/s41586-020-1929-1", read = "AADR annotation + abstract", note = "Abstract: four Shum Laka children, the only West-Central African aDNA of the period." },
 ]
 would_settle = "Rock-shelter sampling."
 speculative_rule = "Fill 0.05."
@@ -773,7 +776,7 @@ confidence = "low"
 basis = ["environment", "literature"]
 reasoning = "0% coverage; nearest 504-2,949 km. Extrapolation."
 literature = [
-  { cite = "Gallego Llorente et al. 2015, Mota, Science", checked = false },
+  { cite = "Gallego Llorente et al. 2015, 'Ancient Ethiopian genome reveals extensive Eurasian admixture throughout the African continent', Science 350 (Mota)", checked = true, url = "https://doi.org/10.1126/science.aad2879", read = "AADR annotation + abstract", note = "Abstract: Mota, a 4,500-year-old Ethiopian genome." },
 ]
 would_settle = "Highland cave sampling."
 speculative_rule = "Fill 0.3 in the Ethiopian highlands, 0.05 in lowlands."
@@ -800,8 +803,8 @@ confidence = "low"
 basis = ["environment", "literature"]
 reasoning = "0-6% coverage; the gap is 1,229-1,323 cells, mostly Saharan Algeria."
 literature = [
-  { cite = "Fregel et al. 2018, PNAS", checked = false },
-  { cite = "van de Loosdrecht et al. 2018, Science", checked = false },
+  { cite = "Fregel et al. 2018, 'Ancient genomes from North Africa evidence prehistoric migrations to the Maghreb from both the Levant and Europe', PNAS 115", checked = true, url = "https://doi.org/10.1073/pnas.1800851115", read = "AADR annotation + abstract", note = "Abstract: Early and Late Neolithic Moroccan genomes." },
+  { cite = "van de Loosdrecht et al. 2018, 'Pleistocene North African genomes link Near Eastern and sub-Saharan African human populations', Science 360", checked = true, url = "https://doi.org/10.1126/science.aar8380", read = "AADR annotation + abstract", note = "Abstract: seven 15,000-year-old Taforalt genomes." },
 ]
 would_settle = "Sample Capsian escargotière burials."
 speculative_rule = "Fill 0.6 in the Tell and Moroccan Atlas, 0.1 south of the Saharan Atlas."
@@ -848,7 +851,7 @@ confidence = "low"
 basis = ["environment", "literature"]
 reasoning = "Pakistani Baluchistan, 75 cells."
 literature = [
-  { cite = "Narasimhan et al. 2019, Science", checked = false },
+  { cite = "Narasimhan et al. 2019, 'The formation of human populations in South and Central Asia', Science 365", checked = true, url = "https://doi.org/10.1126/science.aat7487", read = "AADR annotation + abstract", note = "AADR: no Baluchistan genomes; nearest are Shahr-i Sokhta and Indus Periphery outliers." },
 ]
 would_settle = "Petrous sampling."
 speculative_rule = "Fill 0.15."

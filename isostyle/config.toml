@@ -68,11 +68,101 @@ bone_ph_min = 5.5
 [speculative]
 # Fill smoothing, chosen by `python -m isostyle evals --search` (the smoothest
 # grid point that passes every guard; data/isostyle/evals/search.json).
-blend_rings = 12     # hex rings over which judged values lean toward nearby observed ones
+blend_rings = 16     # hex rings over which judged values lean toward nearby observed ones
 time_smooth = 0.4    # share of the way a speculative cell moves toward its neighbours in time
 smooth_iters = 16    # neighbour-averaging passes over speculative cells (observed cells fixed)
 smooth_rate = 0.5
-bridge = 0.75        # a speculative cell observed in the slices before and after leans toward those two values
+bridge = 1.0         # a speculative cell observed in the slices before and after leans toward those two values
+bridge_conf = 0      # ... by the full `bridge`, whatever the judgement's confidence
+bridge_hold = 1      # ... and keeps that value through the smoothing: its own record outranks its neighbours'
+# Presence-only layers: cells with dated evidence under the threshold move
+# toward the observed 1.0 by s = (E / e_min) ** soft_power (speculative.py).
+# Chosen 2026-11-13 against the regression cases with the hand-painted cores
+# removed; the mean speculative value of these layers rises by 0.01-0.02.
+soft_sources = 1
+soft_power = 0.1
+
+[ancestry]
+# Autosomal ancestry proportions per AADR individual (`python -m isostyle
+# ancestry`; needs R + ADMIXTOOLS 2 and the 1240K genotypes; isostyle/ancestry/README.md).
+anno = "aadr_v66.p1_1240K.anno"
+geno = "aadr_v66.p1_1240K"     # prefix of the .geno/.snp/.ind trio in build_dir/sources
+out = "data/ancestry/ancestry.csv.gz"
+min_snps = 30000               # targets below this are `low_coverage`
+p_min = 0.01                   # a model is accepted at p >= this ...
+z_bound = 2.0                  # ... with every weight inside [0, 1] within this many SE
+max_sources = 4
+# true: sources not in the model under test join the outgroups (rotating qpAdm).
+rotate = true
+order = ["whg", "ehg", "ana", "irn", "lev", "naf"]
+# Outgroups ("right"). The first is the base. `ids` picks AADR genetic IDs
+# within the groups; without it every passing individual of the group is used.
+right = [
+  { pop = "Mbuti", groups = ["Mbuti"] },
+  { pop = "UstIshim", groups = ["Russia_UstIshim_IUP"] },
+  { pop = "Kostenki14", groups = ["Russia_Kostenki_UP"], ids = ["Kostenki14.SG"] },
+  { pop = "MA1", groups = ["Russia_Malta_UP"], ids = ["MA1.SG"] },
+  { pop = "Han", groups = ["Han"] },
+  { pop = "Papuan", groups = ["Papuan"] },
+  { pop = "Onge", groups = ["India_100BP"], ids = ["Andaman.SG"] },
+  { pop = "Mota", groups = ["Ethiopia_MotaCave_4500BP"], ids = ["mota.SG"] },
+]
+
+# The six distal sources. Group labels are AADR v66.p1 Group IDs and are
+# checked against the .anno (isostyle/tests/test_ancestry.py).
+[ancestry.sources.whg]
+name = "Western hunter-gatherer"
+groups = ["Luxembourg_Loschbour_Mesolithic", "Switzerland_Epipaleolithic", "Italy_NordEst_Epigravettian"]
+ids = ["Loschbour.DG", "Bichon.SG", "Villabruna.AG.BY.AA"]
+
+[ancestry.sources.ehg]
+name = "Eastern hunter-gatherer"
+groups = ["Russia_Karelia_Mesolithic_HG", "Russia_Karelia_Mesolithic", "Russia_Samara_EN_Mesolithic", "Russia_Sidelkino2_Mesolithic-Dup"]
+
+[ancestry.sources.ana]
+name = "Anatolian farmer"
+groups = ["Turkey_N"]
+
+[ancestry.sources.irn]
+name = "Iranian farmer / Caucasus hunter-gatherer"
+groups = ["Iran_GanjDareh_N", "Georgia_KotiasKlde_Mesolithic", "Georgia_Satsurblia_LateUP"]
+
+[ancestry.sources.lev]
+name = "Levantine forager"
+groups = ["Israel_Natufian"]
+
+[ancestry.sources.naf]
+name = "North African forager"
+groups = ["Morocco_Iberomaurusian"]
+
+# Known results the table must reproduce within `tol` (default 0.10): the
+# phase-0 validations, kept as regression guards in `evals`.
+[[ancestry.validate]]
+name = "Cheddar Man is a western hunter-gatherer"
+individual = "I3016"
+expect = { whg = 1.0 }
+
+[[ancestry.validate]]
+name = "Oetzi is mostly Anatolian farmer with a little WHG"
+individual = "Iceman"
+expect = { ana = 0.90, whg = 0.10 }
+
+[[ancestry.validate]]
+name = "An LBK farmer (Derenburg) is mostly Anatolian farmer"
+individual = "DER002"
+expect = { ana = 0.93 }
+tol = 0.08
+
+[[ancestry.validate]]
+name = "Globular Amphora shows the hunter-gatherer resurgence"
+individual = "RISE1163"
+expect = { whg = 0.25, ana = 0.75 }
+
+[[ancestry.validate]]
+name = "Khvalynsk is EHG with Iran/CHG"
+individual = "I6737"
+expect = { ehg = 0.75, irn = 0.25 }
+tol = 0.15
 
 [output]
 build_dir = "build/isostyle"
@@ -239,6 +329,30 @@ name = "Allen Ancient DNA Resource v66.p1, 1240K annotation (Mallick et al. 2024
 kind = "url"
 url = "https://dataverse.harvard.edu/api/access/datafile/13994515"
 file = "aadr_v66.p1_1240K.anno"
+
+# The 1240K genotypes (EIGENSTRAT trio) for `python -m isostyle ancestry`.
+# Optional: `fetch` skips them unless ISOSTYLE_FETCH_OPTIONAL=1 (7.2 GB; never
+# committed). Dataverse file ids checked on doi:10.7910/DVN/FFIDCW, 2026-11-13.
+[[sources]]
+name = "AADR v66.p1, 1240K genotypes (.geno, 7.1 GB; CC0)"
+kind = "url"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994829"
+file = "aadr_v66.p1_1240K.geno"
+optional = true
+
+[[sources]]
+name = "AADR v66.p1, 1240K SNP list (.snp; CC0)"
+kind = "url"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994514"
+file = "aadr_v66.p1_1240K.snp"
+optional = true
+
+[[sources]]
+name = "AADR v66.p1, 1240K individual list (.ind; CC0)"
+kind = "url"
+url = "https://dataverse.harvard.edu/api/access/datafile/13994513"
+file = "aadr_v66.p1_1240K.ind"
+optional = true
 
 # ---------------------------------------------------------------- EUROEVOL
 # UCL Discovery refuses scripted downloads (bot check, then HTTP 429), so these

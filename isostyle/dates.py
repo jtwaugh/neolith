@@ -2,7 +2,9 @@
 
 Reads the raw downloads cached by `make settlements`. Unlike that step,
 nothing is dropped by site type (graves and hoards carry ornaments and
-bone tools), and each date keeps its whole calibrated distribution.
+bone tools), and each date keeps its whole calibrated distribution. Single
+dates rejected in data/settlements/records.toml (`[[reject]]`: filed under
+the wrong site or older than anything on it) are dropped here too.
 """
 import csv
 import glob
@@ -14,7 +16,7 @@ from collections import defaultdict
 import numpy as np
 import pandas as pd
 
-from pipeline.settlements import _clean, fix_mojibake, lab_key, load_curve, merge_spellings
+from pipeline.settlements import _clean, fix_mojibake, lab_key, load_curve, load_rejects, merge_spellings
 
 # Compilations named in XRONOS reference lists, for the per-source coverage
 # table. Order matters: the first pattern that matches a reference wins.
@@ -104,6 +106,16 @@ def read_table(path, spec, seen_labs):
     return out
 
 
+def records_path(dc):
+    """The records.toml that `make settlements` uses, from pipeline/config.toml."""
+    import tomllib
+    path = dc.get("pipeline_config")
+    if not path or not os.path.exists(path):
+        return None
+    with open(path, "rb") as f:
+        return tomllib.load(f).get("settlements", {}).get("records")
+
+
 def load(cfg, tables, region):
     """All date rows inside the region box, as a DataFrame with site ids.
 
@@ -123,6 +135,10 @@ def load(cfg, tables, region):
         extra = read_table(path, spec, seen)
         counts[f"{spec['name']}_added"] = len(extra)
         rows += extra
+    rejects = load_rejects(records_path(dc))
+    before = len(rows)
+    rows = [r for r in rows if (r["site"], lab_key(r["labnr"])) not in rejects]
+    counts["rejected"] = before - len(rows)
     rows = [r for r in rows if region["lon_min"] <= r["lon"] <= region["lon_max"]
             and region["lat_min"] <= r["lat"] <= region["lat_max"]]
     counts["in_region"] = len(rows)

@@ -5,7 +5,8 @@ python -m pipeline biome [--config pipeline/config.toml]   # subset the BIOME4 N
 python -m pipeline anchors [--config pipeline/config.toml]  # pollen anchor records for the biome maps
 python -m pipeline suspects                                  # screens for terrain artefacts -> build/critic/terrain/
 python -m pipeline attributions                              # ATTRIBUTIONS.md + app credits from data/ATTRIBUTIONS.toml
-python -m pipeline look --box LON0 LAT0 LON1 LAT1 [--years Y ...] [--name NAME]   # one region over time, stage by stage"""
+python -m pipeline look --box LON0 LAT0 LON1 LAT1 [--years Y ...] [--name NAME]   # one region over time, stage by stage
+python -m pipeline state [--skip cargo,web,evals,python] [--no-write]   # the state of the game -> data/state/STATE.md"""
 import argparse
 import json
 import os
@@ -497,14 +498,20 @@ def main():
     ap = argparse.ArgumentParser(prog="python -m pipeline")
     ap.add_argument("command", choices=["build", "settlements", "biome", "cultures-check", "anchors", "residuals",
                                         "look", "suspects", "places", "places-check", "inferred",
-                                        "attributions"])
+                                        "attributions", "state"])
     ap.add_argument("--config", default="pipeline/config.toml")
     ap.add_argument("--step", type=int)
     ap.add_argument("--out")
     ap.add_argument("--box", nargs=4, type=float, metavar=("LON0", "LAT0", "LON1", "LAT1"))
     ap.add_argument("--years", nargs="*", type=int)
     ap.add_argument("--name")
+    ap.add_argument("--skip", default="", help="state: comma-separated parts to skip (cargo, web, evals, python)")
+    ap.add_argument("--no-write", action="store_true", help="state: print, don't write data/state/")
     a = ap.parse_args()
+    if a.command == "state":
+        from . import state
+        card = state.run({x for x in a.skip.split(",") if x}, write=not a.no_write)
+        raise SystemExit(0 if card["pass"] else 1)
     if a.command == "attributions":
         from . import attributions
         print(attributions.write())

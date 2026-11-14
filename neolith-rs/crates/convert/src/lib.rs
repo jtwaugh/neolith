@@ -952,6 +952,68 @@ pub fn import_residuals(text: &str, hexes: usize) -> Result<neolith_core::Residu
     Ok(out)
 }
 
+/// Reads isostyle's ancestry samples (`neolith-ancestry-samples-1`, written
+/// by `python -m isostyle export`). Samples come back sorted by date.
+pub fn import_samples(text: &str) -> Result<neolith_core::Ancestry, String> {
+    use neolith_core::ancestry::{Ancestry, Component, Sample, Status};
+    let root: Json = serde_json::from_str(text).map_err(|e| format!("cannot parse the ancestry samples: {e}"))?;
+    let format = root["format"].as_str().unwrap_or("");
+    if format != "neolith-ancestry-samples-1" {
+        return Err(format!("samples: format {format:?}, expected \"neolith-ancestry-samples-1\""));
+    }
+    let text_of = |v: &Json| v.as_str().unwrap_or("").to_string();
+    let components: Vec<Component> = root["components"]
+        .as_array()
+        .ok_or("samples: no components")?
+        .iter()
+        .map(|c| Component { key: text_of(&c["key"]), name: text_of(&c["name"]) })
+        .collect();
+    let mut samples = Vec::new();
+    for r in root["samples"].as_array().ok_or("samples: no samples")? {
+        let id = text_of(&r["id"]);
+        let num = |k: &str| r[k].as_f64().ok_or(format!("sample {id}: no {k}"));
+        let status = match r["status"].as_str().unwrap_or("") {
+            "fit" => Status::Fit,
+            "no_fit" => Status::NoFit,
+            "low_coverage" => Status::LowCoverage,
+            "reference" => Status::Reference,
+            other => return Err(format!("sample {id}: unknown status {other:?}")),
+        };
+        let mut weights: Vec<u16> = match r["weights"].as_array() {
+            Some(a) => a
+                .iter()
+                .map(|w| w.as_f64().filter(|w| (0.0..=1.0).contains(w)).map(|w| (w * 1000.0).round() as u16).ok_or(format!("sample {id}: bad weight {w}")))
+                .collect::<Result<_, _>>()?,
+            None => Vec::new(),
+        };
+        // Thousandths must sum to exactly 1000: give the rounding remainder to the largest share.
+        if let Some(k) = (0..weights.len()).max_by_key(|k| weights[*k]) {
+            let sum: i32 = weights.iter().map(|w| *w as i32).sum();
+            if (sum - 1000).abs() <= 15 {
+                weights[k] = (weights[k] as i32 + 1000 - sum) as u16;
+            }
+        }
+        samples.push(Sample {
+            id: id.clone(),
+            group: text_of(&r["group"]),
+            locality: text_of(&r["locality"]),
+            pos: LonLat::new(num("lon")?, num("lat")?),
+            year: Year(num("year")? as i32),
+            sd: num("sd")?.clamp(1.0, u16::MAX as f64) as u16,
+            snps: r["snps"].as_u64().unwrap_or(0) as u32,
+            status,
+            model: text_of(&r["model"]),
+            p_milli: r["p"].as_f64().map(|p| (p.clamp(0.0, 1.0) * 1000.0).round() as u16),
+            weights,
+            publication: text_of(&r["publication"]),
+        });
+    }
+    samples.sort_by_key(|s| s.year);
+    let table = Ancestry { components, samples };
+    table.validate()?;
+    Ok(table)
+}
+
 /// Reads isostyle's speculative layers (`neolith-evidence-1`, written by
 /// `isostyle/export.py`) for a world of `hexes` hexes in file order.
 pub fn import_evidence(text: &str, hexes: usize) -> Result<Vec<EvidenceLayer>, String> {
@@ -1090,6 +1152,11 @@ pub fn stats(world: &World) -> String {
             "landform: {}",
             Landform::ALL.iter().map(|l| format!("{} {}", l.label(), n(*l))).collect::<Vec<_>>().join(", ")
         );
+    }
+    if let Some(a) = &world.ancestry {
+        let fit = a.samples.iter().filter(|x| x.status == neolith_core::ancestry::Status::Fit).count();
+        let _ = writeln!(s, "\nancestry samples: {} ({fit} with a fitted model; components {})", a.samples.len(),
+            a.components.iter().map(|c| c.key.as_str()).collect::<Vec<_>>().join(", "));
     }
     if !world.evidence.is_empty() {
         use neolith_core::evidence::{confidence, LEVELS};
@@ -1268,6 +1335,27 @@ mod lake_tests {
         let mut w = World::empty(GridSpec { cols: 2, rows: 1, origin_lon: 0.0, origin_lat: 1.0, w: 0.5773502691896262, h: 0.5 });
         w.evidence = layers;
         assert!(stats(&w).contains("evidence layers: 1"));
+    }
+
+    #[test]
+    fn samples_import() {
+        let doc = r#"{"format":"neolith-ancestry-samples-1","components":[{"key":"whg","name":"W"},{"key":"ana","name":"A"}],
+          "samples":[
+           {"id":"late","group":"G","locality":"L","lon":10.0,"lat":48.0,"year":-5000,"sd":60,"snps":500000,"status":"fit","model":"whg+ana","p":0.31,"weights":[0.333,0.666],"publication":"P2019"},
+           {"id":"early","group":"G","locality":"","lon":10.0,"lat":48.0,"year":-7000,"sd":25,"snps":1000,"status":"low_coverage","model":"","p":null,"weights":null,"publication":""}]}"#;
+        let t = import_samples(doc).unwrap();
+        assert_eq!(t.components.len(), 2);
+        assert_eq!(t.samples.iter().map(|s| s.id.as_str()).collect::<Vec<_>>(), ["early", "late"], "sorted by date");
+        assert_eq!(t.samples[1].weights, vec![333, 667], "thousandths sum to 1000");
+        assert_eq!(t.samples[1].p_milli, Some(310));
+        assert_eq!(t.samples[0].status, neolith_core::ancestry::Status::LowCoverage);
+        assert!(t.samples[0].weights.is_empty());
+        assert!(import_samples(&doc.replace("low_coverage", "maybe")).is_err());
+        assert!(import_samples(&doc.replace("samples-1", "samples-9")).is_err());
+        assert!(import_samples(&doc.replace("[0.333,0.666]", "[0.3,0.3]")).is_err(), "weights must sum to 1");
+        let mut w = World::empty(GridSpec { cols: 2, rows: 1, origin_lon: 0.0, origin_lat: 1.0, w: 0.5773502691896262, h: 0.5 });
+        w.ancestry = Some(t);
+        assert!(stats(&w).contains("ancestry samples: 2"));
     }
 
     #[test]

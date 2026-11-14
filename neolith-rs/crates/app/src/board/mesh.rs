@@ -33,6 +33,14 @@ pub const TABLE_INNER: f32 = 1.004;
 pub const TABLE_OUTER: f32 = 1.42;
 pub const TABLE_APRON: f32 = 0.09;
 
+/// Steps per wedge side of a hex top near a river (see [`build`]'s `fine`);
+/// must match `FINE_N` in board.wgsl.
+pub const FINE_N: u8 = 8;
+/// The bit of `HexVertex::corner` marking a vertex of a finer top: the
+/// rest holds the wedge k (bits 0-2) and the step j towards corner k + 1
+/// (bits 3-6), `rim` the step i out from the centre; see `vs_board`.
+pub const FINE_BIT: u8 = 0x80;
+
 /// The edges (NE, N, NW) each hex builds steps on. The other three are its
 /// neighbours' NE/N/NW edges, so every inside edge gets exactly one step.
 pub const STEP_EDGES: [usize; 3] = [0, 1, 2];
@@ -108,8 +116,38 @@ pub fn prop_template() -> (Vec<PropVertex>, Vec<u16>) {
     (vertices, indices)
 }
 
-/// Per-hex instance data for the props (48 bytes): the hex's frame on the
-/// curved board and its place on the flat one.
+/// Micro-prop slots per hex (terrain_art.wgsl, vs_micro): two bands of a
+/// five-sided lathe each, like the props but all drawn at once.
+pub const MICRO_SLOTS: u8 = 24;
+pub const MICRO_BANDS: u8 = 2;
+
+/// Indices in the micro-prop template.
+pub const fn micro_index_count() -> u32 {
+    MICRO_SLOTS as u32 * MICRO_BANDS as u32 * PROP_SIDES as u32 * 6
+}
+
+/// The template mesh instanced once per close-up hex for the micro-props;
+/// same vertex layout as [`prop_template`].
+pub fn micro_template() -> (Vec<PropVertex>, Vec<u16>) {
+    let (mut vertices, mut indices) = (Vec::new(), Vec::new());
+    for slot in 0..MICRO_SLOTS {
+        for band in 0..MICRO_BANDS {
+            let base = vertices.len() as u16;
+            for end in 0..2 {
+                for side in 0..PROP_SIDES {
+                    vertices.push(PropVertex { attrs: [slot, band, end, side] });
+                }
+            }
+            let n = PROP_SIDES as u16;
+            for side in 0..n {
+                let (a, b) = (base + side, base + (side + 1) % n);
+                indices.extend_from_slice(&[a, b, b + n, a, b + n, a + n]);
+            }
+        }
+    }
+    (vertices, indices)
+}
+
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Pod, Zeroable)]
 pub struct HexInstance {
@@ -155,7 +193,26 @@ pub struct BoardMesh {
     pub flat_half_extent: [f32; 2],
 }
 
-pub fn build(grid: &GridSpec, proj: &Projection) -> BoardMesh {
+/// The hexes whose tops `build` subdivides: those along rivers (gorges,
+/// `lines::river_hexes`) and every hex that is a mountain in any year,
+/// which board.wgsl (surface_lift) shapes from the relief. Must cover
+/// art_is_mountain: a coarse mountain tile would crack against its fine
+/// neighbours.
+pub fn fine_hexes(world: &neolith_core::World) -> Vec<bool> {
+    let rivers = super::lines::river_hexes(&world.rivers, &world.grid);
+    (0..world.grid.len())
+        .map(|i| {
+            rivers[i]
+                || world.landform[i].is_some_and(|l| l >= neolith_core::Landform::Mountains)
+                || world.terrain[i].keys().iter().any(|(_, t)| *t == neolith_core::Terrain::Mountains)
+        })
+        .collect()
+}
+
+/// `fine`: per hex, whether its top is cut finer (each of its six wedges
+/// into [`FINE_N`]² triangles), as it is near a river
+/// (`lines::river_hexes`) so the shader can cut gorges into it. Empty for none.
+pub fn build(grid: &GridSpec, proj: &Projection, fine: &[bool]) -> BoardMesh {
     let n = grid.len();
     let outside = grid.outside_edges();
     // Tops and undersides, outside walls, then up to 3 steps per hex.
@@ -175,6 +232,43 @@ pub fn build(grid: &GridSpec, proj: &Projection) -> BoardMesh {
             let id = HexId(i as u32);
             let cell = grid.col_row(id);
             let base = vertices.len() as u32;
+            if kind == KIND_TOP && fine.get(i).copied().unwrap_or(false) {
+                let c0 = grid.centre(id);
+                let corners = grid.corners(id);
+                let n = FINE_N as u32;
+                for (k, c) in corners.iter().enumerate() {
+                    let v = vertex(*c, cell, k as u8, 255, kind, depth);
+                    mesh_min_y = mesh_min_y.min(v.sphere[1]);
+                    s_ext = [s_ext[0].max(v.sphere[0].abs()), s_ext[1].max(v.sphere[2].abs())];
+                    f_ext = [f_ext[0].max(v.flat[0].abs()), f_ext[1].max(v.flat[1].abs())];
+                }
+                for k in 0..6usize {
+                    let (ca, cb) = (corners[k], corners[(k + 1) % 6]);
+                    let wedge = vertices.len() as u32;
+                    // Row i (i steps out from the centre) has i + 1 vertices.
+                    for i in 0..=n {
+                        for j in 0..=i {
+                            let (a, b) = ((i - j) as f64 / n as f64, j as f64 / n as f64);
+                            let p = LonLat::new(
+                                c0.lon + a * (ca.lon - c0.lon) + b * (cb.lon - c0.lon),
+                                c0.lat + a * (ca.lat - c0.lat) + b * (cb.lat - c0.lat),
+                            );
+                            vertices.push(vertex(p, cell, FINE_BIT | k as u8 | (j as u8) << 3, i as u8, kind, depth));
+                        }
+                    }
+                    let at = |i: u32, j: u32| wedge + i * (i + 1) / 2 + j;
+                    for i in 0..n {
+                        for j in 0..=i {
+                            // Same winding as the coarse fan (centre, k, k + 1).
+                            indices.extend_from_slice(&[at(i, j), at(i + 1, j), at(i + 1, j + 1)]);
+                            if j < i {
+                                indices.extend_from_slice(&[at(i, j), at(i + 1, j + 1), at(i, j + 1)]);
+                            }
+                        }
+                    }
+                }
+                continue;
+            }
             vertices.push(vertex(grid.centre(id), cell, 0, 0, kind, depth));
             for (k, c) in grid.corners(id).into_iter().enumerate() {
                 let v = vertex(c, cell, k as u8, 255, kind, depth);
@@ -336,7 +430,7 @@ mod tests {
     #[test]
     fn counts() {
         let (g, p) = small();
-        let m = build(&g, &p);
+        let m = build(&g, &p, &[]);
         let walls = g.outside_edges().len();
         // Every inside edge once; each step is double-sided.
         let steps = (g.len() * 6 - walls) / 2;
@@ -359,7 +453,7 @@ mod tests {
     #[test]
     fn props() {
         let (g, p) = small();
-        let m = build(&g, &p);
+        let m = build(&g, &p, &[]);
         assert_eq!(m.props.len(), g.len());
         assert_eq!(std::mem::size_of::<HexInstance>(), 48);
         // East and north are (chords, so only nearly) tangent to the sphere
@@ -377,6 +471,11 @@ mod tests {
         assert!(idx[..base].iter().all(|i| v[*i as usize].attrs[0] < PROP_BASE_SLOTS));
         assert!(idx[base..].iter().all(|i| v[*i as usize].attrs[0] >= PROP_BASE_SLOTS));
         assert!(idx.iter().all(|i| (*i as usize) < v.len()));
+        let (v, idx) = micro_template();
+        assert_eq!(v.len(), MICRO_SLOTS as usize * MICRO_BANDS as usize * 2 * PROP_SIDES as usize);
+        assert_eq!(idx.len() as u32, micro_index_count());
+        assert!(idx.iter().all(|i| (*i as usize) < v.len()));
+        assert!(v.iter().all(|x| x.attrs[0] < MICRO_SLOTS && x.attrs[1] < MICRO_BANDS));
     }
 
     /// Every triangle must face outwards (the renderer culls back faces):
@@ -384,7 +483,7 @@ mod tests {
     #[test]
     fn winding_faces_outwards() {
         let (g, p) = small();
-        let m = build(&g, &p);
+        let m = build(&g, &p, &[]);
         let thick = 0.015f32;
         let pos = |v: &HexVertex| match v.kind {
             KIND_TABLE => Vec3::from(v.sphere),
@@ -426,7 +525,7 @@ mod tests {
     #[test]
     fn steps_are_double_sided() {
         let (g, p) = small();
-        let m = build(&g, &p);
+        let m = build(&g, &p, &[]);
         let first = m.indices.iter().position(|i| m.vertices[*i as usize].kind == KIND_STEP).unwrap();
         let len = m.indices[first..].iter().take_while(|i| m.vertices[**i as usize].kind == KIND_STEP).count();
         let step = &m.indices[first..first + len];

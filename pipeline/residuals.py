@@ -76,7 +76,7 @@ def later_dates(cfg, max_bp, bounds):
         dates += settlements.parse_xronos(path, seen, aliases)
     labs = {settlements.lab_key(d["labnr"]) for d in dates}
     for spec in sc.get("tables", []):
-        path = os.path.join(raw, spec["file"])
+        path = spec.get("path") or os.path.join(raw, spec["file"])   # in-repo tables give a path
         if os.path.exists(path):
             dates += settlements.parse_table(path, spec, labs, aliases)
     w, s, e, n = bounds

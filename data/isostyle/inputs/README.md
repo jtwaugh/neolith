@@ -1,5 +1,22 @@
 # Hand-extracted inputs
 
+## `supplementary_genomes.toml`
+
+Published ancient genomes missing from AADR v66.p1, typed from their papers (dates, position,
+sex, Y/mt calls, SNP counts) with a source string each. `isostyle/people.py` `units()` adds them
+to the sample layers (adna_samples, Y and mt haplogroups). The ancestry table does not use them,
+because it needs AADR genotypes. So far: the two Takarkori women (Salem et al. 2025).
+
+## `aadr_positions.toml`
+
+Corrected positions for AADR genomes whose coordinates contradict their own locality text, applied by
+`isostyle/people.py` before any layer reads them; each entry gives the old position and its source.
+Added 2026-11-13: the three Kehf el Baroud genomes (Fregel et al. 2018), filed by AADR in Algeria at
+5.15°E, 33.35°N, moved to the cave near Ben Slimane, Morocco (7.0°W, 33.67°N, after MedAfriCarbon).
+Also the Shah Tepe genomes (Koptekin et al. 2023), filed near the Strait of Hormuz at 56.87°E, 28.33°N,
+moved to the Gorgan Plain (54.38°E, 36.95°N: 13 km north-north-west of Gorgan, after the site's
+Wikipedia description).
+
 ## Removed: Jordan et al. 2016 (2026-11-13)
 
 `jordan2016_africa.csv` held the African rows of the earliest-pottery table in the supplement to

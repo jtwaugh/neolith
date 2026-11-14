@@ -22,9 +22,9 @@ expected = 0.0
 expected_range = [0.0, 0.03]
 confidence = "high"
 basis = ["neighbouring_evidence", "literature", "dossier_statistics"]
-reasoning = "Slice mean 0.0 from 1.5 units, all absences. Gazelle-dominated assemblages; the earliest managed goats and sheep are in the northern Fertile Crescent after c. 8500 BCE."
+reasoning = "Slice mean 0.0 from 1.5 units, all absences. Gazelle-dominated assemblages. Zeder puts the initial management of morphologically wild future livestock back to at least 11,500 cal BP (c. 9500 BCE), so some herd management may already be under way in the northern Fertile Crescent at the end of this window; but those animals are morphologically wild and would not be recorded as domestic, and the southern Levantine faunas here are hunted gazelle. Animals of domestic status come later (middle Euphrates c. 8500 BCE)."
 literature = [
-  { cite = "Zeder 2011, The origins of agriculture in the Near East, Current Anthropology 52", checked = false },
+  { cite = "Zeder 2011, The origins of agriculture in the Near East, Current Anthropology 52", checked = true, url = "https://doi.org/10.1086/659307", read = "abstract", note = "Abstract read via the OpenAlex record (publisher page blocked): management of morphologically wild plants and animals reaches back to at least 11,500 cal BP; it does not date domestic-status animals." },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set livestock to 0 across the Levant at 10,000 BCE."
@@ -41,7 +41,7 @@ confidence = "medium"
 basis = ["literature", "dossier_statistics"]
 reasoning = "No edge evidence; nearest point 268 km; the slice mean is 0.56 from only 3.5 units. Domestic goats are attested in the middle Euphrates by c. 8500 BCE; the southern Levant has hunted gazelle and wild goat until c. 7500 BCE."
 literature = [
-  { cite = "Zeder 2011, Current Anthropology 52", checked = false },
+  { cite = "Zeder 2011, Current Anthropology 52", checked = true, url = "https://doi.org/10.1086/659307", read = "abstract" },
 ]
 would_settle = "Ingest the full ADEMNES fauna for PPNA/EPPNB Levantine sites."
 speculative_rule = "Set 0.3 in the northern Levant (north of 34°N) and 0 in the south at 9,000 BCE."
@@ -107,7 +107,7 @@ confidence = "medium"
 basis = ["literature"]
 reasoning = "No edge evidence; nearest point 777-800 km. Cereals inside at 5 cells (0.90) show sedentary sites, not herding. Morphologically wild sheep and goat dominate PPNA faunas."
 literature = [
-  { cite = "Zeder 2011, Current Anthropology 52", checked = false },
+  { cite = "Zeder 2011, Current Anthropology 52", checked = true, url = "https://doi.org/10.1086/659307", read = "abstract" },
 ]
 would_settle = "ADEMNES fauna for Nemrik 9 and Qermez Dere with phase dates."
 speculative_rule = "Set 0 at 10,000 BCE and 0.2 north of 35°N at 9,000 BCE; 0 in the south."
@@ -136,11 +136,9 @@ why_note = "Hassuna, Samarra, Halaf, Ubaid and Uruk faunas exist but few are in 
 expected = 0.93
 expected_range = [0.75, 1.0]
 confidence = "high"
-basis = ["neighbouring_evidence", "literature", "other_layer"]
-reasoning = "Edge cells read 0.88-1.0 where present (9-16 cells); cereals inside 0.98; pottery 0.43-0.99. Every Pottery Neolithic and later village in north Mesopotamia has domestic sheep, goat, cattle and pig. 8,000 BCE (8,500-7,500) is lower in the north and south alluvium was hardly settled."
-literature = [
-  { cite = "Arbuckle et al. 2014, Data sharing reveals complexity in the westward spread of domestic animals across Neolithic Turkey, PLoS ONE 9", checked = false },
-]
+basis = ["neighbouring_evidence", "other_layer"]
+reasoning = "Edge cells read 0.88-1.0 where present (9-16 cells); cereals inside 0.98; pottery 0.43-0.99. Pottery Neolithic and later villages in north Mesopotamia are expected to have domestic sheep, goat, cattle and pig, as their neighbours do; no checked source for Mesopotamian faunas is cited (Arbuckle et al. 2014, cited here before, covers Turkey only), so the value rests on the edge evidence. 8,000 BCE (8,500-7,500) is lower in the north and south alluvium was hardly settled."
+literature = []
 would_settle = "Digitise Halaf and Ubaid faunas (Tell Sabi Abyad, Tell Brak, Tell Abada)."
 speculative_rule = "Fill 0.75 at 8,000 BCE north of 34°N; 0.95 from 7,000 BCE in the north and from 6,000 BCE in the south."
 
@@ -173,8 +171,8 @@ confidence = "medium"
 basis = ["literature", "neighbouring_evidence"]
 reasoning = "At 9,000 BCE 13 edge cells read 0.83, but those come from Open Context phases misdated by about 1,950 years (see summary). The 9,500-8,500 window has only incipient management in the southeast; Aşıklı's sheep management starts c. 8200 BCE. Cyprus has imported wild boar, not domestic stock, at this date."
 literature = [
-  { cite = "Stiner et al. 2014, A forager-herder trade-off from broad-spectrum hunting to sheep management at Aşıklı Höyük, PNAS 111", checked = false },
-  { cite = "Arbuckle et al. 2014, PLoS ONE 9", checked = false },
+  { cite = "Stiner et al. 2014, A forager-herder trade-off from broad-spectrum hunting to sheep management at Aşıklı Höyük, PNAS 111", checked = true, url = "https://doi.org/10.1073/pnas.1322723111", read = "abstract" },
+  { cite = "Arbuckle et al. 2014, PLoS ONE 9", checked = true, url = "https://doi.org/10.1371/journal.pone.0099845", read = "full text (Europe PMC, searched passages)" },
 ]
 would_settle = "Fix the Open Context date columns (BP, not BCE) and rebuild."
 speculative_rule = "Set 0 at 10,000 BCE; at 9,000 BCE 0.2 in southeast Anatolia and 0 elsewhere."
@@ -206,8 +204,8 @@ confidence = "medium"
 basis = ["literature", "neighbouring_evidence", "dossier_statistics"]
 reasoning = "Edge cells average 0.88-0.96 (13-34 cells) but the western ones are Ulucak, Çukuriçi and Barcın shifted back by c. 1,950 years. In truth, central Anatolia (Aşıklı, Boncuklu, Çatalhöyük from 7100 BCE) has domestic caprines by c. 8000-7500 BCE; the Lake District from c. 7000; the Aegean coast and Marmara only from c. 6700-6600 BCE. Cyprus PPNB has domestic caprines and cattle from c. 8400 BCE."
 literature = [
-  { cite = "Arbuckle et al. 2014, PLoS ONE 9", checked = false },
-  { cite = "Vigne et al. 2012, First wave of cultivators spread to Cyprus at least 10,600 y ago, PNAS 109", checked = false },
+  { cite = "Arbuckle et al. 2014, PLoS ONE 9", checked = true, url = "https://doi.org/10.1371/journal.pone.0099845", read = "full text (Europe PMC, searched passages)" },
+  { cite = "Vigne et al. 2012, First wave of cultivators spread to Cyprus at least 10,600 y ago, PNAS 109", checked = true, url = "https://doi.org/10.1073/pnas.1201693109", read = "full text (PMC)" },
 ]
 would_settle = "Fix the Open Context dating and rebuild; add Boncuklu and Pınarbaşı faunas."
 speculative_rule = "At 8,000 BCE fill 0.6 on the central plateau and Cyprus and 0 west of 31°E; at 7,000 BCE fill 0.9 on the plateau and Lake District, 0.5 on the Aegean coast and 0 in the Pontic north."
@@ -266,7 +264,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "other_layer", "literature"]
 reasoning = "Edge cells 0.91-1.0 (14-38 cells); cereals and pottery inside 0.88-0.99. All known Late Neolithic and Chalcolithic faunas in Anatolia are livestock-dominated."
 literature = [
-  { cite = "Arbuckle et al. 2014, PLoS ONE 9", checked = false },
+  { cite = "Arbuckle et al. 2014, PLoS ONE 9", checked = true, url = "https://doi.org/10.1371/journal.pone.0099845", read = "full text (Europe PMC, searched passages)" },
 ]
 would_settle = "Faunas from İkiztepe, Norşuntepe and Değirmentepe."
 speculative_rule = "Fill all Anatolia and Cyprus at 0.95 from 6,000 BCE, except the Pontic forest coast at 0.7 at 6,000 BCE."
@@ -294,7 +292,7 @@ confidence = "medium"
 basis = ["literature", "other_layer"]
 reasoning = "No edge evidence; nearest point 1,888-1,912 km (Iran has no open faunal record at all). Cereals inside at 9 cells (0.97) mark sedentary Zagros sites like Chogha Golan, whose fauna is wild. Sheikh-e Abad and Asiab show hunting of wild goat."
 literature = [
-  { cite = "Zeder & Hesse 2000, The initial domestication of goats at Ganj Dareh, Science 287", checked = false },
+  { cite = "Zeder & Hesse 2000, The initial domestication of goats (Capra hircus) in the Zagros Mountains 10,000 years ago, Science 287", checked = true, url = "https://doi.org/10.1126/science.287.5461.2254", read = "abstract" },
 ]
 would_settle = "Ingest Zagros PPN faunas (Ganj Dareh, Asiab, Sheikh-e Abad, East Chia Sabz)."
 speculative_rule = "Set 0 on the plateau and 0.1 in the central Zagros at 9,000 BCE; 0 everywhere at 10,000 BCE."
@@ -326,7 +324,7 @@ confidence = "medium"
 basis = ["literature", "other_layer"]
 reasoning = "No edge evidence until 3,000 BCE (3 cells at 1.0); nearest point 500-1,641 km. Cereals inside at 2-23 cells read 0.98-0.99 and pottery 0.17-0.99, tracking farming villages. Ganj Dareh goats are managed by c. 7900 BCE; Ali Kosh has domestic goats and sheep from c. 7500. The 8,000 BCE value is lower (c. 0.6)."
 literature = [
-  { cite = "Zeder & Hesse 2000, Science 287", checked = false },
+  { cite = "Zeder & Hesse 2000, The initial domestication of goats (Capra hircus) in the Zagros Mountains 10,000 years ago, Science 287", checked = true, url = "https://doi.org/10.1126/science.287.5461.2254", read = "abstract" },
 ]
 would_settle = "Digitise Iranian Neolithic and Chalcolithic faunas (Mashkour's compilations)."
 speculative_rule = "Fill the Zagros at 0.6 at 8,000 BCE and 0.95 from 7,000 BCE; the northern and southern plateau rims at 0.9 from 6,000 BCE; leave the Kavir and Lut masked."
@@ -426,7 +424,7 @@ confidence = "medium"
 basis = ["literature"]
 reasoning = "No edge evidence; nearest point 764-1,354 km. Kotias Klde and Darkveti Mesolithic faunas are wild boar, deer and caprids."
 literature = [
-  { cite = "Meshveliani et al. 2007, Mesolithic hunters at Kotias Klde, western Georgia", checked = false },
+  { cite = "Meshveliani et al. 2007, Mesolithic hunters at Kotias Klde, western Georgia: preliminary results, Paléorient 33", checked = true, url = "https://doi.org/10.3406/paleo.2007.5220", read = "abstract" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set livestock to 0 in the Caucasus before 6,500 BCE."
@@ -441,9 +439,9 @@ expected = 0.9
 expected_range = [0.7, 1.0]
 confidence = "medium"
 basis = ["literature", "other_layer"]
-reasoning = "Edge cells only at 3,000 BCE (2 at 1.0); nearest point 346-764 km. Cereals inside 0.98 at 3 cells and pottery 0.94-0.99. Shulaveri-Shomu sites (Gadachrili Gora, Aruchlo, Göytepe, Mentesh Tepe) have domestic sheep, goat and cattle from c. 5900 BCE."
+reasoning = "Edge cells only at 3,000 BCE (2 at 1.0); nearest point 346-764 km. Cereals inside 0.98 at 3 cells and pottery 0.94-0.99. Shulaveri-Shomu villages have domestic stock from their start: at Hacı Elamxanlı Tepe on the middle Kura (5950-5800 cal BC) the fauna is predominantly domestic, sheep and goat first, then pig and cattle, some cattle used for draught."
 literature = [
-  { cite = "Berthon et al. 2013, Animal exploitation in the Shulaveri-Shomu culture (Mentesh Tepe, Göytepe)", checked = false },
+  { cite = "Nishiaki, Guliyev & Kadowaki 2015, The origins of food production in the southern Caucasus: excavations at Hacı Elamxanlı Tepe, Azerbaijan, Antiquity 89 (348), Project Gallery", checked = true, url = "https://antiquity.ac.uk/projgall/nishiaki348", read = "full text", note = "Replaces 'Berthon et al. 2013, Animal exploitation in the Shulaveri-Shomu culture', which matches no known work. One site; Kura-Araxes faunas are not covered." },
 ]
 would_settle = "Digitise Shulaveri-Shomu and Kura-Araxes faunas."
 speculative_rule = "Fill the Kura and Araxes lowlands and Armenian plateau at 0.9 from 6,000 BCE; high valleys of the Greater Caucasus at 0.6 until 4,000 BCE."
@@ -466,7 +464,7 @@ confidence = "high"
 basis = ["literature"]
 reasoning = "Nearest evidence 1,886-2,470 km. Jeitun's domestic goats and sheep start c. 6200 BCE; Dam-Dam Chashma and Jebel caves are hunting sites."
 literature = [
-  { cite = "Harris 2010, Origins of Agriculture in Western Central Asia", checked = false },
+  { cite = "Harris 2010, Origins of Agriculture in Western Central Asia", checked = false, url = "https://doi.org/10.2307/j.ctt3fj6gz" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set livestock to 0 across Central Asia before 6,500 BCE."
@@ -483,7 +481,7 @@ confidence = "medium"
 basis = ["literature", "environment"]
 reasoning = "No edge evidence; nearest point 993-1,891 km. Jeitun has domestic goat and sheep (c. 6200-5000 BCE); Kelteminar faunas (Dzhanbas-kala) are wild. Domestic sheep and goat reach the Aral and Kazakh steppe only with Bronze Age groups; Botai horses (off-grid, c. 3500 BCE) are not in the layer."
 literature = [
-  { cite = "Harris 2010, Origins of Agriculture in Western Central Asia", checked = false },
+  { cite = "Harris 2010, Origins of Agriculture in Western Central Asia", checked = false, url = "https://doi.org/10.2307/j.ctt3fj6gz" },
 ]
 would_settle = "Digitise Jeitun and Namazga faunas and Kelteminar sites as absences."
 speculative_rule = "Set 0.9 along the Kopet Dag piedmont from 6,000 BCE and in the Tejen and Murghab deltas from 4,000 BCE; 0.05 elsewhere, rising to 0.2 on the Caspian and Ustyurt steppe at 3,000 BCE."
@@ -534,7 +532,7 @@ confidence = "high"
 basis = ["literature", "environment"]
 reasoning = "Nearest evidence 1,412-1,536 km. The Arabian Neolithic begins with the humid phase c. 8000 BCE as hunting; herding arrives later."
 literature = [
-  { cite = "Magee 2014, The Archaeology of Prehistoric Arabia", checked = false },
+  { cite = "Magee 2014, The Archaeology of Prehistoric Arabia", checked = false, url = "https://doi.org/10.1017/cbo9781139016667" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set livestock to 0 in Arabia before 7,500 BCE."
@@ -551,8 +549,8 @@ confidence = "low"
 basis = ["literature", "neighbouring_evidence"]
 reasoning = "Edge cells 0.87-0.91 (4-5 cells) are on the Sinai and Negev fringe. Domestic sheep and goat are claimed in Arabia from c. 6800 BCE; cattle at Shi'bat Dihya and in Yemeni rock art by the 6th millennium. Many sites remain hunting camps."
 literature = [
-  { cite = "Martin, McCorriston & Crassard 2009, Early Arabian pastoralism at Manayzah in Wadi Sana, Yemen, PEA 20", checked = false },
-  { cite = "Drechsler 2009, The Dispersal of the Neolithic over the Arabian Peninsula", checked = false },
+  { cite = "Martin, McCorriston & Crassard 2009, Early Arabian pastoralism at Manayzah in Wadi Sana, Hadramawt, Proceedings of the Seminar for Arabian Studies", checked = true, url = "https://shs.hal.science/halshs-00423893v1", read = "abstract" },
+  { cite = "Drechsler 2009, The Dispersal of the Neolithic over the Arabian Peninsula", checked = true, url = "https://doi.org/10.30861/9781407305028", read = "publisher description" },
 ]
 would_settle = "Ingest dated Arabian Neolithic faunas (Manayzah, Shi'bat Dihya, Jebel Buhais, Dosariyah)."
 speculative_rule = "Fill 0.2 at 7,000 BCE and 0.5 at 6,000 BCE in the north and west of the peninsula and Yemen; 0.1 in the Rub' al-Khali."
@@ -589,7 +587,7 @@ confidence = "medium"
 basis = ["literature", "neighbouring_evidence"]
 reasoning = "Edge cells 0.96-1.0 (4-14 cells); nearest point 1,329-1,368 km. Coastal shell middens of the Gulf and Oman are fishing sites with few domestic bones, which keeps the value under 1. The dry interval after c. 4000 BCE thinned the interior."
 literature = [
-  { cite = "Magee 2014, The Archaeology of Prehistoric Arabia", checked = false },
+  { cite = "Magee 2014, The Archaeology of Prehistoric Arabia", checked = false, url = "https://doi.org/10.1017/cbo9781139016667" },
 ]
 would_settle = "Digitise the Arabian Neolithic faunal syntheses (Uerpmann & Uerpmann)."
 speculative_rule = "Fill 0.85 in the Gulf hinterland, Oman and Yemen and 0.5 on the fishing coasts from 5,000 BCE; leave the Rub' al-Khali masked after 4,000 BCE."
@@ -637,8 +635,8 @@ confidence = "medium"
 basis = ["literature", "neighbouring_evidence"]
 reasoning = "No edge evidence; nearest point 874-1,316 km. Phelps and XRONOS place Nabta and Bir Kiseiba presences at 8,000-7,000 BCE following Wendorf's cattle claim, which rests on a few bones; most zooarchaeologists accept domestic cattle in Egypt only from c. 6000 BCE and caprines from c. 6000 BCE."
 literature = [
-  { cite = "Gifford-Gonzalez & Hanotte 2011, Domesticating animals in Africa, Journal of World Prehistory 24", checked = false },
-  { cite = "Wendorf & Schild 1998, Nabta Playa and its role in northeastern African prehistory", checked = false },
+  { cite = "Gifford-Gonzalez & Hanotte 2011, Domesticating animals in Africa, Journal of World Prehistory 24", checked = false, url = "https://doi.org/10.1007/s10963-010-9042-2" },
+  { cite = "Wendorf & Schild 1998, Nabta Playa and its role in northeastern African prehistory", checked = false, url = "https://doi.org/10.1006/jaar.1998.0319" },
 ]
 would_settle = "Ancient DNA or isotopes on the earliest Nabta and Bir Kiseiba cattle bones."
 speculative_rule = "Set 0 in Libya and Egypt at 10,000 and 9,000 BCE and 0.1 in the southern Western Desert at 8,000 BCE."
@@ -670,8 +668,8 @@ confidence = "low"
 basis = ["neighbouring_evidence", "literature"]
 reasoning = "Edge cells 0.87 (9 cells) at 7,000 and 0.91 (21 cells) at 6,000 BCE, both carried by the disputed Nabta cattle. Sodmein Cave caprines (c. 6100 BCE) and Acacus caprines at Takarkori (c. 6000 BCE) are the secure earliest. Hunting still dominates most sites at 7,000 BCE."
 literature = [
-  { cite = "Vermeersch et al. 2015, Sodmein Cave and early caprines in Egypt", checked = false },
-  { cite = "Gifford-Gonzalez & Hanotte 2011, Journal of World Prehistory 24", checked = false },
+  { cite = "Vermeersch et al. 2015, Early and Middle Holocene human occupation of the Egyptian Eastern Desert: Sodmein Cave, African Archaeological Review 32", checked = true, url = "https://doi.org/10.1007/s10437-015-9195-6", read = "abstract" },
+  { cite = "Gifford-Gonzalez & Hanotte 2011, Journal of World Prehistory 24", checked = false, url = "https://doi.org/10.1007/s10963-010-9042-2" },
 ]
 would_settle = "Ingest Western Desert faunas from Dakhla, Farafra and Djara with identification counts."
 speculative_rule = "Set 0.2 at 7,000 BCE in the southern Western Desert only; at 6,000 BCE 0.6 in the Western Desert and Red Sea hills and 0.3 in Cyrenaica."
@@ -717,7 +715,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "literature", "environment"]
 reasoning = "Edge cells 0.93-1.0 (26-36 cells); pottery inside 0.73-0.90. Fayum, Merimde, Badarian, Naqada and Haua Fteah Neolithic all have sheep, goat and cattle."
 literature = [
-  { cite = "Shirai 2010, The Archaeology of the First Farmer-Herders in Egypt", checked = false },
+  { cite = "Shirai 2010, The Archaeology of the First Farmer-Herders in Egypt", checked = false, url = "https://doi.org/10.24415/9789048512690" },
 ]
 would_settle = "Nothing urgent; desert occupation density is the open question."
 speculative_rule = "Fill 0.95 where any occupation is plausible from 5,000 BCE; leave the Great Sand Sea and Calanscio masked after 4,000 BCE (low population)."
@@ -751,7 +749,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "literature"]
 reasoning = "Recorded absences at Jebel Umm Marrahi, Abu Darbein and others; nearest evidence 316-2,012 km."
 literature = [
-  { cite = "Phelps et al. 2019, African Holocene faunal assemblages (PANGAEA 904942)", checked = false },
+  { cite = "Phelps et al. 2019, African Holocene faunal assemblages (PANGAEA 904942)", checked = true, url = "https://doi.org/10.1594/PANGAEA.904942", read = "dataset description" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set livestock to 0 in Sudan before 7,500 BCE."
@@ -821,7 +819,7 @@ confidence = "medium"
 basis = ["neighbouring_evidence", "literature", "environment"]
 reasoning = "Edge cells 0.98 (48-58 cells). South Sudan and the wetter south may lag, since cattle reach the southern Sudan and East Africa only c. 3000-2500 BCE; Wadi Howar in the west had cattle herders by 4000 BCE."
 literature = [
-  { cite = "Jesse et al. 2013, Wadi Howar cattle pastoralism", checked = false },
+  { cite = "Jesse, Keding, Lenssen-Erz & Pöllath 2013, 'I hope your cattle are well': archaeological evidence for early cattle-centred behaviour in the Eastern Sahara of Sudan and Chad, in Pastoralism in Africa (Berghahn)", checked = false, url = "https://doi.org/10.1515/9780857459091-006" },
 ]
 would_settle = "Faunas from Kordofan and South Sudan."
 speculative_rule = "Fill 0.95 north of 12°N and 0.3 south of it at 4,000 BCE, 0.6 south of 12°N at 3,000 BCE."
@@ -853,7 +851,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "literature"]
 reasoning = "No edge evidence; nearest point 617-3,520 km. Pottery inside 0.47-0.70 marks these ceramic foragers."
 literature = [
-  { cite = "di Lernia 2013, The emergence and spread of herding in northern Africa", checked = false },
+  { cite = "di Lernia 2013, The emergence and spread of herding in northern Africa", checked = false, url = "https://doi.org/10.1093/oxfordhb/9780199569885.013.0036" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set livestock to 0 across the Sahara and Sahel before 6,500 BCE."
@@ -870,8 +868,8 @@ confidence = "medium"
 basis = ["literature", "other_layer"]
 reasoning = "No edge evidence; nearest point 617 km. Pottery inside 0.83. Takarkori and Uan Muhuggiag have caprines c. 6000-5500 BCE and dairy residues by c. 5200 BCE; the western and southern Sahara still have hunters."
 literature = [
-  { cite = "Dunne et al. 2012, First dairying in green Saharan Africa in the fifth millennium BC, Nature 486", checked = false },
-  { cite = "di Lernia 2013, The emergence and spread of herding in northern Africa", checked = false },
+  { cite = "Dunne et al. 2012, First dairying in green Saharan Africa in the fifth millennium BC, Nature 486", checked = true, url = "https://doi.org/10.1038/nature11186", read = "abstract" },
+  { cite = "di Lernia 2013, The emergence and spread of herding in northern Africa", checked = false, url = "https://doi.org/10.1093/oxfordhb/9780199569885.013.0036" },
 ]
 would_settle = "Ingest Acacus and Aïr faunas with identification counts."
 speculative_rule = "Set 0.5 in the central Sahara (Acacus, Tassili, Aïr, Tibesti) and 0.05 in the western Sahara and Sahel at 6,000 BCE."
@@ -898,7 +896,7 @@ confidence = "medium"
 basis = ["neighbouring_evidence", "literature", "environment"]
 reasoning = "Edge cells 0.96-1.0 (22-29 cells); nearest point 96-120 km. Adrar Bous cattle c. 4500 BCE; Tilemsi and Mauritanian Dhar Tichitt herders by c. 2500 BCE. The southern Sahel (south of c. 14°N) has no livestock until after 3000 BCE."
 literature = [
-  { cite = "Gifford-Gonzalez & Hanotte 2011, Journal of World Prehistory 24", checked = false },
+  { cite = "Gifford-Gonzalez & Hanotte 2011, Journal of World Prehistory 24", checked = false, url = "https://doi.org/10.1007/s10963-010-9042-2" },
 ]
 would_settle = "Faunas from Mauritania and Mali (Tilemsi, Tichitt) and dated Saharan rock-art panels."
 speculative_rule = "Fill 0.9 across the Sahara from 5,000 BCE, 0.5 in the Sahel north of 14°N and 0.05 south of it; raise the Sahel to 0.4 at 3,000 BCE."
@@ -937,7 +935,7 @@ confidence = "high"
 basis = ["literature", "environment"]
 reasoning = "Nearest evidence 832-4,127 km. Domestic animals reach the West African savanna c. 2500-2000 BCE (Kintampo caprines, Windé Koroji cattle)."
 literature = [
-  { cite = "Gifford-Gonzalez & Hanotte 2011, Journal of World Prehistory 24", checked = false },
+  { cite = "Gifford-Gonzalez & Hanotte 2011, Journal of World Prehistory 24", checked = false, url = "https://doi.org/10.1007/s10963-010-9042-2" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set livestock to 0 across West Africa before 3,500 BCE."
@@ -954,7 +952,7 @@ confidence = "medium"
 basis = ["literature"]
 reasoning = "No edge evidence; nearest point 836 km. Livestock in the Niger bend and northern Burkina Faso is not securely dated before c. 2500 BCE."
 literature = [
-  { cite = "Linseele 2013, Early stock keeping in northeastern Africa and West Africa", checked = false },
+  { cite = "Linseele 2013, From the first stock keepers to specialised pastoralists in the West African savannah, in Pastoralism in Africa (Berghahn)", checked = false, url = "https://doi.org/10.1515/9780857459091-008" },
 ]
 would_settle = "Dated faunas from northern Burkina Faso and Nigeria."
 speculative_rule = "Set 0.1 north of 12°N and 0 to the south at 3,000 BCE."
@@ -981,7 +979,7 @@ confidence = "high"
 basis = ["literature", "neighbouring_evidence"]
 reasoning = "Nearest point 794-2,497 km; the few edge cells (0.37-0.48 at 7,000 and 5,000 BCE) are Atbara and Kassala absences mixed with Nile presences."
 literature = [
-  { cite = "Lesur et al. 2014, The advent of herding in the Horn of Africa", checked = false },
+  { cite = "Lesur et al. 2014, The advent of herding in the Horn of Africa: new data from Ethiopia, Djibouti and Somaliland, Quaternary International 343", checked = true, url = "https://doi.org/10.1016/j.quaint.2013.11.024", read = "abstract" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set livestock to 0 in the Horn before 4,500 BCE."
@@ -998,14 +996,15 @@ region = "Horn of Africa"
 slices = [-4000, -3000]
 gap_ids = ["domestic_livestock-4000-179", "domestic_livestock-3000-203"]
 why_empty = ["research_intensity", "true_absence"]
-why_note = "The Gash Group in eastern Sudan and Eritrea herds from c. 3000 BCE; the Ethiopian highlands and Somalia later."
+why_note = "Eastern Sudan (Gash delta, Kassala) has domestic livestock from at least the 4th millennium BCE (Butana and Gash Groups); the Horn proper (Ethiopia, Djibouti, Somaliland) only from the beginning of the 2nd millennium BCE."
 expected = 0.15
 expected_range = [0.0, 0.4]
 confidence = "low"
 basis = ["neighbouring_evidence", "literature"]
-reasoning = "Edge cells 0.98 at 4,000 (3 cells) and 0.91 at 3,000 BCE (11 cells), but they are Sudanese Nile sites; Mochena Borago in southern Ethiopia is a recorded absence at c. 3050 BCE. Domestic cattle in Ethiopia (Lake Besaka) date c. 2500 BCE."
+reasoning = "Edge cells 0.98 at 4,000 (3 cells) and 0.91 at 3,000 BCE (11 cells), but they are Sudanese Nile sites; Mochena Borago in southern Ethiopia is a recorded absence at c. 3050 BCE. Lesur et al. put the emergence of pastoral societies in the Horn at the beginning of the 2nd millennium BCE, two millennia after the Sahel and Yemen, so the Horn proper stays near 0 through 3,000 BCE (an earlier claim of domestic cattle at Lake Besaka c. 2500 BCE is not supported by them). The 0.4 in the Gash delta and Eritrean lowlands at 3,000 BCE rests on Manzo: domestic livestock in Eastern Sudan from at least the 4th millennium BCE, before the Gash Group (c. 3000-1800 BCE)."
 literature = [
-  { cite = "Lesur et al. 2014, The advent of herding in the Horn of Africa", checked = false },
+  { cite = "Lesur et al. 2014, The advent of herding in the Horn of Africa: new data from Ethiopia, Djibouti and Somaliland, Quaternary International 343", checked = false, url = "https://doi.org/10.1016/j.quaint.2013.11.024", note = "Publisher page blocked; abstract seen only in search-engine summaries: pastoral societies emerge in the Horn at the beginning of the 2nd millennium BCE. It does not support herding in the Horn at 3000 BCE." },
+  { cite = "Manzo 2020, Back to Mahal Teglinos: new Pharaonic evidence from Eastern Sudan, Journal of Egyptian Archaeology 106", checked = true, url = "https://unora.unior.it/retrieve/handle/11574/196305/80087/Manzo_Back%20to%20Mahal%20Teglinos_JEA.pdf", read = "full text (searched passages)", note = "Introduction: adoption of domestic livestock and cultivated plants in Eastern Sudan from at least the 4th millennium BC; shift to pastoral nomadism from the 2nd millennium BC." },
 ]
 would_settle = "Dated faunas from Eritrea and the Ethiopian Rift."
 speculative_rule = "Set 0.05 at 4,000 BCE; at 3,000 BCE 0.4 in the Eritrean lowlands and Gash delta and 0.05 elsewhere."
@@ -1050,7 +1049,7 @@ confidence = "high"
 basis = ["literature"]
 reasoning = "No edge evidence; nearest point 802-3,370 km. The Medjez II presence (range-dated, c. 6900 BCE) is a Capsian midden; the sheep there are probably intrusive or later."
 literature = [
-  { cite = "Linstädter et al. 2012, Neolithisation process within the Alboran territory", checked = false },
+  { cite = "Linstädter et al. 2012, Neolithisation process within the Alboran territory", checked = false, url = "https://doi.org/10.1016/j.quaint.2012.01.013" },
 ]
 would_settle = "Direct dates on the Medjez II caprine bones."
 speculative_rule = "Set livestock to 0 in the Maghreb before 6,000 BCE."
@@ -1067,7 +1066,7 @@ confidence = "medium"
 basis = ["literature", "other_layer"]
 reasoning = "No edge evidence; nearest point 801 km. Pottery inside 0.60. Ifri Oudadane has domestic sheep and goat from c. 5600 BCE; Grotte Capéletti in the Aurès c. 5000 BCE."
 literature = [
-  { cite = "Linstädter et al. 2012, Neolithisation within the Alboran territory", checked = false },
+  { cite = "Linstädter et al. 2012, Neolithisation within the Alboran territory", checked = false, url = "https://doi.org/10.1016/j.quaint.2012.01.013" },
 ]
 would_settle = "Ingest Moroccan Early Neolithic faunas (Ifri Oudadane, Kaf Taht el-Ghar)."
 speculative_rule = "Set 0.4 on the Moroccan Mediterranean coast and 0 elsewhere at 6,000 BCE."
@@ -1123,8 +1122,8 @@ confidence = "high"
 basis = ["literature", "neighbouring_evidence"]
 reasoning = "At 8,000 BCE 14 edge cells read 0.96; these come from Open Context phases whose BP dates were read as BCE. Franchthi's Mesolithic fauna is red deer, boar and fish; Iron Gates the same."
 literature = [
-  { cite = "Perlès 2001, The Early Neolithic in Greece", checked = false },
-  { cite = "Arbuckle et al. 2014, PLoS ONE 9", checked = false },
+  { cite = "Perlès 2001, The Early Neolithic in Greece", checked = false, url = "https://doi.org/10.1017/cbo9780511612855" },
+  { cite = "Arbuckle et al. 2014, PLoS ONE 9", checked = true, url = "https://doi.org/10.1371/journal.pone.0099845", read = "full text (Europe PMC, searched passages)" },
 ]
 would_settle = "Fix the Open Context date columns."
 speculative_rule = "Set livestock to 0 in the Balkans and Greece before 7,000 BCE."
@@ -1141,7 +1140,7 @@ confidence = "medium"
 basis = ["literature", "neighbouring_evidence"]
 reasoning = "Edge cells 0.87 (6 cells), again partly from misdated west Anatolian phases. Knossos X (c. 7000 BCE) and Thessalian Early Neolithic (c. 6700-6500 BCE) have domestic caprines, cattle and pigs."
 literature = [
-  { cite = "Perlès 2001, The Early Neolithic in Greece", checked = false },
+  { cite = "Perlès 2001, The Early Neolithic in Greece", checked = true, url = "https://doi.org/10.1017/cbo9780511612855", read = "publisher description" },
 ]
 would_settle = "Phase-dated Thessalian faunas."
 speculative_rule = "Set 0.6 in Crete, Thessaly and Greek Macedonia and 0 elsewhere at 7,000 BCE."
@@ -1178,7 +1177,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "other_layer", "literature"]
 reasoning = "Edge cells 0.96-1.0 (19-36 cells) from 5,000 BCE; cereals inside 0.98-0.99; pottery 0.93-1.0. Iron Gates foragers keep a few hunting sites below 1 at 6,000 BCE."
 literature = [
-  { cite = "Orton 2012, Taphonomy and interpretation: an analytical framework for social zooarchaeology (Vinča faunas)", checked = false },
+  { cite = "Orton 2012, Taphonomy and interpretation: an analytical framework for social zooarchaeology (Vinča faunas), International Journal of Osteoarchaeology 22", checked = true, url = "https://doi.org/10.1002/oa.1212", read = "abstract" },
 ]
 would_settle = "Digitise Balkan Neolithic faunas."
 speculative_rule = "Fill at 0.95 from 6,000 BCE, with the Iron Gates gorge at 0.5 at 6,000 BCE."
@@ -1212,7 +1211,7 @@ confidence = "high"
 basis = ["literature"]
 reasoning = "No edge evidence; nearest point 560-2,324 km."
 literature = [
-  { cite = "Rowley-Conwy et al. 2013, Early domestic animals in Italy, Istria, the Tyrrhenian islands and southern France", checked = false },
+  { cite = "Rowley-Conwy et al. 2013, Early domestic animals in Italy, Istria, the Tyrrhenian islands and southern France", checked = false, url = "https://hal.science/hal-02188777v1" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set livestock to 0 in Italy before 6,500 BCE."
@@ -1229,7 +1228,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "literature"]
 reasoning = "Edge cells 0.70 at 6,000 BCE (9 cells) and 0.96-1.0 later (5-6 cells). Impressa sites in the south have domestic stock from c. 6100 BCE; the north is forager until c. 5600. Hence 0.5 at 6,000 and 0.95 after."
 literature = [
-  { cite = "Rowley-Conwy et al. 2013, Early domestic animals in Italy", checked = false },
+  { cite = "Rowley-Conwy et al. 2013, Early domestic animals in Italy", checked = false, url = "https://hal.science/hal-02188777v1" },
 ]
 would_settle = "Ingest the Rowley-Conwy et al. Italian faunal compilation."
 speculative_rule = "At 6,000 BCE fill 0.8 in the south and Sicily and 0.2 in the north; from 5,000 BCE fill 0.95 everywhere."
@@ -1261,7 +1260,7 @@ confidence = "high"
 basis = ["literature"]
 reasoning = "No edge evidence; nearest point 648-3,613 km."
 literature = [
-  { cite = "Saña 2013, Domestication of animals in the Iberian Peninsula", checked = false },
+  { cite = "Saña 2013, Domestication of animals in the Iberian Peninsula", checked = false, url = "https://doi.org/10.4324/9781315417653-17" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set livestock to 0 in Iberia before 6,000 BCE."
@@ -1278,7 +1277,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "other_layer", "literature"]
 reasoning = "Edge cells 0.92-1.0 (6-10 cells); cereals inside 0.98-0.99 from 5,000 BCE. At 6,000 BCE expect 0.3 (coastal Cardial from c. 5600); from 5,000 BCE 0.95, with Cantabria and Galicia later (c. 4500)."
 literature = [
-  { cite = "Saña 2013, Domestication of animals in the Iberian Peninsula", checked = false },
+  { cite = "Saña 2013, Domestication of animals in the Iberian Peninsula", checked = false, url = "https://doi.org/10.4324/9781315417653-17" },
 ]
 would_settle = "Digitise Iberian Neolithic faunas (Saña's compilation)."
 speculative_rule = "At 6,000 BCE set 0.5 on the east coast and 0 inland; from 5,000 BCE fill 0.95, except Cantabria and Galicia at 0.4 at 5,000 BCE."
@@ -1331,7 +1330,8 @@ confidence = "high"
 basis = ["literature"]
 reasoning = "No edge evidence; nearest point 459-3,190 km. Direct dates on supposed Mesolithic sheep in southern France have come back Neolithic or later."
 literature = [
-  { cite = "Zilhão 1993 and Rowley-Conwy 2011 on the 'Mesolithic sheep' of southern France", checked = false },
+  { cite = "Zilhão 1993 on the 'Mesolithic sheep' of southern France, Journal of Mediterranean Archaeology 6", checked = true, url = "https://doi.org/10.1558/jmea.v6i1.5", read = "abstract" },
+  { cite = "Rowley-Conwy 2011, Westward Ho! The spread of agriculture from Central Europe to the Atlantic, Current Anthropology 52", checked = true, url = "https://doi.org/10.1086/658368", read = "abstract" },
 ]
 would_settle = "Direct radiocarbon dates on the Gazel and Font-des-Pigeons caprines."
 speculative_rule = "Set livestock to 0 in France and the Low Countries before 6,000 BCE."
@@ -1341,14 +1341,14 @@ region = "France & Low Countries"
 slices = [-6000]
 gap_ids = ["domestic_livestock-6000-133"]
 why_empty = ["research_intensity", "true_absence"]
-why_note = "Only Mediterranean Impressa herders (Pendimoun, c. 5800 BCE) fall in this window; LBK arrives c. 5300."
+why_note = "Only Mediterranean Impressa farmers (Pendimoun, from c. 5700 BCE) fall in this window; LBK arrives c. 5300."
 expected = 0.15
 expected_range = [0.05, 0.35]
 confidence = "medium"
 basis = ["literature", "neighbouring_evidence"]
 reasoning = "Edge cells 0.85 (25 cells), raised by Gazel and the Rhine LBK edge in the next window. Pottery inside 0.23."
 literature = [
-  { cite = "Binder et al. 2017, First sea-crossing farmers in the western Mediterranean (Pendimoun)", checked = false },
+  { cite = "Binder et al. 2017, Modelling the earliest north-western dispersal of Mediterranean Impressed Wares: new dates and Bayesian chronological model, Documenta Praehistorica 44: 54-77", checked = true, url = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/44.4", read = "full text (searched passages)", note = "Corrected title (the earlier cite's title matches no work). Dates the Impressa levels at Pendimoun from the end of the 58th century BCE (BMAP 5715 BCE), Cardial c. 5500-5450; the animal bones dated across its whole dataset are mostly domestic. It gives no faunal counts for Pendimoun." },
 ]
 would_settle = "Pendimoun and Peiro Signado faunas."
 speculative_rule = "Set 0.5 on the Provence and Languedoc coast and 0 elsewhere at 6,000 BCE."
@@ -1386,7 +1386,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "literature"]
 reasoning = "No edge evidence; nearest point 495-2,564 km."
 literature = [
-  { cite = "Manning et al. 2013, EUROEVOL fauna", checked = false },
+  { cite = "Manning et al. 2013, The origins and spread of stock-keeping (EUROEVOL fauna), Antiquity 87", checked = false, url = "https://doi.org/10.1017/s0003598x00049851" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set livestock to 0 in Central Europe before 6,000 BCE."
@@ -1403,7 +1403,7 @@ confidence = "medium"
 basis = ["neighbouring_evidence", "literature"]
 reasoning = "Edge cells 0.78 (26 cells) at 6,000 and 0.96 (12 cells) at 5,000 BCE. LBK spreads from western Hungary c. 5500 BCE to the Rhine by c. 5300. Expect 0.3 at 6,000 BCE across the gap and 0.95 at 5,000."
 literature = [
-  { cite = "Bánffy 2019, First Farmers of the Carpathian Basin", checked = false },
+  { cite = "Bánffy 2019, First Farmers of the Carpathian Basin", checked = true, url = "https://www.prehistoricsociety.org/publications/research-papers/8", read = "publisher description" },
 ]
 would_settle = "Körös and earliest LBK faunas in EUROEVOL."
 speculative_rule = "At 6,000 BCE set 0.8 in the Hungarian plain and 0 north of 49°N; at 5,000 BCE fill 0.95."
@@ -1435,7 +1435,7 @@ confidence = "high"
 basis = ["literature"]
 reasoning = "No edge evidence; nearest point 779-3,874 km."
 literature = [
-  { cite = "Sheridan 2010, The Neolithization of Britain and Ireland", checked = false },
+  { cite = "Sheridan 2010, The Neolithization of Britain and Ireland", checked = false, url = "https://doi.org/10.2307/jj.47909276.7" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set livestock to 0 in Britain and Ireland before 5,000 BCE."
@@ -1452,7 +1452,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "literature"]
 reasoning = "Edge cells 0.77 (14 cells) and 0.50 (6) come from the kernel reaching from the Continent and from Oronsay's absences; the Neolithic starts c. 4050 BCE in southeast England."
 literature = [
-  { cite = "Whittle, Healy & Bayliss 2011, Gathering Time", checked = false },
+  { cite = "Whittle, Healy & Bayliss 2011, Gathering Time", checked = false, url = "https://doi.org/10.2307/j.ctvh1dwp2" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set 0.02 in the British Isles at 5,000 BCE."
@@ -1469,7 +1469,7 @@ confidence = "high"
 basis = ["neighbouring_evidence", "other_layer"]
 reasoning = "Edge cells 0.96 (10 cells); cereals inside 0.99; pottery 0.98."
 literature = [
-  { cite = "Whittle, Healy & Bayliss 2011, Gathering Time", checked = false },
+  { cite = "Whittle, Healy & Bayliss 2011, Gathering Time", checked = false, url = "https://doi.org/10.2307/j.ctvh1dwp2" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Fill at 0.95."
@@ -1562,7 +1562,7 @@ confidence = "high"
 basis = ["literature"]
 reasoning = "No edge evidence; nearest point 560-2,739 km. Zvejnieki and Narva faunas are wild."
 literature = [
-  { cite = "Piličiauskas et al. 2017, eastern Baltic Corded Ware", checked = false },
+  { cite = "Piličiauskas et al. 2018, The Corded Ware culture in the Eastern Baltic: new evidence on chronology, diet, beaker, bone and flint tool function, Journal of Archaeological Science: Reports 21", checked = false, url = "https://doi.org/10.1016/j.jasrep.2018.08.023" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set livestock to 0 in the Baltic before 4,500 BCE."
@@ -1579,7 +1579,7 @@ confidence = "medium"
 basis = ["neighbouring_evidence", "literature"]
 reasoning = "Edge cells 0.98-1.0 (5-9 cells) are Polish and Kaliningrad farmers. Direct dates on supposed early domestic bones at Šventoji and Kretuonas came back later; secure domestic animals start with Corded Ware."
 literature = [
-  { cite = "Piličiauskas et al. 2017, eastern Baltic Corded Ware", checked = false },
+  { cite = "Piličiauskas et al. 2018, The Corded Ware culture in the Eastern Baltic: new evidence on chronology, diet, beaker, bone and flint tool function, Journal of Archaeological Science: Reports 21", checked = true, url = "https://doi.org/10.1016/j.jasrep.2018.08.023", read = "abstract" },
 ]
 would_settle = "Direct dates on Narva-period domestic bones."
 speculative_rule = "Set 0.05 at 4,000 BCE and 0.4 in Lithuania, 0.2 in Latvia and Estonia at 3,000 BCE."
@@ -1611,7 +1611,7 @@ confidence = "high"
 basis = ["literature"]
 reasoning = "No edge evidence; nearest point 1,099-1,965 km."
 literature = [
-  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false },
+  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false, url = "https://doi.org/10.1515/9780691292601" },
 ]
 would_settle = "Nothing needed."
 speculative_rule = "Set livestock to 0 in Ukraine and Belarus before 6,500 BCE."
@@ -1628,7 +1628,7 @@ confidence = "medium"
 basis = ["literature", "other_layer"]
 reasoning = "Edge cells only at 5,000 BCE (4 cells, 0.96); nearest point 832-854 km. Bug-Dniester faunas have some domestic cattle and pig after c. 5800 BCE (contested), Criş has them; Dnieper-Donets II has few or none. By 5,000 BCE Trypillia A herders occupy the southwest."
 literature = [
-  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false },
+  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false, url = "https://doi.org/10.1515/9780691292601" },
 ]
 would_settle = "Digitise Bug-Dniester, Trypillia A and Dnieper-Donets faunas (Zhuravlev's compilations)."
 speculative_rule = "At 6,000 BCE set 0.2 west of the Dnieper and 0 elsewhere; at 5,000 BCE 0.7 in the forest-steppe west of the Dnieper, 0.3 in the steppe and 0 in Belarus."
@@ -1668,7 +1668,7 @@ confidence = "medium"
 basis = ["neighbouring_evidence", "literature", "environment"]
 reasoning = "Edge cells 0.98-1.0 (18-20 cells) are western Ukrainian. Dereivka and Sredny Stog faunas include cattle and sheep along with horses; Neman and Narva sites in Belarus are wild."
 literature = [
-  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false },
+  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false, url = "https://doi.org/10.1515/9780691292601" },
 ]
 would_settle = "Digitise Sredny Stog and Belarusian Neolithic faunas."
 speculative_rule = "Fill 0.95 in Ukraine from 4,000 BCE; Belarus 0.05 at 4,000 BCE and 0.3 at 3,000 BCE."
@@ -1702,7 +1702,7 @@ confidence = "medium"
 basis = ["literature"]
 reasoning = "No edge evidence; nearest point 1,546-2,198 km. Pottery inside 0.87 at 6,000 BCE is Elshanka ceramic hunters."
 literature = [
-  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false },
+  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false, url = "https://doi.org/10.1515/9780691292601" },
 ]
 would_settle = "Direct dates and aDNA on Rakushechny Yar and Varfolomievka caprines."
 speculative_rule = "Set 0 before 6,500 BCE and 0.05 on the lower Don and Volga at 6,000 BCE."
@@ -1736,8 +1736,8 @@ confidence = "medium"
 basis = ["literature", "environment", "other_layer"]
 reasoning = "No edge evidence; nearest point 1,322-1,546 km. Khvalynsk graves (c. 4700-4200 BCE) contain sheep, goat and cattle; Yamnaya (from c. 3300 BCE) is fully pastoral; Maikop has livestock-rich settlements. Samara forest-steppe and Kama groups are hunters into the 4th millennium. Expect 0.4 at 5,000, 0.7 at 4,000 and 0.9 at 3,000 BCE."
 literature = [
-  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false },
-  { cite = "Shishlina 2008, Reconstruction of the Bronze Age of the Caspian steppes", checked = false },
+  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false, url = "https://doi.org/10.1515/9780691292601" },
+  { cite = "Shishlina 2008, Reconstruction of the Bronze Age of the Caspian steppes", checked = true, url = "https://doi.org/10.30861/9781407303567", read = "publisher description" },
 ]
 would_settle = "Digitise Khvalynsk, Repin and Yamnaya faunas and the Maikop settlements."
 speculative_rule = "Steppe south of 52°N: 0.4 at 5,000, 0.75 at 4,000, 0.95 at 3,000 BCE; forest-steppe north of 52°N: 0.05, 0.2, 0.5."
@@ -1831,7 +1831,7 @@ confidence = "medium"
 basis = ["environment", "literature"]
 reasoning = "Nearest evidence 1,232-4,192 km. Doggerland drowned by c. 6200 BCE; the Gulf basin by c. 6000 BCE, before herding reached Arabia."
 literature = [
-  { cite = "Rose 2010, Current Anthropology 51", checked = false },
+  { cite = "Rose 2010, Current Anthropology 51", checked = false, url = "https://doi.org/10.1086/657397" },
 ]
 would_settle = "Nothing ingestible."
 speculative_rule = "Set livestock to 0 on all now-drowned land."

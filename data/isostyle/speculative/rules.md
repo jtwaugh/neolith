@@ -35,15 +35,15 @@ flat expected value. Each line names its judgement (file#index).
 - **Nile & Sudan**, 3,000–5,000 BCE (medium, flat value): Fill with 0.95. `pottery.toml#34`
 - **Now-drowned shelves and islands**, 7,000–10,000 BCE (medium, flat value): Copy the adjacent coast: 0 on the Gulf and Doggerland shelves. `pottery.toml#48`
 - **Now-drowned shelves and islands**, 10,000–10,000 BCE (high, flat value): Treat as part of the Russian forest zone and take its values. `pottery.toml#50`
-- **Now-drowned shelves and islands**, 6,000–9,000 BCE (low, encoded (3 adjust)): Copy the adjacent Lower Volga/North Caspian coast values: 0 to 8,000, 0.2 at 7,000, 0.75 at 6,000 BCE. `pottery.toml#49`
+- **Now-drowned shelves and islands**, 6,000–9,000 BCE (low, encoded (3 adjust)): Copy the adjacent Lower Volga/North Caspian coast values: 0 to 8,000, 0.05 at 7,000, 0.55 at 6,000 BCE. `pottery.toml#49`
 - **Other**, 6,000–10,000 BCE (low, encoded (2 adjust)): 0 to 7,000 BCE; 0.1 at 6,000 BCE. `pottery.toml#46`
 - **Other**, 3,000–5,000 BCE (medium, encoded (2 adjust)): 0.8 at 5,000 BCE, 0.95 after. `pottery.toml#47`
 - **Russia: forest north of 56°N**, 8,000–10,000 BCE (high, flat value): Set pottery to 0 across the whole Russian forest zone, including the Pechora and Novaya Zemlya fringes, for 10,000-8,000 BCE. `pottery.toml#1`
 - **Russia: forest north of 56°N**, 7,000–7,000 BCE (medium, encoded (2 adjust)): Set 0.05 south of 58°N between 35° and 55°E (Upper Volga, Kama) and 0 elsewhere in the forest zone at 7,000 BCE. `pottery.toml#2`
 - **Russia: forest north of 56°N**, 6,000–6,000 BCE (medium, encoded (2 adjust)): At 6,000 BCE set 0.55 south of 60°N, fading linearly to 0.15 at 64°N and 0.05 on the Arctic coast and Novaya Zemlya. `pottery.toml#3`
 - **Russia: forest north of 56°N**, 3,000–5,000 BCE (medium, encoded (2 adjust)): Fill the forest zone with the adjacent 0.95 south of 64°N, fading to 0.7 at the Arctic coast; leave Novaya Zemlya as unknown/unsettled. `pottery.toml#4`
-- **Russia: steppe and forest-steppe**, 7,000–10,000 BCE (medium, encoded (3 adjust)): 0 for 10,000-8,000 BCE; at 7,000 BCE 0.3 within 250 km of the Middle Volga (Samara) and Lower Don, 0.05 elsewhere in the steppe. `pottery.toml#5`
-- **Russia: steppe and forest-steppe**, 6,000–6,000 BCE (medium, encoded (2 adjust)): 0.8 within 250 km of the Volga and Lower Don, 0.6 in the rest of the steppe and forest-steppe. `pottery.toml#6`
+- **Russia: steppe and forest-steppe**, 7,000–10,000 BCE (medium, encoded (3 adjust)): 0 for 10,000-8,000 BCE; at 7,000 BCE 0.1 within 250 km of the Middle Volga (Samara) and Lower Don, 0.05 elsewhere in the steppe. `pottery.toml#5`
+- **Russia: steppe and forest-steppe**, 6,000–6,000 BCE (medium, encoded (2 adjust)): 0.6 within 250 km of the Volga and Lower Don, 0.4 in the rest of the steppe and forest-steppe. `pottery.toml#6`
 - **Russia: steppe and forest-steppe**, 3,000–5,000 BCE (medium, flat value): Fill with 0.95. `pottery.toml#7`
 - **Sahara–Sahel**, 10,000–10,000 BCE (low, encoded (4 adjust)): 0.15 in the Malian and Nigerien Sahel south of 18°N, 0.05 further north. `pottery.toml#29`
 - **Sahara–Sahel**, 7,000–9,000 BCE (medium, encoded (4 adjust)): 0.6 at 9,000 BCE and 0.8 at 8,000-7,000 BCE south of 22°N, fading to 0.5 in the hyper-arid north of Mali and Mauritania. `pottery.toml#30`
@@ -51,7 +51,7 @@ flat expected value. Each line names its judgement (file#index).
 - **Scandinavia**, 6,000–10,000 BCE (high, flat value): Set 0 over Norway, northern Sweden and Finland through 6,000 BCE, ignoring the 0.25-0.37 edge values. `pottery.toml#15`
 - **Scandinavia**, 3,000–5,000 BCE (low, encoded (8 adjust)): Finland: copy the Baltic values (0.9 at 5,000, 0.95 after). Norway and Swedish interior north of 62°N: 0.1 at 5,000, 0.25 at 4,000 and 0.35 at 3,000 BCE, rising to 0.5 near the Finnish border. `pottery.toml#16`
 - **Ukraine & Belarus**, 8,000–10,000 BCE (high, flat value): Set pottery to 0 across Ukraine and Belarus for 10,000-8,000 BCE. `pottery.toml#8`
-- **Ukraine & Belarus**, 7,000–7,000 BCE (low, encoded (3 adjust)): At 7,000 BCE set 0.15 east of the Dnieper and south of 49°N, fading to 0 at 52°N and in all of Belarus. `pottery.toml#9`
+- **Ukraine & Belarus**, 7,000–7,000 BCE (low, encoded (3 adjust)): At 7,000 BCE set 0.05 east of the Dnieper and south of 49°N, fading to 0 at 52°N and in all of Belarus. `pottery.toml#9`
 - **Ukraine & Belarus**, 6,000–6,000 BCE (low, encoded (1 adjust)): 0.1 across Belarus at 6,000 BCE, rising to 0.4 at the Ukrainian border. `pottery.toml#10`
 - **Ukraine & Belarus**, 3,000–3,000 BCE (high, flat value): Copy the adjacent 0.99 into the hole. `pottery.toml#11`
 
@@ -651,7 +651,7 @@ flat expected value. Each line names its judgement (file#index).
 - **Anatolia & Cyprus**, 8,000–10,000 BCE (medium, encoded (3 adjust)): Fill at 70% at 10,000 BCE, 65% at 9,000 BCE and 58% at 8,000 BCE. `open_land.toml#17`
 - **Anatolia & Cyprus**, 3,000–7,000 BCE (medium, encoded (2 adjust)): Fill at 48%, and at 60% within 50 km of Tuz Gölü. `open_land.toml#18`
 - **Arabia**, 3,000–10,000 BCE (high, encoded (3 adjust)): Fill at 95%, and at 70% on the Asir, Yemeni and Hajar highlands above 1,500 m. `open_land.toml#3`
-- **Balkans & Greece**, 3,000–10,000 BCE (low, encoded (6 adjust)): Fill with the mountain curve (69, 55, 40, then 20%) above 400 m, and at 45% in the Danube and Moldavian lowlands from 7,000 BCE. `open_land.toml#26`
+- **Balkans & Greece**, 3,000–10,000 BCE (low, encoded (6 adjust)): Fill with the mountain curve (69, 55, 40, then 20%) above 400 m, and at 55% in the Danube and Moldavian lowlands from 7,000 BCE. `open_land.toml#26`
 - **Baltic**, 3,000–10,000 BCE (medium, encoded (2 adjust)): Fill at 35% at 10,000 BCE and 20% after. `open_land.toml#21`
 - **Caucasus**, 3,000–10,000 BCE (low, encoded (5 adjust)): Fill at 85% at 10,000-9,000 BCE and 75% thereafter below 500 m. In the foothills, follow the Georgian edge values. `open_land.toml#19`
 - **Central Asia**, 3,000–10,000 BCE (high, encoded (2 adjust)): Fill at 92%, and at 75% in the river deltas. `open_land.toml#4`
@@ -664,7 +664,7 @@ flat expected value. Each line names its judgement (file#index).
 - **Italy & islands**, 3,000–10,000 BCE (low, encoded (3 adjust)): Fill the Po plain at 20% and the Tavoliere at 35% before 6,000 BCE and 45% after. `open_land.toml#27`
 - **Levant**, 3,000–10,000 BCE (medium, flat value): Fill at 92%, ignoring the 0% edges. `open_land.toml#8`
 - **Libya & Egypt**, 3,000–10,000 BCE (high, encoded (2 adjust)): Fill at 98%. Use 70% on the Jebel Akhdar and 85% in a 10 km Nile strip. `open_land.toml#2`
-- **Maghreb**, 3,000–10,000 BCE (medium, encoded (3 adjust)): Fill at 95% south of the Saharan Atlas. In the Tell and Atlas, use 60% at 10,000-9,000 BCE and 45% from 8,000 BCE. `open_land.toml#9`
+- **Maghreb**, 3,000–10,000 BCE (medium, encoded (3 adjust)): Fill at 95% south of the Saharan Atlas. In the Tell and Atlas, use 60% at 10,000-8,000 BCE and 45% from 7,000 BCE. `open_land.toml#9`
 - **Mesopotamia**, 3,000–10,000 BCE (high, encoded (1 adjust)): Fill at 93%, with 85% in the marshes. `open_land.toml#7`
 - **Nile & Sudan**, 3,000–10,000 BCE (medium, encoded (3 adjust)): Fill at 75% for 9,000-5,000 BCE and 88% otherwise. Use 60% on Jebel Marra. `open_land.toml#11`
 - **Now-drowned shelves and islands**, 8,000–10,000 BCE (low, encoded (5 adjust)): Fill Doggerland at 55% at 10,000 BCE, 45% at 9,000 BCE and 30% at 8,000 BCE. Fill the Gulf and Caspian shelves at 95% while dry. `open_land.toml#28`
@@ -675,7 +675,7 @@ flat expected value. Each line names its judgement (file#index).
 - **Sahara–Sahel**, 3,000–10,000 BCE (medium, encoded (1 adjust)): Fill at 95%. In the southern Sahel (south of 15°N), use 85% for 9,000-5,000 BCE. `open_land.toml#1`
 - **Scandinavia**, 3,000–10,000 BCE (medium, encoded (4 adjust)): Fill at 25% in the boreal lowlands and 60% above 800 m in the Scandes. Add 15 points before 8,000 BCE. `open_land.toml#20`
 - **Ukraine & Belarus**, 3,000–10,000 BCE (medium, encoded (6 adjust)): Fill at 80% at 10,000 BCE, 70% at 9,000 BCE, 55% at 8,000 BCE, 45% for 7,000-5,000 BCE and 50% for 4,000-3,000 BCE. Subtract 20 points in Polesia north of 51°N. `open_land.toml#16`
-- **West Africa**, 3,000–10,000 BCE (low, encoded (4 adjust)): Fill at 65% at 10,000 BCE, 45% for 9,000-5,000 BCE and 60% for 4,000-3,000 BCE. Make it 15% more open north of 11°N. `open_land.toml#10`
+- **West Africa**, 3,000–10,000 BCE (low, encoded (3 adjust)): Fill at 65% at 10,000 BCE and 45% for 9,000-3,000 BCE. Make it 15% more open north of 11°N. `open_land.toml#10`
 
 ## Ancient genomes
 
@@ -754,7 +754,7 @@ flat expected value. Each line names its judgement (file#index).
 - **Russia: steppe and forest-steppe**, 4,000–5,000 BCE (medium, flat value): Extend R1b 0.45. `y_haplogroup.toml#21`
 - **Russia: steppe and forest-steppe**, 3,000–3,000 BCE (high, flat value): Extend R1b 0.65. `y_haplogroup.toml#22`
 - **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set other 0.85; R1b 0.15 around Lake Chad from 6,000 BCE, 0.05 elsewhere. `y_haplogroup.toml#46`
-- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.65; raise R1a to 0.2 north of 64°N. `y_haplogroup.toml#14`
+- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.72, R1a 0.03; raise R1a to 0.1 north of 64°N. `y_haplogroup.toml#14`
 - **Scandinavia**, 3,000–6,000 BCE (low, encoded (2 adjust)): Southern cells I2 0.65; Finland R1a 0.3, R1b 0.15, I2 0.25. `y_haplogroup.toml#15`
 - **Ukraine & Belarus**, 5,000–10,000 BCE (medium, flat value): Set I2 0.5. `y_haplogroup.toml#23`
 - **Ukraine & Belarus**, 3,000–4,000 BCE (low, encoded (2 adjust)): Gradient: south R1b 0.45, west G2a 0.25, north I2 0.4. `y_haplogroup.toml#24`
@@ -805,7 +805,7 @@ flat expected value. Each line names its judgement (file#index).
 - **Russia: steppe and forest-steppe**, 4,000–5,000 BCE (medium, flat value): Extend R1b 0.45. `y_haplogroup.toml#21`
 - **Russia: steppe and forest-steppe**, 3,000–3,000 BCE (high, flat value): Extend R1b 0.65. `y_haplogroup.toml#22`
 - **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set other 0.85; R1b 0.15 around Lake Chad from 6,000 BCE, 0.05 elsewhere. `y_haplogroup.toml#46`
-- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.65; raise R1a to 0.2 north of 64°N. `y_haplogroup.toml#14`
+- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.72, R1a 0.03; raise R1a to 0.1 north of 64°N. `y_haplogroup.toml#14`
 - **Scandinavia**, 3,000–6,000 BCE (low, encoded (2 adjust)): Southern cells I2 0.65; Finland R1a 0.3, R1b 0.15, I2 0.25. `y_haplogroup.toml#15`
 - **Ukraine & Belarus**, 5,000–10,000 BCE (medium, flat value): Set I2 0.5. `y_haplogroup.toml#23`
 - **Ukraine & Belarus**, 3,000–4,000 BCE (low, encoded (2 adjust)): Gradient: south R1b 0.45, west G2a 0.25, north I2 0.4. `y_haplogroup.toml#24`
@@ -856,7 +856,7 @@ flat expected value. Each line names its judgement (file#index).
 - **Russia: steppe and forest-steppe**, 4,000–5,000 BCE (medium, flat value): Extend R1b 0.45. `y_haplogroup.toml#21`
 - **Russia: steppe and forest-steppe**, 3,000–3,000 BCE (high, flat value): Extend R1b 0.65. `y_haplogroup.toml#22`
 - **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set other 0.85; R1b 0.15 around Lake Chad from 6,000 BCE, 0.05 elsewhere. `y_haplogroup.toml#46`
-- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.65; raise R1a to 0.2 north of 64°N. `y_haplogroup.toml#14`
+- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.72, R1a 0.03; raise R1a to 0.1 north of 64°N. `y_haplogroup.toml#14`
 - **Scandinavia**, 3,000–6,000 BCE (low, encoded (2 adjust)): Southern cells I2 0.65; Finland R1a 0.3, R1b 0.15, I2 0.25. `y_haplogroup.toml#15`
 - **Ukraine & Belarus**, 5,000–10,000 BCE (medium, flat value): Set I2 0.5. `y_haplogroup.toml#23`
 - **Ukraine & Belarus**, 3,000–4,000 BCE (low, encoded (2 adjust)): Gradient: south R1b 0.45, west G2a 0.25, north I2 0.4. `y_haplogroup.toml#24`
@@ -907,7 +907,7 @@ flat expected value. Each line names its judgement (file#index).
 - **Russia: steppe and forest-steppe**, 4,000–5,000 BCE (medium, flat value): Extend R1b 0.45. `y_haplogroup.toml#21`
 - **Russia: steppe and forest-steppe**, 3,000–3,000 BCE (high, flat value): Extend R1b 0.65. `y_haplogroup.toml#22`
 - **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set other 0.85; R1b 0.15 around Lake Chad from 6,000 BCE, 0.05 elsewhere. `y_haplogroup.toml#46`
-- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.65; raise R1a to 0.2 north of 64°N. `y_haplogroup.toml#14`
+- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.72, R1a 0.03; raise R1a to 0.1 north of 64°N. `y_haplogroup.toml#14`
 - **Scandinavia**, 3,000–6,000 BCE (low, encoded (2 adjust)): Southern cells I2 0.65; Finland R1a 0.3, R1b 0.15, I2 0.25. `y_haplogroup.toml#15`
 - **Ukraine & Belarus**, 5,000–10,000 BCE (medium, flat value): Set I2 0.5. `y_haplogroup.toml#23`
 - **Ukraine & Belarus**, 3,000–4,000 BCE (low, encoded (2 adjust)): Gradient: south R1b 0.45, west G2a 0.25, north I2 0.4. `y_haplogroup.toml#24`
@@ -958,7 +958,7 @@ flat expected value. Each line names its judgement (file#index).
 - **Russia: steppe and forest-steppe**, 4,000–5,000 BCE (medium, flat value): Extend R1b 0.45. `y_haplogroup.toml#21`
 - **Russia: steppe and forest-steppe**, 3,000–3,000 BCE (high, flat value): Extend R1b 0.65. `y_haplogroup.toml#22`
 - **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set other 0.85; R1b 0.15 around Lake Chad from 6,000 BCE, 0.05 elsewhere. `y_haplogroup.toml#46`
-- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.65; raise R1a to 0.2 north of 64°N. `y_haplogroup.toml#14`
+- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.72, R1a 0.03; raise R1a to 0.1 north of 64°N. `y_haplogroup.toml#14`
 - **Scandinavia**, 3,000–6,000 BCE (low, encoded (2 adjust)): Southern cells I2 0.65; Finland R1a 0.3, R1b 0.15, I2 0.25. `y_haplogroup.toml#15`
 - **Ukraine & Belarus**, 5,000–10,000 BCE (medium, flat value): Set I2 0.5. `y_haplogroup.toml#23`
 - **Ukraine & Belarus**, 3,000–4,000 BCE (low, encoded (2 adjust)): Gradient: south R1b 0.45, west G2a 0.25, north I2 0.4. `y_haplogroup.toml#24`
@@ -1009,7 +1009,7 @@ flat expected value. Each line names its judgement (file#index).
 - **Russia: steppe and forest-steppe**, 4,000–5,000 BCE (medium, flat value): Extend R1b 0.45. `y_haplogroup.toml#21`
 - **Russia: steppe and forest-steppe**, 3,000–3,000 BCE (high, flat value): Extend R1b 0.65. `y_haplogroup.toml#22`
 - **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set other 0.85; R1b 0.15 around Lake Chad from 6,000 BCE, 0.05 elsewhere. `y_haplogroup.toml#46`
-- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.65; raise R1a to 0.2 north of 64°N. `y_haplogroup.toml#14`
+- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.72, R1a 0.03; raise R1a to 0.1 north of 64°N. `y_haplogroup.toml#14`
 - **Scandinavia**, 3,000–6,000 BCE (low, encoded (2 adjust)): Southern cells I2 0.65; Finland R1a 0.3, R1b 0.15, I2 0.25. `y_haplogroup.toml#15`
 - **Ukraine & Belarus**, 5,000–10,000 BCE (medium, flat value): Set I2 0.5. `y_haplogroup.toml#23`
 - **Ukraine & Belarus**, 3,000–4,000 BCE (low, encoded (2 adjust)): Gradient: south R1b 0.45, west G2a 0.25, north I2 0.4. `y_haplogroup.toml#24`
@@ -1060,7 +1060,7 @@ flat expected value. Each line names its judgement (file#index).
 - **Russia: steppe and forest-steppe**, 4,000–5,000 BCE (medium, flat value): Extend R1b 0.45. `y_haplogroup.toml#21`
 - **Russia: steppe and forest-steppe**, 3,000–3,000 BCE (high, flat value): Extend R1b 0.65. `y_haplogroup.toml#22`
 - **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set other 0.85; R1b 0.15 around Lake Chad from 6,000 BCE, 0.05 elsewhere. `y_haplogroup.toml#46`
-- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.65; raise R1a to 0.2 north of 64°N. `y_haplogroup.toml#14`
+- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.72, R1a 0.03; raise R1a to 0.1 north of 64°N. `y_haplogroup.toml#14`
 - **Scandinavia**, 3,000–6,000 BCE (low, encoded (2 adjust)): Southern cells I2 0.65; Finland R1a 0.3, R1b 0.15, I2 0.25. `y_haplogroup.toml#15`
 - **Ukraine & Belarus**, 5,000–10,000 BCE (medium, flat value): Set I2 0.5. `y_haplogroup.toml#23`
 - **Ukraine & Belarus**, 3,000–4,000 BCE (low, encoded (2 adjust)): Gradient: south R1b 0.45, west G2a 0.25, north I2 0.4. `y_haplogroup.toml#24`
@@ -1111,7 +1111,7 @@ flat expected value. Each line names its judgement (file#index).
 - **Russia: steppe and forest-steppe**, 4,000–5,000 BCE (medium, flat value): Extend R1b 0.45. `y_haplogroup.toml#21`
 - **Russia: steppe and forest-steppe**, 3,000–3,000 BCE (high, flat value): Extend R1b 0.65. `y_haplogroup.toml#22`
 - **Sahara–Sahel**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set other 0.85; R1b 0.15 around Lake Chad from 6,000 BCE, 0.05 elsewhere. `y_haplogroup.toml#46`
-- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.65; raise R1a to 0.2 north of 64°N. `y_haplogroup.toml#14`
+- **Scandinavia**, 7,000–10,000 BCE (low, encoded (1 adjust)): Set I2 0.72, R1a 0.03; raise R1a to 0.1 north of 64°N. `y_haplogroup.toml#14`
 - **Scandinavia**, 3,000–6,000 BCE (low, encoded (2 adjust)): Southern cells I2 0.65; Finland R1a 0.3, R1b 0.15, I2 0.25. `y_haplogroup.toml#15`
 - **Ukraine & Belarus**, 5,000–10,000 BCE (medium, flat value): Set I2 0.5. `y_haplogroup.toml#23`
 - **Ukraine & Belarus**, 3,000–4,000 BCE (low, encoded (2 adjust)): Gradient: south R1b 0.45, west G2a 0.25, north I2 0.4. `y_haplogroup.toml#24`
@@ -1130,10 +1130,10 @@ flat expected value. Each line names its judgement (file#index).
 - **Central Europe**, 7,000–10,000 BCE (medium, encoded (1 adjust)): Set U5 0.65, U4 0.08, U4 up to 0.15 east of the Oder. `mt_haplogroup.toml#7`
 - **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set U5 0.75, other 0.15 across the region until farming arrives. `mt_haplogroup.toml#1`
 - **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#29`
-- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65, H 0.08. `mt_haplogroup.toml#2`
+- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.7, H 0.03. `mt_haplogroup.toml#2`
 - **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set other 0.55, J 0.12; South Asian M ('other') rises to 0.4 of the total in Afghanistan. `mt_haplogroup.toml#19`
 - **Italy & islands**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65. `mt_haplogroup.toml#6`
-- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, other 0.45; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
+- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, H 0.1, other 0.41; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
 - **Libya & Egypt**, 3,000–10,000 BCE (low, flat value): Set other 0.8. `mt_haplogroup.toml#23`
 - **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95. `mt_haplogroup.toml#24`
 - **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): North Morocco K 0.15, H 0.1; elsewhere other 0.85. `mt_haplogroup.toml#25`
@@ -1162,10 +1162,10 @@ flat expected value. Each line names its judgement (file#index).
 - **Central Europe**, 7,000–10,000 BCE (medium, encoded (1 adjust)): Set U5 0.65, U4 0.08, U4 up to 0.15 east of the Oder. `mt_haplogroup.toml#7`
 - **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set U5 0.75, other 0.15 across the region until farming arrives. `mt_haplogroup.toml#1`
 - **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#29`
-- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65, H 0.08. `mt_haplogroup.toml#2`
+- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.7, H 0.03. `mt_haplogroup.toml#2`
 - **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set other 0.55, J 0.12; South Asian M ('other') rises to 0.4 of the total in Afghanistan. `mt_haplogroup.toml#19`
 - **Italy & islands**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65. `mt_haplogroup.toml#6`
-- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, other 0.45; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
+- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, H 0.1, other 0.41; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
 - **Libya & Egypt**, 3,000–10,000 BCE (low, flat value): Set other 0.8. `mt_haplogroup.toml#23`
 - **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95. `mt_haplogroup.toml#24`
 - **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): North Morocco K 0.15, H 0.1; elsewhere other 0.85. `mt_haplogroup.toml#25`
@@ -1194,10 +1194,10 @@ flat expected value. Each line names its judgement (file#index).
 - **Central Europe**, 7,000–10,000 BCE (medium, encoded (1 adjust)): Set U5 0.65, U4 0.08, U4 up to 0.15 east of the Oder. `mt_haplogroup.toml#7`
 - **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set U5 0.75, other 0.15 across the region until farming arrives. `mt_haplogroup.toml#1`
 - **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#29`
-- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65, H 0.08. `mt_haplogroup.toml#2`
+- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.7, H 0.03. `mt_haplogroup.toml#2`
 - **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set other 0.55, J 0.12; South Asian M ('other') rises to 0.4 of the total in Afghanistan. `mt_haplogroup.toml#19`
 - **Italy & islands**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65. `mt_haplogroup.toml#6`
-- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, other 0.45; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
+- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, H 0.1, other 0.41; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
 - **Libya & Egypt**, 3,000–10,000 BCE (low, flat value): Set other 0.8. `mt_haplogroup.toml#23`
 - **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95. `mt_haplogroup.toml#24`
 - **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): North Morocco K 0.15, H 0.1; elsewhere other 0.85. `mt_haplogroup.toml#25`
@@ -1226,10 +1226,10 @@ flat expected value. Each line names its judgement (file#index).
 - **Central Europe**, 7,000–10,000 BCE (medium, encoded (1 adjust)): Set U5 0.65, U4 0.08, U4 up to 0.15 east of the Oder. `mt_haplogroup.toml#7`
 - **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set U5 0.75, other 0.15 across the region until farming arrives. `mt_haplogroup.toml#1`
 - **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#29`
-- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65, H 0.08. `mt_haplogroup.toml#2`
+- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.7, H 0.03. `mt_haplogroup.toml#2`
 - **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set other 0.55, J 0.12; South Asian M ('other') rises to 0.4 of the total in Afghanistan. `mt_haplogroup.toml#19`
 - **Italy & islands**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65. `mt_haplogroup.toml#6`
-- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, other 0.45; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
+- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, H 0.1, other 0.41; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
 - **Libya & Egypt**, 3,000–10,000 BCE (low, flat value): Set other 0.8. `mt_haplogroup.toml#23`
 - **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95. `mt_haplogroup.toml#24`
 - **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): North Morocco K 0.15, H 0.1; elsewhere other 0.85. `mt_haplogroup.toml#25`
@@ -1258,10 +1258,10 @@ flat expected value. Each line names its judgement (file#index).
 - **Central Europe**, 7,000–10,000 BCE (medium, encoded (1 adjust)): Set U5 0.65, U4 0.08, U4 up to 0.15 east of the Oder. `mt_haplogroup.toml#7`
 - **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set U5 0.75, other 0.15 across the region until farming arrives. `mt_haplogroup.toml#1`
 - **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#29`
-- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65, H 0.08. `mt_haplogroup.toml#2`
+- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.7, H 0.03. `mt_haplogroup.toml#2`
 - **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set other 0.55, J 0.12; South Asian M ('other') rises to 0.4 of the total in Afghanistan. `mt_haplogroup.toml#19`
 - **Italy & islands**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65. `mt_haplogroup.toml#6`
-- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, other 0.45; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
+- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, H 0.1, other 0.41; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
 - **Libya & Egypt**, 3,000–10,000 BCE (low, flat value): Set other 0.8. `mt_haplogroup.toml#23`
 - **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95. `mt_haplogroup.toml#24`
 - **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): North Morocco K 0.15, H 0.1; elsewhere other 0.85. `mt_haplogroup.toml#25`
@@ -1290,10 +1290,10 @@ flat expected value. Each line names its judgement (file#index).
 - **Central Europe**, 7,000–10,000 BCE (medium, encoded (1 adjust)): Set U5 0.65, U4 0.08, U4 up to 0.15 east of the Oder. `mt_haplogroup.toml#7`
 - **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set U5 0.75, other 0.15 across the region until farming arrives. `mt_haplogroup.toml#1`
 - **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#29`
-- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65, H 0.08. `mt_haplogroup.toml#2`
+- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.7, H 0.03. `mt_haplogroup.toml#2`
 - **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set other 0.55, J 0.12; South Asian M ('other') rises to 0.4 of the total in Afghanistan. `mt_haplogroup.toml#19`
 - **Italy & islands**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65. `mt_haplogroup.toml#6`
-- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, other 0.45; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
+- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, H 0.1, other 0.41; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
 - **Libya & Egypt**, 3,000–10,000 BCE (low, flat value): Set other 0.8. `mt_haplogroup.toml#23`
 - **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95. `mt_haplogroup.toml#24`
 - **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): North Morocco K 0.15, H 0.1; elsewhere other 0.85. `mt_haplogroup.toml#25`
@@ -1322,10 +1322,10 @@ flat expected value. Each line names its judgement (file#index).
 - **Central Europe**, 7,000–10,000 BCE (medium, encoded (1 adjust)): Set U5 0.65, U4 0.08, U4 up to 0.15 east of the Oder. `mt_haplogroup.toml#7`
 - **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set U5 0.75, other 0.15 across the region until farming arrives. `mt_haplogroup.toml#1`
 - **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#29`
-- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65, H 0.08. `mt_haplogroup.toml#2`
+- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.7, H 0.03. `mt_haplogroup.toml#2`
 - **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set other 0.55, J 0.12; South Asian M ('other') rises to 0.4 of the total in Afghanistan. `mt_haplogroup.toml#19`
 - **Italy & islands**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65. `mt_haplogroup.toml#6`
-- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, other 0.45; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
+- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, H 0.1, other 0.41; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
 - **Libya & Egypt**, 3,000–10,000 BCE (low, flat value): Set other 0.8. `mt_haplogroup.toml#23`
 - **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95. `mt_haplogroup.toml#24`
 - **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): North Morocco K 0.15, H 0.1; elsewhere other 0.85. `mt_haplogroup.toml#25`
@@ -1354,10 +1354,10 @@ flat expected value. Each line names its judgement (file#index).
 - **Central Europe**, 7,000–10,000 BCE (medium, encoded (1 adjust)): Set U5 0.65, U4 0.08, U4 up to 0.15 east of the Oder. `mt_haplogroup.toml#7`
 - **France & Low Countries**, 7,000–10,000 BCE (high, flat value): Set U5 0.75, other 0.15 across the region until farming arrives. `mt_haplogroup.toml#1`
 - **Horn of Africa**, 3,000–10,000 BCE (low, flat value): Set other 0.97. `mt_haplogroup.toml#29`
-- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65, H 0.08. `mt_haplogroup.toml#2`
+- **Iberia**, 7,000–10,000 BCE (medium, flat value): Set U5 0.7, H 0.03. `mt_haplogroup.toml#2`
 - **Iran & Afghanistan**, 3,000–10,000 BCE (low, flat value): Set other 0.55, J 0.12; South Asian M ('other') rises to 0.4 of the total in Afghanistan. `mt_haplogroup.toml#19`
 - **Italy & islands**, 7,000–10,000 BCE (medium, flat value): Set U5 0.65. `mt_haplogroup.toml#6`
-- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, other 0.45; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
+- **Levant**, 3,000–10,000 BCE (low, encoded (2 adjust)): Set K 0.2, H 0.1, other 0.41; H rising to 0.12 by 3,000 BCE. `mt_haplogroup.toml#17`
 - **Libya & Egypt**, 3,000–10,000 BCE (low, flat value): Set other 0.8. `mt_haplogroup.toml#23`
 - **Maghreb**, 7,000–10,000 BCE (medium, flat value): Set other 0.95. `mt_haplogroup.toml#24`
 - **Maghreb**, 3,000–6,000 BCE (low, encoded (2 adjust)): North Morocco K 0.15, H 0.1; elsewhere other 0.85. `mt_haplogroup.toml#25`

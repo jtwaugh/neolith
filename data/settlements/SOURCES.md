@@ -19,10 +19,10 @@ property, plus the calibration curve.
 
 ### Radiocarbon dates transcribed from papers (`literature`)
 
-- **Cite:** `data/settlements/literature_dates.csv` in this repository, transcribed from: Zaitseva, G.I. et al. 2000, Radiocarbon and Archaeology 1:33-52 (https://old.archeo.ru/izdaniya-1/vagnejshije-izdanija/pdf/2000Radiocarbon.pdf); Zaretskaya, N.E. et al. 2005, Geochronometria 24:117-131 (http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf); Zaretskaya, N.E. et al. 2012, Radiocarbon 54(3-4):783-794 (https://resolve.cambridge.org/core/services/aop-cambridge-core/content/view/F3D2E5D73C3850C8E41225E739698432/S0033822200047433a.pdf/radiocarbon-chronology-of-the-shigir-and-gorbunovo-archaeological-bog-sites-middle-urals-russia.pdf); Tsybrij, A. et al. 2017, Documenta Praehistorica 44:204-223 (https://doi.org/10.4312/dp.44.13); Kulkova, M.A. et al. 2019, Documenta Praehistorica 46:376-387 (https://doi.org/10.4312/dp.46.23); Lychagina, E. & Vybornov, A. 2017, Documenta Praehistorica 44 (https://doi.org/10.4312/dp.44.9); Tarasov, A. et al. 2017, Documenta Praehistorica 44:98-121 (https://doi.org/10.4312/dp.44.7); Seitsonen, O. et al. 2012, Geochronometria 39(2):101-121 (https://doi.org/10.2478/s13386-012-0002-9); Tribolo, C. et al. 2017, PLoS ONE 12(1):e0169418 (https://doi.org/10.1371/journal.pone.0169418; Goda Buticha, Table 1, placed from https://www.mindat.org/loc-417079.html); Vybornov, A. et al. 2013, Documenta Praehistorica 40:13-20 (https://doi.org/10.4312/dp.40.2); Vybornov, A. 2016, Documenta Praehistorica 43:161-166 (https://doi.org/10.4312/dp.43.7); Vybornov, A. et al. 2017, Documenta Praehistorica 44:224-239 (https://doi.org/10.4312/dp.44.14); Vybornov, A.A. et al. 2022, Vestnik VolGU ser. 4, 27(3):6-15 (https://doi.org/10.15688/jvolsu4.2022.3.1; Lower Volga and North Caspian sites, placed from Grechkina et al. 2014 https://snv63.ru/2309-4370/article/download/22443/18625, Vybornov et al. 2022 https://snv63.ru/2309-4370/article/download/133233/111035, Burataev 2014 https://kigiran.elpub.ru/jour/article/download/1037/2075 and Vybornov 2016 Fig. 1). Each row gives its paper, page and table row.
+- **Cite:** `data/settlements/literature_dates.csv` in this repository, transcribed from: Zaitseva, G.I. et al. 2000, Radiocarbon and Archaeology 1:33-52 (https://old.archeo.ru/izdaniya-1/vagnejshije-izdanija/pdf/2000Radiocarbon.pdf); Zaretskaya, N.E. et al. 2005, Geochronometria 24:117-131 (http://www.geochronometria.pl/pdf/geo_24/Geo24_16.pdf); Zaretskaya, N.E. et al. 2012, Radiocarbon 54(3-4):783-794 (https://resolve.cambridge.org/core/services/aop-cambridge-core/content/view/F3D2E5D73C3850C8E41225E739698432/S0033822200047433a.pdf/radiocarbon-chronology-of-the-shigir-and-gorbunovo-archaeological-bog-sites-middle-urals-russia.pdf); Tsybrij, A. et al. 2017, Documenta Praehistorica 44:204-223 (https://doi.org/10.4312/dp.44.13); Kulkova, M.A. et al. 2019, Documenta Praehistorica 46:376-387 (https://doi.org/10.4312/dp.46.23); Lychagina, E. & Vybornov, A. 2017, Documenta Praehistorica 44 (https://doi.org/10.4312/dp.44.9); Tarasov, A. et al. 2017, Documenta Praehistorica 44:98-121 (https://doi.org/10.4312/dp.44.7); Seitsonen, O. et al. 2012, Geochronometria 39(2):101-121 (https://doi.org/10.2478/s13386-012-0002-9); Tribolo, C. et al. 2017, PLoS ONE 12(1):e0169418 (https://doi.org/10.1371/journal.pone.0169418; Goda Buticha, Table 1, placed from https://www.mindat.org/loc-417079.html); Vybornov, A. et al. 2013, Documenta Praehistorica 40:13-20 (https://doi.org/10.4312/dp.40.2); Vybornov, A. 2016, Documenta Praehistorica 43:161-166 (https://doi.org/10.4312/dp.43.7); Vybornov, A. et al. 2017, Documenta Praehistorica 44:224-239 (https://doi.org/10.4312/dp.44.14); Vybornov, A.A. et al. 2022, Vestnik VolGU ser. 4, 27(3):6-15 (https://doi.org/10.15688/jvolsu4.2022.3.1; Lower Volga and North Caspian sites, placed from Grechkina et al. 2014 https://snv63.ru/2309-4370/article/download/22443/18625, Vybornov et al. 2022 https://snv63.ru/2309-4370/article/download/133233/111035, Burataev 2014 https://kigiran.elpub.ru/jour/article/download/1037/2075 and Vybornov 2016 Fig. 1); Card, N. et al. 2018, European Journal of Archaeology 21(2):217-263 (https://doi.org/10.1017/eaa.2016.29; Ness of Brodgar); Cassidy, L.M. et al. 2020, Nature 582:384-388 (https://doi.org/10.1038/s41586-020-2378-6; the two directly dated Newgrange burials, as listed in AADR v66.p1); Meadows, J. et al. 2015, Samara Journal of Science 4(3):113-121 (https://doi.org/10.17816/snv20153210; Zamostje 2 food-crust, fibre and wood dates, placed from Dolbunova et al. 2023 SI_ORA); Nikitin et al. 2025 (AADR 'NikitinReichNature2025'), Nature (https://doi.org/10.1038/s41586-024-08372-2; the directly dated Mariupol' burial, as listed in AADR v66.p1); Firew, G.A. 2014, PhD thesis, University of Bergen (https://hdl.handle.net/1956/8931; Kurtiye rock shelter, Lake Tana, section 5.1). Each row gives its paper, page and table row.
 - **Licence:** Facts from the cited papers; the transcription is the project's own.
-- **Retrieved:** 2026-11-13 (1 file, hashes in `provenance.json`)
-- **In the output:** 192 sites, 706 dates
+- **Retrieved:** 2026-11-14 (1 file, hashes in `provenance.json`)
+- **In the output:** 197 sites, 736 dates
 - **Note:** Only Zaitseva et al. print coordinates (to 1 arcminute). Every other row is placed from the paper's map, text or locality, or from Dolbunova et al. 2023 SI_ORA, and is marked approximate with how and to what precision. Dates the authors reject are left out, as are rows without a lab number and lab numbers printed for two different dates or sites.
 
 ### XRONOS (`xronos`)
@@ -31,7 +31,7 @@ property, plus the calibration curve.
 - **Licence:** CC BY 4.0
 - **URL:** https://xronos.ch
 - **Retrieved:** 2026-11-11 to 2026-11-12 (103 files, hashes in `provenance.json`)
-- **In the output:** 7477 sites, 47240 dates
+- **In the output:** 7472 sites, 47321 dates
 - **Note:** XRONOS compiles dates from other databases and publications and asks that those are cited too; see the last section.
 
 ### p3k14c, release 2025.07 (`p3k14c`)
@@ -40,7 +40,7 @@ property, plus the calibration curve.
 - **Licence:** The article is CC BY 4.0. The repository states CC BY 4.0 for text and figures and MIT for code, and gives no separate licence for the data file.
 - **URL:** https://github.com/people3k/p3k14c
 - **Retrieved:** 2026-11-12 (1 file, hashes in `provenance.json`)
-- **In the output:** 267 sites, 1321 dates
+- **In the output:** 265 sites, 1310 dates
 - **Note:** Only dates whose lab number XRONOS does not have. The file is the "scrubbed and fuzzed" one.
 
 ### NeoNet (Mediterranean), version 2 (`neonet`)
@@ -61,12 +61,21 @@ property, plus the calibration curve.
 - **In the output:** 109 sites, 363 dates
 - **Note:** Only dates whose lab number is not already in hand. The author list is as given by c14bazAAR.
 
+### Wikidata (`wikidata`)
+
+- **Cite:** Wikidata contributors. Wikidata. https://www.wikidata.org. Each site gives its item id in the `wikidata` property.
+- **Licence:** CC0 1.0
+- **URL:** https://query.wikidata.org
+- **Retrieved:** 2026-11-14 (66 files, hashes in `provenance.json`)
+- **In the output:** 374 sites
+- **Note:** Supplies `wikidata`, `wikipedia` and `culture`, and the whole record for sites whose only source is `wikidata`.
+
 ### Hand entries (`curated`)
 
 - **Cite:** `data/settlements/curated.geojson` in this repository, carried over from the 2023 `settlements.geojson`.
 - **Licence:** Project's own.
-- **In the output:** 8 sites
-- **Note:** Names, founding years and populations entered by hand without recorded sources. The populations are placeholders.
+- **In the output:** 11 sites
+- **Note:** Names, founding years and populations entered by hand. The entries carried over from 2023 have no recorded sources and their populations are placeholders. The later ones (Tell el-Farkha, Tell el-Samara, Eridu, Ur, Ġgantija) are sites with no radiocarbon date inside the period in the compilations; each gives its sources in `references` and says in its `note` which date lists were checked.
 
 ### IntCal20 calibration curve (`intcal20`)
 
@@ -81,43 +90,43 @@ property, plus the calibration curve.
 XRONOS asks that the original sources listed on each record are cited
 as well as XRONOS itself. Each site's `references` property lists them,
 and `dates.csv.gz` gives them date by date with lab numbers.
-There are 11555 distinct references; those behind at least 200
+There are 11596 distinct references; those behind at least 200
 dates in the output are:
 
 | Reference | Dates |
 |---|---|
-| p3k14c | 32388 |
-| CalPal2022 | 27244 |
-| RADON | 12745 |
-| EUROEVOL | 9422 |
-| NERD | 6330 |
-| Bevan2017 | 5627 |
-| BDA | 3259 |
-| IRDD | 2471 |
+| p3k14c | 32490 |
+| CalPal2022 | 27459 |
+| RADON | 12790 |
+| EUROEVOL | 9445 |
+| NERD | 6366 |
+| Bevan2017 | 5633 |
+| BDA | 3258 |
+| IRDD | 2498 |
 | AIDA | 2129 |
 | CONTEXT | 2129 |
 | EUROEVOL (via CalPal) | 1863 |
-| Balsera | 1821 |
+| Balsera | 1833 |
 | RADON-B | 1440 |
-| IRDD (CalPal) | 1235 |
-| PACEA | 1195 |
+| IRDD (CalPal) | 1244 |
+| PACEA | 1204 |
 | Katsianis et al. 2020 | 1194 |
 | Solheim_Norway | 1072 |
 | ManningTimpson2014 | 912 |
-| Vermeersch 2020 | 875 |
+| Vermeersch 2020 | 873 |
 | EUROEVOL; RADON | 799 |
+| 14SEA | 782 |
 | MedAfriCarbon | 762 |
-| 14SEA | 714 |
 | Kiel DB 2013 | 635 |
-| CALPAL | 609 |
+| CALPAL | 602 |
 | Jørgensen 2017 | 462 |
 | van Willigen 2006 | 339 |
 | Görsdorf 1996 | 294 |
 | CalPal | 291 |
 | Silva_VanderLinden_2017 | 287 |
 | Gehlen 2010 | 275 |
+| Larsson 2019 | 248 |
 | Oross et al. 2016 | 242 |
-| Larsson 2019 | 230 |
 | Niekus 2005/2006 | 230 |
 | Banadora | 220 |
 | CBA Radiocarbon Index | 217 |

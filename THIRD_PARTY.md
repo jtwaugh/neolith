@@ -22,6 +22,8 @@ Generated from `neolith-rs/Cargo.lock` by `python -m pipeline attributions`.
 | ahash | 0.8.12 | MIT OR Apache-2.0 | https://github.com/tkaitchuck/ahash |
 | aho-corasick | 1.1.5 | Unlicense OR MIT | https://github.com/BurntSushi/aho-corasick |
 | allocator-api2 | 0.2.21 | MIT OR Apache-2.0 | https://github.com/zakarumych/allocator-api2 |
+| alsa | 0.11.0 | Apache-2.0/MIT | https://github.com/diwic/alsa-rs |
+| alsa-sys | 0.4.0 | MIT | https://github.com/diwic/alsa-sys |
 | android-activity | 0.6.1 | MIT OR Apache-2.0 | https://github.com/rust-mobile/android-activity |
 | android-properties | 0.2.2 | MIT | https://github.com/miklelappo/android-properties |
 | android_system_properties | 0.1.6 | MIT OR Apache-2.0 | https://github.com/nical/android_system_properties |
@@ -85,11 +87,14 @@ Generated from `neolith-rs/Cargo.lock` by `python -m pipeline attributions`.
 | core-graphics | 0.23.2 | MIT OR Apache-2.0 | https://github.com/servo/core-foundation-rs |
 | core-graphics-types | 0.1.3 | MIT OR Apache-2.0 | https://github.com/servo/core-foundation-rs |
 | core_detect | 1.0.0 | MIT/Apache-2.0 | https://github.com/thomcc/core_detect |
+| coreaudio-rs | 0.14.2 | MIT/Apache-2.0 | https://github.com/RustAudio/coreaudio-rs.git |
+| cpal | 0.18.2 | Apache-2.0 | https://github.com/RustAudio/cpal |
 | cpufeatures | 0.3.1 | MIT OR Apache-2.0 | https://github.com/RustCrypto/utils |
 | crc32fast | 1.5.5 | MIT OR Apache-2.0 | https://github.com/srijs/rust-crc32fast |
 | crossbeam-utils | 0.8.23 | MIT OR Apache-2.0 | https://github.com/crossbeam-rs/crossbeam |
 | crunchy | 0.2.4 | MIT | https://github.com/eira-fransham/crunchy |
 | cursor-icon | 1.2.0 | MIT OR Apache-2.0 OR Zlib | https://github.com/rust-windowing/cursor-icon |
+| dasp_sample | 0.11.0 | MIT OR Apache-2.0 | https://github.com/rustaudio/sample.git |
 | dispatch | 0.2.0 | MIT | http://github.com/SSheldon/rust-dispatch |
 | dispatch2 | 0.3.1 | Zlib OR Apache-2.0 OR MIT | https://github.com/madsmtm/objc2 |
 | displaydoc | 0.2.7 | MIT OR Apache-2.0 | https://github.com/yaahc/displaydoc |
@@ -203,6 +208,7 @@ Generated from `neolith-rs/Cargo.lock` by `python -m pipeline attributions`.
 | litrs | 1.0.1 | MIT OR Apache-2.0 | https://github.com/LukasKalbertodt/litrs |
 | lock_api | 0.4.14 | MIT OR Apache-2.0 | https://github.com/Amanieu/parking_lot |
 | log | 0.4.35 | MIT OR Apache-2.0 | https://github.com/rust-lang/log |
+| mach2 | 0.6.0 | BSD-2-Clause OR MIT OR Apache-2.0 | https://github.com/JohnTitor/mach2 |
 | memchr | 2.8.3 | Unlicense OR MIT | https://github.com/BurntSushi/memchr |
 | memmap2 | 0.9.12 | MIT OR Apache-2.0 | https://github.com/RazrFalcon/memmap2-rs |
 | memoffset | 0.9.1 | MIT | https://github.com/Gilnaa/memoffset |
@@ -216,6 +222,10 @@ Generated from `neolith-rs/Cargo.lock` by `python -m pipeline attributions`.
 | ndk-sys | 0.6.0+11769913 | MIT OR Apache-2.0 | https://github.com/rust-mobile/ndk |
 | nohash-hasher | 0.2.0 | Apache-2.0 OR MIT | https://github.com/paritytech/nohash-hasher |
 | nom | 8.0.0 | MIT | https://github.com/rust-bakery/nom |
+| num-bigint | 0.4.8 | MIT OR Apache-2.0 | https://github.com/rust-num/num-bigint |
+| num-derive | 0.4.2 | MIT OR Apache-2.0 | https://github.com/rust-num/num-derive |
+| num-integer | 0.1.47 | MIT OR Apache-2.0 | https://github.com/rust-num/num-integer |
+| num-rational | 0.4.2 | MIT OR Apache-2.0 | https://github.com/rust-num/num-rational |
 | num-traits | 0.2.19 | MIT OR Apache-2.0 | https://github.com/rust-num/num-traits |
 | num_enum | 0.7.6 | BSD-3-Clause OR MIT OR Apache-2.0 | https://github.com/illicitonion/num_enum |
 | num_enum_derive | 0.7.6 | BSD-3-Clause OR MIT OR Apache-2.0 | https://github.com/illicitonion/num_enum |
@@ -224,8 +234,12 @@ Generated from `neolith-rs/Cargo.lock` by `python -m pipeline attributions`.
 | objc2 | 0.6.5 | MIT | https://github.com/madsmtm/objc2 |
 | objc2-app-kit | 0.2.2 | MIT | https://github.com/madsmtm/objc2 |
 | objc2-app-kit | 0.3.2 | Zlib OR Apache-2.0 OR MIT | https://github.com/madsmtm/objc2 |
+| objc2-audio-toolbox | 0.3.2 | Zlib OR Apache-2.0 OR MIT | https://github.com/madsmtm/objc2 |
+| objc2-avf-audio | 0.3.2 | Zlib OR Apache-2.0 OR MIT | https://github.com/madsmtm/objc2 |
 | objc2-cloud-kit | 0.2.2 | MIT | https://github.com/madsmtm/objc2 |
 | objc2-contacts | 0.2.2 | MIT | https://github.com/madsmtm/objc2 |
+| objc2-core-audio | 0.3.2 | Zlib OR Apache-2.0 OR MIT | https://github.com/madsmtm/objc2 |
+| objc2-core-audio-types | 0.3.2 | Zlib OR Apache-2.0 OR MIT | https://github.com/madsmtm/objc2 |
 | objc2-core-data | 0.2.2 | MIT | https://github.com/madsmtm/objc2 |
 | objc2-core-foundation | 0.3.2 | Zlib OR Apache-2.0 OR MIT | https://github.com/madsmtm/objc2 |
 | objc2-core-graphics | 0.3.2 | Zlib OR Apache-2.0 OR MIT | https://github.com/madsmtm/objc2 |
@@ -304,6 +318,7 @@ Generated from `neolith-rs/Cargo.lock` by `python -m pipeline attributions`.
 | renderdoc-sys | 1.1.0 | MIT OR Apache-2.0 | https://github.com/ebkalderon/renderdoc-rs |
 | rfd | 0.15.4 | MIT | https://github.com/PolyMeilex/rfd |
 | ring | 0.17.14 | Apache-2.0 AND ISC | https://github.com/briansmith/ring |
+| rodio | 0.23.0 | MIT OR Apache-2.0 | https://github.com/RustAudio/rodio |
 | rustc-hash | 1.1.0 | Apache-2.0/MIT | https://github.com/rust-lang-nursery/rustc-hash |
 | rustc-hash | 2.1.3 | Apache-2.0 OR MIT | https://github.com/rust-lang/rustc-hash |
 | rustc_version | 0.4.1 | MIT OR Apache-2.0 | https://github.com/djc/rustc-version-rs |

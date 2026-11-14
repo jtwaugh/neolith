@@ -79,42 +79,204 @@ fn heading(ui: &mut egui::Ui, text: &str) {
     ui.label(RichText::new(text).small().strong().color(Color32::from_rgb(214, 190, 140)));
 }
 
-/// Draws the record of settlement `i` as it stands in `year`.
-pub fn show(ui: &mut egui::Ui, world: &World, i: usize, year: Year) {
-    let st = &world.settlements[i];
-    let info = world.site_info(i);
-    let empty = SiteInfo::default();
-    let info = info.unwrap_or(&empty);
+/// The record's tabs. The strip sits at the top of the panel, above the
+/// scrolling body, so its controls are in the same place for every site.
+#[derive(Clone, Copy, PartialEq, Eq, Default)]
+pub enum RecordTab {
+    #[default]
+    Overview,
+    Dates,
+    Sources,
+}
 
+impl RecordTab {
+    pub const ALL: [RecordTab; 3] = [RecordTab::Overview, RecordTab::Dates, RecordTab::Sources];
+
+    pub fn label(self) -> &'static str {
+        match self {
+            RecordTab::Overview => "Overview",
+            RecordTab::Dates => "Dates",
+            RecordTab::Sources => "Sources",
+        }
+    }
+}
+
+/// Draws the tab strip and returns the tab chosen. The choice is kept from
+/// one site to the next.
+pub fn tab_strip(ui: &mut egui::Ui) -> RecordTab {
+    let id = egui::Id::unique("site-record-tab");
+    let mut tab = ui.data(|d| d.get_temp::<RecordTab>(id)).unwrap_or_default();
+    ui.horizontal(|ui| {
+        for t in RecordTab::ALL {
+            ui.selectable_value(&mut tab, t, t.label());
+        }
+    });
+    ui.data_mut(|d| d.insert_temp(id, tab));
+    ui.separator();
+    tab
+}
+
+/// One line of text that never wraps (cut short with "…"), so what is below
+/// it stays where it is; the whole text, and `more`, on hover.
+fn line(ui: &mut egui::Ui, text: RichText, more: &str) {
+    let full = if more.is_empty() { text.text().to_string() } else { format!("{}\n\n{more}", text.text()) };
+    ui.add(egui::Label::new(text).truncate()).on_hover_text(full);
+}
+
+/// Draws one tab of the record of settlement `i` as it stands in `year`.
+pub fn show(ui: &mut egui::Ui, world: &World, i: usize, year: Year, tab: RecordTab) {
+    let empty = SiteInfo::default();
+    let info = world.site_info(i).unwrap_or(&empty);
+    match tab {
+        RecordTab::Overview => overview(ui, world, i, year, info),
+        RecordTab::Dates => dates(ui, world, i, year, info),
+        RecordTab::Sources => sources(ui, info),
+    }
+}
+
+/// The overview. Its first part is a fixed form (kind and place, links, dated
+/// occupation, population, culture: the same lines at the same height for
+/// every site), so nothing moves under the player from one record to the
+/// next; what varies in length comes after it.
+fn overview(ui: &mut egui::Ui, world: &World, i: usize, year: Year, info: &SiteInfo) {
+    let st = &world.settlements[i];
+    let famous = crate::renown::lookup(st);
+
+    // Kind and place.
+    let kind = if info.is_inferred() {
+        "Inferred, not recorded".to_string()
+    } else if info.kind.is_empty() || info.kind == "site" {
+        "Site".to_string()
+    } else {
+        capitalise(&info.kind)
+    };
+    let place = format!("{kind} · {:.2}°{}, {:.2}°{}", st.pos.lat.abs(), if st.pos.lat >= 0.0 { "N" } else { "S" },
+        st.pos.lon.abs(), if st.pos.lon >= 0.0 { "E" } else { "W" });
+    line(ui, RichText::new(place).weak(), if info.is_inferred() { INFERRED_NOTE } else { "" });
+
+    // Links out: always one row, so the form below keeps its place.
+    ui.horizontal(|ui| {
+        let article = info.wikipedia.as_deref().map(wikipedia_url).or_else(|| famous.map(|f| f.entry().wikipedia.clone()));
+        if let Some(url) = &article {
+            ui.hyperlink_to("Wikipedia", url);
+        }
+        if let Some(q) = &info.wikidata {
+            ui.hyperlink_to("Wikidata", format!("https://www.wikidata.org/wiki/{q}"));
+        }
+        if article.is_none() && info.wikidata.is_none() {
+            ui.weak("No encyclopedia article linked");
+        }
+    });
+
+    heading(ui, "DATED OCCUPATION");
+    let n = info.dates.len();
+    match st.abandoned_by() {
+        None => line(ui, RichText::new(format!("From {}", st.founded)), ""),
+        Some(by) => line(ui, RichText::new(format!("{} – abandoned by {by}", st.founded)), "The Dates tab has the phases and the last date."),
+    }
+    let basis = if n > 0 {
+        let so_far = info.dates.iter().filter(|d| d.cal <= year).count();
+        format!("{n} radiocarbon date{} · {so_far} by {year}", if n == 1 { "" } else { "s" })
+    } else if info.is_inferred() {
+        "Years from the inference rule, not from dates".to_string()
+    } else if info.sources.iter().any(|s| s == "curated") {
+        "Founding year from a curated entry".to_string()
+    } else if info.sources.iter().any(|s| s == "wikidata") {
+        "Founding year from Wikidata (inception)".to_string()
+    } else {
+        "No radiocarbon dates".to_string()
+    };
+    line(ui, RichText::new(basis).weak(), "");
+
+    heading(ui, "POPULATION");
+    match st.population_at(year) {
+        Some(p) => {
+            line(ui, RichText::new(format!("{p} in {year} (recorded estimate)")), "");
+            line(ui, RichText::new("Piece sized from the record").weak(), "");
+        }
+        None => {
+            let none = if st.population.keys().is_empty() { "No recorded estimate" } else { "No recorded estimate for this year" };
+            line(ui, RichText::new(none).weak(), "");
+            const TIER: [&str; 4] = ["minor (a pit, hearth or find-spot)", "ordinary", "notable", "major"];
+            line(
+                ui,
+                RichText::new(format!("Piece sized as {} · importance {} of 3", TIER[st.importance.min(3) as usize], st.importance)).weak(),
+                "Inferred, not recorded: from the site type (tells and enclosures highest, pits and hearths lowest), \
+                 plus one for a long occupation and one for many dates, each compared with sites within 150 km so heavily \
+                 excavated regions don't get bigger pieces for being excavated.",
+            );
+        }
+    }
+
+    // Culture and stage: two lines, filled or not.
+    heading(ui, "CULTURE");
+    let phase = st.phase_at(year);
+    let lines: Vec<Attribution> =
+        [attribution(world, info, year, phase, false), attribution(world, info, year, phase, true)].into_iter().flatten().collect();
+    for k in 0..2 {
+        ui.horizontal(|ui| match lines.get(k) {
+            Some(a) => {
+                match &a.wikipedia {
+                    Some(t) => ui.hyperlink_to(&a.name, wikipedia_url(t)),
+                    None => ui.label(&a.name),
+                };
+                if a.inferred {
+                    ui.weak("(inferred)").on_hover_text(
+                        "Inferred from nearby sites: the site's own dates carry no label for this; nearby sites with labelled dates do.",
+                    );
+                }
+            }
+            None if k == 0 => {
+                ui.weak("None recorded for this year");
+            }
+            None => {
+                ui.weak(" ");
+            }
+        });
+    }
+
+    // ---- from here on the length varies with the site ----------------------
+    if !info.features.is_empty() {
+        heading(ui, "FEATURES");
+        ui.label(info.features.iter().map(|f| capitalise(f)).collect::<Vec<_>>().join(" · "));
+    }
+    ui.add_space(6.0);
+    // A famous site: what it is known for.
+    if let Some(f) = famous {
+        ui.label(RichText::new(&f.entry().known_for).italics());
+    }
     if info.is_inferred() {
-        ui.label(RichText::new("Inferred, not recorded").strong()).on_hover_text(
-            "No site is recorded here. The record is thin for a known reason (buried under silt, drowned, never \
-             entered in the open compilations), so a settlement is placed where people very probably lived. It \
-             disappears from its hex once a recorded site is entered there.",
-        );
+        ui.label(RichText::new("Inferred, not recorded").strong()).on_hover_text(INFERRED_NOTE);
         for r in &info.references {
             ui.weak(r);
         }
-        ui.separator();
     }
-
-    // A famous site: what it is known for, first.
-    if let Some(f) = crate::renown::lookup(st) {
-        let e = f.entry();
-        ui.label(RichText::new(&e.known_for).italics());
-        ui.hyperlink_to("Wikipedia", &e.wikipedia);
-        ui.add_space(2.0);
-    }
-
-    // Kind and place.
-    let kind = if info.kind.is_empty() || info.kind == "site" { "Site".to_string() } else { capitalise(&info.kind) };
-    ui.weak(format!("{kind} · {:.2}°{}, {:.2}°{}", st.pos.lat.abs(), if st.pos.lat >= 0.0 { "N" } else { "S" },
-        st.pos.lon.abs(), if st.pos.lon >= 0.0 { "E" } else { "W" }));
     if !info.aliases.is_empty() {
         ui.weak(format!("Also: {}", info.aliases.iter().take(3).cloned().collect::<Vec<_>>().join(", ")));
     }
+    if !info.wikidata_culture.is_empty() {
+        ui.weak(format!("Wikidata culture: {}", info.wikidata_culture.join(", ")));
+    }
+    if st.evidence == 0 && !info.is_inferred() {
+        ui.weak("Known from a single date: drawn pale");
+    }
+    let survey = world.grid.hex_at(st.pos).and_then(|h| world.survey_at(h));
+    if let Some(level) = survey.filter(|l| *l < 2) {
+        ui.weak(if level == 0 { "Hardly surveyed area" } else { "Thinly surveyed area" }).on_hover_text(
+            "Few radiocarbon dates of any period come from around here, so fewer sites on the map may mean less \
+             fieldwork rather than fewer people.",
+        );
+    }
+}
 
-    heading(ui, "DATED OCCUPATION");
+const INFERRED_NOTE: &str = "No site is recorded here. The record is thin for a known reason (buried under silt, drowned, never \
+     entered in the open compilations), so a settlement is placed where people very probably lived. It \
+     disappears from its hex once a recorded site is entered there.";
+
+/// The Dates tab: the phases of occupation, the radiocarbon dates and the
+/// period labels they carry.
+fn dates(ui: &mut egui::Ui, world: &World, i: usize, year: Year, info: &SiteInfo) {
+    let st = &world.settlements[i];
     let n = info.dates.len();
     match st.abandoned_by() {
         None => {
@@ -133,128 +295,52 @@ pub fn show(ui: &mut egui::Ui, world: &World, i: usize, year: Year) {
             }
         }
     }
-    if n > 0 {
-        let so_far = info.dates.iter().filter(|d| d.cal <= year).count();
-        ui.weak(format!("{n} radiocarbon date{} · {so_far} by {year}", if n == 1 { "" } else { "s" }));
-    } else if info.is_inferred() {
-        ui.weak("Years from the inference rule, not from dates");
-    } else if info.sources.iter().any(|s| s == "curated") {
-        ui.weak("Founding year from a curated entry");
-    } else if info.sources.iter().any(|s| s == "wikidata") {
-        ui.weak("Founding year from Wikidata (inception)");
-    }
-
-    heading(ui, "POPULATION");
-    match st.population_at(year) {
-        Some(p) => ui.label(format!("{p} in {year} (recorded estimate)")),
-        None if !st.population.keys().is_empty() => ui.weak("No recorded estimate for this year"),
-        None => ui.weak("No recorded estimate"),
-    };
-    if st.population_at(year).is_none() {
-        const TIER: [&str; 4] = ["minor (a pit, hearth or find-spot)", "ordinary", "notable", "major"];
-        ui.weak(format!("Piece sized as {} · importance {} of 3", TIER[st.importance.min(3) as usize], st.importance))
-            .on_hover_text("Inferred, not recorded: from the site type (tells and enclosures highest, pits and hearths lowest), \
-                plus one for a long occupation and one for many dates, each compared with sites within 150 km so heavily \
-                excavated regions don't get bigger pieces for being excavated.");
-    }
-    if st.evidence == 0 && !info.is_inferred() {
-        ui.weak("Known from a single date: drawn pale");
-    }
-    let survey = world.grid.hex_at(st.pos).and_then(|h| world.survey_at(h));
-    if let Some(level) = survey.filter(|l| *l < 2) {
-        ui.weak(if level == 0 { "Hardly surveyed area" } else { "Thinly surveyed area" }).on_hover_text(
-            "Few radiocarbon dates of any period come from around here, so fewer sites on the map may mean less \
-             fieldwork rather than fewer people.",
-        );
-    }
-
-    let phase = st.phase_at(year);
-    let culture = attribution(world, info, year, phase, false);
-    let stage = attribution(world, info, year, phase, true);
-    if culture.is_some() || stage.is_some() || !info.wikidata_culture.is_empty() {
-        heading(ui, "CULTURE");
-        for a in culture.iter().chain(stage.iter()) {
-            ui.horizontal_wrapped(|ui| {
-                match &a.wikipedia {
-                    Some(t) => ui.hyperlink_to(&a.name, wikipedia_url(t)),
-                    None => ui.label(&a.name),
+    heading(ui, &format!("RADIOCARBON DATES ({n})"));
+    if n == 0 {
+        ui.weak("None in the record");
+    } else {
+        egui::Grid::new(("c14_grid", st.id)).num_columns(4).spacing([10.0, 2.0]).striped(true).show(ui, |ui| {
+            for h in ["Lab no.", "¹⁴C BP", "cal.", "data"] {
+                ui.label(RichText::new(h).small().strong());
+            }
+            ui.end_row();
+            for d in &info.dates {
+                // Dates still in the future of the clock are dimmed.
+                let dim = d.cal > year;
+                let cell = |ui: &mut egui::Ui, s: String| {
+                    let t = RichText::new(s).small();
+                    ui.label(if dim { t.weak() } else { t });
                 };
-                if a.inferred {
-                    ui.weak("(inferred from nearby sites)").on_hover_text(
-                        "The site's own dates carry no label for this; nearby sites with labelled dates do.",
-                    );
-                }
-            });
-        }
-        if !info.wikidata_culture.is_empty() {
-            ui.weak(format!("Wikidata: {}", info.wikidata_culture.join(", ")));
-        }
-    }
-
-    if !info.features.is_empty() {
-        heading(ui, "FEATURES");
-        ui.label(info.features.iter().map(|f| capitalise(f)).collect::<Vec<_>>().join(" · "));
-    }
-
-    if info.wikipedia.is_some() || info.wikidata.is_some() {
-        ui.add_space(4.0);
-        ui.horizontal(|ui| {
-            if let Some(t) = &info.wikipedia {
-                ui.hyperlink_to("Wikipedia ↗", wikipedia_url(t));
+                cell(ui, d.lab.clone());
+                cell(ui, format!("{} ± {}", d.bp, d.err));
+                cell(ui, d.cal.to_string());
+                cell(ui, d.dataset.clone());
+                ui.end_row();
             }
-            if let Some(q) = &info.wikidata {
-                ui.hyperlink_to("Wikidata ↗", format!("https://www.wikidata.org/wiki/{q}"));
-            }
-        });
-    }
-
-    if n > 0 {
-        ui.add_space(2.0);
-        egui::CollapsingHeader::new(format!("Radiocarbon dates ({n})")).id_salt(("c14", st.id)).show(ui, |ui| {
-            egui::ScrollArea::vertical().max_height(180.0).id_salt(("c14_scroll", st.id)).show(ui, |ui| {
-                egui::Grid::new(("c14_grid", st.id)).num_columns(4).spacing([10.0, 2.0]).striped(true).show(ui, |ui| {
-                    for h in ["Lab no.", "¹⁴C BP", "cal.", "data"] {
-                        ui.label(RichText::new(h).small().strong());
-                    }
-                    ui.end_row();
-                    for d in &info.dates {
-                        // Dates still in the future of the clock are dimmed.
-                        let dim = d.cal > year;
-                        let cell = |ui: &mut egui::Ui, s: String| {
-                            let t = RichText::new(s).small();
-                            ui.label(if dim { t.weak() } else { t });
-                        };
-                        cell(ui, d.lab.clone());
-                        cell(ui, format!("{} ± {}", d.bp, d.err));
-                        cell(ui, d.cal.to_string());
-                        cell(ui, d.dataset.clone());
-                        ui.end_row();
-                    }
-                });
-            });
         });
     }
     if !info.periods.is_empty() {
-        egui::CollapsingHeader::new(format!("Period labels ({})", info.periods.len()))
-            .id_salt(("periods", st.id))
-            .show(ui, |ui| {
-                ui.label(RichText::new(info.periods.join(" · ")).small());
-            });
+        heading(ui, &format!("PERIOD LABELS ({})", info.periods.len()));
+        ui.label(RichText::new(info.periods.join(" · ")).small());
     }
-    if !info.sources.is_empty() || !info.references.is_empty() {
-        egui::CollapsingHeader::new("Sources").id_salt(("sources", st.id)).show(ui, |ui| {
-            if !info.sources.is_empty() {
-                ui.label(RichText::new(format!("Datasets: {}", info.sources.join(", "))).small());
-            }
-            for r in &info.references {
-                ui.label(RichText::new(format!("• {r}")).small().weak());
-            }
-            ui.hyperlink_to(
-                RichText::new("Full citations (data/settlements/SOURCES.md)").small(),
-                format!("{}/blob/main/data/settlements/SOURCES.md", crate::credits::REPO),
-            );
-        });
+}
+
+/// The Sources tab: the datasets and references behind the record.
+fn sources(ui: &mut egui::Ui, info: &SiteInfo) {
+    if info.sources.is_empty() && info.references.is_empty() {
+        ui.weak("No source is listed for this record");
     }
+    if !info.sources.is_empty() {
+        ui.label(RichText::new(format!("Datasets: {}", info.sources.join(", "))).small());
+    }
+    for r in &info.references {
+        ui.label(RichText::new(format!("• {r}")).small().weak());
+    }
+    ui.add_space(4.0);
+    ui.hyperlink_to(
+        RichText::new("Full citations (data/settlements/SOURCES.md)").small(),
+        format!("{}/blob/main/data/settlements/SOURCES.md", crate::credits::REPO),
+    );
 }
 
 fn capitalise(s: &str) -> String {

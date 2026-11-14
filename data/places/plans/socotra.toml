@@ -34,6 +34,8 @@ near zero, and the plan proposes that as marked speculation.
 """
 
 [[research]]
+status = "dropped"
+reason = "Triage 2026-11-13: the plan's verdict is 'leave'; the tools are surface finds and the item's own reading found nothing dated. Nothing here can enter the settlements."
 what = "Read what the 'Neolithic' stone tools of Socotra actually are and whether any are dated or stratified: Naumkin and Sedov 1993 (Monuments of Socotra, Topoi 3:569-623, open on Persee; I could read only its first page) and Amirkhanov et al. 2009 on the Oldowan claim, both as cited by Jansen van Rensburg 2018."
 url = "https://doi.org/10.3406/topoi.1993.1486"
 yields = "A yes or no on Holocene occupation before 3,000 BCE; at most one or two undated surface localities. If yes, the verdict becomes speculate."

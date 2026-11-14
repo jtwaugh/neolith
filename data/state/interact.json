@@ -1,0 +1,171 @@
+{
+ "date": "2026-11-13",
+ "settings": {
+  "jitter_px": 8,
+  "crowd_px": 24,
+  "pieces_per_view": 12,
+  "ui_shift_px": 4,
+  "bench_passes": 30,
+  "views": [
+   "jericho-8000",
+   "catalhoyuk-6500",
+   "gobekli-9000",
+   "stonehenge-3000"
+  ]
+ },
+ "summary": {
+  "piece_click_rate": 1.0,
+  "off_centre_click_rate": 0.969,
+  "name_click_rate": 0.958,
+  "camera_moved_on_click": 0,
+  "crowded_share": 0.26,
+  "ui_widgets_moved": 0,
+  "ui_controls_moved": 0,
+  "ui_max_shift_px": 0,
+  "board_pass_ms": 45.46,
+  "board_pass_mean_ms": 40.83
+ },
+ "clicks": [
+  {
+   "view": "jericho-8000",
+   "pieces": 12,
+   "hit": 12,
+   "jitter_tries": 48,
+   "jitter_hit": 46,
+   "labels": 12,
+   "label_hit": 12,
+   "camera_moved": 0,
+   "crowded": 17,
+   "on_screen": 56,
+   "misses": []
+  },
+  {
+   "view": "catalhoyuk-6500",
+   "pieces": 12,
+   "hit": 12,
+   "jitter_tries": 48,
+   "jitter_hit": 48,
+   "labels": 12,
+   "label_hit": 12,
+   "camera_moved": 0,
+   "crowded": 7,
+   "on_screen": 21,
+   "misses": []
+  },
+  {
+   "view": "gobekli-9000",
+   "pieces": 12,
+   "hit": 12,
+   "jitter_tries": 48,
+   "jitter_hit": 48,
+   "labels": 12,
+   "label_hit": 12,
+   "camera_moved": 0,
+   "crowded": 2,
+   "on_screen": 17,
+   "misses": []
+  },
+  {
+   "view": "stonehenge-3000",
+   "pieces": 12,
+   "hit": 12,
+   "jitter_tries": 48,
+   "jitter_hit": 44,
+   "labels": 12,
+   "label_hit": 10,
+   "camera_moved": 0,
+   "crowded": 14,
+   "on_screen": 60,
+   "misses": []
+  }
+ ],
+ "ui": [
+  {
+   "action": "open a record",
+   "widgets_moved": 0,
+   "controls_moved": 0,
+   "max_px": 0,
+   "moved": []
+  },
+  {
+   "action": "open another record",
+   "widgets_moved": 0,
+   "controls_moved": 0,
+   "max_px": 0,
+   "moved": []
+  },
+  {
+   "action": "change year",
+   "widgets_moved": 0,
+   "controls_moved": 0,
+   "max_px": 0,
+   "moved": []
+  },
+  {
+   "action": "change map mode",
+   "widgets_moved": 0,
+   "controls_moved": 0,
+   "max_px": 0,
+   "moved": []
+  },
+  {
+   "action": "play 2 s",
+   "widgets_moved": 0,
+   "controls_moved": 0,
+   "max_px": 0,
+   "moved": []
+  },
+  {
+   "action": "hover the board",
+   "widgets_moved": 0,
+   "controls_moved": 0,
+   "max_px": 0,
+   "moved": []
+  },
+  {
+   "action": "close the record",
+   "widgets_moved": 0,
+   "controls_moved": 0,
+   "max_px": 0,
+   "moved": []
+  }
+ ],
+ "perf": [
+  {
+   "view": "jericho-8000",
+   "board_pass_ms": 42.26,
+   "runs": [
+    41.92,
+    42.26,
+    42.32
+   ]
+  },
+  {
+   "view": "catalhoyuk-6500",
+   "board_pass_ms": 37.06,
+   "runs": [
+    37.01,
+    37.06,
+    37.62
+   ]
+  },
+  {
+   "view": "gobekli-9000",
+   "board_pass_ms": 38.54,
+   "runs": [
+    38.52,
+    38.54,
+    38.98
+   ]
+  },
+  {
+   "view": "stonehenge-3000",
+   "board_pass_ms": 45.46,
+   "runs": [
+    45.05,
+    45.46,
+    45.53
+   ]
+  }
+ ]
+}

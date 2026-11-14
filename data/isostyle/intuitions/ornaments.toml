@@ -22,7 +22,8 @@ confidence = "low"
 basis = ["literature", "analogy"]
 reasoning = "Coverage 0%; nearest evidence 1,819-4,023 km."
 literature = [
-  { cite = "Oleni Ostrov cemetery publications (Gurina 1956)", checked = false },
+  { cite = "Gurina 1956, Oleneostrovskii mogil'nik, Materialy i issledovaniya po arkheologii SSSR 47", checked = false, note = "Was 'Oleni Ostrov cemetery publications (Gurina 1956)'; full reference as given by O'Shea & Zvelebil 1984. The monograph is not online." },
+  { cite = "O'Shea & Zvelebil 1984, 'Oleneostrovski mogilnik: reconstructing the social and economic organization of prehistoric foragers in northern Russia', Journal of Anthropological Archaeology 3, 1-40", checked = true, url = "https://public.websites.umich.edu/~anth282/Olenii.pdf", read = "full text (searched passages)", note = "Of more than 7000 grave goods in c. 170 burials, about 6000 are perforated bear, beaver and elk tooth pendants (after Gurina 1956)." },
 ]
 would_settle = "Russian forest-zone cemetery and site inventories."
 speculative_rule = "0.55; 0.75 near cemeteries and wetland sites."
@@ -39,7 +40,7 @@ confidence = "low"
 basis = ["literature"]
 reasoning = "Coverage 0%; nearest evidence 873-1,554 km."
 literature = [
-  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false },
+  { cite = "Anthony 2007, The Horse, the Wheel, and Language", checked = false, note = "Book; no fetchable text to check the Khvalynsk and Mariupol-type ornament inventories against." },
 ]
 would_settle = "Steppe cemetery inventories."
 speculative_rule = "0.5 before 6,000 BCE, 0.75 after."
@@ -89,7 +90,7 @@ confidence = "low"
 basis = ["literature"]
 reasoning = "Coverage 0%."
 literature = [
-  { cite = "Zagorska & Zagorskis, Zvejnieki cemetery", checked = false },
+  { cite = "Larsson 2010, 'A double grave with amber and bone adornments at Zvejnieki in northern Latvia', Archaeologia Baltica 13, 175-190", checked = true, url = "https://e-journals.ku.lt/journal/AB/article/1092/file/pdf", read = "full text (searched passages)", note = "Replaces 'Zagorska & Zagorskis, Zvejnieki cemetery' (no year; the excavation report is Zagorskis 1987, English edition BAR S1292, 2004). Older graves carry tooth beads, the youngest dated 4267-3910 cal BC; amber beads and pendants replace them shortly after, the richest amber grave c. 4000 cal BC." },
 ]
 would_settle = "Zvejnieki and Narva-site inventories."
 speculative_rule = "0.55 before 4,000 BCE, 0.75 after."
@@ -156,7 +157,7 @@ confidence = "medium"
 basis = ["neighbouring_evidence", "literature"]
 reasoning = "Coverage 0% before 7,000 BCE, 4-80% after; edges 1.0."
 literature = [
-  { cite = "Rigaud, d'Errico & Vanhaeren 2015, 'Ornaments reveal resistance of North European cultures to the spread of farming', PLoS ONE", checked = false },
+  { cite = "Rigaud, d'Errico & Vanhaeren 2015, 'Ornaments reveal resistance of North European cultures to the spread of farming', PLoS ONE 10(4), e0121166", checked = true, url = "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0121166", read = "full text", note = "224 bead types from 212 Mesolithic and 222 Early Neolithic units; the Western European Mesolithic group (high bead diversity on the Atlantic coast) and Paris Basin LBK sites show ornaments before and after farming. No country-level breakdown." },
 ]
 would_settle = "Rigaud 2015 Mesolithic ornament data, once dated."
 speculative_rule = "0.55 before 7,000 BCE, 0.7 after."
@@ -359,7 +360,8 @@ confidence = "low"
 basis = ["literature"]
 reasoning = "Coverage 0%."
 literature = [
-  { cite = "Magee 2014, The Archaeology of Prehistoric Arabia, Cambridge", checked = false },
+  { cite = "Magee 2014, The Archaeology of Prehistoric Arabia: Adaptation and Social Formation from the Neolithic to the Iron Age, Cambridge University Press", checked = false, note = "Book; no fetchable text. The Jebel Buhais ornament claim is checked against de Beauclair 2008 instead." },
+  { cite = "de Beauclair 2008, 'Funerary rites in a Neolithic nomad community in Southeastern Arabia: the case of al-Buhais 18', Documenta Praehistorica 35, 143-152", checked = true, url = "https://api.crossref.org/works/10.4312/dp.35.10", read = "abstract", note = "5th-millennium BC graveyard of more than 420 individuals with over 24,000 ornamental objects, many in funerary contexts." },
 ]
 would_settle = "Arabian site inventories."
 speculative_rule = "0.7 on the coasts, 0.5 inland."

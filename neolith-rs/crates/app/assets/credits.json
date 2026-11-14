@@ -84,11 +84,11 @@
   "used_in": "Settlements and dates"
  },
  {
-  "name": "Allen Ancient DNA Resource (AADR) v66.p1, 1240K annotation",
+  "name": "Allen Ancient DNA Resource (AADR) v66.p1, 1240K annotation and genotypes",
   "licence": "CC0-1.0",
   "url": "https://doi.org/10.7910/DVN/FFIDCW",
   "citation": "Mallick, S., Micco, A., Mah, M. et al. 2024. The Allen Ancient DNA Resource (AADR): a curated compendium of ancient human genomes. Scientific Data 11:182. Plus the original genetics papers per sample.",
-  "used_in": "Settlements and dates; isostyle aDNA and haplogroup layers"
+  "used_in": "Settlements and dates; isostyle aDNA, haplogroup and ancestry layers"
  },
  {
   "name": "Radiocarbon dates transcribed from published papers (mostly Russian-language)",
@@ -103,6 +103,13 @@
   "url": "https://en.wikipedia.org",
   "citation": "Wikipedia contributors. Revisions are recorded in data/cultures/wikipedia.json and data/renown/SOURCES.md.",
   "used_in": "data/cultures/cultures.toml; renown one-line summaries (neolith-rs/crates/app/assets/renown.json)"
+ },
+ {
+  "name": "Salem et al. 2025, Takarkori genomes (sample metadata)",
+  "licence": "facts",
+  "url": "https://doi.org/10.1038/s41586-025-08793-7",
+  "citation": "Salem, N. et al. 2025. Ancient DNA from the Green Sahara reveals ancestral North African lineage. Nature 641. https://doi.org/10.1038/s41586-025-08793-7. Reads: ENA PRJEB84057.",
+  "used_in": "isostyle aDNA and mt haplogroup layers; data/isostyle/inputs/supplementary_genomes.toml"
  },
  {
   "name": "Evershed et al. 2022, lipid residue site-phases",
@@ -257,5 +264,26 @@
   "url": "https://github.com/emilk/egui/tree/master/crates/epaint_default_fonts",
   "citation": "Ubuntu font (Ubuntu Font Licence 1.0), Hack (MIT/Bitstream Vera), Noto Emoji (OFL 1.1), emoji-icon-font (MIT/OFL), bundled by the epaint_default_fonts crate.",
   "used_in": "UI text in the app (via eframe)"
+ },
+ {
+  "name": "Grug, caveman Wojak meme (splash-page mascot)",
+  "licence": "LicenseRef-no-licence",
+  "url": "https://knowyourmeme.com/memes/grug",
+  "citation": "Grug, anonymous internet meme (4chan, 2017). Image via Know Your Meme: https://i.kym-cdn.com/entries/icons/original/000/025/413/oogaboogaaa.jpg",
+  "used_in": "Start screen mascot (neolith-rs/crates/app/assets/grug.jpg, cropped; grug.rgba is it resized for the app)"
+ },
+ {
+  "name": "IM FELL English roman, by Igino Marini (subset shipped as \"Neolith Fell\")",
+  "licence": "OFL-1.1",
+  "url": "https://github.com/google/fonts/tree/main/ofl/imfellenglish",
+  "citation": "IM FELL English, Copyright (c) 2010 Igino Marini (iginomarini.com). SIL Open Font License 1.1 (neolith-rs/crates/app/assets/fonts/OFL-IMFell.txt).",
+  "used_in": "Start screen title, headings and questions (neolith-rs/crates/app/assets/fonts/NeolithFell.subset.ttf)"
+ },
+ {
+  "name": "Alegreya, regular and italic (Huerta Tipográfica)",
+  "licence": "OFL-1.1",
+  "url": "https://github.com/huertatipografica/Alegreya",
+  "citation": "Alegreya, Copyright 2011 The Alegreya Project Authors. SIL Open Font License 1.1 (neolith-rs/crates/app/assets/fonts/OFL-Alegreya.txt).",
+  "used_in": "Start screen body text (neolith-rs/crates/app/assets/fonts/Alegreya*.subset.ttf)"
  }
 ]

@@ -4,9 +4,10 @@
 
 ## What we actually have
 
-As a game, Neolith is a good-looking map with nothing to do. The look-and-feel critic scored it
-1.4/5 against shipped grand-strategy games: "no player, no goal and no verb"
-(`build/critic/20261112-0104/report.md`).
+As a game, Neolith is a good-looking map with nothing to do. The first look-and-feel critique
+(2026-11-12) said "no player, no goal and no verb", and scored it 1.4/5 against shipped
+grand-strategy games. Much of its backlog has since shipped. For current numbers and each critic's
+latest score, see `data/state/STATE.md` (`make state`).
 
 As an instrument for measuring what archaeology does and doesn't know about 10,000–3,000 BCE, it is
 unusual. Few public tools put these four things on one map and keep them apart:

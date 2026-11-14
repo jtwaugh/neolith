@@ -11,6 +11,10 @@ and `codes`: base64 of one byte per (slice, hex), slice-major:
   4 extrapolated; 255 = no value (sea, ice, or nothing to fill from).
 The game reads a slice's codes as holding from that year until the next
 slice (the same step-function rule as the map's year keys).
+
+It also writes ancestry_samples.json for `neolith-convert --samples`: one
+record per individual of data/ancestry/ancestry.csv.gz (location, date mean
+and SD, status, model, p, the six weights and the publication).
 """
 import base64
 import json
@@ -59,5 +63,37 @@ def run(cfg, log=print):
            "layers": layers}
     path = os.path.join(sdir, "evidence_layers.json")
     json.dump(doc, open(path, "w"), separators=(",", ":"))
+    samples(cfg, sdir, log)
     log(f"export: {len(layers)} layers × {len(years)} slices × {n} hexes -> {path} ({os.path.getsize(path) / 1e6:.1f} MB)")
+    return path
+
+
+def samples(cfg, sdir, log=print):
+    """data/ancestry/ancestry.csv.gz as ancestry_samples.json (nothing if the table is not built)."""
+    acfg = cfg.get("ancestry", {})
+    if not os.path.exists(acfg.get("out", "")):
+        return None
+    d = pd.read_csv(acfg["out"])
+    order = acfg["order"]
+    r, years = cfg["region"], cfg["time"]["slices"]
+    half = (years[1] - years[0]) / 2
+    year = 1950 - d["bp"]
+    d = d[d["lon"].between(r["lon_min"], r["lon_max"]) & d["lat"].between(r["lat_min"], r["lat_max"])
+          & (year + 3 * d["sd"].fillna(25).clip(lower=25) >= years[0] - half)
+          & (year - 3 * d["sd"].fillna(25).clip(lower=25) <= years[-1] + half)]
+    rows = []
+    for x in d.itertuples():
+        fit = x.status in ("fit", "reference")
+        rows.append({"id": x.individual, "group": x.group, "locality": x.locality if isinstance(x.locality, str) else "",
+                     "lon": round(float(x.lon), 4), "lat": round(float(x.lat), 4),
+                     "year": int(round(1950 - x.bp)), "sd": int(round(max(x.sd if x.sd == x.sd else 25, 25))),
+                     "snps": int(x.snps) if x.snps == x.snps else 0, "status": x.status, "model": x.model if isinstance(x.model, str) else "",
+                     "p": None if x.p != x.p else round(float(x.p), 4),
+                     "weights": [round(float(getattr(x, f"w_{k}")), 3) for k in order] if fit else None,
+                     "publication": x.publication if isinstance(x.publication, str) else ""})
+    doc = {"format": "neolith-ancestry-samples-1", "components": [{"key": k, "name": acfg["sources"][k]["name"]} for k in order],
+           "source": "AADR v66.p1 (CC0), qpAdm per individual; data/ancestry/SOURCES.md", "samples": rows}
+    path = os.path.join(sdir, "ancestry_samples.json")
+    json.dump(doc, open(path, "w"), separators=(",", ":"), ensure_ascii=False)
+    log(f"export: {len(rows)} ancestry samples -> {path}")
     return path

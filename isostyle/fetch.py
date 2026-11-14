@@ -27,6 +27,34 @@ def _get(url, tries=3):
             time.sleep(3 * (k + 1))
 
 
+def _download(url, path, tries=3):
+    """Stream a URL to a file (the AADR genotypes are 7 GB); returns (bytes, sha256)."""
+    for k in range(tries):
+        try:
+            h, n = hashlib.sha256(), 0
+            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=120) as r, \
+                    open(path + ".part", "wb") as f:
+                while chunk := r.read(1 << 22):
+                    f.write(chunk)
+                    h.update(chunk)
+                    n += len(chunk)
+            os.replace(path + ".part", path)
+            return n, h.hexdigest()
+        except Exception:
+            if k == tries - 1:
+                raise
+            time.sleep(3 * (k + 1))
+
+
+def _sha256(path):
+    h, n = hashlib.sha256(), 0
+    with open(path, "rb") as f:
+        while chunk := f.read(1 << 22):
+            h.update(chunk)
+            n += len(chunk)
+    return n, h.hexdigest()
+
+
 def resolve(spec):
     """The download URL for a source entry."""
     kind = spec["kind"]
@@ -59,28 +87,29 @@ def run(cfg, log=print):
         path = os.path.join(d, spec["file"])
         if os.path.exists(path) and spec["file"] in prov:
             continue
+        if spec.get("optional") and not os.path.exists(path) and not os.environ.get("ISOSTYLE_FETCH_OPTIONAL"):
+            # Large inputs of an opt-in step (the AADR genotypes for `ancestry`).
+            continue
         if spec["kind"] == "manual":
             # Downloaded by hand (the host refuses scripted downloads).
             if not os.path.exists(path):
                 log(f"fetch {spec['name']}: download {spec['url']} by hand into {d}/")
                 continue
-            data = open(path, "rb").read()
-            prov[spec["file"]] = {"name": spec["name"], "url": spec["url"], "bytes": len(data),
-                                  "sha256": hashlib.sha256(data).hexdigest(), "retrieved": "manual download",
+            n, digest = _sha256(path)
+            prov[spec["file"]] = {"name": spec["name"], "url": spec["url"], "bytes": n,
+                                  "sha256": digest, "retrieved": "manual download",
                                   "recorded": time.strftime("%Y-%m-%d")}
             json.dump(prov, open(ppath, "w"), indent=1)
             continue
         try:
             url = resolve(spec)
-            data = _get(url)
+            # A file already on disk but not yet recorded is checksummed, not refetched.
+            n, digest = _sha256(path) if os.path.exists(path) else _download(url, path)
         except Exception as e:  # the build reports and skips a missing source
             log(f"fetch {spec['name']}: FAILED ({e})")
             continue
-        with open(path, "wb") as f:
-            f.write(data)
-        prov[spec["file"]] = {"name": spec["name"], "url": url, "bytes": len(data),
-                              "sha256": hashlib.sha256(data).hexdigest(),
+        prov[spec["file"]] = {"name": spec["name"], "url": url, "bytes": n, "sha256": digest,
                               "retrieved": time.strftime("%Y-%m-%d")}
-        log(f"fetch {spec['name']}: {len(data)} bytes")
+        log(f"fetch {spec['name']}: {n} bytes")
         json.dump(prov, open(ppath, "w"), indent=1)
     return prov

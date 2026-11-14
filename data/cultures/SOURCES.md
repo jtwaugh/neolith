@@ -24,8 +24,8 @@ Holdout test (each labelled date voted on by the other sites, as if unlabelled):
 
 | Field | Known dates | Answered | Right |
 |---|---|---|---|
-| culture | 9874 | 4111 (42%) | 3935 (96%) |
-| stage | 23010 | 10632 (46%) | 9886 (93%) |
+| culture | 10015 | 4119 (41%) | 3930 (95%) |
+| stage | 23179 | 10657 (46%) | 9892 (93%) |
 
 Rates count dates, so well-dated sites weigh most. A neighbour can be
 the same place under another name; ignoring neighbours closer than
@@ -39,7 +39,7 @@ the same place under another name; ignoring neighbours closer than
 | Mesolithic (`mesolithic`) | 625 | [Mesolithic](https://en.wikipedia.org/w/index.php?title=Mesolithic&oldid=1374999382) (1374999382) | — |
 | Aceramic Neolithic (`aceramic_neolithic`) | 94 | [Pre-Pottery Neolithic](https://en.wikipedia.org/w/index.php?title=Pre-Pottery_Neolithic&oldid=1360754480) (1360754480) | — |
 | Neolithic (`neolithic`) | 2674 | [Neolithic](https://en.wikipedia.org/w/index.php?title=Neolithic&oldid=1384848321) (1384848321) | — |
-| Chalcolithic (Copper Age) (`chalcolithic`) | 446 | [Chalcolithic](https://en.wikipedia.org/w/index.php?title=Chalcolithic&oldid=1384441085) (1384441085) | — |
+| Chalcolithic (Copper Age) (`chalcolithic`) | 448 | [Chalcolithic](https://en.wikipedia.org/w/index.php?title=Chalcolithic&oldid=1384441085) (1384441085) | — |
 | Bronze Age (`bronze_age`) | 357 | [Bronze Age](https://en.wikipedia.org/w/index.php?title=Bronze_Age&oldid=1384631621) (1384631621) | — |
 | Iron Age (`iron_age`) | 21 | [Iron Age](https://en.wikipedia.org/w/index.php?title=Iron_Age&oldid=1384918549) (1384918549) | — |
 | Kebaran (`kebaran`) | 4 | [Kebaran culture](https://en.wikipedia.org/w/index.php?title=Kebaran_culture&oldid=1360699391) (1360699391) | — |
@@ -102,7 +102,7 @@ the same place under another name; ignoring neighbours closer than
 | Funnel Beaker (TRB) (`funnelbeaker`) | 225 | [Funnelbeaker culture](https://en.wikipedia.org/w/index.php?title=Funnelbeaker_culture&oldid=1373647642) (1373647642) | — |
 | Globular Amphora (`globular_amphora`) | 12 | [Globular Amphora culture](https://en.wikipedia.org/w/index.php?title=Globular_Amphora_culture&oldid=1377032753) (1377032753) | — |
 | Corded Ware (`corded_ware`) | 16 | [Corded Ware culture](https://en.wikipedia.org/w/index.php?title=Corded_Ware_culture&oldid=1381228762) (1381228762) | — |
-| Bell Beaker (`bell_beaker`) | 49 | [Bell Beaker culture](https://en.wikipedia.org/w/index.php?title=Bell_Beaker_culture&oldid=1381906404) (1381906404) | — |
+| Bell Beaker (`bell_beaker`) | 50 | [Bell Beaker culture](https://en.wikipedia.org/w/index.php?title=Bell_Beaker_culture&oldid=1381906404) (1381906404) | — |
 | Swifterbant (`swifterbant`) | 28 | [Swifterbant culture](https://en.wikipedia.org/w/index.php?title=Swifterbant_culture&oldid=1382135390) (1382135390) | — |
 | Vlaardingen (`vlaardingen`) | 7 | [Vlaardingen culture](https://en.wikipedia.org/w/index.php?title=Vlaardingen_culture&oldid=1382136212) (1382136212) | — |
 | Pitted Ware (`pitted_ware`) | 46 | [Pitted Ware culture](https://en.wikipedia.org/w/index.php?title=Pitted_Ware_culture&oldid=1368849338) (1368849338) | — |

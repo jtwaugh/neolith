@@ -1,5 +1,7 @@
 # Grand-strategy look & feel rubric
 
+`rubric_version: 9-category-v2`. Change it whenever a category or a weight changes; scores from different versions aren't compared (`data/state/critics/`).
+
 The critic agent (`.claude/agents/gsg-critic.md`) scores Neolith against this
 rubric, using screenshots from the running app (`harness/neolith.py shot`)
 next to reference screenshots of shipped games (`harness/neolith.py refs`,

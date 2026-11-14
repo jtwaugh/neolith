@@ -8,7 +8,13 @@ use crate::palette;
 use bytemuck::{Pod, Zeroable};
 use eframe::wgpu;
 use eframe::wgpu::util::DeviceExt as _;
-use neolith_core::Terrain;
+use neolith_core::{Cover, MapMode, Terrain};
+
+/// Whether the mode number in `Globals::grid[2]` is drawn as the terrain
+/// map is ([`MapMode::terrain_like`]).
+pub fn terrain_like(mode: f32) -> bool {
+    MapMode::ALL.get(mode as usize).is_some_and(|m| m.terrain_like())
+}
 
 pub const COLOUR_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba8UnormSrgb;
 const DEPTH_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Depth32Float;
@@ -25,19 +31,29 @@ const SAMPLES: u32 = 4;
 /// glyph slots sprout and the rest shrink to make room.
 pub const ART_DETAIL_PX: [f32; 2] = [24.0, 44.0];
 
-/// Picks the hexes whose 3D props can show with globals `g` into `out`,
-/// those that need the detail slots first; returns how many those are.
-///
-/// `vs_prop` drops a prop's vertices off screen when the hex is water or
-/// too small on screen, but only after running them, for every hex × up to
-/// 360 template vertices. These are the same tests, once per hex on the CPU:
-/// - water and unset hexes have no props;
-/// - at or below 5 px per hex unit the props have shrunk to nothing (`lod`
-///   is smoothstep(5, 11, hex_px));
-/// - hexes outside the view frustum (with room for relief and prop height);
-/// - the detail slots sprout above `ART_DETAIL_PX[0]`, so only hexes past
-///   that get the whole template.
-pub fn select_props(all: &[HexInstance], state_rgba: &[u8], cols: usize, g: &Globals, out: &mut Vec<HexInstance>) -> u32 {
+/// The hex grid (grout and bevel rim, board.wgsl) fades out between these
+/// hex radii on screen (pixels) as you zoom out.
+pub const GROUT_PX: [f32; 2] = [14.0, 28.0];
+
+/// Props (3D in vs_prop, printed on the tile in terrain_art) shrink to
+/// nothing over the same range, so they go at the zoom the hexes do.
+pub const PROP_PX: [f32; 2] = GROUT_PX;
+
+/// Micro-props (terrain_art.wgsl, vs_micro): between these hex radii on
+/// screen (pixels) the close-up stones, tufts, flowers and reeds fill in.
+/// Well past `ART_DETAIL_PX`, so the far and middle views are unchanged.
+pub const MICRO_PX: [f32; 2] = [70.0, 120.0];
+
+/// Calls `f` with each land hex that is in the view frustum and more than
+/// `min_px` pixels in radius on screen, and that radius.
+fn for_visible_land(
+    all: &[HexInstance],
+    state_rgba: &[u8],
+    cols: usize,
+    g: &Globals,
+    min_px: f32,
+    mut f: impl FnMut(&HexInstance, f32),
+) {
     use glam::{Mat4, Vec3, Vec4};
     let water = Terrain::ALL.iter().position(|t| *t == Terrain::Water).unwrap_or(usize::MAX);
     let view_proj = Mat4::from_cols_array(&g.view_proj);
@@ -51,8 +67,6 @@ pub fn select_props(all: &[HexInstance], state_rgba: &[u8], cols: usize, g: &Glo
     let unit_f = g.hex[1] / sqrt3_2;
     // The highest tile (Everest-ish) in board units, for the frustum margin.
     let max_lift = g.hex[2] * 9000.0;
-    out.clear();
-    let mut base = Vec::new();
     for inst in all {
         let [c, r] = inst.cell.map(usize::from);
         let terrain = state_rgba.get((r * cols + c) * 4).copied().map_or(usize::MAX, usize::from);
@@ -63,7 +77,7 @@ pub fn select_props(all: &[HexInstance], state_rgba: &[u8], cols: usize, g: &Glo
         let unit_c = Vec3::from_array(inst.north).length() / sqrt3_2;
         let unit = unit_c + (unit_f - unit_c) * t;
         let hex_px = unit * g.art[2] / eye.distance(centre).max(1e-6);
-        if hex_px <= 5.0 {
+        if hex_px <= min_px {
             continue;
         }
         let radius = unit * 4.0 + max_lift;
@@ -71,12 +85,43 @@ pub fn select_props(all: &[HexInstance], state_rgba: &[u8], cols: usize, g: &Glo
         if planes.iter().any(|pl| pl.dot(p) < -radius) {
             continue;
         }
+        f(inst, hex_px);
+    }
+}
+
+/// Picks the hexes whose micro-props can show into `out`: land in view past
+/// `MICRO_PX[0]`, on the terrain map with props on. (`vs_micro` would drop
+/// the rest itself, after running 24 slots of vertices for each.)
+pub fn select_micro(all: &[HexInstance], state_rgba: &[u8], cols: usize, g: &Globals, out: &mut Vec<HexInstance>) {
+    out.clear();
+    if g.art[1] <= 0.0 || !terrain_like(g.grid[2]) {
+        return;
+    }
+    for_visible_land(all, state_rgba, cols, g, MICRO_PX[0], |inst, _| out.push(*inst));
+}
+
+/// Picks the hexes whose 3D props can show with globals `g` into `out`,
+/// those that need the detail slots first; returns how many those are.
+///
+/// `vs_prop` drops a prop's vertices off screen when the hex is water or
+/// too small on screen, but only after running them, for every hex × up to
+/// 360 template vertices. These are the same tests, once per hex on the CPU:
+/// - water and unset hexes have no props;
+/// - at or below `PROP_PX[0]` px per hex unit the props have shrunk to
+///   nothing (`lod` is smoothstep(PROP_PX_LO, PROP_PX_HI, hex_px));
+/// - hexes outside the view frustum (with room for relief and prop height);
+/// - the detail slots sprout above `ART_DETAIL_PX[0]`, so only hexes past
+///   that get the whole template.
+pub fn select_props(all: &[HexInstance], state_rgba: &[u8], cols: usize, g: &Globals, out: &mut Vec<HexInstance>) -> u32 {
+    out.clear();
+    let mut base = Vec::new();
+    for_visible_land(all, state_rgba, cols, g, PROP_PX[0], |inst, hex_px| {
         if hex_px > ART_DETAIL_PX[0] {
             out.push(*inst);
         } else {
             base.push(*inst);
         }
-    }
+    });
     let detail = out.len() as u32;
     out.extend_from_slice(&base);
     detail
@@ -105,6 +150,19 @@ pub fn shader_source() -> String {
         ART_DETAIL_PX[1],
     ));
     src.push_str(&format!(
+        "const GROUT_PX_LO: f32 = {:?};\nconst GROUT_PX_HI: f32 = {:?};\nconst PROP_PX_LO: f32 = {:?};\nconst PROP_PX_HI: f32 = {:?};\n",
+        GROUT_PX[0],
+        GROUT_PX[1],
+        PROP_PX[0],
+        PROP_PX[1],
+    ));
+    src.push_str(&format!(
+        "const MICRO_SLOTS: u32 = {}u;\nconst MICRO_PX_LO: f32 = {:?};\nconst MICRO_PX_HI: f32 = {:?};\n",
+        mesh::MICRO_SLOTS,
+        MICRO_PX[0],
+        MICRO_PX[1],
+    ));
+    src.push_str(&format!(
         "const RIVER_REACH: f32 = {:?};\nconst RIVER_HALF_MAX: f32 = {:?};\nconst RIVER_BED: f32 = {:?};\n",
         super::lines::FIELD_REACH,
         super::lines::FIELD_HALF_MAX,
@@ -116,6 +174,20 @@ pub fn shader_source() -> String {
         super::scene::CAMP_RADIUS_MAX,
     ));
     const _: () = assert!(super::scene::CAMPS_PER_HEX[0] == 2 && super::scene::CAMPS_PER_HEX[1] == 2, "art_camp reads 2 x 2");
+    // The Ground map mode: its number, the covers, and each terrain's cover
+    // (C_NONE for water), so the shader can't drift from Terrain::cover.
+    src.push_str(&format!("const MODE_GROUND: u32 = {}u;\nconst C_NONE: u32 = 255u;\n", MapMode::Ground.index()));
+    for c in Cover::ALL {
+        src.push_str(&format!("const C_{}: u32 = {}u;\n", format!("{c:?}").to_ascii_uppercase(), c as u8));
+    }
+    let covers: Vec<String> = Terrain::ALL.iter().map(|t| format!("{}u", t.cover().map_or(255, |c| c as u8))).collect();
+    src.push_str(&format!(
+        "const TERRAIN_COVER: array<u32, {}> = array<u32, {}>({});\nfn terrain_cover(t: u32) -> u32 {{\n    if (t >= {}u) {{ return C_NONE; }}\n    var covers = TERRAIN_COVER;\n    return covers[t];\n}}\nfn terrain_like(mode: u32) -> bool {{\n    return mode == 0u || mode == MODE_GROUND;\n}}\n",
+        covers.len(),
+        covers.len(),
+        covers.join(", "),
+        covers.len(),
+    ));
     src.push_str(include_str!("terrain_art.wgsl"));
     src.push_str(include_str!("board.wgsl"));
     src
@@ -146,6 +218,11 @@ pub struct Globals {
     /// art_global x0, y0, texels per unit, 1 when there is one (0 none).
     /// The renderer fills it in from the last upload.
     pub relief: [f32; 4],
+    /// x: how much bigger the pieces are now than when their triangles were
+    /// built (`vs_piece` scales each vertex about its anchor), so a zoom
+    /// needn't rebuild them every frame; y: the same for the river lines'
+    /// [`super::lines::line_zoom`] (`vs_line`). 0 is read as 1. z, w unused.
+    pub piece: [f32; 4],
 }
 
 /// A vertex of a settlement piece, already in world space.
@@ -155,6 +232,9 @@ pub struct PieceVertex {
     pub pos: [f32; 3],
     pub normal: [f32; 3],
     pub colour: [f32; 4],
+    /// Where the piece stands on the ground: the vertex scales about it
+    /// with the camera distance ([`Globals::piece`]).
+    pub anchor: [f32; 3],
 }
 
 /// A vertex of a line overlay (river, channel belt, lake shore), in world
@@ -172,8 +252,11 @@ pub struct LineVertex {
     pub colour: [u8; 4],
     /// x: dash "on" fraction (0 = solid), y: the profile across the ribbon
     /// (`lines::Profile` × 85), z: edge feather (fraction of the half
-    /// width); w unused.
+    /// width), w: the power of [`Globals::piece`].y the width scales by.
     pub params: [u8; 4],
+    /// The point on the centreline this vertex is across from: `vs_line`
+    /// scales the ribbon's width about it.
+    pub centre: [f32; 3],
 }
 
 /// Indexed triangles of the line overlays, in draw order.
@@ -221,10 +304,20 @@ pub struct BoardRenderer {
     /// What the art textures were last baked for: edge blending (terrain
     /// mode only), map mode, saturation and the ground field switch (the
     /// per-hex ground colour depends on all of them). `None` forces a bake.
-    art_baked_blend: Option<[f32; 4]>,
+    art_baked_blend: Option<[f32; 5]>,
     /// The relief texels last uploaded (the ground colour reads them).
     state_relief: Vec<u8>,
     prop_scratch: Vec<HexInstance>,
+    /// Micro-props (see [`select_micro`]): their own template and the
+    /// close-up hexes drawn this frame.
+    micro_pipeline: wgpu::RenderPipeline,
+    micro_vertices: wgpu::Buffer,
+    micro_indices: wgpu::Buffer,
+    micro_instances: wgpu::Buffer,
+    micro_instance_count: u32,
+    micro_scratch: Vec<HexInstance>,
+    /// Draw the micro-props (close up, terrain map, props on).
+    pub micro_props: bool,
     blit_pipeline: wgpu::RenderPipeline,
     blit_layout: wgpu::BindGroupLayout,
     blit_params: wgpu::Buffer,
@@ -243,6 +336,8 @@ pub struct BoardRenderer {
     evidence_tex: wgpu::Texture,
     /// RGBA8: where the river channels are (see [`Self::upload_river_field`]).
     river_tex: wgpu::Texture,
+    /// R16Sint: the water level (metres) there ([`super::lines::RiverField::level`]).
+    level_tex: wgpu::Texture,
     /// The field last uploaded, so an unchanged one isn't re-sent.
     river_field: Option<super::lines::RiverField>,
     /// RGBA8: the camps in and around each hex (see [`Self::upload_camps`]).
@@ -331,6 +426,8 @@ impl BoardRenderer {
         let [river_w, river_h] = super::lines::field_size(cols, rows).0;
         let river_tex = device.create_texture(&tex_desc("river field", river_w, river_h, wgpu::TextureFormat::Rgba8Unorm));
         let river_view = river_tex.create_view(&Default::default());
+        let level_tex = device.create_texture(&tex_desc("river level", river_w, river_h, wgpu::TextureFormat::R16Sint));
+        let level_view = level_tex.create_view(&Default::default());
         let [camps_x, camps_y] = super::scene::CAMPS_PER_HEX;
         let camp_tex = device.create_texture(&tex_desc("camps", cols * camps_x, rows * camps_y, wgpu::TextureFormat::Rgba8Unorm));
         let camp_view = camp_tex.create_view(&Default::default());
@@ -414,9 +511,11 @@ impl BoardRenderer {
                 tex_entry(11, wgpu::TextureSampleType::Float { filterable: true }),
                 tex_entry(12, wgpu::TextureSampleType::Uint),
                 tex_entry(13, wgpu::TextureSampleType::Float { filterable: true }),
+                tex_entry(15, wgpu::TextureSampleType::Sint),
                 wgpu::BindGroupLayoutEntry {
                     binding: 14,
-                    visibility: wgpu::ShaderStages::FRAGMENT,
+                    // vs_board shapes the mountains from the relief too.
+                    visibility: wgpu::ShaderStages::VERTEX_FRAGMENT,
                     ty: wgpu::BindingType::Sampler(wgpu::SamplerBindingType::Filtering),
                     count: None,
                 },
@@ -456,6 +555,7 @@ impl BoardRenderer {
                 wgpu::BindGroupEntry { binding: 12, resource: wgpu::BindingResource::TextureView(&massif_view) },
                 wgpu::BindGroupEntry { binding: 13, resource: wgpu::BindingResource::TextureView(&heightfield_view) },
                 wgpu::BindGroupEntry { binding: 14, resource: wgpu::BindingResource::Sampler(&relief_sampler) },
+                wgpu::BindGroupEntry { binding: 15, resource: wgpu::BindingResource::TextureView(&level_view) },
             ],
         });
         // The bakes render into the art textures, so can't have them bound: their own
@@ -598,7 +698,7 @@ impl BoardRenderer {
             step_mode: wgpu::VertexStepMode::Vertex,
             attributes: &board_attrs,
         })];
-        let piece_attrs = wgpu::vertex_attr_array![0 => Float32x3, 1 => Float32x3, 2 => Float32x4];
+        let piece_attrs = wgpu::vertex_attr_array![0 => Float32x3, 1 => Float32x3, 2 => Float32x4, 3 => Float32x3];
         let piece_buffers = [Some(wgpu::VertexBufferLayout {
             array_stride: std::mem::size_of::<PieceVertex>() as u64,
             step_mode: wgpu::VertexStepMode::Vertex,
@@ -635,13 +735,14 @@ impl BoardRenderer {
             }),
         ];
         let prop_pipeline = pipeline("terrain props", "vs_prop", "fs_prop", &prop_buffers, None, depth(true, Less), None, false);
+        let micro_pipeline = pipeline("micro props", "vs_micro", "fs_micro", &prop_buffers, None, depth(true, Less), None, false);
         // Pieces turn opacity into MSAA coverage, so campfire smoke is
         // see-through without sorting and still depth-tested like the rest.
         let piece_pipeline = pipeline("pieces", "vs_piece", "fs_piece", &piece_buffers, None, depth(true, Less), None, true);
         // Lines are translucent (soft edges, fades), so they test against
         // the board's depth without writing their own.
         let line_attrs =
-            wgpu::vertex_attr_array![0 => Float32x3, 1 => Float32x2, 2 => Float32, 3 => Unorm8x4, 4 => Unorm8x4];
+            wgpu::vertex_attr_array![0 => Float32x3, 1 => Float32x2, 2 => Float32, 3 => Unorm8x4, 4 => Unorm8x4, 5 => Float32x3];
         let line_buffers = [Some(wgpu::VertexBufferLayout {
             array_stride: std::mem::size_of::<LineVertex>() as u64,
             step_mode: wgpu::VertexStepMode::Vertex,
@@ -741,6 +842,22 @@ impl BoardRenderer {
             contents: bytemuck::cast_slice(&mesh.props),
             usage: wgpu::BufferUsages::VERTEX | wgpu::BufferUsages::COPY_DST,
         });
+        let (micro_template, micro_template_indices) = mesh::micro_template();
+        let micro_vertices = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: Some("micro template"),
+            contents: bytemuck::cast_slice(&micro_template),
+            usage: wgpu::BufferUsages::VERTEX,
+        });
+        let micro_indices = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: Some("micro template indices"),
+            contents: bytemuck::cast_slice(&micro_template_indices),
+            usage: wgpu::BufferUsages::INDEX,
+        });
+        let micro_instances = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: Some("micro instances"),
+            contents: bytemuck::cast_slice(&mesh.props),
+            usage: wgpu::BufferUsages::VERTEX | wgpu::BufferUsages::COPY_DST,
+        });
         let piece_capacity = 4096;
         let pieces = Self::piece_buffer(device, piece_capacity);
         let line_capacity = [4096, 8192];
@@ -768,6 +885,13 @@ impl BoardRenderer {
             art_baked_blend: None,
             state_relief: Vec::new(),
             prop_scratch: Vec::with_capacity(mesh.props.len()),
+            micro_pipeline,
+            micro_vertices,
+            micro_indices,
+            micro_instances,
+            micro_instance_count: 0,
+            micro_scratch: Vec::new(),
+            micro_props: true,
             blit_pipeline,
             blit_layout,
             blit_params,
@@ -783,6 +907,7 @@ impl BoardRenderer {
             height_tex,
             evidence_tex,
             river_tex,
+            level_tex,
             river_field: None,
             camp_tex,
             history_tex,
@@ -923,6 +1048,12 @@ impl BoardRenderer {
             self.river_tex.as_image_copy(),
             &field.rgba,
             wgpu::TexelCopyBufferLayout { offset: 0, bytes_per_row: Some(w * 4), rows_per_image: Some(h) },
+            wgpu::Extent3d { width: w, height: h, depth_or_array_layers: 1 },
+        );
+        queue.write_texture(
+            self.level_tex.as_image_copy(),
+            bytemuck::cast_slice(&field.level),
+            wgpu::TexelCopyBufferLayout { offset: 0, bytes_per_row: Some(w * 2), rows_per_image: Some(h) },
             wgpu::Extent3d { width: w, height: h, depth_or_array_layers: 1 },
         );
         self.river_field = Some(field.clone());
@@ -1174,11 +1305,12 @@ impl BoardRenderer {
             bytemuck::cast_slice(&[self.blit_encode, globals.depth[2], globals.depth[3], 0.0, share[0], share[1], max_uv[0], max_uv[1]]),
         );
         if globals.art[0] > 0.0 || globals.art[1] > 0.0 {
-            self.bake_art(encoder, globals);
+            self.bake_art(encoder, &g);
         }
         if globals.art[1] > 0.0 {
             self.cull_props(queue, globals);
         }
+        self.cull_micro(queue, globals);
         let targets = self.targets.as_ref().unwrap();
         let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
             label: Some("board"),
@@ -1225,6 +1357,14 @@ impl BoardRenderer {
                 pass.draw_indexed(0..mesh::prop_index_count(mesh::PROP_BASE_SLOTS), 0, d..n);
             }
         }
+        if self.micro_instance_count > 0 {
+            // Close up: the stones and tufts between them.
+            pass.set_pipeline(&self.micro_pipeline);
+            pass.set_vertex_buffer(0, self.micro_vertices.slice(..));
+            pass.set_vertex_buffer(1, self.micro_instances.slice(..));
+            pass.set_index_buffer(self.micro_indices.slice(..), wgpu::IndexFormat::Uint16);
+            pass.draw_indexed(0..mesh::micro_index_count(), 0, 0..self.micro_instance_count);
+        }
         if self.line_count > 0 {
             // Over the tiles and their art, under the settlement pieces.
             pass.set_pipeline(&self.line_pipeline);
@@ -1244,7 +1384,7 @@ impl BoardRenderer {
     /// the terrain map mode) changed since the last bake. [`Self::set_flag`]
     /// doesn't touch them: the art ignores those flags.
     fn bake_art(&mut self, encoder: &mut wgpu::CommandEncoder, g: &Globals) {
-        let blend = [if g.grid[2] == 0.0 { g.art[3] } else { 0.0 }, g.grid[2], g.tile[3], g.art[3]];
+        let blend = [if terrain_like(g.grid[2]) { g.art[3] } else { 0.0 }, g.grid[2], g.tile[3], g.art[3], g.relief[3]];
         if self.art_baked_blend == Some(blend) {
             return;
         }
@@ -1288,6 +1428,22 @@ impl BoardRenderer {
             queue.write_buffer(&self.prop_instances, 0, bytemuck::cast_slice(&out));
         }
         self.prop_scratch = out;
+    }
+
+    /// Uploads the micro-props that can show this frame ([`select_micro`]).
+    fn cull_micro(&mut self, queue: &wgpu::Queue, g: &Globals) {
+        let mut out = std::mem::take(&mut self.micro_scratch);
+        if self.micro_props {
+            let cols = self.state_size[0] as usize;
+            select_micro(&self.prop_all, &self.state_rgba, cols, g, &mut out);
+        } else {
+            out.clear();
+        }
+        self.micro_instance_count = out.len() as u32;
+        if !out.is_empty() {
+            queue.write_buffer(&self.micro_instances, 0, bytemuck::cast_slice(&out));
+        }
+        self.micro_scratch = out;
     }
 
     /// Renders the last frame's board pass `n` times back to back and waits
@@ -1350,5 +1506,36 @@ mod tests {
                 assert!(src.contains(&format!("const {name}: u32")), "{name} has no constant");
             }
         }
+    }
+
+    /// Micro-props only close up, only on land, only on the terrain map,
+    /// and never past the props' own culling.
+    #[test]
+    fn micro_props_only_close_up_on_terrain_land() {
+        use crate::board::{camera::Camera, projection::Projection, scene};
+        use neolith_core::{GridSpec, MapMode};
+        let grid = GridSpec { cols: 4, rows: 3, origin_lon: 0.0, origin_lat: 10.0, w: 0.5773502691896262, h: 0.5 };
+        let proj = Projection::new(grid.centre_of_bounds());
+        let board = mesh::build(&grid, &proj, &[]);
+        let style = scene::BoardStyle::default();
+        let state = |t: Terrain| [Terrain::ALL.iter().position(|x| *x == t).unwrap() as u8, 0, 0, 0].repeat(grid.len());
+        let at = |dist: f64, rgba: &[u8], mode: MapMode| {
+            let mut cam = Camera::initial(&grid);
+            cam.dist = dist;
+            let view = cam.view(&proj, 0.0, glam::DVec2::new(1280.0, 800.0));
+            let g = scene::globals(&view, &style, mode, &grid, &board, 800.0);
+            let mut out = Vec::new();
+            select_micro(&board.props, rgba, grid.cols as usize, &g, &mut out);
+            let mut props = Vec::new();
+            select_props(&board.props, rgba, grid.cols as usize, &g, &mut props);
+            (out.len(), props.len())
+        };
+        let land = state(Terrain::Grassland);
+        assert_eq!(at(2.15, &land, MapMode::Terrain).0, 0, "none from far away");
+        let (near, props) = at(0.03, &land, MapMode::Terrain);
+        assert!(near > 0, "close up, the hexes in view get micro-props");
+        assert!(near <= props, "only where the props show too");
+        assert_eq!(at(0.03, &state(Terrain::Water), MapMode::Terrain).0, 0, "none on water");
+        assert_eq!(at(0.03, &land, MapMode::Elevation).0, 0, "terrain map only");
     }
 }

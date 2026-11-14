@@ -1,0 +1,729 @@
+{
+ "date": "2026-11-13",
+ "commit": "413420d",
+ "dirty": true,
+ "skipped": [],
+ "pass": true,
+ "rows": [
+  {
+   "section": "Health",
+   "name": "python tests failing",
+   "value": 0,
+   "note": "329 run (`make test`)",
+   "unit": "",
+   "gate": true,
+   "target": "≤ 0",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Health",
+   "name": "rust tests failing",
+   "value": 0,
+   "note": "209 passed (`cargo test --workspace`)",
+   "unit": "",
+   "gate": true,
+   "target": "≤ 0",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Health",
+   "name": "web build errors",
+   "value": 0,
+   "note": "`cargo check --target wasm32-unknown-unknown`",
+   "unit": "",
+   "gate": true,
+   "target": "≤ 0",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Health",
+   "name": "place plan problems",
+   "value": 0,
+   "note": "83 places, 19 plans, 0 problems",
+   "unit": "",
+   "gate": true,
+   "target": "≤ 0",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Health",
+   "name": "intuition files invalid",
+   "value": 0,
+   "note": "20 files",
+   "unit": "",
+   "gate": true,
+   "target": "≤ 0",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Speculative fill",
+   "name": "evals guards failing",
+   "value": 0,
+   "note": "observed, coverage, holdout, drift, spread, regressions",
+   "unit": "",
+   "gate": true,
+   "target": "≤ 0",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Speculative fill",
+   "name": "evals score",
+   "value": 0.294,
+   "note": "1.0 = the unsmoothed fill; lower is smoother",
+   "unit": "",
+   "gate": false,
+   "target": "≤ 0.35",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Speculative fill",
+   "name": "regression cases failing",
+   "value": 2,
+   "note": "of 10; allowed 2 (data/isostyle/evals/regressions.toml)",
+   "unit": "",
+   "gate": false,
+   "target": "≤ 2",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Speculative fill",
+   "name": "holdout error",
+   "value": 0.0268,
+   "note": "",
+   "unit": "",
+   "gate": false,
+   "target": "",
+   "ok": null,
+   "delta": null
+  },
+  {
+   "section": "Speculative fill",
+   "name": "flicker",
+   "value": 0.516,
+   "note": "mean over layers (isostyle/evals.py)",
+   "unit": "",
+   "gate": false,
+   "target": "",
+   "ok": null,
+   "delta": null
+  },
+  {
+   "section": "Terrain",
+   "name": "pollen anchors same class",
+   "value": 65,
+   "note": "at 6 ka, published vs map",
+   "unit": "%",
+   "gate": false,
+   "target": "≥ 65",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Terrain",
+   "name": "pollen anchors compatible",
+   "value": 87,
+   "note": "at 6 ka",
+   "unit": "%",
+   "gate": false,
+   "target": "≥ 85",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Terrain",
+   "name": "terrain suspects",
+   "value": 195,
+   "note": "35 straight edges and thin bands, 112 surges and flickers, 28 biomes in the wrong climate, 0 floodplains lost, 20 speckle (`python -m pipeline suspects`)",
+   "unit": "",
+   "gate": false,
+   "target": "≤ 195",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Map",
+   "name": "settlements",
+   "value": 8147,
+   "note": "in build/settlements.geojson",
+   "unit": "",
+   "gate": false,
+   "target": "",
+   "ok": null,
+   "delta": null
+  },
+  {
+   "section": "Map",
+   "name": "settlements on water",
+   "value": 15,
+   "note": "13 offshore (build/report.md)",
+   "unit": "",
+   "gate": false,
+   "target": "≤ 15",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Map",
+   "name": "garbled site names",
+   "value": 0,
+   "note": "",
+   "unit": "",
+   "gate": false,
+   "target": "≤ 0",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Population",
+   "name": "sites hidden by visibility",
+   "value": 66,
+   "note": "4688 recorded vs 13665 expected at 3000 BCE",
+   "unit": "%",
+   "gate": false,
+   "target": "",
+   "ok": null,
+   "delta": null
+  },
+  {
+   "section": "Population",
+   "name": "unexplained shortfall hexes",
+   "value": 1033,
+   "note": "at 3000 BCE (data/population/residuals.json)",
+   "unit": "",
+   "gate": false,
+   "target": "",
+   "ok": null,
+   "delta": null
+  },
+  {
+   "section": "Map",
+   "name": "ramp steps hard to tell apart colour-blind",
+   "value": 3,
+   "note": "elevation, land 4-5 protan 4.2, elevation, land 4-5 deutan 2.4, evidence 1-2 protan 4.3; 7 ramps, protanopia and deuteranopia; a step is weak under ΔE 5; least 2.4 (elevation, land steps 4-5 (deutan))",
+   "unit": "",
+   "gate": false,
+   "target": "≤ 3",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Famous sites",
+   "name": "famous sites missing",
+   "value": 0,
+   "note": "all 50 renown.json sites matched",
+   "unit": "",
+   "gate": false,
+   "target": "≤ 0",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Famous sites",
+   "name": "famous sites dated off the map",
+   "value": 0,
+   "note": "",
+   "unit": "",
+   "gate": false,
+   "target": "≤ 0",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Famous sites",
+   "name": "famous sites with stray records",
+   "value": 0,
+   "note": "",
+   "unit": "",
+   "gate": false,
+   "target": "≤ 0",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Research debt",
+   "name": "unchecked intuition citations",
+   "value": 143,
+   "note": "of 411 (data/isostyle/intuitions)",
+   "unit": "",
+   "gate": false,
+   "target": "",
+   "ok": null,
+   "delta": null
+  },
+  {
+   "section": "Research debt",
+   "name": "open place research items",
+   "value": 23,
+   "note": "of 66 (data/places/plans, `status`)",
+   "unit": "",
+   "gate": false,
+   "target": "",
+   "ok": null,
+   "delta": null
+  },
+  {
+   "section": "Research debt",
+   "name": "unchecked known sites in plans",
+   "value": 0,
+   "note": "of 60",
+   "unit": "",
+   "gate": false,
+   "target": "",
+   "ok": null,
+   "delta": null
+  },
+  {
+   "section": "Fixed views",
+   "name": "views failed to render",
+   "value": 0,
+   "note": "`make state-visual`, 0 days ago",
+   "unit": "",
+   "gate": false,
+   "target": "≤ 0",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Fixed views",
+   "name": "views changed since accepted",
+   "value": 0,
+   "note": "`make state-visual`, 0 days ago",
+   "unit": "",
+   "gate": false,
+   "target": "≤ 0",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Clicking and UI",
+   "name": "piece clicks that open the piece",
+   "value": 100,
+   "note": "48 pieces in 4 views; `make state-ui`, 0 days ago",
+   "unit": "%",
+   "gate": false,
+   "target": "≥ 99",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Clicking and UI",
+   "name": "off-centre clicks that open the piece",
+   "value": 97,
+   "note": "8 px off centre",
+   "unit": "%",
+   "gate": false,
+   "target": "≥ 95",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Clicking and UI",
+   "name": "name clicks that open the site",
+   "value": 96,
+   "note": "clicking a drawn settlement name",
+   "unit": "%",
+   "gate": false,
+   "target": "≥ 95",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Clicking and UI",
+   "name": "crowded pieces",
+   "value": 26,
+   "note": "on-screen pieces with another within 24 px",
+   "unit": "%",
+   "gate": false,
+   "target": "≤ 26",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Clicking and UI",
+   "name": "clicks that moved the camera",
+   "value": 0,
+   "note": "",
+   "unit": "",
+   "gate": false,
+   "target": "≤ 0",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Clicking and UI",
+   "name": "controls that moved under the player",
+   "value": 0,
+   "note": "",
+   "unit": "",
+   "gate": true,
+   "target": "≤ 0",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Clicking and UI",
+   "name": "labels that moved under the player",
+   "value": 0,
+   "note": "",
+   "unit": "",
+   "gate": true,
+   "target": "≤ 0",
+   "ok": true,
+   "delta": null
+  },
+  {
+   "section": "Performance",
+   "name": "board pass time",
+   "value": 45.46,
+   "note": "GPU ms per board pass, worst of 4 views at 1600x1000; mean 40.83 ms; `make state-ui`, 0 days ago",
+   "unit": " ms",
+   "gate": false,
+   "target": "≤ 48",
+   "ok": true,
+   "delta": null
+  }
+ ],
+ "famous": [
+  {
+   "name": "Jericho",
+   "renown": 3,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Çatalhöyük",
+   "renown": 3,
+   "records": 3,
+   "problems": []
+  },
+  {
+   "name": "Göbekli Tepe",
+   "renown": 3,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Stonehenge",
+   "renown": 3,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Skara Brae",
+   "renown": 3,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Newgrange",
+   "renown": 3,
+   "records": 2,
+   "problems": []
+  },
+  {
+   "name": "Carnac",
+   "renown": 3,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Knossos",
+   "renown": 3,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Tell Aswad",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Tell Ramad",
+   "renown": 1,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Ain Ghazal",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Abu Hureyra",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Jarmo",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Ganj Dareh",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Ali Kosh",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Nevalı Çori",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Çayönü",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Aşıklı Höyük",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Hacılar",
+   "renown": 1,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Mureybet",
+   "renown": 1,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Tell Halaf",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Tell Brak",
+   "renown": 1,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Uruk",
+   "renown": 3,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Eridu",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Ur",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Byblos",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Ugarit",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Beidha",
+   "renown": 1,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Ain Mallaha",
+   "renown": 1,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Tell Sabi Abyad",
+   "renown": 1,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Khirokitia",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Merimde Beni Salame",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Fayum",
+   "renown": 2,
+   "records": 2,
+   "problems": []
+  },
+  {
+   "name": "Nabta Playa",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Franchthi",
+   "renown": 2,
+   "records": 2,
+   "problems": []
+  },
+  {
+   "name": "Sesklo",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Dimini",
+   "renown": 1,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Lepenski Vir",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Vinča",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Starčevo",
+   "renown": 1,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Karanovo",
+   "renown": 1,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Varna",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Talianki",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Maidanetske",
+   "renown": 1,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Ġgantija",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Ötzi",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Los Millares",
+   "renown": 1,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Avebury",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Durrington Walls",
+   "renown": 1,
+   "records": 1,
+   "problems": []
+  },
+  {
+   "name": "Ness of Brodgar",
+   "renown": 2,
+   "records": 1,
+   "problems": []
+  }
+ ],
+ "critics": [
+  {
+   "critic": "greatest-hits-critic",
+   "date": "2026-11-12",
+   "age_days": 1,
+   "rubric": "5-axis-v1",
+   "overall": 1.4,
+   "open": 5,
+   "findings": 12,
+   "file": "data/state/critics/2026-11-12-greatest-hits-critic.json"
+  },
+  {
+   "critic": "gsg-critic",
+   "date": "2026-11-12",
+   "age_days": 1,
+   "rubric": "8-category-v1",
+   "overall": 1.4,
+   "open": 3,
+   "findings": 5,
+   "file": "data/state/critics/2026-11-12-gsg-critic.json"
+  },
+  {
+   "critic": "terrain-critic",
+   "date": "2026-11-13",
+   "age_days": 0,
+   "rubric": null,
+   "overall": null,
+   "open": 2,
+   "findings": 6,
+   "file": "data/state/critics/2026-11-13-terrain-critic.json"
+  }
+ ],
+ "stale": []
+}

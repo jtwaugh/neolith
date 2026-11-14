@@ -199,6 +199,101 @@
     ],
     "note": "Village on a gezira, c. 4500-2900 BCE in four levels (Neolithic silos in Level 1; mudbrick by c. 3300; Early Dynastic cemetery), from Guyot et al. 2022, which publishes no radiocarbon dates. Position approximate (about 5 km): 25 km south-east of al-Mansura, as the paper gives it. From data/places/plans/nile_delta.toml."
    }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     45.9961,
+     30.8158
+    ]
+   },
+   "properties": {
+    "name": "Eridu",
+    "founding": -5400,
+    "abandoned": -600,
+    "occupation": [
+     [
+      -5400,
+      -600
+     ]
+    ],
+    "type": "settlement",
+    "features": [
+     "temple sequence",
+     "tell"
+    ],
+    "wikipedia": "Eridu",
+    "references": [
+     "Wikipedia, 'Eridu', https://en.wikipedia.org/wiki/Eridu (retrieved 2026-11-13): coordinates; 'founded c. 5400 BC during the early Ubaid period'; temple levels XIX-VI Ubaid, V-I Uruk; abandoned c. 600 BC",
+     "Hritz, C., Pournelle, J., Smith, J., Albadran, B., Issa, B.M. & Al-Handal, A. 2012, Mid-Holocene dates for organic-rich sediment, palustrine shell, and charcoal from southern Iraq, Radiocarbon 54(1):65-79, https://doi.org/10.2458/azu_js_rc.v54i1.12362 (Table 1 and sample notes)"
+    ],
+    "note": "Not in the open radiocarbon compilations (no date under Eridu or Abu Shahrain). Dates are archaeological phase dates from the Wikipedia article: founded c. 5400 BCE in the early Ubaid period; the temple sequence under the ziggurat runs through the Ubaid (levels XIX-VI, to c. 3800 BCE) and Uruk (levels V-I, to c. 3200 BCE) periods; abandoned c. 600 BCE. The founding rests on the Ubaid levels only; occupation between 3200 and 600 BCE was not checked for breaks. From docs/plans/housekeeping/2026-11-13-1806.md (2.1); a famous site (neolith-rs/crates/app/assets/renown.json). Checked 2026-11-13 (docs/plans/research/2026-11-13-2026.md, 3.2): no radiocarbon date of the occupation is published. Hritz et al. 2012, the compilation of mid-Holocene dates for southern Iraq, gives four AMS dates on freshwater snail shell picked from denuded mudbrick at Eridu (AA94633, 6845 +/- 45 BP, north base of the mound, with possibly Ubaid 2/3 sherds; AA94630, 6169 +/- 43 BP, main mound; two from the ziggurat's bricks, 4064 and 3991 BP). The authors read them as the age of the lake muds the bricks were made from, laid down some 500-700 years before the building, so they are maximum ages, not dates of the settlement, and are not entered. The hand entry stays until a date of the occupation exists."
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     46.1051,
+     30.9617
+    ]
+   },
+   "properties": {
+    "name": "Ur",
+    "founding": -3800,
+    "abandoned": -500,
+    "occupation": [
+     [
+      -3800,
+      -500
+     ]
+    ],
+    "type": "settlement",
+    "features": [
+     "tell"
+    ],
+    "wikipedia": "Ur",
+    "references": [
+     "Wikipedia, 'Ur', https://en.wikipedia.org/wiki/Ur (retrieved 2026-11-13): coordinates; 'The city dates from the Ubaid period c. 3800 BC'; 'no longer inhabited by the early 5th century BC'",
+     "Hritz, C., Pournelle, J., Smith, J., Albadran, B., Issa, B.M. & Al-Handal, A. 2012, Mid-Holocene dates for organic-rich sediment, palustrine shell, and charcoal from southern Iraq, Radiocarbon 54(1):65-79, https://doi.org/10.2458/azu_js_rc.v54i1.12362 (Table 1 and sample notes)"
+    ],
+    "note": "The compilations hold 15 dates for Ur (XRONOS, filed at 46.1, 31.04, 9 km north), the oldest 4211 +/- 32 BP (OxA-34011), all after 3000 BCE, so no dated site forms in the map's period. Dates here are archaeological phase dates from the Wikipedia article: occupied from the Ubaid period, c. 3800 BCE, and no longer inhabited by the early 5th century BCE. The article notes a layer of soil over the Ubaid levels; breaks in occupation were not checked. From docs/plans/housekeeping/2026-11-13-1806.md (2.1); a famous site (neolith-rs/crates/app/assets/renown.json). Checked 2026-11-13 (docs/plans/research/2026-11-13-2026.md, 3.2): no radiocarbon date from the Ubaid levels is published. Hritz et al. 2012, the compilation of mid-Holocene dates for southern Iraq, lists for Ur only P-724 (3959 +/- 59 BP, young wood, Royal Cemetery). The hand entry stays until a date of the Ubaid occupation exists."
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.2692,
+     36.0472
+    ]
+   },
+   "properties": {
+    "name": "Ġgantija",
+    "founding": -3600,
+    "abandoned": -2500,
+    "occupation": [
+     [
+      -3600,
+      -2500
+     ]
+    ],
+    "type": "temple",
+    "features": [
+     "megalithic temple"
+    ],
+    "wikipedia": "Ġgantija",
+    "references": [
+     "Wikipedia, 'Ġgantija', https://en.wikipedia.org/wiki/%C4%A0gantija (retrieved 2026-11-13): coordinates; 'temple complex from the Neolithic era (c. 3600-2500 BC)'; the older, southern temple 'dating back to around 3600 BC'",
+     "Brogan, C., French, C., Taylor, S., Bennett, J., Parkinson, E.W., McLaughlin, R., Stoddart, S. & Malone, C. 2020, Ġgantija, chapter 5 of Malone, C. et al. (eds), Temple Places: Excavating cultural sustainability in prehistoric Malta (FRAGSUS 2), McDonald Institute, pp. 169ff., https://doi.org/10.17863/CAM.62652 (Table 5.1, p. 187)",
+     "McLaughlin, R. et al. 2020, Dating Maltese prehistory, chapter 2 of Temple Places, https://doi.org/10.17863/CAM.62649 (Table 2.1; section 2.3.5, p. 32)"
+    ],
+    "note": "Not in the open radiocarbon compilations. Dates are the archaeological dates of the Wikipedia article: the temples were built from c. 3600 BCE (Ġgantija phase, 3600-3200 BCE) and the complex is dated c. 3600-2500 BCE. From docs/plans/housekeeping/2026-11-13-1806.md (2.1); a famous site (neolith-rs/crates/app/assets/renown.json). Checked 2026-11-13 (docs/plans/research/2026-11-13-2026.md, 3.2): no radiocarbon date inside the period exists for the site. The FRAGSUS excavations (2014-15) obtained two useful dates, both from the megalithic ramp and both late: UBA-35589, 4106 +/- 35 BP (charcoal, context 1016, 2870-2500 cal BC) and UBA-33707, 3962 +/- 50 BP (wheat grain, context 1021, 2580-2300 cal BC); nine bone samples failed (Brogan et al. 2020, Table 5.1; McLaughlin et al. 2020, Table 2.1). The excavators found Ġgantija-phase pottery there 'none in direct association with material that could be radiocarbon dated', and model the Ġgantija phase from Kordin III and Santa Verna as beginning 3600-3200 cal BC (McLaughlin et al. 2020, 2.3.5), which the founding year here falls in. The hand entry stays."
+   }
   }
  ]
 }

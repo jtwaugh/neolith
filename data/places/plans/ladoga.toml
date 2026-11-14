@@ -85,23 +85,26 @@ checked = true
 
 [[known_site]]
 name = "Okhta 1"
-lon = 30.41
-lat = 59.94
+lon = 30.407
+lat = 59.944
 coordinates = "approximate"
 start = -4200
-end = -2500
-what = "Settlement and wooden fishing structures on the cape at the mouth of the Okhta into the Neva, St Petersburg; occupation from about 4,200-3,600 cal BC into the 3rd millennium BC, with more than 150 determinations reported. Coordinates are the river mouth, from memory. The end date is a guess from 'IVth-IIIrd millennia BC'."
-cite = "Kulkova et al. 2012, Radiocarbon; Gusentsova and Sorokin 2011, Rossiiskii arkheologicheskii ezhegodnik 1"
-url = "https://repository.arizona.edu/handle/10150/654758"
-checked = false
+end = -2200
+what = "Neolithic-Early Metal Age settlement with wooden fishing constructions on the cape at the mouth of the Okhta into the Neva, central St Petersburg, excavated in 2008 on the site of the 13th-century Landskrona and 17th-century Nienshanz fortresses (Kulkova et al. 2012, introduction). Occupied from 4200-3600 cal BC, after the Littorina regression, by Pit-Combed Ware fishers and hunters; fishing pile structures about 3500 cal BC; settlements and burials of the Late Neolithic-Early Metal Age from 3200-3000 cal BC; the upper cultural layer formed from 3200 to 2200 cal BC (abstract and results). The point is Nyenschantz as English Wikipedia gives it (59 deg 56' 39\" N, 30 deg 24' 25\" E, https://en.wikipedia.org/wiki/Nyenschantz), good to about 0.5 km for the cape."
+cite = "Kulkova, M., Gusentzova, T., Nesterov, E., Sorokin, P. & Sapelko, T. 2012, Chronology of Neolithic-Early Metal Age sites at the Okhta River mouth (Saint Petersburg, Russia), Radiocarbon 54(3-4):1049-1063"
+url = "https://cambridge.org/core/services/aop-cambridge-core/content/view/E5FC79A1B1B86C866C4CE71BCF5DC383/S0033822200047664a.pdf/chronology_of_neolithicearly_metal_age_sites_at_the_okhta_river_mouth_saint_petersburg_russia.pdf"
+checked = true
 
 [[research]]
 what = "Enter Table 2 of Seitsonen et al. 2012: every Stone Age and Early Metal Period date from the Karelian Isthmus, with site, context, material, lab number, BP and their usability score. Locations come from the site maps (figs. 3, 5, 6) and the former Finnish parish names; mark them approximate. Keep only dates they score as usable, or carry the score."
 url = "https://geochronometria.com/-The-good-the-bad-the-weird-Stone-Age-and-Early-Metal-Period-radiocarbon-dates-and,184394,0,2.html"
 yields = "About 90 or more dates (81 judged usable) from 30-odd numbered sites, 8,600-1,800 cal BC in the window: 12 Early Mesolithic, 18 Late Mesolithic, 7 Early, 14 Middle and 16 Late Neolithic."
 effort = "A four-page table; locations from the maps."
+status = "done"
+done_in = "data/settlements/literature_dates.csv, source 'Seitsonen et al. 2012' (76 dates, 34 sites)"
 
 [[research]]
+next = "Enter the Appendix date list of Kulkova et al. 2012 (Radiocarbon 54(3-4):1049-1063; open PDF on Cambridge Core, link in the Okhta 1 known_site) at the Okhta 1 point, leaving out the dates the authors call mixed."
 what = "Find and enter the Okhta 1 date list (Kulkova et al. 2012, Radiocarbon; the full list is said to run past 150 determinations) and the Neva-mouth sites around it."
 url = "https://repository.arizona.edu/handle/10150/654758"
 yields = "One large multi-phase site at the Neva mouth, 4,200-2,500 cal BC, perhaps a few neighbours."
@@ -112,8 +115,12 @@ what = "Enter the Ladoga dates in Tarasov et al. 2017 (Kurkijoki, Map 1 no. 27) 
 url = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/44.7"
 yields = "A few north-Ladoga sites, 6,600-4,000 cal BC."
 effort = "A handful of rows."
+status = "done"
+done_in = "data/settlements/literature_dates.csv: 'Kurkieki 33' and 'Kurkieki 52' under source 'Tarasov et al. 2017'; 'Antrea Korpilahti (Vuoksenranta)' under source 'Seitsonen et al. 2012'"
 
 [[research]]
+status = "dropped"
+reason = "Triage 2026-11-13: undated survey sites, useful only to a speculation that is not planned; the Karelian Isthmus already has 76 dates from Seitsonen et al. 2012."
 what = "For speculation rather than ingest: the Iskos 16 survey reports (Kaukola, Räisälä, Kurkijoki, Johannes, Koivisto, Kuolemajärvi, 1998-2003) list many undated Stone Age dwelling sites with their elevations, which would date them by shoreline."
 url = "https://journal.fi/iskos/issue/view/7830"
 yields = "Many undated sites; a shoreline-dated settlement pattern for the northern Isthmus."

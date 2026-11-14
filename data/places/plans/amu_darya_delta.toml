@@ -42,31 +42,23 @@ Aral Sea at full size from 10,000 BCE, which I have not checked against
 the lake-level literature.
 """
 
-[[known_site]]
-name = "Dzhanbas-4 (Janbas 4)"
-lon = 61.3
-lat = 41.86
-coordinates = "approximate"
-start = -4500
-end = -3500
-what = "Type site of the Kel'teminar culture in the Akchadarya delta: a single very large post-built communal dwelling with hearths, pottery, microlithic flint and fish and wild-animal bone, excavated 1939-40 and 1945. The date range is the conventional one as I remember it, inside the 5500-3500 BCE span given for the culture; I know of no radiocarbon date from the site. The point is the Dzhanbas-kala fortress the site is numbered from, from memory, good to perhaps 10 km. Not opened: the excavation seasons are from a search engine's summary of Vinogradov 1957, which also names a second site, Kunyak-1."
-cite = "Vinogradov, A.V. 1957, K voprosu o yuzhnykh svyazyakh kel'teminarskoi kul'tury, Sovetskaya etnografiya 1957(1):25-45; first reported in Tolstov, S.P. 1948, Drevnii Khorezm"
-url = "https://eo.iea.ras.ru/wp-content/uploads/1957/01/eoarchive_1957_1_025_vinogradov.pdf"
-checked = false
-
 [[research]]
+next = "Vinogradov 1957 (opened 2026-11-13) gives no site coordinates: it places Dzhanbas-4 in the Akcha-Darya area, excavated by Tolstov in 1939-40 and 1945, and dates the early Kel'teminar stage, by analogy, to the end of the 4th and first half of the 3rd millennium BC (Formozov argued for no earlier than the 3rd). Next: find a scanned Vinogradov 1981 with its site map, or Tolstov 1948, and read positions off it."
 what = "Find and digitise the Kel'teminar site catalogues and their maps: Vinogradov's monographs on the Neolithic of Khorezm (1968) and on the hunters and fishers of the Central Asian interfluve (1981), and Tolstov 1948. Titles and years are from memory and unverified; confirming them is step one. Vinogradov 1957 (open PDF) is a way in."
 url = "https://eo.iea.ras.ru/wp-content/uploads/1957/01/eoarchive_1957_1_025_vinogradov.pdf"
 yields = "My estimate, unverified: several dozen to a few hundred Kel'teminar localities in the Akchadarya delta, the Sarykamysh delta, along the Uzboy and in the inner Kyzylkum, 6th-4th millennium BCE, nearly all dated by typology and not radiocarbon"
 effort = "Russian print monographs; site positions read off distribution maps (approximate, 5-20 km); phases assigned from the authors' typology. Days of work. Enter as surveyed, period-dated sites."
 
 [[research]]
+next = "Download the article's PDF facsimile from the journal page in a browser (the automated fetch got an empty page on 2026-11-13) and enter the Ajakagytma dates with lab numbers."
 what = "Enter the radiocarbon dates and survey results of the French-Uzbek-Polish work on Kel'teminar: Brunet, Hudzanazarov and Szymczak 2013 (open access, PDF facsimile on the journal page) for Ajakagytma and the Kyzylkum and Akchadarya geo-archaeological surveys. Ajakagytma is 400 km east of the box but it is the dated anchor for the whole culture."
 url = "https://journals.openedition.org/asiecentrale/1814"
 yields = "One well-dated stratified site (a search summary gave its early phase as c. 6100-5400 cal BCE; I did not see the dates myself) and possibly a list of surveyed sites; the calibrated frame for every period-dated Kel'teminar site above"
 effort = "One article in French; the abstract page has no dates, they are in the PDF"
 
 [[research]]
+status = "dropped"
+reason = "Triage 2026-11-13: one date of 3750 +/- 90 BP, after 3,000 BCE and so outside the board's window wherever it lies; it cannot change the map."
 what = "Look at the XRONOS record 'Akcha' (RUL-241, 3750 +/- 90 BP, charcoal, from the CONTEXT database): the XRONOS page gives no coordinates, our raw copy has it at 37.6 N, 60.62 E. Decide whether it is an Akchadarya site; if so it belongs here (after 3,000 BCE, so it would still not show in the period)."
 url = "https://xronos.ch/c14s/73010"
 yields = "At most one relocated site, outside the period; a check on how records without coordinates get placed"

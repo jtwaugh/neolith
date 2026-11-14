@@ -35,6 +35,31 @@ class Rejects(unittest.TestCase):
             st.apply_rejects(dates, {("Wustermark 22", "bln5645")})
 
 
+class KeepSite(unittest.TestCase):
+    def test_named_site_passes_exclude_types_others_do_not(self):
+        skip = ["tomb", "necropolis", "grave"]
+        tomb = {"site": "Newgrange", "type": "boyne passage grave"}
+        town = {"site": "Los Millares", "type": "settlement with megalithic necropolis"}
+        other = {"site": "Knowth", "type": "boyne passage grave"}
+        refiled = {"site": "Merged", "filed": "Los Millares", "type": "necropolis"}
+        burial = {"site": "Elsewhere", "type": "grave", "keep_type": True}
+        plain = {"site": "Elsewhere", "type": "settlement"}
+        keep = {"Newgrange", "Los Millares"}
+        self.assertEqual([st.excluded(d, skip, keep) for d in (tomb, town, other, refiled, burial, plain)],
+                         [False, False, True, False, False, False])
+        self.assertTrue(st.excluded(tomb, skip))
+
+    def test_load_keep_sites(self):
+        import os
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            p = os.path.join(tmp, "records.toml")
+            with open(p, "w") as f:
+                f.write('[[keep_site]]\nsite = "Newgrange"\nsource = "https://x"\nnote = "n"\n')
+            self.assertEqual(st.load_keep_sites(p), {"Newgrange"})
+        self.assertEqual(st.load_keep_sites(None), set())
+
+
 class Calibrate(unittest.TestCase):
     def test_identity_curve_gives_the_date_back(self):
         cal = np.arange(0, 20001, st.CAL_STEP, dtype=float)
@@ -263,6 +288,17 @@ class Wikidata(unittest.TestCase):
         new = out[2]["properties"]
         self.assertEqual((new["name"], new["founding"], new["sources"], new["references"], new["n_dates"]),
                          ("Other", -5000, ["wikidata"], ["Wikidata Q2"], 0))
+
+    def test_near_namesake_not_added(self):
+        # A dated item 7 km from a site of the same name: not a match at
+        # 5 km, but the same place, so it is not added either (add_km 10).
+        far = [{"qid": "Q9", "name": "Jericho", "names": ["Jericho"], "lon": 35.46, "lat": 31.92,
+                "inception": -9600, "cultures": [], "wikipedia": "Jericho"}]
+        feats = [point("Jericho", 35.444, 31.871, -9000)]
+        _, matched, added = st.enrich_wikidata(feats, far, 5.0, (-10000, -3000), add_km=10.0)
+        self.assertEqual((matched, added), (0, 0))
+        _, matched, added = st.enrich_wikidata(feats, far, 5.0, (-10000, -3000))
+        self.assertEqual((matched, added), (0, 1))
 
     def test_parse(self):
         import os, tempfile

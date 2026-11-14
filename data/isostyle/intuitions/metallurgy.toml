@@ -698,7 +698,7 @@ confidence = "medium"
 basis = ["literature"]
 reasoning = "Fully masked: the cradle of European smelting reads empty."
 literature = [
-  { cite = "Radivojević et al. 2010, J. Archaeol. Sci. 37", checked = false },
+  { cite = "Radivojević, Rehren, Pernicka, Šljivar, Brauns & Borić 2010, 'On the origins of extractive metallurgy: new evidence from Europe', Journal of Archaeological Science 37, 2775-2787", checked = true, url = "https://dienekes.blogspot.com/2010/06/earliest-copper-smelting-from-balkans.html", read = "abstract", note = "Abstract read on a page that reproduces it (publisher page blocked): copper smelting at Belovode (Vinča, eastern Serbia) c. 7000 years ago, an established technology using several ore sources." },
 ]
 would_settle = "Radivojević et al. Belovode/Pločnik dates; Balkan metallurgy syntheses."
 speculative_rule = "0.08 in the central Balkans and lower Danube, 0.02 in Greece."

@@ -105,12 +105,13 @@ edit that file, not this one.
 - Used in: Settlements and dates
 - Note: Data host says CC BY-SA (images CC BY-NC-SA; we use no images); data paper (joad.120) says CC BY 4.0. Either is compatible with CC BY-SA.
 
-### Allen Ancient DNA Resource (AADR) v66.p1, 1240K annotation
+### Allen Ancient DNA Resource (AADR) v66.p1, 1240K annotation and genotypes
 
 - Licence: [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/)
 - Source: <https://doi.org/10.7910/DVN/FFIDCW>
 - Cite: Mallick, S., Micco, A., Mah, M. et al. 2024. The Allen Ancient DNA Resource (AADR): a curated compendium of ancient human genomes. Scientific Data 11:182. Plus the original genetics papers per sample.
-- Used in: Settlements and dates; isostyle aDNA and haplogroup layers
+- Used in: Settlements and dates; isostyle aDNA, haplogroup and ancestry layers
+- Note: The 1240K genotypes (.geno/.snp/.ind) are read by `python -m isostyle ancestry` and never committed; the per-individual ancestry table derived from them is data/ancestry/ancestry.csv.gz (method and reference groups in data/ancestry/SOURCES.md).
 
 ### Radiocarbon dates transcribed from published papers (mostly Russian-language)
 
@@ -125,6 +126,14 @@ edit that file, not this one.
 - Source: <https://en.wikipedia.org>
 - Cite: Wikipedia contributors. Revisions are recorded in data/cultures/wikipedia.json and data/renown/SOURCES.md.
 - Used in: data/cultures/cultures.toml; renown one-line summaries (neolith-rs/crates/app/assets/renown.json)
+
+### Salem et al. 2025, Takarkori genomes (sample metadata)
+
+- Licence: facts
+- Source: <https://doi.org/10.1038/s41586-025-08793-7>
+- Cite: Salem, N. et al. 2025. Ancient DNA from the Green Sahara reveals ancestral North African lineage. Nature 641. https://doi.org/10.1038/s41586-025-08793-7. Reads: ENA PRJEB84057.
+- Used in: isostyle aDNA and mt haplogroup layers; data/isostyle/inputs/supplementary_genomes.toml
+- Note: Two individuals typed from the paper's text (dates, mt calls, SNP counts); no reads or genotypes are downloaded. Position from Wikipedia ('Takarkori').
 
 ### Evershed et al. 2022, lipid residue site-phases
 
@@ -282,6 +291,30 @@ edit that file, not this one.
 - Cite: Ubuntu font (Ubuntu Font Licence 1.0), Hack (MIT/Bitstream Vera), Noto Emoji (OFL 1.1), emoji-icon-font (MIT/OFL), bundled by the epaint_default_fonts crate.
 - Used in: UI text in the app (via eframe)
 
+### Grug, caveman Wojak meme (splash-page mascot)
+
+- Licence: LicenseRef-no-licence
+- Source: <https://knowyourmeme.com/memes/grug>
+- Cite: Grug, anonymous internet meme (4chan, 2017). Image via Know Your Meme: https://i.kym-cdn.com/entries/icons/original/000/025/413/oogaboogaaa.jpg
+- Used in: Start screen mascot (neolith-rs/crates/app/assets/grug.jpg, cropped; grug.rgba is it resized for the app)
+- Note: Anonymous author, no licence found. Anonymous works are still under copyright, so this image is not covered by the project's MIT or CC BY-SA licences and cannot be relicensed with the data. Shipped at the maintainer's request (2026-11-13) as a meme mascot; replace it if a rights holder objects.
+
+### IM FELL English roman, by Igino Marini (subset shipped as "Neolith Fell")
+
+- Licence: [OFL-1.1](https://openfontlicense.org)
+- Source: <https://github.com/google/fonts/tree/main/ofl/imfellenglish>
+- Cite: IM FELL English, Copyright (c) 2010 Igino Marini (iginomarini.com). SIL Open Font License 1.1 (neolith-rs/crates/app/assets/fonts/OFL-IMFell.txt).
+- Used in: Start screen title, headings and questions (neolith-rs/crates/app/assets/fonts/NeolithFell.subset.ttf)
+- Note: Subset to Latin with fontTools. Because "IM FELL" is a Reserved Font Name and a subset is a modified version, the subset's family is renamed "Neolith Fell".
+
+### Alegreya, regular and italic (Huerta Tipográfica)
+
+- Licence: [OFL-1.1](https://openfontlicense.org)
+- Source: <https://github.com/huertatipografica/Alegreya>
+- Cite: Alegreya, Copyright 2011 The Alegreya Project Authors. SIL Open Font License 1.1 (neolith-rs/crates/app/assets/fonts/OFL-Alegreya.txt).
+- Used in: Start screen body text (neolith-rs/crates/app/assets/fonts/Alegreya*.subset.ttf)
+- Note: From the Google Fonts repository: the variable font pinned to weight 400 and subset to Latin with fontTools.
+
 ## Committed to the repository but not shipped
 
 ### BIOME 6000 DB classified plotfile, version 1
@@ -354,3 +387,10 @@ edit that file, not this one.
 - Cite: Binford, L.R. 2001. Constructing Frames of Reference. University of California Press. Kirby, K.R. et al. 2016. D-PLACE: a global database of cultural, linguistic and environmental diversity. PLoS ONE 11:e0158391.
 - Used in: Fitting the coastal term of the forager model (one coefficient, -0.71); see data/population/SOURCES.md
 - Note: No rows are committed or shipped; only a fitted coefficient, a fact about the data, enters the model.
+
+### ADMIXTOOLS 2 (qpAdm), build tool for the ancestry table
+
+- Licence: GPL-3.0
+- Source: <https://github.com/uqrmaie1/admixtools>
+- Cite: Maier, R., Flegontov, P., Flegontova, O. et al. 2023. On the limits of fitting complex models of population history to f-statistics. eLife 12:e85492. doi:10.7554/eLife.85492
+- Used in: isostyle/ancestry/run.R: per-individual qpAdm for data/ancestry/ancestry.csv.gz. Run as a tool; no code or data from it is shipped.

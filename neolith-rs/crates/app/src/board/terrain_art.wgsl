@@ -341,6 +341,52 @@ fn art_bank(gp: vec2<f32>) -> vec2<f32> {
     return vec2<f32>(r.x - r.y * RIVER_BED, r.z);
 }
 
+// ------------------------------------------------------------- gorges ----
+// The water level at each river field texel's centreline point, metres
+// (lines::RiverField::level): a river only runs downhill, so where the
+// ground rises across its course the board is cut down to it.
+@group(0) @binding(15) var level_tex: texture_2d<i32>;
+
+// The gorge's floor reaches this far (hex-local) from the centreline, at
+// least, and out past the bed's edge by GORGE_MARGIN; its walls rise to the
+// full ground by GORGE_OUT (inside the field's reach, RIVER_REACH).
+const GORGE_FLOOR: f32 = 0.26;
+const GORGE_MARGIN: f32 = 0.09;
+const GORGE_OUT: f32 = 0.72;
+
+// How the ground at `gp` (art_global) is cut towards the nearest river's
+// water level: x the level (board units), y the share of the ground's height
+// above it that is kept (0 on the gorge floor, 1 beyond the walls). Only on
+// the smooth board (edge blending); the river ribbons run at the same level
+// (lines::water_levels).
+fn art_carve(gp: vec2<f32>) -> vec2<f32> {
+    let dims = vec2<i32>(textureDimensions(river_tex));
+    let texel = (1.5 * (g.grid.x - 1.0) + 2.0) / f32(dims.x);
+    let uv = vec2<f32>(gp.x + 1.0, SQRT3_2 - gp.y) / texel - 0.5;
+    let base = vec2<i32>(floor(uv));
+    var d0 = 9.0;
+    var half = 0.0;
+    var at = vec2<i32>(0);
+    for (var k = 0; k < 4; k++) {
+        let ij = clamp(base + vec2<i32>(k & 1, k >> 1), vec2<i32>(0), dims - 1);
+        let e = textureLoad(river_tex, ij, 0);
+        if (e.a < 0.25) { continue; }
+        let centre = vec2<f32>((f32(ij.x) + 0.5) * texel - 1.0, SQRT3_2 - (f32(ij.y) + 0.5) * texel);
+        let d = distance(gp, centre + (e.xy * 2.0 - 1.0) * RIVER_REACH);
+        if (d < d0) {
+            d0 = d;
+            half = e.b * RIVER_HALF_MAX;
+            at = ij;
+        }
+    }
+    if (d0 > 8.0) {
+        return vec2<f32>(0.0, 1.0);
+    }
+    let level = f32(textureLoad(level_tex, at, 0).r) * g.hex.z;
+    let floor_r = min(max(GORGE_FLOOR, half * RIVER_BED + GORGE_MARGIN), GORGE_OUT - 0.2);
+    return vec2<f32>(level, smoothstep(floor_r, GORGE_OUT, d0));
+}
+
 // What grows in a slot on a river bank instead of `kind`. Trees stay. Open
 // ground gets a gallery of trees (palms in the desert) and reeds; a seasonal
 // wash or cold ground only scrub. `h` is the slot's hash, `wet` art_bank's y.
@@ -363,10 +409,17 @@ fn art_riparian(kind: u32, terrain: u32, h: u32, wet: f32) -> u32 {
 // The settlements in and around each hex (scene::camp_texels), 2 x 2 texels
 // per hex filled from the first. rg: the camp in this hex's local
 // coordinates over CAMP_SPAN (-1..1 as 0..1), b: its clearing's radius over
-// CAMP_RADIUS_MAX, a: 0 for no camp, else the hex's east-west squash (a
+// CAMP_RADIUS_MAX in the low 7 bits, plus 128 for a farming site with
+// fields round it, a: 0 for no camp, else the hex's east-west squash (a
 // clearing is round on the board, so wider in hex-local x where hexes are
 // squashed).
 @group(0) @binding(10) var camp_tex: texture_2d<f32>;
+
+// A camp entry's clearing radius (hex-local) and whether it has fields.
+fn art_camp_radius(z: f32) -> vec2<f32> {
+    let b = u32(round(z * 255.0));
+    return vec2<f32>(f32(b & 127u) / 127.0 * CAMP_RADIUS_MAX, f32(b >> 7u));
+}
 
 // How far `p` (hex-local, in `cell`) is from the nearest camp, in clearing
 // radii: under 1 is in a clearing. 9 when the hex has no camp.
@@ -376,49 +429,45 @@ fn art_camp(p: vec2<f32>, cell: vec2<u32>) -> f32 {
         let e = textureLoad(camp_tex, vec2<i32>(cell * 2u + vec2<u32>(k & 1u, k >> 1u)), 0);
         if (e.a <= 0.0) { break; }
         let to = (p - (e.xy * 2.0 - 1.0) * CAMP_SPAN) * vec2<f32>(e.a, 1.0);
-        best = min(best, length(to) / max(e.z * CAMP_RADIUS_MAX, 1e-3));
+        best = min(best, length(to) / max(art_camp_radius(e.z).x, 1e-3));
     }
     return best;
 }
 
-// ------------------------------------------------------------- history ----
-// The most of a hex's trees that clearing removes, and the most of its
-// cleared ground under fields.
-const CLEARING_MAX: f32 = 0.6;
-const FIELDS_MAX: f32 = 0.5;
-// What people have done to each hex (scene::history_texels), one texel per
-// hex: r clearing, g fields (0..1).
-@group(0) @binding(11) var history_tex: texture_2d<f32>;
+// How far out a farming site's fields reach, in clearing radii.
+const FIELD_RING: f32 = 2.6;
+// The share of that ring under plots; the rest stays as it was (woods
+// in a forest), so the fields are a few patches, not a cleared belt.
+const FIELD_SHARE: f32 = 0.55;
 
-fn art_history_texel(c: vec2<i32>, own: vec2<f32>) -> vec2<f32> {
-    if (c.x < 0 || c.y < 0 || c.x >= i32(g.grid.x) || c.y >= i32(g.grid.y)) {
-        return own;
+// How much of the ground at `p` (hex-local, in `cell`) is under a field
+// plot (0..1, soft-edged): a few small plots in the ring just outside a
+// farming site's clearing. Trees and undergrowth keep off the plots.
+fn art_field(p: vec2<f32>, cell: vec2<u32>) -> f32 {
+    var near = 9.0;
+    for (var k = 0u; k < 4u; k++) {
+        let e = textureLoad(camp_tex, vec2<i32>(cell * 2u + vec2<u32>(k & 1u, k >> 1u)), 0);
+        if (e.a <= 0.0) { break; }
+        let r = art_camp_radius(e.z);
+        if (r.y < 0.5) { continue; }
+        let to = (p - (e.xy * 2.0 - 1.0) * CAMP_SPAN) * vec2<f32>(e.a, 1.0);
+        near = min(near, length(to) / max(r.x, 1e-3));
     }
-    return textureLoad(history_tex, c, 0).rg;
+    if (near >= FIELD_RING) {
+        return 0.0;
+    }
+    let gp = art_global(p, cell);
+    // Thicker close in, thinning out to the ring's ragged edge.
+    let cover = FIELD_SHARE * (1.0 - smoothstep(FIELD_RING * 0.55, FIELD_RING, near + (art_noise(gp * 3.1 + 17.0) - 0.5) * 0.6));
+    let plot = art_noise(gp * 4.6 + 101.0) * 0.7 + art_noise(gp * 9.3 + 131.0) * 0.3;
+    return smoothstep(1.0 - cover - 0.06, 1.0 - cover + 0.06, plot);
 }
 
-// Clearing and fields at `p` (hex-local, in `cell`): interpolated over the
-// triangle of hex centres the (noise-warped) point lies in, like the ground
-// field in fs_board, so a clearing is a ragged patch round its sites, not a
-// hex.
-fn art_history_at(p_in: vec2<f32>, cell: vec2<u32>) -> vec2<f32> {
-    let gp = art_global(p_in, cell);
-    let p = p_in + (vec2<f32>(art_noise(gp * 1.4 + 211.0), art_noise(gp * 1.4 + 263.0)) - 0.5) * 0.8;
-    let c = vec2<i32>(cell);
-    let own = textureLoad(history_tex, c, 0).rg;
-    let sector = i32(floor(atan2(p.y, p.x) / SIXTY - 0.5));
-    let k0 = u32((sector % 6 + 6) % 6);
-    let k1 = (k0 + 1u) % 6u;
-    let n1 = edge_normal(k0) * 1.7320508;
-    let n2 = edge_normal(k1) * 1.7320508;
-    let det = n1.x * n2.y - n1.y * n2.x;
-    let a = max((p.x * n2.y - p.y * n2.x) / det, 0.0);
-    let b = max((n1.x * p.y - n1.y * p.x) / det, 0.0);
-    let w0 = max(1.0 - a - b, 0.0);
-    let h1 = art_history_texel(c + neighbour_offset(cell.x & 1u, k0), own);
-    let h2 = art_history_texel(c + neighbour_offset(cell.x & 1u, k1), own);
-    return (own * w0 + h1 * a + h2 * b) / max(w0 + a + b, 1e-4);
-}
+// ------------------------------------------------------------- history ----
+// What people have done to each hex (scene::history_texels). Bound but no
+// longer drawn from: people don't thin the woods, they clear round their
+// sites (art_camp) and farm a few plots there (art_field).
+@group(0) @binding(11) var history_tex: texture_2d<f32>;
 
 // ------------------------------------------------------------- layout ----
 
@@ -433,6 +482,79 @@ const K_PEAK: u32 = 6u;
 const K_HILL: u32 = 7u;
 const K_TUFT: u32 = 8u;
 const K_WAVE: u32 = 9u;
+
+// ----------------------------------------------------------- groves ----
+// In wooded biomes a base slot's tree is drawn as a grove: a tight clump of
+// three crowns with no trunks (one per band of the lathe, art_grove_profile
+// and art_grove_crown), wide enough that the clumps of a hex and its
+// neighbours run together into tree cover. The
+// detail slots that sprout close up stay single trees, poking out of it.
+// Flagged in prop_tex x (K_GROVE_BIT) and in art_tex x (ART_GROVE_BIT, as
+// bits 8-15 there hold the slot).
+const K_GROVE_BIT: u32 = 0x100u;
+const ART_GROVE_BIT: u32 = 0x10000u;
+
+// How big this biome's groves are (0: none, single trees).
+fn art_grove_terrain(terrain: u32) -> f32 {
+    var s = 0.0;
+    switch terrain {
+        case T_BOREAL_FOREST, T_TEMPERATE_FOREST, T_TROPICAL_FOREST: { s = 1.0; }
+        // Copses, forest-steppe islands, gallery woods.
+        case T_WOODLANDS, T_STEPPE_FOREST, T_FLOODPLAIN: { s = 0.78; }
+        default: {}
+    }
+    return s;
+}
+
+fn art_is_grove(terrain: u32, slot: u32, kind: u32) -> bool {
+    return slot < ART_BASE_SLOTS && (kind == K_CONIFER || kind == K_ROUND || kind == K_PALM)
+        && art_grove_terrain(terrain) > 0.0;
+}
+
+// Crown `band` of a grove, as art_profile (a cone from a ring just off the
+// ground to its top): the big middle crown, then two smaller ones beside
+// it. Conifer stands are clumps of spires; broadleaf ones low and round.
+fn art_grove_profile(kind: u32, band: u32) -> vec4<f32> {
+    var bands = array<vec4<f32>, 9>(
+        // conifer
+        vec4<f32>(0.18, 0.03, 0.0, 0.52), vec4<f32>(0.16, 0.03, 0.0, 0.42), vec4<f32>(0.15, 0.03, 0.0, 0.37),
+        // broadleaf
+        vec4<f32>(0.26, 0.04, 0.0, 0.32), vec4<f32>(0.23, 0.04, 0.0, 0.27), vec4<f32>(0.22, 0.04, 0.0, 0.24),
+        // tropical (palm slot): taller, fuller
+        vec4<f32>(0.27, 0.05, 0.0, 0.40), vec4<f32>(0.24, 0.05, 0.0, 0.34), vec4<f32>(0.23, 0.05, 0.0, 0.31),
+    );
+    let k = select(select(2u, 1u, kind == K_ROUND), 0u, kind == K_CONIFER);
+    return bands[k * 3u + band];
+}
+
+// Where crown `band` of a grove stands from the slot's foot, in profile
+// units (times the prop's size): the big one a little off centre, the other
+// two around it, the clump turned by `turn` (0..1).
+fn art_grove_crown(kind: u32, band: u32, turn: f32) -> vec2<f32> {
+    let reach = select(0.21, 0.16, kind == K_CONIFER);
+    let d = select(reach, 0.05, band == 0u);
+    let a = (turn + f32(band) / 3.0 + select(0.0, 0.08, band == 2u)) * 6.2831853;
+    return vec2<f32>(cos(a), sin(a)) * d;
+}
+
+fn art_dims(kind: u32, grove: bool) -> vec2<f32> {
+    if (grove) {
+        let p = art_grove_profile(kind, 1u);
+        let reach = select(0.21, 0.16, kind == K_CONIFER);
+        return vec2<f32>(reach + p.x, art_grove_profile(kind, 0u).w);
+    }
+    return art_prop_dims(kind);
+}
+
+// A grove's size factor at `foot` (hex-local) for a prop of size `size`:
+// the biome's grove size, cut back where its rim would reach over a river
+// bed or into a camp's clearing.
+fn art_grove_size(terrain: u32, kind: u32, foot: vec2<f32>, size: f32, cell: vec2<u32>) -> f32 {
+    let s = art_grove_terrain(terrain);
+    let rim = art_dims(kind, true).x * size * s;
+    let room = art_obstacle(foot, cell, rim + 0.05).x;
+    return s * clamp(room / max(rim, 1e-4), 0.45, 1.0);
+}
 
 // What stands in one of the zoomed-in detail slots: mostly more of the
 // terrain's main glyph, smaller. `h` is the slot's own hash.
@@ -467,7 +589,7 @@ fn art_kind(terrain: u32, i: u32, skip: u32, h: u32) -> u32 {
     var k = K_NONE;
     switch terrain {
         case T_BOREAL_FOREST: { k = K_CONIFER; }
-        case T_TEMPERATE_FOREST: { if (i != skip) { k = K_ROUND; } }
+        case T_TEMPERATE_FOREST: { k = K_ROUND; }
         case T_TROPICAL_FOREST: { k = select(K_ROUND, K_PALM, i == skip); }
         case T_WOODLANDS: {
             if (i == 1u || i == 3u) { k = K_ROUND; } else if (i != skip) { k = K_TUFT; }
@@ -589,6 +711,14 @@ fn art_sprout(i: u32, cell: vec2<u32>, d: f32) -> f32 {
 // As the detail slots fill in, everything gets smaller to make room: trees
 // most, tufts and waves a little, mountains not at all.
 fn art_shrink(kind: u32, d: f32) -> f32 {
+    return art_shrink_g(kind, false, d);
+}
+
+// art_shrink; groves give up less room, so the cover stays closed.
+fn art_shrink_g(kind: u32, grove: bool, d: f32) -> f32 {
+    if (grove) {
+        return mix(1.0, 0.86, d);
+    }
     if (kind <= K_PALM) {
         return mix(1.0, 0.62, d);
     }
@@ -650,7 +780,7 @@ fn art_mountain_slot(i: u32, cell: vec2<u32>, h0: u32, mirror: f32, nb_in: array
         if (i > 7u) {
             return vec4<f32>(0.0, 0.0, 0.0, f32(K_NONE));
         }
-        if (art_unit(art_hash(cell, 40u + i), 0u) > 0.25 + ps) {
+        if (art_unit(art_hash(cell, 40u + i), 0u) > 0.55 + ps) {
             return vec4<f32>(0.0, 0.0, 0.0, f32(K_NONE));
         }
         var extra = array<vec2<f32>, 3>(vec2<f32>(0.42, 0.30), vec2<f32>(-0.08, 0.36), vec2<f32>(-0.46, -0.16));
@@ -844,7 +974,7 @@ fn art_massif_slot(i: u32, cell: vec2<u32>, h0: u32, nb: array<u32, 6>, mtn: u32
             return art_no_slot();
         }
         let h = art_hash(cell, 30u + i);
-        if (art_unit(art_hash(cell, 40u + i), 0u) > 0.25 + ps) {
+        if (art_unit(art_hash(cell, 40u + i), 0u) > 0.55 + ps) {
             return art_no_slot();
         }
         var extra = array<vec2<f32>, 3>(vec2<f32>(0.42, 0.30), vec2<f32>(-0.08, 0.36), vec2<f32>(-0.46, -0.16));
@@ -944,6 +1074,143 @@ fn art_mountain_any(i: u32, cell: vec2<u32>, h0: u32, mirror: f32, nb: array<u32
     }
     let v = art_mountain_slot(i, cell, h0, mirror, nb, mtn, ps);
     return MassifSlot(v.xy, v.z, u32(v.w), -9999.0);
+}
+
+// ------------------------------------------------- dressing the ranges ----
+// The layout above puts a few big props in a mountain hex and leaves the
+// rest of its slots empty, so a range read as lone cones on bare tiles. The
+// empty slots are filled: base slots 1-2 with lower shoulder peaks on the
+// flanks of the main one, base slots 3-4 and detail slots 8-11 with what
+// grows on the hex's biome (conifers on a taiga range, oaks on a temperate
+// one, scrub on a dry one), kept off the big props' footprints so they
+// stand on the lower slopes and in the saddles between them.
+
+// The big props of a mountain hex (slots 0-7), worked out once.
+alias MountainBase = array<MassifSlot, 8>;
+
+fn art_mountain_base(cell: vec2<u32>, h0: u32, mirror: f32, nb: array<u32, 6>, mtn: u32, ps: f32, m: MassifSketch) -> MountainBase {
+    var b: MountainBase;
+    for (var i = 0u; i < 8u; i++) {
+        b[i] = art_mountain_any(i, cell, h0, mirror, nb, mtn, ps, m);
+    }
+    return b;
+}
+
+// What grows on a mountain hex's slopes in this biome, for a slot with hash
+// `h`; K_NONE for bare ground. `high` (0..1) thins the trees towards the
+// treeline.
+fn art_mountain_growth(terrain: u32, h: u32, high: f32) -> u32 {
+    let r = art_unit(h, 24u);
+    let keep = art_unit(h, 16u);
+    var k = K_NONE;
+    var p = 0.0;
+    switch terrain {
+        case T_BOREAL_FOREST: { k = K_CONIFER; p = 0.95; }
+        case T_TEMPERATE_FOREST: { k = select(K_ROUND, K_CONIFER, r < 0.55); p = 0.9; }
+        case T_TROPICAL_FOREST: { k = select(K_ROUND, K_PALM, r < 0.12); p = 0.9; }
+        case T_WOODLANDS: { k = select(K_ROUND, K_CONIFER, r < 0.35); p = 0.65; }
+        case T_STEPPE_FOREST: { k = select(K_SHRUB, K_CONIFER, r < 0.7); p = 0.6; }
+        case T_FLOODPLAIN: { k = K_ROUND; p = 0.55; }
+        case T_SAVANNAH: { k = select(K_SHRUB, K_ACACIA, r < 0.5); p = 0.35; }
+        case T_CHAPARRAL: { k = select(K_SHRUB, K_ROUND, r < 0.15); p = 0.65; }
+        case T_SEMI_DESERT: { k = K_SHRUB; p = 0.3; }
+        case T_GRASSLAND: { k = K_SHRUB; p = 0.2; }
+        case T_TUNDRA: { k = K_SHRUB; p = 0.25; }
+        case T_ALPINE: { k = K_SHRUB; p = 0.15; }
+        default: {}
+    }
+    // Trees give out towards the treeline; scrub holds on longer.
+    if (k <= K_PALM) {
+        p *= 1.0 - 0.85 * high;
+    }
+    return select(K_NONE, k, keep < p);
+}
+
+// A lower peak on the flank of the hex's main one (base slot 0), for empty
+// slot 1 or 2 (and 3-4 where nothing grows). None beside a cone or on a
+// plateau, which keep their clean shapes, or where slot 0 is a hill.
+fn art_shoulder(i: u32, cell: vec2<u32>, b: MountainBase, m: MassifSketch) -> MassifSlot {
+    let main = b[0];
+    if (main.kind != K_PEAK || m.kind == MK_CONE || m.kind == MK_PLATEAU) {
+        return art_no_slot();
+    }
+    let h = art_hash(cell, 240u + i);
+    if (i >= 3u && art_unit(h, 24u) > 0.5) {
+        return art_no_slot();
+    }
+    // Round the main peak, a different side per slot, on its skirt.
+    let a = (f32(i) * 2.4 + art_unit(h, 0u) * 1.6) + f32(art_hash(cell, 241u) % 6u) * SIXTY;
+    var d = vec2<f32>(cos(a), sin(a));
+    if (m.kind == MK_RIDGE) {
+        // Along the crest, not off its sides.
+        d = normalize(m.dir * sign(dot(d, m.dir) + 1e-3) * 0.85 + d * 0.15);
+    }
+    let r = art_prop_dims(K_PEAK).x * main.size;
+    let p = art_inside(main.foot + d * r * (0.7 + 0.25 * art_unit(h, 8u)), 0.12);
+    let size = main.size * (0.38 + 0.2 * art_unit(h, 16u));
+    let elev = select(-9999.0, main.elev - (main.elev - m.floor) * 0.35, main.elev > -9000.0);
+    return MassifSlot(p, size, K_PEAK, elev);
+}
+
+// How far `p` is inside the footprint of the big props (and shoulders) in
+// `b`, as a fraction of each one's radius: under 1 is on a skirt.
+fn art_under_props(p: vec2<f32>, b: MountainBase, sh: array<MassifSlot, 2>, m: MassifSketch) -> f32 {
+    var best = 9.0;
+    for (var j = 0u; j < 10u; j++) {
+        var s = art_no_slot();
+        if (j < 8u) { s = b[j]; } else { s = sh[j - 8u]; }
+        if (s.kind != K_PEAK && s.kind != K_HILL) { continue; }
+        let r = art_prop_dims(s.kind).x * s.size;
+        var q = p - s.foot;
+        if (s.kind == K_PEAK && m.kind == MK_RIDGE) {
+            let k = art_ridge_stretch(m);
+            q = vec2<f32>(dot(q, m.dir) / k.x, dot(q, vec2<f32>(-m.dir.y, m.dir.x)) / k.y);
+        }
+        best = min(best, length(q) / max(r, 1e-4));
+    }
+    return best;
+}
+
+// What stands in mountain slot i: the big prop the layout puts there, or,
+// where it leaves the slot empty, a shoulder peak or the biome's growth.
+fn art_mountain_dressed(i: u32, cell: vec2<u32>, terrain: u32, b: MountainBase, m: MassifSketch) -> MassifSlot {
+    if (i < 8u && b[i].kind != K_NONE) {
+        return b[i];
+    }
+    if (i == 0u || (i >= ART_BASE_SLOTS && i < 8u)) {
+        return art_no_slot();
+    }
+    var sh = array<MassifSlot, 2>(art_no_slot(), art_no_slot());
+    for (var j = 1u; j < 3u; j++) {
+        if (b[j].kind == K_NONE) { sh[j - 1u] = art_shoulder(j, cell, b, m); }
+    }
+    if (i < 3u) {
+        return sh[i - 1u];
+    }
+    // Slots 3-4 and 8-11: growth, where the slot's foot is clear of the
+    // big props' skirts (a tree a little way up a slope is fine).
+    let s = art_slot(i, cell, select(1.0, -1.0, (art_hash(cell, 0u) & 1u) == 1u));
+    let foot = s.xy + vec2<f32>(0.0, 0.15);
+    let h = art_hash(cell, 100u + i);
+    let high = smoothstep(1700.0, 2900.0, f32(textureLoad(height_tex, vec2<i32>(cell), 0).r));
+    var kind = art_mountain_growth(terrain, h, high);
+    if (kind != K_NONE && art_under_props(foot, b, sh, m) < 0.78) {
+        kind = K_NONE;
+    }
+    if (kind != K_NONE) {
+        // Not on a camp or its fields, as on open ground.
+        if (art_field(foot, cell) > 0.5 || art_camp(foot, cell) < 1.0 || art_in_river(foot, cell)) {
+            kind = K_NONE;
+        }
+    }
+    if (kind == K_NONE) {
+        if (i < ART_BASE_SLOTS) {
+            return art_shoulder(i, cell, b, m);
+        }
+        return art_no_slot();
+    }
+    // A touch smaller than on the flat: the props around are big.
+    return MassifSlot(foot, s.z * 1.45 * 0.85, kind, -9999.0);
 }
 
 // ----------------------------------------------- room for rivers and camps ----
@@ -1078,10 +1345,10 @@ fn art_prop_dims(kind: u32) -> vec2<f32> {
 // The soft shadow a prop of size `s` standing at the origin casts on the
 // ground at `p` (glyph space), 0..1. A blob, not a projection: a capsule
 // from under the prop out along the light. A tree's starts under its crown.
-fn art_prop_shadow(p: vec2<f32>, kind: u32, s: f32, a: Art) -> f32 {
-    let dim = art_prop_dims(kind) * s;
+fn art_prop_shadow(p: vec2<f32>, kind: u32, grove: bool, s: f32, a: Art) -> f32 {
+    let dim = art_dims(kind, grove) * s;
     let reach = a.sun * dim.y;
-    let start = reach * select(0.0, 0.3, kind <= K_PALM);
+    let start = reach * select(0.0, 0.3, kind <= K_PALM && !grove);
     let d = sd_segment(p, start, reach * 0.8 + vec2<f32>(1e-5, 0.0)) - dim.x * 0.8;
     let soft = dim.x * 0.35 + a.px;
     return 1.0 - smoothstep(-soft, soft * 0.5, d);
@@ -1102,14 +1369,31 @@ fn art_shadows_from(cell: vec2<u32>, q: vec2<f32>, a: Art) -> f32 {
         if (grow <= 0.0) { continue; }
         // Same foot and size as art_prop_layout gives the prop.
         let foot = vec2<f32>(bitcast<f32>(e.y), bitcast<f32>(e.z)) + vec2<f32>(0.0, select(0.15, 0.0, mountain));
-        let ps = bitcast<f32>(e.w) * select(1.45, 1.0, mountain) * a.size * a.lod * grow * art_shrink(kind, a.detail);
-        shadow = max(shadow, art_prop_shadow(q - vec2<f32>(foot.x * a.asp, foot.y), kind, ps, a));
+        let grove = (e.x & ART_GROVE_BIT) != 0u;
+        let ps = bitcast<f32>(e.w) * select(1.45, 1.0, mountain) * a.size * a.lod * grow * art_shrink_g(kind, grove, a.detail);
+        shadow = max(shadow, art_prop_shadow(q - vec2<f32>(foot.x * a.asp, foot.y), kind, grove, ps, a));
     }
     return shadow;
 }
 
 fn art_is_forest(t: u32) -> bool {
     return t == T_BOREAL_FOREST || t == T_TEMPERATE_FOREST || t == T_TROPICAL_FOREST;
+}
+
+// How much of a biome's ground is grass sward (0 bare .. 1 all grass), for
+// the close-up grass material (fs_board's lighting).
+fn art_grassiness(t: u32) -> f32 {
+    var k = 0.0;
+    switch t {
+        case T_GRASSLAND, T_PLAINS, T_FLOODPLAIN, T_LAND, T_FREE: { k = 1.0; }
+        case T_SAVANNAH, T_STEPPE_FOREST: { k = 0.9; }
+        case T_WOODLANDS, T_ALPINE: { k = 0.75; }
+        case T_TUNDRA, T_TEMPERATE_FOREST: { k = 0.55; }
+        case T_CHAPARRAL, T_BOREAL_FOREST, T_TROPICAL_FOREST, T_MOUNTAINS: { k = 0.4; }
+        case T_SEMI_DESERT: { k = 0.25; }
+        default: {}
+    }
+    return k;
 }
 
 fn terrain_art(local: vec2<f32>, cell: vec2<u32>, terrain: u32, a: Art) -> vec3<f32> {
@@ -1129,7 +1413,7 @@ fn terrain_art(local: vec2<f32>, cell: vec2<u32>, terrain: u32, a: Art) -> vec3<
     if (ground_k > 0.0 && art_is_forest(terrain)) {
         // Leaf litter and shade under the canopy, in drifts.
         let litter = smoothstep(0.3, 0.7, art_noise(gp * 1.9 + 9.0));
-        c = mix(c, pow(art_fill(terrain), vec3<f32>(2.2)) * 1.15, (0.20 + 0.25 * litter) * ground_k);
+        c = mix(c, pow(art_fill(terrain), vec3<f32>(2.2)) * 1.15, (0.32 + 0.28 * litter) * ground_k);
     }
     if (blend > 0.5 && a.field < 0.5) {
         let hit = art_intrusion(local, cell, terrain, nb, a.px);
@@ -1156,25 +1440,16 @@ fn terrain_art(local: vec2<f32>, cell: vec2<u32>, terrain: u32, a: Art) -> vec3<
         c = mix(c, art_rgb(0.47, 0.38, 0.27), (1.0 - smoothstep(0.55, 1.0, camp)) * 0.7 * ground_k);
     }
     if (ground_k > 0.0 && art_is_land(terrain)) {
-        // Cleared land: rough grazing where the woods were, and where
-        // farming has arrived, fields in strips, each patch ploughed its own
-        // way. The strips fade out from far off, leaving the fields' colour.
-        let hist = art_history_at(local, cell);
-        if (hist.x > 0.01) {
-            let wooded = art_is_forest(terrain) || terrain == T_WOODLANDS;
-            c = mix(c, art_rgb(0.60, 0.64, 0.36), hist.x * select(0.15, 0.35, wooded) * ground_k);
-        }
-        if (hist.y > 0.01) {
-            // Small plots, scattered: a share of the clearing, soft-edged,
-            // tinting the ground rather than replacing it.
-            let plot = art_noise(gp * 2.3 + 101.0) * 0.7 + art_noise(gp * 5.1 + 131.0) * 0.3;
-            let cover = hist.y * FIELDS_MAX;
-            let field = smoothstep(1.0 - cover - 0.08, 1.0 - cover + 0.08, plot);
+        // A farming site's fields (art_field), in strips, each plot
+        // ploughed its own way. The strips fade out from far off, leaving
+        // the fields' colour.
+        let field = art_field(local, cell);
+        if (field > 0.0) {
             let turn = art_noise(floor(gp * 2.3) + 7.0) * 3.14159;
             let s = dot(gp, vec2<f32>(cos(turn), sin(turn))) * 9.0;
             let fine = 1.0 - smoothstep(0.03, 0.08, a.px * 9.0);
             let stripe = 0.5 + 0.25 * sin(s * 6.2831853) * fine;
-            let crop = mix(c, mix(art_rgb(0.66, 0.64, 0.38), art_rgb(0.80, 0.72, 0.46), stripe), 0.55);
+            let crop = mix(c, mix(art_rgb(0.70, 0.62, 0.34), art_rgb(0.84, 0.74, 0.44), stripe), 0.8);
             c = mix(c, crop, field * ground_k);
         }
     }
@@ -1367,9 +1642,9 @@ fn art_kind_by_river(terrain: u32, landform: u32, i: u32, skip: u32, foot: vec2<
         if (art_unit(h, 16u) < glade * 0.5) {
             return K_NONE;
         }
-        // Cleared by the people living nearby (and grown back after them).
-        // At most CLEARING_MAX of the trees go: woods thin, they don't vanish.
-        if (art_unit(h, 24u) < art_history_at(foot, cell).x * CLEARING_MAX) {
+        // People don't thin the woods: only a farming site's few field
+        // plots, just outside its clearing, are bare of trees.
+        if (art_field(foot, cell) > 0.5) {
             return K_NONE;
         }
     }
@@ -1407,17 +1682,30 @@ fn art_glyph_list(cell: vec2<u32>, want: u32, blend: f32) -> vec4<u32> {
         let mtn = art_mountain_neighbours(cell, true);
         let ps = art_peak_scale(cell, landform);
         let ms = art_massif(cell);
-        // Crags 5 and 6 stand behind the main peaks, crag 7 in front.
-        var order = array<u32, 8>(5u, 6u, 0u, 1u, 7u, 2u, 3u, 4u);
+        let base = art_mountain_base(cell, h0, mirror, nb, mtn, ps, ms);
+        var dressed: array<MassifSlot, ART_SLOTS>;
+        for (var i = 0u; i < ART_SLOTS; i++) {
+            dressed[i] = art_mountain_dressed(i, cell, terrain, base, ms);
+        }
+        // Crags 5 and 6 stand behind the main peaks, crag 7 in front; the
+        // growth in the slots after them north or south of the peaks.
+        var order = array<u32, 12>(8u, 9u, 5u, 6u, 0u, 1u, 7u, 2u, 3u, 4u, 10u, 11u);
         for (var layer = 0u; layer < 3u; layer++) {
-            for (var n = 0u; n < 8u; n++) {
+            for (var n = 0u; n < 12u; n++) {
                 let i = order[n];
-                let m = art_mountain_any(i, cell, h0, mirror, nb, mtn, ps, ms);
+                let m = dressed[i];
                 // Peaks and the hills standing in for them (slots 0-1) in
-                // the middle layer; foothills north or south of them.
+                // the middle layer; foothills and growth north or south.
                 let layer_of = select(select(2u, 0u, m.foot.y > 0.0), 1u, m.kind == K_PEAK || i < 2u);
-                if (m.kind == K_NONE || layer_of != layer) { continue; }
+                if (m.kind == K_NONE || layer_of != layer || art_relief_drops(i, cell, m, blend)) { continue; }
                 if (m.kind != K_HILL && art_hidden(m.foot, cell, terrain, nb, blend)) { continue; }
+                if (m.kind < K_PEAK) {
+                    if (found == want) {
+                        return art_glyph_entry(m.kind, i, m.foot - vec2<f32>(0.0, 0.15), m.size / 1.45);
+                    }
+                    found++;
+                    continue;
+                }
                 let st = art_settle(m.kind, m.foot, m.size, cell, ms);
                 if (st.z <= 0.0) { continue; }
                 if (found == want) {
@@ -1448,6 +1736,11 @@ fn art_glyph_list(cell: vec2<u32>, want: u32, blend: f32) -> vec4<u32> {
             let st = art_settle(kind, foot, s.z * 1.45, cell, art_massif(cell));
             kind = select(K_NONE, u32(st.w), st.z > 0.0);
             f = vec3<f32>(st.xy - vec2<f32>(0.0, 0.15), st.z / 1.45);
+        }
+        if (kind != K_NONE && art_is_grove(terrain, i, kind)) {
+            // Sized as art_prop_layout sizes the prop.
+            f.z *= art_grove_size(terrain, kind, foot, s.z * 1.45, cell);
+            kind |= ART_GROVE_BIT;
         }
         kinds[i] = kind;
         feet[i] = f;
@@ -1528,6 +1821,57 @@ fn art_slope_cover(terrain: u32) -> vec4<f32> {
     return c;
 }
 
+// Canopy colour per terrain in the Ground map mode, as linear albedo: real
+// foliage seen from above is dark and only mildly green (red about half of
+// green, blue lower still; see data/terrain/SOURCES.md, "Micro-prop
+// colours"), not the terrain map's saturated poster green. Scaled up about
+// 1.5x like the ground covers, so trees sit a shade darker than the grass
+// around them. Conifers darkest, sclerophyll and desert shrubs grey-olive.
+fn art_fill_real(terrain: u32) -> vec3<f32> {
+    var c = vec3<f32>(0.070, 0.105, 0.040);
+    switch terrain {
+        case T_BOREAL_FOREST: { c = vec3<f32>(0.040, 0.062, 0.040); }
+        case T_TROPICAL_FOREST: { c = vec3<f32>(0.050, 0.092, 0.036); }
+        case T_TEMPERATE_FOREST: { c = vec3<f32>(0.062, 0.100, 0.036); }
+        case T_WOODLANDS: { c = vec3<f32>(0.078, 0.112, 0.042); }
+        case T_STEPPE_FOREST: { c = vec3<f32>(0.058, 0.085, 0.045); }
+        case T_SAVANNAH: { c = vec3<f32>(0.110, 0.118, 0.058); }
+        case T_CHAPARRAL: { c = vec3<f32>(0.098, 0.106, 0.066); }
+        case T_SEMI_DESERT: { c = vec3<f32>(0.150, 0.155, 0.105); }
+        case T_TUNDRA: { c = vec3<f32>(0.100, 0.100, 0.062); }
+        case T_ALPINE: { c = vec3<f32>(0.092, 0.098, 0.066); }
+        case T_FLOODPLAIN: { c = vec3<f32>(0.072, 0.122, 0.042); }
+        default: {}
+    }
+    return c;
+}
+
+// A prop's colour in the Ground map mode (linear): realistic foliage, grey
+// bark, grey-brown rock and slopes in the hex's own ground colour.
+fn art_prop_colour_real(kind: u32, band: u32, top: bool, terrain: u32, snow: bool) -> vec3<f32> {
+    // Shaded underside to sunlit crown.
+    var c = art_fill_real(terrain) * (0.80 + 0.35 * f32(band) * 0.5);
+    let ground = textureLoad(palette_tex, vec2<i32>(i32(terrain), i32(MODE_GROUND)), 0).rgb;
+    let rock = vec3<f32>(0.24, 0.225, 0.21);
+    if (kind == K_PEAK) {
+        let cover = art_slope_cover(terrain).w;
+        if (band == 0u) {
+            c = mix(rock, ground * 0.9, cover * select(1.0, 0.55, top));
+        } else if (snow) {
+            c = vec3<f32>(0.80, 0.82, 0.85);
+        } else {
+            c = mix(rock * 1.1, ground, cover * 0.3);
+        }
+    } else if (kind == K_HILL) {
+        c = mix(rock, ground * 0.9, art_slope_cover(terrain).w);
+    } else if (kind == K_PALM && band == 1u) {
+        c = vec3<f32>(0.080, 0.110, 0.042);
+    } else if (band == 0u && kind != K_SHRUB) {
+        c = vec3<f32>(0.105, 0.085, 0.065); // bark
+    }
+    return c * select(0.85, 1.05, top);
+}
+
 // `snow`: the peak is high (or cold) enough to keep a cap.
 fn art_prop_colour(kind: u32, band: u32, top: bool, terrain: u32, snow: bool) -> vec3<f32> {
     let f = art_fill(terrain);
@@ -1570,6 +1914,58 @@ fn art_prop_texel(cell: vec2<u32>, slot: u32) -> vec2<i32> {
     return vec2<i32>(i32(cell.x * 4u + slot % 4u), i32(cell.y * 3u + slot / 4u));
 }
 
+// When the relief shapes the mountains (board.wgsl, surface_lift) the
+// peak and hill props give way to it: only a summit at least ACCENT_ELEV
+// metres high and higher than every neighbour's (Mont Blanc, Elbrus,
+// Ararat) keeps its main peak, as a landmark; the rest is bare ground
+// (growth on it stays). Shared by the props and their glyphs and shadows
+// (art_glyph_list).
+// A kept accent peak on heightmap-shaped ground, against a freestanding
+// one: height and footprint scales, and how far (in units of its size) its
+// foot sinks below the surface.
+// Low, broad and sunk well in, so it reads as the top of the range it
+// stands on rather than a pillar set on it (at 0.65 / 1.0 / 0.06 the
+// Caucasus summits stood up like obelisks).
+const ACCENT_HEIGHT: f32 = 0.5;
+// The rise of real ground (metres) a modelled-size conifer matches in
+// height, and the least tree size that leaves them (see vs_prop).
+const TREE_RELIEF_M: f32 = 1000.0;
+const TREE_MIN_SCALE: f32 = 0.15;
+const ACCENT_WIDTH: f32 = 1.4;
+const ACCENT_SINK: f32 = 0.14;
+const ACCENT_SHOULDER: f32 = 0.6;
+// An accent on a range with a grain runs along it: stretch along the
+// strike and narrowing across it, at full coherence (cones keep round).
+const ACCENT_STRETCH: vec2<f32> = vec2<f32>(1.6, 0.8);
+const ACCENT_ELEV: f32 = 3500.0;
+
+fn art_summit_elev(c: vec2<i32>) -> f32 {
+    if (c.x < 0 || c.y < 0 || c.x >= i32(g.grid.x) || c.y >= i32(g.grid.y)) {
+        return -9999.0;
+    }
+    let m = art_massif(vec2<u32>(c));
+    return select(-9999.0, m.floor + art_summit(vec2<u32>(c), 0u).z, m.count > 0u);
+}
+
+fn art_relief_drops(slot: u32, cell: vec2<u32>, m: MassifSlot, blend: f32) -> bool {
+    if (g.relief.w < 0.5 || blend < 0.5 || (m.kind != K_PEAK && m.kind != K_HILL)) {
+        return false;
+    }
+    if (slot != 0u || m.kind != K_PEAK || m.elev < ACCENT_ELEV) {
+        return true;
+    }
+    let c = vec2<i32>(cell);
+    let own = art_summit_elev(c);
+    for (var e = 0u; e < 6u; e++) {
+        let o = art_summit_elev(c + neighbour_offset(cell.x & 1u, e));
+        // Ties go to the lower edge index's side, so one of a pair stays.
+        if (o > own || (o == own && e < 3u)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 fn art_prop_layout(cell: vec2<u32>, slot: u32, blend: f32) -> vec4<u32> {
     let none = vec4<u32>(K_NONE, 0u, 0u, 0u);
     let st = textureLoad(state_tex, vec2<i32>(cell), 0);
@@ -1588,8 +1984,12 @@ fn art_prop_layout(cell: vec2<u32>, slot: u32, blend: f32) -> vec4<u32> {
     let landform = (st.a >> 3u) & 3u;
     let ms = art_massif(cell);
     if (art_is_mountain(terrain, landform)) {
-        let m = art_mountain_any(slot, cell, h0, mirror, nb, art_mountain_neighbours(cell, true), art_peak_scale(cell, landform), ms);
+        let base = art_mountain_base(cell, h0, mirror, nb, art_mountain_neighbours(cell, true), art_peak_scale(cell, landform), ms);
+        let m = art_mountain_dressed(slot, cell, terrain, base, ms);
         kind = m.kind;
+        if (art_relief_drops(slot, cell, m, blend)) {
+            kind = K_NONE;
+        }
         at = m.foot;
         size = m.size;
         elev = m.elev;
@@ -1616,6 +2016,10 @@ fn art_prop_layout(cell: vec2<u32>, slot: u32, blend: f32) -> vec4<u32> {
     if (art_in_river(at, cell) || art_camp(at, cell) < 1.0) {
         return none;
     }
+    if (!art_is_mountain(terrain, landform) && art_is_grove(terrain, slot, kind)) {
+        size *= art_grove_size(terrain, kind, at, size, cell);
+        return vec4<u32>(kind | K_GROVE_BIT, bitcast<u32>(at.x), bitcast<u32>(at.y), bitcast<u32>(size));
+    }
     return vec4<u32>(kind, bitcast<u32>(at.x), bitcast<u32>(at.y), bitcast<u32>(size));
 }
 
@@ -1638,7 +2042,7 @@ fn fs_slot_bake(@builtin(position) pos: vec4<f32>) -> SlotBake {
     if (n >= ART_SLOTS || cell.x >= u32(g.grid.x) || cell.y >= u32(g.grid.y)) {
         return out;
     }
-    let blend = g.art.w * f32(u32(g.grid.z) == 0u);
+    let blend = g.art.w * f32(terrain_like(u32(g.grid.z)));
     out.props = art_prop_layout(cell, n, blend);
     out.glyphs = art_glyph_list(cell, n, blend);
     return out;
@@ -1659,7 +2063,7 @@ fn vs_prop(in: PropIn) -> PropOut {
     let centre = mix(in.centre, vec3<f32>(in.flat_pos.x, 1.0, -in.flat_pos.y), t);
     // Props shrink away as the hex gets small on screen.
     let hex_px = mix(unit_c, unit_f, t) * g.art.z / max(distance(g.cam_pos.xyz, centre), 1e-6);
-    let lod = smoothstep(5.0, 11.0, hex_px) * g.art.y;
+    let lod = smoothstep(PROP_PX_LO, PROP_PX_HI, hex_px) * g.art.y;
     if (lod <= 0.0) {
         return out;
     }
@@ -1687,20 +2091,45 @@ fn vs_prop(in: PropIn) -> PropOut {
     let band = in.attrs.y;
     let top = in.attrs.z == 1u;
     let mode = u32(g.grid.z);
-    let prof = art_profile(kind, band);
+    let grove = (lay.x & K_GROVE_BIT) != 0u;
+    let prof = select(art_profile(kind, band), art_grove_profile(kind, band), grove);
     if (prof.x + prof.z <= 0.0) {
         return out;
     }
 
     // Squashed hexes get smaller props.
     let asp = mix(min(length(in.east) / unit_c, 1.0), 1.0, t);
-    size *= sqrt(asp) * lod * grow * art_shrink(kind, detail);
+    size *= sqrt(asp) * lod * grow * art_shrink_g(kind, grove, detail);
     let hs = art_hash(in.cell, 40u + slot);
     var r = select(prof.x, prof.z, top) * size;
     var h = select(prof.y, prof.w, top) * size;
     if (kind <= K_PALM) {
         // No two trees the same height.
         h *= 0.85 + 0.35 * art_unit(hs, 24u);
+    }
+    if (kind <= K_SHRUB) {
+        // Trees in the relief's scale: a conifer stands as tall as
+        // TREE_RELIEF_M of real ground at the current exaggeration, so a
+        // low range rises over its forest instead of drowning in it. Height
+        // in full, half (geometrically) in the crown, as "Mountain height"
+        // does; never above the modelled size. Relief off: as modelled.
+        let k = select(1.0, clamp(g.hex.z * TREE_RELIEF_M / (art_prop_dims(K_CONIFER).y * unit_c), TREE_MIN_SCALE, 1.0), g.hex.z > 0.0);
+        h *= k;
+        r *= sqrt(k);
+    }
+    var grove_lean = vec2<f32>(0.0);
+    if (grove) {
+        // Three crowns in a clump, each lumpy (every side of its ring its
+        // own radius), its own height, its top a little off centre.
+        let hc = art_hash(in.cell, 300u + slot * 4u + band);
+        grove_lean = art_grove_crown(kind, band, art_unit(hs, 4u)) * size;
+        if (top) {
+            h *= 0.85 + 0.3 * art_unit(hc, 0u);
+            let la = art_unit(hc, 8u) * 6.2831853;
+            grove_lean += vec2<f32>(cos(la), sin(la)) * 0.05 * size;
+        } else {
+            r *= 0.72 + 0.56 * art_unit(art_hash(in.cell, 320u + slot * 16u + band * 5u + in.attrs.w), 0u);
+        }
     }
     if (kind == K_PEAK || kind == K_HILL) {
         // Craggy: each side of the lathe has its own radius.
@@ -1734,23 +2163,53 @@ fn vs_prop(in: PropIn) -> PropOut {
         h *= g.wall_colour.w;
         r *= sqrt(g.wall_colour.w);
     }
+    var dw = 0.0;
+    if (kind == K_PEAK) {
+        // On heightmap-shaped ground the mountain is already there: the
+        // accent is a small crag on top, its foot sunk into the slope so it
+        // grows out of the rock instead of sitting on it like a box.
+        dw = dem_weight(art_global(at, in.cell));
+        h *= mix(1.0, ACCENT_HEIGHT, dw);
+        r *= mix(1.0, ACCENT_WIDTH, dw);
+        h -= ACCENT_SINK * size * dw;
+        // Lowered, the rock band's broad shoulder makes a boulder: pull it
+        // in so the accent comes to a point like the crest it crowns.
+        if ((band == 0u) == top) {
+            r *= mix(1.0, ACCENT_SHOULDER, dw);
+        }
+    }
     let ang = (f32(in.attrs.w) + art_unit(hs, 0u)) * 1.2566371;
     var ring = vec2<f32>(cos(ang), sin(ang)) * r;
     if (kind == K_PEAK) {
         // Ridges run along their strike: long and narrow. The strike is
         // hex-local, and the board squashes x by `asp`.
         let ms = art_massif(in.cell);
-        if (ms.kind == MK_RIDGE) {
-            let sk = art_ridge_stretch(ms);
+        if (ms.kind == MK_RIDGE || (dw > 0.0 && ms.kind == MK_MASSIF)) {
+            // An accent follows the range's grain too, so it lies along
+            // the crest the relief draws instead of standing across it.
+            let sk = mix(art_ridge_stretch(ms), ACCENT_STRETCH, dw * smoothstep(0.2, 0.6, ms.coherence));
             let d = normalize(vec2<f32>(ms.dir.x * asp, ms.dir.y));
             let n = vec2<f32>(-d.y, d.x);
             ring = d * dot(ring, d) * sk.x + n * dot(ring, n) * sk.y;
+            // Pinched across the strike, a peak at full height reads as a
+            // cardboard fin; a ridge is a long, low crest, so it loses more
+            // height than width and tilts and leans less.
+            h *= sk.y * sqrt(sk.y);
+            lean *= sk.y;
         }
     }
-    ring += lean;
+    ring += lean + grove_lean;
 
     // Standing on the hex's tile, raised by the relief.
-    let lift = surface_lift(vec2<i32>(in.cell), at);
+    var lift = ground_lift(vec2<i32>(in.cell), at);
+    if (kind == K_PEAK || kind == K_HILL) {
+        // Draped: the foot follows the ground under each vertex, so on a
+        // slope the skirt meets the hillside instead of hanging off it,
+        // easing to the centre's height up the flanks.
+        let foot = ground_lift(vec2<i32>(in.cell), at + ring);
+        let up = clamp(select(prof.y, prof.w, top) / max(max(art_profile(kind, 0u).w, art_profile(kind, 1u).w), 1e-4), 0.0, 1.0);
+        lift = mix(min(foot, lift), lift, smoothstep(0.0, 0.6, up));
+    }
     let curved = in.centre * (1.0 + lift) + in.east * at.x + in.north * (at.y / SQRT3_2)
         + (normalize(in.east) * ring.x + normalize(in.north) * ring.y + normalize(in.centre) * h) * unit_c;
     let flat_p = vec3<f32>(
@@ -1767,11 +2226,16 @@ fn vs_prop(in: PropIn) -> PropOut {
     let ground = select(f32(textureLoad(height_tex, vec2<i32>(in.cell), 0).r), summit, elev_code != 0u);
     let cold = terrain == T_ALPINE || terrain == T_TUNDRA || terrain == T_BOREAL_FOREST;
     let snow = ground > select(select(2200.0, 1100.0, cold), select(2900.0, 1900.0, cold), elev_code != 0u);
-    var colour = art_prop_colour(kind, band, top, terrain, snow);
+    // A grove is all foliage: shaded underside to sunlit crown, no trunk.
+    let ck = select(kind, K_SHRUB, grove);
+    var colour = art_prop_colour(ck, band, top, terrain, snow);
+    if (mode == MODE_GROUND) {
+        colour = art_prop_colour_real(ck, band, top, terrain, snow);
+    }
     // Variation: stands of lighter and darker trees across the board (noise
     // on board-wide coordinates), and each prop a little off its neighbours.
     let own = art_unit(hs, 8u);
-    if (kind <= K_SHRUB && (band > 0u || kind == K_SHRUB)) {
+    if (kind <= K_SHRUB && (band > 0u || ck == K_SHRUB)) {
         let stand = art_noise(art_global(at, in.cell) * 0.45 + 3.0);
         let warm = (0.5 * stand + 0.5 * art_unit(hs, 16u)) * 2.0 - 1.0;
         colour *= (0.78 + 0.44 * (0.55 * stand + 0.45 * own))
@@ -1780,9 +2244,9 @@ fn vs_prop(in: PropIn) -> PropOut {
         colour *= 0.92 + 0.16 * own;
     }
     // Darker towards the foot, where less sky reaches (off in flat lighting).
-    let rise = select(prof.y, prof.w, top) / art_prop_dims(kind).y;
+    let rise = select(prof.y, prof.w, top) / art_dims(kind, grove).y;
     colour *= mix(mix(0.56, 1.0, smoothstep(0.0, 0.55, rise)), 1.0, g.lines.w);
-    if (mode != 0u) {
+    if (!terrain_like(mode)) {
         // Other map modes: a shade of the hex's own colour.
         let albedo = saturate_colour(textureLoad(palette_tex, vec2<i32>(i32(layer_value(st, vec2<i32>(in.cell), mode)), i32(mode)), 0).rgb);
         colour = albedo * (0.5 + 0.95 * dot(colour, ART_LUMA));
@@ -1801,4 +2265,544 @@ fn fs_prop(in: PropOut) -> @location(0) vec4<f32> {
         n = -n;
     }
     return vec4<f32>(haze(in.colour * lighting(n), in.world), 1.0);
+}
+
+// ------------------------------------------------------------- locating ----
+// The hex whose tile is under board-wide point `gp` (art_global), clamped
+// to the board.
+fn art_locate(gp: vec2<f32>) -> vec2<i32> {
+    let c0 = i32(round(gp.x / 1.5));
+    var best = vec2<i32>(0);
+    var bd = 1e9;
+    for (var dc = -1; dc <= 1; dc++) {
+        let c = c0 + dc;
+        let par = f32(c & 1);
+        let r = i32(round(-gp.y / 1.7320508 - 0.5 * par));
+        let d = distance(gp, vec2<f32>(1.5 * f32(c), -1.7320508 * (f32(r) + 0.5 * par)));
+        if (d < bd) {
+            bd = d;
+            best = vec2<i32>(c, r);
+        }
+    }
+    return clamp(best, vec2<i32>(0), vec2<i32>(i32(g.grid.x) - 1, i32(g.grid.y) - 1));
+}
+
+// --------------------------------------------------------- micro-props ----
+// The close-up layer: stones, grass tufts, flowers, reeds, ferns, stumps,
+// scrub, cushion plants, the odd succulent or termite mound, scattered
+// between the big props once a hex is MICRO_PX across. Terrain map only.
+// Nothing is baked: each vertex hashes its slot's foot, finds the ground
+// under it (micro_ground, the same field fs_board draws) and
+// keeps clear of rivers, camps and the big props. Colours are linear albedo
+// from measured references (see micro_colour), not the map's palette.
+
+// MICRO_PX_LO, MICRO_PX_HI and MICRO_SLOTS come from renderer.rs.
+const MICRO_SALT: u32 = 900u;
+// All the profiles below, scaled: big enough to read at the closest zoom.
+const MICRO_SCALE: f32 = 1.7;
+
+const M_NONE: u32 = 0u;
+const M_STONE: u32 = 1u;
+const M_TUFT: u32 = 2u;
+const M_FLOWER: u32 = 3u;
+const M_REED: u32 = 4u;
+const M_STUMP: u32 = 5u;
+const M_FERN: u32 = 6u;
+const M_SUCCULENT: u32 = 7u;
+const M_MOUND: u32 = 8u;
+const M_SCRUB: u32 = 9u;
+const M_CUSHION: u32 = 10u;
+const M_BOULDER: u32 = 11u;
+
+// The terrain the ground field draws at `local` in `cell` (fs_board's A/B
+// pick), for close views (warp fully in, seven-hex kernel). Must follow
+// fs_board.
+fn micro_ground(local: vec2<f32>, cellu: vec2<u32>) -> u32 {
+    let cell = vec2<i32>(cellu);
+    let own = textureLoad(state_tex, cell, 0).r;
+    if (g.art.w < 0.5) {
+        return own;
+    }
+    let gp = art_global(local, cellu);
+    let warp = (vec2<f32>(art_noise(gp * 1.1 + 3.0), art_noise(gp * 1.1 + 41.0)) * 0.7
+        + vec2<f32>(art_noise(gp * 3.3 + 19.0), art_noise(gp * 3.3 + 67.0)) * 0.3 - 0.5) * 2.0 * FIELD_WARP;
+    let p = local + warp;
+    let radius = FIELD_RADIUS - FIELD_WARP * 1.4143;
+    let par = cellu.x & 1u;
+    var cells: array<vec2<i32>, 7>;
+    var keys: array<u32, 7>;
+    var d2: array<f32, 7>;
+    var offs: array<vec2<f32>, 7>;
+    for (var i = 0u; i < 7u; i++) {
+        var c = cell;
+        var centre = vec2<f32>(0.0);
+        if (i > 0u) {
+            c = cell + neighbour_offset(par, i - 1u);
+            centre = edge_normal(i - 1u) * 1.7320508;
+        }
+        let inside = c.x >= 0 && c.y >= 0 && c.x < i32(g.grid.x) && c.y < i32(g.grid.y);
+        let off = p - centre;
+        offs[i] = off;
+        d2[i] = select(1e9, dot(off, off), inside);
+        cells[i] = select(cell, c, inside);
+        keys[i] = textureLoad(hex_tex, cells[i], 0).w & 0x1ffffffu;
+    }
+    var ia = 0u;
+    for (var i = 1u; i < 7u; i++) {
+        if (d2[i] < d2[ia]) { ia = i; }
+    }
+    let key_a = keys[ia];
+    var ib = ia;
+    for (var i = 0u; i < 7u; i++) {
+        if (keys[i] != key_a && d2[i] < 1e8 && (ib == ia || d2[i] < d2[ib])) { ib = i; }
+    }
+    let key_b = keys[ib];
+    var a_sum = 0.0;
+    var b_sum = 0.0;
+    var da = vec2<f32>(0.0);
+    var db = vec2<f32>(0.0);
+    for (var i = 0u; i < 7u; i++) {
+        let off = offs[i];
+        let q = max(1.0 - dot(off, off) / (radius * radius), 0.0);
+        if (q <= 0.0) { continue; }
+        let w = q * q * q;
+        let gw = -6.0 * q * q * off / (radius * radius);
+        // (cells[i] is this hex off the board, as in fs_board.)
+        let key = keys[i];
+        if (key == key_a) { a_sum += w; da += gw; }
+        else if (key == key_b) { b_sum += w; db += gw; }
+    }
+    var take_a = true;
+    if (key_b != key_a) {
+        take_a = (a_sum - b_sum) / max(length(da - db), 1e-4) >= 0.0;
+    }
+    let pick = select(ib, ia, take_a);
+    if (((keys[pick] >> 24u) & 1u) == 1u) {
+        return T_WATER;
+    }
+    return textureLoad(state_tex, cells[pick], 0).r;
+}
+
+// What grows or lies at a micro slot, by the ground's terrain; `u` 0..1.
+fn micro_kind(terrain: u32, u: f32) -> u32 {
+    var k = M_NONE;
+    switch terrain {
+        case T_GRASSLAND, T_PLAINS, T_LAND, T_FREE: {
+            if (u < 0.58) { k = M_TUFT; } else if (u < 0.74) { k = M_FLOWER; } else if (u < 0.84) { k = M_STONE; }
+        }
+        case T_STEPPE_FOREST: {
+            if (u < 0.5) { k = M_TUFT; } else if (u < 0.64) { k = M_STONE; } else if (u < 0.72) { k = M_FLOWER; } else if (u < 0.8) { k = M_SCRUB; }
+        }
+        case T_SAVANNAH: {
+            if (u < 0.6) { k = M_TUFT; } else if (u < 0.66) { k = M_MOUND; } else if (u < 0.75) { k = M_STONE; } else if (u < 0.82) { k = M_SCRUB; }
+        }
+        case T_TEMPERATE_FOREST, T_WOODLANDS: {
+            if (u < 0.4) { k = M_FERN; } else if (u < 0.52) { k = M_STUMP; } else if (u < 0.64) { k = M_STONE; } else if (u < 0.74) { k = M_TUFT; }
+        }
+        case T_BOREAL_FOREST: {
+            if (u < 0.3) { k = M_FERN; } else if (u < 0.45) { k = M_STUMP; } else if (u < 0.56) { k = M_BOULDER; } else if (u < 0.7) { k = M_CUSHION; }
+        }
+        case T_TROPICAL_FOREST: {
+            if (u < 0.6) { k = M_FERN; } else if (u < 0.7) { k = M_STUMP; } else if (u < 0.75) { k = M_STONE; }
+        }
+        case T_CHAPARRAL: {
+            if (u < 0.45) { k = M_SCRUB; } else if (u < 0.68) { k = M_STONE; } else if (u < 0.8) { k = M_TUFT; }
+        }
+        case T_SEMI_DESERT: {
+            if (u < 0.33) { k = M_SCRUB; } else if (u < 0.62) { k = M_STONE; } else if (u < 0.72) { k = M_TUFT; } else if (u < 0.75) { k = M_SUCCULENT; }
+        }
+        case T_EXTREME_DESERT: {
+            if (u < 0.45) { k = M_STONE; } else if (u < 0.55) { k = M_BOULDER; } else if (u < 0.6) { k = M_SCRUB; }
+        }
+        case T_TUNDRA: {
+            if (u < 0.35) { k = M_CUSHION; } else if (u < 0.5) { k = M_BOULDER; } else if (u < 0.65) { k = M_STONE; } else if (u < 0.8) { k = M_TUFT; }
+        }
+        case T_ALPINE: {
+            if (u < 0.3) { k = M_CUSHION; } else if (u < 0.6) { k = M_STONE; } else if (u < 0.72) { k = M_BOULDER; } else if (u < 0.8) { k = M_FLOWER; }
+        }
+        case T_FLOODPLAIN: {
+            if (u < 0.55) { k = M_REED; } else if (u < 0.75) { k = M_TUFT; } else if (u < 0.8) { k = M_STONE; }
+        }
+        case T_MOUNTAINS: {
+            if (u < 0.55) { k = M_STONE; } else if (u < 0.7) { k = M_BOULDER; } else if (u < 0.8) { k = M_TUFT; }
+        }
+        default: {}
+    }
+    return k;
+}
+
+// Two bands of a micro-prop's lathe (bottom radius, bottom height, top
+// radius, top height), hex-local units; all zero = unused.
+fn micro_profile(kind: u32, band: u32) -> vec4<f32> {
+    var bands = array<vec4<f32>, 22>(
+        // stone: flank, dome
+        vec4<f32>(0.045, 0.0, 0.042, 0.018), vec4<f32>(0.042, 0.018, 0.0, 0.034),
+        // grass tuft: a clump flaring up, closed at the top
+        vec4<f32>(0.010, 0.0, 0.036, 0.060), vec4<f32>(0.036, 0.060, 0.0, 0.064),
+        // flower: stem, bloom
+        vec4<f32>(0.016, 0.0, 0.008, 0.050), vec4<f32>(0.024, 0.048, 0.0, 0.062),
+        // reed: stems, seed head
+        vec4<f32>(0.018, 0.0, 0.006, 0.120), vec4<f32>(0.010, 0.105, 0.0, 0.150),
+        // stump: bark, cut face
+        vec4<f32>(0.032, 0.0, 0.028, 0.030), vec4<f32>(0.028, 0.030, 0.0, 0.032),
+        // fern: fronds flaring out, low crown
+        vec4<f32>(0.010, 0.0, 0.065, 0.040), vec4<f32>(0.065, 0.040, 0.0, 0.046),
+        // succulent: column, dome
+        vec4<f32>(0.020, 0.0, 0.018, 0.100), vec4<f32>(0.018, 0.100, 0.0, 0.118),
+        // termite mound: cone, tip
+        vec4<f32>(0.045, 0.0, 0.016, 0.100), vec4<f32>(0.016, 0.100, 0.0, 0.120),
+        // scrub: low bush
+        vec4<f32>(0.040, 0.0, 0.052, 0.030), vec4<f32>(0.052, 0.030, 0.0, 0.052),
+        // cushion plant: flat mat
+        vec4<f32>(0.034, 0.0, 0.038, 0.010), vec4<f32>(0.038, 0.010, 0.0, 0.020),
+        // boulder
+        vec4<f32>(0.080, 0.0, 0.072, 0.036), vec4<f32>(0.072, 0.036, 0.0, 0.066),
+    );
+    return bands[(kind - 1u) * 2u + band];
+}
+
+// How dry a biome's grass is, 0 (green) to 1 (straw).
+fn micro_dryness(terrain: u32) -> f32 {
+    var d = 0.35;
+    switch terrain {
+        case T_FLOODPLAIN: { d = 0.08; }
+        case T_TEMPERATE_FOREST, T_WOODLANDS, T_TROPICAL_FOREST, T_BOREAL_FOREST: { d = 0.15; }
+        case T_ALPINE: { d = 0.3; }
+        case T_PLAINS: { d = 0.42; }
+        case T_TUNDRA: { d = 0.5; }
+        case T_STEPPE_FOREST: { d = 0.6; }
+        case T_CHAPARRAL, T_SEMI_DESERT, T_MOUNTAINS: { d = 0.72; }
+        case T_SAVANNAH, T_EXTREME_DESERT: { d = 0.88; }
+        default: {}
+    }
+    return d;
+}
+
+// Linear albedo of a micro-prop's band. Values are typical measured
+// reflectances (visible band, see data/terrain/SOURCES.md, "Micro-prop colours"): green grass
+// about 0.10-0.20, cured grass and straw 0.35-0.45, bark under 0.2, granite
+// and limestone 0.25-0.55, basalt about 0.1, sandstone reddish 0.3-0.45,
+// lateritic soil red-brown, crustose lichen pale grey-green.
+fn micro_colour(kind: u32, band: u32, terrain: u32, h: u32, gp: vec2<f32>) -> vec3<f32> {
+    let green = vec3<f32>(0.075, 0.150, 0.035);
+    let straw = vec3<f32>(0.42, 0.34, 0.17);
+    // Drier and greener swathes across the board, not hex by hex.
+    let dry = clamp(micro_dryness(terrain) + (art_noise(gp * 0.6 + 501.0) - 0.5) * 0.35, 0.0, 1.0);
+    let grass = mix(green, straw, dry);
+    let cold = terrain == T_TUNDRA || terrain == T_ALPINE || terrain == T_BOREAL_FOREST;
+    let desert = terrain == T_EXTREME_DESERT || terrain == T_SEMI_DESERT;
+    var rock = vec3<f32>(0.30, 0.29, 0.27);
+    if (desert) {
+        rock = vec3<f32>(0.44, 0.30, 0.18); // sandstone
+    } else if (terrain == T_CHAPARRAL || terrain == T_MOUNTAINS) {
+        rock = vec3<f32>(0.50, 0.47, 0.41); // limestone
+    }
+    // A few dark (basalt) stones anywhere.
+    if (art_unit(h, 24u) < 0.12) {
+        rock = vec3<f32>(0.10, 0.10, 0.10);
+    }
+    let lichen = vec3<f32>(0.42, 0.45, 0.30);
+    let moss = vec3<f32>(0.10, 0.16, 0.04);
+    var c = grass;
+    switch kind {
+        case M_STONE, M_BOULDER: {
+            c = rock;
+            if (band == 1u) {
+                if (cold) { c = mix(rock, lichen, 0.55); }
+                else if (terrain == T_TEMPERATE_FOREST || terrain == T_WOODLANDS || terrain == T_TROPICAL_FOREST) { c = mix(rock, moss, 0.6); }
+            }
+        }
+        case M_TUFT: { c = grass; }
+        case M_FLOWER: {
+            if (band == 0u) {
+                c = mix(green, grass, 0.5);
+            } else {
+                var blooms = array<vec3<f32>, 5>(
+                    vec3<f32>(0.78, 0.78, 0.72), // white (chamomile, yarrow)
+                    vec3<f32>(0.72, 0.55, 0.04), // yellow (buttercup, adonis)
+                    vec3<f32>(0.28, 0.10, 0.45), // purple (thyme, crocus)
+                    vec3<f32>(0.58, 0.04, 0.03), // red (poppy, anemone)
+                    vec3<f32>(0.20, 0.25, 0.60), // blue (gentian, cornflower)
+                );
+                c = blooms[(h >> 8u) % 5u];
+            }
+        }
+        case M_REED: {
+            c = select(vec3<f32>(0.20, 0.12, 0.06), mix(vec3<f32>(0.20, 0.26, 0.07), straw, dry * 0.6), band == 0u);
+        }
+        case M_STUMP: {
+            c = select(vec3<f32>(0.42, 0.31, 0.18), vec3<f32>(0.15, 0.10, 0.065), band == 0u);
+        }
+        case M_FERN: {
+            c = select(vec3<f32>(0.06, 0.20, 0.035), moss, terrain == T_BOREAL_FOREST);
+        }
+        case M_SUCCULENT: { c = vec3<f32>(0.11, 0.20, 0.12); }
+        case M_MOUND: { c = vec3<f32>(0.40, 0.22, 0.12); }
+        case M_SCRUB: { c = select(vec3<f32>(0.18, 0.20, 0.10), vec3<f32>(0.14, 0.16, 0.07), band == 0u); }
+        case M_CUSHION: { c = select(vec3<f32>(0.16, 0.22, 0.08), lichen, terrain == T_TUNDRA && band == 1u); }
+        default: {}
+    }
+    // Each one a little off its neighbours (value and warmth, about ±8 %).
+    let v = art_unit(h, 16u) * 2.0 - 1.0;
+    let warm = art_unit(h, 0u) * 2.0 - 1.0;
+    return c * (1.0 + 0.08 * v) * vec3<f32>(1.0 + 0.05 * warm, 1.0, 1.0 - 0.05 * warm);
+}
+
+@vertex
+fn vs_micro(in: PropIn) -> PropOut {
+    var out: PropOut;
+    out.clip = vec4<f32>(2.0, 2.0, 2.0, 1.0);
+    out.world = vec3<f32>(0.0);
+    out.colour = vec3<f32>(0.0);
+    if (!terrain_like(u32(g.grid.z))) {
+        return out;
+    }
+    let t = g.cam_pos.w;
+    let unit_c = length(in.north) / SQRT3_2;
+    let unit_f = g.hex.y / SQRT3_2;
+    let centre = mix(in.centre, vec3<f32>(in.flat_pos.x, 1.0, -in.flat_pos.y), t);
+    let hex_px = mix(unit_c, unit_f, t) * g.art.z / max(distance(g.cam_pos.xyz, centre), 1e-6);
+    let lod = smoothstep(MICRO_PX_LO, MICRO_PX_HI, hex_px) * g.art.y;
+    if (lod <= 0.0) {
+        return out;
+    }
+    // The slots fill in one after another as the hex grows.
+    let slot = in.attrs.x;
+    let start = f32(slot) / f32(MICRO_SLOTS) * 0.85;
+    let grow = clamp((lod - start) / 0.15, 0.0, 1.0);
+    if (grow <= 0.0) {
+        return out;
+    }
+    let band = in.attrs.y;
+    let top = in.attrs.z == 1u;
+    let side = in.attrs.w;
+    let h = art_hash(in.cell, MICRO_SALT + slot);
+    let h2 = art_hash(in.cell, MICRO_SALT + 64u + slot);
+    // Anywhere in the hex's inscribed circle, evenly.
+    let ang0 = f32(h2 & 0xffffu) / 65535.0 * 6.2831853;
+    let foot = vec2<f32>(cos(ang0), sin(ang0)) * 0.85 * sqrt(f32(h2 >> 16u) / 65535.0);
+
+    let terrain = micro_ground(foot, in.cell);
+    if (terrain >= T_COUNT || terrain == T_WATER || terrain == T_ICE) {
+        return out;
+    }
+    let kind = micro_kind(terrain, art_unit(h, 0u));
+    if (kind == M_NONE) {
+        return out;
+    }
+    let prof = micro_profile(kind, band);
+    if (prof.x + prof.z <= 0.0) {
+        return out;
+    }
+    if (art_in_river(foot, in.cell) || art_camp(foot, in.cell) < 1.0) {
+        return out;
+    }
+    // Nothing on a field plot but the crop (no ferns or stumps in a field).
+    if (art_field(foot, in.cell) > 0.5) {
+        return out;
+    }
+    // Clear of the big props' feet.
+    for (var s = 0u; s < ART_SLOTS; s++) {
+        let lay = textureLoad(prop_tex, art_prop_texel(in.cell, s), 0);
+        let k = lay.x & 0xffu;
+        if (k == K_NONE) { continue; }
+        let at = vec2<f32>(bitcast<f32>(lay.y), bitcast<f32>(lay.z));
+        if (distance(foot, at) < art_dims(k, (lay.x & K_GROVE_BIT) != 0u).x * bitcast<f32>(lay.w) * 0.9 + 0.03) {
+            return out;
+        }
+    }
+
+    let asp = mix(min(length(in.east) / unit_c, 1.0), 1.0, t);
+    let size = MICRO_SCALE * (0.75 + 0.5 * art_unit(h, 8u)) * sqrt(asp) * grow;
+    var r = select(prof.x, prof.z, top) * size;
+    let hh = select(prof.y, prof.w, top) * size;
+    let hs = art_hash(in.cell, MICRO_SALT + 128u + slot * 8u + side);
+    if (kind == M_STONE || kind == M_BOULDER || kind == M_SCRUB || kind == M_CUSHION) {
+        // Lumpy: each side its own radius.
+        r *= 0.7 + 0.6 * art_unit(hs, 0u);
+    } else if ((kind == M_TUFT || kind == M_FERN || kind == M_REED) && top && band == 0u) {
+        // Blades: alternate sides reach out and in.
+        r *= select(0.45, 1.35, (side & 1u) == 1u) * (0.85 + 0.3 * art_unit(hs, 8u));
+    }
+    let ang = (f32(side) + art_unit(h, 16u)) * 1.2566371;
+    let ring = vec2<f32>(cos(ang), sin(ang)) * r;
+
+    let lift = ground_lift(vec2<i32>(in.cell), foot);
+    let curved = in.centre * (1.0 + lift) + in.east * foot.x + in.north * (foot.y / SQRT3_2)
+        + (normalize(in.east) * ring.x + normalize(in.north) * ring.y + normalize(in.centre) * hh) * unit_c;
+    let flat_p = vec3<f32>(
+        in.flat_pos.x + g.hex.x * foot.x + ring.x * unit_f,
+        1.0 + lift + hh * unit_f,
+        -(in.flat_pos.y + g.hex.y * foot.y / SQRT3_2 + ring.y * unit_f),
+    );
+    let world = mix(curved, flat_p, t);
+
+    var colour = micro_colour(kind, band, terrain, h, art_global(foot, in.cell));
+    // Darker towards the foot, where less sky reaches (off in flat lighting).
+    let tall = max(micro_profile(kind, 0u).w, micro_profile(kind, 1u).w);
+    let rise = select(prof.y, prof.w, top) / tall;
+    colour *= mix(mix(0.5, 1.0, smoothstep(0.0, 0.7, rise)), 1.0, g.lines.w);
+    out.clip = g.view_proj * vec4<f32>(world, 1.0);
+    out.world = world;
+    out.colour = colour;
+    return out;
+}
+
+@fragment
+fn fs_micro(in: PropOut) -> @location(0) vec4<f32> {
+    var n = normalize(cross(dpdx(in.world), dpdy(in.world)));
+    if (dot(n, g.cam_pos.xyz - in.world) < 0.0) {
+        n = -n;
+    }
+    // Softer than the big props' facets: lean the normal towards the sky so
+    // tiny solids read as rounded rather than as flashing shards.
+    let up = normalize(mix(normalize(in.world), vec3<f32>(0.0, 1.0, 0.0), g.cam_pos.w));
+    let soft = normalize(mix(n, up, 0.35));
+    return vec4<f32>(haze(in.colour * lighting(soft), in.world), 1.0);
+}
+
+// ---------------------------------------------------------------------------
+// Ground cover (the Ground map mode): procedural textures of grass, moss,
+// sand, rock, snow and forest floor, in board-wide coordinates (hex units)
+// so they run on across hex edges. Each multiplies the field's colour (the
+// cover's mean, blended between covers) by a pattern that averages about 1,
+// so from far out the map keeps its calm mean colours; every octave fades
+// out before it is finer than a few pixels (`px`: hex units per pixel), so
+// nothing shimmers.
+
+// How much of an octave of frequency `f` (cycles per hex) to keep.
+fn gc_keep(f: f32, px: f32) -> f32 {
+    return 1.0 - smoothstep(0.12, 0.35, px * f);
+}
+
+// Signed fractal noise, about -0.5..0.5, from `f0` cycles per hex up.
+fn gc_fbm(p: vec2<f32>, f0: f32, octaves: u32, px: f32) -> f32 {
+    var sum = 0.0;
+    var amp = 0.5;
+    var f = f0;
+    var norm = 0.0;
+    for (var i = 0u; i < octaves; i++) {
+        let keep = gc_keep(f, px);
+        if (keep <= 0.0) {
+            break;
+        }
+        sum += (art_noise(p * f + vec2<f32>(f32(i) * 17.3, f32(i) * 7.1)) - 0.5) * amp * keep;
+        norm += amp;
+        amp *= 0.55;
+        f *= 2.07;
+    }
+    return sum / max(norm, 0.5) * 1.6;
+}
+
+// Ridged noise 0..1 (1 on the ridges), faded like an octave.
+fn gc_ridge(p: vec2<f32>, f: f32, px: f32) -> f32 {
+    return (1.0 - abs(art_noise(p * f) * 2.0 - 1.0)) * gc_keep(f, px);
+}
+
+// How lush the ground is, 0 (dry, NPP under 400 g/m²/yr) to 1 (over 1300),
+// from the productivity band (255 = no data: middling).
+fn gc_lush(npp: f32) -> f32 {
+    if (npp > 254.0) {
+        return 0.5;
+    }
+    return clamp((npp - 2.0) / 5.0, 0.0, 1.0);
+}
+
+fn gc_grass(p: vec2<f32>, px: f32, base: vec3<f32>, npp: f32) -> vec3<f32> {
+    let lush = gc_lush(npp);
+    // Dry grass cures to straw; lush grass deepens. Patches of each in
+    // between, so a steppe is never one flat tone.
+    let tuft = gc_fbm(p, 1.3, 3u, px);
+    let dry = clamp(1.0 - lush + tuft * 0.6, 0.0, 1.0);
+    let straw = vec3<f32>(1.55, 1.25, 0.72);
+    let deep = vec3<f32>(0.86, 0.97, 0.80);
+    var c = base * mix(deep, straw, dry * 0.45);
+    // Clumps and tussocks, then blades (stretched north-south as if combed
+    // by the wind), then bare soil showing through in the dry.
+    let clump = gc_fbm(p + 3.1, 9.0, 3u, px);
+    let blade = (art_noise(p * vec2<f32>(70.0, 22.0)) - 0.5) * gc_keep(70.0, px);
+    c *= 1.0 + clump * 0.55 + blade * 0.45;
+    let soil = smoothstep(0.62, 0.78, art_noise(p * 16.0 + 40.0)) * dry * 0.55 * gc_keep(16.0, px);
+    c = mix(c, base * vec3<f32>(1.25, 1.0, 0.72) * 0.85, soil);
+    return c;
+}
+
+fn gc_moss(p: vec2<f32>, px: f32, base: vec3<f32>, npp: f32) -> vec3<f32> {
+    // Cushions of moss and heath, with pale lichen between.
+    let blotch = gc_fbm(p, 5.0, 4u, px);
+    let lichen = smoothstep(0.08, 0.22, blotch) * gc_keep(5.0, px);
+    let green = mix(vec3<f32>(0.95, 1.05, 0.8), vec3<f32>(0.82, 1.12, 0.7), gc_lush(npp));
+    var c = base * mix(green, vec3<f32>(1.35, 1.32, 1.15), lichen * 0.7);
+    // Heather and crowberry: dark purplish speckle.
+    let heath = smoothstep(0.6, 0.75, art_noise(p * 34.0 + 9.0)) * gc_keep(34.0, px);
+    c = mix(c, base * vec3<f32>(0.72, 0.58, 0.62), heath * 0.5);
+    c *= 1.0 + gc_fbm(p + 8.0, 40.0, 2u, px) * 0.35;
+    return c;
+}
+
+fn gc_sand(p: vec2<f32>, px: f32, base: vec3<f32>) -> vec3<f32> {
+    // Dunes: broad light and shade; ripples across the wind, bent by the dunes.
+    let dune = gc_fbm(p, 1.6, 3u, px);
+    let warp = gc_fbm(p + 21.0, 3.0, 2u, px);
+    let along = dot(p, vec2<f32>(0.83, 0.56)) * 26.0 + warp * 9.0;
+    let ripple = pow(0.5 + 0.5 * sin(along * 6.2831853), 3.0) - 0.3;
+    var c = base * (1.0 + dune * 0.3 + ripple * 0.3 * gc_keep(26.0, px));
+    // Grain and scattered dark gravel (desert pavement).
+    c *= 1.0 + (art_noise(p * 110.0) - 0.5) * 0.2 * gc_keep(110.0, px);
+    let gravel = smoothstep(0.7, 0.85, art_noise(p * 18.0 + 3.0)) * gc_keep(18.0, px);
+    c = mix(c, base * vec3<f32>(0.72, 0.62, 0.55), gravel * 0.35);
+    return c;
+}
+
+fn gc_rock(p: vec2<f32>, px: f32, base: vec3<f32>) -> vec3<f32> {
+    // Massive rock: ridged tone and bedding planes that wander with the fold.
+    let fold = gc_fbm(p, 2.2, 3u, px);
+    var c = base * (1.0 + fold * 0.3 + (gc_ridge(p + 4.0, 6.0, px) - 0.5) * 0.25);
+    let strata = 0.5 + 0.5 * sin((p.y * 14.0 + fold * 10.0) * 6.2831853);
+    c *= 1.0 + (strata - 0.5) * 0.14 * gc_keep(14.0, px);
+    // Cracks: dark lines along the noise's mid contour.
+    let n = art_noise(p * 12.0 + 31.0);
+    let crack = (1.0 - smoothstep(0.0, 0.035, abs(n - 0.5))) * gc_keep(24.0, px);
+    c *= 1.0 - crack * 0.45;
+    // Scree and lichen: pale specks, warm rust patches.
+    c *= 1.0 + (art_noise(p * 90.0) - 0.5) * 0.18 * gc_keep(90.0, px);
+    let rust = smoothstep(0.66, 0.8, art_noise(p * 7.0 + 55.0)) * gc_keep(7.0, px);
+    c = mix(c, base * vec3<f32>(1.25, 1.0, 0.75), rust * 0.35);
+    return c;
+}
+
+fn gc_snow(p: vec2<f32>, px: f32, base: vec3<f32>) -> vec3<f32> {
+    // Wind-packed drifts, blue in their hollows; sastrugi across the wind.
+    let drift = gc_fbm(p, 2.0, 4u, px);
+    var c = mix(base, base * vec3<f32>(0.82, 0.9, 1.0), clamp(-drift * 1.6, 0.0, 1.0) * 0.6);
+    c *= 1.0 + drift * 0.08;
+    let sast = 0.5 + 0.5 * sin((dot(p, vec2<f32>(0.6, 0.8)) * 40.0 + drift * 6.0) * 6.2831853);
+    c *= 1.0 + (sast - 0.5) * 0.05 * gc_keep(40.0, px);
+    return c;
+}
+
+fn gc_litter(p: vec2<f32>, px: f32, base: vec3<f32>, npp: f32) -> vec3<f32> {
+    // Dark humus with drifts of leaves, needles and moss.
+    let drift = gc_fbm(p, 3.0, 3u, px);
+    var c = base * (1.0 + drift * 0.4);
+    let leaf = smoothstep(0.58, 0.72, art_noise(p * 60.0 + drift * 4.0)) * gc_keep(60.0, px);
+    c = mix(c, base * vec3<f32>(1.75, 1.2, 0.7), leaf * 0.55);
+    let moss = smoothstep(0.1, 0.3, gc_fbm(p + 13.0, 6.0, 2u, px)) * gc_keep(6.0, px);
+    c = mix(c, base * vec3<f32>(0.95, 1.45, 0.75), moss * mix(0.2, 0.5, gc_lush(npp)));
+    c *= 1.0 + (art_noise(p * 140.0) - 0.5) * 0.2 * gc_keep(140.0, px);
+    return c;
+}
+
+// The ground of cover `cover` at board point `p`; `base` is the field's
+// colour there (linear), `npp` the productivity band (eased between hexes).
+fn ground_cover(cover: u32, p: vec2<f32>, px: f32, base: vec3<f32>, npp: f32) -> vec3<f32> {
+    switch cover {
+        case C_GRASS: { return gc_grass(p, px, base, npp); }
+        case C_MOSS: { return gc_moss(p, px, base, npp); }
+        case C_SAND: { return gc_sand(p, px, base); }
+        case C_ROCK: { return gc_rock(p, px, base); }
+        case C_SNOW: { return gc_snow(p, px, base); }
+        case C_LITTER: { return gc_litter(p, px, base, npp); }
+        default: { return base; }
+    }
 }

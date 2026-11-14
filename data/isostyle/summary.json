@@ -17,14 +17,15 @@
   "neonet_added": 532,
   "neonetatl_added": 391,
   "aadr_added": 246,
-  "literature_added": 793,
-  "in_region": 221020,
-  "sites_in_region": 22156,
-  "dates_in_region_deduplicated": 111337,
-  "dates_calibrated_on_grid": 68736,
-  "episodes": 19981,
-  "episodes_in_window": 14112,
-  "sites_with_episode_in_window": 10965,
+  "literature_added": 824,
+  "rejected": 62,
+  "in_region": 220989,
+  "sites_in_region": 22151,
+  "dates_in_region_deduplicated": 111309,
+  "dates_calibrated_on_grid": 68727,
+  "episodes": 19965,
+  "episodes_in_window": 14098,
+  "sites_with_episode_in_window": 10959,
   "external_records": 6326,
   "external_matched_to_episode": 2577,
   "external_by_source": {
@@ -50,7 +51,7 @@
    },
    "Dolbunova et al. 2023 (dated by nearest modelled start)": {
     "records": 156,
-    "matched": 15
+    "matched": 16
    },
    "EUROEVOL archaeobotany (Colledge 2016)": {
     "records": 160,
@@ -86,7 +87,7 @@
    },
    "Rotunno & Crema 2025": {
     "records": 275,
-    "matched": 244
+    "matched": 243
    },
    "Tsirintoulaki et al. 2023": {
     "records": 40,
@@ -97,105 +98,105 @@
     "matched": 131
    }
   },
-  "units_in_window": 18019,
-  "grave_units": 1484,
+  "units_in_window": 18004,
+  "grave_units": 1481,
   "pottery": {
    "present_recorded": 2037,
    "absent_recorded": 186,
-   "present_label": 5002,
-   "absent_label": 1901,
-   "unknown": 8893
+   "present_label": 4996,
+   "absent_label": 1899,
+   "unknown": 8886
   },
   "flaked_stone": {
    "present_recorded": 1329,
    "absent_recorded": 0,
    "present_label": 0,
    "absent_label": 0,
-   "unknown": 16690
+   "unknown": 16675
   },
   "ground_stone": {
    "present_recorded": 403,
    "absent_recorded": 0,
-   "present_label": 6008,
+   "present_label": 6002,
    "absent_label": 285,
-   "unknown": 11323
+   "unknown": 11314
   },
   "bone_antler": {
    "present_recorded": 223,
    "absent_recorded": 0,
    "present_label": 0,
    "absent_label": 0,
-   "unknown": 17796
+   "unknown": 17781
   },
   "ornaments": {
    "present_recorded": 591,
    "absent_recorded": 0,
    "present_label": 0,
    "absent_label": 0,
-   "unknown": 17428
+   "unknown": 17413
   },
   "cereals": {
    "present_recorded": 610,
    "absent_recorded": 12,
    "present_label": 0,
    "absent_label": 0,
-   "unknown": 17397
+   "unknown": 17382
   },
   "domestic_livestock": {
-   "present_recorded": 555,
+   "present_recorded": 550,
    "absent_recorded": 40,
    "present_label": 0,
    "absent_label": 0,
-   "unknown": 17424
+   "unknown": 17414
   },
   "enclosures": {
    "present_recorded": 514,
    "absent_recorded": 0,
    "present_label": 0,
    "absent_label": 0,
-   "unknown": 17505
+   "unknown": 17490
   },
   "megalithic_tombs": {
-   "present_recorded": 390,
+   "present_recorded": 387,
    "absent_recorded": 0,
    "present_label": 0,
    "absent_label": 0,
-   "unknown": 17629
+   "unknown": 17617
   },
   "pile_dwellings": {
    "present_recorded": 8,
    "absent_recorded": 0,
    "present_label": 0,
    "absent_label": 0,
-   "unknown": 18011
+   "unknown": 17996
   },
   "houses": {
-   "present_recorded": 58,
+   "present_recorded": 56,
    "absent_recorded": 0,
    "present_label": 0,
    "absent_label": 0,
-   "unknown": 17961
+   "unknown": 17948
   },
   "mines": {
    "present_recorded": 43,
    "absent_recorded": 0,
    "present_label": 0,
    "absent_label": 0,
-   "unknown": 17976
+   "unknown": 17961
   },
   "metallurgy": {
    "present_recorded": 10,
    "absent_recorded": 0,
    "present_label": 0,
    "absent_label": 0,
-   "unknown": 18009
+   "unknown": 17994
   },
   "waterlogged_organics": {
-   "present_recorded": 63,
+   "present_recorded": 60,
    "absent_recorded": 0,
    "present_label": 0,
    "absent_label": 0,
-   "unknown": 17956
+   "unknown": 17944
   },
   "core_units": 8501,
   "cores": 1572,
@@ -231,42 +232,50 @@
    "mt_t2": 331,
    "mt_n1a": 106,
    "mt_other": 748
+  },
+  "Ancestry": {
+   "anc_whg": 588,
+   "anc_ehg": 533,
+   "anc_ana": 2182,
+   "anc_irn": 255,
+   "anc_lev": 70,
+   "anc_naf": 34
   }
  },
  "layers": {
   "pottery": {
    "cv": {
     "50": {
-     "log_loss": 0.23366445071077768,
-     "share_with_neighbours": 0.9862049452368854
+     "log_loss": 0.2340424133529832,
+     "share_with_neighbours": 0.9861956540721736
     },
     "75": {
-     "log_loss": 0.23039764577949234,
-     "share_with_neighbours": 0.9937850682976789
+     "log_loss": 0.2306739181271274,
+     "share_with_neighbours": 0.9937808824531779
     },
     "100": {
-     "log_loss": 0.22932806738400727,
-     "share_with_neighbours": 0.9964555441076514
+     "log_loss": 0.2295465015438938,
+     "share_with_neighbours": 0.9964531568664208
     },
     "150": {
-     "log_loss": 0.22808988554229678,
-     "share_with_neighbours": 0.9986884596988653
+     "log_loss": 0.22827167866162895,
+     "share_with_neighbours": 0.9986875763579021
     },
     "200": {
-     "log_loss": 0.2287635015024968,
-     "share_with_neighbours": 0.9994927731964002
+     "log_loss": 0.22893670516480719,
+     "share_with_neighbours": 0.9994924315719661
     },
     "300": {
-     "log_loss": 0.23218924536844548,
-     "share_with_neighbours": 0.9997571918126756
+     "log_loss": 0.23237201164032723,
+     "share_with_neighbours": 0.9997570282779236
     }
    },
    "kind": "presence_absence",
    "sigma_km": 150,
    "sigma_from": "",
    "has_absences": true,
-   "n_absent": 2087,
-   "units_known": 9126,
+   "n_absent": 2085,
+   "units_known": 9118,
    "f0": [
     0.034,
     0.068,
@@ -280,11 +289,11 @@
    "by_slice": [
     {
      "slice": -10000,
-     "occupations": 136.5,
-     "label_share": 0.944,
+     "occupations": 135.5,
+     "label_share": 0.943,
      "land_cells": 17263,
-     "cells_unmasked": 1619,
-     "cells_firm": 1609
+     "cells_unmasked": 1618,
+     "cells_firm": 1608
     },
     {
      "slice": -9000,
@@ -292,7 +301,7 @@
      "label_share": 0.889,
      "land_cells": 17478,
      "cells_unmasked": 2635,
-     "cells_firm": 2552
+     "cells_firm": 2548
     },
     {
      "slice": -8000,
@@ -300,75 +309,75 @@
      "label_share": 0.855,
      "land_cells": 17591,
      "cells_unmasked": 3807,
-     "cells_firm": 3575
+     "cells_firm": 3570
     },
     {
      "slice": -7000,
-     "occupations": 552.2,
+     "occupations": 552.0,
      "label_share": 0.763,
      "land_cells": 17680,
-     "cells_unmasked": 4562,
-     "cells_firm": 3602
+     "cells_unmasked": 4559,
+     "cells_firm": 3634
     },
     {
      "slice": -6000,
-     "occupations": 1196.8,
-     "label_share": 0.654,
+     "occupations": 1195.7,
+     "label_share": 0.653,
      "land_cells": 17532,
      "cells_unmasked": 7167,
-     "cells_firm": 5731
+     "cells_firm": 5669
     },
     {
      "slice": -5000,
-     "occupations": 1843.2,
+     "occupations": 1842.2,
      "label_share": 0.593,
      "land_cells": 17389,
-     "cells_unmasked": 7365,
-     "cells_firm": 6823
+     "cells_unmasked": 7360,
+     "cells_firm": 6828
     },
     {
      "slice": -4000,
-     "occupations": 1992.5,
+     "occupations": 1992.4,
      "label_share": 0.762,
-     "land_cells": 17422,
-     "cells_unmasked": 6748,
-     "cells_firm": 6546
+     "land_cells": 17423,
+     "cells_unmasked": 6730,
+     "cells_firm": 6539
     },
     {
      "slice": -3000,
-     "occupations": 1765.9,
+     "occupations": 1763.7,
      "label_share": 0.844,
-     "land_cells": 17401,
-     "cells_unmasked": 5389,
-     "cells_firm": 5388
+     "land_cells": 17403,
+     "cells_unmasked": 5391,
+     "cells_firm": 5390
     }
    ]
   },
   "ground_stone": {
    "cv": {
     "50": {
-     "log_loss": 0.0803830076198274,
-     "share_with_neighbours": 0.9825724041807163
+     "log_loss": 0.08043523186734362,
+     "share_with_neighbours": 0.9825618110894374
     },
     "75": {
-     "log_loss": 0.07733337705855332,
-     "share_with_neighbours": 0.9926310185615054
+     "log_loss": 0.07738282356911047,
+     "share_with_neighbours": 0.992626542940621
     },
     "100": {
-     "log_loss": 0.07576411221114324,
-     "share_with_neighbours": 0.9954574701339156
+     "log_loss": 0.07581166861140759,
+     "share_with_neighbours": 0.9954547135106148
     },
     "150": {
-     "log_loss": 0.07374580275263284,
-     "share_with_neighbours": 0.9970427534250791
+     "log_loss": 0.07379128986887447,
+     "share_with_neighbours": 0.9970409609428849
     },
     "200": {
-     "log_loss": 0.07322404057953676,
-     "share_with_neighbours": 0.997483187791575
+     "log_loss": 0.07326883968866296,
+     "share_with_neighbours": 0.9974816631737304
     },
     "300": {
-     "log_loss": 0.0730755173968706,
-     "share_with_neighbours": 0.9981217587508273
+     "log_loss": 0.07312490364648247,
+     "share_with_neighbours": 0.9981206225004842
     }
    },
    "kind": "presence_absence",
@@ -376,7 +385,7 @@
    "sigma_from": "",
    "has_absences": true,
    "n_absent": 285,
-   "units_known": 6696,
+   "units_known": 6690,
    "f0": [
     0.273,
     0.633,
@@ -394,7 +403,7 @@
      "label_share": 0.973,
      "land_cells": 17263,
      "cells_unmasked": 2778,
-     "cells_firm": 2726
+     "cells_firm": 2696
     },
     {
      "slice": -9000,
@@ -402,7 +411,7 @@
      "label_share": 0.927,
      "land_cells": 17478,
      "cells_unmasked": 3836,
-     "cells_firm": 2464
+     "cells_firm": 2524
     },
     {
      "slice": -8000,
@@ -410,75 +419,75 @@
      "label_share": 0.938,
      "land_cells": 17591,
      "cells_unmasked": 5100,
-     "cells_firm": 4208
+     "cells_firm": 4198
     },
     {
      "slice": -7000,
-     "occupations": 239.0,
+     "occupations": 239.1,
      "label_share": 0.922,
      "land_cells": 17680,
      "cells_unmasked": 5769,
-     "cells_firm": 5336
+     "cells_firm": 5343
     },
     {
      "slice": -6000,
-     "occupations": 659.7,
+     "occupations": 658.4,
      "label_share": 0.832,
      "land_cells": 17532,
-     "cells_unmasked": 9020,
-     "cells_firm": 9020
+     "cells_unmasked": 9045,
+     "cells_firm": 9045
     },
     {
      "slice": -5000,
-     "occupations": 1255.2,
+     "occupations": 1255.3,
      "label_share": 0.879,
      "land_cells": 17389,
-     "cells_unmasked": 8562,
-     "cells_firm": 8562
+     "cells_unmasked": 8593,
+     "cells_firm": 8593
     },
     {
      "slice": -4000,
-     "occupations": 1668.0,
+     "occupations": 1667.8,
      "label_share": 0.958,
-     "land_cells": 17422,
-     "cells_unmasked": 9503,
-     "cells_firm": 9503
+     "land_cells": 17423,
+     "cells_unmasked": 9504,
+     "cells_firm": 9504
     },
     {
      "slice": -3000,
-     "occupations": 1606.2,
+     "occupations": 1604.0,
      "label_share": 0.986,
-     "land_cells": 17401,
-     "cells_unmasked": 7776,
-     "cells_firm": 7776
+     "land_cells": 17403,
+     "cells_unmasked": 7778,
+     "cells_firm": 7778
     }
    ]
   },
   "domestic_livestock": {
    "cv": {
     "50": {
-     "log_loss": 0.1673144178451062,
-     "share_with_neighbours": 0.8903805035278674
+     "log_loss": 0.16810977518881728,
+     "share_with_neighbours": 0.8898458286403069
     },
     "75": {
-     "log_loss": 0.16720699989508456,
-     "share_with_neighbours": 0.9344458974591067
+     "log_loss": 0.16799879124201564,
+     "share_with_neighbours": 0.9341261538593529
     },
     "100": {
-     "log_loss": 0.16512236478668138,
-     "share_with_neighbours": 0.9557052717021123
+     "log_loss": 0.16590202507904656,
+     "share_with_neighbours": 0.9554892218238116
     },
     "150": {
-     "log_loss": 0.1614960077761772,
-     "share_with_neighbours": 0.9805720175941327
+     "log_loss": 0.16216998375579994,
+     "share_with_neighbours": 0.9804772565831565
     },
     "200": {
-     "log_loss": 0.15887115828609735,
-     "share_with_neighbours": 0.9892434564151922
+     "log_loss": 0.159496327649415,
+     "share_with_neighbours": 0.9891909908053612
     },
     "300": {
-     "log_loss": 0.16444371363184282,
-     "share_with_neighbours": 0.9950996739778992
+     "log_loss": 0.1651446480706242,
+     "share_with_neighbours": 0.9950757723787386
     }
    },
    "kind": "presence_absence",
@@ -486,7 +495,7 @@
    "sigma_from": "",
    "has_absences": true,
    "n_absent": 40,
-   "units_known": 595,
+   "units_known": 590,
    "f0": [
     0.0,
     0.247,
@@ -528,7 +537,7 @@
      "label_share": 0.0,
      "land_cells": 17680,
      "cells_unmasked": 364,
-     "cells_firm": 254
+     "cells_firm": 246
     },
     {
      "slice": -6000,
@@ -536,7 +545,7 @@
      "label_share": 0.0,
      "land_cells": 17532,
      "cells_unmasked": 873,
-     "cells_firm": 565
+     "cells_firm": 557
     },
     {
      "slice": -5000,
@@ -544,23 +553,23 @@
      "label_share": 0.0,
      "land_cells": 17389,
      "cells_unmasked": 2099,
-     "cells_firm": 1858
+     "cells_firm": 1842
     },
     {
      "slice": -4000,
      "occupations": 169.3,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 2399,
-     "cells_firm": 2361
+     "cells_firm": 2352
     },
     {
      "slice": -3000,
-     "occupations": 159.2,
+     "occupations": 156.7,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 2549,
-     "cells_firm": 2549
+     "land_cells": 17403,
+     "cells_unmasked": 2535,
+     "cells_firm": 2535
     }
    ]
   },
@@ -660,44 +669,44 @@
      "slice": -4000,
      "occupations": 1295.0,
      "label_share": 0.0,
-     "land_cells": 17422,
-     "cells_unmasked": 5901,
-     "cells_firm": 4993
+     "land_cells": 17423,
+     "cells_unmasked": 5902,
+     "cells_firm": 4994
     },
     {
      "slice": -3000,
      "occupations": 1364.0,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 6119,
-     "cells_firm": 4926
+     "land_cells": 17403,
+     "cells_unmasked": 6121,
+     "cells_firm": 4927
     }
    ]
   },
   "y_i2": {
    "cv": {
     "50": {
-     "log_loss": 0.5033483766382931,
-     "share_with_neighbours": 0.8452799177055156
+     "log_loss": 0.502945951940478,
+     "share_with_neighbours": 0.8480959426542942
     },
     "75": {
-     "log_loss": 0.5046669806519104,
-     "share_with_neighbours": 0.937203131891156
+     "log_loss": 0.5040603893860061,
+     "share_with_neighbours": 0.938712813861466
     },
     "100": {
-     "log_loss": 0.49877333091667914,
-     "share_with_neighbours": 0.9623962937419096
+     "log_loss": 0.49815161248761863,
+     "share_with_neighbours": 0.9639059757122195
     },
     "150": {
-     "log_loss": 0.5032789251486233,
-     "share_with_neighbours": 0.9857130559957628
+     "log_loss": 0.5026872963213325,
+     "share_with_neighbours": 0.9867032458104932
     },
     "200": {
-     "log_loss": 0.5123499400277581,
-     "share_with_neighbours": 0.9917802555222388
+     "log_loss": 0.5118096841449412,
+     "share_with_neighbours": 0.9928054365674934
     },
     "300": {
-     "log_loss": 0.5244626142378069,
+     "log_loss": 0.5248480816185679,
      "share_with_neighbours": 0.9996367258758401
     }
    },
@@ -763,14 +772,14 @@
      "occupations": 493.2,
      "label_share": 0.0,
      "land_cells": 17389,
-     "cells_unmasked": 1513,
-     "cells_firm": 1156
+     "cells_unmasked": 1512,
+     "cells_firm": 1155
     },
     {
      "slice": -4000,
      "occupations": 423.5,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 2159,
      "cells_firm": 1661
     },
@@ -778,36 +787,36 @@
      "slice": -3000,
      "occupations": 722.2,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 3002,
-     "cells_firm": 2363
+     "land_cells": 17403,
+     "cells_unmasked": 2997,
+     "cells_firm": 2358
     }
    ]
   },
   "mt_u5": {
    "cv": {
     "50": {
-     "log_loss": 0.42505671609357143,
-     "share_with_neighbours": 0.9069567715703022
+     "log_loss": 0.42497221152204184,
+     "share_with_neighbours": 0.9095115104823412
     },
     "75": {
-     "log_loss": 0.41685185392215335,
-     "share_with_neighbours": 0.9517388674646531
+     "log_loss": 0.4167523313384147,
+     "share_with_neighbours": 0.9542936063766922
     },
     "100": {
-     "log_loss": 0.41144805798602485,
-     "share_with_neighbours": 0.9740898249135079
+     "log_loss": 0.41133611086890154,
+     "share_with_neighbours": 0.976644563825547
     },
     "150": {
-     "log_loss": 0.3971959244684852,
-     "share_with_neighbours": 0.9901717243780056
+     "log_loss": 0.3970391430756471,
+     "share_with_neighbours": 0.9927266434685283
     },
     "200": {
-     "log_loss": 0.3848938892658801,
-     "share_with_neighbours": 0.9928535990751972
+     "log_loss": 0.3847092218047773,
+     "share_with_neighbours": 0.994769968571573
     },
     "300": {
-     "log_loss": 0.38260992554916157,
+     "log_loss": 0.38203820541982275,
      "share_with_neighbours": 0.999671545222721
     }
    },
@@ -880,17 +889,127 @@
      "slice": -4000,
      "occupations": 737.5,
      "label_share": 0.0,
-     "land_cells": 17422,
-     "cells_unmasked": 7359,
-     "cells_firm": 5712
+     "land_cells": 17423,
+     "cells_unmasked": 7274,
+     "cells_firm": 5627
     },
     {
      "slice": -3000,
      "occupations": 1103.3,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 8042,
-     "cells_firm": 7932
+     "land_cells": 17403,
+     "cells_unmasked": 7967,
+     "cells_firm": 7857
+    }
+   ]
+  },
+  "anc_ana": {
+   "cv": {
+    "50": {
+     "log_loss": 0.512141371863866,
+     "share_with_neighbours": 0.8910490528929315
+    },
+    "75": {
+     "log_loss": 0.4901534713278278,
+     "share_with_neighbours": 0.9524972030737654
+    },
+    "100": {
+     "log_loss": 0.47842518608042034,
+     "share_with_neighbours": 0.9638873795707937
+    },
+    "150": {
+     "log_loss": 0.46015867668769406,
+     "share_with_neighbours": 0.9929859420794681
+    },
+    "200": {
+     "log_loss": 0.4571149037599612,
+     "share_with_neighbours": 0.9961996868149025
+    },
+    "300": {
+     "log_loss": 0.45867105924030754,
+     "share_with_neighbours": 0.9996787854355026
+    }
+   },
+   "kind": "share",
+   "sigma_km": 200,
+   "sigma_from": "",
+   "has_absences": true,
+   "n_absent": 552,
+   "units_known": 3662,
+   "f0": [
+    0.022,
+    0.093,
+    0.273,
+    0.517,
+    0.522,
+    0.698,
+    0.679,
+    0.54
+   ],
+   "by_slice": [
+    {
+     "slice": -10000,
+     "occupations": 7.3,
+     "label_share": 0.0,
+     "land_cells": 17263,
+     "cells_unmasked": 117,
+     "cells_firm": 117
+    },
+    {
+     "slice": -9000,
+     "occupations": 31.8,
+     "label_share": 0.0,
+     "land_cells": 17478,
+     "cells_unmasked": 1112,
+     "cells_firm": 1046
+    },
+    {
+     "slice": -8000,
+     "occupations": 53.1,
+     "label_share": 0.0,
+     "land_cells": 17591,
+     "cells_unmasked": 1542,
+     "cells_firm": 1474
+    },
+    {
+     "slice": -7000,
+     "occupations": 120.2,
+     "label_share": 0.0,
+     "land_cells": 17680,
+     "cells_unmasked": 2089,
+     "cells_firm": 2040
+    },
+    {
+     "slice": -6000,
+     "occupations": 243.4,
+     "label_share": 0.0,
+     "land_cells": 17532,
+     "cells_unmasked": 3917,
+     "cells_firm": 3602
+    },
+    {
+     "slice": -5000,
+     "occupations": 865.3,
+     "label_share": 0.0,
+     "land_cells": 17389,
+     "cells_unmasked": 4390,
+     "cells_firm": 3910
+    },
+    {
+     "slice": -4000,
+     "occupations": 756.5,
+     "label_share": 0.0,
+     "land_cells": 17423,
+     "cells_unmasked": 5602,
+     "cells_firm": 5184
+    },
+    {
+     "slice": -3000,
+     "occupations": 1143.2,
+     "label_share": 0.0,
+     "land_cells": 17403,
+     "cells_unmasked": 6391,
+     "cells_firm": 6117
     }
    ]
   },
@@ -957,14 +1076,14 @@
      "occupations": 328.5,
      "label_share": 0.0,
      "land_cells": 17389,
-     "cells_unmasked": 2013,
-     "cells_firm": 2013
+     "cells_unmasked": 2014,
+     "cells_firm": 2014
     },
     {
      "slice": -4000,
      "occupations": 263.0,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 1384,
      "cells_firm": 1384
     },
@@ -972,7 +1091,7 @@
      "slice": -3000,
      "occupations": 75.4,
      "label_share": 0.0,
-     "land_cells": 17401,
+     "land_cells": 17403,
      "cells_unmasked": 565,
      "cells_firm": 565
     }
@@ -1048,7 +1167,7 @@
      "slice": -4000,
      "occupations": 21.8,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 198,
      "cells_firm": 198
     },
@@ -1056,7 +1175,7 @@
      "slice": -3000,
      "occupations": 13.5,
      "label_share": 0.0,
-     "land_cells": 17401,
+     "land_cells": 17403,
      "cells_unmasked": 125,
      "cells_firm": 125
     }
@@ -1125,14 +1244,14 @@
      "occupations": 201.7,
      "label_share": 0.0,
      "land_cells": 17389,
-     "cells_unmasked": 1481,
-     "cells_firm": 1481
+     "cells_unmasked": 1480,
+     "cells_firm": 1480
     },
     {
      "slice": -4000,
      "occupations": 124.0,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 1312,
      "cells_firm": 1312
     },
@@ -1140,7 +1259,7 @@
      "slice": -3000,
      "occupations": 65.1,
      "label_share": 0.0,
-     "land_cells": 17401,
+     "land_cells": 17403,
      "cells_unmasked": 1112,
      "cells_firm": 1112
     }
@@ -1209,14 +1328,14 @@
      "occupations": 113.5,
      "label_share": 0.0,
      "land_cells": 17389,
-     "cells_unmasked": 1568,
-     "cells_firm": 1543
+     "cells_unmasked": 1567,
+     "cells_firm": 1542
     },
     {
      "slice": -4000,
      "occupations": 147.1,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 1726,
      "cells_firm": 1722
     },
@@ -1224,9 +1343,9 @@
      "slice": -3000,
      "occupations": 139.1,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 1593,
-     "cells_firm": 1593
+     "land_cells": 17403,
+     "cells_unmasked": 1594,
+     "cells_firm": 1594
     }
    ]
   },
@@ -1300,7 +1419,7 @@
      "slice": -4000,
      "occupations": 111.8,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 779,
      "cells_firm": 779
     },
@@ -1308,7 +1427,7 @@
      "slice": -3000,
      "occupations": 86.9,
      "label_share": 0.0,
-     "land_cells": 17401,
+     "land_cells": 17403,
      "cells_unmasked": 971,
      "cells_firm": 971
     }
@@ -1320,7 +1439,7 @@
    "sigma_from": "from pottery",
    "has_absences": false,
    "n_absent": 0,
-   "units_known": 390,
+   "units_known": 387,
    "f0": [
     0.0,
     0.0,
@@ -1384,15 +1503,15 @@
      "slice": -4000,
      "occupations": 138.7,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 806,
      "cells_firm": 806
     },
     {
      "slice": -3000,
-     "occupations": 169.0,
+     "occupations": 167.6,
      "label_share": 0.0,
-     "land_cells": 17401,
+     "land_cells": 17403,
      "cells_unmasked": 1310,
      "cells_firm": 1310
     }
@@ -1468,7 +1587,7 @@
      "slice": -4000,
      "occupations": 2.3,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 40,
      "cells_firm": 40
     },
@@ -1476,7 +1595,7 @@
      "slice": -3000,
      "occupations": 4.5,
      "label_share": 0.0,
-     "land_cells": 17401,
+     "land_cells": 17403,
      "cells_unmasked": 53,
      "cells_firm": 53
     }
@@ -1488,7 +1607,7 @@
    "sigma_from": "from pottery",
    "has_absences": false,
    "n_absent": 0,
-   "units_known": 58,
+   "units_known": 56,
    "f0": [
     0.0,
     0.0,
@@ -1534,11 +1653,11 @@
     },
     {
      "slice": -6000,
-     "occupations": 2.9,
+     "occupations": 0.9,
      "label_share": 0.0,
      "land_cells": 17532,
-     "cells_unmasked": 49,
-     "cells_firm": 49
+     "cells_unmasked": 0,
+     "cells_firm": 0
     },
     {
      "slice": -5000,
@@ -1552,7 +1671,7 @@
      "slice": -4000,
      "occupations": 29.0,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 171,
      "cells_firm": 171
     },
@@ -1560,7 +1679,7 @@
      "slice": -3000,
      "occupations": 8.5,
      "label_share": 0.0,
-     "land_cells": 17401,
+     "land_cells": 17403,
      "cells_unmasked": 71,
      "cells_firm": 71
     }
@@ -1636,7 +1755,7 @@
      "slice": -4000,
      "occupations": 12.5,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 162,
      "cells_firm": 162
     },
@@ -1644,7 +1763,7 @@
      "slice": -3000,
      "occupations": 14.6,
      "label_share": 0.0,
-     "land_cells": 17401,
+     "land_cells": 17403,
      "cells_unmasked": 134,
      "cells_firm": 134
     }
@@ -1720,7 +1839,7 @@
      "slice": -4000,
      "occupations": 2.7,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 19,
      "cells_firm": 19
     },
@@ -1728,7 +1847,7 @@
      "slice": -3000,
      "occupations": 3.1,
      "label_share": 0.0,
-     "land_cells": 17401,
+     "land_cells": 17403,
      "cells_unmasked": 12,
      "cells_firm": 12
     }
@@ -1740,7 +1859,7 @@
    "sigma_from": "from pottery",
    "has_absences": false,
    "n_absent": 0,
-   "units_known": 63,
+   "units_known": 60,
    "f0": [
     1.0,
     1.0,
@@ -1778,7 +1897,7 @@
     },
     {
      "slice": -7000,
-     "occupations": 2.8,
+     "occupations": 1.8,
      "label_share": 0.0,
      "land_cells": 17680,
      "cells_unmasked": 0,
@@ -1794,27 +1913,27 @@
     },
     {
      "slice": -5000,
-     "occupations": 6.8,
+     "occupations": 6.3,
      "label_share": 0.0,
      "land_cells": 17389,
-     "cells_unmasked": 82,
-     "cells_firm": 82
+     "cells_unmasked": 76,
+     "cells_firm": 76
     },
     {
      "slice": -4000,
-     "occupations": 11.5,
+     "occupations": 10.4,
      "label_share": 0.0,
-     "land_cells": 17422,
-     "cells_unmasked": 143,
-     "cells_firm": 143
+     "land_cells": 17423,
+     "cells_unmasked": 135,
+     "cells_firm": 135
     },
     {
      "slice": -3000,
-     "occupations": 21.6,
+     "occupations": 21.1,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 206,
-     "cells_firm": 206
+     "land_cells": 17403,
+     "cells_unmasked": 203,
+     "cells_firm": 203
     }
    ]
   },
@@ -1882,23 +2001,23 @@
      "label_share": 0.0,
      "land_cells": 17389,
      "cells_unmasked": 2068,
-     "cells_firm": 1488
+     "cells_firm": 1487
     },
     {
      "slice": -4000,
      "occupations": 266.0,
      "label_share": 0.0,
-     "land_cells": 17422,
-     "cells_unmasked": 2170,
+     "land_cells": 17423,
+     "cells_unmasked": 2171,
      "cells_firm": 1430
     },
     {
      "slice": -3000,
      "occupations": 277.0,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 2241,
-     "cells_firm": 1541
+     "land_cells": 17403,
+     "cells_unmasked": 2242,
+     "cells_firm": 1542
     }
    ]
   },
@@ -1944,18 +2063,18 @@
     },
     {
      "slice": -5000,
-     "cells_unmasked": 1317,
+     "cells_unmasked": 1316,
      "land_cells": 17389
     },
     {
      "slice": -4000,
      "cells_unmasked": 1393,
-     "land_cells": 17422
+     "land_cells": 17423
     },
     {
      "slice": -3000,
      "cells_unmasked": 1431,
-     "land_cells": 17401
+     "land_cells": 17403
     }
    ]
   },
@@ -2022,14 +2141,14 @@
      "occupations": 925.7,
      "label_share": 0.0,
      "land_cells": 17389,
-     "cells_unmasked": 2049,
-     "cells_firm": 2049
+     "cells_unmasked": 2048,
+     "cells_firm": 2048
     },
     {
      "slice": -4000,
      "occupations": 802.9,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 3016,
      "cells_firm": 3016
     },
@@ -2037,9 +2156,9 @@
      "slice": -3000,
      "occupations": 1242.3,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 3751,
-     "cells_firm": 3751
+     "land_cells": 17403,
+     "cells_unmasked": 3709,
+     "cells_firm": 3709
     }
    ]
   },
@@ -2106,14 +2225,14 @@
      "occupations": 493.2,
      "label_share": 0.0,
      "land_cells": 17389,
-     "cells_unmasked": 1513,
-     "cells_firm": 1266
+     "cells_unmasked": 1512,
+     "cells_firm": 1265
     },
     {
      "slice": -4000,
      "occupations": 423.5,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 2159,
      "cells_firm": 1812
     },
@@ -2121,9 +2240,9 @@
      "slice": -3000,
      "occupations": 722.2,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 3002,
-     "cells_firm": 2788
+     "land_cells": 17403,
+     "cells_unmasked": 2997,
+     "cells_firm": 2783
     }
    ]
   },
@@ -2190,14 +2309,14 @@
      "occupations": 493.2,
      "label_share": 0.0,
      "land_cells": 17389,
-     "cells_unmasked": 1513,
-     "cells_firm": 1284
+     "cells_unmasked": 1512,
+     "cells_firm": 1283
     },
     {
      "slice": -4000,
      "occupations": 423.5,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 2159,
      "cells_firm": 1876
     },
@@ -2205,9 +2324,9 @@
      "slice": -3000,
      "occupations": 722.2,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 3002,
-     "cells_firm": 2558
+     "land_cells": 17403,
+     "cells_unmasked": 2997,
+     "cells_firm": 2553
     }
    ]
   },
@@ -2274,14 +2393,14 @@
      "occupations": 493.2,
      "label_share": 0.0,
      "land_cells": 17389,
-     "cells_unmasked": 1513,
-     "cells_firm": 1472
+     "cells_unmasked": 1512,
+     "cells_firm": 1471
     },
     {
      "slice": -4000,
      "occupations": 423.5,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 2159,
      "cells_firm": 2152
     },
@@ -2289,9 +2408,9 @@
      "slice": -3000,
      "occupations": 722.2,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 3002,
-     "cells_firm": 2977
+     "land_cells": 17403,
+     "cells_unmasked": 2997,
+     "cells_firm": 2972
     }
    ]
   },
@@ -2358,14 +2477,14 @@
      "occupations": 493.2,
      "label_share": 0.0,
      "land_cells": 17389,
-     "cells_unmasked": 1513,
-     "cells_firm": 1485
+     "cells_unmasked": 1512,
+     "cells_firm": 1484
     },
     {
      "slice": -4000,
      "occupations": 423.5,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 2159,
      "cells_firm": 2144
     },
@@ -2373,9 +2492,9 @@
      "slice": -3000,
      "occupations": 722.2,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 3002,
-     "cells_firm": 2993
+     "land_cells": 17403,
+     "cells_unmasked": 2997,
+     "cells_firm": 2988
     }
    ]
   },
@@ -2442,14 +2561,14 @@
      "occupations": 493.2,
      "label_share": 0.0,
      "land_cells": 17389,
-     "cells_unmasked": 1513,
-     "cells_firm": 1493
+     "cells_unmasked": 1512,
+     "cells_firm": 1492
     },
     {
      "slice": -4000,
      "occupations": 423.5,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 2159,
      "cells_firm": 2121
     },
@@ -2457,9 +2576,9 @@
      "slice": -3000,
      "occupations": 722.2,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 3002,
-     "cells_firm": 2834
+     "land_cells": 17403,
+     "cells_unmasked": 2997,
+     "cells_firm": 2829
     }
    ]
   },
@@ -2526,14 +2645,14 @@
      "occupations": 493.2,
      "label_share": 0.0,
      "land_cells": 17389,
-     "cells_unmasked": 1513,
-     "cells_firm": 1510
+     "cells_unmasked": 1512,
+     "cells_firm": 1509
     },
     {
      "slice": -4000,
      "occupations": 423.5,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 2159,
      "cells_firm": 2143
     },
@@ -2541,9 +2660,9 @@
      "slice": -3000,
      "occupations": 722.2,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 3002,
-     "cells_firm": 2997
+     "land_cells": 17403,
+     "cells_unmasked": 2997,
+     "cells_firm": 2992
     }
    ]
   },
@@ -2610,14 +2729,14 @@
      "occupations": 493.2,
      "label_share": 0.0,
      "land_cells": 17389,
-     "cells_unmasked": 1513,
-     "cells_firm": 1428
+     "cells_unmasked": 1512,
+     "cells_firm": 1427
     },
     {
      "slice": -4000,
      "occupations": 423.5,
      "label_share": 0.0,
-     "land_cells": 17422,
+     "land_cells": 17423,
      "cells_unmasked": 2159,
      "cells_firm": 1905
     },
@@ -2625,9 +2744,9 @@
      "slice": -3000,
      "occupations": 722.2,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 3002,
-     "cells_firm": 2664
+     "land_cells": 17403,
+     "cells_unmasked": 2997,
+     "cells_firm": 2667
     }
    ]
   },
@@ -2701,17 +2820,17 @@
      "slice": -4000,
      "occupations": 737.5,
      "label_share": 0.0,
-     "land_cells": 17422,
-     "cells_unmasked": 7359,
-     "cells_firm": 7072
+     "land_cells": 17423,
+     "cells_unmasked": 7274,
+     "cells_firm": 6987
     },
     {
      "slice": -3000,
      "occupations": 1103.3,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 8042,
-     "cells_firm": 8015
+     "land_cells": 17403,
+     "cells_unmasked": 7967,
+     "cells_firm": 7940
     }
    ]
   },
@@ -2785,17 +2904,17 @@
      "slice": -4000,
      "occupations": 737.5,
      "label_share": 0.0,
-     "land_cells": 17422,
-     "cells_unmasked": 7359,
-     "cells_firm": 7349
+     "land_cells": 17423,
+     "cells_unmasked": 7274,
+     "cells_firm": 7266
     },
     {
      "slice": -3000,
      "occupations": 1103.3,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 8042,
-     "cells_firm": 8004
+     "land_cells": 17403,
+     "cells_unmasked": 7967,
+     "cells_firm": 7928
     }
    ]
   },
@@ -2869,17 +2988,17 @@
      "slice": -4000,
      "occupations": 737.5,
      "label_share": 0.0,
-     "land_cells": 17422,
-     "cells_unmasked": 7359,
-     "cells_firm": 7062
+     "land_cells": 17423,
+     "cells_unmasked": 7274,
+     "cells_firm": 7026
     },
     {
      "slice": -3000,
      "occupations": 1103.3,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 8042,
-     "cells_firm": 8042
+     "land_cells": 17403,
+     "cells_unmasked": 7967,
+     "cells_firm": 7967
     }
    ]
   },
@@ -2953,17 +3072,17 @@
      "slice": -4000,
      "occupations": 737.5,
      "label_share": 0.0,
-     "land_cells": 17422,
-     "cells_unmasked": 7359,
-     "cells_firm": 7359
+     "land_cells": 17423,
+     "cells_unmasked": 7274,
+     "cells_firm": 7274
     },
     {
      "slice": -3000,
      "occupations": 1103.3,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 8042,
-     "cells_firm": 8042
+     "land_cells": 17403,
+     "cells_unmasked": 7967,
+     "cells_firm": 7967
     }
    ]
   },
@@ -3037,17 +3156,17 @@
      "slice": -4000,
      "occupations": 737.5,
      "label_share": 0.0,
-     "land_cells": 17422,
-     "cells_unmasked": 7359,
-     "cells_firm": 7318
+     "land_cells": 17423,
+     "cells_unmasked": 7274,
+     "cells_firm": 7233
     },
     {
      "slice": -3000,
      "occupations": 1103.3,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 8042,
-     "cells_firm": 8041
+     "land_cells": 17403,
+     "cells_unmasked": 7967,
+     "cells_firm": 7966
     }
    ]
   },
@@ -3121,17 +3240,17 @@
      "slice": -4000,
      "occupations": 737.5,
      "label_share": 0.0,
-     "land_cells": 17422,
-     "cells_unmasked": 7359,
-     "cells_firm": 7359
+     "land_cells": 17423,
+     "cells_unmasked": 7274,
+     "cells_firm": 7274
     },
     {
      "slice": -3000,
      "occupations": 1103.3,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 8042,
-     "cells_firm": 8042
+     "land_cells": 17403,
+     "cells_unmasked": 7967,
+     "cells_firm": 7967
     }
    ]
   },
@@ -3205,17 +3324,437 @@
      "slice": -4000,
      "occupations": 737.5,
      "label_share": 0.0,
-     "land_cells": 17422,
-     "cells_unmasked": 7359,
-     "cells_firm": 5668
+     "land_cells": 17423,
+     "cells_unmasked": 7274,
+     "cells_firm": 5627
     },
     {
      "slice": -3000,
      "occupations": 1103.3,
      "label_share": 0.0,
-     "land_cells": 17401,
-     "cells_unmasked": 8042,
-     "cells_firm": 7043
+     "land_cells": 17403,
+     "cells_unmasked": 7967,
+     "cells_firm": 6995
+    }
+   ]
+  },
+  "anc_whg": {
+   "kind": "share",
+   "sigma_km": 200,
+   "sigma_from": "from anatolian farmer",
+   "has_absences": true,
+   "n_absent": 1615,
+   "units_known": 3662,
+   "f0": [
+    0.68,
+    0.49,
+    0.383,
+    0.333,
+    0.257,
+    0.134,
+    0.139,
+    0.154
+   ],
+   "by_slice": [
+    {
+     "slice": -10000,
+     "occupations": 7.3,
+     "label_share": 0.0,
+     "land_cells": 17263,
+     "cells_unmasked": 117,
+     "cells_firm": 116
+    },
+    {
+     "slice": -9000,
+     "occupations": 31.8,
+     "label_share": 0.0,
+     "land_cells": 17478,
+     "cells_unmasked": 1112,
+     "cells_firm": 1112
+    },
+    {
+     "slice": -8000,
+     "occupations": 53.1,
+     "label_share": 0.0,
+     "land_cells": 17591,
+     "cells_unmasked": 1542,
+     "cells_firm": 1468
+    },
+    {
+     "slice": -7000,
+     "occupations": 120.2,
+     "label_share": 0.0,
+     "land_cells": 17680,
+     "cells_unmasked": 2089,
+     "cells_firm": 1827
+    },
+    {
+     "slice": -6000,
+     "occupations": 243.4,
+     "label_share": 0.0,
+     "land_cells": 17532,
+     "cells_unmasked": 3917,
+     "cells_firm": 3625
+    },
+    {
+     "slice": -5000,
+     "occupations": 865.3,
+     "label_share": 0.0,
+     "land_cells": 17389,
+     "cells_unmasked": 4390,
+     "cells_firm": 3988
+    },
+    {
+     "slice": -4000,
+     "occupations": 756.5,
+     "label_share": 0.0,
+     "land_cells": 17423,
+     "cells_unmasked": 5602,
+     "cells_firm": 5485
+    },
+    {
+     "slice": -3000,
+     "occupations": 1143.2,
+     "label_share": 0.0,
+     "land_cells": 17403,
+     "cells_unmasked": 6391,
+     "cells_firm": 6391
+    }
+   ]
+  },
+  "anc_ehg": {
+   "kind": "share",
+   "sigma_km": 200,
+   "sigma_from": "from anatolian farmer",
+   "has_absences": true,
+   "n_absent": 2524,
+   "units_known": 3662,
+   "f0": [
+    0.227,
+    0.295,
+    0.134,
+    0.078,
+    0.153,
+    0.128,
+    0.106,
+    0.163
+   ],
+   "by_slice": [
+    {
+     "slice": -10000,
+     "occupations": 7.3,
+     "label_share": 0.0,
+     "land_cells": 17263,
+     "cells_unmasked": 117,
+     "cells_firm": 48
+    },
+    {
+     "slice": -9000,
+     "occupations": 31.8,
+     "label_share": 0.0,
+     "land_cells": 17478,
+     "cells_unmasked": 1112,
+     "cells_firm": 886
+    },
+    {
+     "slice": -8000,
+     "occupations": 53.1,
+     "label_share": 0.0,
+     "land_cells": 17591,
+     "cells_unmasked": 1542,
+     "cells_firm": 1460
+    },
+    {
+     "slice": -7000,
+     "occupations": 120.2,
+     "label_share": 0.0,
+     "land_cells": 17680,
+     "cells_unmasked": 2089,
+     "cells_firm": 2062
+    },
+    {
+     "slice": -6000,
+     "occupations": 243.4,
+     "label_share": 0.0,
+     "land_cells": 17532,
+     "cells_unmasked": 3917,
+     "cells_firm": 3582
+    },
+    {
+     "slice": -5000,
+     "occupations": 865.3,
+     "label_share": 0.0,
+     "land_cells": 17389,
+     "cells_unmasked": 4390,
+     "cells_firm": 4191
+    },
+    {
+     "slice": -4000,
+     "occupations": 756.5,
+     "label_share": 0.0,
+     "land_cells": 17423,
+     "cells_unmasked": 5602,
+     "cells_firm": 5033
+    },
+    {
+     "slice": -3000,
+     "occupations": 1143.2,
+     "label_share": 0.0,
+     "land_cells": 17403,
+     "cells_unmasked": 6391,
+     "cells_firm": 5961
+    }
+   ]
+  },
+  "anc_irn": {
+   "kind": "share",
+   "sigma_km": 200,
+   "sigma_from": "from anatolian farmer",
+   "has_absences": true,
+   "n_absent": 2769,
+   "units_known": 3662,
+   "f0": [
+    0.052,
+    0.077,
+    0.097,
+    0.037,
+    0.036,
+    0.022,
+    0.048,
+    0.12
+   ],
+   "by_slice": [
+    {
+     "slice": -10000,
+     "occupations": 7.3,
+     "label_share": 0.0,
+     "land_cells": 17263,
+     "cells_unmasked": 117,
+     "cells_firm": 117
+    },
+    {
+     "slice": -9000,
+     "occupations": 31.8,
+     "label_share": 0.0,
+     "land_cells": 17478,
+     "cells_unmasked": 1112,
+     "cells_firm": 1112
+    },
+    {
+     "slice": -8000,
+     "occupations": 53.1,
+     "label_share": 0.0,
+     "land_cells": 17591,
+     "cells_unmasked": 1542,
+     "cells_firm": 1495
+    },
+    {
+     "slice": -7000,
+     "occupations": 120.2,
+     "label_share": 0.0,
+     "land_cells": 17680,
+     "cells_unmasked": 2089,
+     "cells_firm": 2085
+    },
+    {
+     "slice": -6000,
+     "occupations": 243.4,
+     "label_share": 0.0,
+     "land_cells": 17532,
+     "cells_unmasked": 3917,
+     "cells_firm": 3847
+    },
+    {
+     "slice": -5000,
+     "occupations": 865.3,
+     "label_share": 0.0,
+     "land_cells": 17389,
+     "cells_unmasked": 4390,
+     "cells_firm": 4295
+    },
+    {
+     "slice": -4000,
+     "occupations": 756.5,
+     "label_share": 0.0,
+     "land_cells": 17423,
+     "cells_unmasked": 5602,
+     "cells_firm": 5473
+    },
+    {
+     "slice": -3000,
+     "occupations": 1143.2,
+     "label_share": 0.0,
+     "land_cells": 17403,
+     "cells_unmasked": 6391,
+     "cells_firm": 6207
+    }
+   ]
+  },
+  "anc_lev": {
+   "kind": "share",
+   "sigma_km": 200,
+   "sigma_from": "from anatolian farmer",
+   "has_absences": true,
+   "n_absent": 3528,
+   "units_known": 3662,
+   "f0": [
+    0.003,
+    0.044,
+    0.112,
+    0.032,
+    0.019,
+    0.007,
+    0.022,
+    0.016
+   ],
+   "by_slice": [
+    {
+     "slice": -10000,
+     "occupations": 7.3,
+     "label_share": 0.0,
+     "land_cells": 17263,
+     "cells_unmasked": 117,
+     "cells_firm": 117
+    },
+    {
+     "slice": -9000,
+     "occupations": 31.8,
+     "label_share": 0.0,
+     "land_cells": 17478,
+     "cells_unmasked": 1112,
+     "cells_firm": 1112
+    },
+    {
+     "slice": -8000,
+     "occupations": 53.1,
+     "label_share": 0.0,
+     "land_cells": 17591,
+     "cells_unmasked": 1542,
+     "cells_firm": 1441
+    },
+    {
+     "slice": -7000,
+     "occupations": 120.2,
+     "label_share": 0.0,
+     "land_cells": 17680,
+     "cells_unmasked": 2089,
+     "cells_firm": 1972
+    },
+    {
+     "slice": -6000,
+     "occupations": 243.4,
+     "label_share": 0.0,
+     "land_cells": 17532,
+     "cells_unmasked": 3917,
+     "cells_firm": 3904
+    },
+    {
+     "slice": -5000,
+     "occupations": 865.3,
+     "label_share": 0.0,
+     "land_cells": 17389,
+     "cells_unmasked": 4390,
+     "cells_firm": 4390
+    },
+    {
+     "slice": -4000,
+     "occupations": 756.5,
+     "label_share": 0.0,
+     "land_cells": 17423,
+     "cells_unmasked": 5602,
+     "cells_firm": 5468
+    },
+    {
+     "slice": -3000,
+     "occupations": 1143.2,
+     "label_share": 0.0,
+     "land_cells": 17403,
+     "cells_unmasked": 6391,
+     "cells_firm": 6377
+    }
+   ]
+  },
+  "anc_naf": {
+   "kind": "share",
+   "sigma_km": 200,
+   "sigma_from": "from anatolian farmer",
+   "has_absences": true,
+   "n_absent": 3572,
+   "units_known": 3662,
+   "f0": [
+    0.016,
+    0.002,
+    0.001,
+    0.004,
+    0.013,
+    0.011,
+    0.006,
+    0.007
+   ],
+   "by_slice": [
+    {
+     "slice": -10000,
+     "occupations": 7.3,
+     "label_share": 0.0,
+     "land_cells": 17263,
+     "cells_unmasked": 117,
+     "cells_firm": 117
+    },
+    {
+     "slice": -9000,
+     "occupations": 31.8,
+     "label_share": 0.0,
+     "land_cells": 17478,
+     "cells_unmasked": 1112,
+     "cells_firm": 1112
+    },
+    {
+     "slice": -8000,
+     "occupations": 53.1,
+     "label_share": 0.0,
+     "land_cells": 17591,
+     "cells_unmasked": 1542,
+     "cells_firm": 1542
+    },
+    {
+     "slice": -7000,
+     "occupations": 120.2,
+     "label_share": 0.0,
+     "land_cells": 17680,
+     "cells_unmasked": 2089,
+     "cells_firm": 2089
+    },
+    {
+     "slice": -6000,
+     "occupations": 243.4,
+     "label_share": 0.0,
+     "land_cells": 17532,
+     "cells_unmasked": 3917,
+     "cells_firm": 3888
+    },
+    {
+     "slice": -5000,
+     "occupations": 865.3,
+     "label_share": 0.0,
+     "land_cells": 17389,
+     "cells_unmasked": 4390,
+     "cells_firm": 4278
+    },
+    {
+     "slice": -4000,
+     "occupations": 756.5,
+     "label_share": 0.0,
+     "land_cells": 17423,
+     "cells_unmasked": 5602,
+     "cells_firm": 5574
+    },
+    {
+     "slice": -3000,
+     "occupations": 1143.2,
+     "label_share": 0.0,
+     "land_cells": 17403,
+     "cells_unmasked": 6391,
+     "cells_firm": 6391
     }
    ]
   }

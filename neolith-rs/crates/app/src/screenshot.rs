@@ -28,6 +28,8 @@ pub struct Options {
     pub art: ArtMode,
     /// Blend biome edges and draw shores.
     pub blend: bool,
+    /// Draw the close-up micro-props.
+    pub micro: bool,
     pub hillshade: Option<f64>,
     /// Relief exaggeration; 0 turns the relief off.
     pub relief: Option<f64>,
@@ -44,8 +46,9 @@ pub fn run(world: &World, opt: &Options) -> Result<(), String> {
 
     let grid = &world.grid;
     let proj = Projection::new(grid.centre_of_bounds());
-    let board = mesh::build(grid, &proj);
+    let board = mesh::build(grid, &proj, &mesh::fine_hexes(world));
     let mut renderer = BoardRenderer::new(&device, &queue, COLOUR_FORMAT, &board, grid.cols as u32, grid.rows as u32);
+    renderer.micro_props = opt.micro;
     renderer.upload_massif(&queue, &scene::massif_texels(grid, &world.massif));
     if let Some(map) = &world.heightmap {
         renderer.upload_heightfield(&queue, &crate::board::heightfield::build(grid, map));
@@ -63,6 +66,18 @@ pub fn run(world: &World, opt: &Options) -> Result<(), String> {
         for (code, terrain) in codes.iter_mut().zip(&snapshot.terrain) {
             if *terrain == neolith_core::Terrain::Ice as u8 {
                 *code = neolith_core::evidence::NO_VALUE;
+            }
+        }
+        renderer.upload_evidence(&queue, &scene::evidence_texels(grid, &codes));
+    }
+    if opt.mode == MapMode::Ancestry {
+        if !world.has_ancestry() {
+            return Err("this world has no ancestry table (neolith-convert --attach-samples)".into());
+        }
+        let mut codes = world.ancestry_codes(opt.year);
+        for (code, terrain) in codes.iter_mut().zip(&snapshot.terrain) {
+            if *terrain == neolith_core::Terrain::Ice as u8 {
+                *code = neolith_core::ancestry::NO_CODE;
             }
         }
         renderer.upload_evidence(&queue, &scene::evidence_texels(grid, &codes));
@@ -106,8 +121,18 @@ pub fn run(world: &World, opt: &Options) -> Result<(), String> {
         .filter(|(_, s)| s.exists_at(opt.year))
         .map(|(i, st)| Piece::for_site(world, i, opt.year, crate::renown::lookup(st)))
         .collect();
-    let relief = crate::board::relief::Relief::new(grid, &snapshot.height, crate::board::relief::scale(&style)).smoothed(style.art_blend);
+    let dem = world.heightmap.clone().map(|m| crate::board::relief::Dem::new(std::sync::Arc::new(m), &snapshot.terrain, &world.landform));
+    let relief = crate::board::relief::Relief::new(grid, &snapshot.height, crate::board::relief::scale(&style))
+        .smoothed(style.art_blend)
+        .with_dem(dem.clone());
     let ruins: Vec<Piece> = (0..world.settlements.len()).filter_map(|i| Piece::ruin_of(world, i, opt.year, crate::renown::lookup(&world.settlements[i]))).collect();
+    // Onto the banks and apart, as on the live board (view.rs).
+    let mut all = [&pieces[..], &ruins[..]].concat();
+    let hy = scene::history_year(opt.year);
+    let waters = crate::board::layout::Waters::new(&world.rivers, &lines::flowing(&world.rivers, hy), &world.lakes, hy);
+    crate::board::layout::place(&mut all, &waters, grid, &snapshot.terrain);
+    let ruins = all.split_off(pieces.len());
+    let pieces = all;
     let verts = scene::piece_vertices(&[&ruins[..], &pieces[..]].concat(), &proj, &relief, opt.flat, cam.dist);
     renderer.upload_history(&queue, &scene::history_texels(world, scene::history_year(opt.year)));
     renderer.upload_pieces(&device, &queue, &verts);
@@ -116,7 +141,7 @@ pub fn run(world: &World, opt: &Options) -> Result<(), String> {
     let line_board = lines::Board { proj: &proj, relief: &relief, t: opt.flat, cam_dist: cam.dist };
     lines::rivers(&mut line_mesh, &world.rivers, &world.lakes, &snapshot, &line_board);
     renderer.upload_lines(&device, &queue, &line_mesh);
-    renderer.upload_river_field(&queue, &lines::river_field(&world.rivers, &lines::flowing(&world.rivers, opt.year), grid));
+    renderer.upload_river_field(&queue, &lines::river_field(&world.rivers, &lines::flowing(&world.rivers, opt.year), grid, &snapshot.height, dem.as_ref()));
 
     let globals = scene::globals(&view, &style, opt.mode, grid, &board, opt.size[1] as f32);
 

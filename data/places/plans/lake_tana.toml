@@ -47,15 +47,15 @@ not settlements.
 
 [[known_site]]
 name = "Kurtiye rock shelter"
-lon = 37.3
-lat = 11.95
-coordinates = "approximate"
-start = -4050
-end = -1
-what = "Small rock shelter on the shore of Lake Tana. The thesis abstract reports occupation from the sixth millennium BP (start taken as 6000 cal BP; it may be uncalibrated), fish-dominated wild fauna, abundant lithics and pottery, domestic animals only very late, no farming before about the end of the first millennium BC. Position NOT known: the coordinates are a placeholder at the middle of the lake and must be replaced from the thesis. The end date is the abstract's 'end of the first millennium BC'."
-cite = "Firew, G.A. 2014. Archaeological fieldwork around Lake Tana area of northwest Ethiopia and the implication for an understanding of aquatic adaptation. PhD thesis, University of Bergen"
+lon = 37.5
+lat = 12.4167
+coordinates = "published"
+start = -4540
+end = 1660
+what = "Small rock shelter at the base of a volcanic hill on the northern shore of Lake Tana, 4-5 km north-east of Gorgora town, at 12 deg 25' N, 37 deg 30' E and about 1794 m a.s.l. (thesis p. 89). Fish-dominated wild fauna, abundant lithics and pottery; the only cattle remain is dated to cal AD 180-390. Thirteen radiocarbon dates: the oldest are on two human teeth, 5668 +/- 20 BP (MAMS-17751, 4540-4458 cal BC) and 5323 +/- 20 BP (MAMS-17752), and on charcoal, 5560 +/- 40 BP (Beta-297116, 4460-4340 cal BC); the youngest reach cal AD 1660. The author reports vertical mixing outside the drip line. start and end are the extreme 2-sigma ranges the thesis prints. Entered in data/settlements/literature_dates.csv as 'Firew 2014'."
+cite = "Firew, G.A. 2014. Archaeological fieldwork around Lake Tana area of northwest Ethiopia and the implication for an understanding of aquatic adaptation. PhD thesis, University of Bergen, chapter 4.2 and section 5.1"
 url = "https://hdl.handle.net/1956/8931"
-checked = false
+checked = true
 
 [[known_site]]
 name = "Gorgora rock shelter"
@@ -70,17 +70,21 @@ url = "https://doi.org/10.1038/s41598-024-67743-x"
 checked = true
 
 [[research]]
+status = "done"
+done_in = "data/settlements/literature_dates.csv, source 'Firew 2014': Kurtiye rock shelter at the thesis's own coordinates (12 deg 25' N, 37 deg 30' E, p. 89), with its four dates before 2000 BCE (Beta-297116, 5560+/-40; MAMS-17751, 5668+/-20 and MAMS-17752, 5323+/-20 on human teeth; Beta-301881, 4070+/-40). The PDF came through the NVA archive's file-link API (https://hdl.handle.net/1956/8931). The thesis's eleven later dates (2250 BP to the 17th century AD) are outside the board's window and not entered. The thesis lists other sites around the lake from its survey (chapter 4) that could be added as undated points."
 what = "Obtain Firew 2014 (Bergen PhD; the PDF is in the Norwegian archive NVA but returned HTTP 403 to me) and enter Kurtiye rock shelter with its radiocarbon dates, phases and position; list the other sites of his survey around the lake with whatever dating they have."
 url = "https://hdl.handle.net/1956/8931"
 yields = "One dated stratified site at the lake, c. 4,000 BCE onward, with fauna and pottery status; probably a handful of undated survey sites for inferred placement."
 effort = "One thesis; a short table. Ask a person to download it or write to the author (now at Bahir Dar University)."
 
 [[research]]
+next = "Find a library or open copy of Barnett 1999 (BAR International Series) and list any dated site within 100 km of the lake; Firew 2014 (chapter 2) cites the regional sequence and is a quicker way in."
 what = "Read Barnett 1999, The Emergence of Food Production in Ethiopia (BAR International Series), for any dated LSA or 'Neolithic' site within 100 km of the lake, and as a gazetteer of dated Ethiopian highland sites generally (cited by Sahle et al. 2024)."
 yields = "Unknown at Tana itself; likely 10-20 dated highland sites across Ethiopia, most after 3,000 BCE."
 effort = "A print monograph; a library job."
 
 [[research]]
+next = "Find an open copy of Dombrowski's 1970 Annales d'Ethiopie article and note the dates of the Lalibela and Natchabiet cave levels and their distance from the lake."
 what = "Locate Dombrowski's Lalibela and Natchabiet caves (Begemder; Annales d'Ethiopie 1970 and his 1971 Boston University thesis) and check whether any dated level predates 3,000 BCE and lies within 100 km of the box."
 yields = "Zero to two sites; most likely first millennium BCE and outside the window."
 effort = "Two print sources."

@@ -37,6 +37,7 @@ KINDS = ("strait", "river_mouth", "delta", "confluence", "island", "oasis", "lak
          "drowned_plain", "headland", "ad_hoc")
 VERDICTS = ("research", "speculate", "leave")
 CONFIDENCE = ("low", "medium", "high")
+RESEARCH_STATUS = ("open", "done", "dropped")
 DEFAULTS = {
     "out": "build/critic/places", "catalogue": "data/places/places.toml", "plans": "data/places/plans",
     "sources": "data/places/SOURCES.md", "near_km": 100.0, "far_km": 300.0, "pad_degrees": 2.0,
@@ -537,6 +538,10 @@ def plan_problems(path, places, layer_ids, years, sources_text, near_km=100.0):
         for field in ("what", "yields"):
             if not str(r.get(field, "")).strip():
                 errs.append(f"research {i}: no {field}")
+        # Follow-through, counted by `python -m pipeline state`: open (the
+        # default), done (ingested; say where in `done_in`) or dropped (say why).
+        if r.get("status", "open") not in RESEARCH_STATUS:
+            errs.append(f"research {i}: status {r.get('status')!r} not one of {', '.join(RESEARCH_STATUS)}")
     for i, x in enumerate(spec, 1):
         w = f"speculate {i}"
         t = str(x.get("target", ""))

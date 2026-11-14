@@ -709,7 +709,7 @@ impl NeolithApp {
             ("bevel", &mut st.bevel, 0.0, 1.0),
             ("art_strength", &mut st.art_strength, 0.0, 1.0),
             ("saturation", &mut st.saturation, 0.0, 1.3),
-            ("relief_exaggeration", &mut st.relief_exaggeration, 1.0, 40.0),
+            ("relief_exaggeration", &mut st.relief_exaggeration, 1.0, 80.0),
             ("mountain_height", &mut st.mountain_height, 0.3, 1.5),
             ("fill_margin", &mut st.fill_margin, 0.0, 0.45),
             ("depth", &mut st.depth, 0.0, 1.0),
@@ -753,10 +753,11 @@ impl NeolithApp {
             match MapMode::from_arg(m) {
                 Some(MapMode::Evidence) if s.world.evidence.is_empty() => return err("mode: this world has no evidence layers"),
                 Some(MapMode::Missing) if s.world.residuals.is_none() => return err("mode: this world has no missing-sites table"),
+                Some(MapMode::Ancestry) if !s.world.has_ancestry() => return err("mode: this world has no ancestry table"),
                 Some(m) => s.mode = m,
                 None => {
                     return err(format!(
-                        "mode: terrain, koeppen, pop, elevation, npp, biodiversity, expected, evidence or missing, not {m:?}"
+                        "mode: terrain, koeppen, pop, elevation, npp, biodiversity, expected, evidence, missing or ancestry, not {m:?}"
                     ))
                 }
             }
@@ -883,6 +884,10 @@ impl NeolithApp {
                         .and_then(|t| t.at(hex, year))
                         .and_then(|r| neolith_core::residuals::band_label(neolith_core::residuals::band((r.missing * 10.0).round() as i16)))
                         .map_or("no data".into(), |l| format!("{l} sites missing")),
+                    None if s.mode == MapMode::Ancestry => match (s.world.ancestry.as_ref(), s.world.ancestry_shares(hex, year)) {
+                        (Some(t), Some(shares)) => crate::ancestry_view::describe(t, &shares),
+                        _ => "unknown (no genome in reach)".into(),
+                    },
                     None if s.mode == MapMode::Evidence => evidence_label(s.evidence(), s.evidence_codes().get(hex.index()).copied()),
                     None if s.mode == MapMode::Biodiversity => {
                         neolith_core::forager::biodiversity_band_label(s.snapshot.biodiversity[hex.index()])

@@ -737,3 +737,22 @@ was = [5.3413, 43.5578]
 rename = "Château Blanc"
 source = "https://www.culture.gouv.fr/content/download/123775/file/BSR_1995_2.pdf"
 note = "Lost â. The 1995 regional archaeology bulletin lists Ventabren, Château Blanc (Bouches-du-Rhône) as a Neolithic/Bronze Age site; the position is consistent."
+
+[[fix]]
+name = "Maser? -Carrera San Giorgio"
+was = [11.8667, 45.3167]
+rename = "Maserà - Carrera San Giorgio"
+source = "https://en.wikipedia.org/wiki/Maser%C3%A0_di_Padova"
+note = "Lost à (stored as '?'). Maserà di Padova, a comune south of Padua (Veneto); the record sits exactly on the comune's coordinates (45°19'N 11°52'E). One date, Hd-22563, 5630 +/- 33 BP, cited to Visentini 2006 and the AIDA database. The locality name 'Carrera San Giorgio' is as filed (a space added before the dash). Checked 2026-11-13: Visentini 2006 (Aspetti cronologici e culturali della fine del Neolitico nell'Italia nord-orientale, in Pessina & Visentini (eds), Preistoria dell'Italia settentrionale, Udine, pp. 225-242, as AIDA's references.txt gives it) is not online, so the name could not be checked against it. AIDA (https://github.com/apalmisano82/AIDA, dates.csv DateID 1378) files the date the same way, context US 117, location quality B. 'Carrera' is probably Carrara San Giorgio, a former comune bordering Maserà (merged into Due Carrare in 1995, https://en.wikipedia.org/wiki/Due_Carrare); left as filed until the paper is read."
+
+# ------------------------------------------------- Famous sites
+# From docs/plans/housekeeping/2026-11-13-1806.md (2.2). Most duplicates of
+# famous sites are joined in records.toml ([[same]]); this one cannot be,
+# because it mixes two mounds.
+
+[[fix]]
+name = "Catalhoyuk, Konya Region"
+was = [32.8167, 37.65]
+drop = true
+source = "https://en.wikipedia.org/wiki/%C3%87atalh%C3%B6y%C3%BCk"
+note = "A second filing (from RADON) of 23 Çatalhöyük dates with no mound named, at the rounded 32.8167, 37.65, 2 km south-west of the mounds. XRONOS also files every one under its mound: OxA-9771, 9772, 9943 to 9945, 9980 and 10092 under Çatalhöyük East, and OxA-11750, 11751, 11754 to 11764, 11773, 11774 and 12089 under Çatalhöyük West (located by records.toml). Dropped as a duplicate; no date is lost. It could not be joined to one mound because it mixes the two, 300 m apart (East Neolithic, West Early Chalcolithic)."

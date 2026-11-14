@@ -25,6 +25,10 @@ pub const FADE_YEARS: f64 = 120.0;
 
 /// Half widths (radians) per river size, close up.
 const HALF_WIDTH: [f64; 3] = [0.00032, 0.00048, 0.00068];
+/// A river's half width (radians) close up, by its size (1-3).
+pub(crate) fn half_width(size: u8) -> f64 {
+    HALF_WIDTH[(size.clamp(1, 3) - 1) as usize]
+}
 /// Half width (radians) of a channel belt, close up.
 const BELT_HALF: f64 = 0.0038;
 /// A headwater starts at this fraction of the river's width and reaches full
@@ -61,7 +65,7 @@ const BELT: [u8; 3] = [0xd6, 0xea, 0xc0];
 
 /// How far a line is drawn from the map: the world width grows a little with
 /// camera distance (like pieces) so lines stay visible zoomed out.
-fn line_zoom(cam_dist: f64) -> f64 {
+pub fn line_zoom(cam_dist: f64) -> f64 {
     const ZOOM_EXP: f64 = 0.6;
     (cam_dist / ZOOM_FREE_DIST).max(1.0).powf(ZOOM_EXP)
 }
@@ -160,7 +164,7 @@ fn smooth(pts: &mut [LonLat], sigma: f64, step: f64) {
 /// A river course ready to stroke at `half_deg` half width: splined, evenly
 /// sampled, with no wiggle the line is too wide to show. Returns the points
 /// and their spacing.
-fn centreline(points: &[LonLat], half_deg: f64, sigma: f64) -> (Vec<LonLat>, f64) {
+pub(crate) fn centreline(points: &[LonLat], half_deg: f64, sigma: f64) -> (Vec<LonLat>, f64) {
     let step = (half_deg * 0.7).clamp(0.02, 0.08);
     let mut pts = resample(&river_spline(points, 0.04), step);
     smooth(&mut pts, sigma, step);
@@ -218,6 +222,9 @@ fn unit(v: f64) -> u8 {
 struct Spine {
     centre: Vec<DVec3>,
     side: Vec<DVec3>,
+    /// The width goes as [`line_zoom`] to this power, so `vs_line` can
+    /// rescale the ribbon for another camera distance until it is rebuilt.
+    zoom_exp: f64,
     /// Distance along the line, in dash periods.
     along: Vec<f32>,
     /// World vectors out past the first and last point, a half width long;
@@ -226,9 +233,13 @@ struct Spine {
 }
 
 impl Spine {
-    /// `half`: half width in radians of arc, scaled per point by `width`;
-    /// `lift`: height above the tiles, board units.
-    fn new(pts: &[LonLat], width: &[f64], half: f64, lift: f64, closed: bool, board: &Board) -> Self {
+    /// `half`: half width in radians of arc, scaled per point by `width`,
+    /// and going as `line_zoom ^ zoom_exp`; `lift`: height above the tiles,
+    /// board units; `head`: for a river on the smooth board, its head level
+    /// ([`head_levels`]): it then runs at its water level, down the gorge
+    /// the board cuts for it, instead of over the ground.
+    #[allow(clippy::too_many_arguments)]
+    fn new(pts: &[LonLat], width: &[f64], half: f64, zoom_exp: f64, lift: f64, closed: bool, head: Option<f64>, board: &Board) -> Self {
         let n = pts.len();
         let half_deg = half.to_degrees();
         // Local metric: a degree of longitude is cos(lat) of a degree of latitude.
@@ -275,6 +286,8 @@ impl Spine {
         // neighbours, so a line crossing a step stays on top of the higher tile.
         let tops: Vec<f64> = if board.relief.is_flat() {
             vec![0.0; n]
+        } else if let Some(head) = head.filter(|_| board.relief.is_smooth()) {
+            water_levels(pts, head, |p| board.relief.at(p))
         } else {
             let own: Vec<f64> = (0..n)
                 .map(|i| board.relief.at(pts[i]).max(board.relief.at(left[i])).max(board.relief.at(right[i])))
@@ -295,7 +308,7 @@ impl Spine {
                 place(shift(pts[i], out), i) - place(pts[i], i)
             })
         });
-        Self { centre, side, along, caps }
+        Self { centre, side, zoom_exp, along, caps }
     }
 
     /// Appends the ribbon to `mesh`. `alpha` is the opacity per point;
@@ -306,13 +319,14 @@ impl Spine {
             return;
         }
         // The shader reads the profile back as `params.y * 3`.
-        let params = [unit(p.dash.unwrap_or(0.0)), p.profile as u8 * 85, unit(p.feather), 0];
+        let params = [unit(p.dash.unwrap_or(0.0)), p.profile as u8 * 85, unit(p.feather), unit(self.zoom_exp)];
         let vertex = |pos: DVec3, i: usize, uv: [f32; 2]| LineVertex {
             pos: pos.as_vec3().to_array(),
             uv,
             along: self.along[i],
             colour: [p.colour[0], p.colour[1], p.colour[2], unit(alpha[i])],
             params,
+            centre: self.centre[i].as_vec3().to_array(),
         };
         let base = mesh.vertices.len() as u32;
         for i in 0..n {
@@ -389,13 +403,15 @@ pub fn rivers(mesh: &mut LineMesh, rivers: &[River], lakes: &[Lake], snapshot: &
     let terrain_at = |p: LonLat| grid.hex_at(p).and_then(|id| snapshot.terrain.get(id.index()).copied());
     let run_start = rivers.iter().filter_map(|r| r.state.keys().first().map(|(y, _)| *y)).min().unwrap_or(year);
 
-    let mut order: Vec<(&River, Vec<(RiverState, f64)>)> = rivers
+    let mut order: Vec<(usize, &River, Vec<(RiverState, f64)>)> = rivers
         .iter()
-        .filter(|r| r.points.len() >= 2)
-        .map(|r| (r, phases(r, year, run_start)))
-        .filter(|(_, ph)| !ph.is_empty())
+        .enumerate()
+        .filter(|(_, r)| r.points.len() >= 2)
+        .map(|(i, r)| (i, r, phases(r, year, run_start)))
+        .filter(|(_, _, ph)| !ph.is_empty())
         .collect();
-    order.sort_by_key(|(r, _)| r.size);
+    order.sort_by_key(|(_, r, _)| r.size);
+    let heads = if board.relief.is_smooth() { head_levels(rivers, |p| board.relief.at(p)) } else { vec![f64::INFINITY; rivers.len()] };
 
     // Belts: the strip an alluvial river moves within, under every channel.
     // Its line is smoothed harder than the channel's, which wanders inside.
@@ -406,7 +422,7 @@ pub fn rivers(mesh: &mut LineMesh, rivers: &[River], lakes: &[Lake], snapshot: &
         x * x * (3.0 - 2.0 * x)
     };
     let belt_half = BELT_HALF * zoom.sqrt();
-    for (r, ph) in order.iter().filter(|(r, _)| r.size >= 2) {
+    for (ri, r, ph) in order.iter().filter(|(_, r, _)| r.size >= 2) {
         let shown = ph.iter().map(|(_, a)| *a).sum::<f64>().min(1.0);
         let half_deg = belt_half.to_degrees();
         let (pts, step) = centreline(&r.points, half_deg, half_deg * 0.6);
@@ -426,7 +442,7 @@ pub fn rivers(mesh: &mut LineMesh, rivers: &[River], lakes: &[Lake], snapshot: &
             continue;
         }
         let alpha: Vec<f64> = blur(&on, (BELT_FADE_DEG / step).round() as usize).iter().map(|g| g * 0.5 * (1.0 - 0.7 * far) * shown).collect();
-        let spine = Spine::new(&pts, &vec![1.0; pts.len()], belt_half, 0.00030, false, board);
+        let spine = Spine::new(&pts, &vec![1.0; pts.len()], belt_half, 0.5, 0.00030, false, Some(heads[*ri]), board);
         spine.paint(mesh, &alpha, &Paint { share: 1.0, colour: BELT, dash: None, feather: 0.3, profile: Profile::Plain });
     }
 
@@ -438,7 +454,7 @@ pub fn rivers(mesh: &mut LineMesh, rivers: &[River], lakes: &[Lake], snapshot: &
     }
     let channels: Vec<Channel> = order
         .iter()
-        .map(|(r, ph)| {
+        .map(|(i, r, ph)| {
             let half = HALF_WIDTH[(r.size.clamp(1, 3) - 1) as usize] * zoom;
             let half_deg = half.to_degrees();
             let (pts, step) = centreline(&r.points, half_deg, half_deg * 0.9);
@@ -459,7 +475,7 @@ pub fn rivers(mesh: &mut LineMesh, rivers: &[River], lakes: &[Lake], snapshot: &
             let wet: Vec<f64> = pts.iter().map(|p| (terrain_at(*p) == Some(Terrain::Water as u8)) as u8 as f64).collect();
             let dry: Vec<f64> = blur(&wet, (WATER_FADE_DEG / step).round() as usize).iter().map(|w| 1.0 - w).collect();
             let phases = ph.iter().map(|(state, a)| (*state == RiverState::Seasonal, dry.iter().map(|d| d * a).collect())).collect();
-            Channel { spine: Spine::new(&pts, &width, half, 0.0004, false, board), phases }
+            Channel { spine: Spine::new(&pts, &width, half, 1.0, 0.0004, false, Some(heads[*i]), board), phases }
         })
         .collect();
     // Beds first, under every channel, fading out with distance.
@@ -499,6 +515,68 @@ pub fn rivers(mesh: &mut LineMesh, rivers: &[River], lakes: &[Lake], snapshot: &
     }
 }
 
+/// Water levels along a centreline `pts` (upstream first): the ground
+/// height `at` each point, never above any point upstream of it nor above
+/// `head` (the level a stretch it continues ends at). Where the ground rises
+/// across a river's course, the water keeps its level and the board cuts a
+/// gorge down to it instead of the river climbing over the ridge.
+pub(crate) fn water_levels(pts: &[LonLat], head: f64, at: impl Fn(LonLat) -> f64) -> Vec<f64> {
+    let mut level = head;
+    pts.iter()
+        .map(|p| {
+            level = level.min(at(*p));
+            level
+        })
+        .collect()
+}
+
+/// Each river's starting cap for [`water_levels`]: the level the river it
+/// continues or leaves has reached there (infinite for a source). Stretches
+/// of one river, and distributaries, are separate courses; without this
+/// each would start again at the ground height where it begins.
+pub(crate) fn head_levels(rivers: &[River], at: impl Fn(LonLat) -> f64) -> Vec<f64> {
+    const NEAR: f64 = 0.08;
+    let dist = |a: LonLat, b: LonLat| (a.lon - b.lon).hypot(a.lat - b.lat);
+    // (river, the other river, the index of its point nearest our source).
+    let mut links = Vec::new();
+    for (i, r) in rivers.iter().enumerate() {
+        let Some(p0) = r.points.first().copied() else { continue };
+        for (j, o) in rivers.iter().enumerate() {
+            if o.id == r.id || o.points.is_empty() {
+                continue;
+            }
+            let (w, e) = o.points.iter().fold((f64::MAX, f64::MIN), |(w, e), q| (w.min(q.lon), e.max(q.lon)));
+            let (s, n) = o.points.iter().fold((f64::MAX, f64::MIN), |(s, n), q| (s.min(q.lat), n.max(q.lat)));
+            if p0.lon < w - NEAR || p0.lon > e + NEAR || p0.lat < s - NEAR || p0.lat > n + NEAR {
+                continue;
+            }
+            let best = o.points.iter().enumerate().min_by(|a, b| dist(*a.1, p0).total_cmp(&dist(*b.1, p0)));
+            if let Some((k, _)) = best.filter(|(_, q)| dist(**q, p0) < NEAR) {
+                links.push((i, j, k));
+            }
+        }
+    }
+    let mut heads = vec![f64::INFINITY; rivers.len()];
+    if links.is_empty() {
+        return heads;
+    }
+    // Chains are short; a few passes settle them in any order.
+    for _ in 0..4 {
+        let levels: Vec<Vec<f64>> = rivers.iter().zip(&heads).map(|(r, h)| water_levels(&r.points, *h, &at)).collect();
+        let mut changed = false;
+        for &(i, j, k) in &links {
+            if levels[j][k] < heads[i] {
+                heads[i] = levels[j][k];
+                changed = true;
+            }
+        }
+        if !changed {
+            break;
+        }
+    }
+    heads
+}
+
 /// Where the channels are, for the terrain art: a raster over the whole
 /// grid that gives, near a river, the nearest point of its centreline. The
 /// layout bake uses it to keep props out of the water and put riverside
@@ -511,10 +589,16 @@ pub fn rivers(mesh: &mut LineMesh, rivers: &[River], lakes: &[Lake], snapshot: &
 /// texel's centre to the nearest centreline point, over [`FIELD_REACH`]
 /// (-1..1 as 0..255); b: the channel's half width over [`FIELD_HALF_MAX`];
 /// a: 0 no river within reach, 128 seasonal, 255 perennial.
+///
+/// `level` (metres, one per texel) is the water level at that nearest
+/// point: the river only ever runs downhill (see [`water_levels`]), so
+/// where the ground rises across its course the shader cuts a gorge down to
+/// this level (`art_carve` in terrain_art.wgsl).
 #[derive(Clone, Debug, PartialEq)]
 pub struct RiverField {
     pub size: [u32; 2],
     pub rgba: Vec<u8>,
+    pub level: Vec<i16>,
 }
 
 /// How far (hex-local units) from a centreline the field reaches.
@@ -542,8 +626,46 @@ impl RiverField {
     /// No rivers on a grid of `cols × rows` hexes.
     pub fn empty(cols: u32, rows: u32) -> Self {
         let size = field_size(cols, rows).0;
-        Self { size, rgba: vec![0; (size[0] * size[1] * 4) as usize] }
+        let n = (size[0] * size[1]) as usize;
+        Self { size, rgba: vec![0; n * 4], level: vec![0; n] }
     }
+}
+
+/// The hexes any river's course comes near (whatever the year): their tops
+/// get a finer mesh (`mesh::build`) so the gorges the shader cuts along a
+/// river ([`RiverField::level`]) have vertices to cut with. A hex whose
+/// centre is farther than this from every course lies wholly outside the
+/// field's reach (a corner is one unit from the centre).
+pub fn river_hexes(rivers: &[River], grid: &GridSpec) -> Vec<bool> {
+    // FIELD_REACH + 1 (corner) + a margin for the smoothing of the centreline.
+    const NEAR: f64 = FIELD_REACH + 1.0 + 0.35;
+    let sqrt3_2 = 3f64.sqrt() / 2.0;
+    let local = |p: LonLat| DVec2::new(p.lon / (grid.w / 2.0), p.lat / (grid.h / 2.0) * sqrt3_2);
+    let mut fine = vec![false; grid.len()];
+    for r in rivers {
+        for seg in r.points.windows(2) {
+            let (a, b) = (seg[0], seg[1]);
+            let steps = ((local(b) - local(a)).length() / 0.3).ceil().max(1.0) as usize;
+            for k in 0..=steps {
+                let t = k as f64 / steps as f64;
+                let p = LonLat::new(a.lon + (b.lon - a.lon) * t, a.lat + (b.lat - a.lat) * t);
+                let Some(id) = grid.hex_at(p) else { continue };
+                let mut ring = vec![id];
+                for _ in 0..2 {
+                    let next: Vec<_> = ring.iter().flat_map(|h| (0..6).filter_map(|e| grid.neighbour(*h, e))).collect();
+                    ring.extend(next);
+                    ring.sort_by_key(|h| h.0);
+                    ring.dedup();
+                }
+                for h in ring {
+                    if (local(grid.centre(h)) - local(p)).length() < NEAR {
+                        fine[h.index()] = true;
+                    }
+                }
+            }
+        }
+    }
+    fine
 }
 
 /// What each river mostly is at `year`, in order: `None` when it isn't
@@ -566,8 +688,15 @@ pub fn flowing(rivers: &[River], year: Year) -> Vec<Option<bool>> {
 }
 
 /// The field for the rivers that are `flowing` (see [`flowing`]), at their
-/// close-up width: props only show close up.
-pub fn river_field(rivers: &[River], flowing: &[Option<bool>], grid: &GridSpec) -> RiverField {
+/// close-up width: props only show close up. `height`: metres per hex
+/// (`Snapshot::height`), for the water levels.
+pub fn river_field(
+    rivers: &[River],
+    flowing: &[Option<bool>],
+    grid: &GridSpec,
+    height: &[i16],
+    dem: Option<&super::relief::Dem>,
+) -> RiverField {
     let mut field = RiverField::empty(grid.cols as u32, grid.rows as u32);
     let ([w, h], texel) = field_size(grid.cols as u32, grid.rows as u32);
     let (w, h) = (w as usize, h as usize);
@@ -576,17 +705,22 @@ pub fn river_field(rivers: &[River], flowing: &[Option<bool>], grid: &GridSpec) 
     let local = |p: LonLat| DVec2::new((p.lon - lon0) / (grid.w / 2.0), (p.lat - lat0) / (grid.h / 2.0) * sqrt3_2);
     let centre = |i: usize, j: usize| DVec2::new((i as f64 + 0.5) * texel - 1.0, sqrt3_2 - (j as f64 + 0.5) * texel);
 
-    let rgba = &mut field.rgba;
+    let RiverField { rgba, level, .. } = &mut field;
     let mut best = vec![f32::INFINITY; w * h];
     let byte = |v: f64| (v.clamp(0.0, 1.0) * 255.0).round() as u8;
-    for (r, seasonal) in rivers.iter().zip(flowing).filter_map(|(r, f)| f.map(|s| (r, s))) {
+    // Metres on the smooth surface (mountains shaped from `dem`), as the
+    // shader carves it.
+    let ground = Relief::new(grid, height, 1.0).smoothed(true).with_dem(dem.cloned());
+    let heads = head_levels(rivers, |p| ground.at(p));
+    for ((r, seasonal), head) in rivers.iter().zip(flowing).zip(&heads).filter_map(|((r, f), h)| f.map(|s| ((r, s), h))) {
         let half = HALF_WIDTH[(r.size.clamp(1, 3) - 1) as usize];
         let half_deg = half.to_degrees();
         let (pts, _) = centreline(&r.points, half_deg, half_deg * 0.9);
+        let levels = water_levels(&pts, *head, |p| ground.at(p));
         let half_local = half_deg / (grid.h / 2.0) * sqrt3_2;
         let meta = [byte(half_local / FIELD_HALF_MAX), if seasonal { 128 } else { 255 }];
         let pts: Vec<DVec2> = pts.iter().map(|p| local(*p)).collect();
-        for seg in pts.windows(2) {
+        for (s, seg) in pts.windows(2).enumerate() {
             let (a, b) = (seg[0], seg[1]);
             let ab = b - a;
             let (lo, hi) = (a.min(b) - FIELD_REACH, a.max(b) + FIELD_REACH);
@@ -604,6 +738,8 @@ pub fn river_field(rivers: &[River], flowing: &[Option<bool>], grid: &GridSpec) 
                         best[k] = d as f32;
                         let o = off / FIELD_REACH * 0.5 + 0.5;
                         rgba[k * 4..k * 4 + 4].copy_from_slice(&[byte(o.x), byte(o.y), meta[0], meta[1]]);
+                        let l = levels[s] + (levels[s + 1] - levels[s]) * t;
+                        level[k] = l.round().clamp(i16::MIN as f64, i16::MAX as f64) as i16;
                     }
                 }
             }
@@ -676,6 +812,26 @@ mod tests {
         mesh
     }
 
+    /// `vs_line` rescales a ribbon's width about `centre` by the zoom ratio
+    /// to the power `params.w`: each cross-section's two edges sit either
+    /// side of it, belts follow the square root and channels the ratio.
+    #[test]
+    fn ribbons_scale_about_their_centreline() {
+        let mesh = build(&river(&[(-10000, RiverState::Perennial)]), -9000, Terrain::Floodplain);
+        let mut exps = std::collections::BTreeSet::new();
+        for pair in mesh.vertices.chunks(2) {
+            let [l, r] = pair else { panic!("vertices come in pairs") };
+            assert_eq!(l.centre, r.centre);
+            assert_eq!(l.params[3], r.params[3]);
+            exps.insert(l.params[3]);
+            if l.uv[1] == 0.0 {
+                let mid = (Vec3::from(l.pos) + Vec3::from(r.pos)) / 2.0;
+                assert!(mid.distance(Vec3::from(l.centre)) < 1e-6, "{mid} vs {:?}", l.centre);
+            }
+        }
+        assert_eq!(exps.into_iter().collect::<Vec<_>>(), vec![unit(0.5), unit(1.0)], "belt and channel");
+    }
+
     #[test]
     fn a_lake_outlet_is_not_a_headwater() {
         use neolith_core::LakeShape;
@@ -742,13 +898,13 @@ mod tests {
         assert_eq!(flowing(rs, Year(-9000)), vec![Some(false)]);
         assert_eq!(flowing(rs, Year(-7000)), vec![Some(true)]);
         assert_eq!(flowing(rs, Year(-5000)), vec![None]);
-        assert_eq!(river_field(rs, &flowing(rs, Year(-5000)), &grid), RiverField::empty(12, 12));
+        assert_eq!(river_field(rs, &flowing(rs, Year(-5000)), &grid, &vec![0; grid.len()], None), RiverField::empty(12, 12));
 
         // A straight river east along 31°N (the test river's spline swings
         // wide after its bend).
         let r = River { points: vec![LonLat::new(30.0, 31.0), LonLat::new(31.5, 31.0), LonLat::new(33.0, 31.0)], ..r };
         let rs = std::slice::from_ref(&r);
-        let field = river_field(rs, &flowing(rs, Year(-9000)), &grid);
+        let field = river_field(rs, &flowing(rs, Year(-9000)), &grid, &vec![0; grid.len()], None);
         let ([w, h], texel) = field_size(12, 12);
         assert_eq!(field.size, [w, h]);
         // A point 0.1°

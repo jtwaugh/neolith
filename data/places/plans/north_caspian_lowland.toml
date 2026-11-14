@@ -93,12 +93,16 @@ what = "Enter Kulkova et al. 2019, Table 1 (Algay, 13 dates; Oroshaemoe I, 5 dat
 url = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/46.23"
 yields = "6-8 well-dated sites, 6,300-4,500 cal BC, in a box that now has two correctly placed records"
 effort = "Two or three open papers; Varfolomeevka's full list is in Yudin's monograph (2004), in print"
+status = "done"
+done_in = "data/settlements/literature_dates.csv, sources 'Kulkova et al. 2019' (Algay, Oroshaemoe I), 'Vybornov et al. 2013', 'Vybornov 2016', 'Vybornov et al. 2017' (Varfolomeevskaya, Kairshak I/III/VI, Tenteksor I, Baibek, Kugat IV) and 'Vybornov et al. 2022'"
 
 [[research]]
 what = "Fix the two misplaced records. Varfolomeevskaya: move from 46.582 E, 49.038 N to the Maly Uzen by the Varfolomeevskoye reservoir; Dolbunova's 47.80 E, 50.52 N is a first approximation, and the exact point should be read off Yudin's or Vybornov's site map. Surskoy Ostrov 2 (KI-6690, citing Kotova 2009): move to the Dnieper rapids. Both share an odd longitude, 46.582, which suggests a bad geocode somewhere upstream (XRONOS or RADON); look for other records at that longitude."
 url = "https://journals.eco-vector.com/2658-4816/article/download/569138/134519"
 yields = "Two corrections; possibly more records with the same bad geocode"
 effort = "An hour"
+status = "done"
+done_in = "data/settlements/corrections.toml, [[fix]] Varfolomeevskaya and [[fix]] Surskoy Ostrov 2 (section 'Russian plain and steppe')"
 
 [[speculate]]
 target = "settlements"

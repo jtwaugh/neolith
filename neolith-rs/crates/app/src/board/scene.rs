@@ -232,7 +232,7 @@ pub fn globals(
         ],
         depth: [
             view.focus as f32,
-            if mode.index() == 0 && !style.flat_lighting { style.depth } else { 0.0 },
+            if mode.terrain_like() && !style.flat_lighting { style.depth } else { 0.0 },
             // Most at a low, grazing view; none looking nearly straight down,
             // or from far out, where the view is a map to be read edge to edge.
             style.depth
@@ -243,6 +243,8 @@ pub fn globals(
         ],
         // Filled in by the renderer from the last relief upload.
         relief: [0.0; 4],
+        // Set by the board view for the distance the pieces were built at.
+        piece: [1.0, 0.0, 0.0, 0.0],
     }
 }
 
@@ -347,6 +349,14 @@ pub struct Piece {
     /// never labelled or picked. 1 freshly abandoned, falling towards 0 as
     /// the mound erodes (it is already scaled into `mound`).
     pub ruin: f32,
+    /// Where the piece is drawn: `pos` as recorded, moved a little by
+    /// [`super::layout`] onto a river bank or a shore and off its
+    /// neighbours. Display only; the record keeps `pos`.
+    pub at: LonLat,
+    /// The way to the water beside the piece ([`super::layout`]), as
+    /// (east, north) on the ground, unit length; `None` inland. The piece
+    /// turns to face it and lines up along the bank.
+    pub water: Option<[f64; 2]>,
 }
 
 /// Years of occupation for a mound to reach full height.
@@ -374,58 +384,159 @@ fn mound_of(s: &neolith_core::Settlement, year: Year) -> f32 {
 fn mound_scale(shape: Shape, importance: u8) -> f32 {
     match shape {
         Shape::Town => 1.0,
-        Shape::Cave | Shape::Monument => 0.0,
+        Shape::Cave | Shape::Monument | Shape::Stilts | Shape::Mine | Shape::Findspot => 0.0,
+        // Its own low barrow, drawn with the piece.
+        Shape::Burial | Shape::Midden => 0.0,
+        Shape::Hamlet if importance >= 2 => 0.6,
+        Shape::Hamlet => 0.35,
         Shape::Camp if importance >= 2 => 0.55,
         Shape::Camp => 0.2,
     }
 }
 
 /// The silhouette of a piece.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum Shape {
-    /// A campfire on trampled ground: the ordinary site.
+    /// A campfire on trampled ground: a forager camp, and any site whose
+    /// record says nothing more.
     #[default]
     Camp,
-    /// A cluster of mud-brick houses: a recorded population of a town's size.
+    /// A few round thatched huts round a hearth: a farming site (any stage
+    /// from the aceramic Neolithic on) with no population figure.
+    Hamlet,
+    /// A cluster of mud-brick houses: a recorded population of a town's
+    /// size, or a tell.
     Town,
     /// A ring of standing stones: henges, sanctuaries, enclosures and
     /// famous monuments (Göbekli Tepe, Stonehenge).
     Monument,
     /// A rock outcrop with a dark mouth: caves and rock shelters.
     Cave,
+    /// A low barrow with a capstone: burials, cemeteries, cremations.
+    Burial,
+    /// A pale heap of shells: shell middens on shores and banks.
+    Midden,
+    /// A dark pit and its spoil heap: mines, quarries, axe and flint workings.
+    Mine,
+    /// Huts on piles over the water: lake villages, crannogs.
+    Stilts,
+    /// A small marker peg: a find, a core or a profile, not a settlement.
+    Findspot,
 }
 
+/// Stages from which a site is a farming one (the stage ids of
+/// [`neolith_core::SiteInfo::stage`]).
+const FARMING_STAGES: [&str; 5] = ["aceramic_neolithic", "neolithic", "chalcolithic", "bronze_age", "iron_age"];
+
+/// Site kinds that say only "people were here": the stage decides.
+const GENERIC_KINDS: [&str; 12] =
+    ["", "site", "settlement", "open air", "open-air site", "dwelling site", "habitation", "unknown", "mesolithic settlement", "neolithic settlement", "bronze age settlement", "multi-period complex"];
+
 impl Shape {
-    /// From the site's kind as filed and its population this year. A
-    /// monument or cave stays one whatever its population.
-    pub fn of(kind: &str, population: u32) -> Shape {
-        let k = kind.to_lowercase();
+    /// From the site's kind as filed, its stage this year (a
+    /// [`neolith_core::SiteInfo::stage`] id) and its population this year.
+    /// The kind wins where it names something (a monument or cave stays one
+    /// whatever its population); a generic kind falls to the stage.
+    pub fn of(kind: &str, stage: Option<&str>, population: u32) -> Shape {
+        let k = kind.trim().trim_end_matches('.').to_lowercase();
         let has = |words: &[&str]| words.iter().any(|w| k.contains(w));
-        if has(&["henge", "sanctuary", "megalith", "tomb", "dolmen", "menhir", "stone circle", "stone row", "temple", "enclosure", "cairn", "barrow"])
-            && !has(&["medieval", "christian", "iron age"])
-        {
+        let later = has(&["medieval", "christian", "iron age", "ringfort", "rath", "castle"]);
+        if has(&["lake core", "peat monolith", "organic mud", "alluvium", "profile", "dune system", "landnam", "log boat", "net find", "bog body", "withers yoke", "deer", "shipwreck", "find spot", "wood remains", "shoreline", "lake basin"]) {
+            Shape::Findspot
+        } else if has(&["pile-dwelling", "pile dwelling", "pfahlbau", "crannog", "lake village", "peat-bog settlement"]) {
+            Shape::Stilts
+        } else if has(&["henge", "sanctuary", "megalith", "dolmen", "menhir", "standing stone", "staing stone", "stone circle", "stone row", "temple", "enclosure", "cairn", "barrow"]) && !later {
             Shape::Monument
         } else if has(&["cave", "rock shelter", "abri"]) && !has(&["open air"]) {
             Shape::Cave
-        } else if population >= 1000 {
+        } else if has(&["midden", "kokkenmodding", "køkkenmødding"]) {
+            Shape::Midden
+        } else if has(&["burial", "cemetery", "cremation", "dead house", "tomb", "grave"]) && !later {
+            Shape::Burial
+        } else if has(&["mine", "quarry", "axe manufacture", "smelting", "flint working"]) && !later {
+            Shape::Mine
+        } else if k == "tell" || k.starts_with("tell ") || population >= 1000 {
             Shape::Town
+        } else if (GENERIC_KINDS.contains(&k.as_str()) || has(&["settlement", "house", "habitation", "dwelling"]))
+            && stage.is_some_and(|s| FARMING_STAGES.contains(&s))
+        {
+            Shape::Hamlet
         } else {
             Shape::Camp
         }
+    }
+
+    /// From a renown entry's `piece` name.
+    pub fn named(name: &str) -> Option<Shape> {
+        Some(match name {
+            "camp" => Shape::Camp,
+            "hamlet" | "village" => Shape::Hamlet,
+            "town" => Shape::Town,
+            "monument" => Shape::Monument,
+            "cave" => Shape::Cave,
+            "burial" => Shape::Burial,
+            "midden" => Shape::Midden,
+            "mine" => Shape::Mine,
+            "stilts" => Shape::Stilts,
+            _ => return None,
+        })
     }
 
     /// Height of the piece in base radii.
     fn height(self) -> f64 {
         match self {
             Shape::Camp => CAMPFIRE_H,
+            Shape::Hamlet => HAMLET_H,
             Shape::Town => TOWN_H,
             Shape::Monument => MONUMENT_H,
             Shape::Cave => CAVE_H,
+            Shape::Burial => 0.55,
+            Shape::Midden => 0.5,
+            Shape::Mine => 1.1,
+            Shape::Stilts => 1.15,
+            Shape::Findspot => 0.9,
         }
+    }
+
+    /// Whether the piece stands on dry land beside water when it can
+    /// (camps, hamlets and middens lean to the bank; stilts go out over it).
+    pub fn seeks_water(self) -> bool {
+        matches!(self, Shape::Camp | Shape::Hamlet | Shape::Midden | Shape::Stilts)
+    }
+}
+
+/// The site's stage at `year`: its own labelled stage in effect then (the
+/// latest from on or before `year`, else its first), or failing that the
+/// inferred one.
+pub fn stage_at(info: &neolith_core::SiteInfo, year: Year) -> Option<&str> {
+    let pick = |v: &'_ [(Year, String)]| -> Option<usize> {
+        if v.is_empty() {
+            return None;
+        }
+        Some(v.iter().rposition(|(y, _)| *y <= year).unwrap_or(0))
+    };
+    pick(&info.stage).map(|i| info.stage[i].1.as_str()).or_else(|| pick(&info.stage_inferred).map(|i| info.stage_inferred[i].1.as_str()))
+}
+
+/// The shape for settlement `i` at `year` with `population` there: the
+/// famous-site entry's `piece` when it names one, else [`Shape::of`].
+fn shape_for(world: &neolith_core::World, i: usize, year: Year, population: u32, fame: Option<crate::renown::Renowned>) -> Shape {
+    if let Some(s) = fame.and_then(|f| f.entry().piece.as_deref()).and_then(Shape::named) {
+        return s;
+    }
+    match world.site_info(i) {
+        Some(info) => Shape::of(&info.kind, stage_at(info, year), population),
+        None => Shape::of("", None, population),
     }
 }
 
 impl Piece {
+    /// A living farming settlement, which clears a little more than a camp
+    /// and farms a few plots just outside its clearing.
+    pub fn has_fields(&self) -> bool {
+        self.ruin <= 0.0 && matches!(self.shape, Shape::Hamlet | Shape::Town | Shape::Stilts)
+    }
+
     pub fn new(s: &neolith_core::Settlement, year: Year) -> Self {
         Piece {
             pos: s.pos,
@@ -438,6 +549,8 @@ impl Piece {
             renown: 0,
             mound: mound_of(s, year),
             ruin: 0.0,
+            at: s.pos,
+            water: None,
         }
     }
 
@@ -445,13 +558,7 @@ impl Piece {
     /// shaped by its kind (or its famous-site entry) and population.
     pub fn for_site(world: &neolith_core::World, i: usize, year: Year, fame: Option<crate::renown::Renowned>) -> Self {
         let p = Piece::new(&world.settlements[i], year);
-        let kind = world.site_info(i).map_or("", |info| info.kind.as_str());
-        let shape = match fame.and_then(|f| f.entry().piece.as_deref()) {
-            Some("monument") => Shape::Monument,
-            Some("town") => Shape::Town,
-            Some("cave") => Shape::Cave,
-            _ => Shape::of(kind, p.population),
-        };
+        let shape = shape_for(world, i, year, p.population, fame);
         let mound = p.mound * mound_scale(shape, p.importance);
         Piece { inferred: world.is_inferred(i), shape, mound, renown: fame.filter(|f| f.primary).map_or(0, |f| f.renown), ..p }
     }
@@ -468,24 +575,19 @@ impl Piece {
             return None;
         }
         let peak = s.population.keys().iter().map(|(_, n)| *n).max().unwrap_or(0);
-        let kind = world.site_info(i).map_or("", |info| info.kind.as_str());
-        let shape = match fame.and_then(|f| f.entry().piece.as_deref()) {
-            Some("monument") => Shape::Monument,
-            Some("town") => Shape::Town,
-            Some("cave") => Shape::Cave,
-            _ => Shape::of(kind, peak),
-        };
+        let shape = shape_for(world, i, end, peak, fame);
         let base = Piece::new(s, end);
         let p = Piece { shape, mound: base.mound * mound_scale(shape, base.importance), ..base };
         let lived = s.occupied_years_by(year) as f64;
-        let life = if p.shape == Shape::Monument {
+        let lasts = matches!(p.shape, Shape::Monument | Shape::Burial);
+        let life = if lasts {
             f64::INFINITY
         } else {
             (lived * RUIN_LIFE_FACTOR).clamp(RUIN_LIFE[0], RUIN_LIFE[1])
         };
         // At history_year steps (see mound_of).
         let left = 1.0 - (history_year(year).0 - end.0).max(0) as f64 / life;
-        let shows = p.shape == Shape::Monument || p.mound >= RUIN_MIN_MOUND;
+        let shows = lasts || p.mound >= RUIN_MIN_MOUND;
         // Worn down as it ages; drawn solid (opacity would show as stipple).
         let worn = left.max(0.0).sqrt() as f32;
         (left > 0.0 && shows).then(|| Piece { ruin: worn.max(0.05), mound: p.mound * worn, population: 0, renown: 0, ..p })
@@ -548,6 +650,11 @@ pub const CAMP_RADIUS_MAX: f64 = 0.75;
 /// The clearing's radius, in close-up piece radii: past the trampled dirt,
 /// so the trees ring the camp instead of standing on it.
 const CAMP_CLEARING: f64 = 1.35;
+/// A farming site's clearing is this much wider than a forager camp's.
+const FARM_CLEARING: f64 = 1.5;
+/// How far a farming site's fields reach, in clearing radii (`FIELD_RING`
+/// in terrain_art.wgsl).
+const FIELD_RING: f64 = 2.6;
 
 /// Where the settlements stand, for the terrain art: nothing grows on a
 /// camp, and the ground around it is trodden bare (`art_camp` in
@@ -555,7 +662,8 @@ const CAMP_CLEARING: f64 = 1.35;
 /// `(col * 2 + k % 2, row * 2 + k / 2)`, filled from k = 0: r, g: the camp's
 /// position in that hex's local coordinates over [`CAMP_SPAN`]; b: its
 /// clearing radius (hex-local, measured north-south) over
-/// [`CAMP_RADIUS_MAX`]; a: 0 for an empty entry, else the hex's east-west
+/// [`CAMP_RADIUS_MAX`] in the low 7 bits, plus 128 for a farming site with
+/// a few fields round it ([`Piece::has_fields`]); a: 0 for an empty entry, else the hex's east-west
 /// squash there (local x to local y, in world length). A camp near an edge
 /// is also listed in the hexes it reaches into. The clearing does not
 /// change with the zoom (the bake would have to follow), so it is sized for
@@ -570,14 +678,16 @@ pub fn camp_texels(grid: &GridSpec, pieces: &[Piece]) -> Vec<u8> {
     let unit = (grid.h / 2.0).to_radians() / sqrt3_2;
     let byte = |v: f64| (v.clamp(0.0, 1.0) * 255.0).round() as u8;
     for piece in pieces {
-        let Some(home) = grid.hex_at(piece.pos) else { continue };
-        let radius = PIECE_R0 * NEAR_SHRINK * tier_scale(piece.size_tier()) * CAMP_CLEARING / unit;
-        let squash = ((grid.w / 2.0) * piece.pos.lat.to_radians().cos() / ((grid.h / 2.0) / sqrt3_2)).clamp(0.05, 1.0);
+        let Some(home) = grid.hex_at(piece.at) else { continue };
+        let fields = piece.has_fields();
+        let radius = near_radius(piece.size_tier()) * CAMP_CLEARING * if fields { FARM_CLEARING } else { 1.0 } / unit;
+        let reach = radius * if fields { FIELD_RING } else { 1.0 };
+        let squash = ((grid.w / 2.0) * piece.at.lat.to_radians().cos() / ((grid.h / 2.0) / sqrt3_2)).clamp(0.05, 1.0);
         for id in std::iter::once(home).chain(grid.neighbours(home)) {
             let c = grid.centre(id);
-            let local = glam::DVec2::new((piece.pos.lon - c.lon) / (grid.w / 2.0), (piece.pos.lat - c.lat) / (grid.h / 2.0) * sqrt3_2);
+            let local = glam::DVec2::new((piece.at.lon - c.lon) / (grid.w / 2.0), (piece.at.lat - c.lat) / (grid.h / 2.0) * sqrt3_2);
             // Does the clearing reach this hex (its corners are 1 from the centre)?
-            let reaches = id == home || glam::DVec2::new(local.x * squash, local.y).length() < 1.0 + radius;
+            let reaches = id == home || glam::DVec2::new(local.x * squash, local.y).length() < 1.0 + reach;
             let slot = used[id.index()] as usize;
             if !reaches || slot >= kx * ky || local.abs().max_element() > CAMP_SPAN {
                 continue;
@@ -586,7 +696,8 @@ pub fn camp_texels(grid: &GridSpec, pieces: &[Piece]) -> Vec<u8> {
             let (col, row) = grid.col_row(id);
             let t = (row as usize * ky + slot / kx) * cols * kx + col as usize * kx + slot % kx;
             let p = local / CAMP_SPAN * 0.5 + 0.5;
-            out[t * 4..t * 4 + 4].copy_from_slice(&[byte(p.x), byte(p.y), byte(radius / CAMP_RADIUS_MAX), byte(squash).max(1)]);
+            let r = ((radius / CAMP_RADIUS_MAX).clamp(0.0, 1.0) * 127.0).round() as u8 | if fields { 128 } else { 0 };
+            out[t * 4..t * 4 + 4].copy_from_slice(&[byte(p.x), byte(p.y), r, byte(squash).max(1)]);
         }
     }
     out
@@ -611,8 +722,9 @@ pub fn history_year(year: Year) -> Year {
 /// RGBA8 texel per hex at (col, row). r: clearing, 0..1, the woods thinned
 /// around sites (each site's footprint grows over [`CLEARING_GROW`] years of
 /// occupation, spills a little into the neighbours, and grows back over
-/// [`CLEARING_REGROW`] years once abandoned; forager camps clear half as
-/// much as farming villages, inferred sites half again; overlapping
+/// [`CLEARING_REGROW`] years once abandoned; only farming sites clear:
+/// foragers leave the woods standing but for the camp itself, which
+/// [`camp_texels`] clears; inferred sites clear half as much; overlapping
 /// clearings combine as a union, never past 1). g: the same clearing where
 /// farming has arrived, which the art turns partly to fields. b, a: unused.
 pub fn history_texels(world: &neolith_core::World, year: Year) -> Vec<u8> {
@@ -631,7 +743,7 @@ pub fn history_texels(world: &neolith_core::World, year: Year) -> Vec<u8> {
             f *= (1.0 - since / CLEARING_REGROW).max(0.0);
         }
         if !farmed(home) {
-            f *= 0.5;
+            continue;
         }
         if world.is_inferred(i) {
             f *= 0.5;
@@ -688,7 +800,12 @@ pub fn tier_scale(tier: u8) -> f64 {
 /// A piece's base radius (radians of arc) at the reference distance, and
 /// how much smaller it is seen close up (about a tenth of that distance).
 const PIECE_R0: f64 = 0.0024;
-const NEAR_SHRINK: f64 = 0.6;
+/// Inside [`DIST_REF`] pieces shrink in the world as the camera closes in
+/// (world radius ∝ (dist / DIST_REF)^NEAR_EXP): at 1 they would keep a
+/// fixed size on screen. Close up they are small figures on a big map.
+const DIST_REF: f64 = 0.48;
+const NEAR_EXP: f64 = 0.7;
+const HAMLET_H: f64 = 0.95;
 const MONUMENT_H: f64 = 1.9;
 const TOWN_H: f64 = 1.25;
 const CAVE_H: f64 = 1.3;
@@ -702,6 +819,26 @@ fn star_scale(renown: u8) -> f64 {
     if renown >= 3 { 1.3 } else { 1.0 }
 }
 
+/// A piece's world size at `cam_dist`, relative to [`PIECE_R0`].
+pub fn piece_zoom(cam_dist: f64) -> f64 {
+    const ZOOM_EXP: f64 = 0.2;
+    let rel = cam_dist / DIST_REF;
+    if rel >= 1.0 { rel.powf(ZOOM_EXP) } else { rel.max(1e-3).powf(NEAR_EXP) }
+}
+
+/// A piece's base radius (radians of arc) seen from closest in: what the
+/// clearings and the layout are sized for.
+pub fn near_radius(tier: u8) -> f64 {
+    PIECE_R0 * piece_zoom(super::camera::DIST_MIN) * tier_scale(tier)
+}
+
+/// How much of a piece's close-up detail shows at `cam_dist`: 0 from
+/// [`DIST_REF`] out, 1 at the closest zoom. Hamlets and camps gain huts
+/// as they shrink, so close up they read as a few tiny buildings.
+pub fn detail(cam_dist: f64) -> f64 {
+    ((DIST_REF / cam_dist).ln() / (DIST_REF / super::camera::DIST_MIN).ln()).clamp(0.0, 1.0)
+}
+
 pub fn piece_frame(piece: &Piece, proj: &Projection, relief: &Relief, t: f64, cam_dist: f64) -> PieceFrame {
     // About a third of a hex wide close up. Further out the world size grows only
     // slightly with distance, so pieces shrink on screen roughly with the map
@@ -709,17 +846,12 @@ pub fn piece_frame(piece: &Piece, proj: &Projection, relief: &Relief, t: f64, ca
     // Closer than DIST_REF they shrink in the world (NEAR_EXP), so a camp
     // doesn't grow to fill its hex and bury its neighbours: on screen a
     // piece still grows as you close in, but slower than the map does.
-    const DIST_REF: f64 = 0.48;
-    const ZOOM_EXP: f64 = 0.2;
-    const NEAR_EXP: f64 = 0.25;
-    let rel = cam_dist / DIST_REF;
-    let zoom = if rel >= 1.0 { rel.powf(ZOOM_EXP) } else { rel.max(1e-3).powf(NEAR_EXP) };
-    let radius = PIECE_R0 * zoom * tier_scale(piece.size_tier());
+    let radius = PIECE_R0 * piece_zoom(cam_dist) * tier_scale(piece.size_tier());
     let body = if piece.ruin > 0.0 { 0.0 } else { radius * piece.shape.height() };
-    let up = proj.normal(piece.pos, t);
+    let up = proj.normal(piece.at, t);
     PieceFrame {
         // On top of its mound.
-        base: proj.surface_at(piece.pos, t, relief.at(piece.pos)) + up * radius * MOUND_H * piece.mound as f64,
+        base: proj.surface_at(piece.at, t, relief.at(piece.at)) + up * radius * MOUND_H * piece.mound as f64,
         up,
         radius,
         body,
@@ -766,6 +898,11 @@ pub fn piece_vertices(pieces: &[Piece], proj: &Projection, relief: &Relief, t: f
     for piece in pieces {
         let f = piece_frame(piece, proj, relief, t, cam_dist);
         let up = f.up;
+        // Where the piece meets the ground, under any mound. Everything
+        // else is an offset from here in proportion to the radius, so the
+        // shader can scale the piece about it for another camera distance
+        // (Globals::piece).
+        let anchor = (f.base - up * f.radius * MOUND_H * piece.mound as f64).as_vec3().to_array();
         let x = up.cross(DVec3::Z).normalize();
         let z = x.cross(up);
         let dir = |a: f64| x * a.cos() + z * a.sin();
@@ -801,13 +938,66 @@ pub fn piece_vertices(pieces: &[Piece], proj: &Projection, relief: &Relief, t: f
                     pos: p.as_vec3().to_array(),
                     normal: n.as_vec3().to_array(),
                     colour: [r * gain, g * gain, bl * gain, alpha],
+                    anchor,
                 });
             }
         };
         const SOLID: [f32; 3] = [1.0; 3];
         let r = f.radius;
         let h = f.body;
-        let turn = rnd(0.0) * TAU;
+        // A direction on the ground at the piece, from (east, north).
+        let ground_dir = |e: f64, n: f64| {
+            let p = piece.at;
+            let step = 0.05;
+            let q = LonLat::new(p.lon + e * step / p.lat.to_radians().cos().max(0.05), p.lat + n * step);
+            let s = proj.surface_at(q, t, 0.0) - proj.surface_at(p, t, 0.0);
+            (s - up * s.dot(up)).normalize_or(z)
+        };
+        // Beside water the piece turns to face it (a little off square);
+        // inland it faces any way.
+        let facing = piece.water.map(|[e, n]| {
+            let w = ground_dir(e, n);
+            w.dot(z).atan2(w.dot(x))
+        });
+        let turn = match facing {
+            Some(a) => a + 0.25 * (rnd(0.0) - 0.5),
+            None => rnd(0.0) * TAU,
+        };
+        let near = detail(cam_dist);
+        // Rings, prisms and cones on the piece's ground plane.
+        let circle = |c: DVec3, rad: f64, n: usize, phase: f64| -> Vec<DVec3> {
+            (0..n).map(|k| c + (x * (phase + k as f64 * TAU / n as f64).cos() + z * (phase + k as f64 * TAU / n as f64).sin()) * rad).collect()
+        };
+        // A cone over a ring of `n` corners: a tent, a roof, a spoil heap.
+        let cone = |c: DVec3, rad: f64, tall: f64, n: usize, phase: f64| -> Vec<[DVec3; 3]> {
+            let ring = circle(c, rad, n, phase);
+            (0..n).map(|k| [ring[k], ring[(k + 1) % n], c + up * tall]).collect()
+        };
+        // A low, lumpy dome: a barrow, a shell heap.
+        let dome = |c: DVec3, rad: f64, tall: f64, salt: f64| -> Vec<[DVec3; 3]> {
+            const N: usize = 9;
+            let ring = |k: usize, frac: f64, lift: f64, s: f64| {
+                let k = k % N;
+                let a = turn + k as f64 * TAU / N as f64;
+                c + (x * a.cos() + z * a.sin()) * rad * frac * (0.85 + 0.3 * rnd(salt + s + k as f64)) + up * tall * lift
+            };
+            let hub = c + up * tall;
+            let mut v = Vec::new();
+            for k in 0..N {
+                let (a0, a1) = (ring(k, 1.0, 0.0, 0.0), ring(k + 1, 1.0, 0.0, 0.0));
+                let (b0, b1) = (ring(k, 0.6, 0.72, 20.0), ring(k + 1, 0.6, 0.72, 20.0));
+                v.extend([[a0, a1, b1], [a0, b1, b0], [b0, b1, hub]]);
+            }
+            v
+        };
+        // A thin upright: a stake, a post, a peg.
+        let post = |c: DVec3, w: f64, tall: f64, lean: DVec3| -> Vec<[DVec3; 3]> {
+            let foot = circle(c, w, 4, turn);
+            let head: Vec<DVec3> = foot.iter().map(|q| *q + up * tall + lean).collect();
+            let (mut sides, cap) = prism_faces(&foot, &head);
+            sides.extend(cap);
+            sides
+        };
         let ruin = piece.ruin > 0.0;
         // The mound: a low, ragged dome of earth (a tell, under a long-lived
         // village), bleached grey once the site is abandoned.
@@ -831,19 +1021,7 @@ pub fn piece_vertices(pieces: &[Piece], proj: &Projection, relief: &Relief, t: f
                 tri(b0, b1, hub, earth, 0.0, SOLID);
             }
         }
-        // Upright prism faces: `foot` and `head` are matching rings of
-        // corners; the head is closed with a cap.
-        fn prism(foot: &[DVec3], head: &[DVec3]) -> (Vec<[DVec3; 3]>, Vec<[DVec3; 3]>) {
-            let n = foot.len();
-            let mut sides = Vec::new();
-            for k in 0..n {
-                let j = (k + 1) % n;
-                sides.push([foot[k], foot[j], head[j]]);
-                sides.push([foot[k], head[j], head[k]]);
-            }
-            let cap = (1..n - 1).map(|k| [head[0], head[k], head[k + 1]]).collect();
-            (sides, cap)
-        }
+        let prism = prism_faces;
         // Bare, trodden ground under a town or a monument.
         if !ruin && matches!(piece.shape, Shape::Town | Shape::Monument) {
             let ground = if piece.shape == Shape::Town { [0x7a, 0x60, 0x44] } else { [0x6b, 0x63, 0x52] };
@@ -857,7 +1035,7 @@ pub fn piece_vertices(pieces: &[Piece], proj: &Projection, relief: &Relief, t: f
                 tri(rim(k), rim(k + 1), hub, ground, 0.0, SOLID);
             }
         }
-        if ruin && piece.shape != Shape::Monument {
+        if ruin && !matches!(piece.shape, Shape::Monument | Shape::Burial) {
             // A ruin is its mound alone.
         } else if piece.shape == Shape::Town {
             // Mud-brick houses packed together, flat-roofed, a ladder hole's
@@ -925,7 +1103,7 @@ pub fn piece_vertices(pieces: &[Piece], proj: &Projection, relief: &Relief, t: f
             }
             // The mouth: a dark arch standing just proud of the rock.
             let south = {
-                let s = proj.normal(LonLat::new(piece.pos.lon, piece.pos.lat - 0.1), t) - up;
+                let s = proj.normal(LonLat::new(piece.at.lon, piece.at.lat - 0.1), t) - up;
                 let s = s - up * s.dot(up);
                 s.normalize_or(z)
             };
@@ -938,6 +1116,152 @@ pub fn piece_vertices(pieces: &[Piece], proj: &Projection, relief: &Relief, t: f
             for j in 0..6 {
                 tri(front + up * r * 0.01, arch(j as f64 / 6.0), arch((j + 1) as f64 / 6.0), mouth, 0.0, SOLID);
             }
+        } else if piece.shape == Shape::Hamlet {
+            // Round huts of wattle and daub under conical thatch, round a
+            // hearth: one hut seen from afar, more as the camera closes in.
+            // Beside water they stand in a row along the bank, facing it.
+            let (wall, thatch, ember, fence) = ([0xa8, 0x8a, 0x66], [0xc6, 0xa5, 0x5a], [0xff, 0x74, 0x18], [0x5e, 0x48, 0x32]);
+            let extra = (piece.importance.min(2) + piece.size_tier()) as f64;
+            let n = 1 + (near * (2.0 + extra)).round() as usize;
+            let hr = r * if n == 1 { 0.4 } else { 0.22 };
+            let spots: Vec<DVec3> = (0..n)
+                .map(|k| {
+                    let jitter = (rnd(30.0 + k as f64) - 0.5) * r * 0.12;
+                    if n == 1 {
+                        f.base
+                    } else if facing.is_some() {
+                        let along = (k as f64 - (n - 1) as f64 / 2.0) * hr * 2.4;
+                        let back = r * 0.1 + if k % 2 == 1 { hr * 1.1 } else { 0.0 };
+                        f.base + dir(turn + FRAC_PI_2) * (along + jitter) - dir(turn) * back
+                    } else {
+                        at(turn + k as f64 * TAU / n as f64, r * 0.55 + jitter, 0.0)
+                    }
+                })
+                .collect();
+            for (k, c) in spots.iter().enumerate() {
+                let wall_h = h * (0.4 + 0.1 * rnd(40.0 + k as f64));
+                let roof_h = h * (0.88 + 0.12 * rnd(41.0 + k as f64));
+                let foot = circle(*c, hr, 7, turn);
+                let head: Vec<DVec3> = foot.iter().map(|q| *q + up * wall_h).collect();
+                let (walls, _) = prism(&foot, &head);
+                for [p, q, s] in walls {
+                    tri(p, q, s, wall, 0.0, SOLID);
+                }
+                for [p, q, s] in cone(*c + up * (wall_h * 0.85), hr * 1.25, roof_h - wall_h * 0.85, 7, turn) {
+                    tri(p, q, s, thatch, 0.0, SOLID);
+                }
+            }
+            if n > 1 {
+                // The shared hearth, glowing between the huts.
+                let c = if facing.is_some() { f.base + dir(turn) * r * 0.3 } else { f.base };
+                for [p, q, s] in cone(c, r * 0.09, r * 0.08, 5, turn) {
+                    tri(p, q, s, ember, 1.5, SOLID);
+                }
+            }
+            if near > 0.5 {
+                // A short fence of stakes on the landward side.
+                let back = dir(turn + std::f64::consts::PI);
+                for k in 0..7 {
+                    let a = turn + std::f64::consts::PI + (k as f64 - 3.0) * 0.22;
+                    let c = f.base + dir(a) * r * 0.95 + back * r * 0.05;
+                    for [p, q, s] in post(c, r * 0.025, r * 0.22, DVec3::ZERO) {
+                        tri(p, q, s, fence, 0.0, SOLID);
+                    }
+                }
+            }
+        } else if piece.shape == Shape::Burial {
+            // A long low barrow, grassed over, with the stones of its
+            // entrance standing at the front.
+            let (turf, stone, slab) = ([0x6e, 0x76, 0x4a], [0x8f, 0x8a, 0x80], [0xa8, 0xa3, 0x96]);
+            for [p, q, s] in dome(f.base, r * 0.8, h, 70.0) {
+                tri(p, q, s, turf, 0.0, SOLID);
+            }
+            let front = f.base + dir(turn) * r * 0.62;
+            let side = dir(turn + FRAC_PI_2);
+            for k in [-1.0, 1.0] {
+                for [p, q, s] in post(front + side * r * 0.14 * k, r * 0.05, h * 0.75, DVec3::ZERO) {
+                    tri(p, q, s, stone, 0.0, SOLID);
+                }
+            }
+            let cap: Vec<DVec3> = [(-1.0, -1.0), (1.0, -1.0), (1.0, 1.0), (-1.0, 1.0)]
+                .iter()
+                .map(|(a, b)| front + side * r * 0.24 * a + dir(turn) * r * 0.1 * b + up * h * 0.75)
+                .collect();
+            let lid: Vec<DVec3> = cap.iter().map(|q| *q + up * r * 0.08).collect();
+            let (sides, top) = prism(&cap, &lid);
+            for [p, q, s] in sides.into_iter().chain(top) {
+                tri(p, q, s, slab, 0.0, SOLID);
+            }
+        } else if piece.shape == Shape::Midden {
+            // Heaps of shell, white against the shore.
+            let (shell, grey) = ([0xe2, 0xdc, 0xcc], [0xb9, 0xb2, 0xa2]);
+            for k in 0..2 + (near * 2.0).round() as usize {
+                let c = if k == 0 { f.base } else { at(turn + 2.0 * k as f64, r * 0.5, 0.0) };
+                let (rad, tall) = if k == 0 { (r * 0.7, h) } else { (r * 0.38, h * 0.55) };
+                for (j, [p, q, s]) in dome(c, rad, tall, 80.0 + k as f64 * 9.0).into_iter().enumerate() {
+                    tri(p, q, s, if j % 5 == 2 { grey } else { shell }, 0.0, SOLID);
+                }
+            }
+        } else if piece.shape == Shape::Mine {
+            // A dark shaft, its chalk spoil heaped beside it, and a pole
+            // for the rope.
+            let (pit, spoil, wood) = ([0x22, 0x1c, 0x18], [0xd2, 0xca, 0xb4], [0x5e, 0x48, 0x32]);
+            let mouth = f.base - dir(turn) * r * 0.2;
+            let ring = circle(mouth + up * r * 0.03, r * 0.3, 8, turn);
+            for k in 0..8 {
+                tri(ring[k], ring[(k + 1) % 8], mouth + up * r * 0.03, pit, 0.0, SOLID);
+            }
+            for [p, q, s] in dome(f.base + dir(turn) * r * 0.45, r * 0.38, h * 0.6, 90.0) {
+                tri(p, q, s, spoil, 0.0, SOLID);
+            }
+            for [p, q, s] in post(mouth - dir(turn + FRAC_PI_2) * r * 0.32, r * 0.035, h, dir(turn + FRAC_PI_2) * r * 0.25) {
+                tri(p, q, s, wood, 0.0, SOLID);
+            }
+        } else if piece.shape == Shape::Stilts {
+            // Huts on a timber platform on piles over the water, and a
+            // plank walk back to the shore.
+            let (wood, deck, wall, thatch) = ([0x4e, 0x3a, 0x28], [0x8a, 0x6c, 0x4a], [0xa8, 0x8a, 0x66], [0xc6, 0xa5, 0x5a]);
+            let deck_h = h * 0.32;
+            let (fwd, side) = (dir(turn), dir(turn + FRAC_PI_2));
+            let corner = |a: f64, b: f64| f.base + side * r * 0.62 * a + fwd * r * 0.42 * b;
+            for (a, b) in [(-1.0, -1.0), (1.0, -1.0), (1.0, 1.0), (-1.0, 1.0), (0.0, -1.0), (0.0, 1.0)] {
+                for [p, q, s] in post(corner(a * 0.9, b * 0.85), r * 0.03, deck_h, DVec3::ZERO) {
+                    tri(p, q, s, wood, 0.0, SOLID);
+                }
+            }
+            let foot: Vec<DVec3> = [(-1.0, -1.0), (1.0, -1.0), (1.0, 1.0), (-1.0, 1.0)].iter().map(|(a, b)| corner(*a, *b) + up * deck_h).collect();
+            let head: Vec<DVec3> = foot.iter().map(|q| *q + up * r * 0.06).collect();
+            let (sides, top) = prism(&foot, &head);
+            for [p, q, s] in sides.into_iter().chain(top) {
+                tri(p, q, s, deck, 0.0, SOLID);
+            }
+            let n = 1 + (near * 1.6).round() as usize;
+            for k in 0..n {
+                let c = f.base + side * r * 0.62 * if n == 1 { 0.0 } else { -0.5 + k as f64 / (n - 1) as f64 } + up * (deck_h + r * 0.06);
+                let hr = r * if n == 1 { 0.3 } else { 0.2 };
+                let wall_h = (h - deck_h) * 0.4;
+                let foot = circle(c, hr, 6, turn);
+                let head: Vec<DVec3> = foot.iter().map(|q| *q + up * wall_h).collect();
+                for [p, q, s] in prism(&foot, &head).0 {
+                    tri(p, q, s, wall, 0.0, SOLID);
+                }
+                for [p, q, s] in cone(c + up * wall_h * 0.85, hr * 1.25, (h - deck_h - r * 0.06) - wall_h * 0.85, 6, turn) {
+                    tri(p, q, s, thatch, 0.0, SOLID);
+                }
+            }
+            // The walk: a plank from the deck's landward edge down to the shore.
+            let (a, b) = (f.base - fwd * r * 0.42 + up * (deck_h + r * 0.05), f.base - fwd * r * 1.3 + up * r * 0.02);
+            let w = side * r * 0.07;
+            tri(a - w, a + w, b + w, deck, 0.0, SOLID);
+            tri(a - w, b + w, b - w, deck, 0.0, SOLID);
+        } else if piece.shape == Shape::Findspot {
+            // A survey peg with a scrap of flag: something was found here.
+            let (peg, flag) = ([0xe0, 0xd8, 0xc0], [0xc8, 0x6a, 0x2c]);
+            for [p, q, s] in post(f.base, r * 0.035, h, DVec3::ZERO) {
+                tri(p, q, s, peg, 0.0, SOLID);
+            }
+            let top = f.base + up * h;
+            tri(top, top - up * h * 0.3, top - up * h * 0.15 + dir(turn + FRAC_PI_2) * r * 0.32, flag, 0.0, SOLID);
         } else {
             // Trampled dirt: a low, ragged patch of bare earth.
             let (dirt, ash, log, ember, smoke) =
@@ -982,6 +1306,46 @@ pub fn piece_vertices(pieces: &[Piece], proj: &Projection, relief: &Relief, t: f
                 }
             }
         }
+        if !ruin && piece.shape == Shape::Camp && near > 0.3 {
+            // Hide tents pitched by the fire, close up.
+            let hide = [0xa0, 0x82, 0x5c];
+            for k in 0..(near * 2.2).round() as usize {
+                let a = turn + 2.1 + k as f64 * 1.5 + 0.3 * rnd(60.0 + k as f64);
+                for [p, q, s] in cone(at(a, r * 0.7, 0.0), r * 0.24, h * 0.36, 6, a) {
+                    tri(p, q, s, hide, 0.0, SOLID);
+                }
+            }
+        }
+        if !ruin && facing.is_some() && near > 0.25 && matches!(piece.shape, Shape::Camp | Shape::Hamlet) {
+            // A dugout canoe drawn up at the water's edge.
+            let (hull, inside) = ([0x5a, 0x40, 0x2a], [0x2e, 0x22, 0x18]);
+            let c = f.base + dir(turn) * r * 1.3;
+            let along = dir(turn + FRAC_PI_2 + 0.5 * (rnd(50.0) - 0.5));
+            let across = along.cross(up).normalize_or(x);
+            let (len, w) = (r * 0.36, r * 0.08);
+            let outline: Vec<DVec3> = [(-1.0, 0.0), (-0.6, -1.0), (0.6, -1.0), (1.0, 0.0), (0.6, 1.0), (-0.6, 1.0)]
+                .iter()
+                .map(|(a, b)| c + along * len * a + across * w * b)
+                .collect();
+            let rim: Vec<DVec3> = outline.iter().map(|q| *q + up * r * 0.06).collect();
+            let (sides, top) = prism(&outline, &rim);
+            for [p, q, s] in sides {
+                tri(p, q, s, hull, 0.0, SOLID);
+            }
+            for [p, q, s] in top {
+                tri(p, q, s, inside, 0.0, SOLID);
+            }
+            if piece.shape == Shape::Camp && near > 0.55 {
+                // A fish weir: a fence of stakes out into the water.
+                let stake = [0x4a, 0x38, 0x28];
+                for k in 0..6 {
+                    let p0 = f.base + dir(turn) * r * (1.75 + 0.05 * (k as f64 - 2.5).abs()) + dir(turn + FRAC_PI_2) * r * 0.14 * (k as f64 - 2.5);
+                    for [p, q, s] in post(p0, r * 0.02, r * 0.3, DVec3::ZERO) {
+                        tri(p, q, s, stake, 0.0, SOLID);
+                    }
+                }
+            }
+        }
         if piece.starred() && !ruin {
             // A five-pointed star floating over a famous site, as two crossed
             // upright cut-outs so it reads from any side.
@@ -1001,6 +1365,20 @@ pub fn piece_vertices(pieces: &[Piece], proj: &Projection, relief: &Relief, t: f
         }
     }
     out
+}
+
+/// Upright prism faces: `foot` and `head` are matching rings of corners;
+/// the head is closed with a cap. (sides, cap)
+fn prism_faces(foot: &[DVec3], head: &[DVec3]) -> (Vec<[DVec3; 3]>, Vec<[DVec3; 3]>) {
+    let n = foot.len();
+    let mut sides = Vec::new();
+    for k in 0..n {
+        let j = (k + 1) % n;
+        sides.push([foot[k], foot[j], head[j]]);
+        sides.push([foot[k], head[j], head[k]]);
+    }
+    let cap = (1..n - 1).map(|k| [head[0], head[k], head[k + 1]]).collect();
+    (sides, cap)
 }
 
 /// Points along a centripetal Catmull-Rom spline through `pts`, about
@@ -1110,7 +1488,7 @@ mod tests {
         use crate::board::{camera::Camera, mesh};
         let grid = GridSpec { cols: 4, rows: 3, origin_lon: 0.0, origin_lat: 10.0, w: 0.5773502691896262, h: 0.5 };
         let proj = Projection::new(grid.centre_of_bounds());
-        let board = mesh::build(&grid, &proj);
+        let board = mesh::build(&grid, &proj, &[]);
         let view = Camera::initial(&grid).view(&proj, 0.0, glam::DVec2::new(800.0, 600.0));
         let art = |style: &BoardStyle| globals(&view, style, MapMode::Terrain, &grid, &board, 600.0).art;
         let on = BoardStyle { art_strength: 0.6, ..Default::default() };
@@ -1126,7 +1504,7 @@ mod tests {
         use crate::board::{camera::Camera, mesh, renderer::select_props};
         let grid = GridSpec { cols: 4, rows: 3, origin_lon: 0.0, origin_lat: 10.0, w: 0.5773502691896262, h: 0.5 };
         let proj = Projection::new(grid.centre_of_bounds());
-        let board = mesh::build(&grid, &proj);
+        let board = mesh::build(&grid, &proj, &[]);
         let style = BoardStyle::default();
         use neolith_core::Terrain;
         let state = |t: Terrain| [Terrain::ALL.iter().position(|x| *x == t).unwrap() as u8, 0, 0, 0].repeat(grid.len());
@@ -1151,13 +1529,61 @@ mod tests {
 
     #[test]
     fn kind_and_population_pick_the_piece_and_renown_the_star() {
-        let p = |population, importance| Piece { pos: LonLat::new(0.0, 0.0), population, importance, evidence: 2, inferred: false, highlighted: false, shape: Shape::Camp, renown: 0, mound: 0.0, ruin: 0.0 };
+        let p = |population, importance| Piece { pos: LonLat::new(0.0, 0.0), population, importance, evidence: 2, inferred: false, highlighted: false, shape: Shape::Camp, renown: 0, mound: 0.0, ruin: 0.0, at: LonLat::new(0.0, 0.0), water: None };
         // A recorded population of 1000 or more builds a town; a monument
         // or a cave keeps its shape whatever its population.
-        assert_eq!((Shape::of("site", 5000), Shape::of("settlement", 1000), Shape::of("site", 999)), (Shape::Town, Shape::Town, Shape::Camp));
-        assert_eq!((Shape::of("Henges", 0), Shape::of("henge monument", 5000), Shape::of("causewayed enclosure", 0)), (Shape::Monument, Shape::Monument, Shape::Monument));
-        assert_eq!((Shape::of("cave", 2000), Shape::of("rock shelter", 0), Shape::of("open air / rock shelter", 0)), (Shape::Cave, Shape::Cave, Shape::Camp));
-        assert_eq!(Shape::of("medieval enclosure", 0), Shape::Camp);
+        assert_eq!((Shape::of("site", None, 5000), Shape::of("settlement", None, 1000), Shape::of("site", None, 999)), (Shape::Town, Shape::Town, Shape::Camp));
+        assert_eq!((Shape::of("Henges", None, 0), Shape::of("henge monument", None, 5000), Shape::of("causewayed enclosure", None, 0)), (Shape::Monument, Shape::Monument, Shape::Monument));
+        assert_eq!((Shape::of("cave", None, 2000), Shape::of("rock shelter", None, 0), Shape::of("open air / rock shelter", None, 0)), (Shape::Cave, Shape::Cave, Shape::Camp));
+        assert_eq!(Shape::of("medieval enclosure", None, 0), Shape::Camp);
+        // Every kind of site in the record gets a fitting piece (the icon
+        // audit): the kind decides where it names something...
+        let cases = [
+            ("shell midden", Shape::Midden),
+            ("Kitchen midden.", Shape::Midden),
+            ("kokkenmodding", Shape::Midden),
+            ("rock shelter shell midden", Shape::Cave),
+            ("burial", Shape::Burial),
+            ("cemetery", Shape::Burial),
+            ("cremation pit", Shape::Burial),
+            ("dead house", Shape::Burial),
+            ("mine (flint)", Shape::Mine),
+            ("mine (jadeite)", Shape::Mine),
+            ("quarry site", Shape::Mine),
+            ("neolithic axe manufacture", Shape::Mine),
+            ("smelting site", Shape::Mine),
+            ("pile-dwelling", Shape::Stilts),
+            ("pfahlbau", Shape::Stilts),
+            ("possible platform crannog", Shape::Stilts),
+            ("peat-bog settlement", Shape::Stilts),
+            ("tell", Shape::Town),
+            ("tell mou", Shape::Town),
+            ("staing stone", Shape::Monument),
+            ("henge/ceremonial enclosure", Shape::Monument),
+            ("lake core", Shape::Findspot),
+            ("peat monolith", Shape::Findspot),
+            ("profile through fluvial sediment", Shape::Findspot),
+            ("log boat", Shape::Findspot),
+            ("bog body", Shape::Findspot),
+            ("giant irish deer", Shape::Findspot),
+            ("neolithic stone axe & animal bone find spot", Shape::Findspot),
+            ("medieval kiln, ringfort - rath", Shape::Camp),
+            ("early christian cereal-drying kiln", Shape::Camp),
+            ("hearth", Shape::Camp),
+            ("burnt mound", Shape::Camp),
+        ];
+        for (kind, want) in cases {
+            assert_eq!(Shape::of(kind, Some("neolithic"), 0), want, "{kind}");
+        }
+        // ...and a generic kind falls to the stage: farmers live in hamlets.
+        for kind in ["site", "settlement", "open air", "Settlement (house)", "dwelling site", ""] {
+            assert_eq!(Shape::of(kind, Some("neolithic"), 0), Shape::Hamlet, "{kind}");
+            assert_eq!(Shape::of(kind, Some("aceramic_neolithic"), 0), Shape::Hamlet, "{kind}");
+            assert_eq!(Shape::of(kind, Some("mesolithic"), 0), Shape::Camp, "{kind}");
+            assert_eq!(Shape::of(kind, None, 0), Shape::Camp, "{kind}");
+        }
+        assert_eq!(Shape::of("pit", Some("neolithic"), 0), Shape::Camp, "an activity trace is not a village");
+        assert_eq!(Shape::named("stilts"), Some(Shape::Stilts));
         // Only fame earns a star; importance never changes the piece.
         assert!(!p(0, 3).starred() && !p(5000, 3).starred());
         assert!(Piece { renown: 2, ..p(0, 0) }.starred() && !Piece { renown: 1, ..p(0, 0) }.starred());
@@ -1165,6 +1591,41 @@ mod tests {
         assert_eq!((p(150, 3).size_tier(), p(5000, 0).size_tier()), (0, 3));
         // Label priority: a figure wins, importance stands in without one.
         assert_eq!((p(150, 3).rank(), p(5000, 0).rank(), p(0, 2).rank()), (0, 3, 2));
+    }
+
+    /// The icon audit over the shipped world: how many sites draw as each
+    /// shape, and the kinds still drawn as a bare campfire. Fails if most
+    /// farming sites are still campfires.
+    /// `cargo test -p neolith-app icon_audit -- --ignored --nocapture`
+    #[test]
+    #[ignore]
+    fn icon_audit() {
+        let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../../assets/world.bin");
+        let world = neolith_core::io::decode(&std::fs::read(path).expect("assets/world.bin")).expect("decodes");
+        let mut shapes: std::collections::BTreeMap<String, usize> = Default::default();
+        let mut camp_kinds: std::collections::BTreeMap<String, usize> = Default::default();
+        let (mut farming, mut farming_camps) = (0, 0);
+        for (i, st) in world.settlements.iter().enumerate() {
+            let Some(info) = world.site_info(i) else { continue };
+            let year = st.occupation.first().map_or(st.founded, |o| o.0);
+            let peak = st.population.keys().iter().map(|(_, n)| *n).max().unwrap_or(0);
+            let stage = stage_at(info, year);
+            let shape = Shape::of(&info.kind, stage, peak);
+            *shapes.entry(format!("{shape:?}")).or_default() += 1;
+            if shape == Shape::Camp {
+                *camp_kinds.entry(format!("{} / {}", info.kind.to_lowercase(), stage.unwrap_or("-"))).or_default() += 1;
+            }
+            if stage.is_some_and(|s| FARMING_STAGES.contains(&s)) {
+                farming += 1;
+                farming_camps += (shape == Shape::Camp) as usize;
+            }
+        }
+        println!("shapes: {shapes:#?}");
+        let mut top: Vec<_> = camp_kinds.into_iter().collect();
+        top.sort_by_key(|(_, n)| std::cmp::Reverse(*n));
+        println!("campfires by kind / stage: {:#?}", &top[..top.len().min(30)]);
+        println!("farming sites drawn as campfires: {farming_camps} of {farming}");
+        assert!(farming_camps * 10 < farming, "most farming sites should not be campfires");
     }
 
     #[test]
@@ -1184,7 +1645,7 @@ mod tests {
             (0, Shape::Camp, 3, 76),
             (5000, Shape::Town, 2, 102),
         ] {
-            let p = Piece { pos: LonLat::new(30.0, 35.0), population: pop, importance: 1, evidence: 2, inferred: false, highlighted: false, shape, renown, mound: 0.0, ruin: 0.0 };
+            let p = Piece { pos: LonLat::new(30.0, 35.0), population: pop, importance: 1, evidence: 2, inferred: false, highlighted: false, shape, renown, mound: 0.0, ruin: 0.0, at: LonLat::new(30.0, 35.0), water: None };
             let verts = piece_vertices(std::slice::from_ref(&p), &proj, &relief, 0.0, 1.0);
             assert_eq!(verts.len(), tris * 3);
             // Only a campfire's smoke is see-through.
@@ -1196,6 +1657,63 @@ mod tests {
                 assert!(h > -1e-6 && h <= f.height + 1e-6);
             }
         }
+        // Every shape, far and close, inland and beside water, stands
+        // within its frame (and close up gains detail, never loses it).
+        let all = [Shape::Camp, Shape::Hamlet, Shape::Town, Shape::Monument, Shape::Cave, Shape::Burial, Shape::Midden, Shape::Mine, Shape::Stilts, Shape::Findspot];
+        for shape in all {
+            for water in [None, Some([0.0, 1.0])] {
+                let mut counts = Vec::new();
+                for dist in [1.0, 0.48, crate::board::camera::DIST_MIN] {
+                    let p = Piece { pos: LonLat::new(30.0, 35.0), population: 0, importance: 2, evidence: 2, inferred: false, highlighted: false, shape, renown: 0, mound: 0.0, ruin: 0.0, at: LonLat::new(30.0, 35.0), water };
+                    let verts = piece_vertices(std::slice::from_ref(&p), &proj, &relief, 0.0, dist);
+                    assert!(!verts.is_empty(), "{shape:?}");
+                    let f = piece_frame(&p, &proj, &relief, 0.0, dist);
+                    for v in &verts {
+                        let h = (Vec3::from(v.pos).as_dvec3() - f.base).dot(f.up);
+                        assert!(h > -1e-6 * f.radius.max(1e-3) * 1e3 && h <= f.height * 1.001 + 1e-9, "{shape:?} at {dist}: {h} vs {}", f.height);
+                    }
+                    counts.push(verts.len());
+                }
+                assert!(counts.windows(2).all(|w| w[0] <= w[1]), "{shape:?}: {counts:?}");
+            }
+        }
+        // Close up a piece is a good deal smaller in the world than before.
+        assert!(piece_zoom(crate::board::camera::DIST_MIN) < 0.3);
+    }
+
+    /// `vs_piece` scales a piece built for one camera distance about its
+    /// anchor to stand for another (Globals::piece). Where the close-up
+    /// detail is the same (DIST_REF and out, none), that has to give the
+    /// piece the other distance would build.
+    #[test]
+    fn a_scaled_piece_is_the_piece_built_for_that_distance() {
+        let proj = Projection::new(LonLat::new(25.0, 41.0));
+        let grid = GridSpec { cols: 4, rows: 4, origin_lon: 29.0, origin_lat: 36.0, w: 0.5773502691896262, h: 0.5 };
+        let relief = Relief::new(&grid, &vec![2000i16; grid.len()], 1e-6);
+        let all = [Shape::Camp, Shape::Hamlet, Shape::Town, Shape::Monument, Shape::Cave, Shape::Burial, Shape::Midden, Shape::Mine, Shape::Stilts, Shape::Findspot];
+        for shape in all {
+            for (water, mound, ruin, renown) in [(None, 0.0, 0.0, 0), (Some([0.0, 1.0]), 0.8, 0.0, 3), (None, 0.5, 0.6, 0)] {
+                let p = Piece { pos: LonLat::new(30.0, 35.0), population: 5000, importance: 2, evidence: 2, inferred: false, highlighted: false, shape, renown, mound, ruin, at: LonLat::new(30.0, 35.0), water };
+                for (built, now) in [(1.0, 1.15), (DIST_REF, 3.0), (2.5, DIST_REF)] {
+                    let a = piece_vertices(std::slice::from_ref(&p), &proj, &relief, 0.0, built);
+                    let b = piece_vertices(std::slice::from_ref(&p), &proj, &relief, 0.0, now);
+                    assert_eq!(a.len(), b.len(), "{shape:?}");
+                    let scale = (piece_zoom(now) / piece_zoom(built)) as f32;
+                    let tol = piece_frame(&p, &proj, &relief, 0.0, now).radius as f32 * 1e-3;
+                    for (u, v) in a.iter().zip(&b) {
+                        let (anchor, pos) = (Vec3::from(u.anchor), Vec3::from(u.pos));
+                        let scaled = anchor + (pos - anchor) * scale;
+                        assert!(scaled.distance(Vec3::from(v.pos)) < tol, "{shape:?} {built} -> {now}: {scaled} vs {:?}", v.pos);
+                        // Up to sign: a face nearly edge-on to the axis can
+                        // turn either way, at any distance. (A ruin's
+                        // flattened faces have no area and no normal.)
+                        let (nu, nv) = (Vec3::from(u.normal), Vec3::from(v.normal));
+                        assert_eq!(nu == Vec3::ZERO, nv == Vec3::ZERO, "{shape:?}");
+                        assert!(nu == Vec3::ZERO || nu.dot(nv).abs() > 0.999, "{shape:?}: {nu} vs {nv}");
+                    }
+                }
+            }
+        }
     }
 
     #[test]
@@ -1203,7 +1721,7 @@ mod tests {
         use crate::board::camera::Camera;
         let grid = GridSpec { cols: 190, rows: 139, origin_lon: -16.5, origin_lat: 6.1, w: 0.5773502691896262, h: 0.5 };
         let proj = Projection::new(grid.centre_of_bounds());
-        let mesh = crate::board::mesh::build(&grid, &proj);
+        let mesh = crate::board::mesh::build(&grid, &proj, &[]);
         let depth = |dist: f64, pitch_deg: f64, mode: MapMode, style: BoardStyle| {
             let mut cam = Camera::initial(&grid);
             (cam.dist, cam.pitch) = (dist, pitch_deg.to_radians());
@@ -1228,7 +1746,7 @@ mod tests {
         let proj = Projection::new(LonLat::new(25.0, 41.0));
         let grid = GridSpec { cols: 4, rows: 4, origin_lon: 29.0, origin_lat: 36.0, w: 0.5773502691896262, h: 0.5 };
         let relief = Relief::flat(&grid);
-        let p = Piece { pos: LonLat::new(30.0, 35.0), population: 0, importance: 1, evidence: 2, inferred: false, highlighted: false, shape: Shape::Camp, renown: 0, mound: 0.0, ruin: 0.0 };
+        let p = Piece { pos: LonLat::new(30.0, 35.0), population: 0, importance: 1, evidence: 2, inferred: false, highlighted: false, shape: Shape::Camp, renown: 0, mound: 0.0, ruin: 0.0, at: LonLat::new(30.0, 35.0), water: None };
         let r = |dist: f64| piece_frame(&p, &proj, &relief, 0.0, dist).radius;
         // Smaller in the world, but still larger on screen (radius / distance).
         assert!(r(0.06) < r(0.12) && r(0.12) < r(0.48));
@@ -1259,7 +1777,7 @@ mod tests {
     #[test]
     fn camps_are_listed_in_the_hexes_their_clearings_reach() {
         let grid = GridSpec { cols: 4, rows: 3, origin_lon: 0.0, origin_lat: 10.0, w: 0.5773502691896262, h: 0.5 };
-        let piece = |pos| Piece { pos, population: 0, importance: 1, evidence: 2, inferred: false, highlighted: false, shape: Shape::Camp, renown: 0, mound: 0.0, ruin: 0.0 };
+        let piece = |pos| Piece { pos, population: 0, importance: 1, evidence: 2, inferred: false, highlighted: false, shape: Shape::Camp, renown: 0, mound: 0.0, ruin: 0.0, at: pos, water: None };
         let entry = |tex: &[u8], id: neolith_core::HexId, k: usize| -> [u8; 4] {
             let (c, r) = grid.col_row(id);
             let t = (r as usize * 2 + k / 2) * grid.cols as usize * 2 + c as usize * 2 + k % 2;
@@ -1271,7 +1789,11 @@ mod tests {
         assert_eq!(tex.len(), 4 * 2 * 3 * 2 * 4);
         let e = entry(&tex, home, 0);
         assert_eq!((e[0], e[1]), (128, 128));
-        assert!(e[2] > 0 && e[3] > 200, "{e:?}");
+        assert!(e[2] > 0 && e[2] < 128 && e[3] > 200, "{e:?}");
+        // A farming hamlet: a wider clearing, flagged for fields.
+        let farm = camp_texels(&grid, &[Piece { shape: Shape::Hamlet, ..piece(grid.centre(home)) }]);
+        let f = entry(&farm, home, 0);
+        assert!(f[2] >= 128 && (f[2] & 127) > e[2], "{f:?} vs {e:?}");
         assert_eq!(tex.iter().filter(|b| **b != 0).count(), 4);
         // Just inside the north edge: also in the hex to the north, below its centre.
         let c = grid.centre(home);
@@ -1300,7 +1822,7 @@ mod tests {
         cam.target = LonLat::new(35.4, 31.8);
         cam.dist = 0.107;
         let view = cam.view(&proj, 0.0, glam::DVec2::new(1200.0, 800.0));
-        let piece = |lon, lat| Piece { pos: LonLat::new(lon, lat), population: 0, importance: 1, evidence: 2, inferred: false, highlighted: false, shape: Shape::Camp, renown: 0, mound: 0.0, ruin: 0.0 };
+        let piece = |lon, lat| Piece { pos: LonLat::new(lon, lat), population: 0, importance: 1, evidence: 2, inferred: false, highlighted: false, shape: Shape::Camp, renown: 0, mound: 0.0, ruin: 0.0, at: LonLat::new(lon, lat), water: None };
         let near = piece_frame(&piece(35.4, 31.8), &proj, &relief, 0.0, cam.dist);
         let far = piece_frame(&piece(30.75, 22.75), &proj, &relief, 0.0, cam.dist);
         let on = piece_on_screen(&view, &near).expect("the piece at the target is on screen");
@@ -1324,8 +1846,11 @@ mod tests {
 
     #[test]
     fn clearings_grow_spill_and_grow_back() {
-        let w = history_world(vec![(Year(-7000), Year(-6000))], 0);
+        let mut w = history_world(vec![(Year(-7000), Year(-6000))], 0);
         let home = w.grid.id_at(2, 2);
+        // Foragers keep the woods: no clearing past the camp itself.
+        assert!(history_texels(&w, Year(-6600)).iter().all(|&b| b == 0), "foragers clear nothing");
+        w.farming = vec![Some(Year(-7000)); w.grid.len()];
         let next = w.grid.neighbour(home, 0).unwrap();
         let r = |y: i32, id: HexId| {
             let (c, row) = w.grid.col_row(id);
@@ -1336,7 +1861,7 @@ mod tests {
         assert!(r(-6600, next) > 0 && r(-6600, next) < r(-6600, home), "and spills into the neighbours, less");
         assert!(r(-5700, home) < r(-6001, home), "abandoned, the woods grow back");
         assert_eq!(r(-5300, home), 0, "and close over it");
-        assert_eq!(history_texels(&w, Year(-6600))[(2 * 6 + 2) * 4 + 1], 0, "no fields without farming");
+        assert!(history_texels(&w, Year(-6600))[(2 * 6 + 2) * 4 + 1] > 0, "fields where farmers cleared");
         assert_eq!(history_year(Year(-6649)), Year(-6650));
     }
 

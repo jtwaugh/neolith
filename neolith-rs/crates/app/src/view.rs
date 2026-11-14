@@ -47,9 +47,15 @@ const WEB_BOARD_DENSITY: [f32; 2] = [1.5, 1.0];
 /// The board stays at its moving density this long after the camera last
 /// moved, so a scroll wheel's separate ticks don't flicker between the two.
 const MOVING_HOLD_SECS: f64 = 0.2;
-/// While the camera moves, the river lines are rebuilt for a zoom only once
-/// the distance has changed by this factor (otherwise every 3%).
-const MOVING_LINE_STEP: f64 = 1.15;
+/// While the camera moves, the pieces and the river lines are drawn from
+/// triangles built for an earlier distance, scaled on the GPU to the
+/// current one (Globals::piece), and rebuilt only once the distance has
+/// changed by these factors: the pieces for their close-up detail, the
+/// lines for their sampling and far-out fade. Both are rebuilt exactly once
+/// the camera stops. (Each build costs milliseconds, several times that in
+/// a phone's browser: pinches stuttered.)
+const MOVING_PIECE_STEP: f64 = 1.15;
+const MOVING_LINE_STEP: f64 = 1.6;
 
 /// The board's density cap [still, moving], in pixels per point.
 fn board_density() -> [f32; 2] {
@@ -106,6 +112,39 @@ pub struct BoardInput {
     flowing: Option<Vec<Option<bool>>>,
     /// The year (and rivers switch) `flowing` was last checked for.
     flowing_year: Option<(neolith_core::Year, bool)>,
+    /// Where the pieces stand ([`crate::board::layout`]), kept while the
+    /// same sites are shown in the same history year.
+    layout: Option<LayoutCache>,
+    /// The last click that had more than one piece under it.
+    ambiguous: Option<Ambiguous>,
+}
+
+/// A click with several pieces within reach: where it was (board points) and
+/// the settlements, nearest first. Another click on the spot takes the next
+/// one, and a chooser beside it lists them.
+struct Ambiguous {
+    at: DVec2,
+    sites: Vec<usize>,
+}
+
+/// Which of `sites` (nearest first) a click picks: the nearest, or, when
+/// the click repeats one that already chose among the same pieces, the one
+/// after the piece now selected.
+fn pick_among(sites: &[usize], selected: Option<usize>, repeat: bool) -> usize {
+    match selected.and_then(|sel| sites.iter().position(|i| *i == sel)) {
+        Some(p) if repeat => sites[(p + 1) % sites.len()],
+        _ => sites[0],
+    }
+}
+
+/// The water at a history year, and the pieces placed beside it.
+struct LayoutCache {
+    year: neolith_core::Year,
+    waters: crate::board::layout::Waters,
+    /// The living sites, then the ruins, they were placed for.
+    sites: (Vec<usize>, Vec<usize>),
+    /// Per site, in that order: where it is drawn and the way to the water.
+    placed: Vec<(neolith_core::LonLat, Option<[f64; 2]>)>,
 }
 
 /// The inputs of the piece, river and lake triangles. Rivers and lakes are
@@ -497,7 +536,7 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
     let view = s.camera.view(&s.proj, s.morph, size);
     let year = s.year();
     let pieces_span = crate::perf::span("pieces");
-    let visible: Vec<(usize, Piece)> = s
+    let mut visible: Vec<(usize, Piece)> = s
         .world
         .settlements
         .iter()
@@ -509,10 +548,33 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         .map(|(i, _)| (i, Piece::for_site(&s.world, i, year, s.renown.get(i).copied().flatten())))
         .collect();
     // Ruins of abandoned sites: as many as the living, by the same rule.
-    let ruins: Vec<Piece> = (0..s.world.settlements.len())
+    let mut ruins: Vec<(usize, Piece)> = (0..s.world.settlements.len())
         .filter(|&i| s.camera.dist < FAR_PIECES_DIST || s.renown.get(i).is_some_and(|r| r.is_some()))
-        .filter_map(|i| Piece::ruin_of(&s.world, i, year, s.renown.get(i).copied().flatten()))
+        .filter_map(|i| Some((i, Piece::ruin_of(&s.world, i, year, s.renown.get(i).copied().flatten())?)))
         .collect();
+    // Onto the banks, facing the water, apart from each other: worked out
+    // again only when the history year or the sites shown change.
+    {
+        let hy = scene::history_year(year);
+        let sites = (visible.iter().map(|(i, _)| *i).collect::<Vec<_>>(), ruins.iter().map(|(i, _)| *i).collect::<Vec<_>>());
+        let stale_water = s.input.layout.as_ref().is_none_or(|c| c.year != hy);
+        if stale_water || s.input.layout.as_ref().is_some_and(|c| c.sites != sites) {
+            let waters = match s.input.layout.take() {
+                Some(c) if !stale_water => c.waters,
+                _ => crate::board::layout::Waters::new(&s.world.rivers, &lines::flowing(&s.world.rivers, hy), &s.world.lakes, hy),
+            };
+            let mut all: Vec<Piece> = visible.iter().chain(ruins.iter()).map(|(_, p)| p.clone()).collect();
+            crate::board::layout::place(&mut all, &waters, &grid, &s.snapshot.terrain);
+            let placed = all.iter().map(|p| (p.at, p.water)).collect();
+            s.input.layout = Some(LayoutCache { year: hy, waters, sites, placed });
+        }
+        let placed = &s.input.layout.as_ref().unwrap().placed;
+        for ((_, p), (at, water)) in visible.iter_mut().chain(ruins.iter_mut()).zip(placed) {
+            p.at = *at;
+            p.water = *water;
+        }
+    }
+    let ruins: Vec<Piece> = ruins.into_iter().map(|(_, p)| p).collect();
     let frames: Vec<PieceFrame> =
         visible.iter().map(|(_, p)| scene::piece_frame(p, &s.proj, &relief, s.morph, s.camera.dist)).collect();
     let on_screen: Vec<Option<ScreenPiece>> = frames.iter().map(|f| scene::piece_on_screen(&view, f)).collect();
@@ -521,17 +583,28 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
     drop(pieces_span);
 
     let hovering = (resp.contains_pointer() || cursor.is_some()) && s.input.drag.is_none() && !s.input.gesture;
-    let piece_hover = cursor.filter(|_| hovering).and_then(|c| {
+    // Every piece the cursor is within reach of, nearest first.
+    let mut piece_hits: Vec<(usize, f64)> = cursor.filter(|_| hovering).map_or_else(Vec::new, |c| {
         (0..visible.len())
             .filter_map(|k| {
                 let p = on_screen[k]?;
                 let d = segment_distance(c, p.base, p.top);
                 (d <= ((p.top - p.base).length() * 0.45).max(p.radius_px).max(8.0)).then_some((k, d))
             })
-            .min_by(|x, y| x.1.total_cmp(&y.1))
-            .map(|(k, _)| k)
+            .collect()
     });
-    let hover = if hovering && piece_hover.is_none() {
+    piece_hits.sort_by(|x, y| x.1.total_cmp(&y.1));
+    let piece_hover = piece_hits.first().map(|h| h.0);
+    // A name is a target too: the label rectangles of the last frame. A
+    // piece wins over a name when the cursor is on both.
+    let name_hover = cursor.filter(|_| hovering && piece_hover.is_none()).and_then(|c| {
+        let at = Pos2::new(rect.left() + c.x as f32, rect.top() + c.y as f32);
+        let site = s.input.drawn.labels.iter().find(|(_, r)| r.contains(at))?.0;
+        visible.iter().position(|(i, _)| *i == site)
+    });
+    // The piece the cursor picks, by its shape or by its name.
+    let target = piece_hover.or(name_hover);
+    let hover = if hovering && target.is_none() {
         cursor.and_then(|c| view.pick_relief(c, &relief)).and_then(|ll| grid.hex_at(ll))
     } else if s.input.drag.is_some() {
         s.hover
@@ -554,17 +627,26 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
     }
 
     // ---- clicks ----------------------------------------------------------
-    if resp.double_clicked() && matches!(s.tool, Tool::Select) {
+    // A double click goes to a hex; on a piece or a name it is a click like
+    // any other (the second of two quick clicks used to open nothing).
+    if resp.double_clicked() && matches!(s.tool, Tool::Select) && target.is_none() {
         if let Some(hex) = s.hover {
             s.glide_to(grid.centre(hex), now);
         }
     } else if resp.clicked() {
-        if let Some(k) = piece_hover {
-            // A piece takes priority over the hex underneath.
-            s.settlement = Some(visible[k].0);
+        if let Some(k) = target {
+            // A piece or its name takes priority over the hex underneath.
+            // Where pieces crowd, clicking the same spot again goes round them.
+            let sites: Vec<usize> = piece_hits.iter().map(|(k, _)| visible[*k].0).collect();
+            let at = cursor.unwrap_or_default();
+            // (The pieces in reach can change with the selection, which enlarges a piece.)
+            let repeat = s.input.ambiguous.as_ref().is_some_and(|a| (a.at - at).length() < 6.0);
+            s.settlement = Some(if sites.len() > 1 { pick_among(&sites, s.settlement, repeat) } else { visible[k].0 });
+            s.input.ambiguous = (sites.len() > 1).then_some(Ambiguous { at, sites });
             s.side_tab = crate::panels::SideTab::Selected;
             s.sheet = true;
         } else {
+            s.input.ambiguous = None;
             match (s.tool, s.hover) {
                 (Tool::Select, Some(hex)) => {
                     // A hex click replaces a selected settlement.
@@ -645,15 +727,21 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
     let pieces: Vec<Piece> = visible
         .iter()
         .enumerate()
-        .map(|(k, (i, p))| Piece { highlighted: piece_hover == Some(k) || s.settlement == Some(*i), ..p.clone() })
+        .map(|(k, (i, p))| Piece { highlighted: target == Some(k) || s.settlement == Some(*i), ..p.clone() })
         .collect();
     // Rebuild the piece triangles, and separately the river and lake ones,
     // only when their inputs change. Panning, the clock between river fades
     // and epochs, and panel repaints keep them.
-    let key = PieceKey { pieces, ruins, relief: relief.clone(), morph: s.morph, dist: s.camera.dist };
+    // While the camera moves only the pieces' close-up detail lags
+    // (MOVING_PIECE_STEP); their size is scaled on the GPU.
+    let piece_dist = match &s.input.piece_key {
+        Some(k) if moving && (s.camera.dist / k.dist).ln().abs() < MOVING_PIECE_STEP.ln() => k.dist,
+        _ => s.camera.dist,
+    };
+    let key = PieceKey { pieces, ruins, relief: relief.clone(), morph: s.morph, dist: piece_dist };
     if s.input.piece_key.as_ref() != Some(&key) {
         let _span = crate::perf::span("piece mesh");
-        let verts = scene::piece_vertices(&[&key.ruins[..], &key.pieces[..]].concat(), &s.proj, &relief, s.morph, s.camera.dist);
+        let verts = scene::piece_vertices(&[&key.ruins[..], &key.pieces[..]].concat(), &s.proj, &relief, s.morph, key.dist);
         let mut renderer = s.renderer.lock().unwrap();
         renderer.upload_pieces(&gpu.device, &gpu.queue, &verts);
         renderer.upload_camps(&gpu.queue, &scene::camp_texels(&grid, &key.pieces));
@@ -665,9 +753,9 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         snapshot_gen: s.snapshot_gen,
         relief: relief.clone(),
         morph: s.morph,
-        // While the camera moves, a zoom has to change the lines' width by
-        // more before they are rebuilt (each build costs several ms, more
-        // on a phone); they catch up when it stops.
+        // While the camera moves, a zoom has to change the distance by more
+        // before they are rebuilt (MOVING_LINE_STEP); meanwhile the shader
+        // keeps their widths right.
         dist: match &s.input.line_key {
             Some(k) if moving && (lines::build_dist(s.camera.dist) / k.dist).ln().abs() < MOVING_LINE_STEP.ln() => k.dist,
             _ => lines::build_dist(s.camera.dist),
@@ -688,7 +776,7 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
     if s.input.flowing_year != Some((year, style.rivers)) {
         let flowing = if style.rivers { lines::flowing(&s.world.rivers, year) } else { Vec::new() };
         if s.input.flowing.as_ref() != Some(&flowing) {
-            let field = lines::river_field(&s.world.rivers, &flowing, &grid);
+            let field = lines::river_field(&s.world.rivers, &flowing, &grid, &s.snapshot.height, s.dem().as_ref());
             s.renderer.lock().unwrap().upload_river_field(&gpu.queue, &field);
             s.input.flowing = Some(flowing);
         }
@@ -729,7 +817,13 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
     };
     // Level of detail follows the full-density size, so the terrain art
     // doesn't thin out while the camera moves and pop back when it stops.
-    let globals = scene::globals(&view, &board_style, s.mode, &grid, &s.mesh, px[1] as f32);
+    let mut globals = scene::globals(&view, &board_style, s.mode, &grid, &s.mesh, px[1] as f32);
+    if let Some(k) = &s.input.piece_key {
+        globals.piece[0] = (scene::piece_zoom(s.camera.dist) / scene::piece_zoom(k.dist)) as f32;
+    }
+    if let Some(k) = &s.input.line_key {
+        globals.piece[1] = (lines::line_zoom(s.camera.dist) / lines::line_zoom(k.dist)) as f32;
+    }
     ui.painter().add(egui_wgpu::Callback::new_paint_callback(
         rect,
         BoardPaint { renderer: s.renderer.clone(), globals, size: px, drawn },
@@ -787,6 +881,10 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
         let (i, piece) = &visible[k];
         let emphasised = piece_hover == Some(k) || s.settlement == Some(*i);
         let renown = fame[k].map_or(0, |f| f.renown);
+        // A find spot is no settlement: named only when picked.
+        if piece.shape == scene::Shape::Findspot && !emphasised && renown == 0 {
+            return None;
+        }
         let name = match (fame[k], crate::labels::settlement_label(&s.world.settlements[*i].name)) {
             (Some(f), _) => f.entry().name.clone(),
             (None, Some(n)) => n,
@@ -857,7 +955,7 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
             .filter(|(_, b, _)| rect.contains(*b))
             .collect(),
         labels: Vec::new(),
-        piece_hover: piece_hover.map(|k| visible[k].0),
+        piece_hover: target.map(|k| visible[k].0),
         geo: crate::labels::draw_geography(
             &painter,
             rect,
@@ -890,9 +988,53 @@ pub fn board_view(ui: &mut egui::Ui, s: &mut Session, style: &BoardStyle, gpu: &
             }
         }
     }
+    // A name under the cursor lights up where it stands: moving it to the
+    // nameplate spot, as for a hovered piece, would take it from under the cursor.
+    let name_hovered = name_hover.map(|k| visible[k].0);
     for p in labels {
         drawn.labels.push((p.i, p.rect));
-        crate::labels::haloed_text(&painter, p.pos, p.align, &p.name, p.font, Color32::WHITE);
+        let colour = if name_hovered == Some(p.i) { Color32::from_rgb(255, 226, 150) } else { Color32::WHITE };
+        crate::labels::haloed_text(&painter, p.pos, p.align, &p.name, p.font, colour);
+    }
+
+    // Ancestry: one pie per genome alive at this year, over everything else.
+    if s.mode == neolith_core::MapMode::Ancestry {
+        if let Some(table) = s.world.ancestry.as_ref() {
+            let pins = crate::ancestry_view::pins(table, year, &view, &s.relief, rect, hex_px);
+            let pointer = ui.input(|i| i.pointer.hover_pos()).filter(|p| rect.contains(*p));
+            if let Some(sample) = crate::ancestry_view::draw_pins(&painter, &pins, pointer) {
+                crate::ancestry_view::card(&painter, rect, pointer.unwrap_or(rect.center()), &crate::ancestry_view::sample_lines(table, sample));
+            }
+        }
+    }
+
+    // The chooser for a crowded spot: the pieces under the last click, by
+    // name. It goes when the camera moves or another site is opened.
+    if in_motion || !s.input.ambiguous.as_ref().is_some_and(|a| s.settlement.is_some_and(|i| a.sites.contains(&i))) {
+        s.input.ambiguous = None;
+    }
+    if let Some(a) = &s.input.ambiguous {
+        let rows: Vec<(usize, String)> = a.sites.iter().map(|&i| (i, s.world.settlements[i].name.clone())).collect();
+        let mut chosen = None;
+        egui::Area::new(egui::Id::unique("piece-chooser"))
+            .order(egui::Order::Foreground)
+            .fixed_pos(to_screen(a.at) + egui::vec2(16.0, 12.0))
+            .constrain_to(rect)
+            .show(ui.ctx(), |ui| {
+                egui::Frame::popup(ui.style()).show(ui, |ui| {
+                    ui.weak(format!("{} pieces here · click again for the next", rows.len()));
+                    for (i, name) in &rows {
+                        if ui.selectable_label(s.settlement == Some(*i), name).clicked() {
+                            chosen = Some(*i);
+                        }
+                    }
+                });
+            });
+        if let Some(i) = chosen {
+            s.settlement = Some(i);
+            s.side_tab = crate::panels::SideTab::Selected;
+            s.sheet = true;
+        }
     }
 
     s.input.drawn = drawn;
@@ -938,6 +1080,20 @@ mod tests {
 
     fn grid() -> GridSpec {
         GridSpec { cols: 190, rows: 139, origin_lon: -16.464168425, origin_lat: 75.858035103, w: 0.5773502691896262, h: 0.5 }
+    }
+
+    #[test]
+    fn repeated_clicks_go_round_crowded_pieces() {
+        let sites = [7, 3, 9];
+        // A first click, or one somewhere new, takes the nearest piece.
+        assert_eq!(pick_among(&sites, None, false), 7);
+        assert_eq!(pick_among(&sites, Some(3), false), 7);
+        // Clicking the same spot again steps through them and wraps.
+        assert_eq!(pick_among(&sites, Some(7), true), 3);
+        assert_eq!(pick_among(&sites, Some(3), true), 9);
+        assert_eq!(pick_among(&sites, Some(9), true), 7);
+        // The selected piece is not one of these: start from the nearest.
+        assert_eq!(pick_among(&sites, Some(1), true), 7);
     }
 
     #[test]

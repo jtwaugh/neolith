@@ -104,6 +104,7 @@ on dry land; only a hint).
 | Sint-Donaaskerk | by Leuven | 51.209, 3.225 (Bruges) | https://en.wikipedia.org/wiki/St._Donatian%27s_Cathedral |
 | Grotte de la Martina | in the Hainaut plain | 50.22, 4.92 (Dinant) | https://acnpsearch.tweb-dev.unibo.it/singlejournalindex/31981005 |
 | Hoogeinds Voorhoofd | at the Mons placeholder point | 51.41, 4.97 (Weelde, after p3k14c) | https://github.com/people3k/p3k14c |
+| Catalhoyuk, Konya Region | 23 Çatalhöyük dates filed a second time with no mound named, 2 km south-west of the mounds; XRONOS also files each under Çatalhöyük East (7) or Çatalhöyük West (16), so it cannot be joined to one mound | dropped; no date is lost | Çatalhöyük (two mounds 300 m apart), https://en.wikipedia.org/wiki/%C3%87atalh%C3%B6y%C3%BCk |
 
 ## Record fixes
 
@@ -116,7 +117,9 @@ names become aliases; `[[reject]]` drops a single date filed under a site it
 does not belong to (`apply_rejects`); `[[keep]]` admits a single date whose
 1-sigma error is above `max_std` (`load_keeps`), for old wide dates that are a
 site's only record. `[[refile]]` moves a single date filed under another
-site's name to its own site (`apply_refiles`).
+site's name to its own site (`apply_refiles`). `[[keep_site]]` lets one site's
+dates pass `[settlements.xronos] exclude_types` (`load_keep_sites`,
+`excluded`), for famous sites the compilations type as a tomb or necropolis.
 
 Before these, `drop_shifted` drops every XRONOS date taken from p3k14c's
 Vermeersch2019 rows that p3k14c itself puts more than `p3k14c_km` (50 km) from
@@ -132,6 +135,15 @@ places.
 | Merimde Beni Salame, Merimde, Merimda, Merimde-Benisalame, Merimde Benisalame | one site under five spellings at three positions (17 km apart), one with no position; shared measurements, one date (KN-3280) only under Merimde-Benisalame | one site, 30.3166, 30.85 | Merimde culture (spellings; 45 km north-west of Cairo), https://en.wikipedia.org/wiki/Merimde_culture |
 | Minshat Abu Omar (67 XRONOS dates), tombs 1590 and 1930 | no position; tombs filed 5.7 km north of the site | one site, 30.8572, 32.0194 | https://en.wikipedia.org/wiki/Minshat_Abu_Omar |
 | Kom el-Hisn (14 XRONOS dates) | no position | 30.7955, 30.6004 | https://en.wikipedia.org/wiki/Kom_el-Hisn |
+| Dimini (2 XRONOS records of one date, nd-133) | no position, so the famous site was missing | 39.35, 22.8833 | https://en.wikipedia.org/wiki/Dimini |
+| Çatalhöyük West, Catalhyk West, Catalhöyük West, Catalhoyuk | the West mound filed with no position (129 XRONOS records), at the rounded 37.65, 32.82 (2 km south) and, with no mound named, as 'Catalhoyuk' (2 dates, both West mound) | one site, 37.6663, 32.8229 (p3k14c's West mound position, https://github.com/people3k/p3k14c), 0.4 km from the East mound, which keeps its own record | Çatalhöyük (West mound about 300 m west of the East mound), https://en.wikipedia.org/wiki/%C3%87atalh%C3%B6y%C3%BCk |
+| Tell Ramad, Ramad | one site filed twice, 15 km apart, with the same measurements (GrN-4426 to 4428, GrN-4821 to 4823) | one site, 33.4125, 36.115: 'about 3 km SE of Qatana' (van Zeist & Bakker-Heeres 1982, Palaeohistoria 24, p. 173, after de Contenson & van Liere 1964), from Qatana's position, https://en.wikipedia.org/wiki/Qatana | https://ugp.rug.nl/Palaeohistoria/article/download/24836/22284/28973 |
+| Jarmo, Qala’at Jarmo | filed twice, the second at the rounded 35.5, 45.6, 61 km east; 13 of its 19 lab numbers are also under the first | one site, 35.5558, 44.9303 | https://en.wikipedia.org/wiki/Jarmo |
+| Ali Kosh, Tepe Ali Kosh | 'Tepe Ali Kosh' (SI-160, SI-160R, both also under Ali Kosh) 25 km south | one site, 32.5578, 47.3249 | https://en.wikipedia.org/wiki/Ali_Kosh |
+| Tell Halaf, Halaf | 'Halaf' (GrN-2660, also under Tell Halaf) at a rounded position 2 km away | one site, 36.8266, 40.0396 | https://en.wikipedia.org/wiki/Tell_Halaf |
+| Franchthi Cave, Franchthi | 'Franchthi' 42 km north-west; 37 of its 39 lab numbers are also under Franchthi Cave | one site, 37.4233, 23.1322 | https://en.wikipedia.org/wiki/Franchthi_Cave |
+| Vinča-Belo Brdo, Vinca-Belo Brdo, Vinča | one tell filed with no position (148 XRONOS records), at the rounded 44.8, 20.6 and as 'Vinča' at 44.75, 20.6167; every lab number of the last two is also under the first | one site, 44.7619, 20.6231 | https://en.wikipedia.org/wiki/Vin%C4%8Da-Belo_Brdo |
+| Varna Cemetery, Varna | the cemetery filed with no position (50 XRONOS records), at the rounded 43.2, 27.9 and as 'Varna' (typed settlement) at 43.2167, 27.9167; 21 of 25 'Varna Cemetery' lab numbers are also under 'Varna' | one site, 43.2131, 27.8644 | https://en.wikipedia.org/wiki/Varna_Necropolis |
 | Wustermark 22, Bln-5645 | a wood date of 1050 ± 80 BP (8th–12th century AD) among six of 15,825–9135 BP; it made a last occupation phase of 990–1990 CE | date dropped | XRONOS, https://xronos.ch/c14s/232067 |
 | Konduga, Kn-4300 | its only date, 6340 ± 250 BP, is above max_std = 200, so the Bama Ridge pottery site was dropped | date kept | Breunig, Neumann & Van Neer 1996, African Archaeological Review 13:111–145, https://doi.org/10.1007/BF01956304 |
 | Mandi, 44Gif (XRONOS 64809, 170509) | only date 9835 ± 135 BP, at Bol 45 m below the Megachad highstand at that date: a lake-deposit date | date dropped (site gone) | https://xronos.ch/c14s/64809 |
@@ -160,6 +172,10 @@ places.
 | Meer I Meirberg: GIN-8399 | an 18,700 BP Pechora Urals cave date under the Belgian site, giving it its Urals position | date dropped | XRONOS record, https://xronos.ch/c14s/241165 |
 | Sewell's Cave: GIN-6209 | a 13,680 BP Siberian date under the Yorkshire cave, giving it its Ukrainian position | date dropped | XRONOS record, https://xronos.ch/c14s/241052 |
 | Bury Hill: OxA-17282, OxA-17283 | Iron Age dates of Bury Hill, Hampshire, under the Sussex causewayed enclosure | moved to Bury Hill, Hampshire, 51.19, -1.507 (p3k14c) | https://xronos.ch/c14s/292548, https://xronos.ch/c14s/292549 |
+| Curraghatoor: GrN-19563 | 7180 ± 70 BP from the fill of an enclosure ditch older than the houses, at a site typed 'house' (a 6,000 BCE house) | date dropped | Doody, Bronze Age Settlements in Co. Tipperary, p. 102, https://tipperarystudies.ie/wp-content/uploads/2021/10/Bronze-Age-Settlements-in-Co.-Tipperary-Fifteen-Years-of-Research.pdf |
+| Corrstown: UB-6250 | charcoal, 7522 ± 44 BP, millennia older than any find on the site (Bronze Age village founded about 1500 cal BC; some Early Neolithic pottery), at a site typed 'house' | date dropped | review of Ginn & Rathbone 2012, https://rmchapple.blogspot.com/2012/04/corrstown-coastal-community-excavations.html |
+| Newgrange (126 XRONOS records) | typed 'Boyne Passage Grave', so `exclude_types` dropped the famous site's own dates | kept (`[[keep_site]]`) | https://en.wikipedia.org/wiki/Newgrange |
+| Los Millares (99 XRONOS records) | typed 'Settlement with megalithic necropolis', dropped with the tombs; the site stood on a hand entry | kept (`[[keep_site]]`); hand entry removed | https://en.wikipedia.org/wiki/Los_Millares |
 
 ## Not yet resolved
 
@@ -276,3 +292,25 @@ Names that reached us with a letter lost upstream (shown as `?`), renamed (and, 
 | Chang? (Saint Piat) | lost é; at the Murciélagos coordinates in Andalusia | Changé (Saint Piat); moved to 48.5655, 1.5850 (Changé, Saint-Piat; OpenStreetMap) | https://isidore.science/document/10.3406/bspf.1996.10171 |
 | Haut M?e | lost é | Haut Mée | https://durham-repository.worktribe.com/OutputFile/1565519 |
 | Ch?teau Blanc | lost â | Château Blanc | https://www.culture.gouv.fr/content/download/123775/file/BSR_1995_2.pdf |
+| Maser? -Carrera San Giorgio | lost à | Maserà - Carrera San Giorgio (Maserà di Padova; the record sits on the comune's coordinates). 'Carrera' is as filed in AIDA (https://github.com/apalmisano82/AIDA) and XRONOS; probably Carrara San Giorgio, a former comune bordering Maserà (https://en.wikipedia.org/wiki/Due_Carrare). Visentini 2006, the cited paper, is not online | https://en.wikipedia.org/wiki/Maser%C3%A0_di_Padova |
+
+## Site kinds still to fix
+
+Found by the icon audit (`cargo test -p neolith-app icon_audit -- --ignored --nocapture`,
+in `neolith-rs`), which maps each site's filed `type` to the piece the map draws.
+These records are not fixed yet. They draw as the default campfire, and none has been dropped.
+
+- **A region in the type column:** `jordan valley`, `middle euphrates`, `southern jordan`,
+  `se anatolia`, `syrian desert`, `central zagros`, `central hills`, `khabur`, `marmara`,
+  `ebro`, `northeast`, `east`, `south`, `coastal plain`, `sw syria`. A column has shifted in the
+  source table, so the real type is missing.
+- **Truncated or misspelt:** `tell mou` (tell mound), `staing stone` (standing stone),
+  `lascape`, `par`, `hahnofersa`. The map reads `tell mou` as a tell and `staing stone` as a
+  standing stone.
+- **Later than the map's span:** `castle`, `ringfort - univallate`, `rath`,
+  `medieval kiln, ringfort - rath`, `early christian/medieval cereal-drying kilns`. These are
+  medieval layers at sites that also have prehistoric dates.
+- **Not settlements:** `lake core`, `peat monolith`, `organic mud`, `alluvium`,
+  `profile through fluvial sediment`, `dune system`, `landnam phase`, `log boat`, `net find`,
+  `bog body`, `withers yoke`, `giant irish deer`, `shipwreck`. These are environmental samples
+  and stray finds. The map draws each as a small find-spot peg with no name.

@@ -93,6 +93,8 @@ pub struct Session {
     pub relief: Arc<Relief>,
     /// The scale `relief` was built with, or `None` when the snapshot changed since.
     relief_scale: Option<(f64, bool)>,
+    /// The real topography the mountains are shaped from, if the world has it.
+    dem_map: Option<Arc<neolith_core::heightmap::Heightmap>>,
     pub input: BoardInput,
     /// The chronicle ([`crate::events`]), in year order.
     pub events: Vec<crate::events::Event>,
@@ -107,7 +109,7 @@ impl Session {
     fn new(world: World, file_name: String, gpu: &Gpu, start_year: i32) -> Self {
         let grid = &world.grid;
         let proj = Projection::new(grid.centre_of_bounds());
-        let mut board = mesh::build(grid, &proj);
+        let mut board = mesh::build(grid, &proj, &mesh::fine_hexes(&world));
         let mut renderer =
             BoardRenderer::new(&gpu.device, &gpu.queue, gpu.target_format, &board, grid.cols as u32, grid.rows as u32);
         renderer.upload_massif(&gpu.queue, &crate::board::scene::massif_texels(grid, &world.massif));
@@ -135,7 +137,7 @@ impl Session {
             snapshot_epoch,
             snapshot_gen: 0,
             world_changed: false,
-            mode: MapMode::Terrain,
+            mode: MapMode::Ground,
             evidence_layer: (!world.evidence.is_empty()).then_some(0),
             evidence_shown: None,
             evidence_dirty: true,
@@ -162,6 +164,7 @@ impl Session {
             hillshade: elevation::hillshade(&world.grid, &world.elevation, elevation::HILLSHADE_EXAGGERATION),
             relief: Arc::new(Relief::flat(&world.grid)),
             relief_scale: None,
+            dem_map: world.heightmap.clone().map(Arc::new),
             input: BoardInput::default(),
             events: crate::events::build(&world),
             events_stale: false,
@@ -183,9 +186,17 @@ impl Session {
         let scale = relief::scale(style);
         let key = (scale, style.art_blend);
         if self.relief_scale != Some(key) {
-            self.relief = Arc::new(Relief::new(&self.world.grid, &self.snapshot.height, scale).smoothed(style.art_blend));
+            self.relief = Arc::new(
+                Relief::new(&self.world.grid, &self.snapshot.height, scale).smoothed(style.art_blend).with_dem(self.dem()),
+            );
             self.relief_scale = Some(key);
         }
+    }
+
+    /// The mountains' real topography for this snapshot (board::relief::Dem).
+    pub fn dem(&self) -> Option<crate::board::relief::Dem> {
+        let map = self.dem_map.clone()?;
+        Some(crate::board::relief::Dem::new(map, &self.snapshot.terrain, &self.world.landform))
     }
 
     /// The evidence layer the Evidence mode shows, if the world has any.
@@ -213,6 +224,15 @@ impl Session {
     pub fn overlay_codes(&self) -> Vec<u8> {
         if self.mode == MapMode::Missing {
             self.world.residuals.as_ref().map_or(Vec::new(), |r| r.bands_at(self.year()))
+        } else if self.mode == MapMode::Ancestry {
+            // Ice hides the ground this year (the board hides the sea itself).
+            let mut codes = self.world.ancestry_codes(self.year());
+            for (code, terrain) in codes.iter_mut().zip(&self.snapshot.terrain) {
+                if *terrain == neolith_core::Terrain::Ice as u8 {
+                    *code = neolith_core::ancestry::NO_CODE;
+                }
+            }
+            codes
         } else {
             self.evidence_codes()
         }
@@ -347,6 +367,9 @@ impl Session {
         let shown = if self.mode == MapMode::Missing {
             // The Missing sites mode borrows the texture: keyed by its slice.
             self.world.residuals.as_ref().and_then(|r| r.slice_at(self.year())).map(|k| (usize::MAX, k as i32))
+        } else if self.mode == MapMode::Ancestry {
+            // Borrows the texture too: mixtures move with every year.
+            self.world.has_ancestry().then(|| (usize::MAX - 1, self.year().0))
         } else if self.mode == MapMode::Evidence {
             self.evidence_layer.filter(|i| *i < self.world.evidence.len()).map(|i| (i, self.year().0))
         } else {

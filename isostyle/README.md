@@ -17,6 +17,7 @@ make settlements                       # once: caches the radiocarbon dumps in b
 .venv/bin/python -m isostyle speculative # fill the gaps from the critic's notes (for the game), then rerun `viewer`
 .venv/bin/python -m isostyle evals       # smoothness and guard numbers for the fill; --search picks [speculative] settings
 .venv/bin/python -m isostyle export      # speculative layers -> data/isostyle/speculative/evidence_layers.json
+.venv/bin/python -m isostyle ancestry    # opt-in, needs R: qpAdm ancestry per genome -> data/ancestry/ (isostyle/ancestry/README.md)
 .venv/bin/python -m unittest discover -s isostyle/tests -t .
 ```
 
@@ -57,6 +58,10 @@ make settlements                       # once: caches the radiocarbon dumps in b
 layer, slice and game hex, packing a 50-step value with a confidence level (format in `isostyle/export.py`).
 `neolith-convert --evidence` puts it into `world.bin` (world format version 10), and `make maps` passes it when
 the file exists. The game shows it as the Evidence map mode, with a layer picker.
+
+`export` also writes `data/isostyle/speculative/ancestry_samples.json` (one record per genome of
+`data/ancestry/ancestry.csv.gz`), which `neolith-convert --samples` puts into `world.bin` (version 15). With the
+six `anc_*` layers it drives the game's Ancestry map mode. Those layers are recorded only: no fill.
 
 The isostyle build reads the hex-map pipeline's `build/combined_map.geojson`. The pipeline now takes an
 exclusive lock on `build/` while it writes. If `make maps` may be running, wrap isostyle commands:

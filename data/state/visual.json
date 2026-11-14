@@ -1,0 +1,89 @@
+{
+ "date": "2026-11-13",
+ "size": "640x400",
+ "pixel_step": 24,
+ "changed_share": 0.02,
+ "views": [
+  {
+   "name": "jericho-8000",
+   "status": "same",
+   "mean_diff": 0.0,
+   "moved": 0.0,
+   "seconds": 4.0,
+   "render": "build/state/visual/jericho-8000.png",
+   "golden": "build/state/golden/jericho-8000.png"
+  },
+  {
+   "name": "catalhoyuk-6500",
+   "status": "same",
+   "mean_diff": 0.13,
+   "moved": 0.0017,
+   "seconds": 0.4,
+   "render": "build/state/visual/catalhoyuk-6500.png",
+   "golden": "build/state/golden/catalhoyuk-6500.png"
+  },
+  {
+   "name": "gobekli-9000",
+   "status": "same",
+   "mean_diff": 0.0,
+   "moved": 0.0,
+   "seconds": 0.4,
+   "render": "build/state/visual/gobekli-9000.png",
+   "golden": "build/state/golden/gobekli-9000.png"
+  },
+  {
+   "name": "stonehenge-3000",
+   "status": "same",
+   "mean_diff": 0.4,
+   "moved": 0.0059,
+   "seconds": 0.5,
+   "render": "build/state/visual/stonehenge-3000.png",
+   "golden": "build/state/golden/stonehenge-3000.png"
+  },
+  {
+   "name": "europe-8000",
+   "status": "same",
+   "mean_diff": 0.34,
+   "moved": 0.0059,
+   "seconds": 0.9,
+   "render": "build/state/visual/europe-8000.png",
+   "golden": "build/state/golden/europe-8000.png"
+  },
+  {
+   "name": "russia-5000",
+   "status": "same",
+   "mean_diff": 0.61,
+   "moved": 0.0094,
+   "seconds": 0.6,
+   "render": "build/state/visual/russia-5000.png",
+   "golden": "build/state/golden/russia-5000.png"
+  },
+  {
+   "name": "levant-cereals-8000",
+   "status": "same",
+   "mean_diff": 0.24,
+   "moved": 0.0042,
+   "seconds": 0.6,
+   "render": "build/state/visual/levant-cereals-8000.png",
+   "golden": "build/state/golden/levant-cereals-8000.png"
+  },
+  {
+   "name": "doggerland-7000",
+   "status": "same",
+   "mean_diff": 0.87,
+   "moved": 0.0141,
+   "seconds": 0.6,
+   "render": "build/state/visual/doggerland-7000.png",
+   "golden": "build/state/golden/doggerland-7000.png"
+  },
+  {
+   "name": "nile-delta-pop-5000",
+   "status": "same",
+   "mean_diff": 0.93,
+   "moved": 0.0191,
+   "seconds": 0.7,
+   "render": "build/state/visual/nile-delta-pop-5000.png",
+   "golden": "build/state/golden/nile-delta-pop-5000.png"
+  }
+ ]
+}

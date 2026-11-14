@@ -25,9 +25,9 @@ confidence = "medium"
 basis = ["dossier_statistics", "literature", "environment", "other_layer"]
 reasoning = "Every Saharan core in core_units records 0 Cerealia across all eight slices (1-5 cores per slice). The edges (0.056-0.145) are the shrinkage term, not cores with cereal pollen. Pottery, ground stone and later livestock inside the gap show people were there, but they were wild-grass gatherers and cattle herders. Large wild grasses such as Echinochloa, Panicum and wild Sorghum might occasionally pass a European size threshold. A few percent is the most that could be expected even if analysts applied European keys."
 literature = [
-  { cite = "Manning et al. 2011, '4500-year old domesticated pearl millet (Pennisetum glaucum) from the Tilemsi Valley, Mali', Antiquity 85", checked = false },
-  { cite = "Lézine et al. 2011, 'Sahara and Sahel vulnerability to climate changes, lessons from Holocene hydrological data', QSR 30", checked = false },
-  { cite = "Vincens et al. 2007, African Pollen Database taxonomy (Poaceae not split by size)", checked = false },
+  { cite = "Manning, Pelling, Higham, Schwenniger & Fuller 2011, '4500-Year old domesticated pearl millet (Pennisetum glaucum) from the Tilemsi Valley, Mali: new insights into an alternative cereal domestication pathway', Journal of Archaeological Science 38, 312-322", checked = false, note = "Was cited as Antiquity 85; corrected to JAS 38 from Crossref (doi:10.1016/j.jas.2010.09.007). ScienceDirect blocks automated fetching and OpenAlex/Crossref carry no abstract, so the c. 2500 BCE date was not read from the source." },
+  { cite = "Lézine, Hély, Grenier, Braconnot & Krinner 2011, 'Sahara and Sahel vulnerability to climate changes, lessons from Holocene hydrological data', QSR 30, 3001-3012", checked = true, url = "https://insu.hal.science/insu-00647072v1", read = "abstract" },
+  { cite = "Vincens, Lézine, Buchet, Lewden & Le Thomas 2007, 'African pollen database inventory of tree and shrub pollen types', Review of Palaeobotany and Palynology 145, 135-141", checked = false, note = "The real 2007 APD paper is an inventory of tree and shrub pollen types only, so it does not address how Poaceae are recorded and does not support 'Poaceae not split by size'. ScienceDirect blocks automated fetching and OpenAlex/Crossref carry no abstract." },
 ]
 would_settle = "Size-measured Poaceae pollen from a Sahelian lake such as Lake Chad, Bal or Tichitt, which would also tell wild from domestic Pennisetum. Ingesting the African Pollen Database's own taxa list would show whether any core separates large grasses at all."
 speculative_rule = "Fill at 0.02 in every slice and ignore the shrinkage edges. If the game wants a domestication marker, add a separate 'millet' flag in the western Sahel from 2,500 BCE instead of raising this layer."
@@ -44,8 +44,8 @@ confidence = "medium"
 basis = ["dossier_statistics", "literature", "environment"]
 reasoning = "Between 2 and 11 West African cores per slice record 0 Cerealia. The 0.06-0.15 edge creep is the f0 shrinkage artefact. Yams, oil palm and wild grasses dominate the subsistence picture before c. 2000 BCE."
 literature = [
-  { cite = "Salzmann et al. 2002, 'Climate and human impact on the vegetation of NE Nigeria (Lake Tilla)', Holocene", checked = false },
-  { cite = "Manning et al. 2011, Tilemsi pearl millet, Antiquity 85", checked = false },
+  { cite = "Salzmann, Hoelzmann & Morczinek 2002, 'Late Quaternary climate and vegetation of the Sudanian zone of northeast Nigeria', Quaternary Research 58, 73-83 (Lake Tilla)", checked = true, url = "https://doi.org/10.1006/qres.2002.2356", read = "abstract" },
+  { cite = "Manning, Pelling, Higham, Schwenniger & Fuller 2011, '4500-Year old domesticated pearl millet (Pennisetum glaucum) from the Tilemsi Valley, Mali: new insights into an alternative cereal domestication pathway', Journal of Archaeological Science 38, 312-322", checked = false, note = "Was cited as Antiquity 85; corrected to JAS 38. Not read: see the Sahara–Sahel entry." },
 ]
 would_settle = "A size-measured grass-pollen series from a Guinea-savanna lake, or simply the APD taxa table."
 speculative_rule = "Fill at 0.02 for all slices."
@@ -55,15 +55,15 @@ region = "Nile & Sudan"
 slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
 gap_ids = ["cereal_pollen-10000-09", "cereal_pollen-9000-28", "cereal_pollen-8000-47", "cereal_pollen-7000-67", "cereal_pollen-6000-87", "cereal_pollen-5000-106", "cereal_pollen-4000-124", "cereal_pollen-3000-141"]
 why_empty = ["research_intensity", "preservation", "recording_practice"]
-why_note = "The Kordofan-Darfur gap has almost no permanent lakes; Sudanese palynology is mostly from archaeological sediments, not cores. The Khartoum Neolithic gathered wild sorghum; Near Eastern cereals reach Nubia only in the 5th millennium BCE and stay riverine."
+why_note = "The Kordofan-Darfur gap has almost no permanent lakes; Sudanese palynology is mostly from archaeological sediments, not cores. The Khartoum Neolithic gathered wild sorghum; Near Eastern cereals reach Nubia only around 5000 BCE and stay riverine."
 expected = 0.03
 expected_range = [0.0, 0.15]
 confidence = "low"
 basis = ["environment", "literature", "neighbouring_evidence"]
-reasoning = "The edges (0.058-0.108) are shrinkage on absent cores. Pottery from 9,000 BCE and livestock from 7,000 BCE inside the gap show pastoral occupation, not cereal fields. Emmer and barley in Nubia (e.g. Kadruka, 5th millennium BCE) would only show up in a Nile-valley core."
+reasoning = "The edges (0.058-0.108) are shrinkage on absent cores. Pottery from 9,000 BCE and livestock from 7,000 BCE inside the gap show pastoral occupation, not cereal fields. Wheat and barley in Nubia (the R12 cemetery, by c. 5000 BCE) would only show up in a Nile-valley core."
 literature = [
-  { cite = "Out, Ryan & García-Granero 2016, 'Evidence for sorghum use at Neolithic sites in Sudan', Vegetation History and Archaeobotany", checked = false },
-  { cite = "Madella et al. 2014, 'Plant use at Kadruka / Neolithic Nubia', archaeobotanical review", checked = false },
+  { cite = "Out, Ryan, García-Granero, Barastegui, Maritan, Madella & Usai 2016, 'Plant exploitation in Neolithic Sudan: a review in the light of new data from the cemeteries R12 and Ghaba', Quaternary International 412, 36-53", checked = false, note = "Was cited under a title and journal that match no work; corrected from Crossref (doi:10.1016/j.quaint.2015.12.066). ScienceDirect, the CSIC repository and ADS block automated fetching, so the wild-sorghum claim was not read from it." },
+  { cite = "Madella, García-Granero, Out, Ryan & Usai 2014, 'Microbotanical evidence of domestic cereals in Africa 7000 years ago', PLoS ONE 9(10), e110177", checked = true, url = "https://doi.org/10.1371/journal.pone.0110177", read = "abstract" },
 ]
 would_settle = "Pollen from a Nile palaeochannel or oxbow core near Khartoum or Dongola with Poaceae size classes."
 speculative_rule = "Fill at 0.03 away from the Nile. In a 50 km Nile strip, raise it to 0.2 from 5,000 BCE and 0.3 by 3,000 BCE."
@@ -92,8 +92,9 @@ confidence = "medium"
 basis = ["dossier_statistics", "environment", "literature"]
 reasoning = "Between 4 and 7 Horn cores per slice record 0 Cerealia. The edges (0.055-0.144) are the shrinkage artefact. Teff and finger millet have unknown, probably late, domestication dates. In any case neither is a Cerealia type."
 literature = [
-  { cite = "Lamb et al. 2007 / Marshall et al. 2011, Lake Tana and Ethiopian highland pollen records", checked = false },
-  { cite = "D'Andrea 2008, 'T'ef (Eragrostis tef) in ancient agricultural systems of highland Ethiopia', Economic Botany", checked = false },
+  { cite = "Lamb, Bates, Coombes, Marshall, Umer, Davies & Dejen 2007, 'Late Pleistocene desiccation of Lake Tana, source of the Blue Nile', QSR 26, 287-299", checked = false, note = "Resolved from 'Lamb et al. 2007 / Marshall et al. 2011'. ScienceDirect blocks automated fetching and OpenAlex/Crossref carry no abstract; a lake-level paper, not known to address how grass pollen is classed." },
+  { cite = "Marshall, Lamb, Huws, Davies, Bates, Bloemendal, Boyle, Leng, Umer & Bryant 2011, 'Late Pleistocene and Holocene drought events at Lake Tana, the source of the Blue Nile', Global and Planetary Change 78, 147-161", checked = false, note = "Resolved from 'Lamb et al. 2007 / Marshall et al. 2011'. ScienceDirect blocks automated fetching and OpenAlex/Crossref carry no abstract; a drought-history paper, not known to address how grass pollen is classed." },
+  { cite = "D'Andrea 2008, 'T'ef (Eragrostis tef) in ancient agricultural systems of highland Ethiopia', Economic Botany 62, 547-566", checked = false, note = "The Springer page redirects to a login, OUCI blocks fetching and OpenAlex/Crossref carry no abstract; not read." },
 ]
 would_settle = "Size-classed grass pollen from Lake Abhe or a highland lake such as Ashenge."
 speculative_rule = "Fill at 0.03 in all slices."
@@ -110,8 +111,8 @@ confidence = "medium"
 basis = ["environment", "literature", "neighbouring_evidence"]
 reasoning = "The edges (0.49-0.74, from only 2-4 cells) belong to a single Nile/Delta-area core that records Cerealia from 8,000 BCE, plus Sinai/Levant leakage. They do not describe the desert. Pottery, ground stone and livestock inside the gap (Nabta Playa, Gilf Kebir) are from herders and foragers. Their plant food was wild sorghum and other grasses, not Near Eastern cereals."
 literature = [
-  { cite = "Wendorf & Schild 2001, Holocene Settlement of the Egyptian Sahara, vol. 1 (Nabta Playa)", checked = false },
-  { cite = "Wengrow et al. 2014, 'Cultural convergence in the Neolithic of the Nile Valley', Antiquity 88", checked = false },
+  { cite = "Wendorf & Schild 2001, Holocene Settlement of the Egyptian Sahara, vol. 1 (Nabta Playa)", checked = false, note = "Book (Springer, doi:10.1007/978-1-4615-0653-9); the Springer pages redirect to a login and no open text was found." },
+  { cite = "Wengrow, Dee, Foster, Stevenson & Bronk Ramsey 2014, 'Cultural convergence in the Neolithic of the Nile Valley: a prehistoric perspective on Egypt's place in Africa', Antiquity 88, 95-111", checked = true, url = "https://doi.org/10.1017/S0003598X00050249", read = "abstract" },
 ]
 would_settle = "Ingest Nile Delta borehole pollen (e.g. the Smithsonian Nile Delta Project cores) to pin the valley strip; the desert needs no more work."
 speculative_rule = "Fill the desert at 0.03. Within 30 km of the Nile and in the Delta, use 0.5 for 10,000-6,000 BCE (wild grasses, following the Delta core) and 0.7 from 5,000 BCE."
@@ -149,7 +150,8 @@ confidence = "medium"
 basis = ["dossier_statistics", "neighbouring_evidence", "environment"]
 reasoning = "Moroccan cores record Cerealia in 0/3-1/5 core-slices up to 7,000 BCE and Algerian-Tunisian cores in 0/1-0/2. The 0.05-0.2 edge means at 10,000-6,000 BCE agree. The higher edge maxima (0.4-0.5) come from Iberian cores across the strait."
 literature = [
-  { cite = "Lamb et al. 1989 / Cheddadi et al. 1998, Middle Atlas Holocene pollen (Tigalmamine)", checked = false },
+  { cite = "Lamb, Eicher & Switsur 1989, 'An 18,000-year record of vegetation, lake-level and climatic change from Tigalmamine, Middle Atlas, Morocco', Journal of Biogeography 16, 65-74", checked = false, note = "Resolved from 'Lamb et al. 1989 / Cheddadi et al. 1998'. JSTOR does not load for automated fetching and no open abstract was found; not read." },
+  { cite = "Cheddadi, Lamb, Guiot & van der Kaars 1998, 'Holocene climatic change in Morocco: a quantitative reconstruction from pollen data', Climate Dynamics 14, 883-890", checked = false, note = "Resolved from 'Lamb et al. 1989 / Cheddadi et al. 1998'. The Springer page redirects to a login and no open abstract was found; not read." },
 ]
 would_settle = "More Tell and Rif cores in Neotoma; the Saharan part will stay empty."
 speculative_rule = "Fill at 0.08 north of 32°N and at 0.02 in the Saharan part south of the Saharan Atlas."
@@ -170,8 +172,8 @@ confidence = "low"
 basis = ["dossier_statistics", "literature", "other_layer", "neighbouring_evidence"]
 reasoning = "Moroccan cores rise to 0.33-0.44 by 5,000-3,000 BCE and the edges to 0.22-0.32. The cereal-grain and livestock layers show Neolithic occupation in the Tell from 5,000 BCE. By 3,000 BCE Tunisia/Algeria cores still show only 1/7, so the east lags."
 literature = [
-  { cite = "Morales et al. 2013, 'The origins of agriculture in North-West Africa: macro-botanical remains from Epipalaeolithic and Early Neolithic levels of Ifri Oudadane', JAS 40", checked = false },
-  { cite = "Zapata et al. 2013, 'Early Neolithic agriculture in the Iberian Peninsula and North Africa (Kaf Taht el-Ghar)'", checked = false },
+  { cite = "Morales, Pérez-Jordà, Peña-Chocarro, Zapata, Ruíz-Alonso, López-Sáez & Linstädter 2013, 'The origins of agriculture in North-West Africa: macro-botanical remains from Epipalaeolithic and Early Neolithic levels of Ifri Oudadane (Morocco)', JAS 40, 2659-2669", checked = true, url = "https://crc806db.uni-koeln.de/dataset/show/the-origins-of-agriculture-in-north-west-africa-macro-botanical-remains-from-epipalaeolithic-and/", read = "abstract" },
+  { cite = "Peña-Chocarro, Pérez Jordà, Morales Mateos & Zapata 2013, 'Neolithic plant use in the western Mediterranean region: preliminary results from the AGRIWESTMED project', Annali di Botanica 3, 135-141 (Kaf Taht el-Ghar, Ifri Oudadane)", checked = true, url = "https://rosa.uniroma1.it/rosa04/annali_di_botanica/article/download/10306/10237/13648", read = "full text (searched passages)" },
 ]
 would_settle = "Digitise Tell and Rif pollen series (e.g. Lake Ifrah, Dayet Iffer, Tunisian Kroumirie bogs) into Neotoma."
 speculative_rule = "Fill at 0.35 in Morocco and 0.2 in Algeria-Tunisia north of 34°N from 5,000 BCE, and at 0.02 south of the Saharan Atlas."
@@ -202,9 +204,10 @@ confidence = "medium"
 basis = ["environment", "literature", "dossier_statistics", "other_layer"]
 reasoning = "Each of the 1-3 Arabian core-slices records 0 Cerealia. The 0.47-0.67 edges come from 2-4 cells on the Levant/Jordan rim, where wild cereals grow. The domestic-livestock layer inside the gap from 7,000 BCE fits Neolithic herding. Desert-grass pollen (Panicum turgidum, Stipagrostis) is mostly below Cerealia size."
 literature = [
-  { cite = "Parker et al. 2006, 'A record of Holocene climate change from lake geochemical analyses in southeastern Arabia', QR 66", checked = false },
-  { cite = "Engel et al. 2012, 'Lacustrine evidence for Holocene humid periods at Tayma', QSR", checked = false },
-  { cite = "Drechsler 2009 / Crassard & Drechsler 2013, The Arabian Neolithic: pastoral, aceramic", checked = false },
+  { cite = "Parker, Goudie, Stokes, White, Hodson, Manning & Kennet 2006, 'A record of Holocene climate change from lake geochemical analyses in southeastern Arabia', Quaternary Research 66, 465-476", checked = true, url = "https://doi.org/10.1016/j.yqres.2006.07.001", read = "abstract" },
+  { cite = "Engel, Brückner, Pint, Wellbrock, Ginau, Voss, Grottker, Klasen & Frenzel 2012, 'The early Holocene humid period in NW Saudi Arabia – sediments, microfossils and palaeo-hydrological modelling', Quaternary International 266, 131-141", checked = false, note = "Was cited as 'Lacustrine evidence for Holocene humid periods at Tayma', QSR, which matches no work; this is the same author's Tayma palaeolake paper (Crossref). ScienceDirect and the catalogues that carry its abstract block automated fetching; not read." },
+  { cite = "Drechsler 2009, The Dispersal of the Neolithic over the Arabian Peninsula, BAR Publishing", checked = false, note = "Resolved from 'Drechsler 2009 / Crassard & Drechsler 2013'. Book (doi:10.30861/9781407305028); no open text found." },
+  { cite = "Crassard & Drechsler 2013, 'Towards new paradigms: multiple pathways for the Arabian Neolithic', Arabian Archaeology and Epigraphy 24, 3-8", checked = true, url = "https://doi.org/10.1111/aae.12021", read = "abstract" },
 ]
 would_settle = "Ingest pollen from the Tayma and Jubbah palaeolake sequences and from Yemeni highland dam sediments."
 speculative_rule = "Fill at 0.05 everywhere up to 4,000 BCE. At 3,000 BCE raise the Yemeni and Asir highlands above 1,500 m to 0.3, and set the northern Nafud margin (north of 28°N) to 0.3 in every slice for wild barley."
@@ -235,8 +238,8 @@ confidence = "low"
 basis = ["neighbouring_evidence", "dossier_statistics", "environment", "literature"]
 reasoning = "Both cores in the wider Mesopotamian box record Cerealia in every slice, and the edges sit at 0.61-0.69 from 10,000 to 3,000 BCE with no farming step. That is the wild-grass background of an arid SW Asian steppe: wild barley and Aegilops grow in the Jazira. Irrigation farming in the alluvium from the Samarra and Ubaid phases (c. 6000 BCE) should push it higher, toward 0.75. The Iraqi western desert should sit lower."
 literature = [
-  { cite = "van Zeist & Bottema 1991, Late Quaternary Vegetation of the Near East", checked = false },
-  { cite = "Wright 1993, 'Environmental determinism in Near Eastern prehistory', Current Anthropology", checked = false },
+  { cite = "van Zeist & Bottema 1991, Late Quaternary Vegetation of the Near East", checked = false, note = "Book; no open text found." },
+  { cite = "Wright 1993, 'Environmental determinism in Near Eastern prehistory', Current Anthropology 34, 458-469", checked = false, note = "JSTOR does not load for automated fetching and OpenAlex/Crossref carry no abstract; not read." },
 ]
 would_settle = "Pollen from Gulf-head and marsh cores (e.g. Aqar et al. on the Hammar marshes, Aqrawi's Tigris-Euphrates delta cores)."
 speculative_rule = "Fill at 0.6 for 10,000-7,000 BCE and 0.75 for 6,000-3,000 BCE in the alluvium. In the western desert, set 0.4 throughout. Flag it as natural grass, not farming, before 7,000 BCE."
@@ -265,7 +268,7 @@ confidence = "medium"
 basis = ["neighbouring_evidence", "dossier_statistics", "environment"]
 reasoning = "Levantine cores record Cerealia in 0.57-0.86 of core-slices across all slices, and the edges are 0.35-0.52. Both are flat across the start of farming because wild barley, wild einkorn and Aegilops are native. The Badia is drier than the cored Mediterranean belt, so it should sit a little lower."
 literature = [
-  { cite = "Litt et al. 2012, 'Holocene climate variability in the Levant from the Dead Sea pollen record', QSR 49", checked = false },
+  { cite = "Litt, Ohlwein, Neumann, Hense & Stein 2012, 'Holocene climate variability in the Levant from the Dead Sea pollen record', QSR 49, 95-105", checked = false, note = "ScienceDirect blocks automated fetching and OpenAlex/Crossref carry no abstract; not read." },
 ]
 would_settle = "Pollen from the El Kowm spring deposits or Jabbul sabkha cores."
 speculative_rule = "Fill at 0.5 in all slices, and mark it as wild-grass background."
@@ -282,8 +285,8 @@ confidence = "medium"
 basis = ["neighbouring_evidence", "dossier_statistics", "literature", "other_layer"]
 reasoning = "Anatolian cores record Cerealia in 0.62-0.88 of core-slices, and the edges are 0.45-0.67. The cereal-grain layer has evidence inside the gap from 9,000 BCE (Çayönü, Nevalı Çori lie close), so wild stands before c. 8500 BCE give way to fields with no gap between them."
 literature = [
-  { cite = "Heun et al. 1997, 'Site of einkorn wheat domestication identified by DNA fingerprinting', Science 278", checked = false },
-  { cite = "Wick, Lemcke & Sturm 2003, 'Evidence of Lateglacial and Holocene climatic change and human impact in eastern Anatolia (Lake Van)', Holocene", checked = false },
+  { cite = "Heun, Schäfer-Pregl, Klawan, Castagna, Accerbi, Borghi & Salamini 1997, 'Site of einkorn wheat domestication identified by DNA fingerprinting', Science 278, 1312-1314", checked = true, url = "https://doi.org/10.1126/science.278.5341.1312", read = "abstract" },
+  { cite = "Wick, Lemcke & Sturm 2003, 'Evidence of Lateglacial and Holocene climatic change and human impact in eastern Anatolia: high-resolution pollen, charcoal, isotopic and geochemical records from the laminated sediments of Lake Van, Turkey', The Holocene 13, 665-675", checked = false, note = "Abstract read (https://doi.org/10.1191/0959683603hl653rp): early-Holocene grass steppe and pistachio scrub, oak woodland delayed to c. 6200 yr BP, and human impact at Lake Van only from 3800 yr BP. It says nothing of Cerealia-type pollen or early fields, so it does not support the wild-stands-to-fields claim; it is far east of the upper Euphrates gap." },
 ]
 would_settle = "Ingest the Lake Hazar pollen series."
 speculative_rule = "Fill at 0.65 for 10,000-9,000 BCE and 0.75 from 8,000 BCE."
@@ -308,7 +311,7 @@ confidence = "low"
 basis = ["neighbouring_evidence", "dossier_statistics", "literature"]
 reasoning = "Caucasus cores record 0.0-0.5 (mostly 0.12-0.33), and the edges are 0.33-0.58. Shulaveri-Shomu farming in the Kura valley from c. 6000 BCE should lift the 5,000 BCE slice above the early ones."
 literature = [
-  { cite = "Connor & Kvavadze 2009, 'Modelling late Quaternary changes in plant distribution, vegetation and climate using pollen data from Georgia, Caucasus', J. Biogeography", checked = false },
+  { cite = "Connor & Kvavadze 2009, 'Modelling late Quaternary changes in plant distribution, vegetation and climate using pollen data from Georgia, Caucasus', J. Biogeography 36, 529-545", checked = false, note = "Abstract read (https://doi.org/10.1111/j.1365-2699.2008.02019.x): a Georgian pollen synthesis showing late-glacial desert-steppe giving way to oak-xerophyte and mixed forest. It does not mention Cerealia-type pollen or Shulaveri-Shomu farming, so it supports only the vegetation background." },
 ]
 would_settle = "Ingest Azerbaijani lowland cores or Kvavadze's Georgian site pollen."
 speculative_rule = "Fill at 0.25 for 10,000-8,000 BCE and 0.45 at 5,000 BCE."
@@ -333,8 +336,8 @@ confidence = "low"
 basis = ["neighbouring_evidence", "dossier_statistics", "environment"]
 reasoning = "The four Zagros cores record Cerealia in every slice from 10,000 BCE, which must be wild cereal. Other Iranian cores record 0.2-0.75, and the edges are 0.34-0.64. The interior is drier and has less grass, but oasis farming at Sialk, Cheshmeh Ali and Tepe Hissar from c. 6000 BCE and in the Kopet Dag would add cereal locally."
 literature = [
-  { cite = "Djamali et al. 2010, 'Indian Summer Monsoon variations could have affected the early-Holocene woodland expansion in the Near East' (Maharlou), Holocene", checked = false },
-  { cite = "van Zeist & Bottema 1977, 'Palynological investigations in western Iran' (Zeribar, Mirabad)", checked = false },
+  { cite = "Djamali et al. 2010, 'Indian Summer Monsoon variations could have affected the early-Holocene woodland expansion in the Near East', The Holocene 20, 813-820", checked = false, note = "Abstract read (https://doi.org/10.1177/0959683610362813): argues Zagros oak woodland expansion was delayed to c. 6300 cal yr BP. It is not the Maharlou core (that is Djamali et al. 2009, VHA 18, 123-136) and does not discuss Cerealia-type pollen, so it supports only an open early-Holocene Zagros." },
+  { cite = "van Zeist & Bottema 1977, 'Palynological investigations in western Iran', Palaeohistoria 19, 19-85 (Zeribar, Mirabad)", checked = true, url = "https://ugp.rug.nl/Palaeohistoria/article/view/25018", read = "full text (searched passages)" },
 ]
 would_settle = "Ingest the newer Iranian lake series (Djamali's group: Maharlou, Parishan, Neor) and any Afghan record (none known)."
 speculative_rule = "Fill at 0.45 in all slices. Raise it to 0.6 within 100 km of known oasis and piedmont settlements from 6,000 BCE, and lower it to 0.2 in the Kavir and Lut basins."
@@ -377,8 +380,7 @@ confidence = "low"
 basis = ["neighbouring_evidence", "dossier_statistics", "environment", "literature"]
 reasoning = "The 4-5 cores in the wider Central Asian box (Caspian rim and Kopet Dag) record 0.25-0.8, already 0.75 at 10,000 BCE. That is the wild steppe-grass background (Leymus, Elymus, Aegilops). The edges are 0.13-0.6. The desert interior should sit lower than the piedmont."
 literature = [
-  { cite = "Sorrel et al. 2007, 'Hydrologic and climatic changes in the Aral Sea region over the last 2000 years' and companion Holocene pollen work", checked = false },
-  { cite = "Harris 2010, Origins of Agriculture in Western Central Asia", checked = false },
+  { cite = "Harris 2010, Origins of Agriculture in Western Central Asia", checked = false, note = "Book (University of Pennsylvania Museum); the De Gruyter pages block automated fetching and no open text was found." },
 ]
 would_settle = "Digitise the Aral and Sarykamysh core pollen and any Soviet Kelteminar site pollen."
 speculative_rule = "Fill at 0.35 in the desert interior. On the Kopet Dag piedmont, use 0.6 from 6,000 BCE."
@@ -404,7 +406,7 @@ confidence = "low"
 basis = ["environment", "analogy", "literature"]
 reasoning = "The nearest evidence is 731-1438 km away, so the dossier gives nothing. By analogy with arid Iranian and Central Asian cores, wild-grass background would be 0.2-0.4. Mehrgarh would add cereal pollen locally in the east."
 literature = [
-  { cite = "Jarrige et al. 1995, Mehrgarh Field Reports 1974-1985", checked = false },
+  { cite = "Jarrige et al. 1995, Mehrgarh Field Reports 1974-1985", checked = false, note = "Book; no open text found." },
 ]
 would_settle = "None realistic; this is a game-map edge."
 speculative_rule = "Fill at 0.3 in all slices, and at 0.5 within 100 km of Mehrgarh from 7,000 BCE."
@@ -423,8 +425,8 @@ confidence = "low"
 basis = ["dossier_statistics", "neighbouring_evidence", "environment", "literature"]
 reasoning = "Edge means are 0.08-0.26, and most edge cells sit near 0.06-0.1 (shrinkage on absent cores). The higher edge maxima come from the Ukrainian and Caucasian rims. Pontic steppe cores record 1 in 3 core-slices. Wild steppe grasses (Leymus racemosus, Elymus, Secale sylvestre) give Cerealia-sized grains, so a non-zero background is expected even without farming."
 literature = [
-  { cite = "Beug 2004, Leitfaden der Pollenbestimmung (Cerealia-type includes several wild Triticeae)", checked = false },
-  { cite = "Anthony 2007, The Horse, the Wheel, and Language (no cultivation by Khvalynsk or Yamnaya)", checked = false },
+  { cite = "Beug 2004, Leitfaden der Pollenbestimmung (Cerealia-type includes several wild Triticeae)", checked = false, note = "Book (identification key); no open text found. The general point that wild Near Eastern grasses give Cerealia-type pollen is confirmed by van Zeist & Bottema 1977 (Iran judgement)." },
+  { cite = "Anthony 2007, The Horse, the Wheel, and Language (no cultivation by Khvalynsk or Yamnaya)", checked = false, note = "Book; no open text found." },
 ]
 would_settle = "Ingest lower Volga and Caspian-lowland lake records from the Russian Pollen Database, with Poaceae grain size measured."
 speculative_rule = "Fill at 0.12 for 10,000-6,000 BCE and 0.18 for 5,000-3,000 BCE. Treat it as wild Triticeae, not farming."
@@ -449,8 +451,8 @@ confidence = "medium"
 basis = ["dossier_statistics", "neighbouring_evidence", "literature"]
 reasoning = "Cores in NW Russia (30-50°E) record Cerealia in 0.00-0.03 of core-slices, and Finland-Karelia in 0.00-0.05 until 4,000 BCE, then 0.11 at 3,000 BCE. That is below the 6% per-level European background because boreal lakes lack large wild grasses. The 6,000-5,000 BCE edge maxima (about 0.5) are single cells near the Baltic. The sporadic early cereal grains in Finnish Comb Ware contexts are real but rare."
 literature = [
-  { cite = "Alenius, Mökkönen & Lahelma 2013, 'Early farming in the northern Boreal zone: reassessing the history of land use in southeastern Finland', VHA 22", checked = false },
-  { cite = "Novenko et al. 2009, Holocene vegetation of the Central Forest Reserve, European Russia (forest-zone pollen synthesis)", checked = false },
+  { cite = "Alenius, Mökkönen & Lahelma 2013, 'Early farming in the northern Boreal zone: reassessing the history of land use in southeastern Finland through high-resolution pollen analysis', Geoarchaeology 28, 1-24", checked = false, note = "Was cited as VHA 22; corrected to Geoarchaeology 28 from Crossref. Abstract read (https://doi.org/10.1002/gea.21428): signs of cultivation by 5260-4260 BC and Neolithic buckwheat pollen at Lake Huhdasjärvi. It does not say the early signal is Cerealia-type, so 'sporadic early cereal grains' is not directly supported." },
+  { cite = "Novenko, Volkova, Nosova & Zuganova 2009, 'Late Glacial and Holocene landscape dynamics in the southern taiga zone of East European Plain according to pollen and macrofossil records from the Central Forest State Reserve (Valdai Hills, Russia)', Quaternary International 207, 93-103", checked = false, note = "ScienceDirect blocks automated fetching and OpenAlex/Crossref carry no abstract; not read." },
 ]
 would_settle = "Ingest the Russian Pollen Database (RPD) cores for the Komi and Pechora region."
 speculative_rule = "Fill at 0.02 for 10,000-5,000 BCE and 0.04 for 4,000-3,000 BCE. Fade to 0 north of 66°N."
@@ -481,7 +483,7 @@ confidence = "low"
 basis = ["dossier_statistics", "neighbouring_evidence", "environment"]
 reasoning = "Edge means are 0.09-0.10 with a few cells near 0.5. Before farming, only wild steppe Triticeae would produce Cerealia-type grains, which is the same background as the Russian steppe."
 literature = [
-  { cite = "Kremenetski 1995, 'Holocene vegetation and climate history of southwestern Ukraine', Review of Palaeobotany and Palynology", checked = false },
+  { cite = "Kremenetski 1995, 'Holocene vegetation and climate history of southwestern Ukraine', Review of Palaeobotany and Palynology 85, 289-301", checked = false, note = "ScienceDirect blocks automated fetching and OpenAlex/Crossref carry no abstract; not read." },
 ]
 would_settle = "Ingest Kremenetski's Ukrainian steppe records."
 speculative_rule = "Fill at 0.1."
@@ -498,7 +500,7 @@ confidence = "low"
 basis = ["analogy", "environment"]
 reasoning = "No edge evidence, and the nearest cores are 782 km away. By analogy with arid Mesopotamian cores, the wild-grass background would be high, but it would be lower on the desert floor than in the Jazira."
 literature = [
-  { cite = "Rose 2010, 'New light on human prehistory in the Arabo-Persian Gulf Oasis', Current Anthropology 51", checked = false },
+  { cite = "Rose 2010, 'New light on human prehistory in the Arabo-Persian Gulf Oasis', Current Anthropology 51, 849-883", checked = true, url = "https://doi.org/10.1086/657397", read = "abstract" },
 ]
 would_settle = "Pollen from Gulf marine cores spanning the transgression."
 speculative_rule = "Fill at 0.4 while the floor is dry."

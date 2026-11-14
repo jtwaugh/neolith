@@ -10,24 +10,28 @@
   -3000
  ],
  "settings": {
-  "blend_rings": 12,
+  "blend_rings": 16,
   "smooth_iters": 16,
   "smooth_rate": 0.5,
   "time_smooth": 0.4,
   "blend_conf": 0,
   "kernel_cap": 0,
   "hold_rings": 0,
-  "bridge": 0.75,
-  "time_from_observed": 1
+  "bridge": 1.0,
+  "time_from_observed": 1,
+  "soft_sources": 1,
+  "soft_power": 0.1,
+  "bridge_conf": 0,
+  "bridge_hold": 1
  },
  "layers": {
   "pottery": [
    {
     "slice": -10000,
     "land_cells": 17742,
-    "observed": 1619,
+    "observed": 1618,
     "judged": 13120,
-    "extrapolated": 3003
+    "extrapolated": 3004
    },
    {
     "slice": -9000,
@@ -46,37 +50,37 @@
    {
     "slice": -7000,
     "land_cells": 18098,
-    "observed": 4562,
-    "judged": 11462,
+    "observed": 4559,
+    "judged": 11465,
     "extrapolated": 2074
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 7167,
     "judged": 9047,
-    "extrapolated": 1696
+    "extrapolated": 1697
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
-    "observed": 7365,
-    "judged": 8540,
-    "extrapolated": 1854
+    "land_cells": 17760,
+    "observed": 7360,
+    "judged": 8545,
+    "extrapolated": 1855
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
-    "observed": 6748,
-    "judged": 9066,
+    "land_cells": 17589,
+    "observed": 6730,
+    "judged": 9085,
     "extrapolated": 1774
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 5389,
+    "land_cells": 17529,
+    "observed": 5391,
     "judged": 10408,
-    "extrapolated": 1731
+    "extrapolated": 1730
    }
   ],
   "flaked_stone": [
@@ -110,30 +114,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 1993,
-    "judged": 15917,
+    "judged": 15918,
     "extrapolated": 0
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
-    "observed": 2013,
+    "land_cells": 17760,
+    "observed": 2014,
     "judged": 15746,
     "extrapolated": 0
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 1384,
-    "judged": 16204,
+    "judged": 16205,
     "extrapolated": 0
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
+    "land_cells": 17529,
     "observed": 565,
-    "judged": 16963,
+    "judged": 16964,
     "extrapolated": 0
    }
   ],
@@ -168,31 +172,31 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
-    "observed": 9020,
-    "judged": 8670,
-    "extrapolated": 220
+    "land_cells": 17911,
+    "observed": 9045,
+    "judged": 8647,
+    "extrapolated": 219
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
-    "observed": 8562,
-    "judged": 9051,
-    "extrapolated": 146
+    "land_cells": 17760,
+    "observed": 8593,
+    "judged": 9020,
+    "extrapolated": 147
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
-    "observed": 9503,
+    "land_cells": 17589,
+    "observed": 9504,
     "judged": 8004,
     "extrapolated": 81
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 7776,
+    "land_cells": 17529,
+    "observed": 7778,
     "judged": 9699,
-    "extrapolated": 53
+    "extrapolated": 52
    }
   ],
   "bone_antler": [
@@ -226,30 +230,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 761,
-    "judged": 17149,
+    "judged": 17150,
     "extrapolated": 0
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
+    "land_cells": 17760,
     "observed": 509,
-    "judged": 17250,
+    "judged": 17251,
     "extrapolated": 0
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 198,
-    "judged": 17390,
+    "judged": 17391,
     "extrapolated": 0
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
+    "land_cells": 17529,
     "observed": 125,
-    "judged": 17403,
+    "judged": 17404,
     "extrapolated": 0
    }
   ],
@@ -284,30 +288,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 1366,
-    "judged": 16544,
+    "judged": 16545,
     "extrapolated": 0
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
-    "observed": 1481,
-    "judged": 16278,
+    "land_cells": 17760,
+    "observed": 1480,
+    "judged": 16280,
     "extrapolated": 0
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 1312,
-    "judged": 16276,
+    "judged": 16277,
     "extrapolated": 0
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
+    "land_cells": 17529,
     "observed": 1112,
-    "judged": 16416,
+    "judged": 16417,
     "extrapolated": 0
    }
   ],
@@ -342,29 +346,29 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 736,
-    "judged": 17107,
+    "judged": 17108,
     "extrapolated": 67
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
-    "observed": 1568,
-    "judged": 16070,
+    "land_cells": 17760,
+    "observed": 1567,
+    "judged": 16072,
     "extrapolated": 121
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 1726,
-    "judged": 15785,
+    "judged": 15786,
     "extrapolated": 77
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 1593,
+    "land_cells": 17529,
+    "observed": 1594,
     "judged": 15860,
     "extrapolated": 75
    }
@@ -400,30 +404,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 873,
-    "judged": 16983,
+    "judged": 16984,
     "extrapolated": 54
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
+    "land_cells": 17760,
     "observed": 2099,
-    "judged": 15507,
+    "judged": 15508,
     "extrapolated": 153
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 2399,
-    "judged": 15037,
+    "judged": 15038,
     "extrapolated": 152
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 2549,
-    "judged": 14626,
+    "land_cells": 17529,
+    "observed": 2535,
+    "judged": 14641,
     "extrapolated": 353
    }
   ],
@@ -458,30 +462,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 0,
-    "judged": 17910,
+    "judged": 17911,
     "extrapolated": 0
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
+    "land_cells": 17760,
     "observed": 971,
-    "judged": 16788,
+    "judged": 16789,
     "extrapolated": 0
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 779,
-    "judged": 16809,
+    "judged": 16810,
     "extrapolated": 0
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
+    "land_cells": 17529,
     "observed": 971,
-    "judged": 16557,
+    "judged": 16558,
     "extrapolated": 0
    }
   ],
@@ -516,30 +520,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 0,
-    "judged": 17910,
+    "judged": 17911,
     "extrapolated": 0
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
+    "land_cells": 17760,
     "observed": 239,
-    "judged": 17520,
+    "judged": 17521,
     "extrapolated": 0
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 806,
-    "judged": 16782,
+    "judged": 16783,
     "extrapolated": 0
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
+    "land_cells": 17529,
     "observed": 1310,
-    "judged": 16218,
+    "judged": 16219,
     "extrapolated": 0
    }
   ],
@@ -574,30 +578,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 0,
-    "judged": 17910,
+    "judged": 17911,
     "extrapolated": 0
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
+    "land_cells": 17760,
     "observed": 0,
-    "judged": 17759,
+    "judged": 17760,
     "extrapolated": 0
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 40,
-    "judged": 17548,
+    "judged": 17549,
     "extrapolated": 0
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
+    "land_cells": 17529,
     "observed": 53,
-    "judged": 17475,
+    "judged": 17476,
     "extrapolated": 0
    }
   ],
@@ -632,30 +636,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
-    "observed": 49,
-    "judged": 17861,
+    "land_cells": 17911,
+    "observed": 0,
+    "judged": 17911,
     "extrapolated": 0
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
+    "land_cells": 17760,
     "observed": 0,
-    "judged": 17759,
+    "judged": 17760,
     "extrapolated": 0
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 171,
-    "judged": 17417,
+    "judged": 17418,
     "extrapolated": 0
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
+    "land_cells": 17529,
     "observed": 71,
-    "judged": 17457,
+    "judged": 17458,
     "extrapolated": 0
    }
   ],
@@ -690,30 +694,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 0,
-    "judged": 17910,
+    "judged": 17911,
     "extrapolated": 0
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
+    "land_cells": 17760,
     "observed": 55,
-    "judged": 17704,
+    "judged": 17705,
     "extrapolated": 0
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 162,
-    "judged": 17426,
+    "judged": 17427,
     "extrapolated": 0
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
+    "land_cells": 17529,
     "observed": 134,
-    "judged": 17394,
+    "judged": 17395,
     "extrapolated": 0
    }
   ],
@@ -748,30 +752,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 0,
-    "judged": 17910,
+    "judged": 17911,
     "extrapolated": 0
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
+    "land_cells": 17760,
     "observed": 0,
-    "judged": 17759,
+    "judged": 17760,
     "extrapolated": 0
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 19,
-    "judged": 17569,
+    "judged": 17570,
     "extrapolated": 0
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
+    "land_cells": 17529,
     "observed": 12,
-    "judged": 17516,
+    "judged": 17517,
     "extrapolated": 0
    }
   ],
@@ -806,30 +810,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 56,
-    "judged": 17854,
+    "judged": 17855,
     "extrapolated": 0
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
-    "observed": 82,
-    "judged": 17677,
+    "land_cells": 17760,
+    "observed": 76,
+    "judged": 17684,
     "extrapolated": 0
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
-    "observed": 143,
-    "judged": 17445,
+    "land_cells": 17589,
+    "observed": 135,
+    "judged": 17454,
     "extrapolated": 0
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 206,
-    "judged": 17322,
+    "land_cells": 17529,
+    "observed": 203,
+    "judged": 17326,
     "extrapolated": 0
    }
   ],
@@ -864,30 +868,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 5698,
     "judged": 11799,
-    "extrapolated": 413
+    "extrapolated": 414
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
+    "land_cells": 17760,
     "observed": 5749,
     "judged": 11767,
-    "extrapolated": 243
+    "extrapolated": 244
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
-    "observed": 5901,
+    "land_cells": 17589,
+    "observed": 5902,
     "judged": 11481,
     "extrapolated": 206
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 6119,
-    "judged": 11261,
+    "land_cells": 17529,
+    "observed": 6121,
+    "judged": 11260,
     "extrapolated": 148
    }
   ],
@@ -922,29 +926,29 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 2072,
-    "judged": 15672,
+    "judged": 15673,
     "extrapolated": 166
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
+    "land_cells": 17760,
     "observed": 2068,
-    "judged": 15611,
+    "judged": 15612,
     "extrapolated": 80
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
-    "observed": 2170,
+    "land_cells": 17589,
+    "observed": 2171,
     "judged": 15329,
     "extrapolated": 89
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 2241,
+    "land_cells": 17529,
+    "observed": 2242,
     "judged": 15227,
     "extrapolated": 60
    }
@@ -980,30 +984,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 1244,
-    "judged": 16395,
+    "judged": 16396,
     "extrapolated": 271
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
-    "observed": 1317,
-    "judged": 16269,
+    "land_cells": 17760,
+    "observed": 1316,
+    "judged": 16271,
     "extrapolated": 173
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 1393,
-    "judged": 16064,
+    "judged": 16065,
     "extrapolated": 131
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
+    "land_cells": 17529,
     "observed": 1431,
-    "judged": 15978,
+    "judged": 15979,
     "extrapolated": 119
    }
   ],
@@ -1038,30 +1042,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 1664,
-    "judged": 16205,
+    "judged": 16206,
     "extrapolated": 41
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
-    "observed": 2049,
-    "judged": 15686,
+    "land_cells": 17760,
+    "observed": 2048,
+    "judged": 15688,
     "extrapolated": 24
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 3016,
-    "judged": 14548,
+    "judged": 14549,
     "extrapolated": 24
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 3751,
-    "judged": 13759,
+    "land_cells": 17529,
+    "observed": 3709,
+    "judged": 13802,
     "extrapolated": 18
    }
   ],
@@ -1096,30 +1100,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 1175,
-    "judged": 16684,
+    "judged": 16685,
     "extrapolated": 51
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
-    "observed": 1513,
-    "judged": 16201,
+    "land_cells": 17760,
+    "observed": 1512,
+    "judged": 16203,
     "extrapolated": 45
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 2159,
-    "judged": 15389,
+    "judged": 15390,
     "extrapolated": 40
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 3002,
-    "judged": 14526,
+    "land_cells": 17529,
+    "observed": 2997,
+    "judged": 14532,
     "extrapolated": 0
    }
   ],
@@ -1154,30 +1158,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 1175,
-    "judged": 16684,
+    "judged": 16685,
     "extrapolated": 51
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
-    "observed": 1513,
-    "judged": 16201,
+    "land_cells": 17760,
+    "observed": 1512,
+    "judged": 16203,
     "extrapolated": 45
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 2159,
-    "judged": 15389,
+    "judged": 15390,
     "extrapolated": 40
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 3002,
-    "judged": 14526,
+    "land_cells": 17529,
+    "observed": 2997,
+    "judged": 14532,
     "extrapolated": 0
    }
   ],
@@ -1212,30 +1216,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 1175,
-    "judged": 16684,
+    "judged": 16685,
     "extrapolated": 51
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
-    "observed": 1513,
-    "judged": 16201,
+    "land_cells": 17760,
+    "observed": 1512,
+    "judged": 16203,
     "extrapolated": 45
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 2159,
-    "judged": 15389,
+    "judged": 15390,
     "extrapolated": 40
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 3002,
-    "judged": 14526,
+    "land_cells": 17529,
+    "observed": 2997,
+    "judged": 14532,
     "extrapolated": 0
    }
   ],
@@ -1270,30 +1274,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 1175,
-    "judged": 16684,
+    "judged": 16685,
     "extrapolated": 51
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
-    "observed": 1513,
-    "judged": 16201,
+    "land_cells": 17760,
+    "observed": 1512,
+    "judged": 16203,
     "extrapolated": 45
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 2159,
-    "judged": 15389,
+    "judged": 15390,
     "extrapolated": 40
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 3002,
-    "judged": 14526,
+    "land_cells": 17529,
+    "observed": 2997,
+    "judged": 14532,
     "extrapolated": 0
    }
   ],
@@ -1328,30 +1332,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 1175,
-    "judged": 16684,
+    "judged": 16685,
     "extrapolated": 51
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
-    "observed": 1513,
-    "judged": 16201,
+    "land_cells": 17760,
+    "observed": 1512,
+    "judged": 16203,
     "extrapolated": 45
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 2159,
-    "judged": 15389,
+    "judged": 15390,
     "extrapolated": 40
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 3002,
-    "judged": 14526,
+    "land_cells": 17529,
+    "observed": 2997,
+    "judged": 14532,
     "extrapolated": 0
    }
   ],
@@ -1386,30 +1390,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 1175,
-    "judged": 16684,
+    "judged": 16685,
     "extrapolated": 51
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
-    "observed": 1513,
-    "judged": 16201,
+    "land_cells": 17760,
+    "observed": 1512,
+    "judged": 16203,
     "extrapolated": 45
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 2159,
-    "judged": 15389,
+    "judged": 15390,
     "extrapolated": 40
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 3002,
-    "judged": 14526,
+    "land_cells": 17529,
+    "observed": 2997,
+    "judged": 14532,
     "extrapolated": 0
    }
   ],
@@ -1444,30 +1448,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 1175,
-    "judged": 16684,
+    "judged": 16685,
     "extrapolated": 51
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
-    "observed": 1513,
-    "judged": 16201,
+    "land_cells": 17760,
+    "observed": 1512,
+    "judged": 16203,
     "extrapolated": 45
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 2159,
-    "judged": 15389,
+    "judged": 15390,
     "extrapolated": 40
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 3002,
-    "judged": 14526,
+    "land_cells": 17529,
+    "observed": 2997,
+    "judged": 14532,
     "extrapolated": 0
    }
   ],
@@ -1502,30 +1506,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 1175,
-    "judged": 16684,
+    "judged": 16685,
     "extrapolated": 51
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
-    "observed": 1513,
-    "judged": 16201,
+    "land_cells": 17760,
+    "observed": 1512,
+    "judged": 16203,
     "extrapolated": 45
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
+    "land_cells": 17589,
     "observed": 2159,
-    "judged": 15389,
+    "judged": 15390,
     "extrapolated": 40
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 3002,
-    "judged": 14526,
+    "land_cells": 17529,
+    "observed": 2997,
+    "judged": 14532,
     "extrapolated": 0
    }
   ],
@@ -1560,30 +1564,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 5930,
     "judged": 11905,
-    "extrapolated": 75
+    "extrapolated": 76
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
+    "land_cells": 17760,
     "observed": 5981,
     "judged": 11717,
-    "extrapolated": 61
+    "extrapolated": 62
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
-    "observed": 7359,
-    "judged": 10150,
+    "land_cells": 17589,
+    "observed": 7274,
+    "judged": 10236,
     "extrapolated": 79
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 8042,
-    "judged": 9428,
+    "land_cells": 17529,
+    "observed": 7967,
+    "judged": 9504,
     "extrapolated": 58
    }
   ],
@@ -1618,30 +1622,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 5930,
     "judged": 11905,
-    "extrapolated": 75
+    "extrapolated": 76
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
+    "land_cells": 17760,
     "observed": 5981,
     "judged": 11717,
-    "extrapolated": 61
+    "extrapolated": 62
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
-    "observed": 7359,
-    "judged": 10150,
+    "land_cells": 17589,
+    "observed": 7274,
+    "judged": 10236,
     "extrapolated": 79
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 8042,
-    "judged": 9428,
+    "land_cells": 17529,
+    "observed": 7967,
+    "judged": 9504,
     "extrapolated": 58
    }
   ],
@@ -1676,30 +1680,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 5930,
     "judged": 11905,
-    "extrapolated": 75
+    "extrapolated": 76
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
+    "land_cells": 17760,
     "observed": 5981,
     "judged": 11717,
-    "extrapolated": 61
+    "extrapolated": 62
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
-    "observed": 7359,
-    "judged": 10150,
+    "land_cells": 17589,
+    "observed": 7274,
+    "judged": 10236,
     "extrapolated": 79
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 8042,
-    "judged": 9428,
+    "land_cells": 17529,
+    "observed": 7967,
+    "judged": 9504,
     "extrapolated": 58
    }
   ],
@@ -1734,30 +1738,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 5930,
     "judged": 11905,
-    "extrapolated": 75
+    "extrapolated": 76
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
+    "land_cells": 17760,
     "observed": 5981,
     "judged": 11717,
-    "extrapolated": 61
+    "extrapolated": 62
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
-    "observed": 7359,
-    "judged": 10150,
+    "land_cells": 17589,
+    "observed": 7274,
+    "judged": 10236,
     "extrapolated": 79
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 8042,
-    "judged": 9428,
+    "land_cells": 17529,
+    "observed": 7967,
+    "judged": 9504,
     "extrapolated": 58
    }
   ],
@@ -1792,30 +1796,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 5930,
     "judged": 11905,
-    "extrapolated": 75
+    "extrapolated": 76
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
+    "land_cells": 17760,
     "observed": 5981,
     "judged": 11717,
-    "extrapolated": 61
+    "extrapolated": 62
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
-    "observed": 7359,
-    "judged": 10150,
+    "land_cells": 17589,
+    "observed": 7274,
+    "judged": 10236,
     "extrapolated": 79
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 8042,
-    "judged": 9428,
+    "land_cells": 17529,
+    "observed": 7967,
+    "judged": 9504,
     "extrapolated": 58
    }
   ],
@@ -1850,30 +1854,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 5930,
     "judged": 11905,
-    "extrapolated": 75
+    "extrapolated": 76
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
+    "land_cells": 17760,
     "observed": 5981,
     "judged": 11717,
-    "extrapolated": 61
+    "extrapolated": 62
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
-    "observed": 7359,
-    "judged": 10150,
+    "land_cells": 17589,
+    "observed": 7274,
+    "judged": 10236,
     "extrapolated": 79
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 8042,
-    "judged": 9428,
+    "land_cells": 17529,
+    "observed": 7967,
+    "judged": 9504,
     "extrapolated": 58
    }
   ],
@@ -1908,30 +1912,30 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 5930,
     "judged": 11905,
-    "extrapolated": 75
+    "extrapolated": 76
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
+    "land_cells": 17760,
     "observed": 5981,
     "judged": 11717,
-    "extrapolated": 61
+    "extrapolated": 62
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
-    "observed": 7359,
-    "judged": 10150,
+    "land_cells": 17589,
+    "observed": 7274,
+    "judged": 10236,
     "extrapolated": 79
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 8042,
-    "judged": 9428,
+    "land_cells": 17529,
+    "observed": 7967,
+    "judged": 9504,
     "extrapolated": 58
    }
   ],
@@ -1966,31 +1970,379 @@
    },
    {
     "slice": -6000,
-    "land_cells": 17910,
+    "land_cells": 17911,
     "observed": 5930,
     "judged": 11905,
-    "extrapolated": 75
+    "extrapolated": 76
    },
    {
     "slice": -5000,
-    "land_cells": 17759,
+    "land_cells": 17760,
     "observed": 5981,
     "judged": 11717,
-    "extrapolated": 61
+    "extrapolated": 62
    },
    {
     "slice": -4000,
-    "land_cells": 17588,
-    "observed": 7359,
-    "judged": 10150,
+    "land_cells": 17589,
+    "observed": 7274,
+    "judged": 10236,
     "extrapolated": 79
    },
    {
     "slice": -3000,
-    "land_cells": 17528,
-    "observed": 8042,
-    "judged": 9428,
+    "land_cells": 17529,
+    "observed": 7967,
+    "judged": 9504,
     "extrapolated": 58
+   }
+  ],
+  "anc_whg": [
+   {
+    "slice": -10000,
+    "land_cells": 117,
+    "observed": 117,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 1112,
+    "observed": 1112,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 1542,
+    "observed": 1542,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 2089,
+    "observed": 2089,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 3917,
+    "observed": 3917,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -5000,
+    "land_cells": 4390,
+    "observed": 4390,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -4000,
+    "land_cells": 5602,
+    "observed": 5602,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -3000,
+    "land_cells": 6391,
+    "observed": 6391,
+    "judged": 0,
+    "extrapolated": 0
+   }
+  ],
+  "anc_ehg": [
+   {
+    "slice": -10000,
+    "land_cells": 117,
+    "observed": 117,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 1112,
+    "observed": 1112,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 1542,
+    "observed": 1542,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 2089,
+    "observed": 2089,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 3917,
+    "observed": 3917,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -5000,
+    "land_cells": 4390,
+    "observed": 4390,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -4000,
+    "land_cells": 5602,
+    "observed": 5602,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -3000,
+    "land_cells": 6391,
+    "observed": 6391,
+    "judged": 0,
+    "extrapolated": 0
+   }
+  ],
+  "anc_ana": [
+   {
+    "slice": -10000,
+    "land_cells": 117,
+    "observed": 117,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 1112,
+    "observed": 1112,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 1542,
+    "observed": 1542,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 2089,
+    "observed": 2089,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 3917,
+    "observed": 3917,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -5000,
+    "land_cells": 4390,
+    "observed": 4390,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -4000,
+    "land_cells": 5602,
+    "observed": 5602,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -3000,
+    "land_cells": 6391,
+    "observed": 6391,
+    "judged": 0,
+    "extrapolated": 0
+   }
+  ],
+  "anc_irn": [
+   {
+    "slice": -10000,
+    "land_cells": 117,
+    "observed": 117,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 1112,
+    "observed": 1112,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 1542,
+    "observed": 1542,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 2089,
+    "observed": 2089,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 3917,
+    "observed": 3917,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -5000,
+    "land_cells": 4390,
+    "observed": 4390,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -4000,
+    "land_cells": 5602,
+    "observed": 5602,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -3000,
+    "land_cells": 6391,
+    "observed": 6391,
+    "judged": 0,
+    "extrapolated": 0
+   }
+  ],
+  "anc_lev": [
+   {
+    "slice": -10000,
+    "land_cells": 117,
+    "observed": 117,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 1112,
+    "observed": 1112,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 1542,
+    "observed": 1542,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 2089,
+    "observed": 2089,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 3917,
+    "observed": 3917,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -5000,
+    "land_cells": 4390,
+    "observed": 4390,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -4000,
+    "land_cells": 5602,
+    "observed": 5602,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -3000,
+    "land_cells": 6391,
+    "observed": 6391,
+    "judged": 0,
+    "extrapolated": 0
+   }
+  ],
+  "anc_naf": [
+   {
+    "slice": -10000,
+    "land_cells": 117,
+    "observed": 117,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -9000,
+    "land_cells": 1112,
+    "observed": 1112,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -8000,
+    "land_cells": 1542,
+    "observed": 1542,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -7000,
+    "land_cells": 2089,
+    "observed": 2089,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -6000,
+    "land_cells": 3917,
+    "observed": 3917,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -5000,
+    "land_cells": 4390,
+    "observed": 4390,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -4000,
+    "land_cells": 5602,
+    "observed": 5602,
+    "judged": 0,
+    "extrapolated": 0
+   },
+   {
+    "slice": -3000,
+    "land_cells": 6391,
+    "observed": 6391,
+    "judged": 0,
+    "extrapolated": 0
    }
   ]
  }

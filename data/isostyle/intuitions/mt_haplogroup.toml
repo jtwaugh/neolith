@@ -21,8 +21,8 @@ confidence = "high"
 basis = ["literature", "neighbouring_evidence", "dossier_statistics"]
 reasoning = "Western hunter-gatherers are about three-quarters U5b with U2, U4 and U5a (mostly in 'other' and U4); evidenced cells read U5 0.67-0.82. Gaps of 25-247 cells lie 463-539 km from genomes."
 literature = [
-  { cite = "Posth et al. 2023, Nature", checked = false },
-  { cite = "Bramanti et al. 2009, 'Genetic discontinuity between local hunter-gatherers and central Europe's first farmers', Science", checked = false },
+  { cite = "Posth et al. 2023, 'Palaeogenomics of Upper Palaeolithic to Neolithic European hunter-gatherers', Nature 615", checked = true, url = "https://doi.org/10.1038/s41586-023-05726-0", read = "AADR annotation + abstract", note = "AADR: Belgian/French/German Mesolithic mtDNA U5a/U5b, with U4b." },
+  { cite = "Bramanti et al. 2009, 'Genetic discontinuity between local hunter-gatherers and central Europe's first farmers', Science 326", checked = false, url = "https://doi.org/10.1126/science.1176869", note = "Abstract says 82% of hunter-gatherers carry mtDNA types rare today but does not name U5/U4; an mtDNA-only study, not in the AADR." },
 ]
 would_settle = "Mesolithic genomes from northern France and Belgium."
 speculative_rule = "Set U5 0.75, other 0.15 across the region until farming arrives."
@@ -33,15 +33,15 @@ slices = [-10000, -9000, -8000, -7000]
 gap_ids = ["mt_u5-9000-43", "mt_u5-8000-71", "mt_u5-10000-17", "mt_u5-7000-96"]
 why_empty = ["research_intensity", "low_population"]
 why_note = "Sampling; the Meseta was thinly settled."
-expected = { mt_u5 = 0.65, mt_h = 0.08, mt_other = 0.2 }
+expected = { mt_u5 = 0.7, mt_h = 0.03, mt_other = 0.2 }
 confidence = "medium"
 basis = ["literature", "neighbouring_evidence"]
-reasoning = "Iberian hunter-gatherers are U5b with some H and U* lineages (El Mirón cluster); surface U5 0.50-0.78. Gaps 209-300 cells, 370-1,234 km away."
+reasoning = "Iberian hunter-gatherers are U5b with U5a and U2'3'4'7'8'9 (El Mirón cluster); no H has been found among Iberian foragers; surface U5 0.50-0.78. Gaps 209-300 cells, 370-1,234 km away."
 literature = [
-  { cite = "Villalba-Mouco et al. 2019, Curr. Biol.", checked = false },
+  { cite = "Villalba-Mouco et al. 2019, 'Survival of Late Pleistocene hunter-gatherer ancestry in the Iberian Peninsula', Curr. Biol. 29", checked = true, url = "https://doi.org/10.1016/j.cub.2019.02.006", read = "AADR annotation + abstract", note = "AADR: Iberian Azilian/Mesolithic mtDNA U5b, U2'3'4'7'8'9; no H among Iberian foragers in the AADR." },
 ]
 would_settle = "Meseta and Andalusian Mesolithic genomes."
-speculative_rule = "Set U5 0.65, H 0.08."
+speculative_rule = "Set U5 0.7, H 0.03."
 
 [[judgement]]
 region = "British Isles"
@@ -54,7 +54,7 @@ confidence = "medium"
 basis = ["literature", "neighbouring_evidence"]
 reasoning = "Surface U5 0.62-0.80 to 6,000 BCE. The 5,000 BCE gaps (59-71 cells) are Irish and Scottish Mesolithic; farmer lineages (K, H, J) enter only after 4,000 BCE, so the surface's 0.22 U5 at 5,000 BCE is a kernel mix with France."
 literature = [
-  { cite = "Brace et al. 2019, Nat. Ecol. Evol.", checked = false },
+  { cite = "Brace et al. 2019, 'Ancient genomes indicate population replacement in Early Neolithic Britain', Nat. Ecol. Evol. 3", checked = true, url = "https://doi.org/10.1038/s41559-019-0871-9", read = "AADR annotation + abstract", note = "AADR: British Mesolithic mtDNA U5a/U5b (two Scottish Mesolithic women, c. 4340 BCE, carry H and V)." },
 ]
 would_settle = "Irish and Scottish Mesolithic genomes."
 speculative_rule = "Set U5 0.75 in the isles until 4,000 BCE."
@@ -113,7 +113,7 @@ confidence = "medium"
 basis = ["literature", "neighbouring_evidence"]
 reasoning = "Villabruna-cluster foragers are U5b and U2'3'4'7'8'9; surface U5 0.43-0.81. Gaps 62-136 cells."
 literature = [
-  { cite = "Fu et al. 2016, Nature", checked = false },
+  { cite = "Fu et al. 2016, 'The genetic history of Ice Age Europe', Nature 534", checked = true, url = "https://doi.org/10.1038/nature17993", read = "AADR annotation + abstract", note = "AADR: Villabruna U5b." },
 ]
 would_settle = "Apennine Mesolithic genomes."
 speculative_rule = "Set U5 0.65."
@@ -129,7 +129,7 @@ confidence = "medium"
 basis = ["literature", "neighbouring_evidence"]
 reasoning = "Surface U5 0.49-0.73. Gaps 109-618 cells, 258-847 km from genomes; U4 rises towards Poland."
 literature = [
-  { cite = "Posth et al. 2023, Nature", checked = false },
+  { cite = "Posth et al. 2023, 'Palaeogenomics of Upper Palaeolithic to Neolithic European hunter-gatherers', Nature 615", checked = true, url = "https://doi.org/10.1038/s41586-023-05726-0", read = "AADR annotation + abstract", note = "AADR: German/Austrian Mesolithic mtDNA U5a, U5b, U4b." },
 ]
 would_settle = "German and Polish Mesolithic genomes."
 speculative_rule = "Set U5 0.65, U4 0.08, U4 up to 0.15 east of the Oder."
@@ -150,7 +150,7 @@ confidence = "medium"
 basis = ["neighbouring_evidence", "literature"]
 reasoning = "Iron Gates foragers are U5a/U5b with some H and K1 and U4; Aegean Mesolithic (Theopetra, Maroulas) is closer to Anatolian foragers (K, N). Surface U5 0.48-0.69. Gaps 29-417 cells, 107-712 km."
 literature = [
-  { cite = "Mathieson et al. 2018, Nature", checked = false },
+  { cite = "Mathieson et al. 2018, 'The genomic history of southeastern Europe', Nature 555", checked = true, url = "https://doi.org/10.1038/nature25778", read = "AADR annotation + abstract", note = "AADR: Iron Gates mtDNA U5a, U5b, U4a/b, K1, H13. The Aegean Mesolithic part is not from this paper." },
 ]
 would_settle = "Greek and Bulgarian Mesolithic genomes."
 speculative_rule = "Set U5 0.55 north of 42°N, U5 0.3 with K 0.2 in Greece."
@@ -176,7 +176,7 @@ confidence = "medium"
 basis = ["neighbouring_evidence", "literature"]
 reasoning = "Baltic foragers are U5a, U4 and U2e; surface U5 0.73 and U4 0.13 at 7,000 BCE."
 literature = [
-  { cite = "Mittnik et al. 2018, Nat. Commun.", checked = false },
+  { cite = "Mittnik et al. 2018, 'The genetic prehistory of the Baltic Sea region', Nat. Commun. 9", checked = true, url = "https://doi.org/10.1038/s41467-018-02825-9", read = "AADR annotation + abstract", note = "AADR: Lithuanian/Estonian Mesolithic-Narva mtDNA U4a, U5a, U5b (U2e comes from Latvian Kunda in Mathieson 2018)." },
 ]
 would_settle = "Early Mesolithic Baltic genomes."
 speculative_rule = "Set U5 0.6, U4 0.25."
@@ -192,8 +192,8 @@ confidence = "low"
 basis = ["literature", "neighbouring_evidence", "analogy"]
 reasoning = "SHG and Pitted Ware are U5a, U4, U2e (other) and some H/V; southern farmer lineages (K, T2, J, H; surface 0.10-0.18 each at 4,000-3,000 BCE) reach only Denmark and south Sweden. The gaps (99-542 cells) are Norrland, Finland and Norway's north, which stayed forager-descended."
 literature = [
-  { cite = "Günther et al. 2018, PLoS Biol.", checked = false },
-  { cite = "Lamnidis et al. 2018, Nat. Commun.", checked = false },
+  { cite = "Günther et al. 2018, 'Population genomics of Mesolithic Scandinavia', PLoS Biol. 16", checked = true, url = "https://doi.org/10.1371/journal.pbio.2003703", read = "AADR annotation + abstract", note = "AADR: Scandinavian Mesolithic mtDNA U5a, U4a." },
+  { cite = "Saag et al. 2017, 'Extensive farming in Estonia started through a sex-biased migration from the Steppe', Curr. Biol. 27", checked = true, url = "https://doi.org/10.1016/j.cub.2017.06.022", read = "AADR annotation + abstract", note = "Replaces Lamnidis et al. 2018 (Bronze/Iron Age only). AADR: Estonian Comb Ceramic foragers U4a, U2e; abstract: EHG-like." },
 ]
 would_settle = "Finnish and Norrland Stone Age genomes."
 speculative_rule = "Set U5 0.5, U4 0.2, other 0.2 in the gaps in every slice; Siberian C/D/Z ('other') up to 0.3 in Finnish Lapland after 4,000 BCE."
@@ -213,10 +213,11 @@ why_note = "Sampling plus acid soils north of 62°N."
 expected = { mt_u5 = 0.35, mt_u4 = 0.3, mt_h = 0.03, mt_t2 = 0.03, mt_other = 0.25 }
 confidence = "low"
 basis = ["literature", "neighbouring_evidence"]
-reasoning = "EHG are U5a, U4, U2e and C1; Yuzhny Oleni Ostrov includes C1g. Surface U5 0.15-0.48, U4 0.18-0.55. H, T2 and J reach the forest zone only with Fatyanovo (c. 2,800 BCE), so the 3,000 BCE surface H 0.18 is the southern edge. Gaps 44-2,002 cells, 552-1,841 km."
+reasoning = "EHG are U5a, U4, U2e and C1; Yuzhny Oleni Ostrov includes C1. Surface U5 0.15-0.48, U4 0.18-0.55. H, T2 and J reach the forest zone only with Fatyanovo (c. 2,800 BCE), so the 3,000 BCE surface H 0.18 is the southern edge. Gaps 44-2,002 cells, 552-1,841 km."
 literature = [
-  { cite = "Mathieson et al. 2018, Nature", checked = false },
-  { cite = "Saag et al. 2021, Sci. Adv.", checked = false },
+  { cite = "Posth et al. 2023, 'Palaeogenomics of Upper Palaeolithic to Neolithic European hunter-gatherers', Nature 615", checked = true, url = "https://doi.org/10.1038/s41586-023-05726-0", read = "AADR annotation + abstract", note = "Replaces Mathieson et al. 2018 (no forest-zone Russian genomes). AADR: Yuzhny Oleni Ostrov and Minino mtDNA U2e, U5a, U4." },
+  { cite = "Mathieson et al. 2015, 'Genome-wide patterns of selection in 230 ancient Eurasians', Nature 528", checked = true, url = "https://doi.org/10.1038/nature16152", read = "AADR annotation + abstract", note = "AADR: Karelian HG (Yuzhny Oleni Ostrov) mtDNA C1 and U4a." },
+  { cite = "Saag et al. 2021, 'Genetic ancestry changes in Stone to Bronze Age transition in the East European plain', Sci. Adv. 7", checked = true, url = "https://doi.org/10.1126/sciadv.abd6535", read = "AADR annotation + abstract", note = "AADR: Fatyanovo mtDNA H, J1c, T2, U5, W; abstract: Fatyanovo from 2900 cal BCE." },
 ]
 would_settle = "Pechora and Dvina Mesolithic-Neolithic genomes."
 speculative_rule = "Set U5 0.35, U4 0.3, other 0.25 (U2e, C, Z); Siberian 'other' up to 0.4 east of 55°E."
@@ -237,7 +238,7 @@ confidence = "medium"
 basis = ["literature", "neighbouring_evidence"]
 reasoning = "Steppe EHG (Samara, Lebyazhinka) U5a, U4, U2e; surface U5 0.34-0.65. H 0.33-0.34 at 10,000/8,000 BCE rests on very few samples. Gaps 47-1,048 cells."
 literature = [
-  { cite = "Haak et al. 2015, Nature", checked = false },
+  { cite = "Mathieson et al. 2015, 'Genome-wide patterns of selection in 230 ancient Eurasians', Nature 528", checked = true, url = "https://doi.org/10.1038/nature16152", read = "AADR annotation + abstract", note = "Replaces Haak et al. 2015 (the AADR gives the Samara forager as first published here). AADR: Samara HG U5a; Khvalynsk U5a, U4." },
 ]
 would_settle = "Lower Don and Kama Mesolithic genomes."
 speculative_rule = "Set U5 0.45, U4 0.2."
@@ -253,7 +254,7 @@ confidence = "medium"
 basis = ["neighbouring_evidence", "literature"]
 reasoning = "Dnieper foragers are U5a/U5b, U4, U2e, with H in a few individuals. Surface U5 0.45-0.67. Gaps 80-321 cells over Belarus."
 literature = [
-  { cite = "Mathieson et al. 2018, Nature", checked = false },
+  { cite = "Mathieson et al. 2018, 'The genomic history of southeastern Europe', Nature 555", checked = true, url = "https://doi.org/10.1038/nature25778", read = "AADR annotation + abstract", note = "AADR: Dnieper (Zaporizhia, Kirovohrad) foragers U5b, U4b, U5a, U2e." },
 ]
 would_settle = "Belarusian Mesolithic genomes."
 speculative_rule = "Set U5 0.5, U4 0.18."
@@ -269,7 +270,7 @@ confidence = "low"
 basis = ["literature", "neighbouring_evidence"]
 reasoning = "Pınarbaşı foragers carry K and U3/N lineages; Boncuklu K1, N1a, U3, X. Surface K 0.37 at 9,000 BCE. Gaps 292-387 cells."
 literature = [
-  { cite = "Feldman et al. 2019, Nat. Commun.", checked = false },
+  { cite = "Feldman et al. 2019, 'Late Pleistocene human genome suggests a local origin for the first farmers of central Anatolia', Nat. Commun. 10", checked = true, url = "https://doi.org/10.1038/s41467-019-09209-7", read = "AADR annotation + abstract", note = "AADR: Pınarbaşı forager K2b; central Anatolian PPN U3, N1a, K1a." },
 ]
 would_settle = "Epipalaeolithic Anatolian genomes."
 speculative_rule = "Set K 0.25, other 0.4."
@@ -285,7 +286,7 @@ confidence = "medium"
 basis = ["neighbouring_evidence"]
 reasoning = "Neighbouring cells at 5,000-4,000 BCE: K 0.19-0.25, H 0.18-0.20, other 0.30-0.34."
 literature = [
-  { cite = "Kılınç et al. 2016, Curr. Biol.", checked = false },
+  { cite = "Kılınç et al. 2016, 'The demographic development of the first farmers in Anatolia', Curr. Biol. 26", checked = true, url = "https://doi.org/10.1016/j.cub.2016.07.057", read = "AADR annotation + abstract", note = "AADR: central Anatolian Neolithic K1a, N1a, U3, N1b; its genomes end c. 6100 BCE, so the 5,000 BCE values rest on the surface." },
 ]
 would_settle = "Chalcolithic genomes."
 speculative_rule = "Extend neighbours."
@@ -301,7 +302,7 @@ confidence = "low"
 basis = ["literature", "neighbouring_evidence"]
 reasoning = "Kotias is H13c, Satsurblia K3; surface H 0.30, other 0.30 at 8,000 BCE."
 literature = [
-  { cite = "Jones et al. 2015, Nat. Commun.", checked = false },
+  { cite = "Jones et al. 2015, 'Upper Palaeolithic genomes reveal deep roots of modern Eurasians', Nat. Commun. 6", checked = true, url = "https://doi.org/10.1038/ncomms9912", read = "AADR annotation + abstract", note = "AADR: Kotias H13c, Satsurblia K3." },
 ]
 would_settle = "Azerbaijani Mesolithic genomes."
 speculative_rule = "Set H 0.2, K 0.15, other 0.45."
@@ -312,16 +313,16 @@ slices = [-10000, -9000, -8000, -7000, -6000, -5000, -4000, -3000]
 gap_ids = ["mt_u5-5000-137", "mt_u5-10000-21", "mt_u5-9000-50", "mt_u5-6000-123", "mt_u5-3000-173"]
 why_empty = ["research_intensity", "recording_practice", "preservation"]
 why_note = "Sampling; burial practice at 5,000 BCE; heat."
-expected = { mt_k = 0.2, mt_j = 0.1, mt_t2 = 0.08, mt_h = 0.06, mt_n1a = 0.03, mt_other = 0.45 }
+expected = { mt_k = 0.2, mt_j = 0.1, mt_t2 = 0.08, mt_h = 0.1, mt_n1a = 0.03, mt_other = 0.41 }
 confidence = "low"
 basis = ["literature", "neighbouring_evidence"]
-reasoning = "Natufians N1b, U3, J; PPNB K, J, T, R0a, X2; Peqi'in H, U, K, T, N1b. Surface K 0.15-0.41, other 0.21-0.45. Gaps 32-142 cells."
+reasoning = "Natufians H, JT, HV, R0a; PPNB T1a, K1a, R0a, N1a/N1b; Peqi'in J2a, K1a, T2, T1a, I6, R0a. Surface K 0.15-0.41, other 0.21-0.45. Gaps 32-142 cells."
 literature = [
-  { cite = "Lazaridis et al. 2016, Nature", checked = false },
-  { cite = "Harney et al. 2018, Nat. Commun.", checked = false },
+  { cite = "Lazaridis et al. 2016, 'Genomic insights into the origin of farming in the ancient Near East', Nature 536", checked = true, url = "https://doi.org/10.1038/nature19310", read = "AADR annotation + abstract", note = "AADR: Natufian mtDNA H, JT, HV, R0a; Jordan PPNB T1a, K1a, R0a." },
+  { cite = "Harney et al. 2018, 'Ancient DNA from Chalcolithic Israel reveals the role of population mixture in cultural transformation', Nat. Commun. 9", checked = true, url = "https://doi.org/10.1038/s41467-018-05649-9", read = "AADR annotation + abstract", note = "AADR: Peqi'in mtDNA J2a, K1a, T2, T1a, I6, R0a." },
 ]
 would_settle = "Syrian genomes."
-speculative_rule = "Set K 0.2, other 0.45; H rising to 0.12 by 3,000 BCE."
+speculative_rule = "Set K 0.2, H 0.1, other 0.41; H rising to 0.12 by 3,000 BCE."
 
 [[judgement.adjust]]
 kind = "slice_value"
@@ -344,7 +345,7 @@ confidence = "low"
 basis = ["literature", "analogy"]
 reasoning = "Northern Iraqi Neolithic genomes mix Anatolian (K, N1a) and Zagros (U1, X, J, T) lineages; surface other 0.25-0.60. All gaps (39-202 cells) are on the southern alluvium."
 literature = [
-  { cite = "Lazaridis et al. 2022, Science", checked = false },
+  { cite = "Lazaridis et al. 2022, 'The genetic history of the Southern Arc: a bridge between West Asia and Europe', Science 377", checked = true, url = "https://doi.org/10.1126/science.abm4247", read = "AADR annotation + abstract", note = "AADR: Nemrik U1a, J1d; Shanidar N1a, J1d, H; Bestansur HV2a, N." },
 ]
 would_settle = "Ubaid petrous sampling."
 speculative_rule = "Set other 0.45, K 0.15."
@@ -358,10 +359,10 @@ why_note = "Sampling; Afghanistan has NO ancient DNA: extrapolation."
 expected = { mt_j = 0.12, mt_k = 0.1, mt_h = 0.08, mt_t2 = 0.05, mt_u5 = 0.03, mt_other = 0.55 }
 confidence = "low"
 basis = ["literature", "neighbouring_evidence"]
-reasoning = "Ganj Dareh and Wezmeh: X, U1, J, T, N; Hissar/Shahr-i Sokhta add W, U7, M (South Asian). Surface other 0.24-0.70. Gaps 41-887 cells, mostly the plateau and Afghanistan."
+reasoning = "Ganj Dareh, Wezmeh and Tepe Abdul Hosein: R2, U7, J1, R; Hissar/Shahr-i Sokhta add W, U2c, R5, M (South Asian). Surface other 0.24-0.70. Gaps 41-887 cells, mostly the plateau and Afghanistan."
 literature = [
-  { cite = "Broushaki et al. 2016, Science", checked = false },
-  { cite = "Narasimhan et al. 2019, Science", checked = false },
+  { cite = "Broushaki et al. 2016, 'Early Neolithic genomes from the eastern Fertile Crescent', Science 353", checked = true, url = "https://doi.org/10.1126/science.aaf7943", read = "AADR annotation + abstract", note = "AADR: Wezmeh J1d, Tepe Abdul Hosein R2." },
+  { cite = "Narasimhan et al. 2019, 'The formation of human populations in South and Central Asia', Science 365", checked = true, url = "https://doi.org/10.1126/science.aat7487", read = "AADR annotation + abstract", note = "AADR: Ganj Dareh R2b, U7, R; Hissar W3b, HV; Shahr-i Sokhta M, R5, U2c, J1, I1." },
 ]
 would_settle = "Plateau genomes."
 speculative_rule = "Set other 0.55, J 0.12; South Asian M ('other') rises to 0.4 of the total in Afghanistan."
@@ -377,7 +378,7 @@ confidence = "low"
 basis = ["analogy", "neighbouring_evidence"]
 reasoning = "North: West Siberian foragers (U5a, U4, U2e, C, Z); south: Geoksyur (U, H, T, J, W, M). Surface U5 0.34-0.41 and U4 0.28-0.30 at 6,000-5,000 BCE. Gaps 41-1,007 cells."
 literature = [
-  { cite = "Narasimhan et al. 2019, Science", checked = false },
+  { cite = "Narasimhan et al. 2019, 'The formation of human populations in South and Central Asia', Science 365", checked = true, url = "https://doi.org/10.1126/science.aat7487", read = "AADR annotation + abstract", note = "AADR: Tyumen foragers U2e, U5a; Turkmenistan Chalcolithic HV, I1, J1, H13, U1, U7; Tajik Chalcolithic W6." },
 ]
 would_settle = "Kelteminar genomes."
 speculative_rule = "North of 45°N U5 0.3, U4 0.2; south other 0.55."
@@ -403,7 +404,7 @@ confidence = "low"
 basis = ["analogy", "literature"]
 reasoning = "Indus Periphery outliers carry South Asian M lineages plus U2, R and W. 71-75 cells."
 literature = [
-  { cite = "Narasimhan et al. 2019, Science", checked = false },
+  { cite = "Narasimhan et al. 2019, 'The formation of human populations in South and Central Asia', Science 365", checked = true, url = "https://doi.org/10.1126/science.aat7487", read = "AADR annotation + abstract", note = "AADR: Shahr-i Sokhta outliers M33, M3a2, R5, U2c, W3." },
 ]
 would_settle = "Mehrgarh petrous sampling."
 speculative_rule = "Set other 0.9."
@@ -419,7 +420,7 @@ confidence = "low"
 basis = ["analogy", "intuition"]
 reasoning = "Expect R0a, HV, N1b, U, L (other) with J and T as in modern and Bronze/Iron Age Arabia."
 literature = [
-  { cite = "Martiniano et al. 2024, Cell", checked = false },
+  { cite = "Martiniano et al. 2024, 'Ancient genomes illuminate Eastern Arabian population history and adaptation against malaria', Cell Genomics 4 (Tylos-period Bahrain)", checked = true, url = "https://doi.org/10.1016/j.xgen.2024.100507", read = "AADR annotation + abstract", note = "Tylos-period (c. 50-600 CE) mtDNA J1c, R2, T2b, U8b; a late analogue only." },
 ]
 would_settle = "Jebel Buhais genomes."
 speculative_rule = "Set other 0.6, J 0.12."
@@ -435,7 +436,7 @@ confidence = "low"
 basis = ["literature", "analogy"]
 reasoning = "Takarkori women carry a basal N lineage; Egyptian later genomes M1, U6, L, J, T, H. Surface values here are kernel bleed from the Levant."
 literature = [
-  { cite = "Salem et al. 2025, Nature", checked = false },
+  { cite = "Salem et al. 2025, 'Ancient DNA from the Green Sahara reveals ancestral North African lineage', Nature 641", checked = true, url = "https://doi.org/10.1038/s41586-025-08793-7", read = "full text", note = "Full text: both Takarkori individuals belong to a basal branch of haplogroup N." },
 ]
 would_settle = "Predynastic Egyptian genomes."
 speculative_rule = "Set other 0.8."
@@ -451,7 +452,7 @@ confidence = "medium"
 basis = ["literature", "analogy"]
 reasoning = "Taforalt women are U6a and M1b; the 7,000 BCE surface U5 0.82 is Iberian bleed (method artefact)."
 literature = [
-  { cite = "van de Loosdrecht et al. 2018, Science", checked = false },
+  { cite = "van de Loosdrecht et al. 2018, 'Pleistocene North African genomes link Near Eastern and sub-Saharan African human populations', Science 360", checked = true, url = "https://doi.org/10.1126/science.aar8380", read = "AADR annotation + abstract", note = "AADR: Taforalt U6a (6), M1b." },
 ]
 would_settle = "Capsian genomes."
 speculative_rule = "Set other 0.95."
@@ -465,10 +466,10 @@ why_note = "Sampling: northern Morocco only."
 expected = { mt_other = 0.65, mt_k = 0.1, mt_h = 0.07, mt_t2 = 0.05, mt_j = 0.05 }
 confidence = "low"
 basis = ["literature", "neighbouring_evidence"]
-reasoning = "IAM U6a, M1; KTG K1, T2, X, H; KEB K1, J2, HV, X, H."
+reasoning = "IAM U6a, M1b, X2b; early Neolithic (KTG) U6, U5b, J1c, HV0; Middle Neolithic M1a, J2a, U6c; KEB K1."
 literature = [
-  { cite = "Fregel et al. 2018, PNAS", checked = false },
-  { cite = "Simões et al. 2023, Nature", checked = false },
+  { cite = "Fregel et al. 2018, 'Ancient genomes from North Africa evidence prehistoric migrations to the Maghreb from both the Levant and Europe', PNAS 115", checked = true, url = "https://doi.org/10.1073/pnas.1800851115", read = "AADR annotation + abstract", note = "AADR: Ifri n'Amr o Moussa U6a, M1b, X2b; Kelif el Boroud K1a." },
+  { cite = "Simões et al. 2023, 'Northwest African Neolithic initiated by migrants from Iberia and Levant', Nature 618", checked = true, url = "https://doi.org/10.1038/s41586-023-06166-6", read = "AADR annotation + abstract", note = "AADR: Early Neolithic (incl. Kaf Taht el-Ghar) U6a, U5b, J1c, HV0; Middle Neolithic M1a, J2a, U6c." },
 ]
 would_settle = "Algerian genomes."
 speculative_rule = "North Morocco K 0.15, H 0.1; elsewhere other 0.85."
@@ -508,7 +509,7 @@ confidence = "low"
 basis = ["analogy", "literature"]
 reasoning = "L, U6, M1, basal N (Takarkori)."
 literature = [
-  { cite = "Salem et al. 2025, Nature", checked = false },
+  { cite = "Salem et al. 2025, 'Ancient DNA from the Green Sahara reveals ancestral North African lineage', Nature 641", checked = true, url = "https://doi.org/10.1038/s41586-025-08793-7", read = "full text", note = "Full text: Takarkori basal N mtDNA." },
 ]
 would_settle = "Gobero."
 speculative_rule = "Set other 0.97."
@@ -524,7 +525,7 @@ confidence = "medium"
 basis = ["analogy", "literature"]
 reasoning = "L0-L3 (Shum Laka L0a2, L1c)."
 literature = [
-  { cite = "Lipson et al. 2020, Nature", checked = false },
+  { cite = "Lipson et al. 2020, 'Ancient West African foragers in the context of African population history', Nature 577 (Shum Laka)", checked = true, url = "https://doi.org/10.1038/s41586-020-1929-1", read = "AADR annotation + abstract", note = "AADR: Shum Laka L0a, L1c." },
 ]
 would_settle = "Rock shelters."
 speculative_rule = "Set other 1.0."
@@ -540,7 +541,7 @@ confidence = "low"
 basis = ["analogy", "literature"]
 reasoning = "Mota is L3x2a; expect L, M1, N."
 literature = [
-  { cite = "Gallego Llorente et al. 2015, Science", checked = false },
+  { cite = "Gallego Llorente et al. 2015, 'Ancient Ethiopian genome reveals extensive Eurasian admixture throughout the African continent', Science 350 (Mota)", checked = true, url = "https://doi.org/10.1126/science.aad2879", read = "AADR annotation + abstract", note = "AADR: Mota L3x." },
 ]
 would_settle = "Highland caves."
 speculative_rule = "Set other 0.97."

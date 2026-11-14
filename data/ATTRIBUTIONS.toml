@@ -258,16 +258,20 @@ notes = "Data host says CC BY-SA (images CC BY-NC-SA; we use no images); data pa
 
 [[source]]
 key = "aadr"
-name = "Allen Ancient DNA Resource (AADR) v66.p1, 1240K annotation"
+name = "Allen Ancient DNA Resource (AADR) v66.p1, 1240K annotation and genotypes"
 url = "https://doi.org/10.7910/DVN/FFIDCW"
 licence = "CC0-1.0"
 citation = "Mallick, S., Micco, A., Mah, M. et al. 2024. The Allen Ancient DNA Resource (AADR): a curated compendium of ancient human genomes. Scientific Data 11:182. Plus the original genetics papers per sample."
-used_in = "Settlements and dates; isostyle aDNA and haplogroup layers"
+used_in = "Settlements and dates; isostyle aDNA, haplogroup and ancestry layers"
 role = "data"
 shipped = true
 committed = true
 verified = true
-provides = ["settlements:aadr", "isostyle:aadr_v66.p1_1240K.anno", "url:https://dataverse.harvard.edu/api/access/datafile/13994515"]
+provides = ["settlements:aadr", "isostyle:aadr_v66.p1_1240K.anno", "url:https://dataverse.harvard.edu/api/access/datafile/13994515",
+            "isostyle:aadr_v66.p1_1240K.geno", "isostyle:aadr_v66.p1_1240K.snp", "isostyle:aadr_v66.p1_1240K.ind",
+            "url:https://dataverse.harvard.edu/api/access/datafile/13994829", "url:https://dataverse.harvard.edu/api/access/datafile/13994514",
+            "url:https://dataverse.harvard.edu/api/access/datafile/13994513", "data:ancestry"]
+notes = "The 1240K genotypes (.geno/.snp/.ind) are read by `python -m isostyle ancestry` and never committed; the per-individual ancestry table derived from them is data/ancestry/ancestry.csv.gz (method and reference groups in data/ancestry/SOURCES.md)."
 
 [[source]]
 key = "literature-dates"
@@ -324,6 +328,20 @@ verified = true
 provides = ["url:https://en.wikipedia.org/"]
 
 # ---------------------------------------------------------------- isostyle
+
+[[source]]
+key = "salem2025"
+name = "Salem et al. 2025, Takarkori genomes (sample metadata)"
+url = "https://doi.org/10.1038/s41586-025-08793-7"
+licence = "facts"
+citation = "Salem, N. et al. 2025. Ancient DNA from the Green Sahara reveals ancestral North African lineage. Nature 641. https://doi.org/10.1038/s41586-025-08793-7. Reads: ENA PRJEB84057."
+used_in = "isostyle aDNA and mt haplogroup layers; data/isostyle/inputs/supplementary_genomes.toml"
+role = "data"
+shipped = true
+committed = true
+verified = true
+provides = ["data:supplementary_genomes"]
+notes = "Two individuals typed from the paper's text (dates, mt calls, SNP counts); no reads or genotypes are downloaded. Position from Wikipedia ('Takarkori')."
 
 [[source]]
 key = "evershed2022"
@@ -666,3 +684,62 @@ shipped = true
 committed = false
 verified = true
 provides = []
+
+[[source]]
+key = "grug"
+name = "Grug, caveman Wojak meme (splash-page mascot)"
+url = "https://knowyourmeme.com/memes/grug"
+licence = "LicenseRef-no-licence"
+citation = "Grug, anonymous internet meme (4chan, 2017). Image via Know Your Meme: https://i.kym-cdn.com/entries/icons/original/000/025/413/oogaboogaaa.jpg"
+used_in = "Start screen mascot (neolith-rs/crates/app/assets/grug.jpg, cropped; grug.rgba is it resized for the app)"
+role = "asset"
+shipped = true
+committed = true
+verified = true
+provides = []
+checked = "2026-11-13"
+notes = "Anonymous author, no licence found. Anonymous works are still under copyright, so this image is not covered by the project's MIT or CC BY-SA licences and cannot be relicensed with the data. Shipped at the maintainer's request (2026-11-13) as a meme mascot; replace it if a rights holder objects."
+
+[[source]]
+key = "admixtools2"
+name = "ADMIXTOOLS 2 (qpAdm), build tool for the ancestry table"
+url = "https://github.com/uqrmaie1/admixtools"
+licence = "GPL-3.0"
+citation = "Maier, R., Flegontov, P., Flegontova, O. et al. 2023. On the limits of fitting complex models of population history to f-statistics. eLife 12:e85492. doi:10.7554/eLife.85492"
+used_in = "isostyle/ancestry/run.R: per-individual qpAdm for data/ancestry/ancestry.csv.gz. Run as a tool; no code or data from it is shipped."
+role = "fit"
+shipped = false
+committed = false
+verified = true
+provides = []
+checked = "2026-11-13"
+
+[[source]]
+key = "imfell"
+name = "IM FELL English roman, by Igino Marini (subset shipped as \"Neolith Fell\")"
+url = "https://github.com/google/fonts/tree/main/ofl/imfellenglish"
+licence = "OFL-1.1"
+citation = "IM FELL English, Copyright (c) 2010 Igino Marini (iginomarini.com). SIL Open Font License 1.1 (neolith-rs/crates/app/assets/fonts/OFL-IMFell.txt)."
+used_in = "Start screen title, headings and questions (neolith-rs/crates/app/assets/fonts/NeolithFell.subset.ttf)"
+role = "asset"
+shipped = true
+committed = true
+verified = true
+provides = []
+checked = "2026-11-13"
+notes = "Subset to Latin with fontTools. Because \"IM FELL\" is a Reserved Font Name and a subset is a modified version, the subset's family is renamed \"Neolith Fell\"."
+
+[[source]]
+key = "alegreya"
+name = "Alegreya, regular and italic (Huerta Tipográfica)"
+url = "https://github.com/huertatipografica/Alegreya"
+licence = "OFL-1.1"
+citation = "Alegreya, Copyright 2011 The Alegreya Project Authors. SIL Open Font License 1.1 (neolith-rs/crates/app/assets/fonts/OFL-Alegreya.txt)."
+used_in = "Start screen body text (neolith-rs/crates/app/assets/fonts/Alegreya*.subset.ttf)"
+role = "asset"
+shipped = true
+committed = true
+verified = true
+provides = []
+checked = "2026-11-13"
+notes = "From the Google Fonts repository: the variable font pinned to weight 400 and subset to Latin with fontTools."

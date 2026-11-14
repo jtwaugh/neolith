@@ -1,0 +1,22 @@
+{
+ "critic": "greatest-hits-critic",
+ "date": "2026-11-12",
+ "rubric_version": "5-axis-v1",
+ "report": "build/critic/20261112-2227-hits/report.md",
+ "overall": 1.4,
+ "scores": {"find": 1.3, "frame": 1.3, "modes": 1.25, "time": 1.4, "record": 1.9},
+ "findings": [
+  {"id": "hits-2026-11-12-01", "title": "Label ranking demotes famous sites (no renown tier)", "severity": "high", "status": "fixed", "where": "renown.rs, data/renown/"},
+  {"id": "hits-2026-11-12-02", "title": "Geography labels always win over famous names", "severity": "medium", "status": "open", "where": "view.rs placed"},
+  {"id": "hits-2026-11-12-03", "title": "Labels attach above the star, not to the piece", "severity": "medium", "status": "open", "where": "view.rs, labels.rs"},
+  {"id": "hits-2026-11-12-04", "title": "Pieces don't read as famous places (two silhouettes only)", "severity": "medium", "status": "open", "where": "board/scene.rs piece_vertices", "note": "renown.json now sets a piece per site; another session is working on piece icons"},
+  {"id": "hits-2026-11-12-05", "title": "Duplicate records for famous sites", "severity": "medium", "status": "fixed", "check": "famous sites with stray records"},
+  {"id": "hits-2026-11-12-06", "title": "No way to search for a place", "severity": "medium", "status": "open", "where": "panels.rs"},
+  {"id": "hits-2026-11-12-07", "title": "Famous sites vanish without a ruin", "severity": "medium", "status": "fixed", "where": "board/scene.rs ruin"},
+  {"id": "hits-2026-11-12-08", "title": "Labels lack a halo", "severity": "low", "status": "fixed", "where": "labels.rs haloed_text"},
+  {"id": "hits-2026-11-12-09", "title": "Label carpet in dense regions (MAX_LABELS = 150, no density limit)", "severity": "medium", "status": "open", "where": "view.rs:789"},
+  {"id": "hits-2026-11-12-10", "title": "Record lacks a 'Known for' line and link", "severity": "low", "status": "fixed", "where": "site_record.rs"},
+  {"id": "hits-2026-11-12-11", "title": "Famous sites missing from the data (Mehrgarh, Newgrange, Ness of Brodgar, Karahan Tepe)", "severity": "medium", "status": "fixed", "check": "famous sites missing", "note": "Closed 2026-11-13 (docs/plans/research/2026-11-13-2026.md, 3.6). Newgrange and Ness of Brodgar have dated records (literature_dates.csv; Newgrange's own XRONOS dates via records.toml [[keep_site]]). Mehrgarh is east of the board (decision 0.4; data/renown/SOURCES.md). Karahan Tepe is left out: no radiocarbon date of the site is published. Karul 2021 (Buried Buildings at Pre-Pottery Neolithic Karahantepe, Turk Arkeoloji ve Etnografya Dergisi 82:21-31, https://dergipark.org.tr/en/download/article-file/1683122) dates its structures only as Late PPNA and Early PPNB; Wikipedia's 9750-9400 BCE rests on a news report, and 2026 news of the diet study gives no dates. Add it when the excavators publish dates."},
+  {"id": "hits-2026-11-12-12", "title": "33 names with U+FFFD mojibake", "severity": "low", "status": "fixed", "check": "garbled site names", "note": "1 left on 2026-11-13"}
+ ]
+}

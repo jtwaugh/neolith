@@ -66,14 +66,14 @@ Bodélé before 3,000 BCE.
 [[known_site]]
 name = "Konduga (Bama Ridge)"
 lon = 13.42
-lat = 11.80
+lat = 11.797
 coordinates = "approximate"
-start = -5700
-end = -4800
-what = "Pottery site on the Bama Ridge, the beach ridge of a Megachad highstand south of Maiduguri: one charcoal date, Kn-4300, 6340 +/- 250 BP, roughly 5700-4800 cal BCE. Search summaries of the paper say the pottery is in the Saharan decorated tradition, from before food production, with no clear local successor. In our raw XRONOS download (p3k14c, after Linseele 2007) with these coordinates, and dropped by the build's max_std = 200. The XRONOS record page I opened shows the date and lab number but no coordinates; the point is the raw download's and lies about 15 km north of Konduga town. The paper itself (Breunig, Neumann & Van Neer 1996) was not opened: Springer refused, and a Frankfurt copy of Hambolu 1996 was behind a bot wall."
-cite = "Breunig, P., Neumann, K. & Van Neer, W. 1996, New research on the Holocene settlement and environment of the Chad Basin in Nigeria, African Archaeological Review 13:111-145; date record XRONOS c14s 275610"
-url = "https://xronos.ch/c14s/275610"
-checked = false
+start = -5725
+end = -4710
+what = "Site on the Bama Ridge with one radiocarbon date, Kn-4300, 6340 +/- 250 BP on charcoal, which XRONOS calibrates to 7675-6660 cal BP (start and end here). XRONOS's site page gives 11.797 N, 13.420 E (its DMS line reads 11 deg 47' N, 13 deg 25' E, so the point is to about 1 arcminute) and cites Linseele 2007 and p3k14c (Bird et al. 2022). Dropped by the build's max_std = 200 until the Kn-4300 [[keep]] entry in data/settlements/records.toml admitted it. The excavation report (Breunig, Neumann & Van Neer 1996) is still unread: what the site is beyond 'Konduga, charcoal' is not checked here."
+cite = "XRONOS site 60668 'Konduga' (Nigeria) and date c14s 275610 (Kn-4300), after Linseele, V. 2007, BAR International Series 1658, and Bird, D. et al. 2022, p3k14c, Scientific Data 9:27"
+url = "https://xronos.ch/sites/60668"
+checked = true
 
 [[known_site]]
 name = "Nedeley"
@@ -87,57 +87,56 @@ cite = "XRONOS c14s 64813 (from EUROEVOL via CalPal; Manning & Timpson 2014)"
 url = "https://xronos.ch/c14s/64813"
 checked = true
 
-[[known_site]]
-name = "Koro Toro (early date)"
-lon = 18.48
-lat = 16.08
-coordinates = "approximate"
-start = -9300
-end = -8300
-what = "One early date at Koro Toro in the Bahr el Ghazal: Gif-1095, 9470 +/- 220 BP, about 8,800 BCE, cited through Guadelli 2005 (BAR S1364). The rest of Koro Toro's 18 records are the Iron Age 'Haddadian' of Treinen-Claustre, 1st millennium CE, outside the window. Dropped by max_std. Same caution as Nedeley: no material or context is recorded. Koro Toro also names Mio-Pliocene fossil beds, so do not confuse the two. I did not open the record page. Desk check 2026-11-13: ETOPO1 ground here is about 271 m, about 58 m below the board's 329 m lake at 8,800 BCE, so it is probably a lake-level sample. Not kept."
-cite = "XRONOS c14s 64794 (Gif-1095; Guadelli 2005, BAR International Series 1364:87-103)"
-url = "https://xronos.ch/c14s/64794"
-checked = false
-
 # ------------------------------------------------------------------ research
 
 [[research]]
+status = "done"
+done_in = "Gif Natural Radiocarbon Measurements VI (Delibrias, Guillier & Labeyrie 1971, Radiocarbon 13(2):213-254, section II 'Geologic and palynologic samples', Tchad series, collected by M. Servant for ORSTOM; https://cambridge.org/core/services/aop-cambridge-core/content/view/1213EB9A380A3C605F23C79502621665/S0033822200008444a.pdf/gif-natural-radiocarbon-measurements-vi.pdf) lists Gif-1094 (Nedeley, vegetal debris in silt under Holocene diatomites, 10,100+/-230), Gif-1097 (Nedeley, clayey limestone with diatoms, 10,900+/-300) and Gif-1095 (Koro-Toro, Melania shell in a marly layer, 9470+/-220), all dating 'Sequence 12' of the lacustrine Labde series. They are lake samples, not sites, and stay out (they were never admitted). Mandi ('44Gif') and Beurkia (T-642) are not in this list; their [[reject]] entries in records.toml stand on the elevation check. Konduga: kept by the Kn-4300 [[keep]] entry."
 what = "DONE for Konduga (2026-11-13): admitted by a [[keep]] entry for Kn-4300 in data/settlements/records.toml (a per-date exception to max_std; max_std itself is unchanged). Still to do: have a person look up Nedeley (Gif-1094, -1097), Koro Toro Gif-1095, Mandi ('44Gif', 9835 BP) and Beurkia (T-642, 6990 BP) in the Gif and Trondheim date lists (Delibrias et al.; Radiocarbon date lists of the late 1960s) and in Servant's thesis. Decide whether each is archaeological or a lake sample. If any is a lake sample, propose its removal in data/settlements/corrections.toml with that citation. Desk check by elevation (ETOPO1 against the board lake at each date): Mandi 284 m (45 m under), Beurkia 266 m (54 m under), Nedeley 267 m (33 m under), Koro Toro 271 m (58 m under). All four probably date lake deposits. Mandi (44Gif) and Beurkia (T-642) were dropped on 2026-11-13 by [[reject]] entries in data/settlements/records.toml; Nedeley and Koro Toro were never admitted. If the lab lists show any of them is archaeological, delete the reject."
 url = "https://xronos.ch/c14s/64809"
 yields = "One certain early Holocene site on the southern shore (Konduga); a decision on four or five doubtful single-date records in the box that currently shape the map"
 effort = "An hour for Konduga; half a day in the 1960s-70s Radiocarbon date lists for the others"
 
 [[research]]
+next = "Get Breunig, Neumann & Van Neer 1996 (African Archaeological Review 13:111-145) through a library and enter its dated Bama Ridge and Chad-basin sites; Konduga's position is now confirmed from XRONOS (sites/60668)."
 what = "Get Breunig, Neumann & Van Neer 1996 and the Frankfurt SFB 268 reports (Thiemeyer on the Bama Ridge shorelines; Hambolu 1996; Gumnior & Thiemeyer 2003 on Komadugu fluvial dynamics) for every dated site on the Bama Ridge and the Komadugu-Yobe older than 4,000 BP, with positions. Expect Konduga and Dufuna and perhaps a few undated ridge-top surface sites; most of the project's dated sites are Gajiganna (after 1,800 BCE) and are already in our raw data."
 url = "https://doi.org/10.1007/BF01956304"
 yields = "Two to five early or mid Holocene sites on the south-west shore, plus the ridge's age, which dates the shoreline itself"
 effort = "One journal paper (paywalled) and some open Frankfurt reports that block scripts; a person has to fetch them"
 
 [[research]]
+status = "dropped"
+reason = "Triage 2026-11-13: 1960s typological papers on harpoons and surface collections, with no radiocarbon dates; they would give undated points only. The Bahr el Ghazal dates of that decade turned out to be lake samples (item 1)."
 what = "The Borkou and Djourab Neolithic. Read Courtin 1966 ('Le néolithique du Borkou, Nord-Tchad', L'Anthropologie 70:269-282), Courtin 1965 (bone harpoons from Borkou, BSPF), Huard & Massip 1964 ('Harpons en os et céramique à décor en vague du Sahara tchadien', BSPF 61:105-123), Coppens 1968 (Bull. IFAN A 30:790-801) and Coppens 1969 ('De l'archéologie à la paléogéographie', Bull. IFAN A 31:263-269). These are cited, with these details, in Gabriel 1977's bibliography, which I opened. List every site with a position, its material (harpoons, wavy-line pottery, fish), and any date. BSPF is digitised on Persée; L'Anthropologie and Bull. IFAN are not open."
 url = "https://e-docs.geo-leo.de/server/api/core/bitstreams/eeb31ca5-7f20-42f2-9ce7-c24b6f125cc8/content"
 yields = "My estimate: 10-40 Neolithic lakeshore and wadi sites on the northern and north-eastern shore (Angamma delta, Borkou, Bahr el Ghazal), most undated, entered as period-dated. This is the zone that would most change the map."
 effort = "Four or five French papers of 10-20 pages, mostly with maps rather than coordinates; Persée for BSPF, a library for the rest"
 
 [[research]]
+status = "dropped"
+reason = "Triage 2026-11-13: an archive search with no known published inventory behind it; not a desk task."
 what = "Find out what survives of Coppens's 1960-66 northern Chad inventory. Universalis says his missions found 'plusieurs centaines de gisements archéologiques' besides the fossil beds. Find out whether a site register exists (MNHN Paris, Institut de Paléontologie Humaine, CNRD N'Djamena), and ask the ArRéLaT project (V. Mourre, INRAP/TRACES Toulouse) whether it has digitised it or has new dates. ArRéLaT inventoried 66 sites at Ounianga in 2015-16, 58 of them new, and worked in the Guéra in 2017, which is inside the box's south-east corner."
 url = "https://www.universalis.fr/encyclopedie/yves-coppens/2-du-tchad-a-l-ethiopie/"
 yields = "Potentially hundreds of positioned surface sites in Borkou, Djourab and Bahr el Ghazal, of all periods; unknown how many are Holocene or dated"
 effort = "Correspondence, not reading; may produce nothing"
 
 [[research]]
+next = "Find the Hannover (Hv-) date list that holds Hv-14024 to 14482 (Radiocarbon or the Würzburg programme's reports) and record each sample's material, as was done for the Gif dates in item 1; reject any that are lake or dune samples."
 what = "Resolve the north-west margin we already hold: Agadem, Dibella, Zoo Baba (Hv-14024/14025/14026/14080/14482, 1980s Hannover dates) and Bilma. These look like the Würzburg geomorphology programme of Baumhauer, Felix-Henningsen and Brauneck in the Grand Erg de Bilma. Brauneck 2010 (Würzburger Geographische Arbeiten 103) has a Zoo Baba section with radiocarbon dates. Search summaries of a Baumhauer abstract say the Neolithic settlement there came when the lakes had already shrunk. Check which of the dates are archaeological. The PDF is open but blocked scripts and is over 10 MB."
 url = "https://opus.bibliothek.uni-wuerzburg.de/files/23514/WGA_103.pdf"
 yields = "No new sites probably, but tells us whether 3-5 of our ten in-box 'sites' are settlements or lake sediments"
 effort = "One thesis, German, searchable for the site names"
 
 [[research]]
+next = "Look for an open copy of Quéchon & Roset 1974 (an ORSTOM survey report) and read off the Neolithic surface sites of the Termit massif, with whatever dates it gives."
 what = "Termit, just west of the box: Quéchon & Roset 1974, the 1972 ORSTOM survey of the Termit massif (15°30'-17°N, 11°10'-11°40'E) with a provisional archaeological map of surface sites from the Palaeolithic to the early centuries CE. Add Paris, Person, Quéchon & Saliège 1992 on the late Neolithic and early metallurgy at Termit. We hold Termit ouest, Dogoule and Gara Tchia Bo; the map should give the rest of the Neolithic sites with positions. The IRD document server was in maintenance when I tried it."
 url = "https://horizon.documentation.ird.fr/exl-doc/pleins_textes/pleins_textes_5/b_fdi_12-13/14238.pdf"
 yields = "Perhaps 10-30 Neolithic surface sites on the west shore of the Termit-Agadem embayment, a few dated"
 effort = "One open French paper with a map, when the IRD server is back"
 
 [[research]]
+status = "dropped"
+reason = "Triage 2026-11-13: the item is for after 3,000 BCE, outside the board's window, as it says itself."
 what = "For the end of the story and the south shore after 3,000 BCE, which is outside this plan's window: Lebeuf 1969 and 1981, 'Carte archéologique des abords du Lac Tchad (Cameroun, Nigeria, Tchad)'. It is a gazetteer of mound sites around the lake, overwhelmingly Sao and later, which will show where the lake floor was settled. Do not enter its sites as in-window. The citation is from the bibliography of Abanga 2018 (linked), which I read; the book itself is not online."
 url = "https://dante.univ-tlse2.fr/files/original/3e3a16e5e04e332ebe9364b6927775a384386489.pdf"
 yields = "Hundreds of late (mostly after 500 BCE) mound sites; useful for the after-window map and for checking that our Gajiganna-Sao sites are complete"
@@ -148,6 +147,8 @@ what = "Checked and negative, so nobody repeats it: aDRAC (Central African radio
 url = "https://github.com/dirkseidensticker/aDRAC"
 yields = "None in window"
 effort = "None"
+status = "dropped"
+reason = "No usable data: aDRAC has nothing older than about 2,800 BP in or near the box (checked by the plan's author, as the item says)"
 
 # ------------------------------------------------------------------ speculation
 

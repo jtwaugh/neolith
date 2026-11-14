@@ -118,7 +118,8 @@ def run(cfg, log=print):
         if L["kind"] == "continuous":
             contrast[L["id"]] = False
             continue
-        contrast[L["id"]] = bool((y == 0).sum() >= 20 and (y == 1).sum() >= 20)
+        # Fractional shares (ancestry weights) count as below or above one half.
+        contrast[L["id"]] = bool((y < 0.5).sum() >= 20 and (y >= 0.5).sum() >= 20)
         if contrast[L["id"]] and L["sigma"] == "cv":
             cvres = surface.cross_validate(u.loc[known, "lon"].values, u.loc[known, "lat"].values,
                                            w[known], y, sc["sigma_km"], sc["cutoff"], sc["alpha"])

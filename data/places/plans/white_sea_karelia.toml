@@ -87,20 +87,27 @@ what = "Board, for a person, before anything is ingested here: stop the sea step
 url = "https://vestnik.mauniver.ru/v18_2_n61/12_kolka_255-268.pdf"
 yields = "A White Sea that is sea at all slices and wider than today's before about 4,000 BCE, instead of land at 8,000 BCE. Without this every shore site plots wrongly."
 effort = "A config and model change, plus three or four calibration points; for whoever owns data/lakes and pipeline/isostasy.py."
+status = "done"
+done_in = "data/lakes/lakes.toml, [[lake]] key 'white-sea' (level 'sea-or-outlet'); pipeline/config.toml, [isostasy] White Sea calibration points and [[isostasy.dome]] at 38.5, 64.5; data/lakes/SOURCES.md, 'White Sea'"
 
 [[research]]
+status = "done"
+done_in = "data/settlements/literature_dates.csv, source 'Tarasov et al. 2017', map no. 11: Yerpin Pudas I, Zalavruga I and IV, Zolotets VI, X, XI and XX, Besovy Sledki and Besovy Sledki II (Tab. 1). Keret' XXII (locality 23) is left out on purpose: its only date, LE-8047, 6130+/-50 BP, is in Tab. 2, which holds dates 'with deviatory age' or with 'no correspondence with archaeological materials' whose 'suitability for building a chronology is virtually non-existent' (Tab. 2 caption); the literature file leaves out dates the authors reject (as it does Zolotets XX's TA-792 in the same table)."
 what = "Enter the White Sea rows of Tarasov et al. 2017 Table 1 (Map 1 locality 11: Yerpin Pudas I, Zalavruga I and IV, Zolotets VI, X, XI and XX, Besovy Sledki and Besovy Sledki II; locality 23: Keret' XXII), placed at the map localities and marked approximate."
 url = "https://journals.uni-lj.si/DocumentaPraehistorica/article/view/44.7"
 yields = "About 10 sites with 20-odd dates, 5,600-2,000 cal BC."
 effort = "Part of the Karelian table proposed in the Onega plan; do them together."
 
 [[research]]
+next = "Open Lobanova 2019 and enter the Table 4 rows (lower Vyg) with lab numbers that Tarasov et al. 2017 does not already give; do it with the onega plan's Table 3."
 what = "Enter the dated rows of Lobanova 2019 Table 4 (the lower-Vyg sites around the petroglyphs, with elevations a.s.l., lab numbers and calibrated ranges) that the Tarasov list lacks."
 url = "https://journal.fi/fennoscandiaarchaeologica/article/download/126571/76389/265733"
 yields = "A few more dated sites, and elevations for the 80-odd undated ones, which with a shoreline curve date them roughly."
 effort = "One table."
 
 [[research]]
+status = "dropped"
+reason = "Triage 2026-11-13: Russian print monographs from the 1970s, not digitised as far as is known; the dated record of the coast is now entered from Tarasov et al. 2017."
 what = "Find the White Sea Mesolithic: the Russian monographs on the south-western White Sea coast (Devyatova 1976 on Holocene geology and the chronology of the sites of the south-west White Sea coast; the papers on the early Mesolithic of the north-western White Sea cited in Tarasov et al. 2017's references). Nothing I opened gives a Mesolithic date inside the box."
 yields = "Unknown; possibly a dozen Mesolithic sites on raised terraces, dated by shoreline more than by radiocarbon."
 effort = "Library work in Russian; Petrozavodsk (Karelian Research Centre) publications."
