@@ -166,9 +166,54 @@ fn smooth(pts: &mut [LonLat], sigma: f64, step: f64) {
 /// and their spacing.
 pub(crate) fn centreline(points: &[LonLat], half_deg: f64, sigma: f64) -> (Vec<LonLat>, f64) {
     let step = (half_deg * 0.7).clamp(0.02, 0.08);
-    let mut pts = resample(&river_spline(points, 0.04), step);
+    let mut pts = resample(&cached_spline(points), step);
     smooth(&mut pts, sigma, step);
     (pts, step)
+}
+
+/// `river_spline(points, 0.04)`, kept between builds: a course's spline
+/// doesn't depend on the camera, and the river lines are rebuilt every few
+/// percent of a zoom. Keyed by the points themselves.
+fn cached_spline(points: &[LonLat]) -> std::sync::Arc<Vec<LonLat>> {
+    use std::collections::HashMap;
+    use std::hash::{Hash, Hasher};
+    use std::sync::{Arc, Mutex, OnceLock};
+    static CACHE: OnceLock<Mutex<HashMap<u64, Arc<Vec<LonLat>>>>> = OnceLock::new();
+    let mut h = std::collections::hash_map::DefaultHasher::new();
+    for p in points {
+        (p.lon.to_bits(), p.lat.to_bits()).hash(&mut h);
+    }
+    let key = h.finish();
+    let cache = CACHE.get_or_init(Default::default);
+    if let Some(s) = cache.lock().unwrap().get(&key) {
+        return s.clone();
+    }
+    let spline = Arc::new(river_spline(points, 0.04));
+    let mut cache = cache.lock().unwrap();
+    // A world has a few thousand courses; a new world starts afresh.
+    if cache.len() > 20_000 {
+        cache.clear();
+    }
+    cache.insert(key, spline.clone());
+    spline
+}
+
+/// [`head_levels`] on the smooth board, kept between builds: they depend
+/// on the courses and the relief, not the camera, year or morph.
+fn cached_heads(rivers: &[River], relief: &Relief) -> std::sync::Arc<Vec<f64>> {
+    use std::sync::{Arc, Mutex};
+    type Key = (usize, usize, usize, u64, u64);
+    static CACHE: Mutex<Option<(Key, Arc<Vec<f64>>)>> = Mutex::new(None);
+    let key: Key = (rivers.as_ptr() as usize, rivers.len(), relief as *const Relief as usize, relief.min.to_bits(), relief.max.to_bits());
+    let mut cache = CACHE.lock().unwrap();
+    if let Some((k, heads)) = cache.as_ref() {
+        if *k == key {
+            return heads.clone();
+        }
+    }
+    let heads = Arc::new(head_levels(rivers, |p| relief.at(p)));
+    *cache = Some((key, heads.clone()));
+    heads
 }
 
 /// Box blur with the ends held (so a value at the end of the line stays).
@@ -411,7 +456,8 @@ pub fn rivers(mesh: &mut LineMesh, rivers: &[River], lakes: &[Lake], snapshot: &
         .filter(|(_, _, ph)| !ph.is_empty())
         .collect();
     order.sort_by_key(|(_, r, _)| r.size);
-    let heads = if board.relief.is_smooth() { head_levels(rivers, |p| board.relief.at(p)) } else { vec![f64::INFINITY; rivers.len()] };
+    let heads_span = crate::perf::span("line heads");
+    let heads = if board.relief.is_smooth() { cached_heads(rivers, board.relief) } else { std::sync::Arc::new(vec![f64::INFINITY; rivers.len()]) };
 
     // Belts: the strip an alluvial river moves within, under every channel.
     // Its line is smoothed harder than the channel's, which wanders inside.
@@ -421,6 +467,8 @@ pub fn rivers(mesh: &mut LineMesh, rivers: &[River], lakes: &[Lake], snapshot: &
         let x = ((board.cam_dist - 0.5) / 1.1).clamp(0.0, 1.0);
         x * x * (3.0 - 2.0 * x)
     };
+    drop(heads_span);
+    let belts_span = crate::perf::span("line belts");
     let belt_half = BELT_HALF * zoom.sqrt();
     for (ri, r, ph) in order.iter().filter(|(_, r, _)| r.size >= 2) {
         let shown = ph.iter().map(|(_, a)| *a).sum::<f64>().min(1.0);
@@ -446,6 +494,8 @@ pub fn rivers(mesh: &mut LineMesh, rivers: &[River], lakes: &[Lake], snapshot: &
         spine.paint(mesh, &alpha, &Paint { share: 1.0, colour: BELT, dash: None, feather: 0.3, profile: Profile::Plain });
     }
 
+    drop(belts_span);
+    let channels_span = crate::perf::span("line channels");
     // Channels: every river's banks, then every river's fill.
     struct Channel {
         spine: Spine,
@@ -478,6 +528,8 @@ pub fn rivers(mesh: &mut LineMesh, rivers: &[River], lakes: &[Lake], snapshot: &
             Channel { spine: Spine::new(&pts, &width, half, 1.0, 0.0004, false, Some(heads[*i]), board), phases }
         })
         .collect();
+    drop(channels_span);
+    let _paint_span = crate::perf::span("line paint");
     // Beds first, under every channel, fading out with distance.
     let near = 1.0 - far;
     if near > 0.01 {
